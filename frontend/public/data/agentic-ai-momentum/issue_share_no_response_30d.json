@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T11:21:37.040484",
+    "fetched_at": "2026-04-01T07:13:58.027800",
     "schema": {
       "name": "issue_share_no_response_30d",
       "description": "3-month trailing average of the monthly share of issues with no response within 30 days per repo.",
@@ -150,122 +150,122 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.42857142857142855
+      "issues_no_response_pct_30d": 0.375
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.5
+      "issues_no_response_pct_30d": 0.4375
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.6666666666666666
+      "issues_no_response_pct_30d": 0.5138888888888888
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.6571428571428571
+      "issues_no_response_pct_30d": 0.5
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.6888888888888888
+      "issues_no_response_pct_30d": 0.5333333333333333
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.35555555555555557
+      "issues_no_response_pct_30d": 0.3111111111111111
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.35185185185185186
+      "issues_no_response_pct_30d": 0.30526315789473685
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.266884531590414
+      "issues_no_response_pct_30d": 0.2719298245614035
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.4097416744475568
+      "issues_no_response_pct_30d": 0.4147869674185463
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.5023342670401494
+      "issues_no_response_pct_30d": 0.5317460317460317
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.6428571428571429
+      "issues_no_response_pct_30d": 0.5132275132275131
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.5666666666666667
+      "issues_no_response_pct_30d": 0.43703703703703706
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.4238095238095238
+      "issues_no_response_pct_30d": 0.28425925925925927
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.14603174603174604
+      "issues_no_response_pct_30d": 0.17314814814814816
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.07936507936507936
+      "issues_no_response_pct_30d": 0.10648148148148147
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.13333333333333333
+      "issues_no_response_pct_30d": 0.15468409586056645
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.21666666666666667
+      "issues_no_response_pct_30d": 0.1843137254901961
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.3833333333333333
+      "issues_no_response_pct_30d": 0.3509803921568628
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.5833333333333334
+      "issues_no_response_pct_30d": 0.5666666666666667
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.611111111111111
+      "issues_no_response_pct_30d": 0.5833333333333334
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.4444444444444444
+      "issues_no_response_pct_30d": 0.5277777777777778
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.2111111111111111
+      "issues_no_response_pct_30d": 0.255050505050505
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.09999999999999999
+      "issues_no_response_pct_30d": 0.2828282828282828
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.35000000000000003
+      "issues_no_response_pct_30d": 0.4217171717171717
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
@@ -385,7 +385,7 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.5215506125080593
+      "issues_no_response_pct_30d": 0.5203450886899674
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -415,92 +415,92 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.2840909090909091
+      "issues_no_response_pct_30d": 0.268939393939394
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.4646464646464646
+      "issues_no_response_pct_30d": 0.4881422924901186
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.5945165945165946
+      "issues_no_response_pct_30d": 0.6180124223602484
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.6178266178266179
+      "issues_no_response_pct_30d": 0.656473960821787
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.6369837059492233
+      "issues_no_response_pct_30d": 0.64004884004884
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.7368300961181941
+      "issues_no_response_pct_30d": 0.7308226495726496
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.736002966258806
+      "issues_no_response_pct_30d": 0.7277146464646465
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.6876061120543294
+      "issues_no_response_pct_30d": 0.6802398989898991
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.7306168647425014
+      "issues_no_response_pct_30d": 0.7323232323232324
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.7644110275689223
+      "issues_no_response_pct_30d": 0.7683982683982684
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.6498599439775911
+      "issues_no_response_pct_30d": 0.6455026455026455
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.411764705882353
+      "issues_no_response_pct_30d": 0.3955026455026455
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.18601514679946052
+      "issues_no_response_pct_30d": 0.1697530864197531
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.2423355473000863
+      "issues_no_response_pct_30d": 0.2223456790123457
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.17273847770301667
+      "issues_no_response_pct_30d": 0.16123456790123455
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.33817057646844884
+      "issues_no_response_pct_30d": 0.3057516339869281
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.22564102564102564
+      "issues_no_response_pct_30d": 0.19760348583877996
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.2888888888888889
+      "issues_no_response_pct_30d": 0.24204793028322438
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -710,27 +710,32 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.2
+      "issues_no_response_pct_30d": 0.15384615384615385
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.26666666666666666
+      "issues_no_response_pct_30d": 0.21978021978021978
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.5111111111111111
+      "issues_no_response_pct_30d": 0.36874236874236876
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.4444444444444444
+      "issues_no_response_pct_30d": 0.31746031746031744
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-11-01",
+      "issues_no_response_pct_30d": 0.2222222222222222
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.5555555555555555
+      "issues_no_response_pct_30d": 0.2222222222222222
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -740,17 +745,17 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.6388888888888888
+      "issues_no_response_pct_30d": 0.611111111111111
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.6666666666666666
+      "issues_no_response_pct_30d": 0.6388888888888888
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.75
+      "issues_no_response_pct_30d": 0.7222222222222222
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -770,122 +775,122 @@
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.07303370786516854
+      "issues_no_response_pct_30d": 0.06341463414634146
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.07053045937476114
+      "issues_no_response_pct_30d": 0.06427436688159985
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.10519640687877158
+      "issues_no_response_pct_30d": 0.09571301404441458
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.14495440169294618
+      "issues_no_response_pct_30d": 0.12733259642728878
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.1815379239907542
+      "issues_no_response_pct_30d": 0.15423234099944713
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.22498783962198599
+      "issues_no_response_pct_30d": 0.18182867499104163
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.25778450032562344
+      "issues_no_response_pct_30d": 0.21425606641123882
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.3281548706959938
+      "issues_no_response_pct_30d": 0.2767560664112388
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.3480241815386349
+      "issues_no_response_pct_30d": 0.30343915343915345
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.34662045222792887
+      "issues_no_response_pct_30d": 0.3003052503052503
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.3259017136874081
+      "issues_no_response_pct_30d": 0.28010323010323007
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.34824200302296054
+      "issues_no_response_pct_30d": 0.27971418559653854
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.37993948998360544
+      "issues_no_response_pct_30d": 0.3073675448954674
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.3619376898035875
+      "issues_no_response_pct_30d": 0.29850973603765857
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.3314354066985646
+      "issues_no_response_pct_30d": 0.28118681771043613
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.3453988868274583
+      "issues_no_response_pct_30d": 0.30740450645731254
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.3941956782713085
+      "issues_no_response_pct_30d": 0.3503532244060305
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.37912824089173247
+      "issues_no_response_pct_30d": 0.35381850496047534
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.4087034856237716
+      "issues_no_response_pct_30d": 0.37698708395429703
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.4581867924600196
+      "issues_no_response_pct_30d": 0.43574776771498086
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.526587563172929
+      "issues_no_response_pct_30d": 0.49099974099974103
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.5157198014340871
+      "issues_no_response_pct_30d": 0.487024343459987
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.4536492563126946
+      "issues_no_response_pct_30d": 0.4365969930326366
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.46880077146420973
+      "issues_no_response_pct_30d": 0.45283240652832407
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1010,122 +1015,122 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.29411764705882354
+      "issues_no_response_pct_30d": 0.2631578947368421
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.38618925831202044
+      "issues_no_response_pct_30d": 0.2982456140350877
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.3500520981339396
+      "issues_no_response_pct_30d": 0.26900584795321636
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.35457698501176765
+      "issues_no_response_pct_30d": 0.27017543859649124
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.22690272690272692
+      "issues_no_response_pct_30d": 0.20073099415204676
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.24542124542124544
+      "issues_no_response_pct_30d": 0.24166666666666667
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.25396825396825395
+      "issues_no_response_pct_30d": 0.2638888888888889
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.3131313131313131
+      "issues_no_response_pct_30d": 0.29914529914529914
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.23710792131844763
+      "issues_no_response_pct_30d": 0.23151244890375325
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.1498063340168603
+      "issues_no_response_pct_30d": 0.14123467112597546
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.20175438596491227
+      "issues_no_response_pct_30d": 0.2124597423510467
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.27777777777777773
+      "issues_no_response_pct_30d": 0.28009259259259256
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.37896825396825395
+      "issues_no_response_pct_30d": 0.4021164021164021
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.3145424836601307
+      "issues_no_response_pct_30d": 0.33239962651727356
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.23120915032679737
+      "issues_no_response_pct_30d": 0.2725705666882137
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.17287581699346408
+      "issues_no_response_pct_30d": 0.18526897938662645
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.28194444444444444
+      "issues_no_response_pct_30d": 0.2822762033288349
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.3875
+      "issues_no_response_pct_30d": 0.38250930356193513
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.4398809523809524
+      "issues_no_response_pct_30d": 0.4602870813397129
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.4857142857142857
+      "issues_no_response_pct_30d": 0.5272727272727272
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.4476190476190476
+      "issues_no_response_pct_30d": 0.5007575757575758
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.49523809523809526
+      "issues_no_response_pct_30d": 0.5340909090909091
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.5476190476190476
+      "issues_no_response_pct_30d": 0.5416666666666666
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.6746031746031745
+      "issues_no_response_pct_30d": 0.6388888888888888
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
@@ -1380,7 +1385,7 @@
     {
       "repo": "https://github.com/agntcy/slim",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.8085618085618086
+      "issues_no_response_pct_30d": 0.8032708032708032
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
@@ -1595,87 +1600,87 @@
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.29780720888180773
+      "issues_no_response_pct_30d": 0.2932095077323824
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.17391304347826086
+      "issues_no_response_pct_30d": 0.15384615384615385
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.20695652173913043
+      "issues_no_response_pct_30d": 0.21978021978021978
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.20591156650973877
+      "issues_no_response_pct_30d": 0.2092652445593622
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.2359035149799481
+      "issues_no_response_pct_30d": 0.23677107206518969
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.24137360045003356
+      "issues_no_response_pct_30d": 0.22311805841217605
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.260975135975136
+      "issues_no_response_pct_30d": 0.23221204083273048
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.23253598253598254
+      "issues_no_response_pct_30d": 0.2118183226287933
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.23243175072443367
+      "issues_no_response_pct_30d": 0.21356657437704504
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.21399535423925667
+      "issues_no_response_pct_30d": 0.20570055789033892
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.21983102183963013
+      "issues_no_response_pct_30d": 0.19815385493351592
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.22911537394241044
+      "issues_no_response_pct_30d": 0.19732877242526511
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.27765674170902926
+      "issues_no_response_pct_30d": 0.23653031162680435
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.3272397933204785
+      "issues_no_response_pct_30d": 0.2773495206663524
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.4135419685115425
+      "issues_no_response_pct_30d": 0.3853174603174603
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.41256157635467977
+      "issues_no_response_pct_30d": 0.37103174603174605
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.44206349206349205
+      "issues_no_response_pct_30d": 0.41757646147890054
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -1685,117 +1690,117 @@
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.6550802139037433
+      "issues_no_response_pct_30d": 0.6338383838383839
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.6811645870469399
+      "issues_no_response_pct_30d": 0.6558922558922559
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.6979279655124461
+      "issues_no_response_pct_30d": 0.6685185185185185
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.6248441865463142
+      "issues_no_response_pct_30d": 0.6050827423167848
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.6174367791389068
+      "issues_no_response_pct_30d": 0.6087864460204886
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.6280055456526045
+      "issues_no_response_pct_30d": 0.6234923283734298
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.699520697167756
+      "issues_no_response_pct_30d": 0.6946722123192712
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.7211043497858913
+      "issues_no_response_pct_30d": 0.7144657763751302
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.7459965761799952
+      "issues_no_response_pct_30d": 0.7414265606888558
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.6420885302029836
+      "issues_no_response_pct_30d": 0.6459471766848816
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.5846172658351675
+      "issues_no_response_pct_30d": 0.5901747766501865
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.47431208638105193
+      "issues_no_response_pct_30d": 0.47211922109463095
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.4522276229947675
+      "issues_no_response_pct_30d": 0.44097755589691073
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.3648993359187933
+      "issues_no_response_pct_30d": 0.35486188357434184
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.3787280997475571
+      "issues_no_response_pct_30d": 0.36811945933191764
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.3648624530824842
+      "issues_no_response_pct_30d": 0.3488197626128661
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.3828242606075362
+      "issues_no_response_pct_30d": 0.3523957523957524
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.37859145637473196
+      "issues_no_response_pct_30d": 0.3201817201817202
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.43654485049833885
+      "issues_no_response_pct_30d": 0.325950950950951
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.49523809523809526
+      "issues_no_response_pct_30d": 0.35028957528957533
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.5285714285714286
+      "issues_no_response_pct_30d": 0.40908521303258144
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.4904761904761905
+      "issues_no_response_pct_30d": 0.4311866623079437
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.54
+      "issues_no_response_pct_30d": 0.4678166989379804
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -2040,207 +2045,207 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.3972222222222222
+      "issues_no_response_pct_30d": 0.4276315789473684
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.16038011695906432
+      "issues_no_response_pct_30d": 0.18596491228070175
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.1766844647851513
+      "issues_no_response_pct_30d": 0.19368096166341778
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.2004392540571819
+      "issues_no_response_pct_30d": 0.19006899055918666
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.15728135932033982
+      "issues_no_response_pct_30d": 0.15587358826033607
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.12256615878107457
+      "issues_no_response_pct_30d": 0.12067526937407391
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.09881136950904394
+      "issues_no_response_pct_30d": 0.08117947105474618
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.10749354005167959
+      "issues_no_response_pct_30d": 0.07599578838627649
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.10133174319220832
+      "issues_no_response_pct_30d": 0.08453866395042865
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.13244285430331942
+      "issues_no_response_pct_30d": 0.10834818775995247
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.11804639804639805
+      "issues_no_response_pct_30d": 0.12623604465709728
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.19851335656213706
+      "issues_no_response_pct_30d": 0.17017543859649123
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.2527069049492338
+      "issues_no_response_pct_30d": 0.2075491759702286
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.28445293669526556
+      "issues_no_response_pct_30d": 0.20147630147630147
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.2841141833077317
+      "issues_no_response_pct_30d": 0.18689296814296816
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.2270923520923521
+      "issues_no_response_pct_30d": 0.13470441595441596
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.3143939393939394
+      "issues_no_response_pct_30d": 0.1693672839506173
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.1875
+      "issues_no_response_pct_30d": 0.16666666666666666
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.18198529411764708
+      "issues_no_response_pct_30d": 0.1715686274509804
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.26947167755991286
+      "issues_no_response_pct_30d": 0.2547299621603027
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.34586056644880175
+      "issues_no_response_pct_30d": 0.35302056045090097
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.3476430976430976
+      "issues_no_response_pct_30d": 0.3418160786581839
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.2920875420875421
+      "issues_no_response_pct_30d": 0.2772227772227772
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.2531986531986532
+      "issues_no_response_pct_30d": 0.21428571428571427
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.29865319865319867
+      "issues_no_response_pct_30d": 0.24666666666666667
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.23636363636363636
+      "issues_no_response_pct_30d": 0.19313131313131313
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.2196969696969697
+      "issues_no_response_pct_30d": 0.18555555555555556
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.13585858585858587
+      "issues_no_response_pct_30d": 0.14477124183006537
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.19646464646464645
+      "issues_no_response_pct_30d": 0.2058823529411765
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.21313131313131314
+      "issues_no_response_pct_30d": 0.2558823529411765
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.24646464646464647
+      "issues_no_response_pct_30d": 0.2537037037037037
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.17407407407407405
+      "issues_no_response_pct_30d": 0.20067340067340067
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.19907407407407407
+      "issues_no_response_pct_30d": 0.16257816257816257
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.19113756613756613
+      "issues_no_response_pct_30d": 0.1600238841618152
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.1726190476190476
+      "issues_no_response_pct_30d": 0.14638752052545156
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.10317460317460318
+      "issues_no_response_pct_30d": 0.08623714458560194
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.10763888888888888
+      "issues_no_response_pct_30d": 0.09342105263157895
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.17906746031746032
+      "issues_no_response_pct_30d": 0.1347254004576659
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.17113095238095236
+      "issues_no_response_pct_30d": 0.12527870680044592
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.24404761904761904
+      "issues_no_response_pct_30d": 0.13916759568933482
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.29383116883116883
+      "issues_no_response_pct_30d": 0.22008547008547008
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2360,7 +2365,7 @@
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.033474187713953794
+      "issues_no_response_pct_30d": 0.03344406856895706
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
@@ -2485,117 +2490,117 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.3114754098360656
+      "issues_no_response_pct_30d": 0.28
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.30279652844744454
+      "issues_no_response_pct_30d": 0.2870588235294118
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.3645627649967091
+      "issues_no_response_pct_30d": 0.3521568627450981
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.36490429505135386
+      "issues_no_response_pct_30d": 0.35406162464985996
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.3721282372598162
+      "issues_no_response_pct_30d": 0.35602240896358545
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.3564886480908152
+      "issues_no_response_pct_30d": 0.33533471359558314
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.4438113431262763
+      "issues_no_response_pct_30d": 0.4305728088336784
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.5315306413718903
+      "issues_no_response_pct_30d": 0.5147833351494678
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.4365551511758119
+      "issues_no_response_pct_30d": 0.4237063246351172
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.34762989203778677
+      "issues_no_response_pct_30d": 0.3136899042738693
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.23798076923076925
+      "issues_no_response_pct_30d": 0.26281271129141315
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.3525641025641026
+      "issues_no_response_pct_30d": 0.38045977011494253
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.3333333333333333
+      "issues_no_response_pct_30d": 0.3833333333333333
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.36999999999999994
+      "issues_no_response_pct_30d": 0.44148936170212766
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.2922222222222222
+      "issues_no_response_pct_30d": 0.3951930654058314
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.4380555555555556
+      "issues_no_response_pct_30d": 0.5618597320724981
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.49349415204678365
+      "issues_no_response_pct_30d": 0.544973544973545
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.6665100250626567
+      "issues_no_response_pct_30d": 0.6810134310134309
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.6931573118843621
+      "issues_no_response_pct_30d": 0.6769150703576933
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.7047105853118332
+      "issues_no_response_pct_30d": 0.7144331078757308
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.5761391567404046
+      "issues_no_response_pct_30d": 0.5913561847988077
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.5069918699186992
+      "issues_no_response_pct_30d": 0.5505827505827506
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.57
+      "issues_no_response_pct_30d": 0.5765567765567766
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2655,17 +2660,17 @@
     {
       "repo": "https://github.com/deepset-ai/haystack",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.4896520215701299
+      "issues_no_response_pct_30d": 0.49264867237217463
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.48072957819332823
+      "issues_no_response_pct_30d": 0.48372622899537304
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.4385154322609827
+      "issues_no_response_pct_30d": 0.44151208306302747
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2750,17 +2755,17 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.0
-    },
-    {
-      "repo": "https://github.com/e2b-dev/code-interpreter",
-      "month": "2024-11-01",
       "issues_no_response_pct_30d": 0.16666666666666666
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-11-01",
+      "issues_no_response_pct_30d": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.5
+      "issues_no_response_pct_30d": 0.6666666666666666
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2785,17 +2790,17 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.05555555555555555
+      "issues_no_response_pct_30d": 0.2222222222222222
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.16666666666666666
+      "issues_no_response_pct_30d": 0.3333333333333333
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.1111111111111111
+      "issues_no_response_pct_30d": 0.27777777777777773
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2815,187 +2820,187 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.3611111111111111
+      "issues_no_response_pct_30d": 0.3055555555555555
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.5833333333333334
+      "issues_no_response_pct_30d": 0.5277777777777778
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.19213973799126638
+      "issues_no_response_pct_30d": 0.12781954887218044
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.18779648770066915
+      "issues_no_response_pct_30d": 0.13815219867851447
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.24640977967923397
+      "issues_no_response_pct_30d": 0.19518044838273121
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.30873682672243824
+      "issues_no_response_pct_30d": 0.27075575027382254
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.41770069011448324
+      "issues_no_response_pct_30d": 0.3694089489270212
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.4914038231396501
+      "issues_no_response_pct_30d": 0.43866556723699585
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.45746717155593974
+      "issues_no_response_pct_30d": 0.38108980966123823
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.4335510594365608
+      "issues_no_response_pct_30d": 0.2911177621420209
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.3954985502973119
+      "issues_no_response_pct_30d": 0.19337423582706603
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.4098576920122503
+      "issues_no_response_pct_30d": 0.1789968856832925
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.39627534905809075
+      "issues_no_response_pct_30d": 0.1665197097855445
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.2
+      "issues_no_response_pct_30d": 0.17391304347826086
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.25
+      "issues_no_response_pct_30d": 0.18695652173913044
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.3735632183908046
+      "issues_no_response_pct_30d": 0.3315342328835582
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.44578544061302683
+      "issues_no_response_pct_30d": 0.4068965517241379
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.42421681316204646
+      "issues_no_response_pct_30d": 0.4104053236539625
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.272875816993464
+      "issues_no_response_pct_30d": 0.25479082321187585
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.276844070961718
+      "issues_no_response_pct_30d": 0.26729082321187586
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.28174603174603174
+      "issues_no_response_pct_30d": 0.2711894586894587
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.30952380952380953
+      "issues_no_response_pct_30d": 0.2532407407407407
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.19047619047619047
+      "issues_no_response_pct_30d": 0.12962962962962962
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.3071428571428571
+      "issues_no_response_pct_30d": 0.18055555555555555
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.36666666666666664
+      "issues_no_response_pct_30d": 0.3138888888888889
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.5650793650793651
+      "issues_no_response_pct_30d": 0.4583333333333333
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.36507936507936506
+      "issues_no_response_pct_30d": 0.3333333333333333
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.2222222222222222
+      "issues_no_response_pct_30d": 0.16666666666666666
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.047619047619047616
+      "issues_no_response_pct_30d": 0.08333333333333333
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.1865079365079365
+      "issues_no_response_pct_30d": 0.22916666666666666
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.2976190476190476
+      "issues_no_response_pct_30d": 0.34027777777777773
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.25
+      "issues_no_response_pct_30d": 0.2569444444444444
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.34920634920634924
+      "issues_no_response_pct_30d": 0.2962962962962963
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.34920634920634924
+      "issues_no_response_pct_30d": 0.2962962962962963
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.4603174603174603
+      "issues_no_response_pct_30d": 0.39153439153439157
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.2888888888888889
+      "issues_no_response_pct_30d": 0.273015873015873
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.17777777777777778
+      "issues_no_response_pct_30d": 0.1619047619047619
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -3070,7 +3075,7 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.4777777777777778
+      "issues_no_response_pct_30d": 0.4444444444444444
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3125,17 +3130,17 @@
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.1315223725039676
+      "issues_no_response_pct_30d": 0.131806992098932
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.1558850330368409
+      "issues_no_response_pct_30d": 0.15616965263180532
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.1437662020053803
+      "issues_no_response_pct_30d": 0.14405082160034471
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3310,7 +3315,7 @@
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.17056147149932577
+      "issues_no_response_pct_30d": 0.1700453424670677
     },
     {
       "repo": "https://github.com/janhq/jan",
@@ -3434,38 +3439,53 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-03-01",
+      "issues_no_response_pct_30d": 0.5
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 1.0
+      "issues_no_response_pct_30d": 0.75
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.875
+      "issues_no_response_pct_30d": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-07-01",
+      "issues_no_response_pct_30d": 0.5
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-08-01",
+      "issues_no_response_pct_30d": 0.5
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.75
+      "issues_no_response_pct_30d": 0.5
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.75
+      "issues_no_response_pct_30d": 0.8333333333333334
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.7222222222222222
+      "issues_no_response_pct_30d": 0.75
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.5555555555555555
+      "issues_no_response_pct_30d": 0.5833333333333334
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.5555555555555555
+      "issues_no_response_pct_30d": 0.5833333333333334
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -3474,13 +3494,18 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
-      "month": "2025-08-01",
+      "month": "2025-07-01",
       "issues_no_response_pct_30d": 0.5
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-08-01",
+      "issues_no_response_pct_30d": 0.16666666666666666
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.5
+      "issues_no_response_pct_30d": 0.3333333333333333
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -3965,7 +3990,7 @@
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.22520837101344426
+      "issues_no_response_pct_30d": 0.21833551877976728
     },
     {
       "repo": "https://github.com/letta-ai/letta",
@@ -4095,117 +4120,117 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.35
+      "issues_no_response_pct_30d": 0.3125
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.2611111111111111
+      "issues_no_response_pct_30d": 0.24404761904761904
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.1814009661835749
+      "issues_no_response_pct_30d": 0.16071428571428573
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.14806763285024155
+      "issues_no_response_pct_30d": 0.1457142857142857
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.18089591567852437
+      "issues_no_response_pct_30d": 0.17666666666666667
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.13560606060606062
+      "issues_no_response_pct_30d": 0.13837837837837838
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.19816313823163137
+      "issues_no_response_pct_30d": 0.20754504504504503
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.23385337392186703
+      "issues_no_response_pct_30d": 0.2317874692874693
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.3203918354603286
+      "issues_no_response_pct_30d": 0.32430856180856177
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.3034487929224771
+      "issues_no_response_pct_30d": 0.2979196729196729
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.2738191632928475
+      "issues_no_response_pct_30d": 0.2810846560846561
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.21228070175438596
+      "issues_no_response_pct_30d": 0.21108608608608606
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.19115646258503402
+      "issues_no_response_pct_30d": 0.20275275275275276
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.18056456227350756
+      "issues_no_response_pct_30d": 0.17457239848544195
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.18056456227350756
+      "issues_no_response_pct_30d": 0.16256038647342994
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.19025198154501358
+      "issues_no_response_pct_30d": 0.15587104406980182
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.2036216596343179
+      "issues_no_response_pct_30d": 0.17479213907785338
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.16398201999467824
+      "issues_no_response_pct_30d": 0.15184527917447171
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.11473631165411986
+      "issues_no_response_pct_30d": 0.1125750256185039
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.09467458325905814
+      "issues_no_response_pct_30d": 0.09486166007905139
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.12479041337488826
+      "issues_no_response_pct_30d": 0.10786699951459677
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.18123821687040076
+      "issues_no_response_pct_30d": 0.16197955362715089
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.28185550082101807
+      "issues_no_response_pct_30d": 0.24531288696048423
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
@@ -4225,67 +4250,67 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.16952380952380952
+      "issues_no_response_pct_30d": 0.16900093370681604
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.077439293598234
+      "issues_no_response_pct_30d": 0.07592734063322298
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.15151336767230808
+      "issues_no_response_pct_30d": 0.14761192844684304
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.15262447878341917
+      "issues_no_response_pct_30d": 0.14874086486989713
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.23076529568242277
+      "issues_no_response_pct_30d": 0.22667470639069517
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.25354656752029836
+      "issues_no_response_pct_30d": 0.2477862113731679
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.336430058298526
+      "issues_no_response_pct_30d": 0.32855037474602694
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.3074232437863491
+      "issues_no_response_pct_30d": 0.30064983325852895
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.2920493793558809
+      "issues_no_response_pct_30d": 0.2834710244130534
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.25665692800417655
+      "issues_no_response_pct_30d": 0.21668274023346487
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.26786140979689366
+      "issues_no_response_pct_30d": 0.16086589041661506
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.29552447108827357
+      "issues_no_response_pct_30d": 0.0941885809232136
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.35938608866658117
+      "issues_no_response_pct_30d": 0.061070055758028846
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4295,72 +4320,72 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.14583333333333334
+      "issues_no_response_pct_30d": 0.15384615384615385
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.19722222222222222
+      "issues_no_response_pct_30d": 0.22377622377622378
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.4396464646464646
+      "issues_no_response_pct_30d": 0.47377622377622375
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.4184476342371079
+      "issues_no_response_pct_30d": 0.4557892356399819
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.4517809675704412
+      "issues_no_response_pct_30d": 0.46420674405749035
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.4593567251461988
+      "issues_no_response_pct_30d": 0.44754007739082363
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.5499999999999999
+      "issues_no_response_pct_30d": 0.5574074074074075
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.6388888888888888
+      "issues_no_response_pct_30d": 0.5611111111111111
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.5138888888888888
+      "issues_no_response_pct_30d": 0.41111111111111115
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.34722222222222215
+      "issues_no_response_pct_30d": 0.21666666666666667
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.39166666666666666
+      "issues_no_response_pct_30d": 0.2833333333333333
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.6
+      "issues_no_response_pct_30d": 0.45
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.9333333333333332
+      "issues_no_response_pct_30d": 0.6722222222222222
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.6666666666666666
+      "issues_no_response_pct_30d": 0.47222222222222215
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -4370,47 +4395,47 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.022727272727272728
+      "issues_no_response_pct_30d": 0.038461538461538464
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.015151515151515152
+      "issues_no_response_pct_30d": 0.04524886877828055
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.015151515151515152
+      "issues_no_response_pct_30d": 0.04524886877828055
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.07407407407407407
+      "issues_no_response_pct_30d": 0.10294117647058824
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.07407407407407407
+      "issues_no_response_pct_30d": 0.08333333333333333
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.2074074074074074
+      "issues_no_response_pct_30d": 0.15
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.18095238095238098
+      "issues_no_response_pct_30d": 0.14074074074074075
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.18095238095238098
+      "issues_no_response_pct_30d": 0.14074074074074075
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.047619047619047616
+      "issues_no_response_pct_30d": 0.07407407407407407
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -4444,13 +4469,18 @@
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-07-01",
+      "issues_no_response_pct_30d": 0.5
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.16666666666666666
+      "issues_no_response_pct_30d": 0.3333333333333333
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.0
+      "issues_no_response_pct_30d": 0.3333333333333333
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -4585,107 +4615,107 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.56
+      "issues_no_response_pct_30d": 0.6433333333333334
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.3732193732193732
+      "issues_no_response_pct_30d": 0.4547970479704797
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.10582010582010581
+      "issues_no_response_pct_30d": 0.19130498447841623
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.1940553999377529
+      "issues_no_response_pct_30d": 0.16723091040434213
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.3128995187818717
+      "issues_no_response_pct_30d": 0.2806156806156806
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.34098254686489976
+      "issues_no_response_pct_30d": 0.2941077441077441
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.31157078215901746
+      "issues_no_response_pct_30d": 0.31592956592956595
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.28327540603755436
+      "issues_no_response_pct_30d": 0.29261954261954265
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.25943375061695156
+      "issues_no_response_pct_30d": 0.301240232274715
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.29584831644328213
+      "issues_no_response_pct_30d": 0.30959004550257707
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.26797763639868905
+      "issues_no_response_pct_30d": 0.33927965413955413
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.4358974358974359
+      "issues_no_response_pct_30d": 0.4434040625235974
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.3962148962148962
+      "issues_no_response_pct_30d": 0.458139834881321
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.5158730158730159
+      "issues_no_response_pct_30d": 0.48206327985739755
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.4444444444444444
+      "issues_no_response_pct_30d": 0.45265151515151514
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.4444444444444444
+      "issues_no_response_pct_30d": 0.4484848484848485
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.27777777777777773
+      "issues_no_response_pct_30d": 0.30833333333333335
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.2222222222222222
+      "issues_no_response_pct_30d": 0.2845238095238095
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.27777777777777773
+      "issues_no_response_pct_30d": 0.3273809523809524
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.31746031746031744
+      "issues_no_response_pct_30d": 0.38095238095238093
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.20634920634920637
+      "issues_no_response_pct_30d": 0.23809523809523805
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -4810,122 +4840,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.375
+      "issues_no_response_pct_30d": 0.35802469135802467
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.43940839694656486
+      "issues_no_response_pct_30d": 0.418142780461621
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.4759990405873274
+      "issues_no_response_pct_30d": 0.4479160824968021
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.5762863969091665
+      "issues_no_response_pct_30d": 0.5496744064773483
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.6000141322781233
+      "issues_no_response_pct_30d": 0.578659913723725
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.556148162182645
+      "issues_no_response_pct_30d": 0.5583152086775275
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.484982669660089
+      "issues_no_response_pct_30d": 0.5025045771093202
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.49844420812162743
+      "issues_no_response_pct_30d": 0.5109491737086583
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.5299817762445614
+      "issues_no_response_pct_30d": 0.527553183733721
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.5265448439521276
+      "issues_no_response_pct_30d": 0.49976392753537385
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.48926533858751586
+      "issues_no_response_pct_30d": 0.46308669400774666
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.45232047934300507
+      "issues_no_response_pct_30d": 0.42696608946608944
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.4463974525980605
+      "issues_no_response_pct_30d": 0.4364746364746364
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.4201609532701969
+      "issues_no_response_pct_30d": 0.41754441415458365
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.45427533976553586
+      "issues_no_response_pct_30d": 0.44739126980789096
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.4337558592460553
+      "issues_no_response_pct_30d": 0.4206834746790431
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.37231243518163354
+      "issues_no_response_pct_30d": 0.3539086219323188
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.3168609998105194
+      "issues_no_response_pct_30d": 0.29893550365274885
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.31928524223476185
+      "issues_no_response_pct_30d": 0.29153797757950123
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.400406788444099
+      "issues_no_response_pct_30d": 0.37091604631927216
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.5012903225806452
+      "issues_no_response_pct_30d": 0.47105045492142267
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.6170478983382209
+      "issues_no_response_pct_30d": 0.5889164598842018
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.6352447552447552
+      "issues_no_response_pct_30d": 0.6017369727047147
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.5806415806415807
+      "issues_no_response_pct_30d": 0.5444947209653092
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -5050,27 +5080,27 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.5
+      "issues_no_response_pct_30d": 0.45454545454545453
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.5833333333333333
+      "issues_no_response_pct_30d": 0.5606060606060606
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.48412698412698413
+      "issues_no_response_pct_30d": 0.4987373737373737
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.5396825396825397
+      "issues_no_response_pct_30d": 0.5694444444444444
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.36507936507936506
+      "issues_no_response_pct_30d": 0.3948412698412698
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -5085,17 +5115,22 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.7000000000000001
+      "issues_no_response_pct_30d": 0.7555555555555555
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.8333333333333334
+      "issues_no_response_pct_30d": 0.5555555555555555
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.8333333333333334
+      "issues_no_response_pct_30d": 0.5555555555555555
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-01-01",
+      "issues_no_response_pct_30d": 0.6666666666666666
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -5415,22 +5450,22 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.16816227113536128
+      "issues_no_response_pct_30d": 0.16788621868539577
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.16447794294399082
+      "issues_no_response_pct_30d": 0.1642018904940253
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.2023856274627663
+      "issues_no_response_pct_30d": 0.20170088830639288
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.1701831680863939
+      "issues_no_response_pct_30d": 0.16977448137998596
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -5570,17 +5605,17 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.25
+      "issues_no_response_pct_30d": 0.2435897435897436
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.08333333333333333
+      "issues_no_response_pct_30d": 0.07692307692307693
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.13888888888888887
+      "issues_no_response_pct_30d": 0.13247863247863248
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -5675,62 +5710,62 @@
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.11578947368421053
+      "issues_no_response_pct_30d": 0.10396039603960396
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.13979128856624318
+      "issues_no_response_pct_30d": 0.1353135313531353
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.1733629687488035
+      "issues_no_response_pct_30d": 0.16991916582962643
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.20705563414723935
+      "issues_no_response_pct_30d": 0.2066942719116632
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.21220636067077003
+      "issues_no_response_pct_30d": 0.21413084234035962
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.1791390335748243
+      "issues_no_response_pct_30d": 0.1811496693754402
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.1977589678574092
+      "issues_no_response_pct_30d": 0.1898898743181768
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.2046772068511199
+      "issues_no_response_pct_30d": 0.19262544786444127
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.18858350951374206
+      "issues_no_response_pct_30d": 0.18511216217633422
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.13643410852713178
+      "issues_no_response_pct_30d": 0.14842164667459146
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.0983388704318937
+      "issues_no_response_pct_30d": 0.11443997889010676
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.08320413436692507
+      "issues_no_response_pct_30d": 0.10748235713172599
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -5750,22 +5785,22 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.10245111388891869
+      "issues_no_response_pct_30d": 0.09589935399427385
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.391304347826087
+      "issues_no_response_pct_30d": 0.36
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.36231884057971014
+      "issues_no_response_pct_30d": 0.3466666666666667
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.33245498462889767
+      "issues_no_response_pct_30d": 0.32202020202020204
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5779,13 +5814,18 @@
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2024-09-01",
+      "month": "2024-08-01",
       "issues_no_response_pct_30d": 0.4666666666666666
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-09-01",
+      "issues_no_response_pct_30d": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.5
+      "issues_no_response_pct_30d": 0.16666666666666666
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5800,47 +5840,47 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.2333333333333333
+      "issues_no_response_pct_30d": 0.27777777777777773
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.2333333333333333
+      "issues_no_response_pct_30d": 0.27777777777777773
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.06666666666666667
+      "issues_no_response_pct_30d": 0.1111111111111111
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.16666666666666666
+      "issues_no_response_pct_30d": 0.1111111111111111
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.16666666666666666
+      "issues_no_response_pct_30d": 0.1111111111111111
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.2222222222222222
+      "issues_no_response_pct_30d": 0.16666666666666666
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.12222222222222223
+      "issues_no_response_pct_30d": 0.1111111111111111
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.45555555555555555
+      "issues_no_response_pct_30d": 0.4444444444444444
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.45555555555555555
+      "issues_no_response_pct_30d": 0.4444444444444444
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5860,12 +5900,12 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.32264957264957267
+      "issues_no_response_pct_30d": 0.33730158730158727
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.24857549857549857
+      "issues_no_response_pct_30d": 0.2632275132275132
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
@@ -5885,102 +5925,102 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.07780705606792564
+      "issues_no_response_pct_30d": 0.0754882154882155
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.11643139469226427
+      "issues_no_response_pct_30d": 0.11102375102375102
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "issues_no_response_pct_30d": 0.1618859401468097
+      "issues_no_response_pct_30d": 0.15647829647829647
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.1504442925495557
+      "issues_no_response_pct_30d": 0.1601146601146601
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.1488569909622541
+      "issues_no_response_pct_30d": 0.15869218500797447
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.1650534381931841
+      "issues_no_response_pct_30d": 0.15820342645469979
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.20306513409961688
+      "issues_no_response_pct_30d": 0.18519206281833614
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.1915347357767657
+      "issues_no_response_pct_30d": 0.1742271505376344
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.1529140461215933
+      "issues_no_response_pct_30d": 0.14895833333333333
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.1192164140633055
+      "issues_no_response_pct_30d": 0.11691919191919192
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.1336707889943438
+      "issues_no_response_pct_30d": 0.12816257816257817
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.1544115297350845
+      "issues_no_response_pct_30d": 0.15392015392015393
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.19802979671400722
+      "issues_no_response_pct_30d": 0.18927368927368926
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.20095377332219436
+      "issues_no_response_pct_30d": 0.19758812615955476
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.19664714110858542
+      "issues_no_response_pct_30d": 0.18593311450454308
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.2645042839657283
+      "issues_no_response_pct_30d": 0.23643816500959358
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.2661638382568615
+      "issues_no_response_pct_30d": 0.2492877492877493
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.2998446722584654
+      "issues_no_response_pct_30d": 0.28322440087145967
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.23083882430524896
+      "issues_no_response_pct_30d": 0.235838779956427
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.2316055484762285
+      "issues_no_response_pct_30d": 0.22349310094408134
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6425,32 +6465,32 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "issues_no_response_pct_30d": 0.5254237288135594
+      "issues_no_response_pct_30d": 0.5081967213114754
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.5198547215496367
+      "issues_no_response_pct_30d": 0.5112412177985948
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.5423370101336203
+      "issues_no_response_pct_30d": 0.5365946742995923
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.48177910052910056
+      "issues_no_response_pct_30d": 0.4783068783068783
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.46035052910052915
+      "issues_no_response_pct_30d": 0.4568783068783069
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.3554924242424242
+      "issues_no_response_pct_30d": 0.35202020202020207
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6460,87 +6500,87 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.43374785591766724
+      "issues_no_response_pct_30d": 0.431662394562543
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.5047435269133382
+      "issues_no_response_pct_30d": 0.4978961607963092
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.44751082251082247
+      "issues_no_response_pct_30d": 0.4481903381142236
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.46329365079365076
+      "issues_no_response_pct_30d": 0.4660586277521761
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.47300605060506046
+      "issues_no_response_pct_30d": 0.4805329323254906
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.5494766388403546
+      "issues_no_response_pct_30d": 0.5451672227662326
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.5510952687484583
+      "issues_no_response_pct_30d": 0.537842260817983
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.5632787300852461
+      "issues_no_response_pct_30d": 0.5504356254176009
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.6207262705049227
+      "issues_no_response_pct_30d": 0.6121925819113995
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.600817343257226
+      "issues_no_response_pct_30d": 0.6023391812865497
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.5824668418587677
+      "issues_no_response_pct_30d": 0.5754056502759245
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.46583266382108096
+      "issues_no_response_pct_30d": 0.4584465859484392
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.4389840722717852
+      "issues_no_response_pct_30d": 0.42348979097593326
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.409127170956267
+      "issues_no_response_pct_30d": 0.39189585578005853
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.4961442956078003
+      "issues_no_response_pct_30d": 0.47285345811923984
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.506560962274467
+      "issues_no_response_pct_30d": 0.4852158883921179
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.5180265654648957
+      "issues_no_response_pct_30d": 0.5065916518122401
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -6670,37 +6710,42 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.25681818181818183
+      "issues_no_response_pct_30d": 0.2661764705882353
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.1784584980237154
+      "issues_no_response_pct_30d": 0.1916353775552774
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.1951251646903821
+      "issues_no_response_pct_30d": 0.2844925204124203
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.4072463768115942
+      "issues_no_response_pct_30d": 0.4903748733535967
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-08-01",
-      "issues_no_response_pct_30d": 0.7333333333333334
+      "issues_no_response_pct_30d": 0.8095238095238094
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 1.0
+      "issues_no_response_pct_30d": 0.6666666666666666
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.6666666666666666
+      "issues_no_response_pct_30d": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-05-01",
+      "issues_no_response_pct_30d": 0.3333333333333333
     },
     {
       "repo": "https://github.com/sweepai/sweep",
@@ -6709,8 +6754,13 @@
     },
     {
       "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-07-01",
+      "issues_no_response_pct_30d": 1.0
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.6666666666666666
+      "issues_no_response_pct_30d": 1.0
     },
     {
       "repo": "https://github.com/sweepai/sweep",
@@ -6724,8 +6774,13 @@
     },
     {
       "repo": "https://github.com/sweepai/sweep",
+      "month": "2026-01-01",
+      "issues_no_response_pct_30d": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 1.0
+      "issues_no_response_pct_30d": 0.6666666666666666
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -6850,17 +6905,17 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.1
+      "issues_no_response_pct_30d": 0.09090909090909091
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.07777777777777778
+      "issues_no_response_pct_30d": 0.07323232323232323
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-07-01",
-      "issues_no_response_pct_30d": 0.05185185185185185
+      "issues_no_response_pct_30d": 0.04882154882154882
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
@@ -6875,87 +6930,87 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "issues_no_response_pct_30d": 0.0
+      "issues_no_response_pct_30d": 0.0043859649122807015
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "issues_no_response_pct_30d": 0.00546448087431694
+      "issues_no_response_pct_30d": 0.009287925696594427
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "issues_no_response_pct_30d": 0.00546448087431694
+      "issues_no_response_pct_30d": 0.009287925696594427
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "issues_no_response_pct_30d": 0.04355971896955504
+      "issues_no_response_pct_30d": 0.05471038990308768
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.10098831985624439
+      "issues_no_response_pct_30d": 0.09882803696191121
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.1495994309673555
+      "issues_no_response_pct_30d": 0.14183878965008326
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "issues_no_response_pct_30d": 0.23431121041597705
+      "issues_no_response_pct_30d": 0.2198842418098481
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.2728674040172896
+      "issues_no_response_pct_30d": 0.2734287365308134
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.38685791892243865
+      "issues_no_response_pct_30d": 0.37226195547384705
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.32545441015050885
+      "issues_no_response_pct_30d": 0.320165649952884
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.3573384681215233
+      "issues_no_response_pct_30d": 0.32871265849989256
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.3971177944862155
+      "issues_no_response_pct_30d": 0.38478535353535354
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.4607142857142857
+      "issues_no_response_pct_30d": 0.4462826797385621
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.38001253132832075
+      "issues_no_response_pct_30d": 0.39577762923351156
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.2756707946336429
+      "issues_no_response_pct_30d": 0.28558026081245896
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.17844857241142073
+      "issues_no_response_pct_30d": 0.17610313662945243
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.12581699346405228
+      "issues_no_response_pct_30d": 0.1154970760233918
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -7095,17 +7150,17 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-04-01",
-      "issues_no_response_pct_30d": 0.125
+      "issues_no_response_pct_30d": 0.1
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-05-01",
-      "issues_no_response_pct_30d": 0.0625
+      "issues_no_response_pct_30d": 0.05
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-06-01",
-      "issues_no_response_pct_30d": 0.041666666666666664
+      "issues_no_response_pct_30d": 0.03333333333333333
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -7145,67 +7200,67 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-02-01",
-      "issues_no_response_pct_30d": 0.09523809523809523
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-03-01",
-      "issues_no_response_pct_30d": 0.15079365079365079
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-04-01",
       "issues_no_response_pct_30d": 0.13095238095238096
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-03-01",
+      "issues_no_response_pct_30d": 0.18358395989974938
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-04-01",
+      "issues_no_response_pct_30d": 0.15818713450292396
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-05-01",
-      "issues_no_response_pct_30d": 0.125
+      "issues_no_response_pct_30d": 0.11189083820662767
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-06-01",
-      "issues_no_response_pct_30d": 0.3361111111111111
+      "issues_no_response_pct_30d": 0.2814814814814815
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-07-01",
-      "issues_no_response_pct_30d": 0.375
+      "issues_no_response_pct_30d": 0.35016835016835013
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-08-01",
-      "issues_no_response_pct_30d": 0.375
+      "issues_no_response_pct_30d": 0.3482190324295587
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-09-01",
-      "issues_no_response_pct_30d": 0.3464285714285715
+      "issues_no_response_pct_30d": 0.3482190324295587
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-10-01",
-      "issues_no_response_pct_30d": 0.39087301587301587
+      "issues_no_response_pct_30d": 0.31286549707602335
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-11-01",
-      "issues_no_response_pct_30d": 0.3795093795093795
+      "issues_no_response_pct_30d": 0.32905982905982906
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "issues_no_response_pct_30d": 0.2080808080808081
+      "issues_no_response_pct_30d": 0.2094017094017094
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "issues_no_response_pct_30d": 0.3191919191919192
+      "issues_no_response_pct_30d": 0.32051282051282054
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "issues_no_response_pct_30d": 0.37222222222222223
+      "issues_no_response_pct_30d": 0.40256410256410263
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:27:57.844269",
+    "fetched_at": "2026-04-01T07:13:35.066706",
     "schema": {
       "name": "dependent_repos_count",
       "description": "Monthly dependent repository counts from Tinybird, broken out by ecosystem.",
@@ -193,7 +193,7 @@
       "repo": "https://github.com/PrefectHQ/prefect",
       "ecosystem": "nixpkgs",
       "month": "2026-03-01",
-      "dependent_repo_count": 41
+      "dependent_repo_count": 767
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",

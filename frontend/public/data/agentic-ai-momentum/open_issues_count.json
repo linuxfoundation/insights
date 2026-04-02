@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:28:18.521867",
+    "fetched_at": "2026-04-01T07:13:54.299505",
     "schema": {
       "name": "open_issues_count",
       "description": "Monthly count of issues opened for tracked repositories.",
@@ -150,42 +150,42 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-03-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-05-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-06-01",
-      "open_issues_count": 5
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-07-01",
-      "open_issues_count": 9
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-08-01",
-      "open_issues_count": 5
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-09-01",
-      "open_issues_count": 18
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-10-01",
-      "open_issues_count": 17
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
@@ -195,42 +195,42 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-12-01",
-      "open_issues_count": 3
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-01-01",
       "open_issues_count": 6
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-01-01",
+      "open_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "open_issues_count": 10
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-03-01",
-      "open_issues_count": 21
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-04-01",
-      "open_issues_count": 7
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-05-01",
-      "open_issues_count": 4
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-06-01",
       "open_issues_count": 15
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-03-01",
+      "open_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-04-01",
+      "open_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-05-01",
+      "open_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-06-01",
+      "open_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "open_issues_count": 4
+      "open_issues_count": 5
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
@@ -245,22 +245,22 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "open_issues_count": 6
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "open_issues_count": 10
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
@@ -385,7 +385,7 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "open_issues_count": 470
+      "open_issues_count": 473
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -415,12 +415,12 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "open_issues_count": 11
+      "open_issues_count": 14
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "open_issues_count": 12
+      "open_issues_count": 23
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -435,22 +435,22 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "open_issues_count": 29
+      "open_issues_count": 30
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "open_issues_count": 62
+      "open_issues_count": 64
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "open_issues_count": 31
+      "open_issues_count": 33
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "open_issues_count": 19
+      "open_issues_count": 22
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -465,12 +465,12 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "open_issues_count": 17
+      "open_issues_count": 18
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "open_issues_count": 14
+      "open_issues_count": 16
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -480,27 +480,27 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "open_issues_count": 47
+      "open_issues_count": 50
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "open_issues_count": 13
+      "open_issues_count": 15
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "open_issues_count": 15
+      "open_issues_count": 17
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "open_issues_count": 15
+      "open_issues_count": 18
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "open_issues_count": 15
+      "open_issues_count": 20
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -710,22 +710,27 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
-      "open_issues_count": 10
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-08-01",
-      "open_issues_count": 6
+      "open_issues_count": 7
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-09-01",
-      "open_issues_count": 1
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-10-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-11-01",
+      "open_issues_count": 1
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -740,7 +745,7 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-02-01",
-      "open_issues_count": 4
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -770,122 +775,122 @@
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "open_issues_count": 178
+      "open_issues_count": 205
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "open_issues_count": 441
+      "open_issues_count": 522
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "open_issues_count": 212
+      "open_issues_count": 227
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "open_issues_count": 130
+      "open_issues_count": 139
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "open_issues_count": 90
+      "open_issues_count": 96
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "open_issues_count": 82
+      "open_issues_count": 87
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "open_issues_count": 86
+      "open_issues_count": 90
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "open_issues_count": 108
+      "open_issues_count": 114
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "open_issues_count": 214
+      "open_issues_count": 224
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "open_issues_count": 185
+      "open_issues_count": 195
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "open_issues_count": 202
+      "open_issues_count": 220
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "open_issues_count": 146
+      "open_issues_count": 153
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "open_issues_count": 152
+      "open_issues_count": 158
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "open_issues_count": 121
+      "open_issues_count": 130
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "open_issues_count": 150
+      "open_issues_count": 164
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "open_issues_count": 196
+      "open_issues_count": 206
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "open_issues_count": 136
+      "open_issues_count": 144
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "open_issues_count": 173
+      "open_issues_count": 183
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "open_issues_count": 82
+      "open_issues_count": 88
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "open_issues_count": 74
+      "open_issues_count": 78
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "open_issues_count": 42
+      "open_issues_count": 45
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "open_issues_count": 98
+      "open_issues_count": 101
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "open_issues_count": 118
+      "open_issues_count": 130
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "open_issues_count": 66
+      "open_issues_count": 73
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1010,27 +1015,27 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "open_issues_count": 17
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "open_issues_count": 23
+      "open_issues_count": 24
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "open_issues_count": 18
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "open_issues_count": 13
+      "open_issues_count": 15
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "open_issues_count": 21
+      "open_issues_count": 24
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1045,22 +1050,22 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "open_issues_count": 11
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "open_issues_count": 19
+      "open_issues_count": 23
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "open_issues_count": 14
+      "open_issues_count": 16
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "open_issues_count": 7
+      "open_issues_count": 9
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1070,7 +1075,7 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "open_issues_count": 8
+      "open_issues_count": 14
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1080,37 +1085,37 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "open_issues_count": 12
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "open_issues_count": 10
+      "open_issues_count": 12
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "open_issues_count": 16
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "open_issues_count": 10
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-09-01",
-      "open_issues_count": 14
+      "open_issues_count": 15
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-10-01",
-      "open_issues_count": 10
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-11-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1120,12 +1125,12 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "open_issues_count": 3
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
@@ -1600,82 +1605,82 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "open_issues_count": 23
+      "open_issues_count": 26
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "open_issues_count": 25
+      "open_issues_count": 28
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "open_issues_count": 157
+      "open_issues_count": 170
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "open_issues_count": 144
+      "open_issues_count": 165
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "open_issues_count": 117
+      "open_issues_count": 143
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "open_issues_count": 99
+      "open_issues_count": 116
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "open_issues_count": 112
+      "open_issues_count": 137
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "open_issues_count": 82
+      "open_issues_count": 92
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "open_issues_count": 82
+      "open_issues_count": 99
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "open_issues_count": 51
+      "open_issues_count": 59
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "open_issues_count": 81
+      "open_issues_count": 101
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "open_issues_count": 34
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "open_issues_count": 29
+      "open_issues_count": 40
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "open_issues_count": 35
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "open_issues_count": 20
+      "open_issues_count": 30
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "open_issues_count": 30
+      "open_issues_count": 41
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -1685,7 +1690,7 @@
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "open_issues_count": 17
+      "open_issues_count": 18
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -1695,12 +1700,12 @@
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-06-01",
-      "open_issues_count": 47
+      "open_issues_count": 48
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-07-01",
-      "open_issues_count": 44
+      "open_issues_count": 47
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -1715,87 +1720,87 @@
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-10-01",
-      "open_issues_count": 50
+      "open_issues_count": 55
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "open_issues_count": 58
+      "open_issues_count": 61
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "open_issues_count": 47
+      "open_issues_count": 48
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "open_issues_count": 58
+      "open_issues_count": 61
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "open_issues_count": 58
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-03-01",
-      "open_issues_count": 132
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-04-01",
-      "open_issues_count": 89
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-05-01",
-      "open_issues_count": 82
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-06-01",
       "open_issues_count": 63
     },
     {
       "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "open_issues_count": 144
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "open_issues_count": 93
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "open_issues_count": 87
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "open_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "open_issues_count": 47
+      "open_issues_count": 52
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "open_issues_count": 43
+      "open_issues_count": 45
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "open_issues_count": 30
+      "open_issues_count": 37
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "open_issues_count": 35
+      "open_issues_count": 40
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "open_issues_count": 35
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "open_issues_count": 32
+      "open_issues_count": 38
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "open_issues_count": 20
+      "open_issues_count": 23
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "open_issues_count": 25
+      "open_issues_count": 26
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -2040,92 +2045,92 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-10-01",
-      "open_issues_count": 15
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "open_issues_count": 38
+      "open_issues_count": 40
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-12-01",
-      "open_issues_count": 23
+      "open_issues_count": 27
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-01-01",
-      "open_issues_count": 29
+      "open_issues_count": 34
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-02-01",
-      "open_issues_count": 25
+      "open_issues_count": 29
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-03-01",
-      "open_issues_count": 43
+      "open_issues_count": 47
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-04-01",
-      "open_issues_count": 30
+      "open_issues_count": 35
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "open_issues_count": 43
+      "open_issues_count": 51
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "open_issues_count": 39
+      "open_issues_count": 44
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "open_issues_count": 25
+      "open_issues_count": 30
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "open_issues_count": 14
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "open_issues_count": 41
+      "open_issues_count": 50
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "open_issues_count": 31
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-11-01",
-      "open_issues_count": 21
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-12-01",
-      "open_issues_count": 24
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2026-01-01",
       "open_issues_count": 33
     },
     {
       "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-11-01",
+      "open_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-12-01",
+      "open_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-01-01",
+      "open_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "open_issues_count": 24
+      "open_issues_count": 27
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "open_issues_count": 16
+      "open_issues_count": 18
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
@@ -2135,37 +2140,37 @@
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "open_issues_count": 18
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "open_issues_count": 12
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "open_issues_count": 11
+      "open_issues_count": 14
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-08-01",
-      "open_issues_count": 18
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-09-01",
-      "open_issues_count": 10
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-10-01",
       "open_issues_count": 22
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-11-01",
+      "month": "2024-09-01",
       "open_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-10-01",
+      "open_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-11-01",
+      "open_issues_count": 15
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
@@ -2175,72 +2180,72 @@
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "open_issues_count": 15
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-02-01",
-      "open_issues_count": 11
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-03-01",
-      "open_issues_count": 20
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-04-01",
-      "open_issues_count": 6
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-05-01",
-      "open_issues_count": 18
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-06-01",
-      "open_issues_count": 16
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-07-01",
-      "open_issues_count": 21
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-08-01",
       "open_issues_count": 17
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-02-01",
+      "open_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-03-01",
+      "open_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-04-01",
+      "open_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-05-01",
+      "open_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-06-01",
+      "open_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-07-01",
+      "open_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-08-01",
+      "open_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "open_issues_count": 18
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "open_issues_count": 32
+      "open_issues_count": 40
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-11-01",
-      "open_issues_count": 14
+      "open_issues_count": 23
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-12-01",
-      "open_issues_count": 7
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "open_issues_count": 8
+      "open_issues_count": 12
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "open_issues_count": 11
+      "open_issues_count": 12
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2360,7 +2365,7 @@
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-02-01",
-      "open_issues_count": 648
+      "open_issues_count": 649
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
@@ -2485,7 +2490,7 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "open_issues_count": 122
+      "open_issues_count": 125
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
@@ -2495,27 +2500,27 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "open_issues_count": 84
+      "open_issues_count": 85
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "open_issues_count": 48
+      "open_issues_count": 49
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "open_issues_count": 57
+      "open_issues_count": 60
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "open_issues_count": 68
+      "open_issues_count": 69
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "open_issues_count": 47
+      "open_issues_count": 49
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
@@ -2525,17 +2530,17 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "open_issues_count": 32
+      "open_issues_count": 34
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "open_issues_count": 26
+      "open_issues_count": 29
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "open_issues_count": 12
+      "open_issues_count": 20
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
@@ -2550,52 +2555,52 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "open_issues_count": 25
+      "open_issues_count": 47
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "open_issues_count": 30
+      "open_issues_count": 36
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "open_issues_count": 16
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-08-01",
-      "open_issues_count": 19
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-09-01",
-      "open_issues_count": 14
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-10-01",
-      "open_issues_count": 43
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-11-01",
-      "open_issues_count": 41
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-12-01",
       "open_issues_count": 20
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
-      "month": "2026-01-01",
+      "month": "2025-08-01",
+      "open_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-09-01",
+      "open_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-10-01",
+      "open_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-11-01",
+      "open_issues_count": 55
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-12-01",
       "open_issues_count": 25
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-01-01",
+      "open_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "open_issues_count": 28
+      "open_issues_count": 49
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2655,7 +2660,7 @@
     {
       "repo": "https://github.com/deepset-ai/haystack",
       "month": "2025-02-01",
-      "open_issues_count": 61
+      "open_issues_count": 62
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2750,7 +2755,7 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-10-01",
-      "open_issues_count": 1
+      "open_issues_count": 2
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2785,7 +2790,7 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-05-01",
-      "open_issues_count": 1
+      "open_issues_count": 2
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2815,7 +2820,7 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-11-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2825,67 +2830,67 @@
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "open_issues_count": 229
+      "open_issues_count": 266
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "open_issues_count": 278
+      "open_issues_count": 330
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "open_issues_count": 209
+      "open_issues_count": 249
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "open_issues_count": 182
+      "open_issues_count": 220
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "open_issues_count": 145
+      "open_issues_count": 180
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "open_issues_count": 118
+      "open_issues_count": 147
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "open_issues_count": 119
+      "open_issues_count": 154
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "open_issues_count": 171
+      "open_issues_count": 212
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "open_issues_count": 119
+      "open_issues_count": 143
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "open_issues_count": 103
+      "open_issues_count": 137
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "open_issues_count": 93
+      "open_issues_count": 124
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "open_issues_count": 20
+      "open_issues_count": 23
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "open_issues_count": 10
+      "open_issues_count": 15
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -2895,52 +2900,52 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-06-01",
-      "open_issues_count": 24
+      "open_issues_count": 25
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-07-01",
-      "open_issues_count": 17
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-08-01",
-      "open_issues_count": 12
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-09-01",
-      "open_issues_count": 14
+      "open_issues_count": 16
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-10-01",
-      "open_issues_count": 8
+      "open_issues_count": 9
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-11-01",
-      "open_issues_count": 4
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-12-01",
-      "open_issues_count": 14
+      "open_issues_count": 15
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-01-01",
-      "open_issues_count": 5
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-02-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-03-01",
-      "open_issues_count": 3
+      "open_issues_count": 4
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -2950,17 +2955,17 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-05-01",
-      "open_issues_count": 4
+      "open_issues_count": 5
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-06-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-07-01",
-      "open_issues_count": 12
+      "open_issues_count": 16
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -2975,7 +2980,7 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "open_issues_count": 7
+      "open_issues_count": 9
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -2985,7 +2990,7 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "open_issues_count": 6
+      "open_issues_count": 7
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -2995,7 +3000,7 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "open_issues_count": 3
+      "open_issues_count": 4
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -3125,7 +3130,7 @@
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-01-01",
-      "open_issues_count": 175
+      "open_issues_count": 174
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3310,7 +3315,7 @@
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2026-02-01",
-      "open_issues_count": 124
+      "open_issues_count": 125
     },
     {
       "repo": "https://github.com/janhq/jan",
@@ -3434,6 +3439,11 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-03-01",
+      "open_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-04-01",
       "open_issues_count": 4
     },
@@ -3444,18 +3454,28 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-07-01",
+      "open_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-08-01",
+      "open_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
       "open_issues_count": 2
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-10-01",
-      "open_issues_count": 1
+      "open_issues_count": 2
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "open_issues_count": 3
+      "open_issues_count": 4
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -3465,12 +3485,17 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-02-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-04-01",
       "open_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-07-01",
+      "open_issues_count": 1
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -3485,7 +3510,7 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-02-01",
-      "open_issues_count": 1
+      "open_issues_count": 2
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -4095,117 +4120,117 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "open_issues_count": 5
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "open_issues_count": 24
+      "open_issues_count": 28
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "open_issues_count": 23
+      "open_issues_count": 24
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "open_issues_count": 20
+      "open_issues_count": 25
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "open_issues_count": 22
+      "open_issues_count": 25
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "open_issues_count": 32
+      "open_issues_count": 37
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "open_issues_count": 73
+      "open_issues_count": 80
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "open_issues_count": 45
+      "open_issues_count": 55
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "open_issues_count": 52
+      "open_issues_count": 63
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "open_issues_count": 38
+      "open_issues_count": 48
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "open_issues_count": 40
+      "open_issues_count": 45
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "open_issues_count": 65
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-04-01",
-      "open_issues_count": 98
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-05-01",
-      "open_issues_count": 107
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-06-01",
-      "open_issues_count": 90
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-07-01",
-      "open_issues_count": 79
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-08-01",
-      "open_issues_count": 96
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-09-01",
       "open_issues_count": 74
     },
     {
       "repo": "https://github.com/livekit/agents",
+      "month": "2025-04-01",
+      "open_issues_count": 120
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-05-01",
+      "open_issues_count": 138
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-06-01",
+      "open_issues_count": 108
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-07-01",
+      "open_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-08-01",
+      "open_issues_count": 108
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-09-01",
+      "open_issues_count": 92
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "open_issues_count": 73
+      "open_issues_count": 88
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "open_issues_count": 81
+      "open_issues_count": 92
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "open_issues_count": 70
+      "open_issues_count": 95
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "open_issues_count": 58
+      "open_issues_count": 77
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "open_issues_count": 60
+      "open_issues_count": 69
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
@@ -4225,112 +4250,112 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "open_issues_count": 50
+      "open_issues_count": 51
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "open_issues_count": 151
+      "open_issues_count": 154
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "open_issues_count": 90
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-05-01",
-      "open_issues_count": 108
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-06-01",
-      "open_issues_count": 362
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-07-01",
-      "open_issues_count": 265
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-08-01",
-      "open_issues_count": 247
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-09-01",
-      "open_issues_count": 357
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-10-01",
-      "open_issues_count": 405
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-11-01",
       "open_issues_count": 93
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-05-01",
+      "open_issues_count": 110
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-06-01",
+      "open_issues_count": 368
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-07-01",
+      "open_issues_count": 273
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-08-01",
+      "open_issues_count": 253
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-09-01",
+      "open_issues_count": 364
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-10-01",
+      "open_issues_count": 432
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-11-01",
+      "open_issues_count": 299
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "open_issues_count": 105
+      "open_issues_count": 250
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "open_issues_count": 113
+      "open_issues_count": 261
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "open_issues_count": 115
+      "open_issues_count": 246
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-10-01",
-      "open_issues_count": 27
+      "open_issues_count": 28
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "open_issues_count": 24
+      "open_issues_count": 26
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "open_issues_count": 10
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-01-01",
       "open_issues_count": 11
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-01-01",
+      "open_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "open_issues_count": 57
+      "open_issues_count": 67
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "open_issues_count": 20
+      "open_issues_count": 36
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "open_issues_count": 8
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-05-01",
       "open_issues_count": 10
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-05-01",
+      "open_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-06-01",
-      "open_issues_count": 3
+      "open_issues_count": 5
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4350,12 +4375,12 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-10-01",
-      "open_issues_count": 2
+      "open_issues_count": 4
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-12-01",
-      "open_issues_count": 1
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4365,42 +4390,42 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "open_issues_count": 20
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2024-04-01",
       "open_issues_count": 22
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-04-01",
+      "open_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "open_issues_count": 12
+      "open_issues_count": 17
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "open_issues_count": 12
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "open_issues_count": 9
+      "open_issues_count": 12
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-08-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "open_issues_count": 5
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-10-01",
-      "open_issues_count": 7
+      "open_issues_count": 9
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -4415,7 +4440,7 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-01-01",
-      "open_issues_count": 4
+      "open_issues_count": 5
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -4440,6 +4465,11 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-06-01",
+      "open_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-07-01",
       "open_issues_count": 1
     },
     {
@@ -4585,72 +4615,72 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-06-01",
-      "open_issues_count": 3
+      "open_issues_count": 4
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "open_issues_count": 234
+      "open_issues_count": 271
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "open_issues_count": 91
+      "open_issues_count": 105
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "open_issues_count": 34
+      "open_issues_count": 45
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "open_issues_count": 21
+      "open_issues_count": 22
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "open_issues_count": 39
+      "open_issues_count": 44
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "open_issues_count": 34
+      "open_issues_count": 37
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "open_issues_count": 23
+      "open_issues_count": 26
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-02-01",
-      "open_issues_count": 19
+      "open_issues_count": 29
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "open_issues_count": 28
+      "open_issues_count": 41
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "open_issues_count": 13
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "open_issues_count": 14
+      "open_issues_count": 17
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "open_issues_count": 12
+      "open_issues_count": 16
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "open_issues_count": 6
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
@@ -4660,22 +4690,22 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "open_issues_count": 6
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "open_issues_count": 6
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "open_issues_count": 6
+      "open_issues_count": 7
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "open_issues_count": 3
+      "open_issues_count": 7
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
@@ -4685,7 +4715,7 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "open_issues_count": 6
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -4810,122 +4840,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "open_issues_count": 152
+      "open_issues_count": 162
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "open_issues_count": 131
+      "open_issues_count": 138
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "open_issues_count": 122
+      "open_issues_count": 134
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "open_issues_count": 290
+      "open_issues_count": 297
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "open_issues_count": 160
+      "open_issues_count": 184
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "open_issues_count": 91
+      "open_issues_count": 112
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "open_issues_count": 93
+      "open_issues_count": 121
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "open_issues_count": 104
+      "open_issues_count": 127
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "open_issues_count": 123
+      "open_issues_count": 133
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "open_issues_count": 73
+      "open_issues_count": 80
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "open_issues_count": 141
+      "open_issues_count": 154
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "open_issues_count": 147
+      "open_issues_count": 165
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "open_issues_count": 175
+      "open_issues_count": 195
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "open_issues_count": 153
+      "open_issues_count": 177
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "open_issues_count": 135
+      "open_issues_count": 155
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "open_issues_count": 110
+      "open_issues_count": 133
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "open_issues_count": 79
+      "open_issues_count": 94
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "open_issues_count": 83
+      "open_issues_count": 96
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "open_issues_count": 50
+      "open_issues_count": 62
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "open_issues_count": 31
+      "open_issues_count": 39
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "open_issues_count": 25
+      "open_issues_count": 31
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "open_issues_count": 11
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2026-01-01",
       "open_issues_count": 13
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-01-01",
+      "open_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "open_issues_count": 21
+      "open_issues_count": 34
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -5050,7 +5080,7 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
-      "open_issues_count": 10
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -5060,7 +5090,7 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-05-01",
-      "open_issues_count": 7
+      "open_issues_count": 8
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -5080,12 +5110,12 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-09-01",
-      "open_issues_count": 2
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-10-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -5095,6 +5125,11 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-12-01",
+      "open_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-01-01",
       "open_issues_count": 1
     },
     {
@@ -5415,7 +5450,7 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-11-01",
-      "open_issues_count": 230
+      "open_issues_count": 231
     },
     {
       "repo": "https://github.com/ollama/ollama",
@@ -5425,7 +5460,7 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "open_issues_count": 217
+      "open_issues_count": 218
     },
     {
       "repo": "https://github.com/ollama/ollama",
@@ -5570,7 +5605,7 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-06-01",
-      "open_issues_count": 12
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -5675,62 +5710,62 @@
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "open_issues_count": 190
+      "open_issues_count": 202
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "open_issues_count": 116
+      "open_issues_count": 132
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "open_issues_count": 79
-    },
-    {
-      "repo": "https://github.com/openai/openai-agents-python",
-      "month": "2025-06-01",
-      "open_issues_count": 83
-    },
-    {
-      "repo": "https://github.com/openai/openai-agents-python",
-      "month": "2025-07-01",
-      "open_issues_count": 106
-    },
-    {
-      "repo": "https://github.com/openai/openai-agents-python",
-      "month": "2025-08-01",
       "open_issues_count": 92
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-06-01",
+      "open_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-07-01",
+      "open_issues_count": 127
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-08-01",
+      "open_issues_count": 107
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "open_issues_count": 66
+      "open_issues_count": 79
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "open_issues_count": 60
+      "open_issues_count": 71
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "open_issues_count": 43
+      "open_issues_count": 51
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "open_issues_count": 43
+      "open_issues_count": 46
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "open_issues_count": 35
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "open_issues_count": 21
+      "open_issues_count": 31
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -5750,12 +5785,12 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "open_issues_count": 10831
+      "open_issues_count": 10830
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "open_issues_count": 23
+      "open_issues_count": 25
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5776,6 +5811,11 @@
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-07-01",
       "open_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-08-01",
+      "open_issues_count": 1
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5800,22 +5840,22 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-01-01",
-      "open_issues_count": 5
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "open_issues_count": 1
+      "open_issues_count": 2
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "open_issues_count": 2
+      "open_issues_count": 3
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5830,7 +5870,7 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "open_issues_count": 5
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5860,7 +5900,7 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "open_issues_count": 13
+      "open_issues_count": 14
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5885,12 +5925,12 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "open_issues_count": 23
+      "open_issues_count": 25
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "open_issues_count": 35
+      "open_issues_count": 37
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
@@ -5900,87 +5940,87 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "open_issues_count": 19
+      "open_issues_count": 22
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "open_issues_count": 18
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "open_issues_count": 29
+      "open_issues_count": 31
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "open_issues_count": 54
+      "open_issues_count": 64
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "open_issues_count": 53
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-03-01",
-      "open_issues_count": 50
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-04-01",
-      "open_issues_count": 61
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-05-01",
-      "open_issues_count": 57
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-06-01",
-      "open_issues_count": 36
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-07-01",
       "open_issues_count": 56
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-03-01",
+      "open_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-04-01",
+      "open_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-05-01",
+      "open_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-06-01",
+      "open_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-07-01",
+      "open_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "open_issues_count": 38
+      "open_issues_count": 49
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "open_issues_count": 43
+      "open_issues_count": 52
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "open_issues_count": 30
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "open_issues_count": 37
+      "open_issues_count": 54
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "open_issues_count": 29
+      "open_issues_count": 34
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "open_issues_count": 57
+      "open_issues_count": 68
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "open_issues_count": 47
+      "open_issues_count": 54
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6425,7 +6465,7 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "open_issues_count": 59
+      "open_issues_count": 61
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6440,7 +6480,7 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-06-01",
-      "open_issues_count": 32
+      "open_issues_count": 33
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6460,7 +6500,7 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "open_issues_count": 88
+      "open_issues_count": 89
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6470,7 +6510,7 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-12-01",
-      "open_issues_count": 30
+      "open_issues_count": 31
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6485,17 +6525,17 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-03-01",
-      "open_issues_count": 85
+      "open_issues_count": 91
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-04-01",
-      "open_issues_count": 133
+      "open_issues_count": 146
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-05-01",
-      "open_issues_count": 107
+      "open_issues_count": 114
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6505,37 +6545,37 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "open_issues_count": 71
+      "open_issues_count": 76
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "open_issues_count": 137
+      "open_issues_count": 142
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "open_issues_count": 108
+      "open_issues_count": 114
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "open_issues_count": 64
+      "open_issues_count": 67
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "open_issues_count": 59
+      "open_issues_count": 61
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "open_issues_count": 62
+      "open_issues_count": 64
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "open_issues_count": 32
+      "open_issues_count": 33
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6670,17 +6710,17 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-04-01",
-      "open_issues_count": 33
+      "open_issues_count": 34
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "open_issues_count": 46
+      "open_issues_count": 47
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "open_issues_count": 5
+      "open_issues_count": 7
     },
     {
       "repo": "https://github.com/sweepai/sweep",
@@ -6704,7 +6744,17 @@
     },
     {
       "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-05-01",
+      "open_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
       "month": "2025-06-01",
+      "open_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-07-01",
       "open_issues_count": 1
     },
     {
@@ -6720,6 +6770,11 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-12-01",
+      "open_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2026-01-01",
       "open_issues_count": 1
     },
     {
@@ -6850,7 +6905,7 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "open_issues_count": 10
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
@@ -6870,82 +6925,82 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "open_issues_count": 25
+      "open_issues_count": 26
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "open_issues_count": 66
+      "open_issues_count": 76
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "open_issues_count": 61
+      "open_issues_count": 68
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "open_issues_count": 57
+      "open_issues_count": 72
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "open_issues_count": 70
+      "open_issues_count": 87
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "open_issues_count": 53
+      "open_issues_count": 68
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "open_issues_count": 48
+      "open_issues_count": 62
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "open_issues_count": 57
+      "open_issues_count": 73
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "open_issues_count": 46
+      "open_issues_count": 52
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "open_issues_count": 41
+      "open_issues_count": 47
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "open_issues_count": 38
+      "open_issues_count": 44
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "open_issues_count": 30
+      "open_issues_count": 42
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "open_issues_count": 28
+      "open_issues_count": 32
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "open_issues_count": 16
+      "open_issues_count": 17
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "open_issues_count": 19
+      "open_issues_count": 22
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "open_issues_count": 17
+      "open_issues_count": 19
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
@@ -6955,7 +7010,7 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "open_issues_count": 11
+      "open_issues_count": 14
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -7095,12 +7150,12 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-04-01",
-      "open_issues_count": 8
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-05-01",
-      "open_issues_count": 3
+      "open_issues_count": 5
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -7110,12 +7165,12 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-07-01",
-      "open_issues_count": 4
+      "open_issues_count": 7
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-08-01",
-      "open_issues_count": 3
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -7125,12 +7180,12 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-10-01",
-      "open_issues_count": 9
+      "open_issues_count": 10
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-11-01",
-      "open_issues_count": 8
+      "open_issues_count": 11
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -7145,67 +7200,67 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-02-01",
-      "open_issues_count": 7
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-03-01",
-      "open_issues_count": 18
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-04-01",
-      "open_issues_count": 12
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-05-01",
       "open_issues_count": 8
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-03-01",
+      "open_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-04-01",
+      "open_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-05-01",
+      "open_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-06-01",
-      "open_issues_count": 5
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-07-01",
-      "open_issues_count": 10
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-08-01",
-      "open_issues_count": 16
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-09-01",
-      "open_issues_count": 7
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-10-01",
       "open_issues_count": 6
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-11-01",
+      "month": "2025-07-01",
       "open_issues_count": 11
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-08-01",
+      "open_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-09-01",
+      "open_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-10-01",
+      "open_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-11-01",
+      "open_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "open_issues_count": 10
+      "open_issues_count": 13
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "open_issues_count": 3
+      "open_issues_count": 6
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "open_issues_count": 4
+      "open_issues_count": 5
     }
   ]
 }

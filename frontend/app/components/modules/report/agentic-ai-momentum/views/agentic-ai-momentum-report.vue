@@ -13,6 +13,16 @@ SPDX-License-Identifier: MIT
         <p class="text-body-2 md:text-body-1 text-neutral-600">
           Tracking the most critical agentic AI projects across the ecosystem
         </p>
+        <span
+          v-if="vintageDate"
+          class="inline-flex items-center gap-1.5 bg-neutral-100 text-neutral-600 rounded-full px-2.5 py-1 text-xs font-medium mt-2"
+        >
+          <lfx-icon
+            name="calendar-days"
+            :size="12"
+          />
+          Updated: {{ vintageDate }}
+        </span>
       </div>
       <a
         href="https://aaif.io/"
@@ -152,6 +162,8 @@ import LfxAgenticMetricExplorer from '../components/metric-explorer.vue';
 import { AGENTIC_AI_MOMENTUM_API_SERVICE } from '../services/agentic-ai-momentum.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { formatDate } from '~/components/shared/utils/formatter';
 
 // Fetch all data
 const { data: projectsResponse, status: projectsStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchProjects();
@@ -197,6 +209,9 @@ const issueResponseTimeData = computed(() => issueResponseTimeResponse.value?.da
 const noResponseShareData = computed(() => noResponseShareResponse.value?.data ?? []);
 const prTimeToResolveData = computed(() => prTimeToResolveResponse.value?.data ?? []);
 const totalVulnerabilitiesData = computed(() => totalVulnerabilitiesResponse.value?.data ?? []);
+
+// Data vintage date (formatted from metadata.fetched_at of the projects dataset)
+const vintageDate = computed(() => formatDate(projectsResponse.value?.metadata?.fetched_at ?? '', 'MMMM yyyy'));
 
 // Loading states
 const isLoading = computed(

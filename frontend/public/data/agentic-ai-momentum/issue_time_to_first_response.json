@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T11:21:36.751359",
+    "fetched_at": "2026-04-01T07:13:57.720359",
     "schema": {
       "name": "issue_time_to_first_response",
       "description": "3-month trailing average of the monthly median time to first response (hours) per repo.",
@@ -150,102 +150,107 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 347.4659722222222
+      "median_time_to_first_response_hours": 120.50638888888889
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 174.65812499999998
+      "median_time_to_first_response_hours": 61.71513888888889
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-05-01",
+      "median_time_to_first_response_hours": 44.31064814814815
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 117.69828703703702
+      "median_time_to_first_response_hours": 6.193657407407407
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 9.953796296296296
+      "median_time_to_first_response_hours": 10.443657407407407
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 13.091018518518519
+      "median_time_to_first_response_hours": 13.446805555555555
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 14.250370370370371
+      "median_time_to_first_response_hours": 13.813888888888888
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 12.607916666666668
+      "median_time_to_first_response_hours": 17.131851851851852
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 10.468935185185186
+      "median_time_to_first_response_hours": 12.57648148148148
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 8.057083333333333
+      "median_time_to_first_response_hours": 10.258379629629628
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 118.87546296296297
+      "median_time_to_first_response_hours": 71.9450462962963
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 147.03180555555556
+      "median_time_to_first_response_hours": 97.42689814814815
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 150.15337962962963
+      "median_time_to_first_response_hours": 100.0224074074074
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 34.04208333333333
+      "median_time_to_first_response_hours": 32.66328703703704
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 11.535000000000002
+      "median_time_to_first_response_hours": 12.160601851851851
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 13.943333333333333
+      "median_time_to_first_response_hours": 15.001249999999999
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 15.699629629629628
+      "median_time_to_first_response_hours": 13.86064814814815
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 12.250648148148146
+      "median_time_to_first_response_hours": 11.081759259259258
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 10.69699074074074
+      "median_time_to_first_response_hours": 9.956157407407408
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 25.423935185185183
+      "median_time_to_first_response_hours": 25.851990740740742
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 44.2099537037037
+      "median_time_to_first_response_hours": 44.63800925925926
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
@@ -375,22 +380,22 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 14.924398148148148
+      "median_time_to_first_response_hours": 14.952546296296296
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 0.3827777777777778
+      "median_time_to_first_response_hours": 0.22833333333333333
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 31.202569444444443
+      "median_time_to_first_response_hours": 31.12534722222222
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 26.076157407407408
+      "median_time_to_first_response_hours": 26.024675925925923
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -405,17 +410,17 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 71.97814814814815
+      "median_time_to_first_response_hours": 58.144814814814815
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 53.106481481481474
+      "median_time_to_first_response_hours": 39.273148148148145
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 30.899583333333336
+      "median_time_to_first_response_hours": 17.06625
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -425,62 +430,62 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 49.02064814814815
+      "median_time_to_first_response_hours": 46.80032407407407
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 44.3949537037037
+      "median_time_to_first_response_hours": 40.14407407407407
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 33.029953703703704
+      "median_time_to_first_response_hours": 29.777546296296293
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 40.12916666666667
+      "median_time_to_first_response_hours": 39.09708333333334
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 34.76277777777778
+      "median_time_to_first_response_hours": 36.988703703703706
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 57.47486111111112
+      "median_time_to_first_response_hours": 72.64916666666666
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 62.369861111111106
+      "median_time_to_first_response_hours": 77.54416666666667
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 60.331250000000004
+      "median_time_to_first_response_hours": 74.30226851851852
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 43.13175925925926
+      "median_time_to_first_response_hours": 40.894814814814815
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 12.71199074074074
+      "median_time_to_first_response_hours": 10.475046296296297
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 22.26648148148148
+      "median_time_to_first_response_hours": 16.482824074074074
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 17.034675925925928
+      "median_time_to_first_response_hours": 14.518472222222222
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -690,42 +695,52 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 6.785416666666666
+      "median_time_to_first_response_hours": 8.806666666666667
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 8.045902777777778
+      "median_time_to_first_response_hours": 9.488472222222223
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-09-01",
+      "median_time_to_first_response_hours": 6.398518518518519
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 5.386342592592594
+      "median_time_to_first_response_hours": 3.485462962962963
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-11-01",
+      "median_time_to_first_response_hours": 2.4789814814814815
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 10.82712962962963
+      "median_time_to_first_response_hours": 10.108703703703704
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 8.78111111111111
+      "median_time_to_first_response_hours": 11.142314814814815
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 32.03824074074074
+      "median_time_to_first_response_hours": 110.66462962962963
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 74.1112037037037
+      "median_time_to_first_response_hours": 152.7375925925926
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 113.55907407407408
+      "median_time_to_first_response_hours": 192.18546296296293
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -740,127 +755,127 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 228.0048148148148
+      "median_time_to_first_response_hours": 209.7187962962963
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 2.237222222222222
+      "median_time_to_first_response_hours": 1.8775
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 1.6851388888888887
+      "median_time_to_first_response_hours": 1.469861111111111
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 2.3605555555555555
+      "median_time_to_first_response_hours": 2.283240740740741
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 2.0917592592592595
+      "median_time_to_first_response_hours": 2.1353703703703704
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 2.456898148148148
+      "median_time_to_first_response_hours": 2.5470370370370374
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 4.7767129629629625
+      "median_time_to_first_response_hours": 4.659490740740741
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 5.080416666666666
+      "median_time_to_first_response_hours": 5.163101851851851
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 7.4425
+      "median_time_to_first_response_hours": 7.502268518518519
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 6.742685185185185
+      "median_time_to_first_response_hours": 6.317777777777778
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 6.528935185185186
+      "median_time_to_first_response_hours": 5.853796296296296
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 3.899768518518519
+      "median_time_to_first_response_hours": 3.184212962962963
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 1.252361111111111
+      "median_time_to_first_response_hours": 1.4157870370370371
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 0.9596296296296295
+      "median_time_to_first_response_hours": 1.2505555555555554
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 0.8652777777777777
+      "median_time_to_first_response_hours": 1.1683796296296296
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 1.0424074074074074
+      "median_time_to_first_response_hours": 1.1116666666666666
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 1.4562962962962962
+      "median_time_to_first_response_hours": 1.5516203703703706
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 2.9367592592592593
+      "median_time_to_first_response_hours": 2.8548148148148145
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 4.3758333333333335
+      "median_time_to_first_response_hours": 4.106944444444444
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 5.1887037037037045
+      "median_time_to_first_response_hours": 4.743009259259259
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 5.768796296296297
+      "median_time_to_first_response_hours": 4.556481481481481
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 14.627407407407409
+      "median_time_to_first_response_hours": 12.924861111111111
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 17.976666666666667
+      "median_time_to_first_response_hours": 16.094074074074076
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 20.15787037037037
+      "median_time_to_first_response_hours": 19.00888888888889
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 16.185092592592593
+      "median_time_to_first_response_hours": 15.705740740740742
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -985,32 +1000,32 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 55.685694444444444
+      "median_time_to_first_response_hours": 39.23111111111111
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 30.361527777777777
+      "median_time_to_first_response_hours": 22.72597222222222
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 23.873055555555556
+      "median_time_to_first_response_hours": 18.782685185185183
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 17.964027777777776
+      "median_time_to_first_response_hours": 21.127314814814813
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 22.11537037037037
+      "median_time_to_first_response_hours": 24.88416666666667
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 25.684074074074076
+      "median_time_to_first_response_hours": 28.452870370370373
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1025,52 +1040,52 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 8.432685185185186
+      "median_time_to_first_response_hours": 8.512083333333335
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 7.187037037037037
+      "median_time_to_first_response_hours": 7.287916666666667
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 40.954490740740745
+      "median_time_to_first_response_hours": 8.058842592592592
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 42.781851851851854
+      "median_time_to_first_response_hours": 9.806805555555556
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 47.97342592592593
+      "median_time_to_first_response_hours": 17.74550925925926
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 14.716805555555558
+      "median_time_to_first_response_hours": 17.485416666666666
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 42.20425925925926
+      "median_time_to_first_response_hours": 44.97287037037037
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 39.41935185185185
+      "median_time_to_first_response_hours": 40.766018518518514
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 55.38962962962963
+      "median_time_to_first_response_hours": 56.736296296296295
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 44.93412037037037
+      "median_time_to_first_response_hours": 46.28078703703704
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1095,12 +1110,12 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 255.57305555555556
+      "median_time_to_first_response_hours": 248.11305555555555
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 240.44194444444443
+      "median_time_to_first_response_hours": 238.93527777777777
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
@@ -1320,7 +1335,7 @@
     {
       "repo": "https://github.com/agntcy/slim",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 172.90412037037038
+      "median_time_to_first_response_hours": 174.36685185185186
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
@@ -1535,87 +1550,87 @@
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 11.700740740740741
+      "median_time_to_first_response_hours": 11.943148148148149
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 7.856944444444444
+      "median_time_to_first_response_hours": 5.669305555555556
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 11.249166666666667
+      "median_time_to_first_response_hours": 8.079375
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 12.209074074074074
+      "median_time_to_first_response_hours": 10.004907407407407
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 18.136157407407406
+      "median_time_to_first_response_hours": 16.715277777777775
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 16.268194444444443
+      "median_time_to_first_response_hours": 16.987268518518515
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 15.244768518518518
+      "median_time_to_first_response_hours": 15.753333333333332
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 8.149259259259258
+      "median_time_to_first_response_hours": 8.396805555555556
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 8.221851851851852
+      "median_time_to_first_response_hours": 7.16462962962963
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 5.316481481481481
+      "median_time_to_first_response_hours": 4.516435185185185
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 7.45388888888889
+      "median_time_to_first_response_hours": 6.770277777777778
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 10.770740740740742
+      "median_time_to_first_response_hours": 13.090787037037037
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 13.61101851851852
+      "median_time_to_first_response_hours": 16.358425925925925
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 18.729074074074074
+      "median_time_to_first_response_hours": 21.65476851851852
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 28.86101851851852
+      "median_time_to_first_response_hours": 29.331851851851855
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 31.710185185185185
+      "median_time_to_first_response_hours": 30.64342592592593
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 37.036203703703706
+      "median_time_to_first_response_hours": 34.180092592592594
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -1625,117 +1640,117 @@
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 66.47701388888889
+      "median_time_to_first_response_hours": 110.50805555555556
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 148.16518518518518
+      "median_time_to_first_response_hours": 161.65351851851852
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 241.93527777777777
+      "median_time_to_first_response_hours": 248.48037037037037
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 238.94995370370373
+      "median_time_to_first_response_hours": 216.25041666666667
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 178.31055555555557
+      "median_time_to_first_response_hours": 171.47671296296298
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 144.78009259259258
+      "median_time_to_first_response_hours": 136.55652777777777
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 112.64712962962962
+      "median_time_to_first_response_hours": 105.98518518518519
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 77.31620370370369
+      "median_time_to_first_response_hours": 70.5138425925926
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 20.03175925925926
+      "median_time_to_first_response_hours": 21.562361111111112
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 36.01217592592592
+      "median_time_to_first_response_hours": 35.85773148148149
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 34.69828703703704
+      "median_time_to_first_response_hours": 34.64453703703703
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 28.2675462962963
+      "median_time_to_first_response_hours": 28.922407407407405
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 14.351296296296297
+      "median_time_to_first_response_hours": 14.00861111111111
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 22.807083333333335
+      "median_time_to_first_response_hours": 22.19212962962963
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 38.24476851851852
+      "median_time_to_first_response_hours": 33.20342592592593
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 51.683194444444446
+      "median_time_to_first_response_hours": 40.99953703703704
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 44.77407407407407
+      "median_time_to_first_response_hours": 38.42638888888889
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 42.702638888888885
+      "median_time_to_first_response_hours": 50.112175925925925
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 31.588009259259263
+      "median_time_to_first_response_hours": 43.76069444444445
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 29.515324074074073
+      "median_time_to_first_response_hours": 36.364953703703705
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 19.934444444444445
+      "median_time_to_first_response_hours": 16.13763888888889
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 18.1775
+      "median_time_to_first_response_hours": 16.271435185185187
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 22.418796296296296
+      "median_time_to_first_response_hours": 29.00708333333333
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -1975,82 +1990,82 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 3.93125
+      "median_time_to_first_response_hours": 4.4551388888888885
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 3.800231481481481
+      "median_time_to_first_response_hours": 4.324120370370371
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 3.6484259259259257
+      "median_time_to_first_response_hours": 4.255740740740741
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 3.242314814814815
+      "median_time_to_first_response_hours": 4.040277777777778
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 3.1233333333333335
+      "median_time_to_first_response_hours": 3.957222222222222
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 5.5740740740740735
+      "median_time_to_first_response_hours": 4.13824074074074
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 6.8176851851851845
+      "median_time_to_first_response_hours": 4.7662962962962965
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 7.779629629629629
+      "median_time_to_first_response_hours": 5.379444444444445
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 12.774166666666668
+      "median_time_to_first_response_hours": 9.786203703703704
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 10.530601851851852
+      "median_time_to_first_response_hours": 7.483240740740741
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 22.45328703703704
+      "median_time_to_first_response_hours": 13.691990740740742
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 15.60875
+      "median_time_to_first_response_hours": 10.00449074074074
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 20.36925925925926
+      "median_time_to_first_response_hours": 16.45486111111111
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 9.723333333333333
+      "median_time_to_first_response_hours": 10.030555555555555
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 12.790925925925926
+      "median_time_to_first_response_hours": 12.715185185185184
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 14.083472222222222
+      "median_time_to_first_response_hours": 8.293148148148148
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
@@ -2065,112 +2080,112 @@
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 6.560277777777777
+      "median_time_to_first_response_hours": 5.315648148148148
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 4.855555555555555
+      "median_time_to_first_response_hours": 3.610925925925926
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 35.934999999999995
+      "median_time_to_first_response_hours": 14.558703703703705
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 35.36944444444445
+      "median_time_to_first_response_hours": 20.49398148148148
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 52.76583333333334
+      "median_time_to_first_response_hours": 33.37185185185185
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 27.506574074074077
+      "median_time_to_first_response_hours": 33.2387037037037
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 38.34291666666667
+      "median_time_to_first_response_hours": 38.818842592592596
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 28.493009259259257
+      "median_time_to_first_response_hours": 33.4874537037037
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 29.486064814814814
+      "median_time_to_first_response_hours": 29.56699074074074
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 35.498333333333335
+      "median_time_to_first_response_hours": 39.43388888888889
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 29.34523148148148
+      "median_time_to_first_response_hours": 34.539351851851855
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 27.00236111111111
+      "median_time_to_first_response_hours": 45.505324074074075
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 13.341620370370372
+      "median_time_to_first_response_hours": 27.35134259259259
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 18.274398148148148
+      "median_time_to_first_response_hours": 31.597731481481485
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 24.051990740740745
+      "median_time_to_first_response_hours": 23.29287037037037
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 33.171527777777776
+      "median_time_to_first_response_hours": 33.05101851851852
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 34.0275
+      "median_time_to_first_response_hours": 33.33481481481481
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 41.1562962962963
+      "median_time_to_first_response_hours": 37.59685185185185
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 49.51657407407407
+      "median_time_to_first_response_hours": 45.95712962962963
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 58.180416666666666
+      "median_time_to_first_response_hours": 54.62097222222223
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 45.47486111111112
+      "median_time_to_first_response_hours": 44.97773148148148
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 76.85717592592593
+      "median_time_to_first_response_hours": 76.36004629629629
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2290,7 +2305,7 @@
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 3.1457870370370373
+      "median_time_to_first_response_hours": 3.182592592592593
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
@@ -2415,117 +2430,117 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 5.183055555555556
+      "median_time_to_first_response_hours": 5.429444444444444
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 5.878402777777778
+      "median_time_to_first_response_hours": 6.001597222222221
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 7.55050925925926
+      "median_time_to_first_response_hours": 7.783240740740741
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 7.383101851851852
+      "median_time_to_first_response_hours": 7.533703703703703
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 13.947037037037036
+      "median_time_to_first_response_hours": 14.245138888888889
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 15.770879629629631
+      "median_time_to_first_response_hours": 16.889120370370367
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 17.335740740740743
+      "median_time_to_first_response_hours": 19.136898148148145
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 15.317546296296298
+      "median_time_to_first_response_hours": 17.575972222222223
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 10.157314814814816
+      "median_time_to_first_response_hours": 11.499166666666667
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 11.030972222222223
+      "median_time_to_first_response_hours": 11.689907407407409
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 5.13287037037037
+      "median_time_to_first_response_hours": 5.052314814814815
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 4.887037037037037
+      "median_time_to_first_response_hours": 4.752314814814815
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 6.041851851851852
+      "median_time_to_first_response_hours": 5.90712962962963
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 10.309537037037037
+      "median_time_to_first_response_hours": 10.550324074074073
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 11.489259259259258
+      "median_time_to_first_response_hours": 11.719768518518519
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 6.699907407407408
+      "median_time_to_first_response_hours": 6.930416666666666
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 14.852685185185186
+      "median_time_to_first_response_hours": 11.193148148148147
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 13.633425925925925
+      "median_time_to_first_response_hours": 10.294305555555555
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 18.74800925925926
+      "median_time_to_first_response_hours": 17.73138888888889
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 6.334537037037037
+      "median_time_to_first_response_hours": 9.861712962962963
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 11.75060185185185
+      "median_time_to_first_response_hours": 15.619351851851851
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 9.40462962962963
+      "median_time_to_first_response_hours": 14.83384259259259
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 26.919398148148147
+      "median_time_to_first_response_hours": 30.241481481481483
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2740,152 +2755,152 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 12.21662037037037
+      "median_time_to_first_response_hours": 6.316481481481482
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 9.711388888888889
+      "median_time_to_first_response_hours": 9.606111111111112
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 13.645694444444445
+      "median_time_to_first_response_hours": 12.622361111111111
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 20.5725
+      "median_time_to_first_response_hours": 19.748935185185186
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 26.74851851851852
+      "median_time_to_first_response_hours": 24.591805555555556
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 25.26212962962963
+      "median_time_to_first_response_hours": 25.675833333333333
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 24.542037037037037
+      "median_time_to_first_response_hours": 38.96050925925926
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 37.19916666666667
+      "median_time_to_first_response_hours": 50.27337962962963
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 40.802268518518524
+      "median_time_to_first_response_hours": 54.66101851851852
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 42.9713425925926
+      "median_time_to_first_response_hours": 45.20342592592593
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 28.37611111111111
+      "median_time_to_first_response_hours": 37.62430555555556
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 31.53912037037037
+      "median_time_to_first_response_hours": 37.39319444444445
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 12.37138888888889
+      "median_time_to_first_response_hours": 10.461944444444445
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 9.470277777777778
+      "median_time_to_first_response_hours": 6.818333333333333
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 9.517592592592592
+      "median_time_to_first_response_hours": 7.74962962962963
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 5.904212962962963
+      "median_time_to_first_response_hours": 4.821296296296296
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 5.567175925925926
+      "median_time_to_first_response_hours": 5.658703703703703
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 4.162083333333333
+      "median_time_to_first_response_hours": 4.248518518518519
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 4.625972222222223
+      "median_time_to_first_response_hours": 5.331574074074074
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 4.655601851851852
+      "median_time_to_first_response_hours": 5.536944444444444
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 5.653009259259259
+      "median_time_to_first_response_hours": 16.614814814814814
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 9.299999999999999
+      "median_time_to_first_response_hours": 20.413055555555555
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 40.97574074074074
+      "median_time_to_first_response_hours": 20.599907407407407
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 53.673611111111114
+      "median_time_to_first_response_hours": 23.222407407407406
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 49.2612962962963
+      "median_time_to_first_response_hours": 38.02722222222223
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 24.77587962962963
+      "median_time_to_first_response_hours": 44.81199074074075
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 21.918796296296296
+      "median_time_to_first_response_hours": 30.008935185185184
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 23.658055555555553
+      "median_time_to_first_response_hours": 10.970277777777776
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 16.09189814814815
+      "median_time_to_first_response_hours": 3.40412037037037
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 3.4735185185185187
+      "median_time_to_first_response_hours": 2.731712962962963
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -2895,27 +2910,27 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 32.10472222222222
+      "median_time_to_first_response_hours": 31.774768518518517
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 39.67337962962963
+      "median_time_to_first_response_hours": 39.34342592592592
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 61.95078703703703
+      "median_time_to_first_response_hours": 15.949444444444444
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 60.44837962962962
+      "median_time_to_first_response_hours": 14.776990740740741
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 96.33296296296295
+      "median_time_to_first_response_hours": 65.77185185185185
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -2990,7 +3005,7 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 264.4322685185185
+      "median_time_to_first_response_hours": 273.9462037037037
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3045,17 +3060,17 @@
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 9.505925925925926
+      "median_time_to_first_response_hours": 9.556064814814816
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 9.04787037037037
+      "median_time_to_first_response_hours": 9.098009259259259
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 7.664814814814815
+      "median_time_to_first_response_hours": 7.714953703703704
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3230,7 +3245,7 @@
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 1.8449074074074074
+      "median_time_to_first_response_hours": 1.819675925925926
     },
     {
       "repo": "https://github.com/janhq/jan",
@@ -3354,18 +3369,28 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-03-01",
+      "median_time_to_first_response_hours": 46.73777777777778
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 104.72777777777777
+      "median_time_to_first_response_hours": 139.28076388888888
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-07-01",
+      "median_time_to_first_response_hours": 100.36759259259259
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 105.06555555555556
+      "median_time_to_first_response_hours": 119.92277777777777
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 70.06175925925926
+      "median_time_to_first_response_hours": 42.66625
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -3379,8 +3404,13 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-07-01",
+      "median_time_to_first_response_hours": 118.44509259259259
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 55.69652777777778
+      "median_time_to_first_response_hours": 168.9801388888889
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -3860,7 +3890,7 @@
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 22.00763888888889
+      "median_time_to_first_response_hours": 22.059490740740742
     },
     {
       "repo": "https://github.com/letta-ai/letta",
@@ -3990,117 +4020,117 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 150.5353472222222
+      "median_time_to_first_response_hours": 147.23659722222223
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 115.89476851851852
+      "median_time_to_first_response_hours": 113.30569444444444
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 29.055185185185184
+      "median_time_to_first_response_hours": 26.49884259259259
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 21.721574074074073
+      "median_time_to_first_response_hours": 19.116527777777776
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 14.426111111111112
+      "median_time_to_first_response_hours": 12.210972222222223
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 19.88486111111111
+      "median_time_to_first_response_hours": 17.636990740740742
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 19.062685185185185
+      "median_time_to_first_response_hours": 18.080416666666668
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 16.823703703703703
+      "median_time_to_first_response_hours": 16.697777777777777
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 15.980231481481482
+      "median_time_to_first_response_hours": 17.2474537037037
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 19.592037037037038
+      "median_time_to_first_response_hours": 19.58791666666667
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 19.046111111111113
+      "median_time_to_first_response_hours": 17.096759259259258
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 15.005046296296298
+      "median_time_to_first_response_hours": 12.050092592592593
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 9.280601851851852
+      "median_time_to_first_response_hours": 8.797638888888889
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 5.375231481481482
+      "median_time_to_first_response_hours": 5.63375
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 5.090277777777778
+      "median_time_to_first_response_hours": 5.280648148148148
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 5.400555555555556
+      "median_time_to_first_response_hours": 5.593009259259259
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 8.470694444444444
+      "median_time_to_first_response_hours": 7.994305555555556
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 6.934814814814814
+      "median_time_to_first_response_hours": 6.5334259259259255
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 7.0938888888888885
+      "median_time_to_first_response_hours": 6.550370370370371
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 5.323842592592593
+      "median_time_to_first_response_hours": 5.916111111111111
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 6.967083333333334
+      "median_time_to_first_response_hours": 6.905925925925925
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 7.708935185185186
+      "median_time_to_first_response_hours": 7.398333333333333
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 11.988750000000001
+      "median_time_to_first_response_hours": 11.663287037037037
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
@@ -4120,132 +4150,142 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 3.4427777777777777
+      "median_time_to_first_response_hours": 3.4306944444444447
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 5.54462962962963
+      "median_time_to_first_response_hours": 5.425833333333333
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 8.23486111111111
+      "median_time_to_first_response_hours": 8.010833333333332
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 15.401574074074075
+      "median_time_to_first_response_hours": 15.189629629629628
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 20.247592592592593
+      "median_time_to_first_response_hours": 20.03824074074074
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 23.838333333333335
+      "median_time_to_first_response_hours": 23.71638888888889
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 29.177314814814817
+      "median_time_to_first_response_hours": 29.10287037037037
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 28.66111111111111
+      "median_time_to_first_response_hours": 28.627037037037038
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 28.18800925925926
+      "median_time_to_first_response_hours": 28.233796296296294
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 29.26564814814815
+      "median_time_to_first_response_hours": 15.586481481481483
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 23.840833333333336
+      "median_time_to_first_response_hours": 7.543611111111112
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 20.990925925925925
+      "median_time_to_first_response_hours": 0.42333333333333334
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 8.711157407407407
+      "median_time_to_first_response_hours": 0.011851851851851851
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 16.189722222222223
+      "median_time_to_first_response_hours": 16.05902777777778
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 20.870555555555555
+      "median_time_to_first_response_hours": 22.024583333333332
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 21.27138888888889
+      "median_time_to_first_response_hours": 22.04074074074074
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 16.488055555555555
+      "median_time_to_first_response_hours": 17.30097222222222
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 19.583518518518517
+      "median_time_to_first_response_hours": 15.581944444444444
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 12.719490740740738
+      "median_time_to_first_response_hours": 9.337546296296296
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 12.627824074074072
+      "median_time_to_first_response_hours": 8.752268518518518
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 7.165509259259259
+      "median_time_to_first_response_hours": 7.291527777777778
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 6.807685185185185
+      "median_time_to_first_response_hours": 9.098425925925925
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 9.264166666666666
+      "median_time_to_first_response_hours": 13.173287037037037
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 101.27004629629629
+      "median_time_to_first_response_hours": 105.17916666666666
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 183.21671296296293
+      "median_time_to_first_response_hours": 240.88425925925927
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-10-01",
+      "median_time_to_first_response_hours": 303.54421296296294
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-12-01",
+      "median_time_to_first_response_hours": 309.6380555555556
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 180.2988425925926
+      "median_time_to_first_response_hours": 171.07296296296295
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -4255,62 +4295,62 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 7.598680555555555
+      "median_time_to_first_response_hours": 6.878819444444444
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 5.971388888888889
+      "median_time_to_first_response_hours": 5.5825
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 10.548425925925926
+      "median_time_to_first_response_hours": 9.585879629629629
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 6.756851851851852
+      "median_time_to_first_response_hours": 6.959768518518518
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 19.864722222222223
+      "median_time_to_first_response_hours": 31.348055555555558
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 17.062083333333334
+      "median_time_to_first_response_hours": 28.23810185185185
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 24.695833333333336
+      "median_time_to_first_response_hours": 38.03560185185185
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 27.498101851851853
+      "median_time_to_first_response_hours": 29.466435185185187
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 28.810092592592593
+      "median_time_to_first_response_hours": 31.659398148148146
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 26.753981481481485
+      "median_time_to_first_response_hours": 32.666435185185186
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 15.64101851851852
+      "median_time_to_first_response_hours": 21.553472222222222
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 11.932314814814816
+      "median_time_to_first_response_hours": 17.844768518518517
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -4465,102 +4505,102 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 9.246805555555556
+      "median_time_to_first_response_hours": 9.614212962962963
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 8.606712962962964
+      "median_time_to_first_response_hours": 8.922453703703704
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 14.225416666666666
+      "median_time_to_first_response_hours": 17.77837962962963
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 21.17657407407407
+      "median_time_to_first_response_hours": 27.756481481481483
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 30.58037037037037
+      "median_time_to_first_response_hours": 36.90611111111111
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 34.75717592592593
+      "median_time_to_first_response_hours": 37.84569444444444
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 45.49314814814815
+      "median_time_to_first_response_hours": 45.18731481481482
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 46.49296296296296
+      "median_time_to_first_response_hours": 38.97768518518519
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 45.768379629629635
+      "median_time_to_first_response_hours": 37.94337962962963
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 52.77916666666667
+      "median_time_to_first_response_hours": 46.58726851851852
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 64.37726851851852
+      "median_time_to_first_response_hours": 43.66902777777778
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 109.7963888888889
+      "median_time_to_first_response_hours": 90.16476851851853
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 188.9613888888889
+      "median_time_to_first_response_hours": 102.52166666666666
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 214.2285648148148
+      "median_time_to_first_response_hours": 149.82046296296298
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 199.86092592592593
+      "median_time_to_first_response_hours": 134.68592592592594
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 115.0174074074074
+      "median_time_to_first_response_hours": 99.25925925925925
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 112.3974537037037
+      "median_time_to_first_response_hours": 96.63930555555555
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 172.42337962962964
+      "median_time_to_first_response_hours": 133.97194444444443
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 205.22273148148147
+      "median_time_to_first_response_hours": 182.52944444444447
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 173.8087037037037
+      "median_time_to_first_response_hours": 144.47800925925927
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -4685,122 +4725,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 12.92
+      "median_time_to_first_response_hours": 12.560277777777777
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 15.270277777777778
+      "median_time_to_first_response_hours": 14.304791666666667
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 13.225462962962963
+      "median_time_to_first_response_hours": 12.950787037037037
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 14.216064814814814
+      "median_time_to_first_response_hours": 13.804722222222223
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 12.013888888888888
+      "median_time_to_first_response_hours": 12.654351851851851
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 17.48037037037037
+      "median_time_to_first_response_hours": 17.546666666666667
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 17.31939814814815
+      "median_time_to_first_response_hours": 17.199953703703702
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 18.712962962962962
+      "median_time_to_first_response_hours": 17.63675925925926
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 13.417499999999999
+      "median_time_to_first_response_hours": 12.59425925925926
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 13.534259259259258
+      "median_time_to_first_response_hours": 13.811018518518518
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 18.469953703703705
+      "median_time_to_first_response_hours": 18.085462962962964
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 20.350231481481483
+      "median_time_to_first_response_hours": 18.99138888888889
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 24.566435185185185
+      "median_time_to_first_response_hours": 20.755277777777778
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 27.54398148148148
+      "median_time_to_first_response_hours": 20.707916666666666
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 26.956203703703704
+      "median_time_to_first_response_hours": 20.823287037037037
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 24.869537037037038
+      "median_time_to_first_response_hours": 21.717083333333335
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 20.496574074074072
+      "median_time_to_first_response_hours": 23.745
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 22.23
+      "median_time_to_first_response_hours": 26.38138888888889
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 45.99462962962963
+      "median_time_to_first_response_hours": 45.80916666666667
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 54.64134259259259
+      "median_time_to_first_response_hours": 42.43694444444444
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 59.07263888888889
+      "median_time_to_first_response_hours": 43.75787037037037
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 32.71273148148148
+      "median_time_to_first_response_hours": 41.43435185185185
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 33.94402777777778
+      "median_time_to_first_response_hours": 79.03726851851853
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 50.02939814814815
+      "median_time_to_first_response_hours": 97.55347222222223
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -4925,17 +4965,17 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 66.09027777777777
+      "median_time_to_first_response_hours": 60.149027777777775
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 159.31666666666666
+      "median_time_to_first_response_hours": 156.34604166666668
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 119.29722222222222
+      "median_time_to_first_response_hours": 117.31680555555556
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -4959,13 +4999,18 @@
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-11-01",
+      "median_time_to_first_response_hours": 172.8163888888889
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 41.98833333333334
+      "median_time_to_first_response_hours": 178.06925925925927
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 72.56722222222221
+      "median_time_to_first_response_hours": 172.41907407407408
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
@@ -5250,22 +5295,22 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 1.3247222222222221
+      "median_time_to_first_response_hours": 1.3249074074074072
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 1.3941666666666668
+      "median_time_to_first_response_hours": 1.3943518518518518
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 1.4341666666666668
+      "median_time_to_first_response_hours": 1.4422685185185184
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 1.5503703703703706
+      "median_time_to_first_response_hours": 1.5582870370370372
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -5405,17 +5450,17 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 23.834351851851853
+      "median_time_to_first_response_hours": 23.75615740740741
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 3.770787037037037
+      "median_time_to_first_response_hours": 3.6925925925925926
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 3.586527777777778
+      "median_time_to_first_response_hours": 3.5083333333333333
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -5510,62 +5555,62 @@
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 2.409861111111111
+      "median_time_to_first_response_hours": 2.2575
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 4.573680555555555
+      "median_time_to_first_response_hours": 4.493541666666666
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 9.042592592592593
+      "median_time_to_first_response_hours": 7.905277777777779
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 11.672824074074073
+      "median_time_to_first_response_hours": 11.04601851851852
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 11.651527777777778
+      "median_time_to_first_response_hours": 10.62800925925926
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 6.548425925925926
+      "median_time_to_first_response_hours": 6.414351851851852
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 4.608611111111111
+      "median_time_to_first_response_hours": 3.8206018518518516
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 3.9625925925925927
+      "median_time_to_first_response_hours": 3.5607870370370365
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 4.9521296296296295
+      "median_time_to_first_response_hours": 4.751342592592592
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 4.951342592592592
+      "median_time_to_first_response_hours": 4.944768518518519
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 4.1880092592592595
+      "median_time_to_first_response_hours": 4.012361111111111
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 5.159305555555556
+      "median_time_to_first_response_hours": 4.251759259259259
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -5585,22 +5630,22 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 23.808703703703703
+      "median_time_to_first_response_hours": 25.273425925925924
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 3.9034722222222222
+      "median_time_to_first_response_hours": 3.5956944444444447
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 2.617986111111111
+      "median_time_to_first_response_hours": 2.4640972222222226
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 5.631157407407407
+      "median_time_to_first_response_hours": 5.528564814814814
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5609,13 +5654,18 @@
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-08-01",
+      "median_time_to_first_response_hours": 36.44305555555555
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 25.575925925925926
+      "median_time_to_first_response_hours": 45.892037037037035
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 21.73888888888889
+      "median_time_to_first_response_hours": 37.58555555555556
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5635,42 +5685,42 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 19.42574074074074
+      "median_time_to_first_response_hours": 16.87949074074074
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 14.163148148148148
+      "median_time_to_first_response_hours": 12.058564814814815
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 22.827731481481482
+      "median_time_to_first_response_hours": 12.66777777777778
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 97.5676851851852
+      "median_time_to_first_response_hours": 89.95398148148149
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 235.6288888888889
+      "median_time_to_first_response_hours": 227.5735185185185
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 222.70699074074074
+      "median_time_to_first_response_hours": 225.23416666666665
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 146.6626388888889
+      "median_time_to_first_response_hours": 149.1898148148148
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 32.86212962962963
+      "median_time_to_first_response_hours": 35.38930555555556
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5710,102 +5760,102 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 14.331435185185185
+      "median_time_to_first_response_hours": 14.913472222222223
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 16.47689814814815
+      "median_time_to_first_response_hours": 17.87421296296296
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 63.03481481481481
+      "median_time_to_first_response_hours": 64.43212962962963
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 80.04555555555555
+      "median_time_to_first_response_hours": 77.47310185185185
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 89.24787037037036
+      "median_time_to_first_response_hours": 91.25828703703702
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 61.70861111111111
+      "median_time_to_first_response_hours": 51.11388888888889
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 44.72824074074074
+      "median_time_to_first_response_hours": 36.72578703703704
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 33.04583333333333
+      "median_time_to_first_response_hours": 19.447175925925926
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 12.102685185185186
+      "median_time_to_first_response_hours": 14.459074074074074
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 12.164722222222222
+      "median_time_to_first_response_hours": 14.300740740740741
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 9.797685185185186
+      "median_time_to_first_response_hours": 11.25861111111111
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 11.134629629629629
+      "median_time_to_first_response_hours": 16.62763888888889
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 10.35962962962963
+      "median_time_to_first_response_hours": 17.476574074074072
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 12.093703703703705
+      "median_time_to_first_response_hours": 19.499537037037037
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 16.983796296296294
+      "median_time_to_first_response_hours": 15.721157407407409
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 24.108796296296294
+      "median_time_to_first_response_hours": 23.002962962962965
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 27.523888888888887
+      "median_time_to_first_response_hours": 25.26648148148148
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 26.141296296296293
+      "median_time_to_first_response_hours": 31.008935185185184
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 15.120324074074075
+      "median_time_to_first_response_hours": 19.227175925925923
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 10.682638888888889
+      "median_time_to_first_response_hours": 16.222916666666666
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6250,32 +6300,32 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "median_time_to_first_response_hours": 4.424027777777778
+      "median_time_to_first_response_hours": 3.026527777777778
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-04-01",
-      "median_time_to_first_response_hours": 3.9938194444444446
+      "median_time_to_first_response_hours": 3.2950694444444446
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 5.2252777777777775
+      "median_time_to_first_response_hours": 4.759444444444445
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 4.301064814814815
+      "median_time_to_first_response_hours": 4.1698611111111115
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 8.075462962962963
+      "median_time_to_first_response_hours": 7.944259259259259
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 13.430092592592592
+      "median_time_to_first_response_hours": 13.298888888888888
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6285,22 +6335,22 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 15.366249999999999
+      "median_time_to_first_response_hours": 14.673657407407406
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 8.638287037037037
+      "median_time_to_first_response_hours": 7.915555555555556
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 6.373101851851852
+      "median_time_to_first_response_hours": 5.6503703703703705
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 2.587824074074074
+      "median_time_to_first_response_hours": 2.557685185185185
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6310,62 +6360,62 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 5.1627777777777775
+      "median_time_to_first_response_hours": 4.79925925925926
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 6.179537037037036
+      "median_time_to_first_response_hours": 5.748888888888889
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 5.936805555555555
+      "median_time_to_first_response_hours": 5.359907407407408
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 3.292083333333333
+      "median_time_to_first_response_hours": 3.0787037037037037
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 4.8032407407407405
+      "median_time_to_first_response_hours": 4.656990740740741
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 5.14162037037037
+      "median_time_to_first_response_hours": 5.196527777777778
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 5.045555555555556
+      "median_time_to_first_response_hours": 5.1785648148148145
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 4.409398148148148
+      "median_time_to_first_response_hours": 4.947037037037037
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 6.641435185185185
+      "median_time_to_first_response_hours": 7.682824074074074
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 8.7825
+      "median_time_to_first_response_hours": 9.384305555555555
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 10.794907407407408
+      "median_time_to_first_response_hours": 11.508842592592591
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 7.844444444444445
+      "median_time_to_first_response_hours": 7.999722222222222
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -6509,8 +6559,18 @@
     },
     {
       "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-11-01",
+      "median_time_to_first_response_hours": 0.014259259259259258
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 136.74638888888887
+      "median_time_to_first_response_hours": 136.74416666666664
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2026-01-01",
+      "median_time_to_first_response_hours": 226.2213888888889
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -6635,17 +6695,17 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 10.657777777777778
+      "median_time_to_first_response_hours": 13.450694444444444
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 13.535277777777777
+      "median_time_to_first_response_hours": 14.93173611111111
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 14.850648148148148
+      "median_time_to_first_response_hours": 15.78162037037037
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
@@ -6655,72 +6715,72 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 27.578888888888887
+      "median_time_to_first_response_hours": 27.88175925925926
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 29.518703703703704
+      "median_time_to_first_response_hours": 29.443055555555556
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 22.67740740740741
+      "median_time_to_first_response_hours": 20.49138888888889
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 21.947314814814817
+      "median_time_to_first_response_hours": 19.151851851851852
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 23.558425925925928
+      "median_time_to_first_response_hours": 20.09287037037037
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "median_time_to_first_response_hours": 24.46083333333333
+      "median_time_to_first_response_hours": 22.485370370370372
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 23.71777777777778
+      "median_time_to_first_response_hours": 20.795879629629628
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 23.661620370370372
+      "median_time_to_first_response_hours": 22.763935185185186
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 22.060046296296296
+      "median_time_to_first_response_hours": 22.13513888888889
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 34.883472222222224
+      "median_time_to_first_response_hours": 27.194814814814816
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 35.151296296296294
+      "median_time_to_first_response_hours": 26.338379629629628
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 42.461157407407406
+      "median_time_to_first_response_hours": 32.82958333333334
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 31.44125
+      "median_time_to_first_response_hours": 30.826435185185186
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 41.57888888888889
+      "median_time_to_first_response_hours": 41.11273148148148
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
@@ -6740,7 +6800,7 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 63.52037037037038
+      "median_time_to_first_response_hours": 59.68199074074074
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -6880,47 +6940,47 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-05-01",
-      "median_time_to_first_response_hours": 3.468888888888889
+      "median_time_to_first_response_hours": 3.383611111111111
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-06-01",
-      "median_time_to_first_response_hours": 4.5156018518518515
+      "median_time_to_first_response_hours": 4.458749999999999
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-07-01",
-      "median_time_to_first_response_hours": 6.038333333333333
+      "median_time_to_first_response_hours": 6.30912037037037
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-08-01",
-      "median_time_to_first_response_hours": 4.385277777777778
+      "median_time_to_first_response_hours": 5.637546296296296
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-09-01",
-      "median_time_to_first_response_hours": 3.54125
+      "median_time_to_first_response_hours": 4.7935185185185185
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-10-01",
-      "median_time_to_first_response_hours": 2.84
+      "median_time_to_first_response_hours": 3.5314814814814817
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-11-01",
-      "median_time_to_first_response_hours": 8.969351851851853
+      "median_time_to_first_response_hours": 6.198425925925926
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-12-01",
-      "median_time_to_first_response_hours": 10.507777777777777
+      "median_time_to_first_response_hours": 7.736851851851852
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-01-01",
-      "median_time_to_first_response_hours": 12.433287037037038
+      "median_time_to_first_response_hours": 9.895509259259258
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -6930,62 +6990,62 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-03-01",
-      "median_time_to_first_response_hours": 35.581435185185185
+      "median_time_to_first_response_hours": 35.40625
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-04-01",
-      "median_time_to_first_response_hours": 35.864814814814814
+      "median_time_to_first_response_hours": 35.52425925925926
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-05-01",
-      "median_time_to_first_response_hours": 13.958055555555555
+      "median_time_to_first_response_hours": 10.714861111111112
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-06-01",
-      "median_time_to_first_response_hours": 145.29675925925926
+      "median_time_to_first_response_hours": 80.56532407407407
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-07-01",
-      "median_time_to_first_response_hours": 143.71064814814815
+      "median_time_to_first_response_hours": 79.14458333333333
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-08-01",
-      "median_time_to_first_response_hours": 138.87875
+      "median_time_to_first_response_hours": 77.40222222222222
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-09-01",
-      "median_time_to_first_response_hours": 6.376759259259259
+      "median_time_to_first_response_hours": 5.512777777777778
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-10-01",
-      "median_time_to_first_response_hours": 16.581666666666667
+      "median_time_to_first_response_hours": 10.24537037037037
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-11-01",
-      "median_time_to_first_response_hours": 60.70462962962963
+      "median_time_to_first_response_hours": 78.44314814814815
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "median_time_to_first_response_hours": 67.05499999999999
+      "median_time_to_first_response_hours": 80.26277777777779
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "median_time_to_first_response_hours": 55.182314814814816
+      "median_time_to_first_response_hours": 81.25527777777778
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "median_time_to_first_response_hours": 17.093009259259258
+      "median_time_to_first_response_hours": 18.90425925925926
     }
   ]
 }

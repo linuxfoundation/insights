@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:28:17.573727",
+    "fetched_at": "2026-04-01T07:13:53.396860",
     "schema": {
       "name": "new_contributors_90d",
       "description": "Monthly count of contributors whose first commit was within the past 90 days.",
@@ -145,7 +145,7 @@
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 77
+      "new_contributors_90d_count": 78
     },
     {
       "repo": "https://github.com/a2aproject/A2A",
@@ -1260,17 +1260,17 @@
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 548
+      "new_contributors_90d_count": 547
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 508
+      "new_contributors_90d_count": 507
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 467
+      "new_contributors_90d_count": 466
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -1650,182 +1650,182 @@
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 110
+      "new_contributors_90d_count": 140
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 143
+      "new_contributors_90d_count": 184
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 174
+      "new_contributors_90d_count": 225
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 90
+      "new_contributors_90d_count": 120
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 102
+      "new_contributors_90d_count": 155
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 104
+      "new_contributors_90d_count": 175
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 107
+      "new_contributors_90d_count": 184
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 84
+      "new_contributors_90d_count": 131
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 64
+      "new_contributors_90d_count": 97
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 57
+      "new_contributors_90d_count": 83
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 51
+      "new_contributors_90d_count": 72
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 64
+      "new_contributors_90d_count": 81
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 55
+      "new_contributors_90d_count": 84
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 63
+      "new_contributors_90d_count": 97
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 64
+      "new_contributors_90d_count": 97
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 56
+      "new_contributors_90d_count": 87
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 50
+      "new_contributors_90d_count": 71
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 45
+      "new_contributors_90d_count": 68
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 40
+      "new_contributors_90d_count": 55
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 36
+      "new_contributors_90d_count": 50
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 27
+      "new_contributors_90d_count": 37
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 26
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 15
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 32
+      "new_contributors_90d_count": 45
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 49
+      "new_contributors_90d_count": 70
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 56
+      "new_contributors_90d_count": 75
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 51
+      "new_contributors_90d_count": 71
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 38
+      "new_contributors_90d_count": 54
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 36
+      "new_contributors_90d_count": 46
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 38
+      "new_contributors_90d_count": 52
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 44
+      "new_contributors_90d_count": 56
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 43
+      "new_contributors_90d_count": 56
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 36
+      "new_contributors_90d_count": 49
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 37
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 19
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 25
+      "new_contributors_90d_count": 31
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -1880,17 +1880,17 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 162
+      "new_contributors_90d_count": 161
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 258
+      "new_contributors_90d_count": 257
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 297
+      "new_contributors_90d_count": 296
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -2095,217 +2095,217 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 16
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 16
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 16
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 11
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 23
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 38
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 86
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 123
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 139
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 141
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 141
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 118
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 103
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 88
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 108
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2025-12-01",
-      "new_contributors_90d_count": 87
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2026-01-01",
-      "new_contributors_90d_count": 88
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2026-02-01",
-      "new_contributors_90d_count": 121
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-03-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 8
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 13
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 21
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 18
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 21
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 12
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 20
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
       "new_contributors_90d_count": 15
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 33
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 48
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 58
+      "new_contributors_90d_count": 103
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 69
+      "new_contributors_90d_count": 144
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 81
+      "new_contributors_90d_count": 168
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 51
+      "new_contributors_90d_count": 171
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 40
+      "new_contributors_90d_count": 172
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 31
+      "new_contributors_90d_count": 145
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 32
+      "new_contributors_90d_count": 126
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 25
+      "new_contributors_90d_count": 119
     },
     {
-      "repo": "https://github.com/camel-ai/camel",
+      "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 143
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-12-01",
+      "new_contributors_90d_count": 128
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-01-01",
+      "new_contributors_90d_count": 123
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-02-01",
+      "new_contributors_90d_count": 163
     },
     {
       "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-12-01",
+      "month": "2024-03-01",
+      "new_contributors_90d_count": 7
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 10
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
       "new_contributors_90d_count": 19
     },
     {
       "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 33
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 33
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 36
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 24
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 37
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 36
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 38
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 83
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 97
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 111
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 79
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 67
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 57
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 46
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 38
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 36
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-12-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 25
+      "new_contributors_90d_count": 39
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 36
+      "new_contributors_90d_count": 52
     },
     {
       "repo": "https://github.com/google/adk-python",
@@ -2375,57 +2375,57 @@
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 70
+      "new_contributors_90d_count": 93
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 147
+      "new_contributors_90d_count": 215
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 207
+      "new_contributors_90d_count": 293
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 178
+      "new_contributors_90d_count": 248
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 140
+      "new_contributors_90d_count": 185
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 112
+      "new_contributors_90d_count": 154
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 120
+      "new_contributors_90d_count": 183
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 138
+      "new_contributors_90d_count": 212
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 148
+      "new_contributors_90d_count": 225
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 136
+      "new_contributors_90d_count": 200
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 129
+      "new_contributors_90d_count": 173
     },
     {
       "repo": "https://github.com/block/goose",
@@ -2545,7 +2545,7 @@
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 154
+      "new_contributors_90d_count": 155
     },
     {
       "repo": "https://github.com/FoundationAgents/MetaGPT",
@@ -3025,7 +3025,7 @@
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 35
+      "new_contributors_90d_count": 36
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
@@ -3385,127 +3385,127 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 4504
+      "new_contributors_90d_count": 4510
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 78
+      "new_contributors_90d_count": 100
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 163
+      "new_contributors_90d_count": 221
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 216
+      "new_contributors_90d_count": 294
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 157
+      "new_contributors_90d_count": 216
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 100
+      "new_contributors_90d_count": 134
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 61
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 46
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 37
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 50
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 58
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 72
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 82
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 100
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 122
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 127
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 133
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 101
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 95
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-09-01",
       "new_contributors_90d_count": 76
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 63
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 55
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 79
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 78
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 97
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 102
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 133
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 158
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 172
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 182
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 142
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 136
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 116
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 72
+      "new_contributors_90d_count": 113
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 58
+      "new_contributors_90d_count": 95
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 69
+      "new_contributors_90d_count": 105
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 81
+      "new_contributors_90d_count": 109
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 92
+      "new_contributors_90d_count": 118
     },
     {
       "repo": "https://github.com/cline/cline",
@@ -3890,27 +3890,27 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 3
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -3930,17 +3930,17 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 3
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -3950,17 +3950,17 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
@@ -4110,52 +4110,52 @@
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 46
+      "new_contributors_90d_count": 65
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 53
+      "new_contributors_90d_count": 75
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 51
+      "new_contributors_90d_count": 68
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-06-01",
+      "new_contributors_90d_count": 40
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 25
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 23
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-09-01",
       "new_contributors_90d_count": 29
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/OpenInterpreter/open-interpreter",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 13
-    },
-    {
-      "repo": "https://github.com/OpenInterpreter/open-interpreter",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 16
+      "new_contributors_90d_count": 26
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 27
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 14
+      "new_contributors_90d_count": 17
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
@@ -4170,22 +4170,22 @@
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 5
+      "new_contributors_90d_count": 6
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 5
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
@@ -4195,17 +4195,17 @@
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
@@ -4225,37 +4225,37 @@
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 8
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 12
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 5
+      "new_contributors_90d_count": 6
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/sweepai/sweep",
@@ -4390,82 +4390,82 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 19
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 30
+      "new_contributors_90d_count": 33
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 94
+      "new_contributors_90d_count": 126
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
+      "new_contributors_90d_count": 196
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 286
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 278
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 254
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 192
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-07-01",
       "new_contributors_90d_count": 147
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 202
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 120
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 198
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 125
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 168
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 124
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 133
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 119
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-07-01",
+      "month": "2025-12-01",
       "new_contributors_90d_count": 104
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 91
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 89
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 90
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 88
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-12-01",
-      "new_contributors_90d_count": 79
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 74
+      "new_contributors_90d_count": 98
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 80
+      "new_contributors_90d_count": 106
     },
     {
       "repo": "https://github.com/firecrawl/firecrawl",
@@ -4600,232 +4600,232 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 3
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 13
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 10
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 9
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 18
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 27
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 35
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 39
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 43
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 43
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 45
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 47
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 52
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 49
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 42
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 34
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 21
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-11-01",
       "new_contributors_90d_count": 15
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 13
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 24
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 47
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 50
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 54
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 54
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 55
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 55
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 58
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 58
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 54
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 46
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 30
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 23
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 16
+      "new_contributors_90d_count": 22
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
+      "new_contributors_90d_count": 34
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-02-01",
+      "new_contributors_90d_count": 31
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-03-01",
+      "new_contributors_90d_count": 13
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 11
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-05-01",
+      "new_contributors_90d_count": 12
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 12
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 10
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 7
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 7
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 8
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 12
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 13
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 17
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 15
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 20
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 38
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 42
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-10-01",
       "new_contributors_90d_count": 26
     },
     {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2026-02-01",
-      "new_contributors_90d_count": 27
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-03-01",
-      "new_contributors_90d_count": 7
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 7
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 6
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 4
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 4
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 6
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 9
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 9
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 10
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 18
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 20
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 20
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 10
-    },
-    {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 24
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 19
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 19
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 5
+      "new_contributors_90d_count": 14
     },
     {
       "repo": "https://github.com/simular-ai/Agent-S",
@@ -5065,7 +5065,7 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -5105,42 +5105,42 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 27
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2024-11-01",
       "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 33
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 30
+      "new_contributors_90d_count": 33
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 18
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 25
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-04-01",
       "new_contributors_90d_count": 24
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 32
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 29
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 11
+      "new_contributors_90d_count": 12
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -5150,42 +5150,42 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 7
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-09-01",
       "new_contributors_90d_count": 8
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 9
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 3
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/modelcontextprotocol/inspector",
@@ -5620,52 +5620,52 @@
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 14
+      "new_contributors_90d_count": 35
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 30
+      "new_contributors_90d_count": 64
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 43
+      "new_contributors_90d_count": 78
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 48
+      "new_contributors_90d_count": 77
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 49
+      "new_contributors_90d_count": 71
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 47
+      "new_contributors_90d_count": 79
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 47
+      "new_contributors_90d_count": 75
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 47
+      "new_contributors_90d_count": 83
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 61
+      "new_contributors_90d_count": 118
     },
     {
       "repo": "https://github.com/AmoyLab/Unla",
@@ -6035,67 +6035,67 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 8
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 8
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 46
+      "new_contributors_90d_count": 60
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 69
+      "new_contributors_90d_count": 98
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 72
+      "new_contributors_90d_count": 104
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 38
+      "new_contributors_90d_count": 62
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 29
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 21
+      "new_contributors_90d_count": 28
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 19
+      "new_contributors_90d_count": 26
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 18
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 14
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
@@ -6135,17 +6135,17 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 6
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 6
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -6265,7 +6265,7 @@
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 63
+      "new_contributors_90d_count": 65
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -7115,52 +7115,52 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 10
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 15
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 18
+      "new_contributors_90d_count": 20
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 29
+      "new_contributors_90d_count": 35
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 41
+      "new_contributors_90d_count": 48
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 33
+      "new_contributors_90d_count": 37
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 22
+      "new_contributors_90d_count": 24
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 10
+      "new_contributors_90d_count": 11
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -7175,57 +7175,57 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 27
-    },
-    {
-      "repo": "https://github.com/ComposioHQ/composio",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 29
-    },
-    {
-      "repo": "https://github.com/ComposioHQ/composio",
-      "month": "2025-06-01",
       "new_contributors_90d_count": 28
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 31
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 33
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 27
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 27
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 27
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 23
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 15
+      "new_contributors_90d_count": 21
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 16
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 10
+      "new_contributors_90d_count": 21
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 15
+      "new_contributors_90d_count": 31
     },
     {
       "repo": "https://github.com/567-labs/instructor",
@@ -7585,47 +7585,47 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 521
+      "new_contributors_90d_count": 523
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 13
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 6
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -7640,37 +7640,37 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 6
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 3
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -7690,22 +7690,22 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 4
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 11
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 21
+      "new_contributors_90d_count": 25
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 23
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
@@ -7980,212 +7980,212 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 19
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 9
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 15
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 19
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 24
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 27
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 25
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 26
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 30
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-11-01",
       "new_contributors_90d_count": 29
     },
     {
       "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 40
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 17
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 22
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 24
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 29
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 33
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 44
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 45
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 41
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 35
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 26
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 42
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 42
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 34
+      "new_contributors_90d_count": 53
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 28
+      "new_contributors_90d_count": 45
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 30
+      "new_contributors_90d_count": 47
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 25
+      "new_contributors_90d_count": 32
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 31
+      "new_contributors_90d_count": 38
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 31
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 25
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 21
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 18
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 22
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 31
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 36
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 34
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 39
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 47
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 63
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 59
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 54
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-06-01",
       "new_contributors_90d_count": 42
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 45
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 47
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 47
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 55
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 46
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-12-01",
+      "month": "2024-06-01",
       "new_contributors_90d_count": 34
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 33
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 27
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 38
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 45
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 57
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 52
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 59
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 69
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 93
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 94
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 83
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 61
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 71
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 77
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 77
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 84
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 65
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-12-01",
+      "new_contributors_90d_count": 46
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 32
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 30
+      "new_contributors_90d_count": 39
     },
     {
       "repo": "https://github.com/SWE-bench/SWE-bench",
@@ -8430,602 +8430,602 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 35
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 41
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 28
+      "new_contributors_90d_count": 39
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 27
+      "new_contributors_90d_count": 35
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 14
+      "new_contributors_90d_count": 22
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 23
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 18
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
+      "new_contributors_90d_count": 53
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 53
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 48
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-01-01",
       "new_contributors_90d_count": 29
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 28
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 25
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 18
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 19
+      "new_contributors_90d_count": 27
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 22
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 16
+      "new_contributors_90d_count": 32
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
+      "new_contributors_90d_count": 48
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 42
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 38
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 26
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 37
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 34
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-12-01",
       "new_contributors_90d_count": 20
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 16
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 20
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 19
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-12-01",
-      "new_contributors_90d_count": 11
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 7
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2026-02-01",
-      "new_contributors_90d_count": 8
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-03-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 8
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 10
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-08-01",
       "new_contributors_90d_count": 12
     },
     {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 11
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 7
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 1
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 1
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-12-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2026-01-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
+      "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-03-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2025-12-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2026-01-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "month": "2026-02-01",
-      "new_contributors_90d_count": 0
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-03-01",
-      "new_contributors_90d_count": 11
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 11
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 12
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 12
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 15
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 9
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 4
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 4
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 1
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 2
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-10-01",
-      "new_contributors_90d_count": 1
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-11-01",
-      "new_contributors_90d_count": 3
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-12-01",
-      "new_contributors_90d_count": 4
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2026-01-01",
-      "new_contributors_90d_count": 4
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2026-02-01",
-      "new_contributors_90d_count": 5
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-03-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 15
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-06-01",
       "new_contributors_90d_count": 13
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-03-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-05-01",
+      "new_contributors_90d_count": 8
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 11
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-07-01",
+      "new_contributors_90d_count": 15
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 13
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 13
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-10-01",
       "new_contributors_90d_count": 9
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-08-01",
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-03-01",
       "new_contributors_90d_count": 3
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 3
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 3
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 3
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 6
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 4
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-12-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2026-01-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2026-02-01",
+      "new_contributors_90d_count": 3
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-03-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-05-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 0
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 20
+      "new_contributors_90d_count": 0
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 22
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-12-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2026-01-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2026-02-01",
+      "new_contributors_90d_count": 0
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-03-01",
+      "new_contributors_90d_count": 17
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 14
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-05-01",
+      "new_contributors_90d_count": 16
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 19
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 29
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 25
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 15
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 6
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 6
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 8
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 1
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 3
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 2
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-11-01",
+      "new_contributors_90d_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-12-01",
+      "new_contributors_90d_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-01-01",
+      "new_contributors_90d_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-02-01",
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-12-01",
+      "month": "2024-03-01",
+      "new_contributors_90d_count": 28
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 30
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-05-01",
+      "new_contributors_90d_count": 28
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 23
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-07-01",
       "new_contributors_90d_count": 14
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 7
+      "month": "2024-08-01",
+      "new_contributors_90d_count": 11
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 10
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 17
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-04-01",
+      "month": "2024-09-01",
       "new_contributors_90d_count": 21
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 41
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 40
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 26
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 12
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 27
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 41
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 50
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 17
+      "new_contributors_90d_count": 38
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 29
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 25
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 26
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 18
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 14
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 5
+      "new_contributors_90d_count": 10
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 18
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 22
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 34
     },
     {
       "repo": "https://github.com/NVIDIA/garak",
@@ -9260,27 +9260,27 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 144
+      "new_contributors_90d_count": 145
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 152
+      "new_contributors_90d_count": 153
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 384
+      "new_contributors_90d_count": 383
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 357
+      "new_contributors_90d_count": 356
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 339
+      "new_contributors_90d_count": 338
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -9315,42 +9315,42 @@
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 336
+      "new_contributors_90d_count": 335
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 316
+      "new_contributors_90d_count": 314
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 320
+      "new_contributors_90d_count": 318
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 358
+      "new_contributors_90d_count": 356
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 426
+      "new_contributors_90d_count": 425
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 443
+      "new_contributors_90d_count": 441
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-06-01",
-      "new_contributors_90d_count": 480
+      "new_contributors_90d_count": 479
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 486
+      "new_contributors_90d_count": 485
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -9630,22 +9630,22 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 21
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 11
+      "new_contributors_90d_count": 19
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 9
+      "new_contributors_90d_count": 16
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 7
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -9740,132 +9740,132 @@
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-04-01",
-      "new_contributors_90d_count": 13
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-05-01",
-      "new_contributors_90d_count": 11
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-06-01",
-      "new_contributors_90d_count": 9
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-07-01",
-      "new_contributors_90d_count": 13
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-08-01",
-      "new_contributors_90d_count": 20
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-09-01",
-      "new_contributors_90d_count": 26
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-10-01",
-      "new_contributors_90d_count": 31
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-11-01",
-      "new_contributors_90d_count": 28
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-12-01",
       "new_contributors_90d_count": 22
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 18
+      "month": "2024-04-01",
+      "new_contributors_90d_count": 17
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-02-01",
+      "month": "2024-05-01",
+      "new_contributors_90d_count": 13
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-06-01",
+      "new_contributors_90d_count": 12
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 15
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-08-01",
       "new_contributors_90d_count": 21
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-03-01",
-      "new_contributors_90d_count": 27
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 31
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 30
+      "month": "2024-10-01",
+      "new_contributors_90d_count": 43
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 29
+      "month": "2024-11-01",
+      "new_contributors_90d_count": 43
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 39
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 33
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 39
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-09-01",
-      "new_contributors_90d_count": 30
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-10-01",
+      "month": "2024-12-01",
       "new_contributors_90d_count": 32
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 25
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-02-01",
+      "new_contributors_90d_count": 27
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-03-01",
+      "new_contributors_90d_count": 34
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 37
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 37
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 47
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 48
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 61
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 55
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-10-01",
+      "new_contributors_90d_count": 53
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 38
+      "new_contributors_90d_count": 62
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 42
+      "new_contributors_90d_count": 66
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 54
+      "new_contributors_90d_count": 78
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 56
+      "new_contributors_90d_count": 73
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -9985,127 +9985,127 @@
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 47
+      "new_contributors_90d_count": 48
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 38
+      "new_contributors_90d_count": 42
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 41
+      "new_contributors_90d_count": 46
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 38
+      "new_contributors_90d_count": 39
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 16
+      "new_contributors_90d_count": 18
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 24
+      "new_contributors_90d_count": 28
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 25
+      "new_contributors_90d_count": 31
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 23
+      "new_contributors_90d_count": 31
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 11
+      "new_contributors_90d_count": 15
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 10
+      "new_contributors_90d_count": 13
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 156
+      "new_contributors_90d_count": 267
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 156
+      "new_contributors_90d_count": 270
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 151
+      "new_contributors_90d_count": 265
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 1
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-04-01",
       "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 6
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "new_contributors_90d_count": 7
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-06-01",
-      "new_contributors_90d_count": 15
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-07-01",
-      "new_contributors_90d_count": 14
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-08-01",
-      "new_contributors_90d_count": 15
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2025-09-01",
       "new_contributors_90d_count": 11
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 20
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-07-01",
+      "new_contributors_90d_count": 21
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-08-01",
+      "new_contributors_90d_count": 22
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-09-01",
+      "new_contributors_90d_count": 17
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 12
+      "new_contributors_90d_count": 18
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 16
+      "new_contributors_90d_count": 24
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 18
+      "new_contributors_90d_count": 30
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 18
+      "new_contributors_90d_count": 33
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 15
+      "new_contributors_90d_count": 31
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -10195,17 +10195,17 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 301
+      "new_contributors_90d_count": 300
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 239
+      "new_contributors_90d_count": 238
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 228
+      "new_contributors_90d_count": 227
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -10350,242 +10350,242 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 17
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 16
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 13
+      "new_contributors_90d_count": 15
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "new_contributors_90d_count": 18
+      "new_contributors_90d_count": 24
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 21
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2024-09-01",
       "new_contributors_90d_count": 32
     },
     {
       "repo": "https://github.com/livekit/agents",
+      "month": "2024-09-01",
+      "new_contributors_90d_count": 48
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 46
+      "new_contributors_90d_count": 72
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
+      "new_contributors_90d_count": 74
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-12-01",
+      "new_contributors_90d_count": 67
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-01-01",
+      "new_contributors_90d_count": 40
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-02-01",
       "new_contributors_90d_count": 52
     },
     {
       "repo": "https://github.com/livekit/agents",
-      "month": "2024-12-01",
-      "new_contributors_90d_count": 47
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-01-01",
-      "new_contributors_90d_count": 30
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-02-01",
-      "new_contributors_90d_count": 39
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 54
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 72
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 85
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2025-06-01",
       "new_contributors_90d_count": 79
     },
     {
       "repo": "https://github.com/livekit/agents",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 103
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 130
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 137
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 81
+      "new_contributors_90d_count": 145
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 77
+      "new_contributors_90d_count": 136
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 69
+      "new_contributors_90d_count": 112
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 72
+      "new_contributors_90d_count": 115
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 92
+      "new_contributors_90d_count": 187
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 108
+      "new_contributors_90d_count": 220
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 116
+      "new_contributors_90d_count": 237
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 109
+      "new_contributors_90d_count": 182
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 8
+      "new_contributors_90d_count": 12
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 5
+      "new_contributors_90d_count": 9
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 10
+      "new_contributors_90d_count": 15
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-06-01",
-      "new_contributors_90d_count": 10
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2024-07-01",
       "new_contributors_90d_count": 17
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-07-01",
+      "new_contributors_90d_count": 24
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 22
+      "new_contributors_90d_count": 37
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 32
+      "new_contributors_90d_count": 52
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 42
+      "new_contributors_90d_count": 73
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 40
+      "new_contributors_90d_count": 67
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 33
+      "new_contributors_90d_count": 55
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "new_contributors_90d_count": 33
+      "new_contributors_90d_count": 58
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 33
+      "new_contributors_90d_count": 59
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 43
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-04-01",
-      "new_contributors_90d_count": 47
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-05-01",
-      "new_contributors_90d_count": 69
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2025-06-01",
       "new_contributors_90d_count": 70
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-04-01",
+      "new_contributors_90d_count": 76
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-05-01",
+      "new_contributors_90d_count": 110
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-06-01",
+      "new_contributors_90d_count": 109
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "new_contributors_90d_count": 69
+      "new_contributors_90d_count": 109
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 65
+      "new_contributors_90d_count": 102
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 65
+      "new_contributors_90d_count": 108
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 64
+      "new_contributors_90d_count": 98
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "new_contributors_90d_count": 57
+      "new_contributors_90d_count": 92
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 68
+      "new_contributors_90d_count": 95
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 89
+      "new_contributors_90d_count": 121
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 100
+      "new_contributors_90d_count": 130
     },
     {
       "repo": "https://github.com/qodo-ai/pr-agent",
@@ -10830,17 +10830,17 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-03-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-04-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-05-01",
-      "new_contributors_90d_count": 6
+      "new_contributors_90d_count": 7
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -10855,27 +10855,27 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-08-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-10-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 5
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 4
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-12-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -10885,17 +10885,17 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-02-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-03-01",
-      "new_contributors_90d_count": 2
+      "new_contributors_90d_count": 3
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-04-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -10915,17 +10915,17 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-08-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-09-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-10-01",
-      "new_contributors_90d_count": 0
+      "new_contributors_90d_count": 1
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
@@ -10935,17 +10935,17 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-12-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-01-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-02-01",
-      "new_contributors_90d_count": 1
+      "new_contributors_90d_count": 2
     }
   ]
 }

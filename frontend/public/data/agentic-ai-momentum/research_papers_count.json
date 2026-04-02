@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:43:24.226770",
+    "fetched_at": "2026-04-01T07:29:21.706084",
     "schema": {
       "name": "research_papers_count",
       "description": "Monthly arXiv paper counts for agentic-AI topics.",
@@ -100,7 +100,7 @@
     {
       "topic": "autonomous_agents",
       "month": "2025-04",
-      "paper_count": 57
+      "paper_count": 56
     },
     {
       "topic": "autonomous_agents",
@@ -125,7 +125,7 @@
     {
       "topic": "autonomous_agents",
       "month": "2025-09",
-      "paper_count": 110
+      "paper_count": 111
     },
     {
       "topic": "autonomous_agents",
@@ -140,12 +140,12 @@
     {
       "topic": "autonomous_agents",
       "month": "2025-12",
-      "paper_count": 108
+      "paper_count": 109
     },
     {
       "topic": "autonomous_agents",
       "month": "2026-01",
-      "paper_count": 134
+      "paper_count": 135
     },
     {
       "topic": "autonomous_agents",
@@ -155,7 +155,7 @@
     {
       "topic": "autonomous_agents",
       "month": "2026-03",
-      "paper_count": 160
+      "paper_count": 182
     },
     {
       "topic": "multi_agent_systems",
@@ -275,17 +275,17 @@
     {
       "topic": "multi_agent_systems",
       "month": "2026-01",
-      "paper_count": 319
+      "paper_count": 320
     },
     {
       "topic": "multi_agent_systems",
       "month": "2026-02",
-      "paper_count": 337
+      "paper_count": 336
     },
     {
       "topic": "multi_agent_systems",
       "month": "2026-03",
-      "paper_count": 383
+      "paper_count": 440
     },
     {
       "topic": "llm_tool_use",
@@ -510,7 +510,7 @@
     {
       "topic": "agent_memory_planning",
       "month": "2025-08",
-      "paper_count": 62
+      "paper_count": 63
     },
     {
       "topic": "agent_memory_planning",
@@ -520,7 +520,7 @@
     {
       "topic": "agent_memory_planning",
       "month": "2025-10",
-      "paper_count": 81
+      "paper_count": 82
     },
     {
       "topic": "agent_memory_planning",
@@ -545,7 +545,7 @@
     {
       "topic": "agent_memory_planning",
       "month": "2026-03",
-      "paper_count": 97
+      "paper_count": 105
     },
     {
       "topic": "agent_safety_alignment",
@@ -665,7 +665,7 @@
     {
       "topic": "agent_safety_alignment",
       "month": "2026-01",
-      "paper_count": 15
+      "paper_count": 16
     },
     {
       "topic": "agent_safety_alignment",
@@ -675,7 +675,7 @@
     {
       "topic": "agent_safety_alignment",
       "month": "2026-03",
-      "paper_count": 19
+      "paper_count": 20
     },
     {
       "topic": "agentic_rag",
@@ -750,7 +750,7 @@
     {
       "topic": "agentic_rag",
       "month": "2025-04",
-      "paper_count": 49
+      "paper_count": 50
     },
     {
       "topic": "agentic_rag",
@@ -805,7 +805,7 @@
     {
       "topic": "agentic_rag",
       "month": "2026-03",
-      "paper_count": 170
+      "paper_count": 190
     }
   ]
 }

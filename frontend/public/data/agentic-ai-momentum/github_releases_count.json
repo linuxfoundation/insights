@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:30:18.373850",
+    "fetched_at": "2026-04-01T07:16:13.283238",
     "schema": {
       "name": "github_releases_count",
       "description": "Cumulative monthly release counts for tracked repositories.",
@@ -5351,76 +5351,6 @@
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
       "cumulative_release_count": 64
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-03-01",
-      "cumulative_release_count": 3
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-04-01",
-      "cumulative_release_count": 4
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-05-01",
-      "cumulative_release_count": 5
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-06-01",
-      "cumulative_release_count": 6
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-08-01",
-      "cumulative_release_count": 7
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-11-01",
-      "cumulative_release_count": 8
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-12-01",
-      "cumulative_release_count": 9
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-02-01",
-      "cumulative_release_count": 10
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-03-01",
-      "cumulative_release_count": 12
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-04-01",
-      "cumulative_release_count": 13
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-05-01",
-      "cumulative_release_count": 14
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-09-01",
-      "cumulative_release_count": 15
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-12-01",
-      "cumulative_release_count": 16
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2026-02-01",
-      "cumulative_release_count": 17
     },
     {
       "repo": "https://github.com/NVIDIA/garak",
