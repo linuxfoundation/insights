@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
       <div
         v-else
         class="flex items-center gap-2 p-4 min-h-16 rounded-t-xl"
-        :class="{ 'justify-between': props.variant === 'my-collections' }"
+        :class="{ 'justify-between': props.variant === CollectionTypeEnum.MY_COLLECTIONS }"
         :style="headerBackground"
       >
         <lfx-avatar-group type="project">
@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
           />
         </lfx-avatar-group>
         <lfx-dropdown
-          v-if="props.variant === 'my-collections'"
+          v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
           placement="bottom-end"
         >
           <template #trigger>
@@ -59,7 +59,7 @@ SPDX-License-Identifier: MIT
             <lfx-icon
               name="trash"
               :size="16"
-              class="text-negative-500"
+              class="!text-negative-500"
             />
             <span class="text-negative-500">Delete</span>
           </lfx-dropdown-item>
@@ -78,7 +78,7 @@ SPDX-License-Identifier: MIT
         <div class="mt-auto">
           <!-- owner info - different display based on variant -->
           <div
-            v-if="props.variant !== 'my-collections'"
+            v-if="props.variant !== CollectionTypeEnum.MY_COLLECTIONS"
             class="flex items-center gap-2 mb-2"
           >
             <collection-owner
@@ -102,11 +102,11 @@ SPDX-License-Identifier: MIT
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>
-              <template v-if="props.variant === 'my-collections'"> ・ </template>
+              <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"> ・ </template>
             </p>
             <!-- visibility badge for my-collections -->
             <span
-              v-if="props.variant === 'my-collections'"
+              v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
               class="flex items-center gap-1.5"
             >
               <lfx-icon
@@ -125,37 +125,51 @@ SPDX-License-Identifier: MIT
 
           <!-- footer actions - not shown for my-collections -->
           <div
-            v-if="props.variant !== 'my-collections'"
-            class="pt-3 mt-3 border-t border-neutral-200 flex items-center justify-center gap-2"
+            v-if="props.variant !== CollectionTypeEnum.MY_COLLECTIONS"
+            class="pt-3 mt-3 border-t border-neutral-200 grid grid-cols-3 gap-2"
           >
-            <lfx-button
-              type="transparent"
-              class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
-              @click.stop.prevent="handleShare"
+            <lfx-tooltip
+              content="Share collection"
+              class="!w-full"
             >
-              <lfx-icon
-                name="share-nodes"
-                :size="16"
-                class="!text-neutral-900"
-              />
-            </lfx-button>
-            <template v-if="!!user">
               <lfx-button
-                type="transparent"
-                class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
+                type="ghost"
+                button-style="pill"
+                class="w-full justify-center items-center opacity-50 hover:!opacity-100"
+                @click.stop.prevent="handleShare"
+              >
+                <div class="p-0.5">
+                  <lfx-icon
+                    name="share-nodes"
+                    :size="16"
+                    class="!text-neutral-900"
+                  />
+                </div>
+              </lfx-button>
+            </lfx-tooltip>
+            <lfx-tooltip
+              content="Duplicate collection"
+              class="!w-full"
+            >
+              <lfx-button
+                type="ghost"
+                button-style="pill"
+                class="w-full justify-center items-center opacity-50 hover:!opacity-100"
                 @click.stop.prevent="handleClone"
               >
-                <lfx-icon
-                  name="clone"
-                  :size="16"
-                  class="!text-neutral-900"
-                />
+                <div class="p-0.5">
+                  <lfx-icon
+                    name="clone"
+                    :size="16"
+                    class="!text-neutral-900"
+                  />
+                </div>
               </lfx-button>
-              <like-button
-                :collection="props.collection"
-                class="flex-1"
-              />
-            </template>
+            </lfx-tooltip>
+            <like-button
+              :collection="props.collection"
+              class="!w-full"
+            />
           </div>
         </div>
       </div>
@@ -166,7 +180,6 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
-import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -187,14 +200,14 @@ import { useDuplicateCollectionStore } from '~/components/modules/collection/sto
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
-const { user } = storeToRefs(useAuthStore());
 
 const props = withDefaults(
   defineProps<{
@@ -214,7 +227,7 @@ const emit = defineEmits<{
 // This only applies to the collection card header, in the designs the header gradient seems to be different
 // from the card background gradient for communinity and my collections
 const headerBackground = computed(() => {
-  if (props.variant === 'curated') {
+  if (props.variant === CollectionTypeEnum.CURATED) {
     // curated collections should have an image so we don't need a background
     // however, if the image is not set, we need to use a default background
     if (props.collection.imageUrl) {

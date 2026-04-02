@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="projects.length > 0"
-    class="border-y border-neutral-200 min-h-[204px] max-h-[200px] overflow-y-auto"
+    class="border-y border-neutral-200 flex-1 min-h-0 overflow-y-auto"
   >
     <div class="flex flex-col">
       <div

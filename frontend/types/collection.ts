@@ -6,7 +6,7 @@ export interface CollectionFeaturedProject {
   logo: string;
 }
 
-export type CollectionType = 'curated' | 'community' | 'my-collections';
+export type CollectionType = 'curated' | 'community' | 'my-collections' | 'liked-collections';
 
 export interface Collection {
   id: string;

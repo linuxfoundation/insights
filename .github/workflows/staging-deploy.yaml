@@ -12,6 +12,7 @@ on:
           - frontend
           - package-downloads-worker
           - search-volume-worker
+          - vulnerability-enrichment-worker
 
 env:
   CLOUD_ENV: lf-oracle-staging
@@ -31,8 +32,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Init submodules
+        run: bash init-submodules.sh --https
 
       - name: Set service config
         id: config
@@ -55,6 +57,12 @@ jobs:
               echo "image_name=insights-search-volume-worker" >> $GITHUB_OUTPUT
               echo "k8s_deployment=search-volume-worker-dpl" >> $GITHUB_OUTPUT
               echo "k8s_container=search-volume-worker" >> $GITHUB_OUTPUT
+              ;;
+            vulnerability-enrichment-worker)
+              echo "dockerfile=workers/temporal/vulnerability_enrichment_worker/Dockerfile" >> $GITHUB_OUTPUT
+              echo "image_name=vulnerability-enrichment-worker" >> $GITHUB_OUTPUT
+              echo "k8s_deployment=vulnerability-enrichment-worker-dpl" >> $GITHUB_OUTPUT
+              echo "k8s_container=vulnerability-enrichment-worker" >> $GITHUB_OUTPUT
               ;;
             *)
               echo "::error::Unknown service: ${{ inputs.service }}"

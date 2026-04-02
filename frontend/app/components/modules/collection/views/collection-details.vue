@@ -114,6 +114,7 @@ import type { Project } from '~~/types/project';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
 const props = defineProps<{
   slug: string;
@@ -152,10 +153,10 @@ const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionL
 const { onlyLFProjects, collectionSort } = queryParams.value;
 const collectionType = computed<CollectionType>(() => {
   if (user.value && user.value.sub === currentCollection.value?.ssoUserId) {
-    return 'my-collections';
+    return CollectionTypeEnum.MY_COLLECTIONS;
   }
 
-  return currentCollection.value?.ssoUserId ? 'community' : 'curated';
+  return currentCollection.value?.ssoUserId ? CollectionTypeEnum.COMMUNITY : CollectionTypeEnum.CURATED;
 });
 
 const sort = ref(collectionSort || 'contributorCount_desc');

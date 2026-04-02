@@ -104,6 +104,10 @@ SPDX-License-Identifier: MIT
               </div>
             </div>
             <div class="hidden md:flex items-center gap-4 flex-grow justify-end">
+              <lfx-project-featured-in-collection
+                v-if="props.project"
+                :project="props.project"
+              />
               <lfx-icon-button
                 icon="comment-exclamation"
                 size="medium"
@@ -231,6 +235,7 @@ import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
+import LfxProjectFeaturedInCollection from '~/components/modules/project/components/shared/header/collection-information/featured-in-collection.vue';
 
 const props = defineProps<{
   project?: Project;

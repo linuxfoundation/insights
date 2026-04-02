@@ -6,6 +6,12 @@ import type { MenuItem } from '~/config/menu';
 import type { CollectionType } from '~~/types/collection';
 import type { User } from '~~/types/auth/auth-user.types';
 
+export enum CollectionTypeEnum {
+  CURATED = 'curated',
+  COMMUNITY = 'community',
+  MY_COLLECTIONS = 'my-collections',
+}
+
 export interface CollectionTypesTabs extends MenuItem {
   type: CollectionType;
   description: string;
@@ -20,7 +26,7 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
       route: LfxRoutes.COLLECTIONS_CURATED,
       activeClass: '!bg-neutral-200',
       iconHighlightClass: '!bg-neutral-900',
-      type: 'curated',
+      type: CollectionTypeEnum.CURATED,
       description: 'Hand-picked collections from The Linux Foundation.',
     },
   ];
@@ -32,7 +38,7 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
     route: LfxRoutes.COLLECTIONS_COMMUNITY,
     activeClass: '!bg-accent-200',
     iconHighlightClass: '!bg-accent-500',
-    type: 'community',
+    type: CollectionTypeEnum.COMMUNITY,
     description: 'Discover collections from the open source community.',
   });
 
@@ -44,7 +50,7 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
       route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
       activeClass: '!bg-discovery-200',
       iconHighlightClass: '!bg-discovery-500',
-      type: 'my-collections',
+      type: CollectionTypeEnum.MY_COLLECTIONS,
       description: "Collections you've created or liked.",
     });
   }
@@ -55,13 +61,13 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
 // This only applies to the collection details page header
 export const headerBackground = (type?: CollectionType, curatedColor?: string | null) => {
   switch (type) {
-    case 'curated':
+    case CollectionTypeEnum.CURATED:
       return {
         background: curatedColor
           ? `linear-gradient(0deg, ${curatedColor}00, ${curatedColor}0D), var(--White, #FFF)`
           : 'linear-gradient(0deg, #0F172B00, #0F172B0D), var(--White, #FFF)',
       };
-    case 'community':
+    case CollectionTypeEnum.COMMUNITY:
       return {
         background: 'linear-gradient(0deg, #009AFF00, #009AFF0D), var(--White, #FFF)',
       };

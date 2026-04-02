@@ -68,7 +68,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
@@ -101,7 +101,7 @@ const queryParams = computed(() => ({
   projectSlug: props.project?.slug as string,
   repos: selectedReposValues.value || undefined,
 }));
-const { data } = VULNERABILITY_API_SERVICE.fetchVulnerabilitySummary(queryParams);
+const { data, refetch } = VULNERABILITY_API_SERVICE.checkVulnerabilitySummary(queryParams, user.value);
 
 const hasVulnerabilitiesData = computed(() => (data.value ? data.value.lastScanStatus === 'success' : false));
 
@@ -157,6 +157,10 @@ const linkUrl = (link: (typeof lfProjectLinks)[number]) => {
     query,
   };
 };
+
+watch(user, () => {
+  refetch();
+});
 </script>
 
 <script lang="ts">

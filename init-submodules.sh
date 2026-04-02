@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Usage: ./init-submodules.sh [--https]
+REPO_URL="git@github.com:CrowdDotDev/crowd.dev.git"
+if [ "$1" = "--https" ]; then
+  REPO_URL="https://github.com/CrowdDotDev/crowd.dev.git"
+fi
+
 # clean start on reinitializing the submodule
 git submodule deinit -f submodules/crowd.dev
 git rm -f submodules/crowd.dev
@@ -9,7 +15,7 @@ sed -i '/crowd\.dev/,+2d' .gitmodules
 
 # create the submodule directory and add the submodule
 mkdir -p submodules
-git submodule add -b main git@github.com:CrowdDotDev/crowd.dev.git submodules/crowd.dev
+git submodule add -b main "$REPO_URL" submodules/crowd.dev
 git add .gitmodules submodules/crowd.dev
 cd submodules/crowd.dev || exit 1
 
