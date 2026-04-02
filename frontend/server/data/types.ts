@@ -105,6 +105,7 @@ export type ActivityCountFilter = DefaultFilter & {
 export type PatchSetsFilter = DefaultFilter & {
   granularity?: Granularity;
   dataType?: string;
+  platform?: string;
 };
 
 export type ReviewTimeByPRSizeFilter = {

@@ -23,6 +23,7 @@ export async function fetchPatchsetsPerReview(
   const currentSummaryQuery = {
     ...filter,
     granularity: undefined,
+    platform: filter.platform,
   };
 
   const previousSummaryQuery = {
@@ -30,6 +31,7 @@ export async function fetchPatchsetsPerReview(
     granularity: undefined,
     startDate: dates.previous.from,
     endDate: dates.previous.to,
+    platform: filter.platform,
   };
 
   const dataQuery = {

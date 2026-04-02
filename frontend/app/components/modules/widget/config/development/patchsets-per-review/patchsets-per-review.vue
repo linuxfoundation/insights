@@ -80,6 +80,7 @@ import type { WidgetModel } from '~/components/modules/widget/config/widget.conf
 interface PatchsetsPerReviewModel extends WidgetModel {
   granularity: Granularity;
   dataType: 'median' | 'average';
+  platform?: string;
 }
 
 const props = defineProps<{
@@ -118,6 +119,7 @@ const params = computed<PatchsetsPerReviewQueryParams>(() => ({
   startDate: startDate.value,
   endDate: endDate.value,
   dataType: dataType.value,
+  platform: props.modelValue?.platform as string,
 }));
 
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchPatchsetsPerReview(params);

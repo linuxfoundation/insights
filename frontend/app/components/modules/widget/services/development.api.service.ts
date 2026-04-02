@@ -37,7 +37,7 @@ export interface CodeReviewEngagementQueryParams extends QueryParams {
 export interface CommitActivitiesQueryParams extends QueryParams {
   type: string;
   countType: string;
-  activityType: string;
+  activityType?: string;
 }
 
 export interface PatchsetsPerReviewQueryParams extends QueryParams {
@@ -515,7 +515,7 @@ class DevelopmentApiService {
   patchsetsPerReviewQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<PatchsetsPerReview> {
-    const { projectSlug, repos, granularity, startDate, endDate, dataType } = query();
+    const { projectSlug, repos, granularity, startDate, endDate, dataType, platform } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/patchsets-per-review`, {
         params: {
@@ -524,6 +524,7 @@ class DevelopmentApiService {
           startDate,
           endDate,
           dataType,
+          platform,
         },
       });
   }
