@@ -192,7 +192,7 @@ SPDX-License-Identifier: MIT
             v-if="projectCount > 0"
             class="text-sm leading-5 text-neutral-600"
           >
-            {{ projectCount }} projects
+            {{ pluralize('project', projectCount, true) }}
             <span v-if="props.collection?.updatedAt">
               ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}
             </span>
@@ -255,6 +255,7 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
+import pluralize from 'pluralize';
 import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -321,7 +322,7 @@ const allTabs = computed(() => collectionTabs(user.value));
 const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === props.type) || allTabs.value[0]);
 const headerBackgroundStyle = computed(() => headerBackground(props.type, props.collection?.color));
 
-const projectCount = computed(() => props.collection?.projectCount || 0);
+const projectCount = computed(() => (props.collection?.projectCount || 0) + (props.collection?.repositoryCount || 0));
 
 const currentSort = computed(() => {
   const match = props.sort.match(/^(.+)_(asc|desc)$/);

@@ -13,13 +13,27 @@ SPDX-License-Identifier: MIT
         :is-lf="props.project.isLF"
         :alt="props.project.name"
       />
-      {{ props.project.name }}
-      <lfx-archived-tag
-        v-if="status === 'archived'"
-        :archived="true"
-        label="Archived"
-        type="project"
-      />
+      <div class="flex flex-col">
+        <div class="flex items-center gap-1">
+          {{ nameDisplay }}
+          <lfx-archived-tag
+            v-if="status === 'archived'"
+            :archived="true"
+            label="Archived"
+            type="project"
+          />
+        </div>
+        <div
+          v-if="props.project.type === 'repo'"
+          class="text-neutral-500 flex gap-1.5 items-center"
+        >
+          <lfx-icon
+            name="book"
+            :size="16"
+          />
+          {{ repoName }}
+        </div>
+      </div>
     </div>
     <template v-if="isOnboarded">
       <div class="w-2/12">
@@ -78,6 +92,8 @@ import LfxDependencyColumn from '~/components/modules/collection/components/deta
 import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';
 import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { getRepoNameFromUrl } from '~~/server/helpers/repository.helpers';
 
 const props = defineProps<{
   project: ProjectInsights;
@@ -85,9 +101,23 @@ const props = defineProps<{
 
 const router = useRouter();
 
-// TODO: waiting on the backend to provide this
 const status = computed(() => {
-  return 'active';
+  return props.project.status;
+});
+
+const repoName = computed(() => {
+  if (props.project.type === 'repo') {
+    return getRepoNameFromUrl(props.project.repoUrl);
+  }
+  return '';
+});
+
+const nameDisplay = computed(() => {
+  if (props.project.type === 'repo') {
+    const splitName = repoName.value.split('/');
+    return splitName.length > 1 ? splitName[1] : splitName[0];
+  }
+  return props.project.name;
 });
 
 const isOnboarded = computed(() => {
