@@ -70,10 +70,13 @@ SPDX-License-Identifier: MIT
           />
         </div>
 
-        <!-- Project name -->
+        <!-- Repository name -->
         <div class="flex-1 min-w-0">
           <p class="text-sm font-medium leading-5 text-neutral-900 truncate">
-            {{ repository.name }}
+            {{ nameDisplay(repository.url) }}
+          </p>
+          <p class="text-neutral-500 text-2xs truncate">
+            {{ shorRepoUrl(repository.url) }}
           </p>
         </div>
 
@@ -104,6 +107,8 @@ import type {
   CollectionProject,
   CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
+import { getRepoNameFromUrl } from '~~/server/helpers/repository.helpers';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 defineProps<{
   projects: CollectionProject[];
@@ -114,6 +119,21 @@ defineEmits<{
   removeProject: [slug: string];
   removeRepository: [slug: string];
 }>();
+
+const shorRepoUrl = (url: string) => {
+  return getRepoNameFromUrl(url);
+};
+
+const nameDisplay = (repoUrl: string) => {
+  const splitName = normalizeRepoName({
+    url: repoUrl,
+    name: '',
+    slug: '',
+    score: 0,
+    rank: 0,
+  }).split('/');
+  return splitName.length > 0 ? splitName[splitName.length - 1] : repoUrl;
+};
 </script>
 
 <script lang="ts">

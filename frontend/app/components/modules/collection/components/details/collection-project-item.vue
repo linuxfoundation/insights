@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         :is-lf="props.project.isLF"
         :alt="props.project.name"
       />
-      <div class="flex flex-col">
+      <div class="flex flex-col min-w-0">
         <div class="flex items-center gap-1">
           {{ nameDisplay }}
           <lfx-archived-tag
@@ -25,13 +25,14 @@ SPDX-License-Identifier: MIT
         </div>
         <div
           v-if="props.project.type === 'repo'"
-          class="text-neutral-500 flex gap-1.5 items-center"
+          class="text-neutral-500 flex gap-1.5 items-center min-w-0"
         >
           <lfx-icon
             name="book"
             :size="16"
+            class="shrink-0"
           />
-          {{ repoName }}
+          <span class="truncate">{{ repoShortUrl }}</span>
         </div>
       </div>
     </div>
@@ -94,6 +95,7 @@ import LfxBadgeDetails from '~/components/modules/collection/components/details/
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { getRepoNameFromUrl } from '~~/server/helpers/repository.helpers';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   project: ProjectInsights;
@@ -105,7 +107,7 @@ const status = computed(() => {
   return props.project.status;
 });
 
-const repoName = computed(() => {
+const repoShortUrl = computed(() => {
   if (props.project.type === 'repo') {
     return getRepoNameFromUrl(props.project.repoUrl);
   }
@@ -114,8 +116,14 @@ const repoName = computed(() => {
 
 const nameDisplay = computed(() => {
   if (props.project.type === 'repo') {
-    const splitName = repoName.value.split('/');
-    return splitName.length > 1 ? splitName[1] : splitName[0];
+    const splitName = normalizeRepoName({
+      url: props.project.repoUrl,
+      name: '',
+      slug: '',
+      score: 0,
+      rank: 0,
+    }).split('/');
+    return splitName.length > 0 ? splitName[splitName.length - 1] : props.project.repoUrl;
   }
   return props.project.name;
 });
