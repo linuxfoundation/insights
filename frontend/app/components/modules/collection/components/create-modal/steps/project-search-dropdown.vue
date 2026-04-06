@@ -49,71 +49,22 @@ SPDX-License-Identifier: MIT
       </div>
 
       <!-- Results -->
-      <template v-else-if="searchResults.length > 0">
-        <!-- Projects header -->
-        <div class="px-3 pt-2 pb-1">
-          <p class="text-xs font-semibold text-neutral-400 leading-5">Projects</p>
-        </div>
-
-        <!-- Project items -->
-        <div class="flex flex-col gap-1">
-          <div
-            v-for="project in searchResults"
-            :key="project.slug"
-            class="flex items-center justify-between px-3 py-2 rounded-md mx-1 cursor-pointer transition-colors"
-            :class="isSelected(project.slug) ? 'bg-neutral-50' : 'hover:bg-neutral-50'"
-            @click="toggleProject(project)"
-          >
-            <div class="flex items-center gap-2">
-              <div
-                class="size-4 rounded-sm border border-neutral-200 bg-white overflow-hidden flex items-center justify-center"
-              >
-                <img
-                  v-if="project.logo"
-                  :src="project.logo"
-                  :alt="project.name"
-                  class="size-full object-contain"
-                />
-                <lfx-icon
-                  v-else
-                  name="folder"
-                  :size="10"
-                  class="text-neutral-400"
-                />
-              </div>
-              <span class="text-sm font-normal text-neutral-900 leading-5">{{ project.name }}</span>
-            </div>
-            <div class="flex items-center">
-              <lfx-button
-                v-if="!isSelected(project.slug)"
-                type="ghost"
-                size="small"
-                class="!font-medium !p-0"
-                @click.stop="addProject(project)"
-              >
-                <lfx-icon
-                  name="plus"
-                  :size="12"
-                />
-                Add
-              </lfx-button>
-              <lfx-icon
-                v-else
-                name="check"
-                :size="14"
-                class="text-positive-500"
-              />
-            </div>
-          </div>
-        </div>
-      </template>
+      <lf-collection-search-results
+        v-if="projects.length > 0 || repositories.length > 0"
+        :selected-projects-slugs="selectedProjectsSlugs"
+        :selected-repositories-slugs="selectedRepositoriesSlugs"
+        :projects="projects"
+        :repositories="repositories"
+        @add-project="addProject"
+        @add-repository="addRepository"
+      />
 
       <!-- No results -->
       <div
         v-else
         class="flex items-center justify-center py-8"
       >
-        <p class="text-sm text-neutral-500">No projects found</p>
+        <p class="text-sm text-neutral-500">No projects or repositories found</p>
       </div>
     </div>
   </div>
@@ -122,63 +73,66 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { debounce } from 'lodash-es';
-import type { SearchProject } from '~~/types/search';
+import LfCollectionSearchResults from './collection-search-results.vue';
+import type { SearchProject, SearchRepository } from '~~/types/search';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
-const props = defineProps<{
-  selectedSlugs: string[];
+defineProps<{
+  selectedProjectsSlugs: string[];
+  selectedRepositoriesSlugs: string[];
 }>();
 
 const emit = defineEmits<{
-  add: [project: SearchProject];
-  toggle: [project: SearchProject];
+  addProject: [project: SearchProject];
+  addRepository: [repository: SearchRepository];
 }>();
 
 const { showToast } = useToastService();
 
 const containerRef = ref<HTMLElement | null>(null);
 const searchQuery = ref('');
-const searchResults = ref<SearchProject[]>([]);
+const projects = ref<SearchProject[]>([]);
+const repositories = ref<SearchRepository[]>([]);
 const loading = ref(false);
 const showDropdown = ref(false);
 
-const isSelected = (slug: string) => {
-  return props.selectedSlugs.includes(slug);
-};
-
 const addProject = (project: SearchProject) => {
-  emit('add', project);
+  emit('addProject', project);
   clearSearch();
 };
 
-const toggleProject = (project: SearchProject) => {
-  emit('toggle', project);
+const addRepository = (repository: SearchRepository) => {
+  emit('addRepository', repository);
   clearSearch();
 };
 
 const clearSearch = () => {
   searchQuery.value = '';
-  searchResults.value = [];
+  projects.value = [];
+  repositories.value = [];
   showDropdown.value = false;
 };
 
 const fetchSearchResults = async () => {
   if (searchQuery.value.length === 0) {
-    searchResults.value = [];
+    projects.value = [];
+    repositories.value = [];
     return;
   }
 
   loading.value = true;
   try {
-    searchResults.value = await COLLECTIONS_API_SERVICE.searchProjects(searchQuery.value);
+    const results = await COLLECTIONS_API_SERVICE.searchProjects(searchQuery.value);
+    projects.value = results.projects;
+    repositories.value = results.repositories;
   } catch {
     showToast('Error searching projects', ToastTypesEnum.negative);
-    searchResults.value = [];
+    projects.value = [];
+    repositories.value = [];
   } finally {
     loading.value = false;
   }

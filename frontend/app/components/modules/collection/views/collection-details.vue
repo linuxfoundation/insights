@@ -110,7 +110,6 @@ import {
 } from '~/components/modules/collection/services/collections.query.service';
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { useBannerStore } from '~/components/shared/store/banner.store';
-import type { Project } from '~~/types/project';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
@@ -177,7 +176,7 @@ const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSucce
   COLLECTIONS_API_SERVICE.fetchCollectionProjects(params);
 
 // @ts-expect-error - TanStack Query type inference issue with Vue
-const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Project>) => page.data) || []);
+const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<ProjectInsights>) => page.data) || []);
 
 const loadMore = () => {
   if (hasNextPage.value) {

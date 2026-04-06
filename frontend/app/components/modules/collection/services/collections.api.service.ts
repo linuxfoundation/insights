@@ -13,7 +13,7 @@ import type { Collection, CollectionType } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
 import type { ProjectInsights } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { SearchProject, SearchResults } from '~~/types/search';
+import type { SearchResults } from '~~/types/search';
 import { type User } from '~~/types/auth/auth-user.types';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
@@ -43,6 +43,7 @@ export interface CollectionPayload {
   description?: string;
   isPrivate?: boolean;
   projects?: string[];
+  repositoryUrls?: string[];
 }
 
 export interface CollectionProjectsQueryParams {
@@ -198,17 +199,17 @@ class CollectionsApiService {
       });
   }
 
-  async searchProjects(query: string): Promise<SearchProject[]> {
+  async searchProjects(query: string): Promise<SearchResults> {
     const sanitizedQuery = sanitizeSearchQuery(query);
     if (!sanitizedQuery) {
-      return [];
+      return { projects: [], repositories: [], collections: [] };
     }
 
     const res = await $fetch<SearchResults>('/api/search', {
       query: { query: sanitizedQuery },
     });
 
-    return res.projects || [];
+    return res;
   }
 
   discoveryParams(type: CollectionType) {
@@ -512,7 +513,7 @@ class CollectionsApiService {
   ): QueryFunction<Pagination<ProjectInsights>, readonly unknown[], number> {
     return async ({ pageParam = 0 }) => {
       const { slug, isLF, ...rest } = query();
-      return await $fetch(`/api/collection/${slug}/projects`, {
+      return await $fetch(`/api/collection/${slug}/project-repos`, {
         params: {
           page: pageParam,
           ...rest,

@@ -54,11 +54,13 @@ import {
   type CreateCollectionStep,
   type CreateCollectionForm,
   type CollectionProject,
+  type CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import type { Collection } from '~~/types/collection';
+import type { ProjectInsights } from '~~/types/project';
 
 const props = withDefaults(
   defineProps<{
@@ -86,7 +88,7 @@ const isModalOpen = computed({
 const { showToast } = useToastService();
 
 const step = ref(0);
-const form = ref<CreateCollectionForm>({ ...createCollectionTemplate, projects: [] });
+const form = ref<CreateCollectionForm>({ ...createCollectionTemplate, projects: [], repositories: [] });
 const stepRef = ref<{ $v?: { $invalid: boolean; $touch: () => void } } | null>(null);
 const isCreating = ref(false);
 const isLoadingProjects = ref(false);
@@ -102,18 +104,29 @@ const initializeFromSourceCollection = async () => {
 
   isLoadingProjects.value = true;
   try {
-    const response = await $fetch<{ data: Array<{ id: string; name: string; slug: string; logoUrl: string | null }> }>(
-      `/api/collection/${props.sourceCollection.slug}/projects`,
+    const response = await $fetch<{ data: Array<ProjectInsights> }>(
+      `/api/collection/${props.sourceCollection.slug}/project-repos`,
       { params: { pageSize: 1000 } },
     );
-    form.value.projects = response.data.map(
-      (p): CollectionProject => ({
-        id: p.id,
-        name: p.name,
-        slug: p.slug,
-        logo: p.logoUrl || null,
-      }),
-    );
+    form.value.projects = response.data
+      .filter((p) => p.type === 'project')
+      .map(
+        (p): CollectionProject => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          logo: p.logoUrl || null,
+        }),
+      );
+    form.value.repositories = response.data
+      .filter((r) => r.type === 'repo')
+      .map(
+        (r): CollectionRepository => ({
+          name: r.name,
+          slug: r.slug,
+          url: r.repoUrl,
+        }),
+      );
   } catch (error) {
     console.error('Failed to load source collection projects:', error);
   } finally {
@@ -134,7 +147,7 @@ const canProceed = computed(() => {
     return form.value.name.trim().length > 0 && form.value.description.trim().length > 0;
   }
   if (step.value === 1) {
-    return form.value.projects.length > 0;
+    return form.value.projects.length > 0 || form.value.repositories.length > 0;
   }
   return true;
 });
@@ -169,7 +182,9 @@ const previousStep = () => {
 
 const isFormValid = computed(() => {
   return (
-    form.value.name.trim().length > 0 && form.value.description.trim().length > 0 && form.value.projects.length > 0
+    form.value.name.trim().length > 0 &&
+    form.value.description.trim().length > 0 &&
+    (form.value.projects.length > 0 || form.value.repositories.length > 0)
   );
 });
 
@@ -183,6 +198,7 @@ const createCollection = async () => {
     description: form.value.description,
     isPrivate: form.value.visibility === 'private',
     projects: form.value.projects.map((project) => project.id),
+    repositoryUrls: form.value.repositories.map((repository) => repository.url),
   };
 
   isCreating.value = true;
