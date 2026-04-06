@@ -43,6 +43,7 @@ export interface Project {
   communityKeywords: string[];
   communityLanguages: string[];
   status: string;
+  lastVulnerabilityScanStatus: string;
 }
 
 export interface ProjectLanguage {
@@ -93,6 +94,8 @@ export interface ProjectTinybird {
   firstCommitUrl?: string;
   connectedPlatforms: string[];
   repoData: ProjectRepoData[];
+  status: string;
+  lastVulnerabilityScanStatus: string;
 }
 
 export interface ProjectInsightsAchievement {
