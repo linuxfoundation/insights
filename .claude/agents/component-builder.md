@@ -70,6 +70,14 @@ SPDX-License-Identifier: MIT
 -->
 ```
 
+## Figma Input
+
+When a Figma design is provided (screenshot, link, or pasted frame):
+
+1. **Write directly into the target file** — if the user has a file or line selection open, generate code there rather than returning a standalone code block
+2. **Color mapping** — check `frontend/tailwind.config.ts` for custom color tokens first; if the design color has no exact match, use the closest Tailwind utility class (e.g. `bg-slate-200` over an arbitrary `bg-[#e2e8f0]`)
+3. **Treat the design as layout spec** — extract structure, spacing, and hierarchy from the Figma frame; don't replicate pixel-perfect values when a standard Tailwind scale step is close enough
+
 ## Before Writing Any Component
 
 1. Read the relevant uikit component file(s) in `frontend/app/components/uikit/` to understand accepted props/slots
