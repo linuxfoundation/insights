@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="flex flex-col gap-10 container pt-6 gap-10"
+    class="flex flex-col gap-10 container pt-6"
     :class="!props.isScrolledState ? 'pb-0' : 'pb-10 '"
   >
     <div class="flex items-center justify-between w-full pb-6 border-b border-neutral-200">

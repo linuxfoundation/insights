@@ -132,6 +132,8 @@ import { computed, ref, watch } from 'vue';
 import type { AddToCollectionProject } from '~/components/modules/collection/store/add-to-collection.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useAuth } from '~~/composables/useAuth';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxModal from '~/components/uikit/modal/modal.vue';
@@ -162,6 +164,7 @@ const isModalOpen = computed({
 
 const { user } = useAuth();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 
 const selectedCollectionId = ref('');
 const isAdding = ref(false);
@@ -231,6 +234,13 @@ const addToCollection = async () => {
       projects: newProjectIds,
     });
 
+    trackEvent({
+      key: CollectionsEventKey.ADD_PROJECT_TO_COLLECTION,
+      properties: {
+        collectionId: collection.id,
+        projectId: props.project.id,
+      },
+    });
     showToast(`${props.project.name} added to ${collection.name}`, ToastTypesEnum.positive);
     emit('added');
     closeModal();

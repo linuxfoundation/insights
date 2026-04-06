@@ -13,22 +13,31 @@ description: >
 
 Helps you add the right `trackEvent()` call to the right place in the codebase, using the catalog-approved event definitions.
 
-## Composable location
+## Two files to know
 
-`frontend/composables/useTrackEvent.ts`
+**`frontend/app/components/shared/types/events.ts`** — the event registry. Contains `EventKey`, `EventType`, `EventFeature` enums, the `EventDefinition` interface, and `EVENT_DEFINITIONS` (the full catalog config). When a new feature adds events, add them here.
+
+**`frontend/composables/useTrackEvent.ts`** — just the tracking function. Looks up the definition from the registry and POSTs to `/api/events`.
+
+Always import explicitly — these are not Nuxt auto-imports:
+
+```ts
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { EventKey } from '~/components/shared/types/events';
+```
+
+Then use:
 
 ```ts
 const { trackEvent } = useTrackEvent()
 
 trackEvent({
-  key: 'create-collection',       // from catalog — required
-  type: 'feature',                // 'feature' | 'page' — required
-  name: 'Create collection',      // from catalog — required
-  description: '...',             // from catalog — optional
-  feature: 'Community Collections', // from catalog — optional
+  key: EventKey.CREATE_COLLECTION,
   properties: { collectionId },   // catalog-defined fields only — optional
 })
 ```
+
+`name`, `type`, and `feature` are looked up automatically from `EVENT_DEFINITIONS` — never pass them in the call.
 
 `source` (current URL) and `entrySource` (referrer) are captured **automatically** — never pass them manually.
 
@@ -38,7 +47,7 @@ The call is always fire-and-forget: errors are caught inside the composable and 
 
 ### 1. Read the events catalog
 
-Always start by reading `references/events-catalog.md` to find the event that matches what the developer described. Copy the `key`, `type`, `name`, `description`, and `feature` values exactly — do not invent or rename them.
+Always start by reading `references/events-catalog.md` to find the event that matches what the developer described. Copy the `key`, `type`, `name`, and `feature` values exactly — do not invent or rename them.
 
 If no catalog entry matches, note this to the developer and suggest the closest match or a new entry following the naming conventions at the bottom of the catalog.
 
@@ -63,11 +72,7 @@ const handleCreateCollection = async () => {
   const result = await createCollection(...)
 
   trackEvent({
-    key: 'create-collection',
-    type: 'feature',
-    name: 'Create collection',
-    description: 'User creates a new collection.',
-    feature: 'Community Collections',
+    key: EventKey.CREATE_COLLECTION,
     properties: { collectionId: result.id, isPrivate: form.isPrivate },
   })
 }
@@ -81,25 +86,26 @@ Place inside `onMounted()`. If it already exists, add to it. If not, add it afte
 
 ```ts
 onMounted(() => {
-  trackEvent({
-    key: 'view-discover-collections',
-    type: 'page',
-    name: 'View Discover Collections',
-    description: 'User views collections entry page.',
-    feature: 'Community Collections',
-  })
+  trackEvent({ key: EventKey.VIEW_DISCOVER_COLLECTIONS })
 })
 ```
 
-### 4. Add the import (if missing)
+### 4. Add the imports (if missing)
 
-If `useTrackEvent` is not yet imported in the file, add it alongside the other composable imports:
+Add both imports explicitly alongside the other imports at the top of `<script setup>`:
+
+```ts
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { EventKey } from '~/components/shared/types/events';
+```
+
+Then destructure the composable at the top level of the script block:
 
 ```ts
 const { trackEvent } = useTrackEvent()
 ```
 
-In `<script setup>` files this goes at the top level of the script block. No need to import the function explicitly — Nuxt auto-imports composables from the `composables/` directory.
+The `~~` alias points to `frontend/`, `~` points to `frontend/app/`. Neither is auto-imported.
 
 ### 5. Verify
 
@@ -127,7 +133,7 @@ If the event should only fire on success (e.g. after a successful API call), pla
 
 ```ts
 await updateCollection(payload)
-trackEvent({ key: 'update-collection', ... })
+trackEvent({ key: EventKey.UPDATE_COLLECTION, properties: { collectionId, changedFields } })
 ```
 
 ### Multiple events in one handler

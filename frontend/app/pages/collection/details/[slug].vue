@@ -9,14 +9,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useHead, useSeoMeta } from 'nuxt/app';
 import { useRoute } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import type { Collection } from '~~/types/collection';
 import LfxCollectionDetailsView from '~/components/modules/collection/views/collection-details.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useRichSchema } from '~~/composables/useRichSchema';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 
 const route = useRoute();
 const { slug } = route.params;
@@ -62,4 +65,15 @@ useSeoMeta({
 });
 
 useHead(getCollectionSchema(data));
+
+const { trackEvent } = useTrackEvent();
+
+onMounted(() => {
+  trackEvent({
+    key: CollectionsEventKey.VIEW_COLLECTION,
+    properties: {
+      collectionId: slug as string,
+    },
+  });
+});
 </script>

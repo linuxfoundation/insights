@@ -1,27 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { useRoute } from 'nuxt/app';
-
-export interface TrackEventPayload {
-  key: string;
-  type: string;
-  name: string;
-  description?: string;
-  properties?: Record<string, unknown>;
-  feature?: string;
-}
+import { EVENT_DEFINITIONS, type EventKey } from '~/components/shared/types/events';
 
 export function useTrackEvent() {
-  const route = useRoute();
-
-  const trackEvent = async (payload: TrackEventPayload): Promise<void> => {
+  const trackEvent = async ({
+    key,
+    properties,
+  }: {
+    key: EventKey;
+    properties?: Record<string, unknown>;
+  }): Promise<void> => {
     if (!process.client) return;
 
     try {
       await $fetch('/api/events', {
         method: 'POST',
         body: {
-          ...payload,
+          ...EVENT_DEFINITIONS[key],
+          properties,
           source: window.location.href,
           entrySource: document.referrer || undefined,
         },
@@ -31,5 +27,5 @@ export function useTrackEvent() {
     }
   };
 
-  return { trackEvent, route };
+  return { trackEvent };
 }

@@ -9,7 +9,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useSeoMeta } from 'nuxt/app';
+import { onMounted } from 'vue';
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+
+const { trackEvent } = useTrackEvent();
+
+onMounted(() => {
+  trackEvent({
+    key: CollectionsEventKey.VIEW_CURATED_COLLECTIONS,
+  });
+});
 
 const title = 'Curated Collections | LFX Insights';
 const description =
