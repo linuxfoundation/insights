@@ -12,7 +12,6 @@ import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
  * - key (string, required): Unique event key/identifier
  * - type (string, required): Event type category
  * - name (string, required): Human-readable event name
- * - description (string, optional): Event description
  * - properties (object, optional): Arbitrary event metadata
  * - feature (string, optional): Feature area where the event occurred
  * - source (string, optional): URL of the page where the event occurred
@@ -35,7 +34,6 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     key?: string;
     type?: string;
     name?: string;
-    description?: string;
     properties?: Record<string, unknown>;
     feature?: string;
     source?: string;
@@ -60,7 +58,6 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     key: body.key.trim(),
     type: body.type.trim(),
     name: body.name.trim(),
-    description: body.description?.trim(),
     userId: user?.sub,
     properties: body.properties,
     feature: body.feature?.trim(),
