@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
 import { EventsRepository } from '~~/server/repo/events.repo';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 /**
  * API Endpoint: POST /api/events
@@ -34,6 +33,7 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     key?: string;
     type?: string;
     name?: string;
+    userId?: string;
     properties?: Record<string, unknown>;
     feature?: string;
     source?: string;
@@ -50,8 +50,6 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     throw createError({ statusCode: 400, statusMessage: 'name is required' });
   }
 
-  const user = event.context.user as DecodedOidcToken | undefined;
-
   const repo = new EventsRepository(insightsDbPool);
 
   try {
@@ -59,7 +57,7 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
       key: body.key.trim(),
       type: body.type.trim(),
       name: body.name.trim(),
-      userId: user?.sub,
+      userId: body.userId,
       properties: body.properties,
       feature: body.feature?.trim(),
       source: body.source?.trim(),

@@ -1,8 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { EVENT_DEFINITIONS, type EventKey } from '~/components/shared/types/events';
+import { useAuth } from '~~/composables/useAuth';
 
 export function useTrackEvent() {
+  const { user } = useAuth();
+
   const trackEvent = async ({
     key,
     properties,
@@ -18,6 +21,7 @@ export function useTrackEvent() {
         body: {
           ...EVENT_DEFINITIONS[key],
           properties,
+          userId: user.value?.sub ?? undefined,
           source: window.location.href,
           entrySource: document.referrer || undefined,
         },
