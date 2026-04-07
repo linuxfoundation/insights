@@ -22,6 +22,6 @@ export default defineEventHandler(async (event): Promise<SecurityData[] | Error>
       throw err;
     }
     console.error('Error fetching project security details:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });

@@ -32,13 +32,13 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
       await readBody<IStreamRequestBody>(event);
 
     if (!projectSlug) {
-      return createError({ statusCode: 400, statusMessage: 'Project slug is required' });
+      throw createError({ statusCode: 400, statusMessage: 'Project slug is required' });
     }
 
     const question = messages?.filter((m) => m.role === 'user').pop()?.content;
 
     if (!question) {
-      return createError({ statusCode: 400, statusMessage: 'Question is required' });
+      throw createError({ statusCode: 400, statusMessage: 'Question is required' });
     }
 
     // Generate conversationId if not provided
@@ -54,7 +54,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
       const insightsProjectsRepo = new InsightsProjectsRepository(cmDbPool);
       const insightsProject = await insightsProjectsRepo.findInsightsProjectsBySlug(projectSlug);
       if (!insightsProject) {
-        return createError({ statusCode: 404, statusMessage: 'Project not found' });
+        throw createError({ statusCode: 404, statusMessage: 'Project not found' });
       }
       segmentId = insightsProject.segmentId;
     } else {
@@ -80,7 +80,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
       },
     });
   } catch (error) {
-    return createError({
+    throw createError({
       statusCode: 500,
       statusMessage:
         error instanceof Error ? error.message : 'An error occurred processing your request',

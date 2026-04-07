@@ -15,30 +15,30 @@ interface IFeedbackRequestResponse {
 export default defineEventHandler(async (event): Promise<IFeedbackRequestResponse | Error> => {
   try {
     if (event.node.req.method !== 'PUT') {
-      return createError({ statusCode: 405, statusMessage: 'Method not allowed' });
+      throw createError({ statusCode: 405, statusMessage: 'Method not allowed' });
     }
 
     const chatResponseId = getRouterParam(event, 'id');
     if (!chatResponseId) {
-      return createError({ statusCode: 400, statusMessage: 'Chat response ID is required' });
+      throw createError({ statusCode: 400, statusMessage: 'Chat response ID is required' });
     }
 
     const { feedback } = await readBody<IFeedbackRequestBody>(event);
 
     if (feedback !== null && feedback !== 0 && feedback !== 1) {
-      return createError({ statusCode: 400, statusMessage: 'Feedback must be 0, 1, or null' });
+      throw createError({ statusCode: 400, statusMessage: 'Feedback must be 0, 1, or null' });
     }
 
     const insightsDbPool = event.context.insightsDbPool as Pool;
     if (!insightsDbPool) {
-      return createError({ statusCode: 500, statusMessage: 'Database connection not available' });
+      throw createError({ statusCode: 500, statusMessage: 'Database connection not available' });
     }
 
     const chatRepo = new ChatRepository(insightsDbPool);
     const updated = await chatRepo.updateChatFeedback(chatResponseId, feedback);
 
     if (!updated) {
-      return createError({ statusCode: 404, statusMessage: 'Chat response not found' });
+      throw createError({ statusCode: 404, statusMessage: 'Chat response not found' });
     }
 
     return {
@@ -47,7 +47,7 @@ export default defineEventHandler(async (event): Promise<IFeedbackRequestRespons
     };
   } catch (error) {
     console.error('Error updating chat feedback:', error);
-    return createError({
+    throw createError({
       statusCode: 500,
       statusMessage: error instanceof Error ? error.message : 'An error occurred updating feedback',
     });
