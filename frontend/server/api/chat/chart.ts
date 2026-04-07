@@ -66,7 +66,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
         const executedResults = await executePipeInstructions(pipeInstructions, bucketId);
 
         if (!userQuery) {
-          return createError({
+          throw createError({
             statusCode: 400,
             statusMessage: 'User query is required for chart generation',
           });
@@ -87,7 +87,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
         };
       } catch (pipeError) {
         console.error('Pipe execution error:', pipeError);
-        return createError({
+        throw createError({
           statusCode: 500,
           statusMessage: 'Failed to execute pipe instructions',
         });
@@ -95,7 +95,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
     }
 
     if (!results || !Array.isArray(results)) {
-      return createError({
+      throw createError({
         statusCode: 400,
         statusMessage: 'Results array or pipe instructions are required',
       });
@@ -118,7 +118,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
 
     // Otherwise, generate a new chart config
     if (!userQuery) {
-      return createError({
+      throw createError({
         statusCode: 400,
         statusMessage: 'User query is required for chart generation',
       });
@@ -139,6 +139,6 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
     };
   } catch (error) {
     console.error('Chart generation/modification error:', error);
-    return createError({ statusCode: 500, statusMessage: 'Failed to process chart request' });
+    throw createError({ statusCode: 500, statusMessage: 'Failed to process chart request' });
   }
 });

@@ -9,5 +9,7 @@ export default defineNitroPlugin((nitroApp) => {
     if (!event?.path?.startsWith('/__og-image__/')) return;
     console.warn(`OG image generation failed for ${event.path}:`, error);
     await sendRedirect(event, '/og-image.png', 302);
+    // Mark as handled so h3 doesn't override the redirect with the error response
+    event.handled = true;
   });
 });
