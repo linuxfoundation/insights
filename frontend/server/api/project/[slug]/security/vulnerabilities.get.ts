@@ -49,7 +49,7 @@ export default defineEventHandler(
       if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404)
         throw err;
       console.error('Error fetching vulnerabilities list:', err);
-      return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+      throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
     }
   },
 );

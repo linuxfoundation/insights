@@ -40,14 +40,14 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
 
   // Validate request body
   if (!body.slug) {
-    return createError({
+    throw createError({
       statusCode: 400,
       statusMessage: 'Missing required field: slug is required',
     });
   }
 
   if (!body.repoUrl) {
-    return createError({
+    throw createError({
       statusCode: 400,
       statusMessage: 'Missing required field: repoUrl is required',
     });
@@ -56,7 +56,7 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
   // Use server-side configured token
   const token = config.securityGithubToken;
   if (!token) {
-    return createError({
+    throw createError({
       statusCode: 500,
       statusMessage: 'Security GitHub token is not configured on the server',
     });
@@ -72,14 +72,14 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
     });
 
     if (!projectRes.data || projectRes.data.length === 0) {
-      return createError({ statusCode: 404, statusMessage: 'Project not found' });
+      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
 
     const project = projectRes.data[0];
 
     // Validate that the repository belongs to this project
     if (!project.repositories.includes(body.repoUrl)) {
-      return createError({
+      throw createError({
         statusCode: 400,
         statusMessage: 'Repository does not belong to this project',
       });
@@ -116,7 +116,7 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
   } catch (err) {
     // Handle case where workflow is already running for this project
     if (err instanceof WorkflowExecutionAlreadyStartedError) {
-      return createError({
+      throw createError({
         statusCode: 429,
         statusMessage:
           'A security update is already in progress for this project. Please try again later.',
@@ -124,7 +124,7 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
     }
 
     console.error('Error triggering security update:', err);
-    return createError({
+    throw createError({
       statusCode: 500,
       statusMessage: 'Failed to trigger security update',
     });

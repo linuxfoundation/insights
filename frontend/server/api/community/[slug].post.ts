@@ -11,7 +11,7 @@ export default defineEventHandler(async (event): Promise<boolean | Error> => {
   const { slug } = event.context.params as Record<string, string>;
 
   if (!slug || !body?.data) {
-    return createError({ statusCode: 422, statusMessage: 'Invalid request' });
+    throw createError({ statusCode: 422, statusMessage: 'Invalid request' });
   }
 
   const data = { ...body.data };

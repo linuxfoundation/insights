@@ -49,7 +49,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       }),
     ]);
     if (!res.data || res.data.length === 0) {
-      return createError({ statusCode: 404, statusMessage: 'Project not found' });
+      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
     const project: ProjectTinybird = res.data[0];
     const repoData: Record<string, Partial<ProjectRepository>> = project.repoData.reduce(
@@ -98,6 +98,6 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       throw err;
     }
     console.error('Error fetching project:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });
