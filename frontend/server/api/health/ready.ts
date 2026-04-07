@@ -3,7 +3,17 @@
 import { getInsightsDbPool } from '~~/server/utils/db';
 import { getRedisClient } from '~~/server/utils/redis-client';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { isLocal } from '~~/server/utils/common';
 import type { PingResult } from '~~/types/health';
+
+const CHECK_TIMEOUT_MS = 3000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error('timed out')), ms)),
+  ]);
+}
 
 /**
  * API Endpoint: /api/health/ready
@@ -12,48 +22,69 @@ import type { PingResult } from '~~/types/health';
  */
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
-  const checks: Record<string, boolean> = {};
-  const errors: string[] = [];
 
-  try {
-    const pool = getInsightsDbPool();
-    const client = await pool.connect();
-    try {
-      await client.query('SELECT 1');
-      checks.db = true;
-    } finally {
-      client.release();
-    }
-  } catch (err) {
-    checks.db = false;
-    errors.push(`db: ${err instanceof Error ? err.message : String(err)}`);
-  }
+  const [dbResult, tinybirdResult, redisResult] = await Promise.allSettled([
+    withTimeout(
+      (async () => {
+        const pool = getInsightsDbPool();
+        const client = await pool.connect();
+        try {
+          await client.query('SELECT 1');
+        } finally {
+          client.release();
+        }
+      })(),
+      CHECK_TIMEOUT_MS,
+    ),
 
-  try {
-    const result = await fetchFromTinybird<PingResult[]>('/v0/pipes/ping.json', {});
-    checks.tinybird = result.data.length > 0 && result.data[0].result === 'pong';
-    if (!checks.tinybird) errors.push('tinybird: unexpected ping response');
-  } catch (err) {
-    checks.tinybird = false;
-    errors.push(`tinybird: ${err instanceof Error ? err.message : String(err)}`);
-  }
+    withTimeout(
+      (async () => {
+        const result = await fetchFromTinybird<PingResult[]>('/v0/pipes/ping.json', {});
+        if (!(result.data.length > 0 && result.data[0].result === 'pong')) {
+          throw new Error('unexpected ping response');
+        }
+      })(),
+      CHECK_TIMEOUT_MS,
+    ),
 
-  if (config.redisUrl) {
-    try {
-      const redis = await getRedisClient(config.redisUrl, 0, true);
-      await redis.ping();
-      checks.redis = true;
-    } catch (err) {
-      checks.redis = false;
-      errors.push(`redis: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  }
+    config.redisUrl
+      ? withTimeout(
+          (async () => {
+            const redis = await getRedisClient(config.redisUrl, 0, true);
+            await redis.ping();
+          })(),
+          CHECK_TIMEOUT_MS,
+        )
+      : Promise.resolve(),
+  ]);
+
+  const checks = {
+    db: dbResult.status === 'fulfilled',
+    tinybird: tinybirdResult.status === 'fulfilled',
+    ...(config.redisUrl ? { redis: redisResult.status === 'fulfilled' } : {}),
+  };
 
   const ready = Object.values(checks).every(Boolean);
 
   if (!ready) {
+    const internalErrors = [
+      dbResult.status === 'rejected' ? `db: ${dbResult.reason?.message}` : null,
+      tinybirdResult.status === 'rejected' ? `tinybird: ${tinybirdResult.reason?.message}` : null,
+      config.redisUrl && redisResult.status === 'rejected'
+        ? `redis: ${redisResult.reason?.message}`
+        : null,
+    ]
+      .filter(Boolean)
+      .join('; ');
+
+    console.error('[health/ready] readiness check failed:', internalErrors);
+
     setResponseStatus(event, 503);
-    return { ready: false, checks, detail: errors.join('; ') };
+    return {
+      ready: false,
+      checks,
+      detail: isLocal ? internalErrors : 'one or more dependency checks failed',
+    };
   }
 
   return { ready: true, checks };
