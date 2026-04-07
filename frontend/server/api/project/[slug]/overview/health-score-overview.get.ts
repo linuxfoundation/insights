@@ -33,7 +33,7 @@ export default defineEventHandler(async (event): Promise<HealthScoreResults | un
         filter,
       );
       if (!res.data || res.data.length === 0) {
-        return createError({ statusCode: 404, statusMessage: 'Not found' });
+        throw createError({ statusCode: 404, statusMessage: 'Not found' });
       }
       healthScore = res.data[0];
     } else {

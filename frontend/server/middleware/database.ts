@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
     '/api/auth/logout',
     '/api/collection',
     '/api/project',
+    '/api/repository',
     '/api/events',
   ];
   if (allowedRoutes.some((route) => event.node.req.url?.startsWith(route))) {

@@ -18,6 +18,7 @@ export default {
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
+          '/api/health/ready': { cache: false },
           '/api/report': { cache: false },
           '/api/report/cncf/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/report/ai-code-tracker/**': { cache: { maxAge: longCache, base: 'redis' } },

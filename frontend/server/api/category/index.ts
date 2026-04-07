@@ -67,6 +67,6 @@ export default defineEventHandler(async (event): Promise<Pagination<CategoryGrou
     };
   } catch (err) {
     console.error('Error fetching category list:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });

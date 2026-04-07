@@ -21,6 +21,6 @@ export default defineEventHandler(async (event): Promise<ExploreContributors[] |
     return res.data;
   } catch (err) {
     console.error('Error fetching top active contributors:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });
