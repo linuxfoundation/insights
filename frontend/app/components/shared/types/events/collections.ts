@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { EventFeature, EventType, type EventDefinition } from '.';
+import { EventFeature, EventType, type EventDefinition } from './base';
 
 export enum CollectionsEventKey {
   CREATE_COLLECTION = 'create-collection',

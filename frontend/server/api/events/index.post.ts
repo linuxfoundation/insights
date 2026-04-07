@@ -54,16 +54,21 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
 
   const repo = new EventsRepository(insightsDbPool);
 
-  await repo.track({
-    key: body.key.trim(),
-    type: body.type.trim(),
-    name: body.name.trim(),
-    userId: user?.sub,
-    properties: body.properties,
-    feature: body.feature?.trim(),
-    source: body.source?.trim(),
-    entrySource: body.entrySource?.trim(),
-  });
+  try {
+    await repo.track({
+      key: body.key.trim(),
+      type: body.type.trim(),
+      name: body.name.trim(),
+      userId: user?.sub,
+      properties: body.properties,
+      feature: body.feature?.trim(),
+      source: body.source?.trim(),
+      entrySource: body.entrySource?.trim(),
+    });
 
-  return { success: true };
+    return { success: true };
+  } catch (error) {
+    console.error('Unexpected error tracking event in POST /api/events', error);
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error', data: { error } });
+  }
 });

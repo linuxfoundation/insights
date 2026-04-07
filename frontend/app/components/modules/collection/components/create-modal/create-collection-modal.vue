@@ -249,11 +249,11 @@ watch(isModalOpen, async (value) => {
         key: isDuplicateMode.value
           ? CollectionsEventKey.ABANDONED_COLLECTION_DUPLICATION
           : CollectionsEventKey.ABANDONED_COLLECTION_CREATION,
-        ...(isDuplicateMode.value
+        properties: isDuplicateMode.value
           ? {
               sourceCollectionId: props.sourceCollection?.id,
             }
-          : {}),
+          : undefined,
       });
     }
     completedSuccessfully.value = false;
