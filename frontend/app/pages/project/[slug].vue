@@ -56,6 +56,12 @@ const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !
 onServerPrefetch(async () => {
   await suspense();
   if (isError.value) {
+    // On rate limit, don't throw — let SWR serve stale cached content
+    const statusCode = (error.value as { statusCode?: number })?.statusCode;
+    if (statusCode === 429) {
+      return;
+    }
+
     const statusMessage = error.value?.message || 'Project Not Found';
 
     if (import.meta.server) {

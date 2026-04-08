@@ -94,8 +94,16 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       tags: project?.keywords || [],
     };
   } catch (err: unknown) {
-    if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
-      throw err;
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      const status = (err as { statusCode: number }).statusCode;
+      // Re-throw 404 and 429 as-is without logging as error
+      if (status === 404) {
+        throw err;
+      }
+      if (status === 429) {
+        console.warn(`Rate limited fetching project ${slug}`);
+        throw err;
+      }
     }
     console.error('Error fetching project:', err);
     throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
