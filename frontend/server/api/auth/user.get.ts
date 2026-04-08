@@ -21,10 +21,9 @@ export default defineEventHandler(async (event) => {
       const isBrowserRequest = userAgent.includes('Mozilla');
       const isNotCallback = !referer.includes('/api/auth/callback');
 
-      // Check if silent login was already attempted by looking for the silent login cookies
-      const silentLoginState = getCookie(event, 'auth_state');
-      const silentLoginCodeVerifier = getCookie(event, 'auth_code_verifier');
-      const hasAttemptedSilentLogin = !!(silentLoginState && silentLoginCodeVerifier);
+      // Check if silent login was already attempted by looking for the PKCE cookie
+      const silentLoginPkce = getCookie(event, 'auth_pkce');
+      const hasAttemptedSilentLogin = !!silentLoginPkce;
 
       const shouldAttemptSilentLogin =
         isBrowserRequest && isNotCallback && !hasAttemptedSilentLogin;
