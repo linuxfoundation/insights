@@ -1,5 +1,18 @@
 {
     "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "hooks": {
+      "PostToolUse": [
+        {
+          "matcher": "Edit|Write",
+          "hooks": [
+            {
+              "type": "command",
+              "command": ".claude/hooks/post-tool-use-doc-check.sh"
+            }
+          ]
+        }
+      ]
+    },
     "permissions": {
       "allow": [
         "Bash(pnpm *)",

@@ -101,8 +101,15 @@ export async function getBucketIdForProject(
       }
 
       return bucketId;
-    } catch (error) {
-      console.error(`Failed to fetch bucketId for project ${projectValue}:`, error);
+    } catch (error: unknown) {
+      // Propagate rate limit and server errors instead of masking them as 404
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      console.warn(`Failed to fetch bucketId for project ${projectValue}:`, error);
       return null;
     } finally {
       // Clean up in-flight request tracker

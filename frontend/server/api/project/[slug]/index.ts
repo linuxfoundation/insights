@@ -49,7 +49,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       }),
     ]);
     if (!res.data || res.data.length === 0) {
-      return createError({ statusCode: 404, statusMessage: 'Project not found' });
+      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
     const project: ProjectTinybird = res.data[0];
     const repoData: Record<string, Partial<ProjectRepository>> = project.repoData.reduce(
@@ -94,10 +94,18 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       tags: project?.keywords || [],
     };
   } catch (err: unknown) {
-    if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
-      throw err;
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      const status = (err as { statusCode: number }).statusCode;
+      // Re-throw 404 and 429 as-is without logging as error
+      if (status === 404) {
+        throw err;
+      }
+      if (status === 429) {
+        console.warn(`Rate limited fetching project ${slug}`);
+        throw err;
+      }
     }
     console.error('Error fetching project:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });
