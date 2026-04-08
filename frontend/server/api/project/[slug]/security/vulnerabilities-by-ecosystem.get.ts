@@ -22,6 +22,6 @@ export default defineEventHandler(async (event): Promise<VulnerabilityByEcosyste
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) throw err;
     console.error('Error fetching vulnerabilities by ecosystem:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });

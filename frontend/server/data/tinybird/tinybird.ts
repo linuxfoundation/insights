@@ -87,11 +87,14 @@ export async function fetchFromTinybird<T>(
         });
       }
     } catch (error: unknown) {
-      // Re-throw 404 errors
-      if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
-        throw error;
+      // Re-throw 404 and 429 errors
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 404 || status === 429 || status >= 500) {
+          throw error;
+        }
       }
-      console.error(`Failed to fetch bucketId for project ${query.project}:`, error);
+      console.warn(`Failed to fetch bucketId for project ${query.project}:`, error);
       // Continue without bucketId for other errors
     }
   }

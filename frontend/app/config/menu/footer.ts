@@ -41,6 +41,14 @@ export const lfxFooterMenu: FooterMenuSection[] = [
         link: '/docs/introduction/what-is-insights/',
       },
       {
+        name: 'Changelog',
+        link: 'https://changelog.lfx.dev/?product=insights',
+      },
+      {
+        name: 'Roadmap',
+        link: 'https://changelog.lfx.dev/roadmap?product=insights',
+      },
+      {
         name: 'Report issue',
         click: () => {
           const { openReportModal } = useReportStore();

@@ -52,6 +52,10 @@ const description = computed(() => {
   return desc.substring(0, 157).trim() + '...';
 });
 
+defineOgImageComponent('collection', {
+  collectionSlug: slug as string,
+});
+
 useSeoMeta({
   title,
   description,

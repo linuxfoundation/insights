@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 import { sendRedirect } from 'h3';
-import { getBucketIdForProject } from '~~/server/data/tinybird/bucket-cache';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { ProjectTinybird } from '~~/types/project';
 
 const OG_IMAGE_PROJECT_PREFIX = '/__og-image__/image/project/';
 
@@ -12,6 +12,9 @@ const OG_IMAGE_PROJECT_PREFIX = '/__og-image__/image/project/';
  * If the project doesn't exist (slug removed/moved), redirects to the
  * default static OG image instead of letting the rendering pipeline
  * throw a 500.
+ *
+ * Uses the same Tinybird pipe (projects_list) as the project API endpoint
+ * to avoid discrepancies between data sources.
  */
 export default defineEventHandler(async (event) => {
   const path = event.path;
@@ -22,8 +25,11 @@ export default defineEventHandler(async (event) => {
   if (!slug) return;
 
   try {
-    const bucketId = await getBucketIdForProject(slug, fetchFromTinybird);
-    if (bucketId === null) {
+    const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
+      slug,
+      details: true,
+    });
+    if (!res.data || res.data.length === 0) {
       return sendRedirect(event, '/og-image.png', 302);
     }
   } catch {
