@@ -51,7 +51,8 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const project: ProjectTinybird = res.data[0];
+    const project: ProjectTinybird = res.data[0]!;
+
     const repoData: Record<string, Partial<ProjectRepository>> = project.repoData.reduce(
       (acc, repo) => {
         const [url, score, rank] = repo;
