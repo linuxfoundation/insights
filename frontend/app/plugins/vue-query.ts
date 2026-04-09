@@ -11,7 +11,14 @@ export default defineNuxtPlugin((nuxt: NuxtApp) => {
 
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 5,
+        // Disable gc timers on the server to prevent orphaned QueryClient instances
+        // from being held in memory after SSR completes
+        ...(import.meta.server ? { gcTime: 0 } : {}),
+      },
+    },
   });
   const options: VueQueryPluginOptions = { queryClient };
 
@@ -20,6 +27,7 @@ export default defineNuxtPlugin((nuxt: NuxtApp) => {
   if (import.meta.server) {
     nuxt.hooks.hook('app:rendered', () => {
       vueQueryState.value = dehydrate(queryClient);
+      queryClient.clear();
     });
   }
 
