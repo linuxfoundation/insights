@@ -59,7 +59,7 @@ export function usePopularityExcludedWidgets(params: PopularityExcludedWidgetsPa
   const {
     data: downloadsData,
     status: downloadsStatus,
-    suspense: downloadsSuspense,
+    suspense: rawDownloadsSuspense,
   } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams, hasDownloadsWidget);
 
   const isPackageDownloadsEmpty = computed(() =>
@@ -77,7 +77,7 @@ export function usePopularityExcludedWidgets(params: PopularityExcludedWidgetsPa
   const {
     data: searchQueriesData,
     status: searchQueriesStatus,
-    suspense: searchQueriesSuspense,
+    suspense: rawSearchQueriesSuspense,
   } = POPULARITY_API_SERVICE.fetchSearchQueries(popularityParams, hasSearchQueriesWidget);
 
   const isSearchQueriesEmpty = computed(() =>
@@ -89,7 +89,7 @@ export function usePopularityExcludedWidgets(params: PopularityExcludedWidgetsPa
   const {
     data: mailingListMessagesData,
     status: mailingListMessagesStatus,
-    suspense: mailingListMessagesSuspense,
+    suspense: rawMailingListMessagesSuspense,
   } = POPULARITY_API_SERVICE.fetchMailingListsMessages(
     mailingListMessagesParams,
     hasMailingListWidget,
@@ -100,6 +100,16 @@ export function usePopularityExcludedWidgets(params: PopularityExcludedWidgetsPa
       mailingListMessagesStatus.value === 'success' ? mailingListMessagesData.value : undefined,
     ),
   );
+
+  // Wrap suspense functions to resolve immediately when queries are disabled.
+  // TanStack Query's suspense() hangs forever on disabled queries (status stays 'pending'),
+  // which deadlocks SSR rendering in onServerPrefetch.
+  const downloadsSuspense = () =>
+    hasDownloadsWidget.value ? rawDownloadsSuspense() : Promise.resolve();
+  const searchQueriesSuspense = () =>
+    hasSearchQueriesWidget.value ? rawSearchQueriesSuspense() : Promise.resolve();
+  const mailingListMessagesSuspense = () =>
+    hasMailingListWidget.value ? rawMailingListMessagesSuspense() : Promise.resolve();
 
   const excludedWidgets = computed(() => {
     const excluded: Widget[] = [];
