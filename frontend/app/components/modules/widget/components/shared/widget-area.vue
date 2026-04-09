@@ -49,7 +49,6 @@ import { computed, ref, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'nuxt/app';
 import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
-import { POPULARITY_API_SERVICE } from '../../services/popularity.api.service';
 import { Widget } from '~/components/modules/widget/types/widget';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import { WidgetArea } from '~/components/modules/widget/types/widget-area';
@@ -64,7 +63,7 @@ import { useQueryParam } from '~/components/shared/utils/query-param';
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { Granularity } from '~~/types/shared/granularity';
+import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
 import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
 
 const props = defineProps<{
@@ -93,87 +92,24 @@ const isFirstLoad = ref(true);
  * This is a workaround to show/hide widgets in the popularity for projects that have no data.
  * ===============================
  */
-const popularityParams = computed(() => ({
-  projectSlug: route.params.slug as string,
-  repos: selectedReposValues.value,
-  granularity: Granularity.MONTHLY,
-  startDate: startDate.value,
-  endDate: endDate.value,
-}));
+const projectSlug = computed(() => route.params.slug as string);
 
-const downloadsParams = computed(() => ({
-  ...popularityParams.value,
-  ecosystem: undefined,
-  name: undefined,
-}));
+const projectWidgets = computed(() => project.value?.widgets || []);
 
-const mailingListMessagesParams = computed(() => ({
-  ...popularityParams.value,
-  type: 'new',
-  countType: 'new',
-}));
-
-// package downloads and dependency share the same endpoint
 const {
-  data: downloadsData,
-  status: downloadsStatus,
-  suspense: downloadsSuspense,
-} = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
-
-const isPackageDownloadsEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isPackageDownloadsEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined),
-);
-
-const isPackageDependencyEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isPackageDependencyEmpty(
-    downloadsStatus.value === 'success' ? downloadsData.value : undefined,
-  ),
-);
-
-// search queries
-const {
-  data: searchQueriesData,
-  status: searchQueriesStatus,
-  suspense: searchQueriesSuspense,
-} = POPULARITY_API_SERVICE.fetchSearchQueries(popularityParams);
-
-const isSearchQueriesEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isSearchQueriesEmpty(
-    searchQueriesStatus.value === 'success' ? searchQueriesData.value : undefined,
-  ),
-);
-
-// mailing list messages
-const {
-  data: mailingListMessagesData,
-  status: mailingListMessagesStatus,
-  suspense: mailingListMessagesSuspense,
-} = POPULARITY_API_SERVICE.fetchMailingListsMessages(mailingListMessagesParams);
-
-const isMailingListMessagesEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isMailingListMessagesEmpty(
-    mailingListMessagesStatus.value === 'success' ? mailingListMessagesData.value : undefined,
-  ),
-);
-
-const excludedWidgets = computed(() => {
-  const excludedWidgets = [];
-  if (props.name === WidgetArea.POPULARITY) {
-    if (isPackageDownloadsEmpty.value) {
-      excludedWidgets.push(Widget.PACKAGE_DOWNLOADS);
-    }
-    if (isPackageDependencyEmpty.value) {
-      excludedWidgets.push(Widget.PACKAGE_DEPENDENCY);
-    }
-    if (isSearchQueriesEmpty.value) {
-      excludedWidgets.push(Widget.SEARCH_QUERIES);
-    }
-    if (isMailingListMessagesEmpty.value) {
-      excludedWidgets.push(Widget.MAILING_LISTS_MESSAGES);
-    }
-  }
-  return excludedWidgets;
+  excludedWidgets: popularityExcludedWidgets,
+  downloadsSuspense,
+  searchQueriesSuspense,
+  mailingListMessagesSuspense,
+} = usePopularityExcludedWidgets({
+  projectSlug,
+  repos: selectedReposValues,
+  startDate,
+  endDate,
+  projectWidgets,
 });
+
+const excludedWidgets = computed(() => (props.name === WidgetArea.POPULARITY ? popularityExcludedWidgets.value : []));
 
 /**
  * ===============================

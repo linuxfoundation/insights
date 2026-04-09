@@ -85,6 +85,7 @@ import { useProjectStore } from '~~/app/components/modules/project/store/project
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
 
 const props = defineProps<{
   project?: Project;
@@ -93,8 +94,18 @@ const props = defineProps<{
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
 
-const { selectedRepositoryGroup } = storeToRefs(useProjectStore());
+const { selectedRepositoryGroup, selectedReposValues, startDate, endDate } = storeToRefs(useProjectStore());
 const { user } = storeToRefs(useAuthStore());
+
+const projectSlug = computed(() => route.params.slug as string);
+const projectWidgets = computed(() => props.project?.widgets || []);
+const { excludedWidgets: popularityExcludedWidgets } = usePopularityExcludedWidgets({
+  projectSlug,
+  repos: selectedReposValues,
+  startDate,
+  endDate,
+  projectWidgets,
+});
 
 const hasVulnerabilitiesData = computed(() => props.project?.lastVulnerabilityScanStatus === 'success' || false);
 
@@ -122,6 +133,11 @@ const isAreaEnabled = (area: WidgetArea) => {
       props.project?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github')) ||
       hasVulnerabilitiesData.value
     );
+  }
+
+  if (area === WidgetArea.POPULARITY) {
+    const availableWidgets = widgets.filter((w) => !popularityExcludedWidgets.value.includes(w));
+    return availableWidgets.some((widget) => props.project?.widgets?.includes(lfxWidgets[widget]?.key));
   }
 
   return widgets.length === 0 || widgets.some((widget) => props.project?.widgets?.includes(lfxWidgets[widget]?.key));
