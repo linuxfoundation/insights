@@ -20,9 +20,6 @@ permissions:
   contents: read
 
 env:
-  CLOUD_ENV: lf-oracle-production
-  ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
-  ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
   ORACLE_USER: ${{ secrets.ORACLE_USER }}
   ORACLE_TENANT: ${{ secrets.ORACLE_TENANT }}
   ORACLE_REGION: ${{ secrets.ORACLE_REGION }}
@@ -36,8 +33,6 @@ jobs:
   flush-partial-cache:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
       - name: Install OCI
         run: |
           curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh > install.sh
