@@ -59,7 +59,7 @@ jobs:
 
       - name: Verify OCI CLI Configuration
         run: |
-          oci os ns get --config-file ~/.oci/config || cat ~/.oci/config
+          oci os ns get --config-file ~/.oci/config || { echo "OCI config verification failed"; exit 1; }
 
       - name: Get Cluster Kubeconfig
         run: |
@@ -99,15 +99,23 @@ jobs:
             TOTAL_FLUSHED=0
 
             while true; do
-              RESPONSE=$(curl -sf \
+              if ! RESPONSE=$(curl -sf \
                 -H "Authorization: Bearer $TINYBIRD_TOKEN" \
-                "${TINYBIRD_URL}/v0/pipes/projects_list.json?collectionSlug=${SLUG}&pageSize=${PAGE_SIZE}&page=${PAGE}")
+                "${TINYBIRD_URL}/v0/pipes/projects_list.json?collectionSlug=${SLUG}&pageSize=${PAGE_SIZE}&page=${PAGE}"); then
+                echo "Error: curl failed for collection page $PAGE (HTTP error or network issue)"
+                exit 1
+              fi
 
               SLUGS=$(echo "$RESPONSE" | jq -r '.data[].slug')
               ROWS=$(echo "$RESPONSE" | jq -r '.rows')
 
               if [ -z "$SLUGS" ] && [ "$PAGE" -eq 0 ]; then
                 echo "No projects found for collection: $SLUG"
+                exit 1
+              fi
+
+              if ! [[ "$ROWS" =~ ^[0-9]+$ ]]; then
+                echo "Error: unexpected .rows value '$ROWS' on page $PAGE"
                 exit 1
               fi
 
