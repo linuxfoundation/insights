@@ -281,11 +281,14 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import useToastService from '~/components/uikit/toast/toast.service';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { openConfirmModal } = useConfirmStore();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 const queryClient = useQueryClient();
 
 const authStore = useAuthStore();
@@ -360,6 +363,14 @@ const sortIconClass = (field: string) => {
 };
 
 const handleShare = () => {
+  trackEvent({
+    key: CollectionsEventKey.SHARE_COLLECTION,
+    properties: {
+      collectionId: props.collection?.id,
+      shareMethod: 'link',
+    },
+  });
+
   const title = `LFX Insights | Collections - ${props.collection?.name}`;
 
   const resolvedRoute = router.resolve({
@@ -406,7 +417,12 @@ const handleDelete = () => {
         if (result) {
           isDeleting.value = true;
           await COLLECTIONS_API_SERVICE.deleteCollection(props.collection!.id);
-
+          trackEvent({
+            key: CollectionsEventKey.DELETE_COLLECTION,
+            properties: {
+              collectionId: props.collection!.id,
+            },
+          });
           invalidateMyCollections();
           isDeleting.value = false;
           router.push({ name: LfxRoutes.COLLECTIONS_MY_COLLECTIONS });

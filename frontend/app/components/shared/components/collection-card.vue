@@ -202,12 +202,15 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 
 const props = withDefaults(
   defineProps<{
@@ -252,6 +255,14 @@ const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
 });
 
 const handleShare = () => {
+  trackEvent({
+    key: CollectionsEventKey.SHARE_COLLECTION,
+    properties: {
+      collectionId: props.collection.id,
+      shareMethod: 'link',
+    },
+  });
+
   const title = `LFX Insights | Collections - ${props.collection.name}`;
 
   const resolvedRoute = router.resolve({
@@ -285,6 +296,12 @@ const handleEdit = () => {
 const handleDelete = async () => {
   try {
     await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    trackEvent({
+      key: CollectionsEventKey.DELETE_COLLECTION,
+      properties: {
+        collectionId: props.collection.id,
+      },
+    });
     showToast('Collection deleted successfully', ToastTypesEnum.positive);
     emit('deleted', props.collection.id);
   } catch (error) {

@@ -175,6 +175,8 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 
 const router = useRouter();
 const { user } = storeToRefs(useAuthStore());
@@ -182,6 +184,7 @@ const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 const emit = defineEmits<{
   (e: 'updated', collection: Collection | null): void;
 }>();
@@ -206,6 +209,14 @@ const showLikeCount = computed(() => props.variant !== 'my-collections');
 const isSingleLogo = computed(() => props.variant === 'liked-collections' || props.variant === 'curated');
 
 const handleShare = () => {
+  trackEvent({
+    key: CollectionsEventKey.SHARE_COLLECTION,
+    properties: {
+      collectionId: props.collection.id,
+      shareMethod: 'link',
+    },
+  });
+
   const title = `LFX Insights | Collections - ${props.collection.name}`;
 
   const resolvedRoute = router.resolve({
@@ -239,6 +250,12 @@ const handleClone = () => {
 const handleDeleteCollection = async () => {
   try {
     await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    trackEvent({
+      key: CollectionsEventKey.DELETE_COLLECTION,
+      properties: {
+        collectionId: props.collection.id,
+      },
+    });
     showToast('Collection deleted successfully', ToastTypesEnum.positive);
     emit('updated', null);
   } catch (error) {

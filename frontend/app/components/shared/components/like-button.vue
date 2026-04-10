@@ -72,11 +72,14 @@ import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 // import { useAuth } from '~~/composables/useAuth';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 
 const props = withDefaults(
   defineProps<{
@@ -125,6 +128,12 @@ const handleLike = async () => {
         collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
         showToast('Failed to unlike collection', ToastTypesEnum.negative);
       } else {
+        trackEvent({
+          key: CollectionsEventKey.DISLIKE_COLLECTION,
+          properties: {
+            collectionId: props.collection.id,
+          },
+        });
         invalidateCollectionQueries();
         emit('updated', props.collection);
       }
@@ -140,6 +149,12 @@ const handleLike = async () => {
         collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
         showToast('Failed to like collection', ToastTypesEnum.negative);
       } else {
+        trackEvent({
+          key: CollectionsEventKey.LIKE_COLLECTION,
+          properties: {
+            collectionId: props.collection.id,
+          },
+        });
         invalidateCollectionQueries();
         emit('updated', props.collection);
       }

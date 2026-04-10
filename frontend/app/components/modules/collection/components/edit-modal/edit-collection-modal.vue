@@ -101,6 +101,8 @@ import type {
   CreateCollectionForm,
   CollectionProject,
 } from '~/components/modules/collection/config/create-collection.config';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 
 interface Tab {
   value: 'settings' | 'projects';
@@ -142,9 +144,11 @@ const collectionProjects = computed<ProjectInsights[]>(
 );
 
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 
 const activeTab = ref<'settings' | 'projects'>('settings');
 const isUpdating = ref(false);
+const completedSuccessfully = ref(false);
 const form = ref<CreateCollectionForm>({
   name: '',
   description: '',
@@ -220,6 +224,31 @@ const updateCollection = async () => {
 
   try {
     const updated = await COLLECTIONS_API_SERVICE.updateCollection(props.collection.id, payload);
+
+    completedSuccessfully.value = true;
+
+    const changedFields: string[] = [];
+    if (originalForm.value) {
+      if (form.value.name !== originalForm.value.name) {
+        changedFields.push('name');
+      }
+
+      if (form.value.description !== originalForm.value.description) {
+        changedFields.push('description');
+      }
+
+      if (form.value.visibility !== originalForm.value.visibility) {
+        changedFields.push('privacy');
+      }
+    }
+
+    trackEvent({
+      key: CollectionsEventKey.UPDATE_COLLECTION,
+      properties: {
+        collectionId: props.collection.id,
+        changedFields,
+      },
+    });
     showToast('Collection updated successfully', ToastTypesEnum.positive);
     emit('updated', updated);
     isModalOpen.value = false;
@@ -247,6 +276,16 @@ watch(
     if (value) {
       activeTab.value = 'settings';
       initializeForm();
+    } else {
+      if (hasUnsavedChanges.value && !completedSuccessfully.value) {
+        trackEvent({
+          key: CollectionsEventKey.ABANDONED_COLLECTION_EDITION,
+          properties: {
+            sourceCollectionId: props.collection?.id,
+          },
+        });
+      }
+      completedSuccessfully.value = false;
     }
   },
   { immediate: true },
