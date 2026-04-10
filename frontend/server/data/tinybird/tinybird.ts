@@ -4,6 +4,60 @@ import { DateTime } from 'luxon';
 import { ofetch } from 'ofetch';
 import { getBucketIdForProject } from './bucket-cache';
 
+class Semaphore {
+  private count = 0;
+  private queue: Array<{
+    resolve: () => void;
+    reject: (err: unknown) => void;
+    timer: ReturnType<typeof setTimeout>;
+  }> = [];
+
+  constructor(private limit: number) {}
+
+  acquire(timeoutMs: number): Promise<void> {
+    if (this.count < this.limit) {
+      this.count++;
+      return Promise.resolve();
+    }
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        const idx = this.queue.findIndex((item) => item.resolve === resolve);
+        if (idx !== -1) this.queue.splice(idx, 1);
+        console.warn(
+          JSON.stringify({
+            message: 'tinybird_throttle',
+            queueDepth: this.queue.length,
+            limit: this.limit,
+            timeoutMs,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+        reject(
+          createError({
+            statusCode: 503,
+            statusMessage: 'Tinybird request queue full — try again shortly',
+          }),
+        );
+      }, timeoutMs);
+      this.queue.push({ resolve, reject, timer });
+    });
+  }
+
+  release(): void {
+    if (this.queue.length > 0) {
+      const next = this.queue.shift()!;
+      clearTimeout(next.timer);
+      next.resolve();
+    } else {
+      this.count--;
+    }
+  }
+}
+
+const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '100', 10);
+const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '10000', 10);
+const tinybirdSemaphore = new Semaphore(MAX_CONCURRENT);
+
 /**
  * Represents the structure of a response from the Tinybird API.
  *
@@ -126,15 +180,20 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-  const data: TinybirdResponse<T> = await ofetch(url, {
-    headers: {
-      Authorization: `Bearer ${tinybirdToken}`,
-    },
-  });
-  if (!data || !data.data) {
-    throw new Error('Invalid response from Tinybird');
+  await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+  try {
+    const data: TinybirdResponse<T> = await ofetch(url, {
+      headers: {
+        Authorization: `Bearer ${tinybirdToken}`,
+      },
+    });
+    if (!data || !data.data) {
+      throw new Error('Invalid response from Tinybird');
+    }
+    return data;
+  } finally {
+    tinybirdSemaphore.release();
   }
-  return data;
 }
 
 /**
