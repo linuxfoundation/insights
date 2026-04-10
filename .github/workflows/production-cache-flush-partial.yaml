@@ -75,9 +75,10 @@ jobs:
 
           flush_project() {
             local PROJECT=$1
-            echo "Flushing cache for project: $PROJECT"
+            local PROJECT_KEY=$(echo "$PROJECT" | tr -d '-_.' | cut -c1-6)
+            echo "Flushing cache for project: $PROJECT (key prefix: $PROJECT_KEY)"
             kubectl exec -i redis-client -n insights -- \
-              sh -c "redis-cli -h redis-svc -a \"$REDIS_PASS\" --scan --pattern \"*project${PROJECT}*\" 2>/dev/null | xargs -r redis-cli -h redis-svc -a \"$REDIS_PASS\" DEL 2>/dev/null"
+              sh -c "redis-cli -h redis-svc -a \"$REDIS_PASS\" --scan --pattern \"*project${PROJECT_KEY}*\" 2>/dev/null | tee /dev/stderr | xargs -r redis-cli -h redis-svc -a \"$REDIS_PASS\" DEL 2>/dev/null"
           }
 
           if [ "$TYPE" = "project" ] || [ "$TYPE" = "collection" ]; then
