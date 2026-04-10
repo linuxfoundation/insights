@@ -6,12 +6,18 @@ SPDX-License-Identifier: MIT
   <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow">
     <lfx-collection-list-view type="my-collections" />
   </div>
+
+  <lfx-collection-auth-wall
+    v-if="showAuthWall"
+    v-model="showAuthWall"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'nuxt/app';
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
 import { useAuth } from '~~/composables/useAuth';
 
 const title = 'My Collections | LFX Insights';
@@ -24,14 +30,15 @@ useSeoMeta({
   twitterDescription: description,
 });
 
-const { isAuthenticated, login } = useAuth();
+const { isAuthenticated } = useAuth();
+const showAuthWall = ref(false);
 
 onMounted(() => {
   const route = useRoute();
   const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
 
   if (!isAuthCallback && !isAuthenticated.value) {
-    login(window.location.pathname + window.location.search + window.location.hash);
+    showAuthWall.value = true;
   }
 });
 </script>
