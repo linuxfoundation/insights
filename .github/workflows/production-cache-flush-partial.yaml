@@ -28,6 +28,7 @@ env:
   ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
   ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
   KUBECONFIG_PATH: /home/runner/.kube/config
+  SUPPRESS_LABEL_WARNING: 'True'
 
 jobs:
   flush-partial-cache:
@@ -59,7 +60,7 @@ jobs:
 
       - name: Verify OCI CLI Configuration
         run: |
-          oci os ns get --config-file ~/.oci/config || { echo "OCI config verification failed"; exit 1; }
+          oci os ns get --config-file ~/.oci/config > /dev/null 2>&1 || { echo "OCI config verification failed"; exit 1; }
 
       - name: Get Cluster Kubeconfig
         run: |
@@ -75,9 +76,11 @@ jobs:
 
           flush_project() {
             local PROJECT=$1
-            echo "Flushing cache for project: $PROJECT"
+            local STRIPPED="${PROJECT//[-_.]/}"
+            local PROJECT_KEY="${STRIPPED:0:6}"
+            echo "Flushing cache for project: $PROJECT (key prefix: $PROJECT_KEY)"
             kubectl exec -i redis-client -n insights -- \
-              sh -c "redis-cli -h redis-svc -a \"$REDIS_PASS\" --scan --pattern \"*project${PROJECT}*\" 2>/dev/null | xargs -r redis-cli -h redis-svc -a \"$REDIS_PASS\" DEL 2>/dev/null"
+              sh -c "redis-cli -h redis-svc -a \"$REDIS_PASS\" --scan --pattern \"*project${PROJECT_KEY}*\" 2>/dev/null | xargs -r redis-cli -h redis-svc -a \"$REDIS_PASS\" DEL 2>/dev/null"
           }
 
           if [ "$TYPE" = "project" ] || [ "$TYPE" = "collection" ]; then
