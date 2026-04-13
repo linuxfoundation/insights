@@ -15,6 +15,15 @@ class Semaphore {
   constructor(private limit: number) {}
 
   acquire(timeoutMs: number): Promise<void> {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_queue_status',
+        active: this.count,
+        queued: this.queue.length,
+        limit: this.limit,
+        timestamp: new Date().toISOString(),
+      }),
+    );
     if (this.count < this.limit) {
       this.count++;
       return Promise.resolve();
