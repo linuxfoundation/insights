@@ -154,7 +154,10 @@ const canProceed = computed(() => {
 
 const isFormDirty = computed(() => {
   return (
-    form.value.name.trim().length > 0 || form.value.description.trim().length > 0 || form.value.projects.length > 0
+    form.value.name.trim().length > 0 ||
+    form.value.description.trim().length > 0 ||
+    form.value.projects.length > 0 ||
+    form.value.repositories.length > 0
   );
 });
 
@@ -237,7 +240,7 @@ watch(isModalOpen, async (value) => {
     }
   } else {
     step.value = 0;
-    form.value = { ...createCollectionTemplate, projects: [] };
+    form.value = { ...createCollectionTemplate, projects: [], repositories: [] };
   }
 });
 </script>

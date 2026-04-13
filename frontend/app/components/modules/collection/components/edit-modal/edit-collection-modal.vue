@@ -168,11 +168,15 @@ const hasUnsavedChanges = computed(() => {
   const projectIds = form.value.projects.map((p) => p.id).sort();
   const originalProjectIds = originalForm.value.projects.map((p) => p.id).sort();
 
+  const repositoryUrls = form.value.repositories.map((r) => r.url).sort();
+  const originalRepositoryUrls = originalForm.value.repositories.map((r) => r.url).sort();
+
   return (
     form.value.name !== originalForm.value.name ||
     form.value.description !== originalForm.value.description ||
     form.value.visibility !== originalForm.value.visibility ||
-    JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds)
+    JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds) ||
+    JSON.stringify(repositoryUrls) !== JSON.stringify(originalRepositoryUrls)
   );
 });
 

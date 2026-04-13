@@ -126,7 +126,7 @@ const fetchSearchResults = async () => {
 
   loading.value = true;
   try {
-    const results = await COLLECTIONS_API_SERVICE.searchProjects(searchQuery.value);
+    const results = await COLLECTIONS_API_SERVICE.searchProjectsAndRepositories(searchQuery.value);
     projects.value = results.projects;
     repositories.value = results.repositories;
   } catch {

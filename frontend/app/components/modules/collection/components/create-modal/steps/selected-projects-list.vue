@@ -59,10 +59,8 @@ SPDX-License-Identifier: MIT
         :key="repository.slug"
         class="flex items-center gap-3 py-2.5 border-b border-neutral-200 last:border-b-0"
       >
-        <!-- Project avatar -->
-        <div
-          class="size-6 rounded-sm border border-neutral-200 bg-white overflow-hidden flex items-center justify-center shrink-0"
-        >
+        <!-- Repository icon -->
+        <div class="size-6 flex items-center justify-center shrink-0">
           <lfx-icon
             name="book"
             :size="16"
@@ -76,7 +74,7 @@ SPDX-License-Identifier: MIT
             {{ nameDisplay(repository.url) }}
           </p>
           <p class="text-neutral-500 text-2xs truncate">
-            {{ shorRepoUrl(repository.url) }}
+            {{ shortRepoUrl(repository.url) }}
           </p>
         </div>
 
@@ -120,7 +118,7 @@ defineEmits<{
   removeRepository: [slug: string];
 }>();
 
-const shorRepoUrl = (url: string) => {
+const shortRepoUrl = (url: string) => {
   return getRepoNameFromUrl(url);
 };
 

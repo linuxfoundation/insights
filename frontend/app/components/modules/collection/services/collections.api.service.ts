@@ -199,7 +199,7 @@ class CollectionsApiService {
       });
   }
 
-  async searchProjects(query: string): Promise<SearchResults> {
+  async searchProjectsAndRepositories(query: string): Promise<SearchResults> {
     const sanitizedQuery = sanitizeSearchQuery(query);
     if (!sanitizedQuery) {
       return { projects: [], repositories: [], collections: [] };
