@@ -98,7 +98,7 @@ SPDX-License-Identifier: MIT
               v-if="props.collection"
               class="text-xs leading-4 text-neutral-500"
             >
-              {{ props.collection.projectCount }} projects
+              {{ pluralize('project', projectCount, true) }}
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>
@@ -180,6 +180,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
+import pluralize from 'pluralize';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -250,6 +251,8 @@ const headerBackground = computed(() => {
 const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
   return props.collection.featuredProjects.slice(0, 5);
 });
+
+const projectCount = computed(() => (props.collection.projectCount || 0) + (props.collection.repositoryCount || 0));
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;

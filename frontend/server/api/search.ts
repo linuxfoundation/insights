@@ -14,6 +14,7 @@ export interface SearchResponse {
   archived: boolean | null;
   excluded: boolean | null;
   status: string;
+  url?: string;
 }
 
 /**
@@ -78,6 +79,7 @@ export default defineEventHandler(async (event) => {
             archived: item.archived || false,
             excluded: item.excluded || false,
             projectSlug: item.projectSlug || '',
+            url: item.slug, // from tinybird slug contains the url
           });
         } else if (item.type === 'collection') {
           collections.push({
