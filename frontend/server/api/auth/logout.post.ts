@@ -134,8 +134,7 @@ export default defineEventHandler(async (event) => {
             deleteCookie(event, 'auth_oidc_token');
           }
           deleteCookie(event, 'auth_refresh_token');
-          deleteCookie(event, 'auth_state');
-          deleteCookie(event, 'auth_code_verifier');
+          deleteCookie(event, 'auth_pkce');
           deleteCookie(event, 'auth_redirect_to');
 
           return {
@@ -156,8 +155,7 @@ export default defineEventHandler(async (event) => {
       deleteCookie(event, 'auth_oidc_token');
     }
     deleteCookie(event, 'auth_refresh_token');
-    deleteCookie(event, 'auth_state');
-    deleteCookie(event, 'auth_code_verifier');
+    deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
 
     return {

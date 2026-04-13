@@ -34,14 +34,15 @@ export default defineEventHandler(async (event) => {
       secure: isProduction,
       sameSite: 'lax' as const,
       path: '/',
-      maxAge: 60 * 10, // 10 minutes
+      maxAge: 60 * 15, // 15 minutes
       // Don't set domain for production - let browser handle it automatically
       // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
       ...(!isProduction && { domain: 'localhost' }),
     };
 
-    setCookie(event, 'auth_state', state, cookieOptions);
-    setCookie(event, 'auth_code_verifier', codeVerifier, cookieOptions);
+    // Store state and code verifier together in a single cookie to prevent
+    // race conditions where concurrent login flows overwrite each other's code verifier
+    setCookie(event, 'auth_pkce', JSON.stringify({ state, codeVerifier }), cookieOptions);
 
     // Store redirect URL if provided (validated to prevent open redirect)
     const redirectTo = query.redirectTo as string;
