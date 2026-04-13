@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import type { QueryFunction } from '@tanstack/vue-query';
-import { type ComputedRef, computed } from 'vue';
+import { type ComputedRef, type Ref, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
@@ -49,7 +49,7 @@ export interface SocialMentionsQueryParams extends QueryParams {
 }
 
 class PopularityApiService {
-  fetchPackageDownloads(params: ComputedRef<PopularityQueryParams>) {
+  fetchPackageDownloads(params: ComputedRef<PopularityQueryParams>, enabled?: Ref<boolean>) {
     const queryKey = computed(() => [
       TanstackKey.PACKAGE_DOWNLOADS,
       params.value.projectSlug,
@@ -75,6 +75,7 @@ class PopularityApiService {
     return useQuery<PackageDownloads>({
       queryKey,
       queryFn,
+      enabled,
     });
   }
 
@@ -129,7 +130,7 @@ class PopularityApiService {
       });
   }
 
-  fetchSearchQueries(params: ComputedRef<QueryParams>) {
+  fetchSearchQueries(params: ComputedRef<QueryParams>, enabled?: Ref<boolean>) {
     const queryKey = computed(() => [
       TanstackKey.SEARCH_QUERIES,
       params.value.projectSlug,
@@ -151,6 +152,7 @@ class PopularityApiService {
     return useQuery<SearchQueries>({
       queryKey,
       queryFn,
+      enabled,
     });
   }
 
@@ -168,7 +170,7 @@ class PopularityApiService {
       });
   }
 
-  fetchMailingListsMessages(params: ComputedRef<ActivityTypeQueryParams>) {
+  fetchMailingListsMessages(params: ComputedRef<ActivityTypeQueryParams>, enabled?: Ref<boolean>) {
     const queryKey = computed(() => [
       TanstackKey.MAILING_LISTS_MESSAGES,
       params.value.projectSlug,
@@ -194,6 +196,7 @@ class PopularityApiService {
     return useQuery<MailingListsMessages>({
       queryKey,
       queryFn,
+      enabled,
     });
   }
 

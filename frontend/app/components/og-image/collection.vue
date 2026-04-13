@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <!-- Curated Collection Layout - no ssoUserId, shows collection logo -->
   <div
-    v-if="!isCommunity && collectionLogo"
+    v-if="!isCommunity"
     style="width: 1200px; height: 630px; position: relative; display: flex"
   >
     <img

@@ -35,7 +35,10 @@ SPDX-License-Identifier: MIT
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
+import { useRoute } from 'nuxt/app';
 import { WidgetArea } from '../../../widget/types/widget-area';
+import { lfxWidgetArea } from '../../../widget/config/widget-area.config';
+import { lfxWidgets } from '../../../widget/config/widget.config';
 import { OVERVIEW_API_SERVICE } from '../../services/overview.api.service';
 import LfxProjectScoreTabView from './score-details/score-tab-view.vue';
 import LfxProjectScoreAccordionView from './score-details/score-accordion-view.vue';
@@ -50,8 +53,10 @@ import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import { overviewScore } from '~~/app/components/shared/utils/overview-score';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
 
-const { project, selectedRepoSlugs } = storeToRefs(useProjectStore());
+const route = useRoute();
+const { project, selectedRepoSlugs, selectedReposValues, startDate, endDate } = storeToRefs(useProjectStore());
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -63,13 +68,38 @@ const props = defineProps<{
   isRepoSelected: boolean;
 }>();
 
-const tabs = ref<Tab[]>([
+const projectSlug = computed(() => route.params.slug as string);
+const projectWidgets = computed(() => project.value?.widgets || []);
+const { excludedWidgets: popularityExcludedWidgets } = usePopularityExcludedWidgets({
+  projectSlug,
+  repos: selectedReposValues,
+  startDate,
+  endDate,
+  projectWidgets,
+});
+
+const isPopularityEnabled = computed(() => {
+  const widgets = lfxWidgetArea[WidgetArea.POPULARITY].widgets || [];
+  const availableWidgets = widgets.filter((w) => !popularityExcludedWidgets.value.includes(w));
+  return availableWidgets.some((widget) => project.value?.widgets?.includes(lfxWidgets[widget]?.key));
+});
+
+const allTabs: Tab[] = [
   { label: 'Contributors', value: WidgetArea.CONTRIBUTORS },
   { label: 'Popularity', value: WidgetArea.POPULARITY },
   { label: 'Development', value: WidgetArea.DEVELOPMENT },
   { label: 'Security & Best practices', value: WidgetArea.SECURITY },
-]);
-const selectedTab = ref(tabs.value[0]?.value || WidgetArea.CONTRIBUTORS);
+];
+
+const tabs = computed(() =>
+  allTabs.filter((tab) => {
+    if (tab.value === WidgetArea.POPULARITY) {
+      return isPopularityEnabled.value;
+    }
+    return true;
+  }),
+);
+const selectedTab = ref(allTabs[0]?.value || WidgetArea.CONTRIBUTORS);
 
 const parsedTrustScoreSummary = computed(() => {
   const scoreFromData = overviewScore(props.trustScoreSummary, props.scoreDisplay);

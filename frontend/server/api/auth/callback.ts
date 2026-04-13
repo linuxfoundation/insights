@@ -55,14 +55,33 @@ export default defineEventHandler(async (event) => {
         statusMessage: `Authentication error: ${error} - ${errorDescription}`,
       });
     }
-    // Get stored state and code verifier
-    const storedState = query.state as string;
-    const codeVerifier = getCookie(event, 'auth_code_verifier');
+    // Get stored PKCE data (state + code verifier) from cookie
+    const pkceCookie = getCookie(event, 'auth_pkce');
+    let storedState: string | undefined;
+    let codeVerifier: string | undefined;
+
+    if (pkceCookie) {
+      try {
+        const pkceData = JSON.parse(pkceCookie);
+        storedState = pkceData.state;
+        codeVerifier = pkceData.codeVerifier;
+      } catch {
+        // Invalid cookie format
+      }
+    }
 
     if (!query.code || !codeVerifier) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Missing authorization code or code verifier',
+      });
+    }
+
+    // Validate state from cookie against URL to prevent CSRF and detect concurrent login races
+    if (!storedState || storedState !== query.state) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Invalid state parameter — please try logging in again',
       });
     }
 
@@ -72,15 +91,19 @@ export default defineEventHandler(async (event) => {
       config.public.auth0ClientId,
     );
 
+    // Construct callback URL using the original redirect_uri base path
+    // to avoid mismatch caused by the /auth/callback -> /api/auth/callback route rule redirect
+    const callbackUrl = new URL(config.public.auth0RedirectUri);
+    callbackUrl.search = new URL(getRequestURL(event)).search;
+
     // Exchange authorization code for tokens
-    const tokenResponse = await authorizationCodeGrant(authConfig, new URL(getRequestURL(event)), {
+    const tokenResponse = await authorizationCodeGrant(authConfig, callbackUrl, {
       expectedState: storedState,
       pkceCodeVerifier: codeVerifier,
     });
 
     // Clean up temporary cookies
-    deleteCookie(event, 'auth_state');
-    deleteCookie(event, 'auth_code_verifier');
+    deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
 
     // Validate client secret
@@ -162,8 +185,7 @@ export default defineEventHandler(async (event) => {
     console.error('Auth callback error:', error);
 
     // Clean up cookies on error
-    deleteCookie(event, 'auth_state');
-    deleteCookie(event, 'auth_code_verifier');
+    deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
     deleteCookie(event, 'auth_oidc_token');
     deleteCookie(event, 'auth_refresh_token');

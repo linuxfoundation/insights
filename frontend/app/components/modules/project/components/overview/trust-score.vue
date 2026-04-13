@@ -121,7 +121,9 @@ const props = defineProps<{
 }>();
 
 const overallScore = computed(() => Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0));
-const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
+const hideOverallScore = computed(
+  () => Object.values(props.scoreDisplay).some((score) => !score) && selectedRepositories.value.length == 0,
+);
 const { selectedRepositories, isArchived, emptyStateTitle, emptyStateDescription } = storeToRefs(useProjectStore());
 </script>
 <script lang="ts">
