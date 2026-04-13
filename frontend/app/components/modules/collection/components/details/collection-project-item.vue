@@ -15,7 +15,12 @@ SPDX-License-Identifier: MIT
       />
       <div class="flex flex-col min-w-0">
         <div class="flex items-center gap-1">
-          {{ nameDisplay }}
+          <template v-if="props.project.type === 'repo'">
+            {{ props.project.name }}
+          </template>
+          <template v-else>
+            {{ nameDisplay }}
+          </template>
           <lfx-archived-tag
             v-if="status === 'archived'"
             :archived="true"
@@ -25,11 +30,11 @@ SPDX-License-Identifier: MIT
         </div>
         <div
           v-if="props.project.type === 'repo'"
-          class="text-neutral-500 flex gap-1.5 items-center min-w-0"
+          class="text-neutral-500 font-normal flex gap-1.5 items-center min-w-0"
         >
           <lfx-icon
             name="book"
-            :size="16"
+            :size="12"
             class="shrink-0"
           />
           <span class="truncate">{{ repoShortUrl }}</span>
@@ -66,7 +71,13 @@ SPDX-License-Identifier: MIT
         </lfx-popover>
       </div>
       <div class="w-2/12">
-        <lfx-badge-details :project="props.project" />
+        <template v-if="props.project.type === 'repo'">
+          <span class="text-neutral-400">-</span>
+        </template>
+        <lfx-badge-details
+          v-else
+          :project="props.project"
+        />
       </div>
     </template>
     <template v-else>
