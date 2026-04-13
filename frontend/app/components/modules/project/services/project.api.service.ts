@@ -122,6 +122,21 @@ class ProjectApiService {
   projectCollectionsQueryFn(slug: string): QueryFunction<ProjectCollectionsResponse> {
     return async () => await $fetch(`/api/project/${slug}/collections`);
   }
+
+  fetchRepositoryCollections(url: ComputedRef<string>) {
+    const queryKey = computed(() => [TanstackKey.REPOSITORY_COLLECTIONS, url.value]);
+
+    const queryFn = async (): Promise<ProjectCollectionsResponse> =>
+      await $fetch('/api/repository/collections', {
+        query: { url: url.value },
+      });
+
+    return useQuery<ProjectCollectionsResponse>({
+      queryKey,
+      queryFn,
+      enabled: computed(() => !!url.value),
+    });
+  }
 }
 
 export const PROJECT_API_SERVICE = new ProjectApiService();

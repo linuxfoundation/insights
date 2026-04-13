@@ -57,15 +57,26 @@ import { useAddToCollectionStore } from '~/components/modules/collection/store/a
 import type { Project } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 
-const props = defineProps<{
-  project: Project;
-}>();
+const props = withDefaults(
+  defineProps<{
+    project: Project;
+    repositoryUrl?: string;
+  }>(),
+  {
+    repositoryUrl: undefined,
+  },
+);
 
 const { isAuthenticated, login } = useAuth();
 const { openModal } = useAddToCollectionStore();
 const queryClient = useQueryClient();
 
-const { data } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug);
+const repoUrl = computed(() => props.repositoryUrl || '');
+
+const { data: projectData } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug);
+const { data: repoData } = PROJECT_API_SERVICE.fetchRepositoryCollections(repoUrl);
+
+const data = computed(() => (props.repositoryUrl ? repoData.value : projectData.value));
 
 const collections = computed(() => data.value?.collections || []);
 const publicCount = computed(() => data.value?.publicCount || 0);
@@ -95,6 +106,11 @@ const handleOpenAddToCollectionModal = () => {
       queryClient.invalidateQueries({
         queryKey: [TanstackKey.PROJECT_COLLECTIONS, props.project.slug],
       });
+      if (props.repositoryUrl) {
+        queryClient.invalidateQueries({
+          queryKey: [TanstackKey.REPOSITORY_COLLECTIONS, props.repositoryUrl],
+        });
+      }
     },
   });
 };

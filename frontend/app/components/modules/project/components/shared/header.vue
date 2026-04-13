@@ -107,6 +107,7 @@ SPDX-License-Identifier: MIT
               <lfx-project-featured-in-collection
                 v-if="props.project && showFeaturedInCollection"
                 :project="props.project"
+                :repository-url="singleSelectedRepoUrl"
               />
               <lfx-icon-button
                 icon="link-simple"
@@ -323,6 +324,13 @@ const repoName = computed<string>(() => {
 
 const showFeaturedInCollection = computed(() => {
   return selectedRepositories.value.length <= 1;
+});
+
+const singleSelectedRepoUrl = computed(() => {
+  if (selectedRepositories.value.length === 1) {
+    return selectedRepositories.value[0]!.url;
+  }
+  return undefined;
 });
 
 const archivedRepoLabel = computed<string>(() => {
