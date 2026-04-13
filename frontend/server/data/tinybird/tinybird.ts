@@ -15,15 +15,17 @@ class Semaphore {
   constructor(private limit: number) {}
 
   acquire(timeoutMs: number): Promise<void> {
-    console.warn(
-      JSON.stringify({
-        message: 'tinybird_queue_status',
-        active: this.count,
-        queued: this.queue.length,
-        limit: this.limit,
-        timestamp: new Date().toISOString(),
-      }),
-    );
+    if (this.count >= this.limit) {
+      console.warn(
+        JSON.stringify({
+          message: 'tinybird_queue_status',
+          active: this.count,
+          queued: this.queue.length,
+          limit: this.limit,
+          timestamp: new Date().toISOString(),
+        }),
+      );
+    }
     if (this.count < this.limit) {
       this.count++;
       return Promise.resolve();
@@ -63,7 +65,7 @@ class Semaphore {
   }
 }
 
-const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '100', 10);
+const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '50', 10);
 const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '10000', 10);
 const tinybirdSemaphore = new Semaphore(MAX_CONCURRENT);
 
