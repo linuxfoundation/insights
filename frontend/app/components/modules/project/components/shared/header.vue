@@ -105,7 +105,7 @@ SPDX-License-Identifier: MIT
             </div>
             <div class="hidden md:flex items-center gap-4 flex-grow justify-end">
               <lfx-project-featured-in-collection
-                v-if="props.project"
+                v-if="props.project && showFeaturedInCollection"
                 :project="props.project"
                 :repositories="selectedReposForCollection"
               />
@@ -313,6 +313,10 @@ const repoName = computed<string>(() => {
     return repos.value[0]!.name;
   }
   return `${reposNoDuplicates.value.length} repositories`;
+});
+
+const showFeaturedInCollection = computed(() => {
+  return selectedRepositories.value.length <= 1;
 });
 
 const archivedRepoLabel = computed<string>(() => {
