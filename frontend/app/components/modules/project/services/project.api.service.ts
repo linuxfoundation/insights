@@ -106,13 +106,11 @@ class ProjectApiService {
     return () => $fetch(`/api/project/${slug}`);
   }
 
-  fetchProjectCollections(slug: string, repoUrls: ComputedRef<string[]>) {
-    const queryKey = computed(() => [TanstackKey.PROJECT_COLLECTIONS, slug, repoUrls.value]);
+  fetchProjectCollections(slug: string) {
+    const queryKey = computed(() => [TanstackKey.PROJECT_COLLECTIONS, slug]);
 
     const queryFn = async (): Promise<ProjectCollectionsResponse> =>
-      await $fetch(`/api/project/${slug}/collections`, {
-        query: repoUrls.value.length > 0 ? { repoUrls: repoUrls.value.join(',') } : {},
-      });
+      await $fetch(`/api/project/${slug}/collections`);
 
     return useQuery<ProjectCollectionsResponse>({
       queryKey,

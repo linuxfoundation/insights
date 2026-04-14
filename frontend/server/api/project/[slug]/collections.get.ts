@@ -1,7 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import type { ProjectTinybird } from '~~/types/project';
 
 interface ProjectCollectionItem {
   name: string;
@@ -19,14 +21,11 @@ interface ProjectCollectionsResponse {
  * API Endpoint: /api/project/:slug/collections
  * Method: GET
  * Description: Fetches collections that include the given project — either by a direct
- * project link or by any of the provided repository URLs. Includes public collections
+ * project link or by any repository belonging to the project. Includes public collections
  * as well as private collections owned by the authenticated user.
  *
  * URL Parameters:
  * - slug (string): The unique slug identifier for the project.
- *
- * Query Parameters:
- * - repoUrls (string, optional): Comma-separated repository URLs under the project.
  *
  * Response:
  * - collections (Array): Public collections plus the authenticated user's own private collections.
@@ -39,13 +38,6 @@ interface ProjectCollectionsResponse {
  */
 export default defineEventHandler(async (event): Promise<ProjectCollectionsResponse | Error> => {
   const { slug } = event.context.params as Record<string, string>;
-  const query = getQuery(event);
-  const repoUrlsParam = query?.repoUrls as string | string[] | undefined;
-  const repoUrls: string[] = Array.isArray(repoUrlsParam)
-    ? repoUrlsParam
-    : repoUrlsParam
-      ? repoUrlsParam.split(',').filter(Boolean)
-      : [];
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
 
@@ -57,11 +49,17 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
     const user = event.context.user as DecodedOidcToken | undefined;
     const ssoUserId: string | null = user?.sub ?? null;
 
-    const projectResult = await cmDbPool.query(
-      `SELECT id FROM "insightsProjects" WHERE slug = $1 AND "deletedAt" IS NULL`,
-      [slug],
-    );
+    const [projectResult, projectTinybird] = await Promise.all([
+      cmDbPool.query(`SELECT id FROM "insightsProjects" WHERE slug = $1 AND "deletedAt" IS NULL`, [
+        slug,
+      ]),
+      fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
+        slug,
+        details: true,
+      }),
+    ]);
     const projectId: string | null = projectResult.rows[0]?.id ?? null;
+    const repoUrls: string[] = projectTinybird.data?.[0]?.repositories ?? [];
 
     if (!projectId && repoUrls.length === 0) {
       return { collections: [], publicCount: 0, privateCount: 0 };
