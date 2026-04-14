@@ -40,7 +40,8 @@ export default {
           '/leaderboard': { cache: { maxAge: longCache, base: 'redis' } },
           '/leaderboard/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/project/**': { cache: false },
-          '/': { cache: false },
+          '/collection/**': { cache: false },
+          '/collection': { cache: false },
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {}),
