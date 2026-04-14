@@ -45,7 +45,6 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useQueryClient } from '@tanstack/vue-query';
 import pluralize from 'pluralize';
 import LfxFeaturedInCollectionDropdown from './featured-in-collection-dropdown.vue';
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
@@ -55,22 +54,35 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useAuth } from '~~/composables/useAuth';
 import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
 import type { Project } from '~~/types/project';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 
-const props = defineProps<{
-  project: Project;
-}>();
+const props = withDefaults(
+  defineProps<{
+    project: Project;
+    repositories?: { name: string; path: string; url: string }[];
+  }>(),
+  {
+    repositories: undefined,
+  },
+);
 
 const { isAuthenticated, login } = useAuth();
 const { openModal } = useAddToCollectionStore();
-const queryClient = useQueryClient();
 
-const { data } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug);
+const singleRepo = computed(() => (props.repositories?.length === 1 ? props.repositories[0] : undefined));
+const hasMultipleRepos = computed(() => (props.repositories?.length ?? 0) > 1);
+
+const repoUrl = computed(() => singleRepo.value?.url || '');
+const projectRepoUrls = computed(() => props.project.repositories?.map((r) => r.url) ?? []);
+
+const { data: projectData } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug, projectRepoUrls);
+const { data: repoData } = PROJECT_API_SERVICE.fetchRepositoryCollections(repoUrl);
+
+const data = computed(() => (singleRepo.value ? repoData.value : projectData.value));
 
 const collections = computed(() => data.value?.collections || []);
 const publicCount = computed(() => data.value?.publicCount || 0);
 const privateCount = computed(() => data.value?.privateCount || 0);
-const totalCount = computed(() => publicCount.value + privateCount.value);
+const totalCount = computed(() => (hasMultipleRepos.value ? 0 : publicCount.value + privateCount.value));
 
 const handleAddToCollection = (close: () => void) => {
   close();
@@ -91,11 +103,7 @@ const handleOpenAddToCollectionModal = () => {
       slug: props.project.slug,
       logo: props.project.logo,
     },
-    onAdded: () => {
-      queryClient.invalidateQueries({
-        queryKey: [TanstackKey.PROJECT_COLLECTIONS, props.project.slug],
-      });
-    },
+    repositories: props.repositories,
   });
 };
 </script>

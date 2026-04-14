@@ -39,46 +39,51 @@ export default defineEventHandler(async (event) => {
 
   const isPermissionRequired = protectedAndPermissionRoutes.some((route) => url.startsWith(route));
 
+  const config = useRuntimeConfig();
+  const oidcToken = getCookie(event, 'auth_oidc_token');
+
+  if (oidcToken) {
+    try {
+      const decodedToken = jwt.verify(oidcToken, config.auth0ClientSecret, {
+        algorithms: ['HS256'],
+      }) as DecodedOidcToken;
+
+      if (decodedToken.original_id_token && isJWT(decodedToken.original_id_token)) {
+        event.context.user = decodedToken;
+      } else if (isProtectedRoute) {
+        throw createError({
+          statusCode: 401,
+          statusMessage: 'Invalid token format',
+        });
+      }
+    } catch (jwtError) {
+      if (isProtectedRoute) {
+        console.error('JWT verification failed:', jwtError);
+        throw createError({
+          statusCode: 401,
+          statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
+        });
+      }
+    }
+  }
+
   if (!isProtectedRoute) {
     return;
   }
 
-  const config = useRuntimeConfig();
-  const oidcToken = getCookie(event, 'auth_oidc_token');
+  const contextUser = event.context.user as DecodedOidcToken | undefined;
 
-  if (!oidcToken) {
+  if (!contextUser) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Authorization header required',
     });
   }
 
-  try {
-    // Verify and decode the OIDC token using the client secret
-    const decodedToken = jwt.verify(oidcToken, config.auth0ClientSecret, {
-      algorithms: ['HS256'],
-    }) as DecodedOidcToken;
-
-    if (decodedToken.original_id_token && isJWT(decodedToken.original_id_token)) {
-      event.context.user = decodedToken;
-
-      if (!isLocal && isPermissionRequired && !decodedToken.hasLfxInsightsPermission) {
-        throw createError({
-          statusCode: 401,
-          statusMessage: `User does not belong to ${config.lfxAuth0TokenClaimGroupName}`,
-        });
-      }
-    } else {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'Invalid token format',
-      });
-    }
-  } catch (jwtError) {
-    console.error('JWT verification failed:', jwtError);
+  if (!isLocal && isPermissionRequired && !contextUser.hasLfxInsightsPermission) {
     throw createError({
       statusCode: 401,
-      statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
+      statusMessage: `User does not belong to ${config.lfxAuth0TokenClaimGroupName}`,
     });
   }
 });
