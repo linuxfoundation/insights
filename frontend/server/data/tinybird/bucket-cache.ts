@@ -80,8 +80,10 @@ export async function getBucketIdForProject(
       const cachedBucketId = await storage.getItem<number>(cacheKey);
 
       if (cachedBucketId !== null && cachedBucketId !== undefined) {
+        console.warn(`[bucketId] cache HIT project="${projectValue}" bucketId=${cachedBucketId}`);
         return cachedBucketId;
       }
+      console.warn(`[bucketId] cache MISS project="${projectValue}" — fetching from Tinybird`);
     } catch (cacheError) {
       console.error(`Failed to read from Redis cache for project ${projectValue}:`, cacheError);
     }
@@ -90,12 +92,16 @@ export async function getBucketIdForProject(
       const bucketId = await fetchBucketIdFromTinybird(projectValue, fetcher);
 
       if (bucketId === null) {
+        console.warn(
+          `[bucketId] Tinybird returned null for project="${projectValue}" — not caching`,
+        );
         return null;
       }
 
       try {
         const storage = useStorage('redis');
         await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+        console.warn(`[bucketId] cached project="${projectValue}" bucketId=${bucketId} ttl=86400s`);
       } catch (cacheError) {
         console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
       }
@@ -139,14 +145,18 @@ async function fetchBucketIdFromTinybird(
 
   // Validate response structure
   if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
-    console.warn(`No bucketId found for project: ${projectValue}`);
+    console.warn(
+      `[bucketId] empty response from project_buckets.json project="${projectValue}" rows=${response?.rows ?? 'n/a'} dataLen=${Array.isArray(response?.data) ? response.data.length : 'not-array'}`,
+    );
     return null;
   }
 
   const bucketId = response.data[0]?.bucketId;
 
   if (typeof bucketId !== 'number') {
-    console.warn(`Invalid bucketId type for project ${projectValue}:`, typeof bucketId);
+    console.warn(
+      `[bucketId] invalid bucketId type project="${projectValue}" type=${typeof bucketId} value=${JSON.stringify(response.data[0])}`,
+    );
     return null;
   }
 

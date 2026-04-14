@@ -81,6 +81,9 @@ export async function fetchFromTinybird<T>(
       if (bucketId !== null) {
         query.bucketId = bucketId;
       } else {
+        console.warn(
+          `[bucketId] null bucketId for project="${query.project}" path="${path}" — throwing 404`,
+        );
         throw createError({
           statusCode: 404,
           statusMessage: `Project not found: ${query.project}`,
@@ -126,11 +129,26 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-  const data: TinybirdResponse<T> = await ofetch(url, {
-    headers: {
-      Authorization: `Bearer ${tinybirdToken}`,
-    },
-  });
+  let data: TinybirdResponse<T>;
+  try {
+    data = await ofetch(url, {
+      headers: {
+        Authorization: `Bearer ${tinybirdToken}`,
+      },
+    });
+  } catch (fetchError: unknown) {
+    if (path === '/v0/pipes/project_buckets.json') {
+      const status =
+        fetchError && typeof fetchError === 'object' && 'status' in fetchError
+          ? (fetchError as { status: number }).status
+          : 'unknown';
+      const message = fetchError instanceof Error ? fetchError.message : String(fetchError);
+      console.error(
+        `[tinybird] project_buckets.json HTTP error project="${query.project}" status=${status} message="${message}"`,
+      );
+    }
+    throw fetchError;
+  }
   if (!data || !data.data) {
     throw new Error('Invalid response from Tinybird');
   }
