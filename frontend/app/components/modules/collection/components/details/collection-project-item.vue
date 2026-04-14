@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="flex items-center gap-2 py-4 text-neutral-900 text-sm cursor-pointer hover:bg-neutral-50 transition-all duration-300 px-2 -mx-2"
-    @click="navigateToProject(props.project.slug)"
+    @click="navigateToItem"
   >
     <div class="flex items-center gap-3 w-3/12 font-semibold">
       <lfx-organization-logo
@@ -105,7 +105,7 @@ import LfxDependencyDetails from '~/components/modules/collection/components/det
 import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { getRepoNameFromUrl } from '~~/server/helpers/repository.helpers';
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
@@ -143,8 +143,17 @@ const isOnboarded = computed(() => {
   return props.project.contributorCount > 0 || props.project.organizationCount > 0;
 });
 
-const navigateToProject = (slug: string) => {
-  router.push({ name: LfxRoutes.PROJECT, params: { slug } });
+const navigateToItem = () => {
+  if (props.project.type === 'repo') {
+    const repoName = getRepoNameFromUrl(props.project.repoUrl);
+    const repoSlug = getRepoSlugFromName(repoName);
+    router.push({
+      name: LfxRoutes.REPOSITORY,
+      params: { slug: props.project.slug, name: repoSlug },
+    });
+  } else {
+    router.push({ name: LfxRoutes.PROJECT, params: { slug: props.project.slug } });
+  }
 };
 </script>
 
