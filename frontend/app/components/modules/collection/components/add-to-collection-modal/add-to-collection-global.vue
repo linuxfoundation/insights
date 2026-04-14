@@ -7,7 +7,6 @@ SPDX-License-Identifier: MIT
     v-if="isModalOpen && modalData?.project"
     v-model="isModalOpen"
     :project="modalData.project"
-    :repositories="modalData.repositories"
     @added="handleAdded"
   />
 </template>

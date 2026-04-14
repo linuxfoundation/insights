@@ -107,7 +107,6 @@ SPDX-License-Identifier: MIT
               <lfx-project-featured-in-collection
                 v-if="props.project && showFeaturedInCollection"
                 :project="props.project"
-                :repositories="selectedReposForCollection"
               />
               <lfx-icon-button
                 icon="link-simple"
@@ -141,7 +140,10 @@ SPDX-License-Identifier: MIT
                   />
                   <span class="text-warning-600">Report issue</span>
                 </lfx-dropdown-item>
-                <lfx-dropdown-item @click.stop.prevent="openAddToCollectionModal()">
+                <lfx-dropdown-item
+                  v-if="showFeaturedInCollection"
+                  @click.stop.prevent="openAddToCollectionModal()"
+                >
                   <lfx-icon
                     name="rectangle-history-circle-plus"
                     :size="16"
@@ -231,6 +233,7 @@ import { useRoute } from 'nuxt/app';
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import pluralize from 'pluralize';
+import { useQueryClient } from '@tanstack/vue-query';
 import type { Project, ProjectRepository } from '~~/types/project';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -259,6 +262,7 @@ import { normalizeRepoName } from '~/components/shared/utils/helper';
 import LfxProjectFeaturedInCollection from '~/components/modules/project/components/shared/header/collection-information/featured-in-collection.vue';
 import { useAuth } from '~~/composables/useAuth';
 import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = defineProps<{
   project?: Project;
@@ -268,6 +272,8 @@ const route = useRoute();
 
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { isAuthenticated, login } = useAuth();
+const queryClient = useQueryClient();
+
 const {
   projectRepos,
   selectedRepoSlugs,
@@ -364,17 +370,6 @@ const share = () => {
   });
 };
 
-const selectedReposForCollection = computed(() => {
-  if (selectedRepositories.value.length === 0) {
-    return undefined;
-  }
-  return selectedRepositories.value.map((repo) => ({
-    name: repo.name,
-    path: normalizeRepoName(repo),
-    url: repo.url,
-  }));
-});
-
 const openAddToCollectionModal = () => {
   if (!isAuthenticated.value) {
     login();
@@ -388,7 +383,11 @@ const openAddToCollectionModal = () => {
       slug: props.project?.slug || '',
       logo: props.project?.logo || '',
     },
-    repositories: selectedReposForCollection.value,
+    onAdded: () => {
+      queryClient.invalidateQueries({
+        queryKey: [TanstackKey.PROJECT_COLLECTIONS, props.project?.slug || ''],
+      });
+    },
   });
 };
 

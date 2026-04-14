@@ -10,10 +10,7 @@ SPDX-License-Identifier: MIT
     class="!w-full"
   >
     <template #trigger="{ selectedOption }">
-      <div
-        class="c-select"
-        :class="{ '!rounded-full !pl-4': props.pill }"
-      >
+      <div class="c-select">
         <div class="flex items-center">
           <slot
             v-if="$slots.prefix"
@@ -50,7 +47,6 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 const props = defineProps<{
   modelValue: string;
   placeholder?: string;
-  pill?: boolean;
 }>();
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();

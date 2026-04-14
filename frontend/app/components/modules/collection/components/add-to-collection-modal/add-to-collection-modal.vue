@@ -35,15 +35,10 @@ SPDX-License-Identifier: MIT
 
       <!-- Content -->
       <div class="flex flex-col gap-6">
-        <!-- Selected project/repositories -->
+        <!-- Selected project -->
         <div class="flex flex-col gap-3">
-          <p class="text-xs font-medium text-neutral-900">
-            {{ hasRepositories ? 'Selected repositories:' : 'Selected projects:' }}
-          </p>
-          <div
-            v-if="!hasRepositories"
-            class="flex items-center gap-3 py-2 border-y border-neutral-200"
-          >
+          <p class="text-xs font-medium text-neutral-900">Selected projects:</p>
+          <div class="flex items-center gap-3 py-2 border-y border-neutral-200">
             <lfx-avatar
               type="organization"
               size="xsmall"
@@ -54,28 +49,6 @@ SPDX-License-Identifier: MIT
               <span class="text-xxs text-neutral-500">All repositories</span>
             </div>
           </div>
-          <div
-            v-else
-            class="border-y border-neutral-200 flex flex-col max-h-[40vh] overflow-y-auto"
-          >
-            <div
-              v-for="repo in props.repositories"
-              :key="repo.url"
-              class="flex items-center gap-3 py-2 border-b border-neutral-200 last:border-b-0"
-            >
-              <div class="size-6 flex items-center justify-center shrink-0">
-                <lfx-icon
-                  name="book"
-                  :size="16"
-                  class="text-neutral-400"
-                />
-              </div>
-              <div class="flex flex-col min-w-0">
-                <span class="text-sm font-medium text-neutral-900 leading-5 truncate">{{ repo.name }}</span>
-                <span class="text-xxs text-neutral-500 truncate">{{ repo.path }}</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Collection select -->
@@ -84,7 +57,6 @@ SPDX-License-Identifier: MIT
           <lfx-select
             v-model="selectedCollectionId"
             placeholder="Select a collection"
-            pill
           >
             <template #prefix>
               <lfx-icon
@@ -119,11 +91,7 @@ SPDX-License-Identifier: MIT
         v-if="isProjectInCollection"
         class="text-xs font-medium text-negative-500 text-right"
       >
-        {{
-          hasRepositories
-            ? 'These repositories are already in the collection.'
-            : 'This project is already in the collection.'
-        }}
+        This project is already in the collection.
       </p>
 
       <!-- Footer -->
@@ -161,11 +129,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useQueryClient } from '@tanstack/vue-query';
-import type {
-  AddToCollectionProject,
-  AddToCollectionRepository,
-} from '~/components/modules/collection/store/add-to-collection.store';
+import type { AddToCollectionProject } from '~/components/modules/collection/store/add-to-collection.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useAuth } from '~~/composables/useAuth';
 import useToastService from '~/components/uikit/toast/toast.service';
@@ -180,20 +144,11 @@ import LfxOption from '~/components/uikit/select/option.vue';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { ProjectInsights } from '~~/types/project';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: boolean;
-    project: AddToCollectionProject;
-    repositories?: AddToCollectionRepository[];
-  }>(),
-  {
-    repositories: undefined,
-  },
-);
-
-const hasRepositories = computed(() => props.repositories && props.repositories.length > 0);
+const props = defineProps<{
+  modelValue: boolean;
+  project: AddToCollectionProject;
+}>();
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
@@ -207,7 +162,6 @@ const isModalOpen = computed({
 
 const { user } = useAuth();
 const { showToast } = useToastService();
-const queryClient = useQueryClient();
 
 const selectedCollectionId = ref('');
 const isAdding = ref(false);
@@ -248,15 +202,9 @@ const projectCollections = computed<ProjectInsights[]>(() => {
   return data;
 });
 
-const isProjectInCollection = computed(() => {
-  if (hasRepositories.value) {
-    const existingUrls = new Set(
-      projectCollections.value.filter((p: ProjectInsights) => p.type === 'repo').map((p: ProjectInsights) => p.repoUrl),
-    );
-    return props.repositories!.every((r) => existingUrls.has(r.url));
-  }
-  return projectCollections.value.some((p: ProjectInsights) => p.id === props.project.id);
-});
+const isProjectInCollection = computed(() =>
+  projectCollections.value.some((p: ProjectInsights) => p.id === props.project.id),
+);
 
 const closeModal = () => {
   isModalOpen.value = false;
@@ -272,54 +220,18 @@ const addToCollection = async () => {
   isAdding.value = true;
 
   try {
-    const existingProjectIds = projectCollections.value
-      .filter((p: ProjectInsights) => p.type === 'project')
-      .map((p: ProjectInsights) => p.id);
-    const existingRepoUrls = projectCollections.value
-      .filter((p: ProjectInsights) => p.type === 'repo')
-      .map((p: ProjectInsights) => p.repoUrl);
+    const existingProjectIds = projectCollections.value.map((p: ProjectInsights) => p.id);
 
-    const payload: {
-      name: string;
-      description: string;
-      isPrivate: boolean;
-      projects: string[];
-      repositoryUrls: string[];
-    } = {
+    const newProjectIds = [...existingProjectIds, props.project.id];
+
+    await COLLECTIONS_API_SERVICE.updateCollection(collection.id, {
       name: collection.name,
       description: collection.description,
       isPrivate: collection.isPrivate,
-      projects: existingProjectIds,
-      repositoryUrls: existingRepoUrls,
-    };
-
-    if (hasRepositories.value) {
-      const newUrls = props.repositories!.map((r) => r.url);
-      payload.repositoryUrls = [...new Set([...existingRepoUrls, ...newUrls])];
-    } else {
-      payload.projects = [...new Set([...existingProjectIds, props.project.id])];
-    }
-
-    await COLLECTIONS_API_SERVICE.updateCollection(collection.id, payload);
-
-    queryClient.invalidateQueries({
-      queryKey: [TanstackKey.COLLECTION_PROJECTS],
+      projects: newProjectIds,
     });
-    queryClient.invalidateQueries({
-      queryKey: [TanstackKey.PROJECT_COLLECTIONS, props.project.slug],
-    });
-    if (hasRepositories.value) {
-      props.repositories!.forEach((repo) => {
-        queryClient.invalidateQueries({
-          queryKey: [TanstackKey.REPOSITORY_COLLECTIONS, repo.url],
-        });
-      });
-    }
 
-    const label = hasRepositories.value
-      ? `${props.repositories!.length} ${props.repositories!.length === 1 ? 'repository' : 'repositories'}`
-      : props.project.name;
-    showToast(`${label} added to ${collection.name}`, ToastTypesEnum.positive);
+    showToast(`${props.project.name} added to ${collection.name}`, ToastTypesEnum.positive);
     emit('added');
     closeModal();
   } catch (error) {

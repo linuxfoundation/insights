@@ -11,9 +11,9 @@ SPDX-License-Identifier: MIT
         class="text-accent-500"
       />
     </div>
-    <div class="flex flex-col items-center justify-center gap-3 text-center">
+    <div class="flex flex-col items-center justify-center gap-3">
       <h3 class="text-xl font-bold font-secondary leading-8">No collections yet</h3>
-      <p class="text-sm text-neutral-600 max-w-md">
+      <p class="text-sm text-neutral-600">
         Start building your first collection of open source projects and share it with the community.
       </p>
     </div>
