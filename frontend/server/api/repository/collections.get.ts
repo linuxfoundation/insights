@@ -1,7 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 interface RepositoryCollectionItem {
   name: string;
@@ -18,19 +17,19 @@ interface RepositoryCollectionsResponse {
 /**
  * API Endpoint: /api/repository/collections
  * Method: GET
- * Description: Fetches collections that include the given repository. Includes public
- * collections as well as private collections owned by the authenticated user.
+ * Description: Fetches all public collections that include the given repository,
+ * along with counts of public and private collections.
  *
  * Query Parameters:
  * - url (string): The full repository URL (e.g. https://github.com/org/repo).
  *
  * Response:
- * - collections (Array): Public collections plus the authenticated user's own private collections.
+ * - collections (Array): List of public collections containing the repository.
  *   - name (string): Collection name.
  *   - slug (string): Collection slug.
  *   - logo (string | null): Collection logo URL.
  * - publicCount (number): Total number of public collections containing the repository.
- * - privateCount (number): Total number of private collections containing the repository (all users).
+ * - privateCount (number): Total number of private collections containing the repository.
  *
  * Errors:
  * - 400: Missing url parameter
@@ -53,9 +52,7 @@ export default defineEventHandler(async (event): Promise<RepositoryCollectionsRe
   }
 
   try {
-    const user = event.context.user as DecodedOidcToken | undefined;
-    const ssoUserId: string | null = user?.sub ?? null;
-
+    // Find repository by URL
     const repoResult = await cmDbPool.query(
       `SELECT id FROM repositories WHERE url = $1 AND "deletedAt" IS NULL`,
       [url],
@@ -67,31 +64,42 @@ export default defineEventHandler(async (event): Promise<RepositoryCollectionsRe
 
     const repoId = repoResult.rows[0].id;
 
-    const result = await cmDbPool.query(
-      `WITH matching_collections AS (
-         SELECT c.id, c.name, c.slug, c."logoUrl", c."isPrivate", c."ssoUserId"
+    // Fetch public collections and counts in parallel
+    const [publicCollections, countsResult] = await Promise.all([
+      cmDbPool.query(
+        `SELECT c.name, c.slug, c."logoUrl"
          FROM collections c
          INNER JOIN "collectionsRepositories" cr ON cr."collectionId" = c.id
          WHERE cr."repoId" = $1
            AND cr."deletedAt" IS NULL
            AND c."deletedAt" IS NULL
-       )
-       SELECT
-         json_agg(
-           json_build_object('name', name, 'slug', slug, 'logo', "logoUrl")
-           ORDER BY name ASC
-         ) FILTER (WHERE "isPrivate" = false OR "ssoUserId" = $2) AS collections,
-         COUNT(*) FILTER (WHERE "isPrivate" = false)::int AS "publicCount",
-         COUNT(*) FILTER (WHERE "isPrivate" = true)::int AS "privateCount"
-       FROM matching_collections`,
-      [repoId, ssoUserId],
-    );
+           AND c."isPrivate" = false
+         ORDER BY c.name ASC`,
+        [repoId],
+      ),
+      cmDbPool.query(
+        `SELECT
+           COUNT(*) FILTER (WHERE c."isPrivate" = false)::int AS "publicCount",
+           COUNT(*) FILTER (WHERE c."isPrivate" = true)::int AS "privateCount"
+         FROM collections c
+         INNER JOIN "collectionsRepositories" cr ON cr."collectionId" = c.id
+         WHERE cr."repoId" = $1
+           AND cr."deletedAt" IS NULL
+           AND c."deletedAt" IS NULL`,
+        [repoId],
+      ),
+    ]);
 
-    const row = result.rows[0];
     return {
-      collections: row?.collections ?? [],
-      publicCount: row?.publicCount ?? 0,
-      privateCount: row?.privateCount ?? 0,
+      collections: publicCollections.rows.map(
+        (r: { name: string; slug: string; logoUrl: string | null }) => ({
+          name: r.name,
+          slug: r.slug,
+          logo: r.logoUrl,
+        }),
+      ),
+      publicCount: countsResult.rows[0]?.publicCount || 0,
+      privateCount: countsResult.rows[0]?.privateCount || 0,
     };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {

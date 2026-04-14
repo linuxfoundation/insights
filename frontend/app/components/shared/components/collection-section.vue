@@ -104,7 +104,7 @@ const iconBackground = computed(() => currentTab.value?.iconHighlightClass || ''
 const viewAllRoute = computed(() => currentTab.value?.route || '');
 
 const gridClasses = computed(() => {
-  if ((props.isEmpty && props.status === 'success') || props.status === 'error') {
+  if (props.isEmpty && props.status === 'success') {
     return 'mt-8';
   }
   return 'mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
