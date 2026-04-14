@@ -10,8 +10,15 @@ export interface AddToCollectionProject {
   logo?: string;
 }
 
+export interface AddToCollectionRepository {
+  name: string;
+  path: string;
+  url: string;
+}
+
 export interface AddToCollectionData {
   project: AddToCollectionProject;
+  repositories?: AddToCollectionRepository[];
   onAdded?: () => void;
 }
 

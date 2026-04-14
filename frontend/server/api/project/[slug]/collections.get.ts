@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
+import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 interface ProjectCollectionItem {
   name: string;
@@ -17,27 +18,34 @@ interface ProjectCollectionsResponse {
 /**
  * API Endpoint: /api/project/:slug/collections
  * Method: GET
- * Description: Fetches all public collections that include the given project,
- * along with counts of public and private collections.
+ * Description: Fetches collections that include the given project — either by a direct
+ * project link or by any of the provided repository URLs. Includes public collections
+ * as well as private collections owned by the authenticated user.
  *
  * URL Parameters:
  * - slug (string): The unique slug identifier for the project.
  *
+ * Query Parameters:
+ * - repoUrls (string, optional): Comma-separated repository URLs under the project.
+ *
  * Response:
- * - collections (Array): List of public collections containing the project.
- *   - name (string): Collection name.
- *   - slug (string): Collection slug.
- *   - logo (string | null): Collection logo URL.
- * - publicCount (number): Total number of public collections containing the project.
- * - privateCount (number): Total number of private collections containing the project.
+ * - collections (Array): Public collections plus the authenticated user's own private collections.
+ * - publicCount (number): Total number of public collections referencing the project.
+ * - privateCount (number): Total number of private collections referencing the project (all users).
  *
  * Errors:
- * - 404: Project not found
  * - 503: Database not available
  * - 500: Internal Server Error
  */
 export default defineEventHandler(async (event): Promise<ProjectCollectionsResponse | Error> => {
   const { slug } = event.context.params as Record<string, string>;
+  const query = getQuery(event);
+  const repoUrlsParam = query?.repoUrls as string | string[] | undefined;
+  const repoUrls: string[] = Array.isArray(repoUrlsParam)
+    ? repoUrlsParam
+    : repoUrlsParam
+      ? repoUrlsParam.split(',').filter(Boolean)
+      : [];
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
 
@@ -46,54 +54,48 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
   }
 
   try {
-    // Find project by slug
+    const user = event.context.user as DecodedOidcToken | undefined;
+    const ssoUserId: string | null = user?.sub ?? null;
+
     const projectResult = await cmDbPool.query(
       `SELECT id FROM "insightsProjects" WHERE slug = $1 AND "deletedAt" IS NULL`,
       [slug],
     );
+    const projectId: string | null = projectResult.rows[0]?.id ?? null;
 
-    if (projectResult.rows.length === 0) {
-      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
+    if (!projectId && repoUrls.length === 0) {
+      return { collections: [], publicCount: 0, privateCount: 0 };
     }
 
-    const projectId = projectResult.rows[0].id;
-
-    // Fetch public collections and counts in parallel
-    const [publicCollections, countsResult] = await Promise.all([
-      cmDbPool.query(
-        `SELECT c.name, c.slug, c."logoUrl"
+    const result = await cmDbPool.query(
+      `WITH matching_collections AS (
+         SELECT DISTINCT c.id, c.name, c.slug, c."logoUrl", c."isPrivate", c."ssoUserId"
          FROM collections c
-         INNER JOIN "collectionsInsightsProjects" cip ON cip."collectionId" = c.id
-         WHERE cip."insightsProjectId" = $1
-           AND cip."deletedAt" IS NULL
-           AND c."deletedAt" IS NULL
-           AND c."isPrivate" = false
-         ORDER BY c.name ASC`,
-        [projectId],
-      ),
-      cmDbPool.query(
-        `SELECT
-           COUNT(*) FILTER (WHERE c."isPrivate" = false)::int AS "publicCount",
-           COUNT(*) FILTER (WHERE c."isPrivate" = true)::int AS "privateCount"
-         FROM collections c
-         INNER JOIN "collectionsInsightsProjects" cip ON cip."collectionId" = c.id
-         WHERE cip."insightsProjectId" = $1
-           AND cip."deletedAt" IS NULL
-           AND c."deletedAt" IS NULL`,
-        [projectId],
-      ),
-    ]);
+         LEFT JOIN "collectionsInsightsProjects" cip
+           ON cip."collectionId" = c.id AND cip."deletedAt" IS NULL
+         LEFT JOIN "collectionsRepositories" cr
+           ON cr."collectionId" = c.id AND cr."deletedAt" IS NULL
+         LEFT JOIN repositories r
+           ON r.id = cr."repoId" AND r."deletedAt" IS NULL
+         WHERE c."deletedAt" IS NULL
+           AND (cip."insightsProjectId" = $1 OR r.url = ANY($2))
+       )
+       SELECT
+         json_agg(
+           json_build_object('name', name, 'slug', slug, 'logo', "logoUrl")
+           ORDER BY name ASC
+         ) FILTER (WHERE "isPrivate" = false OR "ssoUserId" = $3) AS collections,
+         COUNT(*) FILTER (WHERE "isPrivate" = false)::int AS "publicCount",
+         COUNT(*) FILTER (WHERE "isPrivate" = true)::int AS "privateCount"
+       FROM matching_collections`,
+      [projectId, repoUrls, ssoUserId],
+    );
 
+    const row = result.rows[0];
     return {
-      collections: publicCollections.rows.map(
-        (r: { name: string; slug: string; logoUrl: string | null }) => ({
-          name: r.name,
-          slug: r.slug,
-          logo: r.logoUrl,
-        }),
-      ),
-      publicCount: countsResult.rows[0]?.publicCount || 0,
-      privateCount: countsResult.rows[0]?.privateCount || 0,
+      collections: row?.collections ?? [],
+      publicCount: row?.publicCount ?? 0,
+      privateCount: row?.privateCount ?? 0,
     };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
