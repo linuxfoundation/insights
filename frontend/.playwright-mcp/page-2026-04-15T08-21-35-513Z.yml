@@ -1,0 +1,172 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - link "Collections" [ref=e6] [cursor=pointer]:
+        - /url: /collection
+        - text: Collections
+      - link "Leaderboards" [ref=e8] [cursor=pointer]:
+        - /url: /leaderboards
+        - text: Leaderboards
+      - link "Open Source Index" [ref=e10] [cursor=pointer]:
+        - /url: /open-source-index
+        - text: Open Source Index
+      - link "Star linuxfoundation/insights on GitHub" [ref=e13] [cursor=pointer]:
+        - /url: https://github.com/linuxfoundation/insights
+        - text: Star
+    - generic [ref=e16]:
+      - paragraph [ref=e19]: LFX Platform
+      - generic [ref=e20]:
+        - link "Organization Dashboard" [ref=e21] [cursor=pointer]:
+          - /url: https://myorg.lfx.dev
+          - button "Organization Dashboard" [ref=e22]:
+            - generic [ref=e24]: Organization Dashboard
+        - link "Individual Dashboard" [ref=e25] [cursor=pointer]:
+          - /url: https://openprofile.dev
+          - button "Individual Dashboard" [ref=e26]:
+            - generic [ref=e28]: Individual Dashboard
+        - link "Project Control Center" [ref=e29] [cursor=pointer]:
+          - /url: https://projectadmin.lfx.linuxfoundation.org
+          - button "Project Control Center" [ref=e30]:
+            - generic [ref=e32]: Project Control Center
+        - link "Security" [ref=e33] [cursor=pointer]:
+          - /url: https://security.lfx.linuxfoundation.org
+          - button "Security" [ref=e34]:
+            - generic [ref=e36]: Security
+        - link "EasyCLA" [ref=e37] [cursor=pointer]:
+          - /url: https://easycla.lfx.linuxfoundation.org
+          - button "EasyCLA" [ref=e38]:
+            - generic [ref=e40]: EasyCLA
+        - link "Mentorship" [ref=e41] [cursor=pointer]:
+          - /url: https://mentorship.lfx.linuxfoundation.org
+          - button "Mentorship" [ref=e42]:
+            - generic [ref=e44]: Mentorship
+        - link "Crowdfunding" [ref=e45] [cursor=pointer]:
+          - /url: https://crowdfunding.lfx.linuxfoundation.org/
+          - button "Crowdfunding" [ref=e46]:
+            - generic [ref=e48]: Crowdfunding
+        - link "Community Data Platform" [ref=e49] [cursor=pointer]:
+          - /url: https://cm.lfx.dev
+          - button "Community Data Platform" [ref=e50]:
+            - generic [ref=e52]: Community Data Platform
+      - link "Know more about LFX Platform" [ref=e53] [cursor=pointer]:
+        - /url: https://lfx.linuxfoundation.org
+        - paragraph [ref=e54]: Know more about LFX Platform
+  - main [ref=e57]:
+    - generic [ref=e60]:
+      - generic [ref=e61]:
+        - link "LFX Insights" [ref=e66] [cursor=pointer]:
+          - /url: /
+          - img "LFX Insights" [ref=e67]
+        - generic [ref=e69] [cursor=pointer]:
+          - paragraph: Search projects, repositories, or collections
+          - alert [ref=e71]: ⌘+K
+      - generic [ref=e73]:
+        - link "Collections" [ref=e74] [cursor=pointer]:
+          - /url: /collection
+          - text: Collections
+        - link "Leaderboards" [ref=e76] [cursor=pointer]:
+          - /url: /leaderboards
+          - text: Leaderboards
+        - link "Open Source Index" [ref=e78] [cursor=pointer]:
+          - /url: /open-source-index
+          - text: Open Source Index
+        - link "Star linuxfoundation/insights on GitHub" [ref=e81] [cursor=pointer]:
+          - /url: https://github.com/linuxfoundation/insights
+          - text: Star
+      - button "Log in" [ref=e84] [cursor=pointer]: Log in
+    - alert [ref=e87]: My Collections | LFX Insights
+    - generic [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - img "LFX Logo" [ref=e92]
+          - paragraph [ref=e93]: LFX Insights helps developers and their organizations make smarter decisions about the open source projects they depend on.
+          - generic [ref=e94]:
+            - link "GitHub Repository" [ref=e95] [cursor=pointer]:
+              - /url: https://github.com/linuxfoundation/insights
+            - link "Join discussions" [ref=e98] [cursor=pointer]:
+              - /url: https://github.com/linuxfoundation/insights/discussions
+              - button "Join discussions" [ref=e99]: Join discussions
+            - link "Submit project" [ref=e102] [cursor=pointer]:
+              - /url: https://github.com/linuxfoundation/insights/discussions/categories/project-onboardings?discussions_q=is:open+category:%22Project+onboardings%22+sort:top
+              - button "Submit project" [ref=e103]: Submit project
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - paragraph [ref=e107]: LFX Insights
+            - navigation [ref=e108]:
+              - link "Leaderboards" [ref=e109] [cursor=pointer]:
+                - /url: /leaderboards
+              - link "Collections" [ref=e110] [cursor=pointer]:
+                - /url: /collection
+              - link "Open Source Index" [ref=e111] [cursor=pointer]:
+                - /url: /open-source-index
+              - link "Docs" [ref=e112] [cursor=pointer]:
+                - /url: /docs/introduction/what-is-insights/
+              - link "Changelog" [ref=e113] [cursor=pointer]:
+                - /url: https://changelog.lfx.dev/?product=insights
+              - link "Roadmap" [ref=e114] [cursor=pointer]:
+                - /url: https://changelog.lfx.dev/roadmap?product=insights
+              - generic [ref=e115] [cursor=pointer]: Report issue
+              - link "Join discussions" [ref=e116] [cursor=pointer]:
+                - /url: https://github.com/linuxfoundation/insights/discussions
+          - generic [ref=e117]:
+            - paragraph [ref=e118]: Featured
+            - navigation [ref=e119]:
+              - link "AI Code Tracker" [ref=e120] [cursor=pointer]:
+                - /url: /report/ai-code-tracker
+              - link "Product Update November 2025" [ref=e121] [cursor=pointer]:
+                - /url: /blog/product-update-nov-2025
+              - link "The First 3 Months of Insights" [ref=e122] [cursor=pointer]:
+                - /url: /blog/first-3-months
+              - link "Introducing Insights" [ref=e123] [cursor=pointer]:
+                - /url: /blog/introducing-insights
+          - generic [ref=e124]:
+            - paragraph [ref=e125]: Other LFX Tools
+            - navigation [ref=e126]:
+              - link "Individual Dashboard" [ref=e127] [cursor=pointer]:
+                - /url: https://openprofile.dev
+              - link "Organization Dashboard" [ref=e128] [cursor=pointer]:
+                - /url: https://myorg.lfx.dev
+              - link "Project Control Center" [ref=e129] [cursor=pointer]:
+                - /url: https://projectadmin.lfx.linuxfoundation.org
+              - link "Mentorship" [ref=e130] [cursor=pointer]:
+                - /url: https://mentorship.lfx.linuxfoundation.org
+              - link "Crowdfunding" [ref=e131] [cursor=pointer]:
+                - /url: https://crowdfunding.lfx.linuxfoundation.org/
+      - contentinfo [ref=e133]:
+        - generic [ref=e135]:
+          - paragraph [ref=e136]:
+            - text: Copyright © 2026 The Linux Foundation®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For more information, including terms of use,
+            - link "Platform Usage" [ref=e137] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/platform-use-agreement/
+            - text: ","
+            - link "Privacy Policy" [ref=e138] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/privacy-policy?hsLang=en
+            - text: ", and"
+            - link "Trademark Usage" [ref=e139] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/trademark-usage?hsLang=en
+            - text: ", please see our"
+            - link "Policies" [ref=e140] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/policies
+            - text: page.
+          - generic [ref=e141]:
+            - link "Manage cookie preferences" [ref=e142] [cursor=pointer]:
+              - /url: "#"
+            - text: .
+  - iframe [ref=e143]:
+    
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e144]:
+    - button "Toggle Nuxt DevTools" [ref=e145] [cursor=pointer]:
+      - img [ref=e146]
+    - generic "Page load time" [ref=e149]:
+      - generic [ref=e150]: "197"
+      - generic [ref=e151]: ms
+    - button "Toggle Component Inspector" [ref=e153] [cursor=pointer]:
+      - img [ref=e154]

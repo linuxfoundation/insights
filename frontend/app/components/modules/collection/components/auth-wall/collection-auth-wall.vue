@@ -113,7 +113,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -139,29 +139,42 @@ const isOpen = computed({
 
 const { login } = useAuth();
 
-const topAuthors = ref<{ name: string; logo: string }[]>([]);
+type Author = { name: string; logo: string };
+
+const topAuthorsCache = ref<Author[] | null>(null);
+let topAuthorsPromise: Promise<Author[]> | null = null;
+
+const topAuthors = ref<Author[]>(topAuthorsCache.value ?? []);
+
+const fetchTopAuthors = async (): Promise<Author[]> => {
+  if (topAuthorsCache.value) return topAuthorsCache.value;
+  if (!topAuthorsPromise) {
+    topAuthorsPromise = $fetch<Pagination<Collection>>('/api/collection', {
+      params: { type: 'community', sort: 'likeCount_desc', pageSize: 10 },
+    })
+      .then((data) => {
+        const seen = new Set<string>();
+        const authors: Author[] = [];
+        for (const collection of data.data) {
+          if (collection.owner?.name && !seen.has(collection.owner.name)) {
+            seen.add(collection.owner.name);
+            authors.push(collection.owner);
+            if (authors.length >= 3) break;
+          }
+        }
+        topAuthorsCache.value = authors;
+        return authors;
+      })
+      .catch(() => {
+        topAuthorsPromise = null;
+        return [];
+      });
+  }
+  return topAuthorsPromise;
+};
 
 onMounted(async () => {
-  try {
-    const data = await $fetch<Pagination<Collection>>('/api/collection', {
-      params: { type: 'community', sort: 'likeCount_desc', pageSize: 10 },
-    });
-
-    const seen = new Set<string>();
-    const authors: { name: string; logo: string }[] = [];
-
-    for (const collection of data.data) {
-      if (collection.owner?.name && !seen.has(collection.owner.name)) {
-        seen.add(collection.owner.name);
-        authors.push(collection.owner);
-        if (authors.length >= 3) break;
-      }
-    }
-
-    topAuthors.value = authors;
-  } catch {
-    // Silently fail - avatar section just won't show
-  }
+  topAuthors.value = await fetchTopAuthors();
 });
 
 const features = [

@@ -348,6 +348,8 @@ class CollectionsApiService {
       ...params.value,
     }));
 
+    const isEnabled = computed(() => !!user.value);
+
     return useInfiniteQuery<
       Pagination<Collection>,
       Error,
@@ -359,7 +361,7 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
-      enabled: !!user,
+      enabled: isEnabled,
     });
   }
 

@@ -1,0 +1,251 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - link "Collections" [ref=e6] [cursor=pointer]:
+        - /url: /collection
+        - text: Collections
+      - link "Leaderboards" [ref=e8] [cursor=pointer]:
+        - /url: /leaderboards
+        - text: Leaderboards
+      - link "Open Source Index" [ref=e10] [cursor=pointer]:
+        - /url: /open-source-index
+        - text: Open Source Index
+    - generic [ref=e14]:
+      - paragraph [ref=e17]: LFX Platform
+      - generic [ref=e18]:
+        - link "Organization Dashboard" [ref=e19] [cursor=pointer]:
+          - /url: https://myorg.lfx.dev
+          - button "Organization Dashboard" [ref=e20]:
+            - generic [ref=e22]: Organization Dashboard
+        - link "Individual Dashboard" [ref=e23] [cursor=pointer]:
+          - /url: https://openprofile.dev
+          - button "Individual Dashboard" [ref=e24]:
+            - generic [ref=e26]: Individual Dashboard
+        - link "Project Control Center" [ref=e27] [cursor=pointer]:
+          - /url: https://projectadmin.lfx.linuxfoundation.org
+          - button "Project Control Center" [ref=e28]:
+            - generic [ref=e30]: Project Control Center
+        - link "Security" [ref=e31] [cursor=pointer]:
+          - /url: https://security.lfx.linuxfoundation.org
+          - button "Security" [ref=e32]:
+            - generic [ref=e34]: Security
+        - link "EasyCLA" [ref=e35] [cursor=pointer]:
+          - /url: https://easycla.lfx.linuxfoundation.org
+          - button "EasyCLA" [ref=e36]:
+            - generic [ref=e38]: EasyCLA
+        - link "Mentorship" [ref=e39] [cursor=pointer]:
+          - /url: https://mentorship.lfx.linuxfoundation.org
+          - button "Mentorship" [ref=e40]:
+            - generic [ref=e42]: Mentorship
+        - link "Crowdfunding" [ref=e43] [cursor=pointer]:
+          - /url: https://crowdfunding.lfx.linuxfoundation.org/
+          - button "Crowdfunding" [ref=e44]:
+            - generic [ref=e46]: Crowdfunding
+        - link "Community Data Platform" [ref=e47] [cursor=pointer]:
+          - /url: https://cm.lfx.dev
+          - button "Community Data Platform" [ref=e48]:
+            - generic [ref=e50]: Community Data Platform
+      - link "Know more about LFX Platform" [ref=e51] [cursor=pointer]:
+        - /url: https://lfx.linuxfoundation.org
+        - paragraph [ref=e52]: Know more about LFX Platform
+  - main [ref=e55]:
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - link "LFX Insights" [ref=e64] [cursor=pointer]:
+          - /url: /
+          - img "LFX Insights" [ref=e65]
+        - generic [ref=e67] [cursor=pointer]:
+          - paragraph: Search projects, repositories, or collections
+          - alert [ref=e70]: ⌘+K
+      - generic [ref=e72]:
+        - link "Collections" [ref=e73] [cursor=pointer]:
+          - /url: /collection
+          - text: Collections
+        - link "Leaderboards" [ref=e75] [cursor=pointer]:
+          - /url: /leaderboards
+          - text: Leaderboards
+        - link "Open Source Index" [ref=e77] [cursor=pointer]:
+          - /url: /open-source-index
+          - text: Open Source Index
+      - button "Log in" [ref=e207] [cursor=pointer]: Log in
+    - generic [ref=e80]:
+      - alert [ref=e209]: Community Collections | LFX Insights
+      - generic [ref=e81]:
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - link [ref=e87] [cursor=pointer]:
+                - /url: /collection
+              - link "Curated" [ref=e90] [cursor=pointer]:
+                - /url: /collection/curated
+                - text: Curated
+              - link "Community" [ref=e93] [cursor=pointer]:
+                - /url: /collection/community
+                - text: Community
+              - generic [ref=e96] [cursor=pointer]: My Collections
+            - button "Create collection" [ref=e100] [cursor=pointer]: Create collection
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - heading "Community Collections" [level=1] [ref=e104]
+              - paragraph [ref=e105]: Discover collections from the open source community.
+            - generic [ref=e106]:
+              - generic [ref=e110] [cursor=pointer]: Featured
+              - group [ref=e113]:
+                - button [pressed] [ref=e114] [cursor=pointer]
+                - button [ref=e118] [cursor=pointer]
+        - generic [ref=e210]:
+          - link "Dronecode Dronecode's Open Source Family by Ramon Roche 0 projects ・ Updated 08 Apr 0" [ref=e211] [cursor=pointer]:
+            - /url: /collection/details/dronecode
+            - generic [ref=e214]:
+              - heading "Dronecode" [level=3] [ref=e215]
+              - paragraph [ref=e216]: Dronecode's Open Source Family
+              - generic [ref=e217]:
+                - generic [ref=e218]:
+                  - img [ref=e220]
+                  - generic [ref=e221]: by Ramon Roche
+                - paragraph [ref=e224]: 0 projects ・ Updated 08 Apr
+                - generic [ref=e225]:
+                  - button [ref=e227]
+                  - button [ref=e231]
+                  - button "0" [ref=e235]:
+                    - generic [ref=e238]: "0"
+          - link "Aurora Bazzite Bluefin Universal Blue Operating System images based using bootc by Jorge Castro 3 projects ・ Updated 23 Mar 0" [ref=e239] [cursor=pointer]:
+            - /url: /collection/details/universal-blue
+            - generic [ref=e240]:
+              - generic [ref=e242]:
+                - generic "Aurora" [ref=e243]:
+                  - img "Aurora" [ref=e244]
+                - generic "Bazzite" [ref=e245]:
+                  - img "Bazzite" [ref=e246]
+                - generic "Bluefin" [ref=e247]:
+                  - img "Bluefin" [ref=e248]
+              - generic [ref=e249]:
+                - heading "Universal Blue" [level=3] [ref=e250]
+                - paragraph [ref=e251]: Operating System images based using bootc
+                - generic [ref=e252]:
+                  - generic [ref=e253]:
+                    - img [ref=e255]
+                    - generic [ref=e256]: by Jorge Castro
+                  - paragraph [ref=e259]: 3 projects ・ Updated 23 Mar
+                  - generic [ref=e260]:
+                    - button [ref=e262]
+                    - button [ref=e266]
+                    - button "0" [ref=e270]:
+                      - generic [ref=e273]: "0"
+    - generic [ref=e144]:
+      - generic [ref=e145]:
+        - generic [ref=e146]:
+          - img "LFX Logo" [ref=e147]
+          - paragraph [ref=e148]: LFX Insights helps developers and their organizations make smarter decisions about the open source projects they depend on.
+          - generic [ref=e149]:
+            - link "GitHub Repository" [ref=e150] [cursor=pointer]:
+              - /url: https://github.com/linuxfoundation/insights
+            - link "Join discussions" [ref=e153] [cursor=pointer]:
+              - /url: https://github.com/linuxfoundation/insights/discussions
+              - button "Join discussions" [ref=e154]: Join discussions
+            - link "Submit project" [ref=e157] [cursor=pointer]:
+              - /url: https://github.com/linuxfoundation/insights/discussions/categories/project-onboardings?discussions_q=is:open+category:%22Project+onboardings%22+sort:top
+              - button "Submit project" [ref=e158]: Submit project
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - paragraph [ref=e162]: LFX Insights
+            - navigation [ref=e163]:
+              - link "Leaderboards" [ref=e164] [cursor=pointer]:
+                - /url: /leaderboards
+              - link "Collections" [ref=e165] [cursor=pointer]:
+                - /url: /collection
+              - link "Open Source Index" [ref=e166] [cursor=pointer]:
+                - /url: /open-source-index
+              - link "Docs" [ref=e167] [cursor=pointer]:
+                - /url: /docs/introduction/what-is-insights/
+              - link "Changelog" [ref=e168] [cursor=pointer]:
+                - /url: https://changelog.lfx.dev/?product=insights
+              - link "Roadmap" [ref=e169] [cursor=pointer]:
+                - /url: https://changelog.lfx.dev/roadmap?product=insights
+              - generic [ref=e170] [cursor=pointer]: Report issue
+              - link "Join discussions" [ref=e171] [cursor=pointer]:
+                - /url: https://github.com/linuxfoundation/insights/discussions
+          - generic [ref=e172]:
+            - paragraph [ref=e173]: Featured
+            - navigation [ref=e174]:
+              - link "AI Code Tracker" [ref=e175] [cursor=pointer]:
+                - /url: /report/ai-code-tracker
+              - link "Product Update November 2025" [ref=e176] [cursor=pointer]:
+                - /url: /blog/product-update-nov-2025
+              - link "The First 3 Months of Insights" [ref=e177] [cursor=pointer]:
+                - /url: /blog/first-3-months
+              - link "Introducing Insights" [ref=e178] [cursor=pointer]:
+                - /url: /blog/introducing-insights
+          - generic [ref=e179]:
+            - paragraph [ref=e180]: Other LFX Tools
+            - navigation [ref=e181]:
+              - link "Individual Dashboard" [ref=e182] [cursor=pointer]:
+                - /url: https://openprofile.dev
+              - link "Organization Dashboard" [ref=e183] [cursor=pointer]:
+                - /url: https://myorg.lfx.dev
+              - link "Project Control Center" [ref=e184] [cursor=pointer]:
+                - /url: https://projectadmin.lfx.linuxfoundation.org
+              - link "Mentorship" [ref=e185] [cursor=pointer]:
+                - /url: https://mentorship.lfx.linuxfoundation.org
+              - link "Crowdfunding" [ref=e186] [cursor=pointer]:
+                - /url: https://crowdfunding.lfx.linuxfoundation.org/
+      - contentinfo [ref=e275]:
+        - generic [ref=e277]:
+          - paragraph [ref=e278]:
+            - text: Copyright © 2026 The Linux Foundation®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For more information, including terms of use,
+            - link "Platform Usage" [ref=e279] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/platform-use-agreement/
+            - text: ","
+            - link "Privacy Policy" [ref=e280] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/privacy-policy?hsLang=en
+            - text: ", and"
+            - link "Trademark Usage" [ref=e281] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/trademark-usage?hsLang=en
+            - text: ", please see our"
+            - link "Policies" [ref=e282] [cursor=pointer]:
+              - /url: https://www.linuxfoundation.org/legal/policies
+            - text: page.
+          - generic [ref=e283]:
+            - link "Manage cookie preferences" [ref=e284] [cursor=pointer]:
+              - /url: "#"
+            - text: .
+  - iframe [ref=e187]:
+    
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e188]:
+    - button "Toggle Nuxt DevTools" [ref=e189] [cursor=pointer]:
+      - img [ref=e190]
+    - generic "Page load time" [ref=e285]:
+      - generic [ref=e194]: "326"
+      - generic [ref=e195]: ms
+    - button "Toggle Component Inspector" [ref=e197] [cursor=pointer]:
+      - img [ref=e198]
+  - generic [ref=e288]:
+    - generic [ref=e289]:
+      - generic [ref=e290]:
+        - generic [ref=e294]: Members only
+        - generic [ref=e297]:
+          - heading "Your open source universe, curated your way." [level=2] [ref=e298]:
+            - text: Your open source universe,
+            - text: curated your way.
+          - paragraph [ref=e299]: Sign in to build, customize, and save collections of the open source projects that matter to you. Then watch your community discover and celebrate them.
+      - generic [ref=e300]:
+        - generic [ref=e303]:
+          - generic [ref=e304]: Create collections
+          - generic [ref=e305]: Group projects by theme, stack, or use case. Give your collection a story worth sharing.
+        - generic [ref=e308]:
+          - generic [ref=e309]: Duplicate & remix
+          - generic [ref=e310]: Fork any community collection as your own starting point and make it uniquely yours.
+        - generic [ref=e313]:
+          - generic [ref=e314]: Like & save
+          - generic [ref=e315]: Bookmark collections you love and surface them later. Your personal discovery feed awaits.
+    - generic [ref=e317]:
+      - button "Sign in to LFX" [ref=e318] [cursor=pointer]
+      - button "Create account" [ref=e319] [cursor=pointer]
