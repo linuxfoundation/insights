@@ -18,13 +18,12 @@ interface ProjectCollectionsResponse {
 /**
  * API Endpoint: /api/project/collections
  * Method: GET
- * Description: Fetches collections that include the given project — either by a direct
- * project link or by any of the provided repository URLs. Includes public collections
- * as well as private collections owned by the authenticated user.
+ * Description: Fetches collections that directly include the given project via
+ * `collectionsInsightsProjects`. Includes public collections as well as private
+ * collections owned by the authenticated user.
  *
  * Query Parameters:
  * - slug (string): The unique slug identifier for the project.
- * - repoUrls (string, optional): Comma-separated repository URLs under the project.
  *
  * Response:
  * - collections (Array): Public collections plus the authenticated user's own private collections.
@@ -44,13 +43,6 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
     throw createError({ statusCode: 400, statusMessage: 'slug query parameter is required' });
   }
 
-  const repoUrlsParam = query?.repoUrls as string | string[] | undefined;
-  const repoUrls: string[] = Array.isArray(repoUrlsParam)
-    ? repoUrlsParam
-    : repoUrlsParam
-      ? repoUrlsParam.split(',').filter(Boolean)
-      : [];
-
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
 
   if (!cmDbPool) {
@@ -67,7 +59,7 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
     );
     const projectId: string | null = projectResult.rows[0]?.id ?? null;
 
-    if (!projectId && repoUrls.length === 0) {
+    if (!projectId) {
       return { collections: [], publicCount: 0, privateCount: 0 };
     }
 
@@ -75,24 +67,20 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
       `WITH matching_collections AS (
          SELECT DISTINCT c.id, c.name, c.slug, c."logoUrl", c."isPrivate", c."ssoUserId"
          FROM collections c
-         LEFT JOIN "collectionsInsightsProjects" cip
+         JOIN "collectionsInsightsProjects" cip
            ON cip."collectionId" = c.id AND cip."deletedAt" IS NULL
-         LEFT JOIN "collectionsRepositories" cr
-           ON cr."collectionId" = c.id AND cr."deletedAt" IS NULL
-         LEFT JOIN repositories r
-           ON r.id = cr."repoId" AND r."deletedAt" IS NULL
          WHERE c."deletedAt" IS NULL
-           AND (cip."insightsProjectId" = $1 OR r.url = ANY($2))
+           AND cip."insightsProjectId" = $1
        )
        SELECT
          json_agg(
            json_build_object('name', name, 'slug', slug, 'logo', "logoUrl")
            ORDER BY name ASC
-         ) FILTER (WHERE "isPrivate" = false OR "ssoUserId" = $3) AS collections,
+         ) FILTER (WHERE "isPrivate" = false OR "ssoUserId" = $2) AS collections,
          COUNT(*) FILTER (WHERE "isPrivate" = false)::int AS "publicCount",
          COUNT(*) FILTER (WHERE "isPrivate" = true)::int AS "privateCount"
        FROM matching_collections`,
-      [projectId, repoUrls, ssoUserId],
+      [projectId, ssoUserId],
     );
 
     const row = result.rows[0];

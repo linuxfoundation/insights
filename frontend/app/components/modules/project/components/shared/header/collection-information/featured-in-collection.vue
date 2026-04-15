@@ -72,9 +72,8 @@ const singleRepo = computed(() => (props.repositories?.length === 1 ? props.repo
 const hasMultipleRepos = computed(() => (props.repositories?.length ?? 0) > 1);
 
 const repoUrl = computed(() => singleRepo.value?.url || '');
-const projectRepoUrls = computed(() => props.project.repositories?.map((r) => r.url) ?? []);
 
-const { data: projectData } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug, projectRepoUrls);
+const { data: projectData } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug);
 const { data: repoData } = PROJECT_API_SERVICE.fetchRepositoryCollections(repoUrl);
 
 const data = computed(() => (singleRepo.value ? repoData.value : projectData.value));
