@@ -39,7 +39,7 @@ export default {
           '/api/**': { cache: { maxAge: shortCache, base: 'redis' } },
           '/leaderboard': { cache: { maxAge: longCache, base: 'redis' } },
           '/leaderboard/**': { cache: { maxAge: longCache, base: 'redis' } },
-          '/project/**': { cache: { maxAge: shortCache, base: 'redis' } },
+          '/project/**': { cache: false },
           '/collection/**': { cache: false },
           '/collection': { cache: false },
           '**': { cache: { maxAge: longCache, base: 'redis' } },
