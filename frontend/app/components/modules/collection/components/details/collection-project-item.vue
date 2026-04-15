@@ -43,15 +43,18 @@ SPDX-License-Identifier: MIT
     </div>
     <template v-if="isOnboarded">
       <div class="w-2/12">
+        <lfx-health-score
+          v-if="isHealthScoreUnavailable"
+          :unavailable="true"
+          :score="0"
+        />
         <lfx-popover
+          v-else
           placement="top"
           trigger-event="hover"
           :allow-pass-through="true"
         >
-          <lfx-health-score
-            :score="project.healthScore"
-            :unavailable="isHealthScoreUnavailable"
-          />
+          <lfx-health-score :score="project.healthScore" />
           <template #content>
             <lfx-health-score-details :project="props.project" />
           </template>

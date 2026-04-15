@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-tag
     v-if="props.unavailable"
-    variation="neutral"
+    variation="default"
   >
     Unavailable
   </lfx-tag>
