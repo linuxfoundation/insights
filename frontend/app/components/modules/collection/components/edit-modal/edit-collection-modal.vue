@@ -110,7 +110,7 @@ interface Tab {
 
 const tabs: Tab[] = [
   { value: 'settings', label: 'Settings', icon: 'sliders-simple' },
-  { value: 'projects', label: 'Projects', icon: 'grid-round-2' },
+  { value: 'projects', label: 'Projects & Repositories', icon: 'grid-round-2' },
 ];
 
 const props = defineProps<{

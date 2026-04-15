@@ -12,6 +12,7 @@ export enum TanstackKey {
   PROJECTS = 'projects',
   PROJECT = 'project',
   PROJECT_COLLECTIONS = 'project-collections',
+  REPOSITORY_COLLECTIONS = 'repository-collections',
 
   // Contributors
   ACTIVE_CONTRIBUTORS = 'active-contributors',

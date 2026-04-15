@@ -647,6 +647,32 @@ export class CommunityCollectionRepository {
     const uniqueIds = [...new Set(insightsProjectIds)];
     if (uniqueIds.length === 0) return;
 
+    // Validate that all project IDs exist in the insightsProjects table
+    const projectResult = await client.query(
+      `SELECT id FROM "insightsProjects" WHERE id = ANY($1) AND "deletedAt" IS NULL`,
+      [uniqueIds],
+    );
+
+    const foundIds = new Set(projectResult.rows.map((r: { id: string }) => r.id));
+    if (foundIds.size === 0) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'None of the provided project IDs were found',
+      });
+    }
+
+    const notFound = uniqueIds.filter((id) => !foundIds.has(id));
+    if (notFound.length > 0) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Some project IDs were not found',
+        data: {
+          notFoundIds: notFound,
+          notFoundCount: notFound.length,
+        },
+      });
+    }
+
     const values = uniqueIds.map((_, i) => `($1, $${i + 2}, false)`).join(', ');
 
     await client.query(
