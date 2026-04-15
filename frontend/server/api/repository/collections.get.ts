@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import { getOptionalUser } from '../../utils/jwt';
 
 interface RepositoryCollectionItem {
   name: string;
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event): Promise<RepositoryCollectionsRe
   }
 
   try {
-    const user = event.context.user as DecodedOidcToken | undefined;
+    const user = getOptionalUser(event);
     const ssoUserId: string | null = user?.sub ?? null;
 
     const repoResult = await cmDbPool.query(

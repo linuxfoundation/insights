@@ -110,8 +110,11 @@ class ProjectApiService {
     const queryKey = computed(() => [TanstackKey.PROJECT_COLLECTIONS, slug, repoUrls.value]);
 
     const queryFn = async (): Promise<ProjectCollectionsResponse> =>
-      await $fetch(`/api/project/${slug}/collections`, {
-        query: repoUrls.value.length > 0 ? { repoUrls: repoUrls.value.join(',') } : {},
+      await $fetch('/api/project/collections', {
+        query: {
+          slug,
+          ...(repoUrls.value.length > 0 ? { repoUrls: repoUrls.value.join(',') } : {}),
+        },
       });
 
     return useQuery<ProjectCollectionsResponse>({

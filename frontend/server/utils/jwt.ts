@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: MIT
 import jwt from 'jsonwebtoken';
 import type { H3Event } from 'h3';
+import { getCookie } from 'h3';
+import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+
+const isJWT = (token: string) => token.split('.').length === 3;
 
 /**
  * Auth middleware for static jwt - supports both Authorization header and auth query parameter
@@ -40,6 +44,33 @@ export async function auth(event: H3Event): Promise<void> {
       statusCode: 401,
       statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
     });
+  }
+}
+
+/**
+ * Reads the OIDC auth cookie and returns the decoded user if the token is
+ * present and valid. Returns null when the cookie is missing or invalid.
+ * Intended for endpoints that are publicly accessible but can personalize
+ * their response when the caller is authenticated.
+ */
+export function getOptionalUser(event: H3Event): DecodedOidcToken | null {
+  const oidcToken = getCookie(event, 'auth_oidc_token');
+  if (!oidcToken) {
+    return null;
+  }
+
+  try {
+    const config = useRuntimeConfig();
+    const decoded = jwt.verify(oidcToken, config.auth0ClientSecret, {
+      algorithms: ['HS256'],
+    }) as DecodedOidcToken;
+
+    if (decoded.original_id_token && isJWT(decoded.original_id_token)) {
+      return decoded;
+    }
+    return null;
+  } catch {
+    return null;
   }
 }
 

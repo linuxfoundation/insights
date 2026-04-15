@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import { getOptionalUser } from '../../utils/jwt';
 
 interface ProjectCollectionItem {
   name: string;
@@ -16,16 +16,14 @@ interface ProjectCollectionsResponse {
 }
 
 /**
- * API Endpoint: /api/project/:slug/collections
+ * API Endpoint: /api/project/collections
  * Method: GET
  * Description: Fetches collections that include the given project — either by a direct
  * project link or by any of the provided repository URLs. Includes public collections
  * as well as private collections owned by the authenticated user.
  *
- * URL Parameters:
- * - slug (string): The unique slug identifier for the project.
- *
  * Query Parameters:
+ * - slug (string): The unique slug identifier for the project.
  * - repoUrls (string, optional): Comma-separated repository URLs under the project.
  *
  * Response:
@@ -34,12 +32,18 @@ interface ProjectCollectionsResponse {
  * - privateCount (number): Total number of private collections referencing the project (all users).
  *
  * Errors:
+ * - 400: Missing slug
  * - 503: Database not available
  * - 500: Internal Server Error
  */
 export default defineEventHandler(async (event): Promise<ProjectCollectionsResponse | Error> => {
-  const { slug } = event.context.params as Record<string, string>;
   const query = getQuery(event);
+  const slug = query?.slug as string | undefined;
+
+  if (!slug) {
+    throw createError({ statusCode: 400, statusMessage: 'slug query parameter is required' });
+  }
+
   const repoUrlsParam = query?.repoUrls as string | string[] | undefined;
   const repoUrls: string[] = Array.isArray(repoUrlsParam)
     ? repoUrlsParam
@@ -54,7 +58,7 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
   }
 
   try {
-    const user = event.context.user as DecodedOidcToken | undefined;
+    const user = getOptionalUser(event);
     const ssoUserId: string | null = user?.sub ?? null;
 
     const projectResult = await cmDbPool.query(

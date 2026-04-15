@@ -35,7 +35,7 @@ export default {
           '/api/leaderboard': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/leaderboard/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/project': { cache: { maxAge: longCache, base: 'redis' } },
-          '/api/project/*/collections': { cache: false },
+          '/api/project/collections': { cache: false },
           '/api/repository/collections': { cache: false },
           '/api/ossindex': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/**': { cache: { maxAge: shortCache, base: 'redis' } },
