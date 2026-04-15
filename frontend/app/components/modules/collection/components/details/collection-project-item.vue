@@ -43,7 +43,13 @@ SPDX-License-Identifier: MIT
     </div>
     <template v-if="isOnboarded">
       <div class="w-2/12">
+        <lfx-health-score
+          v-if="isHealthScoreUnavailable"
+          :unavailable="true"
+          :score="0"
+        />
         <lfx-popover
+          v-else
           placement="top"
           trigger-event="hover"
           :allow-pass-through="true"
@@ -141,6 +147,13 @@ const nameDisplay = computed(() => {
 
 const isOnboarded = computed(() => {
   return props.project.contributorCount > 0 || props.project.organizationCount > 0;
+});
+
+const isHealthScoreUnavailable = computed(() => {
+  const { contributorHealthScore, popularityHealthScore, developmentHealthScore, securityHealthScore } = props.project;
+  return [contributorHealthScore, popularityHealthScore, developmentHealthScore, securityHealthScore].some(
+    (score) => !score,
+  );
 });
 
 const navigateToItem = () => {
