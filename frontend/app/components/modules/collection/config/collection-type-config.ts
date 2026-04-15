@@ -17,7 +17,7 @@ export interface CollectionTypesTabs extends MenuItem {
   description: string;
   detailsLabel: string;
 }
-export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
+export const collectionTabs = (_user?: User | null): CollectionTypesTabs[] => {
   const tabs: CollectionTypesTabs[] = [
     {
       label: 'Curated',
@@ -42,18 +42,16 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
     description: 'Discover collections from the open source community.',
   });
 
-  if (user) {
-    tabs.push({
-      label: 'My Collections',
-      detailsLabel: 'My Collections',
-      icon: 'folder-heart',
-      route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
-      activeClass: '!bg-discovery-200',
-      iconHighlightClass: '!bg-discovery-500',
-      type: CollectionTypeEnum.MY_COLLECTIONS,
-      description: "Collections you've created or liked.",
-    });
-  }
+  tabs.push({
+    label: 'My Collections',
+    detailsLabel: 'My Collections',
+    icon: 'folder-heart',
+    route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
+    activeClass: '!bg-discovery-200',
+    iconHighlightClass: '!bg-discovery-500',
+    type: CollectionTypeEnum.MY_COLLECTIONS,
+    description: "Collections you've created or liked.",
+  });
 
   return tabs;
 };

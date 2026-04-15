@@ -24,10 +24,11 @@ SPDX-License-Identifier: MIT
         <lfx-menu-button
           v-for="link of linkUrl"
           :key="link.label"
-          :to="{ name: link.route }"
+          :to="getTabTo(link)"
           :exact="true"
           class="!py-1"
           :class="[route.name === link.route ? link.activeClass : '']"
+          @click="handleTabClick(link)"
         >
           <template #default="{ isActive }">
             <div
@@ -78,14 +79,21 @@ SPDX-License-Identifier: MIT
       />
     </div>
   </div>
+
+  <lfx-collection-auth-wall
+    v-if="isAuthWallOpen"
+    v-model="isAuthWallOpen"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { collectionTabs } from '../../config/collection-type-config';
+import { collectionTabs, CollectionTypeEnum } from '../../config/collection-type-config';
+import type { CollectionTypesTabs } from '../../config/collection-type-config';
 import LfCreateCollectionButton from '../../components/create-modal/create-button.vue';
+import LfxCollectionAuthWall from '../auth-wall/collection-auth-wall.vue';
 import LfxCollectionListControls from './collection-list-controls.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
@@ -96,7 +104,19 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 
 const authStore = useAuthStore();
-const { user } = storeToRefs(authStore);
+const { user, isAuthenticated } = storeToRefs(authStore);
+const isAuthWallOpen = ref(false);
+
+const isLockedTab = (link: CollectionTypesTabs) =>
+  link.type === CollectionTypeEnum.MY_COLLECTIONS && !isAuthenticated.value;
+
+const getTabTo = (link: CollectionTypesTabs) => (isLockedTab(link) ? undefined : { name: link.route });
+
+const handleTabClick = (link: CollectionTypesTabs) => {
+  if (isLockedTab(link)) {
+    isAuthWallOpen.value = true;
+  }
+};
 
 const props = defineProps<{
   type?: CollectionType;
