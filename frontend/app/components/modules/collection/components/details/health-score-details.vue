@@ -105,6 +105,7 @@ const getColor = (value: number): ProgressBarType => {
 };
 
 const getHealthLabel = (score: number): string => {
+  if (!score) return 'Unavailable';
   if (score >= 80) return 'Excellent';
   if (score >= 60) return 'Healthy';
   if (score >= 40) return 'Stable';

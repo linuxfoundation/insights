@@ -48,7 +48,10 @@ SPDX-License-Identifier: MIT
           trigger-event="hover"
           :allow-pass-through="true"
         >
-          <lfx-health-score :score="project.healthScore" />
+          <lfx-health-score
+            :score="project.healthScore"
+            :unavailable="isHealthScoreUnavailable"
+          />
           <template #content>
             <lfx-health-score-details :project="props.project" />
           </template>
@@ -141,6 +144,13 @@ const nameDisplay = computed(() => {
 
 const isOnboarded = computed(() => {
   return props.project.contributorCount > 0 || props.project.organizationCount > 0;
+});
+
+const isHealthScoreUnavailable = computed(() => {
+  const { contributorHealthScore, popularityHealthScore, developmentHealthScore, securityHealthScore } = props.project;
+  return [contributorHealthScore, popularityHealthScore, developmentHealthScore, securityHealthScore].some(
+    (score) => !score,
+  );
 });
 
 const navigateToItem = () => {
