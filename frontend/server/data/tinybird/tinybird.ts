@@ -266,12 +266,13 @@ export async function fetchFromTinybird<T>(
   // Health-check pings bypass the semaphore to avoid readiness probe failures under load
   const skipThrottle = path === '/v0/pipes/ping.json';
 
-  if (!skipThrottle) {
-    await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
-  }
-
+  let acquired = false;
   const fetchStart = Date.now();
   try {
+    if (!skipThrottle) {
+      await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+      acquired = true;
+    }
     const data: TinybirdResponse<T> = await ofetch(url, {
       headers: {
         Authorization: `Bearer ${tinybirdToken}`,
@@ -319,7 +320,7 @@ export async function fetchFromTinybird<T>(
     }
     throw error;
   } finally {
-    if (!skipThrottle) {
+    if (acquired) {
       tinybirdSemaphore.release();
     }
   }
