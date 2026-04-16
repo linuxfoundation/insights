@@ -4,29 +4,83 @@ import { DateTime } from 'luxon';
 import { ofetch } from 'ofetch';
 import { getBucketIdForProject } from './bucket-cache';
 
-class Semaphore {
+/**
+ * Concurrency limiter for outbound Tinybird GET requests.
+ *
+ * Caps the number of in-flight requests to `limit` (default 20, configurable via
+ * NUXT_TINYBIRD_MAX_CONCURRENT). Excess requests queue with a timeout, returning 503
+ * if they wait too long.
+ *
+ * Includes an adaptive backoff mechanism: when Tinybird returns a 429, the effective
+ * concurrency limit is halved for 30 seconds to reduce pressure, then auto-recovers.
+ */
+class AdaptiveSemaphore {
   private count = 0;
+  private effectiveLimit: number;
+  private recoveryTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly recoveryMs = 30_000;
+  private readonly backoffFactor = 0.5;
+  private readonly minLimit = 5;
   private queue: Array<{
     resolve: () => void;
     reject: (err: unknown) => void;
     timer: ReturnType<typeof setTimeout>;
   }> = [];
 
-  constructor(private limit: number) {}
+  constructor(private limit: number) {
+    this.effectiveLimit = limit;
+  }
+
+  reportTinybirdRateLimit(): void {
+    const previousLimit = this.effectiveLimit;
+    this.effectiveLimit = Math.max(Math.floor(this.limit * this.backoffFactor), this.minLimit);
+
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_adaptive_throttle',
+        event: 'backoff',
+        previousLimit,
+        newLimit: this.effectiveLimit,
+        active: this.count,
+        queued: this.queue.length,
+        timestamp: new Date().toISOString(),
+      }),
+    );
+
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+    }
+
+    this.recoveryTimer = setTimeout(() => {
+      this.effectiveLimit = this.limit;
+      this.recoveryTimer = null;
+      console.warn(
+        JSON.stringify({
+          message: 'tinybird_adaptive_throttle',
+          event: 'recovery',
+          restoredLimit: this.limit,
+          active: this.count,
+          queued: this.queue.length,
+          timestamp: new Date().toISOString(),
+        }),
+      );
+    }, this.recoveryMs);
+  }
 
   acquire(timeoutMs: number): Promise<void> {
-    if (this.count >= this.limit) {
+    if (this.count >= this.effectiveLimit) {
       console.warn(
         JSON.stringify({
           message: 'tinybird_queue_status',
           active: this.count,
           queued: this.queue.length,
+          effectiveLimit: this.effectiveLimit,
           limit: this.limit,
           timestamp: new Date().toISOString(),
         }),
       );
     }
-    if (this.count < this.limit) {
+    if (this.count < this.effectiveLimit) {
       this.count++;
       return Promise.resolve();
     }
@@ -38,6 +92,7 @@ class Semaphore {
           JSON.stringify({
             message: 'tinybird_throttle',
             queueDepth: this.queue.length,
+            effectiveLimit: this.effectiveLimit,
             limit: this.limit,
             timeoutMs,
             timestamp: new Date().toISOString(),
@@ -54,6 +109,18 @@ class Semaphore {
     });
   }
 
+  getActive(): number {
+    return this.count;
+  }
+
+  getQueueLength(): number {
+    return this.queue.length;
+  }
+
+  getEffectiveLimit(): number {
+    return this.effectiveLimit;
+  }
+
   release(): void {
     if (this.queue.length > 0) {
       const next = this.queue.shift()!;
@@ -65,9 +132,9 @@ class Semaphore {
   }
 }
 
-const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '50', 10);
+const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '20', 10);
 const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '10000', 10);
-const tinybirdSemaphore = new Semaphore(MAX_CONCURRENT);
+const tinybirdSemaphore = new AdaptiveSemaphore(MAX_CONCURRENT);
 
 /**
  * Represents the structure of a response from the Tinybird API.
@@ -191,7 +258,23 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
+  const acquireStart = Date.now();
   await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+  const waitMs = Date.now() - acquireStart;
+
+  console.warn(
+    JSON.stringify({
+      message: 'tinybird_request_start',
+      pipe: path,
+      waitMs,
+      active: tinybirdSemaphore.getActive(),
+      queued: tinybirdSemaphore.getQueueLength(),
+      effectiveLimit: tinybirdSemaphore.getEffectiveLimit(),
+      timestamp: new Date().toISOString(),
+    }),
+  );
+
+  const fetchStart = Date.now();
   try {
     const data: TinybirdResponse<T> = await ofetch(url, {
       headers: {
@@ -201,7 +284,41 @@ export async function fetchFromTinybird<T>(
     if (!data || !data.data) {
       throw new Error('Invalid response from Tinybird');
     }
+
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_request_end',
+        pipe: path,
+        durationMs: Date.now() - fetchStart,
+        active: tinybirdSemaphore.getActive(),
+        queued: tinybirdSemaphore.getQueueLength(),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+
     return data;
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? (error as { status: number }).status
+        : undefined;
+
+    console.error(
+      JSON.stringify({
+        message: 'tinybird_request_error',
+        pipe: path,
+        status,
+        durationMs: Date.now() - fetchStart,
+        active: tinybirdSemaphore.getActive(),
+        queued: tinybirdSemaphore.getQueueLength(),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+
+    if (status === 429) {
+      tinybirdSemaphore.reportTinybirdRateLimit();
+    }
+    throw error;
   } finally {
     tinybirdSemaphore.release();
   }
