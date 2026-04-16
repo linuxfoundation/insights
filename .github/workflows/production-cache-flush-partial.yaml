@@ -136,6 +136,10 @@ jobs:
 
             echo "Done. Flushed cache for $TOTAL_FLUSHED projects."
 
+            echo "Flushing collection cache keys matching *collection*"
+            kubectl exec -i redis-client -n insights -- \
+              sh -c "redis-cli -h redis-svc -a \"$REDIS_PASS\" --scan --pattern \"*collection*\" 2>/dev/null | xargs -r redis-cli -h redis-svc -a \"$REDIS_PASS\" DEL 2>/dev/null"
+
           elif [ "$TYPE" = "leaderboards" ]; then
             echo "Flushing all leaderboard cache keys"
             kubectl exec -i redis-client -n insights -- \
