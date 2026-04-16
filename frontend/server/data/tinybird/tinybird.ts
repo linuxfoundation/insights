@@ -134,6 +134,10 @@ class AdaptiveSemaphore {
 
 const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '35', 10);
 const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '15000', 10);
+const SLOW_REQUEST_THRESHOLD_MS = parseInt(
+  process.env.NUXT_TINYBIRD_SLOW_REQUEST_THRESHOLD_MS || '5000',
+  10,
+);
 const tinybirdSemaphore = new AdaptiveSemaphore(MAX_CONCURRENT);
 
 /**
@@ -275,6 +279,20 @@ export async function fetchFromTinybird<T>(
     });
     if (!data || !data.data) {
       throw new Error('Invalid response from Tinybird');
+    }
+    const durationMs = Date.now() - fetchStart;
+    if (durationMs > SLOW_REQUEST_THRESHOLD_MS) {
+      console.warn(
+        JSON.stringify({
+          message: 'tinybird_slow_request',
+          pipe: path,
+          params: processedQuery,
+          durationMs,
+          active: tinybirdSemaphore.getActive(),
+          queued: tinybirdSemaphore.getQueueLength(),
+          timestamp: new Date().toISOString(),
+        }),
+      );
     }
     return data;
   } catch (error: unknown) {
