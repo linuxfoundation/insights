@@ -9,15 +9,21 @@ SPDX-License-Identifier: MIT
     :source-collection="duplicateData.collection"
     @created="handleCreated"
   />
+
+  <lfx-collection-auth-wall
+    v-if="isAuthWallOpen"
+    v-model="isAuthWallOpen"
+  />
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import LfCreateCollectionModal from './create-collection-modal.vue';
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
 
 const duplicateCollectionStore = useDuplicateCollectionStore();
-const { isDuplicateModalOpen, duplicateData } = storeToRefs(duplicateCollectionStore);
+const { isDuplicateModalOpen, isAuthWallOpen, duplicateData } = storeToRefs(duplicateCollectionStore);
 const { handleCreated } = duplicateCollectionStore;
 </script>
 

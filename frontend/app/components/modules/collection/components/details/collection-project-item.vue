@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="flex items-center gap-2 py-4 text-neutral-900 text-sm cursor-pointer hover:bg-neutral-50 transition-all duration-300 px-2 -mx-2"
-    @click="navigateToProject(props.project.slug)"
+    @click="navigateToItem"
   >
     <div class="flex items-center gap-3 w-3/12 font-semibold">
       <lfx-organization-logo
@@ -13,17 +13,43 @@ SPDX-License-Identifier: MIT
         :is-lf="props.project.isLF"
         :alt="props.project.name"
       />
-      {{ props.project.name }}
-      <lfx-archived-tag
-        v-if="status === 'archived'"
-        :archived="true"
-        label="Archived"
-        type="project"
-      />
+      <div class="flex flex-col min-w-0">
+        <div class="flex items-center gap-1">
+          <template v-if="props.project.type === 'repo'">
+            {{ props.project.name }}
+          </template>
+          <template v-else>
+            {{ nameDisplay }}
+          </template>
+          <lfx-archived-tag
+            v-if="status === 'archived'"
+            :archived="true"
+            label="Archived"
+            type="project"
+          />
+        </div>
+        <div
+          v-if="props.project.type === 'repo'"
+          class="text-neutral-500 font-normal flex gap-1.5 items-center min-w-0"
+        >
+          <lfx-icon
+            name="book"
+            :size="12"
+            class="shrink-0"
+          />
+          <span class="truncate">{{ repoShortUrl }}</span>
+        </div>
+      </div>
     </div>
     <template v-if="isOnboarded">
       <div class="w-2/12">
+        <lfx-health-score
+          v-if="isHealthScoreUnavailable"
+          :unavailable="true"
+          :score="0"
+        />
         <lfx-popover
+          v-else
           placement="top"
           trigger-event="hover"
           :allow-pass-through="true"
@@ -51,7 +77,13 @@ SPDX-License-Identifier: MIT
         </lfx-popover>
       </div>
       <div class="w-2/12">
-        <lfx-badge-details :project="props.project" />
+        <template v-if="props.project.type === 'repo'">
+          <span class="text-neutral-400">-</span>
+        </template>
+        <lfx-badge-details
+          v-else
+          :project="props.project"
+        />
       </div>
     </template>
     <template v-else>
@@ -78,6 +110,9 @@ import LfxDependencyColumn from '~/components/modules/collection/components/deta
 import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';
 import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   project: ProjectInsights;
@@ -85,17 +120,53 @@ const props = defineProps<{
 
 const router = useRouter();
 
-// TODO: waiting on the backend to provide this
 const status = computed(() => {
-  return 'active';
+  return props.project.status;
+});
+
+const repoShortUrl = computed(() => {
+  if (props.project.type === 'repo') {
+    return getRepoNameFromUrl(props.project.repoUrl);
+  }
+  return '';
+});
+
+const nameDisplay = computed(() => {
+  if (props.project.type === 'repo') {
+    const splitName = normalizeRepoName({
+      url: props.project.repoUrl,
+      name: '',
+      slug: '',
+      score: 0,
+      rank: 0,
+    }).split('/');
+    return splitName.length > 0 ? splitName[splitName.length - 1] : props.project.repoUrl;
+  }
+  return props.project.name;
 });
 
 const isOnboarded = computed(() => {
   return props.project.contributorCount > 0 || props.project.organizationCount > 0;
 });
 
-const navigateToProject = (slug: string) => {
-  router.push({ name: LfxRoutes.PROJECT, params: { slug } });
+const isHealthScoreUnavailable = computed(() => {
+  const { contributorHealthScore, popularityHealthScore, developmentHealthScore, securityHealthScore } = props.project;
+  return [contributorHealthScore, popularityHealthScore, developmentHealthScore, securityHealthScore].some(
+    (score) => !score,
+  );
+});
+
+const navigateToItem = () => {
+  if (props.project.type === 'repo') {
+    const repoName = getRepoNameFromUrl(props.project.repoUrl);
+    const repoSlug = getRepoSlugFromName(repoName);
+    router.push({
+      name: LfxRoutes.REPOSITORY,
+      params: { slug: props.project.slug, name: repoSlug },
+    });
+  } else {
+    router.push({ name: LfxRoutes.PROJECT, params: { slug: props.project.slug } });
+  }
 };
 </script>
 

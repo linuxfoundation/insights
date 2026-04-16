@@ -15,6 +15,7 @@ export interface Collection {
   description: string;
   isLf: boolean;
   projectCount: number;
+  repositoryCount: number;
   featuredProjects: CollectionFeaturedProject[];
   softwareValue?: number;
   contributorCount?: number;

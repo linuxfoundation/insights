@@ -18,16 +18,19 @@ SPDX-License-Identifier: MIT
     <template v-else>
       <!-- Search input with dropdown -->
       <lf-project-search-dropdown
-        :selected-slugs="selectedSlugs"
-        @add="addProject"
-        @toggle="toggleProject"
+        :selected-projects-slugs="selectedProjectsSlugs"
+        :selected-repositories-slugs="selectedRepositoriesSlugs"
+        @add-project="addProject"
+        @add-repository="addRepository"
       />
 
       <!-- Selected projects list -->
       <lf-selected-projects-list
-        v-if="model.projects.length > 0"
+        v-if="model.projects.length > 0 || model.repositories.length > 0"
         :projects="model.projects"
-        @remove="removeProject"
+        :repositories="model.repositories"
+        @remove-project="removeProject"
+        @remove-repository="removeRepository"
       />
 
       <!-- Empty state -->
@@ -56,10 +59,11 @@ import { computed } from 'vue';
 import LfProjectSearchDropdown from '../create-modal/steps/project-search-dropdown.vue';
 import LfSelectedProjectsList from '../create-modal/steps/selected-projects-list.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { SearchProject } from '~~/types/search';
+import type { SearchProject, SearchRepository } from '~~/types/search';
 import type {
   CreateCollectionForm,
   CollectionProject,
+  CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
 import LfSkeletonLoader from '~/components/uikit/skeleton/skeleton.vue';
 
@@ -75,30 +79,38 @@ const model = computed<CreateCollectionForm>({
   set: (value: CreateCollectionForm) => emit('update:modelValue', value),
 });
 
-const selectedSlugs = computed(() => model.value.projects.map((p) => p.slug));
+const selectedProjectsSlugs = computed(() => model.value.projects.map((p) => p.slug));
+const selectedRepositoriesSlugs = computed(() => model.value.repositories.map((r) => r.slug));
 
-const addProject = (project: SearchProject) => {
-  if (!selectedSlugs.value.includes(project.slug)) {
+const addProject = (item: SearchProject) => {
+  if (!selectedProjectsSlugs.value.includes(item.slug)) {
     const collectionProject: CollectionProject = {
-      id: project.id,
-      name: project.name,
-      slug: project.slug,
-      logo: project.logo,
+      id: item.id,
+      name: item.name,
+      slug: item.slug,
+      logo: item.logo,
     };
     model.value.projects = [...model.value.projects, collectionProject];
   }
 };
 
-const toggleProject = (project: SearchProject) => {
-  if (selectedSlugs.value.includes(project.slug)) {
-    removeProject(project.slug);
-  } else {
-    addProject(project);
+const addRepository = (repository: SearchRepository) => {
+  if (!selectedRepositoriesSlugs.value.includes(repository.slug)) {
+    const collectionRepository: CollectionRepository = {
+      name: repository.name,
+      slug: repository.slug,
+      url: repository.url,
+    };
+    model.value.repositories = [...model.value.repositories, collectionRepository];
   }
 };
 
 const removeProject = (slug: string) => {
   model.value.projects = model.value.projects.filter((p) => p.slug !== slug);
+};
+
+const removeRepository = (slug: string) => {
+  model.value.repositories = model.value.repositories.filter((r) => r.slug !== slug);
 };
 </script>
 

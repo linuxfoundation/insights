@@ -17,10 +17,17 @@ export interface CollectionProject {
   logo: string | null;
 }
 
+export interface CollectionRepository {
+  name: string;
+  slug: string;
+  url: string;
+}
+
 export interface CreateCollectionForm {
   name: string;
   description: string;
   projects: CollectionProject[];
+  repositories: CollectionRepository[];
   visibility: 'private' | 'public';
 }
 
@@ -43,5 +50,6 @@ export const createCollectionTemplate: CreateCollectionForm = {
   name: '',
   description: '',
   projects: [],
+  repositories: [],
   visibility: 'private',
 };

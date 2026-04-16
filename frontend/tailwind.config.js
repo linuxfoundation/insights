@@ -133,5 +133,6 @@ export default {
     '!bg-positive-500',
     '!bg-neutral-300',
     '!bg-negative-900',
+    'bg-neutral-50',
   ],
 };

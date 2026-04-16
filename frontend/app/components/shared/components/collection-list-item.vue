@@ -75,7 +75,7 @@ SPDX-License-Identifier: MIT
             class="text-neutral-500"
           />
           <span class="text-sm text-neutral-500">
-            {{ props.collection.projectCount }} projects ・ Updated
+            {{ pluralize('project', projectCount, true) }} ・ Updated
             {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
           </span>
         </div>
@@ -155,6 +155,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+import pluralize from 'pluralize';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
@@ -204,6 +205,8 @@ const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
 const showLikeCount = computed(() => props.variant !== 'my-collections');
 
 const isSingleLogo = computed(() => props.variant === 'liked-collections' || props.variant === 'curated');
+
+const projectCount = computed(() => (props.collection.projectCount || 0) + (props.collection.repositoryCount || 0));
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;

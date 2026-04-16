@@ -105,15 +105,9 @@ SPDX-License-Identifier: MIT
             </div>
             <div class="hidden md:flex items-center gap-4 flex-grow justify-end">
               <lfx-project-featured-in-collection
-                v-if="props.project"
+                v-if="props.project && showFeaturedInCollection"
                 :project="props.project"
-              />
-              <lfx-icon-button
-                icon="comment-exclamation"
-                size="medium"
-                class="!text-warning-600"
-                title="Report issue"
-                @click="openReportModal()"
+                :repositories="selectedReposForCollection"
               />
               <lfx-icon-button
                 icon="link-simple"
@@ -130,6 +124,31 @@ SPDX-License-Identifier: MIT
                 <lfx-icon name="sparkles" />
                 Ask Copilot
               </lfx-button>
+
+              <lfx-dropdown placement="bottom-end">
+                <template #trigger>
+                  <lfx-icon-button
+                    icon="ellipsis"
+                    type="transparent"
+                    class="!text-neutral-900"
+                  />
+                </template>
+                <lfx-dropdown-item @click.stop.prevent="openReportModal()">
+                  <lfx-icon
+                    name="comment-exclamation"
+                    :size="16"
+                    class="!text-warning-600"
+                  />
+                  <span class="text-warning-600">Report issue</span>
+                </lfx-dropdown-item>
+                <lfx-dropdown-item @click.stop.prevent="openAddToCollectionModal()">
+                  <lfx-icon
+                    name="rectangle-history-circle-plus"
+                    :size="16"
+                  />
+                  <span>Add to collection</span>
+                </lfx-dropdown-item>
+              </lfx-dropdown>
             </div>
           </div>
         </div>
@@ -231,11 +250,15 @@ import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
 import LfxProjectFeaturedInCollection from '~/components/modules/project/components/shared/header/collection-information/featured-in-collection.vue';
+import { useAuth } from '~~/composables/useAuth';
+import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
 
 const props = defineProps<{
   project?: Project;
@@ -244,7 +267,7 @@ const props = defineProps<{
 const route = useRoute();
 
 const { headerTopClass } = storeToRefs(useBannerStore());
-
+const { isAuthenticated, login } = useAuth();
 const {
   projectRepos,
   selectedRepoSlugs,
@@ -258,6 +281,7 @@ const { openShareModal } = useShareStore();
 const { openCopilotModal } = useCopilotStore();
 const { filterCount } = storeToRefs(useCommunityStore());
 const { openCommunityFilterModal } = useCommunityStore();
+const { openModal } = useAddToCollectionStore();
 
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 
@@ -289,6 +313,10 @@ const repoName = computed<string>(() => {
     return repos.value[0]!.name;
   }
   return `${reposNoDuplicates.value.length} repositories`;
+});
+
+const showFeaturedInCollection = computed(() => {
+  return selectedRepositories.value.length <= 1;
 });
 
 const archivedRepoLabel = computed<string>(() => {
@@ -333,6 +361,34 @@ const share = () => {
     title: finalTitle,
     showGithubBadge: true,
     activeTab: 'link',
+  });
+};
+
+const selectedReposForCollection = computed(() => {
+  if (selectedRepositories.value.length === 0) {
+    return undefined;
+  }
+  return selectedRepositories.value.map((repo) => ({
+    name: repo.name,
+    path: normalizeRepoName(repo),
+    url: repo.url,
+  }));
+});
+
+const openAddToCollectionModal = () => {
+  if (!isAuthenticated.value) {
+    login();
+    return;
+  }
+
+  openModal({
+    project: {
+      id: props.project?.id || '',
+      name: props.project?.name || '',
+      slug: props.project?.slug || '',
+      logo: props.project?.logo || '',
+    },
+    repositories: selectedReposForCollection.value,
   });
 };
 

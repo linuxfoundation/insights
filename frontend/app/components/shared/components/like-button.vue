@@ -53,10 +53,15 @@ SPDX-License-Identifier: MIT
       </span>
     </lfx-button>
   </lfx-tooltip>
+
+  <lfx-collection-auth-wall
+    v-if="isAuthWallOpen"
+    v-model="isAuthWallOpen"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -72,11 +77,14 @@ import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
-// import { useAuth } from '~~/composables/useAuth';
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
+import { useAuth } from '~~/composables/useAuth';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
 const { showToast } = useToastService();
+const { isAuthenticated } = useAuth();
+const isAuthWallOpen = ref(false);
 
 const props = withDefaults(
   defineProps<{
@@ -112,6 +120,11 @@ const invalidateCollectionQueries = () => {
 };
 
 const handleLike = async () => {
+  if (!isAuthenticated.value) {
+    isAuthWallOpen.value = true;
+    return;
+  }
+
   const wasLiked = isLiked.value;
 
   try {

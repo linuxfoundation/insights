@@ -4,7 +4,13 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-tag
-    v-if="props.score >= 80"
+    v-if="props.unavailable"
+    variation="default"
+  >
+    Unavailable
+  </lfx-tag>
+  <lfx-tag
+    v-else-if="props.score >= 80"
     variation="positive-solid"
   >
     Excellent
@@ -40,6 +46,7 @@ import LfxTag from '~/components/uikit/tag/tag.vue';
 
 const props = defineProps<{
   score: number;
+  unavailable?: boolean;
 }>();
 </script>
 
