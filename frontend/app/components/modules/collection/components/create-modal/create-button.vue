@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     :type="type"
     button-style="pill"
     :class="type === 'ghost' ? '!text-accent-500' : ''"
+    v-bind="$attrs"
     @click="handleClick"
   >
     <lfx-icon name="rectangle-history-circle-plus" />

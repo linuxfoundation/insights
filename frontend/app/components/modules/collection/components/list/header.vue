@@ -4,12 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="flex flex-col gap-10 container pt-6 gap-10"
-    :class="!props.isScrolledState ? 'pb-0' : 'pb-10 '"
+    class="flex flex-col gap-4 md:gap-10 container pt-3 md:pt-6"
+    :class="!props.isScrolledState ? 'pb-0' : 'pb-4 md:pb-10'"
   >
-    <div class="flex items-center justify-between w-full pb-6 border-b border-neutral-200">
+    <div class="flex items-center justify-between w-full pb-3 md:pb-6 border-b border-neutral-200">
       <div class="flex items-center gap-2">
-        <!-- TODO: change this to the correct route when we have the discovery page -->
         <nuxt-link
           :to="{ name: LfxRoutes.COLLECTIONS }"
           class="ease-linear transition-all"
@@ -17,35 +16,78 @@ SPDX-License-Identifier: MIT
           <lfx-icon-button
             type="transparent"
             icon="angle-left"
-            class=""
+            :size="isMobile ? 'small' : 'medium'"
           />
         </nuxt-link>
 
-        <lfx-menu-button
-          v-for="link of linkUrl"
-          :key="link.label"
-          :to="getTabTo(link)"
-          :exact="true"
-          class="!py-1"
-          :class="[route.name === link.route ? link.activeClass : '']"
-          @click="handleTabClick(link)"
-        >
-          <template #default="{ isActive }">
-            <div
-              :class="[isActive ? link.iconHighlightClass : '']"
-              class="rounded-full h-[26px] w-[26px] flex items-center justify-center"
-            >
-              <lfx-icon
-                :name="link.icon!"
-                :class="[isActive ? '!text-white' : '']"
-              />
-            </div>
-            {{ link.label }}
-          </template>
-        </lfx-menu-button>
+        <!-- Desktop: tab buttons -->
+        <div class="hidden md:flex items-center gap-2">
+          <lfx-menu-button
+            v-for="link of linkUrl"
+            :key="link.label"
+            :to="getTabTo(link)"
+            :exact="true"
+            class="!py-1"
+            :class="[route.name === link.route ? link.activeClass : '']"
+            @click="handleTabClick(link)"
+          >
+            <template #default="{ isActive }">
+              <div
+                :class="[isActive ? link.iconHighlightClass : '']"
+                class="rounded-full h-[26px] w-[26px] flex items-center justify-center"
+              >
+                <lfx-icon
+                  :name="link.icon!"
+                  :class="[isActive ? '!text-white' : '']"
+                />
+              </div>
+              {{ link.label }}
+            </template>
+          </lfx-menu-button>
+        </div>
+
+        <!-- Mobile: dropdown for tabs -->
+        <div class="md:hidden">
+          <lfx-dropdown-select
+            :model-value="currentTabValue"
+            width="12rem"
+            placement="bottom-start"
+            @update:model-value="handleMobileTabChange"
+          >
+            <template #trigger="{ selectedOption }">
+              <lfx-dropdown-selector
+                size="small"
+                class="!gap-2 !rounded-full text-xs"
+                :class="currentTabActiveClass"
+              >
+                <div
+                  class="rounded-full h-5 w-5 flex items-center justify-center"
+                  :class="currentTabIconHighlightClass"
+                >
+                  <lfx-icon
+                    :name="currentTabIcon"
+                    :size="12"
+                    class="!text-white"
+                  />
+                </div>
+                {{ selectedOption?.label || title }}
+              </lfx-dropdown-selector>
+            </template>
+
+            <lfx-dropdown-item
+              v-for="link of linkUrl"
+              :key="link.label"
+              :value="link.type"
+              :label="link.label"
+            />
+          </lfx-dropdown-select>
+        </div>
       </div>
       <div class="flex items-center gap-4">
-        <div v-if="!props.isScrolledState">
+        <div
+          v-if="!props.isScrolledState"
+          class="hidden md:block"
+        >
           <lfx-collection-list-controls
             v-if="!props.isEmpty || props.isLoading"
             :sort="props.sort"
@@ -54,7 +96,10 @@ SPDX-License-Identifier: MIT
             @update:view="emit('update:view', $event)"
           />
         </div>
-        <lf-create-collection-button @created="handleCreated" />
+        <lf-create-collection-button
+          :size="isMobile ? 'small' : 'medium'"
+          @created="handleCreated"
+        />
       </div>
     </div>
     <div
@@ -62,21 +107,23 @@ SPDX-License-Identifier: MIT
       class="flex justify-between items-start"
     >
       <div class="flex flex-col gap-1">
-        <h1 class="text-4xl font-secondary font-light">
+        <h1 class="text-2xl md:text-4xl font-secondary font-light">
           {{ title }}
         </h1>
-        <p class="text-neutral-600">
+        <p class="text-sm md:text-base text-neutral-600">
           {{ description }}
         </p>
       </div>
 
-      <lfx-collection-list-controls
-        v-if="!props.isEmpty || props.isLoading"
-        :sort="props.sort"
-        :view="props.view"
-        @update:sort="emit('update:sort', $event)"
-        @update:view="emit('update:view', $event)"
-      />
+      <div class="hidden md:block">
+        <lfx-collection-list-controls
+          v-if="!props.isEmpty || props.isLoading"
+          :sort="props.sort"
+          :view="props.view"
+          @update:sort="emit('update:sort', $event)"
+          @update:view="emit('update:view', $event)"
+        />
+      </div>
     </div>
   </div>
 
@@ -88,7 +135,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useRoute } from 'nuxt/app';
+import { useRoute, useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { collectionTabs, CollectionTypeEnum } from '../../config/collection-type-config';
 import type { CollectionTypesTabs } from '../../config/collection-type-config';
@@ -99,13 +146,21 @@ import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import useResponsive from '~/components/shared/utils/responsive';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+
+const { pageWidth } = useResponsive();
+const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);
 
 const authStore = useAuthStore();
 const { user, isAuthenticated } = storeToRefs(authStore);
 const isAuthWallOpen = ref(false);
+const router = useRouter();
 
 const isLockedTab = (link: CollectionTypesTabs) =>
   link.type === CollectionTypeEnum.MY_COLLECTIONS && !isAuthenticated.value;
@@ -136,6 +191,23 @@ const route = useRoute();
 const linkUrl = computed(() => collectionTabs(user.value));
 const title = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.detailsLabel || '');
 const description = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.description || '');
+const currentTabValue = computed(() => props.type || '');
+const currentTab = computed(() => linkUrl.value.find((tab) => tab.type === props.type));
+const currentTabIcon = computed(() => currentTab.value?.icon || '');
+const currentTabActiveClass = computed(() => currentTab.value?.activeClass || '');
+const currentTabIconHighlightClass = computed(() => currentTab.value?.iconHighlightClass || '');
+
+const handleMobileTabChange = (value: string) => {
+  const tab = linkUrl.value.find((t) => t.type === value);
+  if (!tab) return;
+
+  if (tab.type === CollectionTypeEnum.MY_COLLECTIONS && !isAuthenticated.value) {
+    isAuthWallOpen.value = true;
+    return;
+  }
+
+  router.push({ name: tab.route });
+};
 
 const handleCreated = (form: CreateCollectionForm) => {
   emit('created', form);

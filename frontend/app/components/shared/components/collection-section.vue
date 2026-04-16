@@ -21,7 +21,11 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
 
-      <div v-if="viewAllRoute && status === 'success' && !props.isEmpty">
+      <!-- Desktop: View all in header -->
+      <div
+        v-if="viewAllRoute && status === 'success' && !props.isEmpty"
+        class="hidden md:block"
+      >
         <nuxt-link :to="{ name: viewAllRoute }">
           <lfx-button
             type="transparent"
@@ -55,6 +59,25 @@ SPDX-License-Identifier: MIT
         <lfx-collections-empty @created="handleCreated" />
       </template>
     </div>
+
+    <!-- Mobile: View all at end of list, centered -->
+    <div
+      v-if="viewAllRoute && status === 'success' && !props.isEmpty"
+      class="mt-6 flex justify-center md:hidden"
+    >
+      <nuxt-link :to="{ name: viewAllRoute }">
+        <lfx-button
+          type="transparent"
+          button-style="pill"
+        >
+          <lfx-icon
+            name="rectangle-history"
+            :size="16"
+          />
+          <span class="text-sm text-nowrap">View all</span>
+        </lfx-button>
+      </nuxt-link>
+    </div>
   </section>
 </template>
 
@@ -82,12 +105,14 @@ const props = withDefaults(
     error?: Error | null;
     errorMessage?: string;
     isEmpty?: boolean;
+    mobileLayout?: 'cards' | 'list';
   }>(),
   {
     status: 'success',
     error: null,
     errorMessage: 'Error fetching collections',
     isEmpty: false,
+    mobileLayout: 'cards',
   },
 );
 
@@ -107,7 +132,8 @@ const gridClasses = computed(() => {
   if ((props.isEmpty && props.status === 'success') || props.status === 'error') {
     return 'mt-8';
   }
-  return 'mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+  const mobileGap = props.mobileLayout === 'cards' ? 'gap-6' : '';
+  return `mt-8 flex flex-col ${mobileGap} md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6`;
 });
 
 const handleCreated = () => {

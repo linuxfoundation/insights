@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
     <!-- Loading State -->
     <template v-if="status === 'pending'">
       <div :class="classDisplay">
-        <template v-if="props.view === 'list'">
+        <template v-if="effectiveView === 'list'">
           <lfx-collection-list-item-loading
             v-for="i in 3"
             :key="i"
@@ -61,9 +61,9 @@ SPDX-License-Identifier: MIT
         v-else
         :class="classDisplay"
       >
-        <template v-if="props.view === 'list'">
+        <template v-if="effectiveView === 'list'">
           <lfx-collection-list-item
-            v-for="collection in likedCollections"
+            v-for="collection in displayedLikedCollections"
             :key="collection.slug"
             :collection="collection"
             variant="liked-collections"
@@ -73,7 +73,7 @@ SPDX-License-Identifier: MIT
         </template>
         <template v-else>
           <lfx-collection-card
-            v-for="collection in likedCollections"
+            v-for="collection in displayedLikedCollections"
             :key="collection.slug"
             :collection="collection"
             variant="community"
@@ -99,6 +99,10 @@ import LfxCollectionCardLoading from '~/components/shared/components/collection-
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import useResponsive from '~/components/shared/utils/responsive';
+
+const { pageWidth } = useResponsive();
+const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);
 
 const props = withDefaults(
   defineProps<{
@@ -133,13 +137,17 @@ const {
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryLikedCollections(params, user);
 
 const likedCollections = computed(() => likedData.value?.data || []);
+const displayedLikedCollections = computed(() =>
+  isMobile.value ? likedCollections.value.slice(0, 5) : likedCollections.value,
+);
+const effectiveView = computed(() => (isMobile.value ? 'list' : props.view));
 const isLikedCollectionsEmpty = computed(() => likedCollections.value.length === 0);
 
 const likedCollectionIds = computed(() => likedCollections.value.map((c) => c.id));
 useLikeCounts(likedCollectionIds);
 
 const classDisplay = computed(() => {
-  if (props.view === 'grid') {
+  if (effectiveView.value === 'grid') {
     return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr';
   }
   return 'flex flex-col';
