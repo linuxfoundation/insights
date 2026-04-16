@@ -3,47 +3,44 @@
 import type { Pool } from 'pg';
 import { getOptionalUser } from '../../utils/jwt';
 
-interface RepositoryCollectionItem {
+interface ProjectCollectionItem {
   name: string;
   slug: string;
   logo: string | null;
 }
 
-interface RepositoryCollectionsResponse {
-  collections: RepositoryCollectionItem[];
+interface ProjectCollectionsResponse {
+  collections: ProjectCollectionItem[];
   publicCount: number;
   privateCount: number;
 }
 
 /**
- * API Endpoint: /api/repository/collections
+ * API Endpoint: /api/project/collections
  * Method: GET
- * Description: Fetches collections that include the given repository. Includes public
- * collections as well as private collections owned by the authenticated user.
+ * Description: Fetches collections that directly include the given project via
+ * `collectionsInsightsProjects`. Includes public collections as well as private
+ * collections owned by the authenticated user.
  *
  * Query Parameters:
- * - url (string): The full repository URL (e.g. https://github.com/org/repo).
+ * - slug (string): The unique slug identifier for the project.
  *
  * Response:
  * - collections (Array): Public collections plus the authenticated user's own private collections.
- *   - name (string): Collection name.
- *   - slug (string): Collection slug.
- *   - logo (string | null): Collection logo URL.
- * - publicCount (number): Total number of public collections containing the repository.
- * - privateCount (number): Total number of private collections containing the repository (all users).
+ * - publicCount (number): Total number of public collections referencing the project.
+ * - privateCount (number): Total number of private collections referencing the project (all users).
  *
  * Errors:
- * - 400: Missing url parameter
- * - 404: Repository not found
+ * - 400: Missing slug
  * - 503: Database not available
  * - 500: Internal Server Error
  */
-export default defineEventHandler(async (event): Promise<RepositoryCollectionsResponse | Error> => {
+export default defineEventHandler(async (event): Promise<ProjectCollectionsResponse | Error> => {
   const query = getQuery(event);
-  const url = query.url as string | undefined;
+  const slug = query?.slug as string | undefined;
 
-  if (!url) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing required query parameter: url' });
+  if (!slug) {
+    throw createError({ statusCode: 400, statusMessage: 'slug query parameter is required' });
   }
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
@@ -56,25 +53,24 @@ export default defineEventHandler(async (event): Promise<RepositoryCollectionsRe
     const user = getOptionalUser(event);
     const ssoUserId: string | null = user?.sub ?? null;
 
-    const repoResult = await cmDbPool.query(
-      `SELECT id FROM repositories WHERE url = $1 AND "deletedAt" IS NULL`,
-      [url],
+    const projectResult = await cmDbPool.query(
+      `SELECT id FROM "insightsProjects" WHERE slug = $1 AND "deletedAt" IS NULL`,
+      [slug],
     );
+    const projectId: string | null = projectResult.rows[0]?.id ?? null;
 
-    if (repoResult.rows.length === 0) {
-      throw createError({ statusCode: 404, statusMessage: 'Repository not found' });
+    if (!projectId) {
+      return { collections: [], publicCount: 0, privateCount: 0 };
     }
-
-    const repoId = repoResult.rows[0].id;
 
     const result = await cmDbPool.query(
       `WITH matching_collections AS (
-         SELECT c.id, c.name, c.slug, c."logoUrl", c."isPrivate", c."ssoUserId"
+         SELECT DISTINCT c.id, c.name, c.slug, c."logoUrl", c."isPrivate", c."ssoUserId"
          FROM collections c
-         INNER JOIN "collectionsRepositories" cr ON cr."collectionId" = c.id
-         WHERE cr."repoId" = $1
-           AND cr."deletedAt" IS NULL
-           AND c."deletedAt" IS NULL
+         JOIN "collectionsInsightsProjects" cip
+           ON cip."collectionId" = c.id AND cip."deletedAt" IS NULL
+         WHERE c."deletedAt" IS NULL
+           AND cip."insightsProjectId" = $1
        )
        SELECT
          json_agg(
@@ -84,7 +80,7 @@ export default defineEventHandler(async (event): Promise<RepositoryCollectionsRe
          COUNT(*) FILTER (WHERE "isPrivate" = false)::int AS "publicCount",
          COUNT(*) FILTER (WHERE "isPrivate" = true)::int AS "privateCount"
        FROM matching_collections`,
-      [repoId, ssoUserId],
+      [projectId, ssoUserId],
     );
 
     const row = result.rows[0];
@@ -97,7 +93,7 @@ export default defineEventHandler(async (event): Promise<RepositoryCollectionsRe
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }
-    console.error('Error fetching repository collections:', error);
+    console.error('Error fetching project collections:', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });

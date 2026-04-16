@@ -3,13 +3,16 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow">
+  <div
+    v-if="isAuthenticated"
+    class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow"
+  >
     <lfx-collection-list-view type="my-collections" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { nextTick, onMounted } from 'vue';
 import { useRoute } from 'nuxt/app';
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
 import { useAuth } from '~~/composables/useAuth';
@@ -24,14 +27,18 @@ useSeoMeta({
   twitterDescription: description,
 });
 
-const { isAuthenticated, login } = useAuth();
+const { isAuthenticated, login, refreshAuth } = useAuth();
 
-onMounted(() => {
+onMounted(async () => {
   const route = useRoute();
   const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
+  if (isAuthCallback) return;
 
-  if (!isAuthCallback && !isAuthenticated.value) {
-    login(window.location.pathname + window.location.search + window.location.hash);
+  await refreshAuth();
+  await nextTick();
+
+  if (!isAuthenticated.value) {
+    await login(window.location.pathname + window.location.search + window.location.hash);
   }
 });
 </script>

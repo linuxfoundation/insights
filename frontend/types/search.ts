@@ -19,6 +19,7 @@ export interface SearchRepository {
   projectSlug: string;
   archived: boolean;
   excluded: boolean;
+  url: string;
 }
 
 export interface SearchResults {

@@ -73,6 +73,7 @@ SPDX-License-Identifier: MIT
               :key="collection.slug"
               :collection="collection"
               variant="my-collections"
+              @deleted="handleCollectionUpdated"
               @updated="handleCollectionUpdated"
             />
           </lfx-collection-section>
