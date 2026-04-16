@@ -258,7 +258,13 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-  await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+
+  // Health-check pings bypass the semaphore to avoid readiness probe failures under load
+  const skipThrottle = path === '/v0/pipes/ping.json';
+
+  if (!skipThrottle) {
+    await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+  }
 
   const fetchStart = Date.now();
   try {
@@ -294,7 +300,9 @@ export async function fetchFromTinybird<T>(
     }
     throw error;
   } finally {
-    tinybirdSemaphore.release();
+    if (!skipThrottle) {
+      tinybirdSemaphore.release();
+    }
   }
 }
 
