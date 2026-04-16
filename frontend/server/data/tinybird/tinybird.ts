@@ -258,21 +258,7 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-  const acquireStart = Date.now();
   await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
-  const waitMs = Date.now() - acquireStart;
-
-  console.warn(
-    JSON.stringify({
-      message: 'tinybird_request_start',
-      pipe: path,
-      waitMs,
-      active: tinybirdSemaphore.getActive(),
-      queued: tinybirdSemaphore.getQueueLength(),
-      effectiveLimit: tinybirdSemaphore.getEffectiveLimit(),
-      timestamp: new Date().toISOString(),
-    }),
-  );
 
   const fetchStart = Date.now();
   try {
@@ -284,18 +270,6 @@ export async function fetchFromTinybird<T>(
     if (!data || !data.data) {
       throw new Error('Invalid response from Tinybird');
     }
-
-    console.warn(
-      JSON.stringify({
-        message: 'tinybird_request_end',
-        pipe: path,
-        durationMs: Date.now() - fetchStart,
-        active: tinybirdSemaphore.getActive(),
-        queued: tinybirdSemaphore.getQueueLength(),
-        timestamp: new Date().toISOString(),
-      }),
-    );
-
     return data;
   } catch (error: unknown) {
     const status =
