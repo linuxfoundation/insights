@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
       <!-- Empty State -->
       <div
         v-if="isLikedCollectionsEmpty || status === 'error'"
-        class="flex flex-col items-center justify-center py-10 gap-5 border border-neutral-200 rounded-lg"
+        class="flex flex-col items-center justify-center py-8 md:py-10 px-6 gap-4 md:gap-5 border border-neutral-200 rounded-lg text-center"
       >
         <div class="flex items-center justify-center h-14 w-14 rounded-full bg-accent-100">
           <lfx-icon
@@ -48,9 +48,9 @@ SPDX-License-Identifier: MIT
             class="text-accent-500"
           />
         </div>
-        <div class="flex flex-col items-center justify-center gap-3">
-          <h3 class="text-xl font-bold font-secondary leading-8">No liked collections yet</h3>
-          <p class="text-sm text-neutral-600">
+        <div class="flex flex-col items-center justify-center gap-2 md:gap-3">
+          <h3 class="text-lg md:text-xl font-bold font-secondary leading-7 md:leading-8">No liked collections yet</h3>
+          <p class="text-sm text-neutral-600 max-w-md">
             Explore curated and community collections, and like the ones that inspire you. They'll appear here.
           </p>
         </div>

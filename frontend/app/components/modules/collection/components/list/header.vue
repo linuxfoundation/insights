@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="flex flex-col gap-4 md:gap-10 container pt-3 md:pt-6"
-    :class="!props.isScrolledState ? 'pb-0' : 'pb-4 md:pb-10'"
+    :class="!props.isScrolledState ? 'pb-0' : 'pb-6'"
   >
     <div class="flex items-center justify-between w-full pb-3 md:pb-6 border-b border-neutral-200">
       <div class="flex items-center gap-2">
@@ -107,10 +107,10 @@ SPDX-License-Identifier: MIT
       class="flex justify-between items-start"
     >
       <div class="flex flex-col gap-1">
-        <h1 class="text-2xl md:text-4xl font-secondary font-light">
+        <h1 class="text-3xl font-secondary font-light leading-tight">
           {{ title }}
         </h1>
-        <p class="text-sm md:text-base text-neutral-600">
+        <p class="text-sm leading-5 text-neutral-600">
           {{ description }}
         </p>
       </div>

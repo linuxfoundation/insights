@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
   </div>
 
   <section>
-    <div class="container pt-0 md:pt-6 pb-3 flex flex-col">
+    <div class="container pt-0 pb-3 flex flex-col">
       <div
         v-if="flatData.length"
         :class="classDisplay"

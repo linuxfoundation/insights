@@ -253,43 +253,51 @@ SPDX-License-Identifier: MIT
           :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3 md:mt-10'"
           class="flex items-center gap-2 justify-between w-full flex-wrap transition-all ease-linear"
         >
-          <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center gap-1 md:gap-2 flex-wrap">
             <collection-owner :collection="props.collection" />
-            <span
-              v-if="projectCount > 0"
-              class="text-neutral-600"
+            <span class="text-neutral-600">・</span>
+            <div class="flex items-center gap-1.5">
+              <lfx-icon
+                name="laptop-code"
+                :size="16"
+                class="text-neutral-500"
+              />
+              <p class="text-xs md:text-sm leading-4 md:leading-5 text-neutral-600">
+                <!-- Mobile community/curated: just the number -->
+                <span
+                  v-if="hasCompactMetaMobile"
+                  class="md:hidden"
+                >
+                  {{ projectCount }}
+                </span>
+                <!-- Desktop + my-collections: "X projects" -->
+                <span :class="hasCompactMetaMobile ? 'hidden md:inline' : ''">
+                  {{ pluralize('project', projectCount, true) }}
+                </span>
+                <span v-if="props.collection.updatedAt">
+                  ・ Updated
+                  <span class="md:hidden">{{ formatDate(props.collection.updatedAt, 'dd MMM') }}</span>
+                  <span class="hidden md:inline">{{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}</span>
+                </span>
+              </p>
+            </div>
+            <!-- Mobile only: like count for my-collections, preceded by dot -->
+            <div
+              v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
+              class="flex md:hidden items-center gap-1 whitespace-nowrap"
             >
-              ・
-            </span>
-            <lfx-icon
-              v-if="projectCount > 0"
-              name="laptop-code"
-              :size="14"
-              class="text-neutral-600"
-            />
-            <p
-              v-if="projectCount > 0"
-              class="text-xs md:text-sm leading-5 text-neutral-600"
-            >
-              {{ pluralize('project', projectCount, true) }}
-              <span v-if="props.collection.updatedAt">
-                ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}
-              </span>
-            </p>
-            <!-- Mobile only: like count for my-collections -->
-            <template v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS">
-              <span class="text-neutral-600 flex md:hidden">・</span>
-              <div class="flex md:hidden items-center gap-1">
+              <span class="text-neutral-600">・</span>
+              <div class="flex items-center gap-1.5">
                 <lfx-icon
-                  name="heart"
-                  :size="14"
-                  class="text-neutral-600"
+                  name="hearts"
+                  :size="16"
+                  class="text-neutral-500"
                 />
-                <span class="text-xs leading-5 text-neutral-600">
+                <span class="text-xs leading-4 text-neutral-600">
                   {{ formatNumberShort(props.collection.likeCount ?? 0) }}
                 </span>
               </div>
-            </template>
+            </div>
           </div>
           <lfx-toggle
             v-model="isOnlyLFProjects"
@@ -389,6 +397,10 @@ const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === pr
 const headerBackgroundStyle = computed(() => headerBackground(props.type, props.collection?.color));
 
 const projectCount = computed(() => (props.collection?.projectCount || 0) + (props.collection?.repositoryCount || 0));
+
+const hasCompactMetaMobile = computed(
+  () => props.type === CollectionTypeEnum.COMMUNITY || props.type === CollectionTypeEnum.CURATED,
+);
 
 const isDeleting = ref(false);
 
