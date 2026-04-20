@@ -27,7 +27,10 @@ class AdaptiveSemaphore {
     timer: ReturnType<typeof setTimeout>;
   }> = [];
 
-  constructor(private limit: number) {
+  constructor(
+    private limit: number,
+    private maxQueueSize: number,
+  ) {
     this.effectiveLimit = limit;
   }
 
@@ -84,6 +87,14 @@ class AdaptiveSemaphore {
       this.count++;
       return Promise.resolve();
     }
+    if (this.queue.length >= this.maxQueueSize) {
+      return Promise.reject(
+        createError({
+          statusCode: 503,
+          statusMessage: 'Tinybird request queue full — try again shortly',
+        }),
+      );
+    }
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         const idx = this.queue.findIndex((item) => item.resolve === resolve);
@@ -133,12 +144,13 @@ class AdaptiveSemaphore {
 }
 
 const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '35', 10);
-const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '15000', 10);
+const MAX_QUEUE_SIZE = parseInt(process.env.NUXT_TINYBIRD_MAX_QUEUE_SIZE || '500', 10);
+const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '10000', 10);
 const SLOW_REQUEST_THRESHOLD_MS = parseInt(
   process.env.NUXT_TINYBIRD_SLOW_REQUEST_THRESHOLD_MS || '5000',
   10,
 );
-const tinybirdSemaphore = new AdaptiveSemaphore(MAX_CONCURRENT);
+const tinybirdSemaphore = new AdaptiveSemaphore(MAX_CONCURRENT, MAX_QUEUE_SIZE);
 
 /**
  * Represents the structure of a response from the Tinybird API.
@@ -264,7 +276,7 @@ export async function fetchFromTinybird<T>(
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
 
   // Health-check pings bypass the semaphore to avoid readiness probe failures under load
-  const skipThrottle = path === '/v0/pipes/ping.json';
+  const skipThrottle = path === '/v0/pipes/ping.json' || path === '/v0/pipes/project_buckets.json';
 
   let acquired = false;
   const fetchStart = Date.now();
