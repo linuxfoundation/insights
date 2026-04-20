@@ -46,6 +46,7 @@ export class AdaptiveSemaphore {
   private readonly recoveryMs = 30_000;
   private readonly backoffFactor = 0.5;
   private readonly minLimit = 5;
+  private readonly statusLogIntervalMs = 8_000;
 
   /**
    * Waiters that could not get a slot immediately. Each entry holds the
@@ -60,16 +61,23 @@ export class AdaptiveSemaphore {
     timer: ReturnType<typeof setTimeout>;
   }> = [];
 
-  /** Minimum interval between saturation log entries. */
-  private readonly saturationLogIntervalMs = 5_000;
-  /** Timestamp of last saturation log — used to throttle logging. */
-  private lastSaturationLogMs = 0;
-
   constructor(
     private limit: number,
     private maxQueueSize: number,
   ) {
     this.effectiveLimit = limit;
+    setInterval(() => {
+      console.warn(
+        JSON.stringify({
+          message: 'tinybird_queue_status',
+          active: this.count,
+          queued: this.queue.length,
+          effectiveLimit: this.effectiveLimit,
+          limit: this.limit,
+          timestamp: new Date().toISOString(),
+        }),
+      );
+    }, this.statusLogIntervalMs).unref();
   }
 
   reportTinybirdRateLimit(): void {
@@ -109,22 +117,6 @@ export class AdaptiveSemaphore {
   }
 
   acquire(timeoutMs: number): Promise<void> {
-    if (this.count >= this.effectiveLimit) {
-      const now = Date.now();
-      if (now - this.lastSaturationLogMs >= this.saturationLogIntervalMs) {
-        this.lastSaturationLogMs = now;
-        console.warn(
-          JSON.stringify({
-            message: 'tinybird_queue_status',
-            active: this.count,
-            queued: this.queue.length,
-            effectiveLimit: this.effectiveLimit,
-            limit: this.limit,
-            timestamp: new Date().toISOString(),
-          }),
-        );
-      }
-    }
     if (this.count < this.effectiveLimit) {
       this.count++;
       return Promise.resolve();
