@@ -7,9 +7,11 @@ import { getBucketIdForProject } from './bucket-cache';
 /**
  * Concurrency limiter for outbound Tinybird GET requests.
  *
- * Caps the number of in-flight requests to `limit` (default 20, configurable via
- * NUXT_TINYBIRD_MAX_CONCURRENT). Excess requests queue with a timeout, returning 503
- * if they wait too long.
+ * Caps the number of in-flight requests to `limit` (default 35, configurable via
+ * NUXT_TINYBIRD_MAX_CONCURRENT). Excess requests queue up to `maxQueueSize`
+ * (default 500, configurable via NUXT_TINYBIRD_MAX_QUEUE_SIZE) with a per-item
+ * timeout (default 10s, configurable via NUXT_TINYBIRD_QUEUE_TIMEOUT_MS), returning
+ * 503 if the queue is full or a queued request times out.
  *
  * Includes an adaptive backoff mechanism: when Tinybird returns a 429, the effective
  * concurrency limit is halved for 30 seconds to reduce pressure, then auto-recovers.
@@ -275,7 +277,9 @@ export async function fetchFromTinybird<T>(
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
 
-  // Health-check pings bypass the semaphore to avoid readiness probe failures under load
+  // Health-check pings and bucket lookups bypass the semaphore so they don't
+  // compete for slots with real data queries (each query already needs a bucket
+  // lookup first, which would double the slot pressure).
   const skipThrottle = path === '/v0/pipes/ping.json' || path === '/v0/pipes/project_buckets.json';
 
   let acquired = false;
