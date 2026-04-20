@@ -27,15 +27,15 @@ const ossIndexType = ['horizontal', 'vertical'];
 
 export const options = {
   stages: [
-    { duration: '30s', target: 40 },  // gentle ramp — morning traffic building
-    { duration: '1m',  target: 40 },  // sustained normal load
-    { duration: '30s', target: 80 },  // lunch / peak hours
-    { duration: '1m',  target: 80 },
-    { duration: '0s',  target: 0 },
+    { duration: '30s', target: 40 }, // gentle ramp — morning traffic building
+    { duration: '1m', target: 40 }, // sustained normal load
+    { duration: '30s', target: 80 }, // lunch / peak hours
+    { duration: '1m', target: 80 },
+    { duration: '0s', target: 0 },
   ],
   thresholds: {
-    http_req_failed: ['rate<0.01'],           // <1% errors expected
-    http_req_duration: ['p(95)<10000'],       // 95th percentile under 10s
+    http_req_failed: ['rate<0.01'], // <1% errors expected
+    http_req_duration: ['p(95)<10000'], // 95th percentile under 10s
   },
 };
 
@@ -62,9 +62,7 @@ export function setup() {
   });
 
   ossIndexSort.forEach((sort) =>
-    ossIndexType.forEach((type) =>
-      allPaths.push(`/open-source-index?sort=${sort}&type=${type}`),
-    ),
+    ossIndexType.forEach((type) => allPaths.push(`/open-source-index?sort=${sort}&type=${type}`)),
   );
 
   return allPaths;

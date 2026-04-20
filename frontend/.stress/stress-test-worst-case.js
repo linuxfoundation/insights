@@ -37,11 +37,11 @@ const ossIndexType = ['horizontal', 'vertical'];
 export const options = {
   stages: [
     { duration: '30s', target: 50 },
-    { duration: '1m',  target: 50 },
+    { duration: '1m', target: 50 },
     { duration: '30s', target: 100 },
-    { duration: '1m',  target: 100 },
+    { duration: '1m', target: 100 },
     { duration: '30s', target: 200 },
-    { duration: '1m',  target: 200 },
+    { duration: '1m', target: 200 },
     { duration: '30s', target: 0 },
   ],
   // No thresholds — this test is meant to find the breaking point
@@ -71,9 +71,7 @@ export function setup() {
   });
 
   ossIndexSort.forEach((sort) =>
-    ossIndexType.forEach((type) =>
-      allPaths.push(`/open-source-index?sort=${sort}&type=${type}`),
-    ),
+    ossIndexType.forEach((type) => allPaths.push(`/open-source-index?sort=${sort}&type=${type}`)),
   );
 
   return allPaths;
