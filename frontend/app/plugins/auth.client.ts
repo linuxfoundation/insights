@@ -7,6 +7,7 @@ import { useCollectionsStore } from '~/components/modules/collection/store/colle
 import {
   authState,
   isAuthLoading,
+  isAuthReady,
   setRefreshAuth,
   getSilentLoginAttempted,
   setSilentLoginAttempted,
@@ -19,7 +20,11 @@ import type { AuthData } from '~~/types/auth/auth-user.types';
 declare const window: Window & typeof globalThis;
 
 export default defineNuxtPlugin(() => {
-  const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
+  const {
+    data: userData,
+    refresh: refreshAuth,
+    status,
+  } = useAsyncData<AuthData>(
     'auth-user',
     () => $fetch('/api/auth/user', { credentials: 'include' }),
     {
@@ -34,6 +39,17 @@ export default defineNuxtPlugin(() => {
   );
 
   setRefreshAuth(refreshAuth);
+
+  watch(
+    status,
+    (s) => {
+      if (s === 'success' || s === 'error') {
+        isAuthReady.value = true;
+        isAuthLoading.value = false;
+      }
+    },
+    { immediate: true },
+  );
 
   watchEffect(() => {
     if (!userData.value) return;
@@ -66,28 +82,19 @@ export default defineNuxtPlugin(() => {
 
   const route = useRoute();
 
+  // The initial /api/auth/user fetch above already reflects the post-callback state
+  // (the callback sets/clears cookies before redirecting back), so we don't refetch here.
+  // We only clean up the ?auth=logout query param — ?auth=success is left as-is to match prior behavior.
   const handleAuthQuery = async (authParam: string | undefined) => {
-    if (authParam === 'success') {
-      await refreshAuth();
-      setSilentLoginAttempted(false);
-    } else if (authParam === 'logout') {
-      await refreshAuth();
-      authState.value = {
-        isAuthenticated: false,
-        user: null,
-        token: null,
-      };
-      // Clean up the URL by removing the auth parameter
+    if (authParam === 'logout') {
       await navigateTo('/', { replace: true });
     }
   };
 
-  // Initial check for auth/logout success on first load
-  if (route.query.auth === 'success' || route.query.auth === 'logout') {
+  if (route.query.auth === 'logout') {
     nextTick(() => handleAuthQuery(route.query.auth as string | undefined));
   }
 
-  // Watch for subsequent route changes
   watch(
     () => route.query.auth,
     (authParam) => handleAuthQuery(authParam as string | undefined),

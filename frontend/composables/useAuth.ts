@@ -17,6 +17,10 @@ export const authState = ref<AuthData>({
 
 export const isAuthLoading = ref(false);
 
+// Flips to true once the initial /api/auth/user fetch resolves (success or error).
+// Consumers can await this before making auth-gated decisions instead of calling refreshAuth().
+export const isAuthReady = ref(false);
+
 let refreshAuthFn: () => Promise<unknown> = async () => {};
 
 export const setRefreshAuth = (fn: () => Promise<unknown>) => {
@@ -132,6 +136,7 @@ export const useAuth = () => {
     user,
     token,
     isLoading: isAuthLoading,
+    isReady: isAuthReady,
     login,
     logout,
     refreshAuth: () => refreshAuthFn(),
