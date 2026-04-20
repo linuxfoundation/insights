@@ -3,7 +3,7 @@
 //
 // Simulates normal organic user behaviour.
 //
-// Each VU browses at a human pace: 30–90s think time between pages.
+// Each VU browses at a human pace: 15–45s think time between pages.
 // Requests are weighted toward the most common entry points (home,
 // collection index, top project pages) rather than exhaustive time-range
 // combinations.
