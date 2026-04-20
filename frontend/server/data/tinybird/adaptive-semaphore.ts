@@ -116,10 +116,10 @@ export class AdaptiveSemaphore {
     }, this.recoveryMs);
   }
 
-  acquire(timeoutMs: number): Promise<void> {
+  acquire(timeoutMs: number): Promise<boolean> {
     if (this.count < this.effectiveLimit) {
       this.count++;
-      return Promise.resolve();
+      return Promise.resolve(false);
     }
     if (this.queue.length >= this.maxQueueSize) {
       return Promise.reject(
@@ -150,7 +150,7 @@ export class AdaptiveSemaphore {
           }),
         );
       }, timeoutMs);
-      this.queue.push({ resolve, reject, timer });
+      this.queue.push({ resolve: () => resolve(true), reject, timer });
     });
   }
 

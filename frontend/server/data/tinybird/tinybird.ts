@@ -143,10 +143,11 @@ export async function fetchFromTinybird<T>(
   const skipThrottle = path === '/v0/pipes/ping.json' || path === '/v0/pipes/project_buckets.json';
 
   let acquired = false;
+  let wasQueued = false;
   const fetchStart = Date.now();
   try {
     if (!skipThrottle) {
-      await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+      wasQueued = await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
       acquired = true;
     }
     const data: TinybirdResponse<T> = await ofetch(url, {
@@ -165,6 +166,7 @@ export async function fetchFromTinybird<T>(
           pipe: path,
           params: processedQuery,
           durationMs,
+          wasQueued,
           active: tinybirdSemaphore.getActive(),
           queued: tinybirdSemaphore.getQueueLength(),
           timestamp: new Date().toISOString(),
@@ -185,6 +187,7 @@ export async function fetchFromTinybird<T>(
         params: processedQuery,
         status,
         durationMs: Date.now() - fetchStart,
+        wasQueued,
         active: tinybirdSemaphore.getActive(),
         queued: tinybirdSemaphore.getQueueLength(),
         timestamp: new Date().toISOString(),
