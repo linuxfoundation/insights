@@ -60,6 +60,11 @@ export class AdaptiveSemaphore {
     timer: ReturnType<typeof setTimeout>;
   }> = [];
 
+  /** Minimum interval between saturation log entries. */
+  private readonly saturationLogIntervalMs = 5_000;
+  /** Timestamp of last saturation log — used to throttle logging. */
+  private lastSaturationLogMs = 0;
+
   constructor(
     private limit: number,
     private maxQueueSize: number,
@@ -105,16 +110,20 @@ export class AdaptiveSemaphore {
 
   acquire(timeoutMs: number): Promise<void> {
     if (this.count >= this.effectiveLimit) {
-      console.warn(
-        JSON.stringify({
-          message: 'tinybird_queue_status',
-          active: this.count,
-          queued: this.queue.length,
-          effectiveLimit: this.effectiveLimit,
-          limit: this.limit,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      const now = Date.now();
+      if (now - this.lastSaturationLogMs >= this.saturationLogIntervalMs) {
+        this.lastSaturationLogMs = now;
+        console.warn(
+          JSON.stringify({
+            message: 'tinybird_queue_status',
+            active: this.count,
+            queued: this.queue.length,
+            effectiveLimit: this.effectiveLimit,
+            limit: this.limit,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+      }
     }
     if (this.count < this.effectiveLimit) {
       this.count++;
