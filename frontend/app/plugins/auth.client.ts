@@ -65,6 +65,7 @@ export default defineNuxtPlugin(() => {
       getWasUserLoggedIn() // Only attempt silent login if the user has logged in previously
     ) {
       const currentPath = window.location.pathname + window.location.search + window.location.hash;
+      setSilentLoginAttempted(true);
       login(currentPath, true);
     }
 
@@ -91,12 +92,18 @@ export default defineNuxtPlugin(() => {
     }
   };
 
+  const runAuthQuery = (authParam: string | undefined) => {
+    handleAuthQuery(authParam).catch((error) => {
+      console.error('Auth query handling error:', error);
+    });
+  };
+
   if (route.query.auth === 'logout') {
-    nextTick(() => handleAuthQuery(route.query.auth as string | undefined));
+    nextTick(() => runAuthQuery(route.query.auth as string | undefined));
   }
 
   watch(
     () => route.query.auth,
-    (authParam) => handleAuthQuery(authParam as string | undefined),
+    (authParam) => runAuthQuery(authParam as string | undefined),
   );
 });

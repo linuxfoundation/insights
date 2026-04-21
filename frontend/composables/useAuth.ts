@@ -82,6 +82,8 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
       } else {
         await navigateTo(response.authorizationUrl, { external: true });
       }
+    } else {
+      isAuthLoading.value = false;
     }
   } catch (error) {
     console.error('Login error:', error);
