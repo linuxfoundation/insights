@@ -5,14 +5,14 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="isAuthenticated"
-    class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow"
+    class="bg-white pb-30 -mb-30 flex-grow"
   >
     <lfx-collection-list-view type="my-collections" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted } from 'vue';
+import { watch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
 import { useAuth } from '~~/composables/useAuth';
@@ -27,18 +27,19 @@ useSeoMeta({
   twitterDescription: description,
 });
 
-const { isAuthenticated, login, refreshAuth } = useAuth();
+const { isAuthenticated, isReady, login } = useAuth();
+const route = useRoute();
 
-onMounted(async () => {
-  const route = useRoute();
-  const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
-  if (isAuthCallback) return;
-
-  await refreshAuth();
-  await nextTick();
-
-  if (!isAuthenticated.value) {
-    await login(window.location.pathname + window.location.search + window.location.hash);
-  }
-});
+watch(
+  [isReady, isAuthenticated],
+  ([ready, authed]) => {
+    if (!ready || !process.client) return;
+    const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
+    if (isAuthCallback) return;
+    if (!authed) {
+      login(window.location.pathname + window.location.search + window.location.hash);
+    }
+  },
+  { immediate: true },
+);
 </script>

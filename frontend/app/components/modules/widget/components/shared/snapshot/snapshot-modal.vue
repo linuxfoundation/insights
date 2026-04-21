@@ -93,11 +93,53 @@ const repoName = computed(
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
+const shouldProxy = (src: string): boolean => {
+  if (!src) return false;
+  if (src.startsWith('data:') || src.startsWith('blob:')) return false;
+  try {
+    const parsed = new URL(src, window.location.href);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+    return parsed.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+};
+
+const rewriteImagesThroughProxy = async (root: HTMLElement): Promise<() => void> => {
+  const imgs = Array.from(root.querySelectorAll('img')).filter((img) => shouldProxy(img.src));
+  const originals = imgs.map((img) => img.src);
+  imgs.forEach((img) => {
+    img.src = `/api/image-proxy?url=${encodeURIComponent(img.src)}`;
+  });
+  await Promise.all(
+    imgs.map(
+      (img) =>
+        new Promise<void>((resolve) => {
+          if (img.complete && img.naturalWidth > 0) return resolve();
+          const done = () => {
+            img.removeEventListener('load', done);
+            img.removeEventListener('error', done);
+            resolve();
+          };
+          img.addEventListener('load', done);
+          img.addEventListener('error', done);
+        }),
+    ),
+  );
+  return () => {
+    imgs.forEach((img, i) => {
+      img.src = originals[i]!;
+    });
+  };
+};
+
 const download = async () => {
   if (!snapshot.value) return;
+  let restoreImages: (() => void) | undefined;
   try {
     await document?.fonts.ready;
     await nextTick();
+    restoreImages = await rewriteImagesThroughProxy(snapshot.value);
     const canvas = await html2canvas(snapshot.value, {
       useCORS: true,
       allowTaint: false,
@@ -116,6 +158,8 @@ const download = async () => {
     document.body.removeChild(link);
   } catch (e) {
     showToast('Failed to download snapshot', ToastTypesEnum.negative);
+  } finally {
+    restoreImages?.();
   }
   isModalOpen.value = false;
 };

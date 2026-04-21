@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
       />
     </lfx-dropdown-select>
 
-    <div>
+    <div class="hidden md:block">
       <lfx-tabs
         :tabs="viewTabs"
         tab-style="pill"

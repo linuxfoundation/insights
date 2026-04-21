@@ -9,12 +9,12 @@ SPDX-License-Identifier: MIT
   >
     <template #default="{ close }">
       <div
-        class="bg-gradient-to-t from-white from-50% to-accent-100 rounded-xl shadow-xl border border-neutral-100 p-8 flex flex-col gap-16 overflow-hidden"
+        class="bg-gradient-to-t from-white from-50% to-accent-100 rounded-xl shadow-xl border border-neutral-100 p-6 md:p-8 flex flex-col gap-8 md:gap-16 overflow-hidden"
       >
         <!-- Top section -->
-        <div class="flex flex-col gap-10">
+        <div class="flex flex-col gap-6 md:gap-10">
           <!-- Header: Members only badge + close button -->
-          <div class="flex flex-col gap-10">
+          <div class="flex flex-col gap-6 md:gap-10">
             <div class="flex items-start justify-between">
               <span class="bg-neutral-600 rounded-full px-1.5 py-0.5 flex items-center gap-0.5">
                 <lfx-icon
@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
 
             <!-- Title + description -->
             <div class="flex flex-col gap-3">
-              <h2 class="font-secondary font-light text-3xl leading-[44px]">
+              <h2 class="font-secondary font-light text-2xl md:text-3xl leading-tight md:leading-[44px]">
                 <span class="text-neutral-900 font-secondary">Your open source universe,</span>
                 <br />
                 <span class="text-accent-500 font-secondary">curated your way.</span>
@@ -46,17 +46,17 @@ SPDX-License-Identifier: MIT
             </div>
           </div>
 
-          <!-- Three feature columns -->
-          <div class="flex gap-8">
+          <!-- Three features: horizontal columns on desktop, vertical stacked rows on mobile -->
+          <div class="flex flex-col md:flex-row gap-6 md:gap-8">
             <div
               v-for="feature in features"
               :key="feature.title"
-              class="flex-1 flex flex-col gap-4"
+              class="flex-1 flex flex-row md:flex-col gap-3 md:gap-4 items-start"
             >
               <lfx-icon
                 :name="feature.icon"
                 :size="16"
-                :class="feature.iconClass"
+                :class="[feature.iconClass, 'shrink-0 mt-0.5 md:mt-0']"
               />
               <div class="flex flex-col gap-1">
                 <span class="text-sm font-semibold text-neutral-900 leading-5">{{ feature.title }}</span>
@@ -67,7 +67,7 @@ SPDX-License-Identifier: MIT
         </div>
 
         <!-- Bottom section -->
-        <div class="flex flex-col gap-10 items-center">
+        <div class="flex flex-col gap-6 md:gap-10 items-center">
           <!-- Social proof (shown only when at least 3 community collection authors exist) -->
           <div
             v-if="topAuthors.length >= 3"
@@ -87,12 +87,12 @@ SPDX-License-Identifier: MIT
             >
           </div>
 
-          <!-- CTA buttons -->
-          <div class="flex gap-5 items-center w-full">
+          <!-- CTA buttons: side-by-side on desktop, stacked on mobile -->
+          <div class="flex flex-col md:flex-row gap-3 md:gap-5 items-center w-full">
             <lfx-button
               type="primary"
               button-style="pill"
-              class="flex-1 justify-center"
+              class="w-full md:flex-1 justify-center"
               @click="handleSignIn"
             >
               Sign in to LFX
@@ -100,7 +100,7 @@ SPDX-License-Identifier: MIT
             <lfx-button
               type="outline"
               button-style="pill"
-              class="flex-1 justify-center"
+              class="w-full md:flex-1 justify-center"
               @click="handleSignIn"
             >
               Create account
