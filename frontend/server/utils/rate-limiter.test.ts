@@ -830,8 +830,8 @@ describe('checkRateLimit', () => {
       let callCount = 0;
       (redis.zCount as ReturnType<typeof vi.fn>).mockImplementation(() => {
         callCount++;
-        // First call is for IP check (count=1), second is for subnet check (count=100)
-        return Promise.resolve(callCount === 1 ? 1 : 100);
+        // First call is for subnet check (count=100), second is for IP check (count=1)
+        return Promise.resolve(callCount === 1 ? 100 : 1);
       });
 
       const result = await checkRateLimit(event, config, redis);
@@ -840,7 +840,7 @@ describe('checkRateLimit', () => {
       expect(result.limit).toBe(50); // Subnet limit returned
     });
 
-    it('blocks request when per-IP limit is exceeded (subnet check also runs)', async () => {
+    it('blocks request when per-IP limit is exceeded (subnet passes first)', async () => {
       const config: RateLimiterConfig = {
         ...baseConfig,
         subnetLimit: { maxRequests: 1000, windowSeconds: 60 },
