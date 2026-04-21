@@ -2,7 +2,17 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import { ofetch } from 'ofetch';
+import { AdaptiveSemaphore } from './adaptive-semaphore';
 import { getBucketIdForProject } from './bucket-cache';
+
+const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '35', 10);
+const MAX_QUEUE_SIZE = parseInt(process.env.NUXT_TINYBIRD_MAX_QUEUE_SIZE || '500', 10);
+const QUEUE_TIMEOUT_MS = parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS || '10000', 10);
+const SLOW_REQUEST_THRESHOLD_MS = parseInt(
+  process.env.NUXT_TINYBIRD_SLOW_REQUEST_THRESHOLD_MS || '5000',
+  10,
+);
+const tinybirdSemaphore = new AdaptiveSemaphore(MAX_CONCURRENT, MAX_QUEUE_SIZE);
 
 /**
  * Represents the structure of a response from the Tinybird API.
@@ -126,15 +136,73 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-  const data: TinybirdResponse<T> = await ofetch(url, {
-    headers: {
-      Authorization: `Bearer ${tinybirdToken}`,
-    },
-  });
-  if (!data || !data.data) {
-    throw new Error('Invalid response from Tinybird');
+
+  // Health-check pings and bucket lookups bypass the semaphore so they don't
+  // compete for slots with real data queries (each query already needs a bucket
+  // lookup first, which would double the slot pressure).
+  const skipThrottle = path === '/v0/pipes/ping.json' || path === '/v0/pipes/project_buckets.json';
+
+  let acquired = false;
+  let wasQueued = false;
+  const fetchStart = Date.now();
+  try {
+    if (!skipThrottle) {
+      wasQueued = await tinybirdSemaphore.acquire(QUEUE_TIMEOUT_MS);
+      acquired = true;
+    }
+    const data: TinybirdResponse<T> = await ofetch(url, {
+      headers: {
+        Authorization: `Bearer ${tinybirdToken}`,
+      },
+    });
+    if (!data || !data.data) {
+      throw new Error('Invalid response from Tinybird');
+    }
+    const durationMs = Date.now() - fetchStart;
+    if (durationMs > SLOW_REQUEST_THRESHOLD_MS) {
+      console.warn(
+        JSON.stringify({
+          message: 'tinybird_slow_request',
+          pipe: path,
+          params: processedQuery,
+          durationMs,
+          wasQueued,
+          active: tinybirdSemaphore.getActive(),
+          queued: tinybirdSemaphore.getQueueLength(),
+          timestamp: new Date().toISOString(),
+        }),
+      );
+    }
+    return data;
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? (error as { status: number }).status
+        : undefined;
+
+    console.error(
+      JSON.stringify({
+        message: 'tinybird_request_error',
+        pipe: path,
+        params: processedQuery,
+        status,
+        durationMs: Date.now() - fetchStart,
+        wasQueued,
+        active: tinybirdSemaphore.getActive(),
+        queued: tinybirdSemaphore.getQueueLength(),
+        timestamp: new Date().toISOString(),
+      }),
+    );
+
+    if (status === 429) {
+      tinybirdSemaphore.reportTinybirdRateLimit();
+    }
+    throw error;
+  } finally {
+    if (acquired) {
+      tinybirdSemaphore.release();
+    }
   }
-  return data;
 }
 
 /**

@@ -14,7 +14,7 @@ vi.mock('h3', () => ({
 }));
 
 // Import after mocks so the module picks up the mocked dependencies.
-import { checkRateLimit } from './rate-limiter';
+import { checkRateLimit, getSubnet } from './rate-limiter';
 
 interface RedisMockOptions {
   count: number;
@@ -80,6 +80,24 @@ function createEvent(overrides: Partial<H3Event> = {}): H3Event {
     ...overrides,
   } as H3Event;
 }
+
+describe('getSubnet', () => {
+  it('extracts /24 prefix from IPv4', () => {
+    expect(getSubnet('1.2.3.4')).toBe('1.2.3');
+  });
+
+  it('strips IPv4-mapped IPv6 prefix before extracting', () => {
+    expect(getSubnet('::ffff:1.2.3.4')).toBe('1.2.3');
+  });
+
+  it('returns null for pure IPv6', () => {
+    expect(getSubnet('2001:db8::1')).toBe(null);
+  });
+
+  it('returns null for unknown', () => {
+    expect(getSubnet('unknown')).toBe(null);
+  });
+});
 
 describe('checkRateLimit', () => {
   beforeEach(() => {
@@ -776,6 +794,134 @@ describe('checkRateLimit', () => {
 
       expect(result.allowed).toBe(true);
       expect(result.limit).toBe(Number.MAX_SAFE_INTEGER); // Any method excluded
+      expect(redis.zCount).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('subnet rate limiting', () => {
+    it('allows request when both per-IP and per-subnet are under limit', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        subnetLimit: { maxRequests: 100, windowSeconds: 60 },
+      };
+      const event = createEvent({ path: '/api/test', method: 'GET' });
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '202.46.62.5' });
+      // count=1 for both IP and subnet checks
+      const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+
+      const result = await checkRateLimit(event, config, redis);
+
+      expect(result.allowed).toBe(true);
+    });
+
+    it('blocks request when subnet limit is exceeded even if per-IP is fine', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        subnetLimit: { maxRequests: 50, windowSeconds: 60 },
+      };
+      const event = createEvent({ path: '/api/test', method: 'GET' });
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '202.46.62.5' });
+
+      const now = Date.now();
+      // IP count=1 (under per-IP limit of 5), subnet count=100 (over subnet limit of 50)
+      const redis = {
+        ...createRedisMock({ count: 1, oldestScore: now }),
+      } as ReturnType<typeof createRedisMock>;
+      let callCount = 0;
+      (redis.zCount as ReturnType<typeof vi.fn>).mockImplementation(() => {
+        callCount++;
+        // First call is for subnet check (count=100), second is for IP check (count=1)
+        return Promise.resolve(callCount === 1 ? 100 : 1);
+      });
+
+      const result = await checkRateLimit(event, config, redis);
+
+      expect(result.allowed).toBe(false);
+      expect(result.limit).toBe(50); // Subnet limit returned
+    });
+
+    it('blocks request when per-IP limit is exceeded (subnet passes first)', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        subnetLimit: { maxRequests: 1000, windowSeconds: 60 },
+      };
+      const event = createEvent({ path: '/api/test', method: 'GET' });
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '202.46.62.5' });
+      // count=10 exceeds per-IP limit of 5
+      const redis = createRedisMock({ count: 10, oldestScore: Date.now() });
+
+      const result = await checkRateLimit(event, config, redis);
+
+      expect(result.allowed).toBe(false);
+      expect(result.limit).toBe(5); // Per-IP limit returned
+    });
+
+    it('uses subnet: key prefix for subnet Redis keys', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        subnetLimit: { maxRequests: 100, windowSeconds: 60 },
+      };
+      const event = createEvent({ path: '/api/test', method: 'GET' });
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '202.46.62.5' });
+      const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+
+      await checkRateLimit(event, config, redis);
+
+      const hashedSubnet = createHash('sha256').update(`202.46.62:${config.secret}`).digest('hex');
+      const expectedSubnetKey = `ratelimit:subnet:GET:/api/test:${hashedSubnet}`;
+      expect(redis.zRemRangeByScore).toHaveBeenCalledWith(
+        expectedSubnetKey,
+        expect.any(Number),
+        expect.any(Number),
+      );
+    });
+
+    it('skips subnet check when subnetLimit is not configured', async () => {
+      const config: RateLimiterConfig = { ...baseConfig }; // no subnetLimit
+      const event = createEvent({ path: '/api/test', method: 'GET' });
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '202.46.62.5' });
+      const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+
+      await checkRateLimit(event, config, redis);
+
+      // Only one zCount call (IP check only, no subnet check)
+      expect(redis.zCount).toHaveBeenCalledTimes(1);
+    });
+
+    it('skips subnet check for IPv6 addresses', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        subnetLimit: { maxRequests: 100, windowSeconds: 60 },
+      };
+      const event = createEvent({
+        path: '/api/test',
+        method: 'GET',
+        node: { req: { socket: { remoteAddress: '2001:db8::1' } } },
+      } as Partial<H3Event>);
+      getHeadersMock.mockReturnValue({});
+      const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+
+      const result = await checkRateLimit(event, config, redis);
+
+      expect(result.allowed).toBe(true);
+      // Only one zCount call — subnet check skipped for IPv6
+      expect(redis.zCount).toHaveBeenCalledTimes(1);
+    });
+
+    it('bypasses subnet check for excluded routes', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        subnetLimit: { maxRequests: 100, windowSeconds: 60 },
+        exclusions: [{ route: '/api/health' }],
+      };
+      const event = createEvent({ path: '/api/health', method: 'GET' });
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '202.46.62.5' });
+      const redis = createRedisMock({ count: 0, oldestScore: null });
+
+      const result = await checkRateLimit(event, config, redis);
+
+      expect(result.allowed).toBe(true);
+      expect(result.limit).toBe(Number.MAX_SAFE_INTEGER);
       expect(redis.zCount).not.toHaveBeenCalled();
     });
   });

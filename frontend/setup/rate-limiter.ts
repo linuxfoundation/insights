@@ -41,6 +41,12 @@ const rateLimiterConfig: RateLimiterConfig = {
     },
   ],
 
+  // /24 subnet rate limit — catches coordinated bot attacks from multiple IPs in the same subnet
+  subnetLimit: {
+    maxRequests: parseInt(process.env.NUXT_RATE_LIMITER_SUBNET_MAX_REQUESTS || '2000'),
+    windowSeconds: parseInt(process.env.NUXT_RATE_LIMITER_SUBNET_WINDOW_SECONDS || '60'),
+  },
+
   // Routes to exclude from rate limiting
   exclusions: [
     {

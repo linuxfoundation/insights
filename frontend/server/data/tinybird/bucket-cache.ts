@@ -49,7 +49,12 @@ export async function getBucketIdForProject(
   // Validate input
   const projectValue = project?.toString().trim();
   if (!projectValue || projectValue.length === 0) {
-    console.warn('getBucketIdForProject: Invalid project value provided');
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_project',
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return null;
   }
 
@@ -139,14 +144,27 @@ async function fetchBucketIdFromTinybird(
 
   // Validate response structure
   if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
-    console.warn(`No bucketId found for project: ${projectValue}`);
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_not_found',
+        project: projectValue,
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return null;
   }
 
   const bucketId = response.data[0]?.bucketId;
 
   if (typeof bucketId !== 'number') {
-    console.warn(`Invalid bucketId type for project ${projectValue}:`, typeof bucketId);
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_type',
+        project: projectValue,
+        bucketIdType: typeof bucketId,
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return null;
   }
 
