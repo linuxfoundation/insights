@@ -3,10 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-card class="p-6 flex flex-col gap-6">
+  <lfx-card class="p-4 md:p-6 flex flex-col gap-6">
     <!-- Header -->
     <div class="flex flex-col gap-2">
-      <h2 class="font-secondary text-xl font-bold leading-7 text-neutral-900">Vulnerabilities</h2>
+      <h2 class="font-secondary text-lg md:text-xl font-bold leading-6 md:leading-7 text-neutral-900">
+        Vulnerabilities
+      </h2>
       <p class="text-xs leading-4 text-neutral-500">
         Overview of security vulnerabilities detected across project dependencies over the last 365 days.
       </p>
@@ -39,7 +41,7 @@ SPDX-License-Identifier: MIT
       <lfx-project-vulnerability-summary :params="params" />
 
       <!-- Charts row -->
-      <div class="flex gap-6">
+      <div class="flex flex-col md:flex-row gap-6">
         <lfx-project-vulnerability-severity :params="params" />
         <lfx-project-vulnerability-ecosystem :params="params" />
       </div>
