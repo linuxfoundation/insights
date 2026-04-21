@@ -307,16 +307,7 @@ export async function checkRateLimit(
   const method = event.method.toUpperCase();
   const key = `${method}:${path}`;
 
-  // Per-IP check
-  const ipResult = await checkRateLimitInRedis(
-    hashedIp,
-    key,
-    maxRequests,
-    windowSeconds,
-    redisClient,
-  );
-
-  // Per-subnet check — runs in parallel with per-IP; blocks if subnet is over limit
+  // Subnet check first — rejects coordinated bot traffic before touching per-IP counters
   if (rateLimiterConfig.subnetLimit) {
     const hashedSubnet = getHashedSubnet(event, rateLimiterConfig.secret);
     if (hashedSubnet) {
@@ -333,5 +324,6 @@ export async function checkRateLimit(
     }
   }
 
-  return ipResult;
+  // Per-IP check
+  return checkRateLimitInRedis(hashedIp, key, maxRequests, windowSeconds, redisClient);
 }

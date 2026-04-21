@@ -129,28 +129,32 @@ export class AdaptiveSemaphore {
         }),
       );
     }
-    return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        const idx = this.queue.findIndex((item) => item.resolve === resolve);
-        if (idx !== -1) this.queue.splice(idx, 1);
-        console.warn(
-          JSON.stringify({
-            message: 'tinybird_throttle',
-            queueDepth: this.queue.length,
-            effectiveLimit: this.effectiveLimit,
-            limit: this.limit,
-            timeoutMs,
-            timestamp: new Date().toISOString(),
-          }),
-        );
-        reject(
-          createError({
-            statusCode: 503,
-            statusMessage: 'Tinybird request queue timeout — try again shortly',
-          }),
-        );
-      }, timeoutMs);
-      this.queue.push({ resolve: () => resolve(true), reject, timer });
+    return new Promise<boolean>((resolve, reject) => {
+      const entry: (typeof this.queue)[number] = {
+        resolve: () => resolve(true),
+        reject,
+        timer: setTimeout(() => {
+          const idx = this.queue.indexOf(entry);
+          if (idx !== -1) this.queue.splice(idx, 1);
+          console.warn(
+            JSON.stringify({
+              message: 'tinybird_throttle',
+              queueDepth: this.queue.length,
+              effectiveLimit: this.effectiveLimit,
+              limit: this.limit,
+              timeoutMs,
+              timestamp: new Date().toISOString(),
+            }),
+          );
+          reject(
+            createError({
+              statusCode: 503,
+              statusMessage: 'Tinybird request queue timeout — try again shortly',
+            }),
+          );
+        }, timeoutMs),
+      };
+      this.queue.push(entry);
     });
   }
 
