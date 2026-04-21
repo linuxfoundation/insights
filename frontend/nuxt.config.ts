@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     '~/plugins/vue-query.ts',
     '~/plugins/analytics.ts',
     '~/plugins/canonical.ts',
+    '~/plugins/auth.client.ts',
     '~/plugins/intercom.ts',
   ],
   css: ['~/assets/styles/main.scss'],

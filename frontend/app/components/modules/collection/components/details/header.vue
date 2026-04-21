@@ -6,60 +6,122 @@ SPDX-License-Identifier: MIT
   <div :style="headerBackgroundStyle">
     <section
       class="container"
-      :class="scrollTop > 50 ? 'py-3 md:py-5' : ' py-5'"
+      :class="scrollTop > 50 ? 'py-3 md:py-5' : 'py-3 md:py-5'"
     >
+      <!-- Mobile top row: back link + action icons -->
       <div
-        :class="scrollTop > 50 ? 'h-0 opacity-0' : 'h-10 sm:h-0 p-px sm:p-0 opacity-100'"
-        class="transition-all overflow-hidden ease-linear"
+        class="flex md:hidden items-center justify-between transition-all"
+        :class="scrollTop > 50 ? 'mb-0' : 'mb-4'"
       >
         <nuxt-link
           :to="{ name: collectionTab?.route }"
-          class="block sm:hidden"
+          class="ease-linear transition-all items-center gap-1.5 inline-flex text-neutral-500"
         >
-          <lfx-button
-            type="tertiary"
-            size="small"
-            icon="fa fa-angle-left fa-light"
-            :label="collectionTab?.detailsLabel"
-            class="!rounded-full"
+          <lfx-icon
+            name="angle-left"
+            :size="14"
           />
+          <span
+            class="text-sm font-medium transition-all"
+            :class="scrollTop > 50 ? 'hidden' : 'block'"
+          >
+            {{ collectionTab?.detailsLabel }}
+          </span>
+        </nuxt-link>
+
+        <div
+          v-if="props.collection && !loading"
+          class="flex items-center gap-2"
+        >
+          <!-- Clone + Like only for non-my-collections -->
+          <template v-if="props.type !== CollectionTypeEnum.MY_COLLECTIONS">
+            <lfx-icon-button
+              v-if="!!user"
+              icon="clone"
+              type="outline"
+              size="medium"
+              @click="handleClone"
+            />
+            <like-button
+              :collection="props.collection"
+              button-type="outline"
+              :hide-count="true"
+              class="!rounded-full !w-9 !h-9 !p-0"
+            />
+          </template>
+          <lfx-icon-button
+            icon="share-nodes"
+            type="outline"
+            size="medium"
+            @click="handleShare"
+          />
+          <lfx-dropdown
+            v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
+            placement="bottom-end"
+            :class="isDeleting ? 'opacity-50 cursor-not-allowed' : ''"
+            :disabled="isDeleting"
+          >
+            <template #trigger>
+              <lfx-icon-button
+                icon="ellipsis"
+                type="outline"
+                size="medium"
+              />
+            </template>
+            <lfx-dropdown-item @click.stop.prevent="handleEdit">
+              <lfx-icon
+                name="pencil"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Edit collection
+            </lfx-dropdown-item>
+            <lfx-dropdown-item @click.stop.prevent="handleDelete">
+              <lfx-icon
+                name="trash"
+                :size="16"
+                class="!text-negative-500"
+              />
+              <span class="text-negative-500">Delete collection</span>
+            </lfx-dropdown-item>
+          </lfx-dropdown>
+        </div>
+      </div>
+
+      <!-- Desktop back link -->
+      <div
+        class="transition-all hidden md:block"
+        :class="scrollTop > 50 ? 'mb-0' : 'mb-6'"
+      >
+        <nuxt-link
+          :to="{ name: collectionTab?.route }"
+          class="ease-linear transition-all items-center gap-1.5 inline-flex"
+        >
+          <lfx-icon
+            name="angle-left"
+            class="text-neutral-500"
+            :size="16"
+          />
+          <span
+            class="text-sm text-neutral-500 font-medium transition-all"
+            :class="scrollTop > 50 ? 'hidden' : 'block'"
+          >
+            {{ collectionTab?.detailsLabel }}
+          </span>
         </nuxt-link>
       </div>
+
       <div
         class="transition-all ease-linear flex"
         :class="scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col'"
       >
-        <div
-          class="transition-all"
-          :class="scrollTop > 50 ? 'mb-0' : 'mb-6'"
-        >
-          <nuxt-link
-            :to="{ name: collectionTab?.route }"
-            class="ease-linear transition-all items-center gap-1.5"
-            :class="scrollTop > 50 ? 'flex' : 'hidden sm:flex'"
-          >
-            <div
-              :class="scrollTop > 50 ? 'opacity-100 visible' : 'opacity-0 sm:opacity-100 invisible sm:visible pr-0'"
-              class="transition-all ease-linear"
-            >
-              <lfx-icon
-                name="angle-left"
-                class="text-neutral-500"
-                :size="16"
-              />
-            </div>
-            <div
-              class="text-sm text-neutral-500 font-medium transition-all"
-              :class="scrollTop > 50 ? 'hidden' : 'block'"
-            >
-              {{ collectionTab?.detailsLabel }}
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start">
+        <!-- Title row: logo + title (left) + action buttons (right, desktop only) -->
+        <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start w-full">
           <div
-            class="flex-grow flex"
-            :class="scrollTop > 50 ? 'gap-4' : 'gap-8'"
+            class="flex-grow flex w-full"
+            :class="
+              scrollTop > 50 ? 'flex-row gap-3 items-center' : 'flex-col md:flex-row md:items-stretch gap-3 md:gap-8'
+            "
           >
             <div
               v-if="props.collection?.logoUrl"
@@ -68,10 +130,27 @@ SPDX-License-Identifier: MIT
               <img
                 :src="props.collection?.logoUrl"
                 alt="Collection image"
-                :class="scrollTop > 50 ? 'h-10 w-10' : 'h-30 w-auto'"
+                :class="scrollTop > 50 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 md:h-30 w-auto'"
               />
             </div>
-            <div class="w-full flex flex-col justify-center">
+            <div class="w-full flex flex-col justify-center min-w-0">
+              <!-- Mobile only: visibility badge above title for my-collections -->
+              <div
+                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS && props.collection && scrollTop <= 50"
+                class="flex md:hidden items-center gap-1.5 mb-2"
+              >
+                <lfx-icon
+                  :name="props.collection.isPrivate ? 'lock' : 'globe'"
+                  :size="14"
+                  :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
+                />
+                <span
+                  class="text-sm font-medium"
+                  :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
+                >
+                  {{ props.collection.isPrivate ? 'Private' : 'Public' }}
+                </span>
+              </div>
               <lfx-skeleton
                 v-if="loading"
                 height="2rem"
@@ -81,12 +160,12 @@ SPDX-License-Identifier: MIT
               <h1
                 v-else-if="props.collection"
                 class="font-secondary font-light transition-all"
-                :class="scrollTop > 50 ? 'text-2xl md:text-3xl' : 'text-4xl md:text-5xl'"
+                :class="scrollTop > 50 ? 'text-lg md:text-3xl truncate' : 'text-3xl md:text-5xl'"
               >
                 {{ props.collection.name }}
               </h1>
               <div
-                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible'"
+                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-1 md:mt-0'"
                 class="w-full transition-all ease-linear"
               >
                 <lfx-skeleton
@@ -97,16 +176,18 @@ SPDX-License-Identifier: MIT
                 />
                 <p
                   v-else-if="props.collection"
-                  class="text-body-2 md:text-body-1 text-neutral-500"
+                  class="text-sm md:text-body-1 text-neutral-500 line-clamp-2 md:line-clamp-none"
                 >
                   {{ props.collection.description }}
                 </p>
               </div>
             </div>
           </div>
+
+          <!-- Desktop action buttons (next to title) -->
           <div
             v-if="props.collection && !loading"
-            class="flex transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
+            class="hidden md:flex transition-all ease-linear gap-4 lg:w-auto shrink-0 mt-4 lg:mt-0"
           >
             <template v-if="!!user">
               <lfx-tooltip content="Duplicate collection">
@@ -126,7 +207,7 @@ SPDX-License-Identifier: MIT
                 Edit Collection
               </lfx-button>
               <like-button
-                v-else
+                v-if="props.type !== CollectionTypeEnum.MY_COLLECTIONS"
                 :collection="props.collection"
                 button-type="outline"
                 class="!rounded-full"
@@ -165,72 +246,66 @@ SPDX-License-Identifier: MIT
             </lfx-dropdown>
           </div>
         </div>
-      </div>
 
-      <div
-        class="flex items-center gap-2 justify-between w-full"
-        :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-10'"
-      >
-        <div class="flex items-center gap-2">
-          <collection-owner
-            v-if="props.collection"
-            :collection="props.collection"
-          />
-
-          <span
-            v-if="projectCount > 0"
-            class="text-neutral-600"
-            >・</span
-          >
-          <lfx-icon
-            v-if="projectCount > 0"
-            name="laptop-code"
-            :size="16"
-            class="text-neutral-600"
-          />
-          <p
-            v-if="projectCount > 0"
-            class="text-sm leading-5 text-neutral-600"
-          >
-            {{ pluralize('project', projectCount, true) }}
-            <span v-if="props.collection?.updatedAt">
-              ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}
-            </span>
-          </p>
-        </div>
-        <lfx-toggle v-model="isOnlyLFProjects"> Only Linux Foundation projects </lfx-toggle>
-      </div>
-    </section>
-    <section class="container py-5 text-neutral-500 text-xs font-semibold">
-      <div class="flex items-center gap-2">
+        <!-- Owner + project count + LF toggle (desktop only for toggle) -->
         <div
-          class="w-3/12 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('name')"
+          v-if="!loading && props.collection"
+          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3 md:mt-10'"
+          class="flex items-center gap-2 justify-between w-full flex-wrap transition-all ease-linear"
         >
-          Project
-          <lfx-icon
-            name="caret-large-down"
-            type="solid"
-            :class="[sortIconClass('name')]"
-          />
+          <div class="flex items-center gap-1 md:gap-2 flex-wrap">
+            <collection-owner :collection="props.collection" />
+            <span class="text-neutral-600">・</span>
+            <div class="flex items-center gap-1.5">
+              <lfx-icon
+                name="laptop-code"
+                :size="16"
+                class="text-neutral-500"
+              />
+              <p class="text-xs md:text-sm leading-4 md:leading-5 text-neutral-600">
+                <!-- Mobile community/curated: just the number -->
+                <span
+                  v-if="hasCompactMetaMobile"
+                  class="md:hidden"
+                >
+                  {{ projectCount }}
+                </span>
+                <!-- Desktop + my-collections: "X projects" -->
+                <span :class="hasCompactMetaMobile ? 'hidden md:inline' : ''">
+                  {{ pluralize('project', projectCount, true) }}
+                </span>
+                <span v-if="props.collection.updatedAt">
+                  ・ Updated
+                  <span class="md:hidden">{{ formatDate(props.collection.updatedAt, 'dd MMM') }}</span>
+                  <span class="hidden md:inline">{{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}</span>
+                </span>
+              </p>
+            </div>
+            <!-- Mobile only: like count for my-collections, preceded by dot -->
+            <div
+              v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
+              class="flex md:hidden items-center gap-1 whitespace-nowrap"
+            >
+              <span class="text-neutral-600">・</span>
+              <div class="flex items-center gap-1.5">
+                <lfx-icon
+                  name="hearts"
+                  :size="16"
+                  class="text-neutral-500"
+                />
+                <span class="text-xs leading-4 text-neutral-600">
+                  {{ formatNumberShort(props.collection.likeCount ?? 0) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <lfx-toggle
+            v-model="isOnlyLFProjects"
+            class="!hidden md:!flex"
+          >
+            Only Linux Foundation projects
+          </lfx-toggle>
         </div>
-        <div class="w-2/12 group flex items-center gap-1">Health Score</div>
-        <div
-          class="w-1/12 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('contributorCount')"
-        >
-          Contributors
-          <lfx-icon
-            name="caret-large-down"
-            type="solid"
-            :class="[sortIconClass('contributorCount')]"
-          />
-        </div>
-        <!-- TODO: Enable sorting by software value when backend is ready-->
-        <div class="w-1/12">Software value</div>
-        <!-- Contributor/Organization dependency -->
-        <div class="w-3/12">Contributor/Organization dependency</div>
-        <div class="w-2/12">Achievements</div>
       </div>
     </section>
   </div>
@@ -265,7 +340,7 @@ import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
-import { formatDate } from '~/components/shared/utils/formatter';
+import { formatDate, formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
@@ -299,13 +374,11 @@ const props = defineProps<{
   collection?: Collection;
   loading?: boolean;
   onlyLfProjects: boolean;
-  sort: string;
   type?: CollectionType;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:onlyLfProjects', value: boolean): void;
-  (e: 'update:sort', value: string): void;
   (e: 'updated', value: Collection): void;
 }>();
 
@@ -317,6 +390,7 @@ const isOnlyLFProjects = computed({
 });
 
 const { scrollTop } = useScroll();
+
 const allTabs = computed(() => collectionTabs(user.value));
 
 const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === props.type) || allTabs.value[0]);
@@ -324,41 +398,11 @@ const headerBackgroundStyle = computed(() => headerBackground(props.type, props.
 
 const projectCount = computed(() => (props.collection?.projectCount || 0) + (props.collection?.repositoryCount || 0));
 
-const currentSort = computed(() => {
-  const match = props.sort.match(/^(.+)_(asc|desc)$/);
-  if (match) {
-    return { field: match[1], direction: match[2] as 'asc' | 'desc' };
-  }
-  return { field: props.sort, direction: 'asc' as const };
-});
+const hasCompactMetaMobile = computed(
+  () => props.type === CollectionTypeEnum.COMMUNITY || props.type === CollectionTypeEnum.CURATED,
+);
 
 const isDeleting = ref(false);
-
-const handleSort = (field: string) => {
-  const defaultDirections: Record<string, 'asc' | 'desc'> = {
-    name: 'asc',
-    contributorCount: 'desc',
-    organizationCount: 'desc',
-  };
-
-  if (currentSort.value.field === field) {
-    const newDirection = currentSort.value.direction === 'asc' ? 'desc' : 'asc';
-    emit('update:sort', `${field}_${newDirection}`);
-  } else {
-    const direction = defaultDirections[field] || 'asc';
-    emit('update:sort', `${field}_${direction}`);
-  }
-};
-
-const sortIconClass = (field: string) => {
-  const isActive = currentSort.value.field === field;
-  const isAscending = currentSort.value.direction === 'asc';
-
-  return [
-    isActive ? 'text-neutral-500' : 'text-neutral-300 invisible group-hover:visible',
-    isActive && isAscending ? 'rotate-180' : '',
-  ];
-};
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection?.name}`;

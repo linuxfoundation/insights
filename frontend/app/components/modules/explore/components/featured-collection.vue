@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
     />
   </lfx-collection-section>
 
-  <div class="pt-10 border-t border-neutral-200">
+  <div class="pt-10 border-t border-neutral-200 pb-1">
     <lfx-collection-section
       type="community"
       :status="communityStatus"

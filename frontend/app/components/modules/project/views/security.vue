@@ -186,7 +186,7 @@ const { selectedReposValues, project, isArchived, emptyStateTitle, emptyStateDes
   storeToRefs(useProjectStore());
 const { isAuthenticated } = storeToRefs(useAuthStore());
 
-const isRepository = computed(() => !!name || project.value?.repositoryGroups?.length === 0);
+const isRepository = computed(() => !!name || (project.value?.repositories?.length ?? 0) <= 1);
 const isReposEvalModalOpen = ref(false);
 const currentTab = ref('');
 const accordion = ref('');

@@ -27,43 +27,59 @@ SPDX-License-Identifier: MIT
             :aria-label="project.logo && project.name"
           />
         </lfx-avatar-group>
-        <lfx-dropdown
+        <div
           v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
-          placement="bottom-end"
+          class="flex items-center gap-2"
         >
-          <template #trigger>
-            <lfx-icon-button
-              icon="ellipsis"
-              size="small"
-              type="transparent"
-              class="!text-neutral-900"
-            />
-          </template>
-          <lfx-dropdown-item @click.stop.prevent="handleEdit">
+          <!-- Mobile only: visibility badge in header -->
+          <span class="flex md:hidden items-center gap-1.5">
             <lfx-icon
-              name="pen"
-              :size="16"
-              class="text-neutral-600"
+              :name="props.collection.isPrivate ? 'lock' : 'globe'"
+              :size="12"
+              :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
             />
-            Edit
-          </lfx-dropdown-item>
-          <lfx-dropdown-item @click.stop.prevent="handleShare">
-            <lfx-icon
-              name="share-nodes"
-              :size="16"
-              class="text-neutral-600"
-            />
-            Share
-          </lfx-dropdown-item>
-          <lfx-dropdown-item @click.stop.prevent="handleDelete">
-            <lfx-icon
-              name="trash"
-              :size="16"
-              class="!text-negative-500"
-            />
-            <span class="text-negative-500">Delete</span>
-          </lfx-dropdown-item>
-        </lfx-dropdown>
+            <span
+              class="text-xs leading-4 font-medium"
+              :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
+            >
+              {{ props.collection.isPrivate ? 'Private' : 'Public' }}
+            </span>
+          </span>
+          <lfx-dropdown placement="bottom-end">
+            <template #trigger>
+              <lfx-icon-button
+                icon="ellipsis"
+                size="small"
+                type="transparent"
+                class="!text-neutral-900"
+              />
+            </template>
+            <lfx-dropdown-item @click.stop.prevent="handleEdit">
+              <lfx-icon
+                name="pen"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Edit
+            </lfx-dropdown-item>
+            <lfx-dropdown-item @click.stop.prevent="handleShare">
+              <lfx-icon
+                name="share-nodes"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Share
+            </lfx-dropdown-item>
+            <lfx-dropdown-item @click.stop.prevent="handleDelete">
+              <lfx-icon
+                name="trash"
+                :size="16"
+                class="!text-negative-500"
+              />
+              <span class="text-negative-500">Delete</span>
+            </lfx-dropdown-item>
+          </lfx-dropdown>
+        </div>
       </div>
 
       <!-- content -->
@@ -87,8 +103,11 @@ SPDX-License-Identifier: MIT
             />
           </div>
 
-          <!-- project count and updated date -->
-          <div class="flex items-center gap-1.5">
+          <!-- project count and updated date (hidden on mobile for my-collections per design) -->
+          <div
+            class="flex items-center gap-1.5"
+            :class="{ 'hidden md:flex': props.variant === CollectionTypeEnum.MY_COLLECTIONS }"
+          >
             <lfx-icon
               name="laptop-code"
               :size="12"
@@ -102,12 +121,17 @@ SPDX-License-Identifier: MIT
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>
-              <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"> ・ </template>
+              <span
+                v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
+                class="hidden md:inline"
+              >
+                ・
+              </span>
             </p>
-            <!-- visibility badge for my-collections -->
+            <!-- visibility badge for my-collections (desktop only - mobile shows in header) -->
             <span
               v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
-              class="flex items-center gap-1.5"
+              class="hidden md:flex items-center gap-1.5"
             >
               <lfx-icon
                 :name="props.collection.isPrivate ? 'lock' : 'globe'"

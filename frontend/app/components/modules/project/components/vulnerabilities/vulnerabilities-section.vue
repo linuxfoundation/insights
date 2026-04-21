@@ -78,7 +78,7 @@ const route = useRoute();
 
 const { selectedReposValues, project } = storeToRefs(useProjectStore());
 
-const isRepository = computed(() => !!route.params.name || project.value?.repositoryGroups?.length === 0);
+const isRepository = computed(() => !!route.params.name || (project.value?.repositories?.length ?? 0) <= 1);
 const hasSelectedRepos = computed(() => selectedReposValues.value && selectedReposValues.value.length > 0);
 const showAggregatedDisclaimer = computed(() => !isRepository.value && !hasSelectedRepos.value);
 

@@ -5,14 +5,19 @@ SPDX-License-Identifier: MIT
 <template>
   <!-- Header Section -->
   <div class="container bg-white">
-    <section class="flex items-start justify-between gap-4 border-b border-neutral-200 pt-16 pb-10">
+    <section class="flex items-start justify-between gap-4 border-b border-neutral-200 pt-8 pb-6 md:pt-16 md:pb-10">
       <div class="flex-1">
-        <h1 class="font-secondary font-light text-4xl leading-[56px] text-neutral-900">Discover Collections</h1>
-        <p class="text-base leading-6 text-neutral-600">
+        <h1 class="font-secondary font-light text-2xl md:text-4xl leading-tight md:leading-[56px] text-neutral-900">
+          Discover Collections
+        </h1>
+        <p class="text-sm md:text-base leading-5 md:leading-6 text-neutral-600">
           Explore and curate open source projects organized into themed collections.
         </p>
       </div>
-      <lf-create-collection-button @created="handleCollectionCreated" />
+      <lf-create-collection-button
+        class="!hidden md:!flex"
+        @created="handleCollectionCreated"
+      />
     </section>
   </div>
 
@@ -28,7 +33,7 @@ SPDX-License-Identifier: MIT
           :is-empty="isCuratedEmpty"
         >
           <lfx-collection-card
-            v-for="collection in curatedCollections"
+            v-for="collection in isMobile ? curatedCollections.slice(0, 3) : curatedCollections"
             :key="collection.slug"
             :collection="collection"
             variant="curated"
@@ -47,8 +52,9 @@ SPDX-License-Identifier: MIT
           :is-empty="isCommunityEmpty"
           @created="refetchCommunityCollections"
         >
+          <!-- Desktop: all community collections as cards -->
           <lfx-collection-card
-            v-for="collection in communityCollections"
+            v-for="collection in isMobile ? communityCollections.slice(0, 3) : communityCollections"
             :key="collection.slug"
             :collection="collection"
             variant="community"
@@ -66,16 +72,30 @@ SPDX-License-Identifier: MIT
             :error="myCollectionsError"
             error-message="Error fetching your collections"
             :is-empty="isMyCollectionsEmpty"
+            mobile-layout="list"
             @created="refetchMyCollections"
           >
-            <lfx-collection-card
-              v-for="collection in myCollections"
-              :key="collection.slug"
-              :collection="collection"
-              variant="my-collections"
-              @deleted="handleCollectionUpdated"
-              @updated="handleCollectionUpdated"
-            />
+            <!-- Mobile: dedicated mobile card -->
+            <template v-if="isMobile">
+              <lfx-my-collection-card-mobile
+                v-for="collection in myCollections.slice(0, 5)"
+                :key="collection.slug"
+                :collection="collection"
+                @deleted="handleCollectionUpdated"
+                @updated="handleCollectionUpdated"
+              />
+            </template>
+            <!-- Desktop: standard card -->
+            <template v-else>
+              <lfx-collection-card
+                v-for="collection in myCollections"
+                :key="collection.slug"
+                :collection="collection"
+                variant="my-collections"
+                @deleted="handleCollectionUpdated"
+                @updated="handleCollectionUpdated"
+              />
+            </template>
           </lfx-collection-section>
         </section>
 
@@ -84,6 +104,16 @@ SPDX-License-Identifier: MIT
       </template>
     </div>
   </div>
+
+  <!-- Mobile floating create button -->
+  <teleport to="body">
+    <div
+      v-if="isMobile"
+      class="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2"
+    >
+      <lf-create-collection-button @created="handleCollectionCreated" />
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -91,12 +121,17 @@ import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
 import LfxLikedCollections from '../components/discovery/liked-collections.vue';
+import LfxMyCollectionCardMobile from '../components/my-collection-card-mobile.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import useResponsive from '~/components/shared/utils/responsive';
 
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+
+const { pageWidth } = useResponsive();
+const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
