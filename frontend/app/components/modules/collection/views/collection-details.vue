@@ -14,26 +14,75 @@ SPDX-License-Identifier: MIT
         :loading="loading"
         :collection="currentCollection"
         :only-lf-projects="isLFOnly"
-        :sort="sort"
         :type="collectionType"
         @update:only-lf-projects="updateOnlyLFProjects"
-        @update:sort="updateSort"
         @updated="handleCollectionUpdated"
       />
     </div>
   </lfx-maintain-height>
 
   <div class="container pb-5 lg:pb-10 flex flex-col">
-    <div
-      v-if="!isPending && flatData.length"
-      class="flex flex-col"
-    >
-      <lfx-collection-project-item
-        v-for="project in flatData"
-        :key="project.slug"
-        :project="project"
-      />
-    </div>
+    <template v-if="!isPending && flatData.length">
+      <!-- Mobile: card list -->
+      <div class="flex flex-col md:hidden">
+        <lfx-collection-project-item
+          v-for="project in flatData"
+          :key="project.slug"
+          :project="project"
+          as="card"
+        />
+      </div>
+
+      <!-- Desktop: scrollable table -->
+      <div class="hidden md:block overflow-x-auto">
+        <table class="w-full min-w-[60rem] border-collapse">
+          <thead class="text-neutral-500 text-xs font-semibold">
+            <tr>
+              <th
+                class="w-3/12 py-5 px-2 text-left whitespace-nowrap cursor-pointer group"
+                @click="handleSort('name')"
+              >
+                <span class="inline-flex items-center gap-1">
+                  Project
+                  <lfx-icon
+                    name="caret-large-down"
+                    type="solid"
+                    :class="[sortIconClass('name')]"
+                  />
+                </span>
+              </th>
+              <th class="w-2/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Health Score</th>
+              <th
+                class="w-1/12 py-5 px-2 text-left whitespace-nowrap cursor-pointer group"
+                @click="handleSort('contributorCount')"
+              >
+                <span class="inline-flex items-center gap-1">
+                  Contributors
+                  <lfx-icon
+                    name="caret-large-down"
+                    type="solid"
+                    :class="[sortIconClass('contributorCount')]"
+                  />
+                </span>
+              </th>
+              <th class="w-1/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Software value</th>
+              <th class="w-3/12 py-5 px-2 text-left whitespace-nowrap font-semibold">
+                Contributor/Organization dependency
+              </th>
+              <th class="w-2/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Achievements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <lfx-collection-project-item
+              v-for="project in flatData"
+              :key="project.slug"
+              :project="project"
+              as="row"
+            />
+          </tbody>
+        </table>
+      </div>
+    </template>
 
     <div
       v-if="flatData.length === 0 && isSuccess"
@@ -86,6 +135,64 @@ SPDX-License-Identifier: MIT
   <div class="flex justify-center mt-5 lg:mt-10">
     <lfx-onboarding-link show-message />
   </div>
+
+  <!-- Mobile floating bar: sort + LF filter -->
+  <teleport to="body">
+    <div
+      v-if="isMobile"
+      class="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px flex items-center gap-1"
+    >
+      <lfx-dropdown-select
+        :model-value="sort"
+        width="14rem"
+        placement="top-start"
+        @update:model-value="updateSort"
+      >
+        <template #trigger="{ selectedOption }">
+          <div class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer">
+            <lfx-icon
+              name="arrow-down-wide-short"
+              :size="14"
+            />
+            <p class="text-xs whitespace-nowrap">{{ selectedOption?.label || 'Sort' }}</p>
+          </div>
+        </template>
+        <lfx-dropdown-item
+          value="contributorCount_desc"
+          label="Most contributors"
+        />
+        <lfx-dropdown-item
+          value="name_asc"
+          label="Alphabetically"
+        />
+      </lfx-dropdown-select>
+      <div class="border-l border-neutral-200 my-1"></div>
+      <lfx-dropdown-select
+        :model-value="isLFOnly ? 'lfx' : 'all'"
+        width="12rem"
+        placement="top-end"
+        @update:model-value="(v) => updateOnlyLFProjects(v === 'lfx')"
+      >
+        <template #trigger="{ selectedOption }">
+          <div class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer">
+            <lfx-icon
+              name="globe"
+              :size="14"
+            />
+            <p class="text-xs whitespace-nowrap">{{ selectedOption?.label || 'All projects' }}</p>
+          </div>
+        </template>
+        <lfx-dropdown-item
+          value="all"
+          label="All projects"
+        />
+        <lfx-dropdown-item
+          value="lfx"
+          label="Only LF projects"
+        />
+      </lfx-dropdown-select>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -101,8 +208,11 @@ import LfxCollectionHeader from '~/components/modules/collection/components/deta
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useScroll from '~/components/shared/utils/scroll';
+import useResponsive from '~/components/shared/utils/responsive';
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import {
   collectionDetailsParamsGetter,
@@ -146,6 +256,8 @@ const detailCollectionIds = computed(() => (currentCollection.value ? [currentCo
 useLikeCounts(detailCollectionIds);
 
 const { scrollTop } = useScroll();
+const { pageWidth } = useResponsive();
+const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);
 const collectionSlug = props.slug;
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
@@ -188,6 +300,40 @@ const updateSort = (value: string) => {
     collectionSort: value,
     onlyLFProjects: queryParams.value.onlyLFProjects,
   };
+};
+
+const currentSort = computed(() => {
+  const match = sort.value.match(/^(.+)_(asc|desc)$/);
+  if (match) {
+    return { field: match[1], direction: match[2] as 'asc' | 'desc' };
+  }
+  return { field: sort.value, direction: 'asc' as const };
+});
+
+const handleSort = (field: string) => {
+  const defaultDirections: Record<string, 'asc' | 'desc'> = {
+    name: 'asc',
+    contributorCount: 'desc',
+    organizationCount: 'desc',
+  };
+
+  if (currentSort.value.field === field) {
+    const newDirection = currentSort.value.direction === 'asc' ? 'desc' : 'asc';
+    updateSort(`${field}_${newDirection}`);
+  } else {
+    const direction = defaultDirections[field] || 'asc';
+    updateSort(`${field}_${direction}`);
+  }
+};
+
+const sortIconClass = (field: string) => {
+  const isActive = currentSort.value.field === field;
+  const isAscending = currentSort.value.direction === 'asc';
+
+  return [
+    isActive ? 'text-neutral-500' : 'text-neutral-300 invisible group-hover:visible',
+    isActive && isAscending ? 'rotate-180' : '',
+  ];
 };
 
 const updateOnlyLFProjects = (value: boolean) => {

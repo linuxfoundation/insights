@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow">
+  <div class="bg-white pb-30 -mb-30 flex-grow">
     <lfx-collection-details-view :slug="slug as string" />
   </div>
 </template>

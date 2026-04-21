@@ -3,12 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-between gap-3">
     <!-- Previous button -->
     <lfx-button
       v-if="step > 0"
       type="tertiary"
       button-style="pill"
+      class="!whitespace-nowrap !justify-center"
       @click="$emit('previous')"
     >
       <lfx-icon name="arrow-left" />
@@ -16,14 +17,15 @@ SPDX-License-Identifier: MIT
     </lfx-button>
     <div
       v-else
-      class="flex-grow"
+      class="hidden sm:block sm:flex-grow"
     />
 
     <!-- Right buttons -->
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-3 sm:gap-4">
       <lfx-button
         type="tertiary"
         button-style="pill"
+        class="hidden sm:!flex flex-1 sm:flex-none !whitespace-nowrap !justify-center"
         :disabled="loading"
         @click="$emit('cancel')"
       >
@@ -32,6 +34,7 @@ SPDX-License-Identifier: MIT
       <lfx-button
         v-if="!isLastStep"
         button-style="pill"
+        class="flex-1 sm:flex-none !whitespace-nowrap !justify-center"
         :disabled="!canProceed"
         @click="$emit('next')"
       >
@@ -41,6 +44,7 @@ SPDX-License-Identifier: MIT
       <lfx-button
         v-else
         button-style="pill"
+        class="flex-1 sm:flex-none !whitespace-nowrap !justify-center"
         :disabled="!canProceed || loading"
         @click="$emit('submit')"
       >

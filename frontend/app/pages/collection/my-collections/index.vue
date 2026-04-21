@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="isAuthenticated"
-    class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow"
+    class="bg-white pb-30 -mb-30 flex-grow"
   >
     <lfx-collection-list-view type="my-collections" />
   </div>
