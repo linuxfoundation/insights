@@ -23,12 +23,12 @@ SPDX-License-Identifier: MIT
   </div>
 
   <section>
-    <div class="container pt-6 pb-3 flex flex-col">
+    <div class="container pt-0 pb-3 flex flex-col">
       <div
         v-if="flatData.length"
         :class="classDisplay"
       >
-        <template v-if="view === 'list'">
+        <template v-if="effectiveView === 'list'">
           <lfx-collection-list-item
             v-for="collection in flatData"
             :key="collection.slug"
@@ -38,14 +38,26 @@ SPDX-License-Identifier: MIT
           />
         </template>
         <template v-else>
-          <lfx-collection-card
-            v-for="collection in flatData"
-            :key="collection.slug"
-            :collection="collection"
-            :variant="props.type"
-            @deleted="refreshList"
-            @updated="refreshList"
-          />
+          <!-- Mobile + my-collections: dedicated mobile card -->
+          <template v-if="isMobile && props.type === CollectionTypeEnum.MY_COLLECTIONS">
+            <lfx-my-collection-card-mobile
+              v-for="collection in flatData"
+              :key="collection.slug"
+              :collection="collection"
+              @deleted="refreshList"
+              @updated="refreshList"
+            />
+          </template>
+          <template v-else>
+            <lfx-collection-card
+              v-for="collection in flatData"
+              :key="collection.slug"
+              :collection="collection"
+              :variant="props.type"
+              @deleted="refreshList"
+              @updated="refreshList"
+            />
+          </template>
         </template>
       </div>
 
@@ -54,7 +66,7 @@ SPDX-License-Identifier: MIT
         :class="classDisplay"
         class="pt-6"
       >
-        <template v-if="view === 'list'">
+        <template v-if="effectiveView === 'list'">
           <lfx-collection-list-item-loading
             v-for="i in 3"
             :key="i"
@@ -94,11 +106,53 @@ SPDX-License-Identifier: MIT
     class="container mt-10"
   >
     <lfx-liked-collections
-      :view="view"
+      :view="effectiveView"
       :in-my-collections="true"
       @loaded="handleLikedCollectionsLoaded"
     />
   </section>
+
+  <!-- Mobile floating sort bar -->
+  <teleport to="body">
+    <div
+      v-if="isMobile && flatData.length > 0"
+      class="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px flex items-center gap-1"
+    >
+      <lfx-dropdown-select
+        :model-value="sort"
+        width="14rem"
+        placement="top-start"
+        @update:model-value="updateSort"
+      >
+        <template #trigger="{ selectedOption }">
+          <div class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer">
+            <lfx-icon
+              name="arrow-down-wide-short"
+              :size="14"
+            />
+            <p class="text-xs whitespace-nowrap">{{ selectedOption?.label || 'Sort' }}</p>
+          </div>
+        </template>
+
+        <lfx-dropdown-item
+          value="starred_desc"
+          label="Featured"
+        />
+        <lfx-dropdown-item
+          value="likeCount_desc"
+          label="Most liked"
+        />
+        <lfx-dropdown-item
+          value="projectCount_desc"
+          label="Most projects"
+        />
+        <lfx-dropdown-item
+          value="name_asc"
+          label="Alphabetically"
+        />
+      </lfx-dropdown-select>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -110,6 +164,7 @@ import { headerBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
 
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import LfxCollectionListItemLoading from '~/components/modules/collection/components/list/collection-list-item-loading.vue';
 import LfxCollectionListHeader from '~/components/modules/collection/components/list/header.vue';
@@ -117,10 +172,13 @@ import LfxCollectionCardLoading from '~/components/shared/components/collection-
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
 import LfxLikedCollections from '~/components/modules/collection/components/discovery/liked-collections.vue';
-
+import LfxMyCollectionCardMobile from '~/components/modules/collection/components/my-collection-card-mobile.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import useScroll from '~/components/shared/utils/scroll';
+import useResponsive from '~/components/shared/utils/responsive';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import type { Collection, CollectionType } from '~~/types/collection';
@@ -144,11 +202,19 @@ const { scrollTop } = useScroll();
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
 
+const { pageWidth } = useResponsive();
+const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);
+
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const sort = ref(listSort || 'starred_desc');
 const pageSize = computed(() => (view.value === 'grid' ? 99 : 100));
 const view = ref<CollectionViewType>('grid');
 const likedDataCount = ref(0);
+
+const effectiveView = computed<CollectionViewType>(() => {
+  if (!isMobile.value) return view.value;
+  return 'grid';
+});
 
 const params = computed(() => ({
   pageSize: pageSize.value,
@@ -175,7 +241,11 @@ const collectionIds = computed(() =>
 useLikeCounts(collectionIds);
 
 const classDisplay = computed(() => {
-  if (view.value === 'grid') {
+  if (effectiveView.value === 'grid') {
+    // my-collections on mobile uses dedicated mobile card with border-b — no extra gap
+    if (isMobile.value && props.type === CollectionTypeEnum.MY_COLLECTIONS) {
+      return 'flex flex-col';
+    }
     return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr';
   }
   return 'flex flex-col';

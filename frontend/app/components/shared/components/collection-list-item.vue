@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     class="flex items-center justify-between py-4 px-2 hover:bg-neutral-50 transition border-b border-neutral-100"
   >
     <div
-      class="flex items-center w-1/2 min-w-0"
+      class="flex items-center w-1/2 md:w-1/2 min-w-0 flex-1 md:flex-none"
       :class="{ 'gap-3': isSingleLogo, 'gap-4': !isSingleLogo }"
     >
       <!-- Collection Avatar -->
@@ -44,18 +44,44 @@ SPDX-License-Identifier: MIT
         </lfx-avatar-group>
       </template>
       <!-- Collection Info -->
-      <div class="flex flex-col min-w-0 flex-1 pr-4">
+      <div class="flex flex-col min-w-0 flex-1 pr-2 md:pr-4">
         <h4 class="text-sm font-semibold text-neutral-900 truncate">
           {{ props.collection.name }}
         </h4>
         <p class="text-xs text-neutral-500 truncate">
           {{ props.collection.description }}
         </p>
+        <!-- Mobile: inline meta (hidden for liked-collections per design) -->
+        <div
+          v-if="props.variant !== 'liked-collections'"
+          class="flex items-center gap-1.5 mt-1 md:hidden"
+        >
+          <span
+            v-if="props.variant !== 'my-collections'"
+            class="text-xs text-neutral-500 truncate max-w-[20ch]"
+          >
+            {{ ownerName }}
+          </span>
+          <span
+            v-if="props.variant !== 'my-collections'"
+            class="text-neutral-400 text-xs"
+          >
+            ・
+          </span>
+          <lfx-icon
+            name="laptop-code"
+            :size="12"
+            class="text-neutral-500"
+          />
+          <span class="text-xs text-neutral-500">
+            {{ pluralize('project', projectCount, true) }}
+          </span>
+        </div>
       </div>
     </div>
 
-    <!-- Right side info -->
-    <div class="flex items-center gap-4 shrink-0">
+    <!-- Right side info (desktop) -->
+    <div class="hidden md:flex items-center gap-4 shrink-0">
       <!-- Owner info -->
       <div class="flex items-center gap-2">
         <template v-if="props.variant !== 'my-collections'">
@@ -148,6 +174,63 @@ SPDX-License-Identifier: MIT
         </lfx-dropdown>
       </div>
     </div>
+
+    <!-- Mobile: three-dot menu only -->
+    <div class="md:hidden shrink-0">
+      <lfx-dropdown placement="bottom-end">
+        <template #trigger>
+          <lfx-icon-button
+            icon="ellipsis"
+            size="small"
+            type="transparent"
+            class="!p-1"
+          />
+        </template>
+        <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS && !!user">
+          <lfx-dropdown-item @click="handleEditCollection()">
+            <lfx-icon
+              name="pencil"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Edit collection
+          </lfx-dropdown-item>
+        </template>
+        <lfx-dropdown-item @click="handleShare()">
+          <lfx-icon
+            name="share-nodes"
+            :size="16"
+            class="text-neutral-600"
+          />
+          Share collection
+        </lfx-dropdown-item>
+        <lfx-dropdown-item @click="handleClone()">
+          <lfx-icon
+            name="clone"
+            :size="16"
+            class="text-neutral-600"
+          />
+          Duplicate collection
+        </lfx-dropdown-item>
+        <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS && !!user">
+          <lfx-dropdown-item @click="handleDeleteCollection()">
+            <lfx-icon
+              name="trash"
+              :size="16"
+              class="!text-negative-500"
+            />
+            <span class="text-negative-500">Delete collection</span>
+          </lfx-dropdown-item>
+        </template>
+        <like-button
+          v-if="showLikeCount && !!user"
+          :collection="props.collection"
+          :variant="props.variant"
+          :show-as-dropdown="true"
+          @updated="handleLikeUpdated"
+        />
+      </lfx-dropdown>
+    </div>
   </nuxt-link>
 </template>
 
@@ -203,6 +286,13 @@ const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
 });
 
 const showLikeCount = computed(() => props.variant !== 'my-collections');
+
+const ownerName = computed(() => {
+  if (props.collection.owner?.name) {
+    return `by ${props.collection.owner.name}`;
+  }
+  return 'by The Linux Foundation';
+});
 
 const isSingleLogo = computed(() => props.variant === 'liked-collections' || props.variant === 'curated');
 

@@ -41,16 +41,18 @@ SPDX-License-Identifier: MIT
           :type="isLiked ? 'solid' : 'light'"
         />
       </div>
-      <lfx-spinner
-        v-if="likeCountLoading"
-        :size="12"
-      />
-      <span
-        v-else-if="likeCount !== undefined || isLiked"
-        class="text-xs leading-4 text-neutral-900 font-medium"
-      >
-        {{ formatNumberShort(isLiked && (!likeCount || likeCount === 0) ? 1 : (likeCount ?? 0)) }}
-      </span>
+      <template v-if="!hideCount">
+        <lfx-spinner
+          v-if="likeCountLoading"
+          :size="12"
+        />
+        <span
+          v-else-if="likeCount !== undefined || isLiked"
+          class="text-xs leading-4 text-neutral-900 font-medium"
+        >
+          {{ formatNumberShort(isLiked && (!likeCount || likeCount === 0) ? 1 : (likeCount ?? 0)) }}
+        </span>
+      </template>
     </lfx-button>
   </lfx-tooltip>
 
@@ -93,6 +95,7 @@ const props = withDefaults(
     variant?: CollectionType;
     showUnlikeIcon?: boolean;
     showAsDropdown?: boolean;
+    hideCount?: boolean;
   }>(),
   {
     buttonType: 'ghost',
@@ -100,6 +103,7 @@ const props = withDefaults(
     size: 'medium',
     showUnlikeIcon: false,
     showAsDropdown: false,
+    hideCount: false,
   },
 );
 

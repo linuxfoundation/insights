@@ -3,7 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col items-center justify-center py-10 gap-5 border border-neutral-200 rounded-lg">
+  <div
+    class="flex flex-col items-center justify-center py-12 md:py-14 px-6 gap-5 border border-neutral-200 rounded-lg text-center"
+  >
     <div class="flex items-center justify-center h-14 w-14 rounded-full bg-accent-100">
       <lfx-icon
         name="rectangle-history"
@@ -11,8 +13,8 @@ SPDX-License-Identifier: MIT
         class="text-accent-500"
       />
     </div>
-    <div class="flex flex-col items-center justify-center gap-3 text-center">
-      <h3 class="text-xl font-bold font-secondary leading-8">No collections yet</h3>
+    <div class="flex flex-col items-center justify-center gap-2 md:gap-3">
+      <h3 class="text-lg md:text-xl font-bold font-secondary leading-7 md:leading-8">No collections yet</h3>
       <p class="text-sm text-neutral-600 max-w-md">
         Start building your first collection of open source projects and share it with the community.
       </p>
