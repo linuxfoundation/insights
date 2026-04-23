@@ -27,50 +27,7 @@ export interface AgenticProject {
   layer: string;
   license: string;
   github_url: string | null;
-}
-
-// Time series data with repo and month
-export interface RepoMonthMetric {
-  repo: string;
-  month: string;
-}
-
-// Stargazers
-export interface StargazersData extends RepoMonthMetric {
-  cumulative_stars: number;
-}
-
-// Fork count
-export interface ForkData extends RepoMonthMetric {
-  cumulative_forks: number;
-}
-
-// Contributor count
-export interface ContributorData extends RepoMonthMetric {
-  cumulative_contributors: number;
-}
-
-// New contributors 90d
-export interface NewContributors90dData extends RepoMonthMetric {
-  new_contributors_90d_count: number;
-}
-
-// Pull request merge rate
-export interface PullRequestMergeRateData extends RepoMonthMetric {
-  pr_merge_rate: number;
-}
-
-// Issue time to close
-export interface IssueTimeToCloseData extends RepoMonthMetric {
-  median_time_to_close_days: number;
-}
-
-// Package downloads
-export interface PackageDownloadsData {
-  repo: string;
-  ecosystem: string;
-  month: string;
-  download_counts: number;
+  github_url_display: string | null;
 }
 
 // Research papers
@@ -89,61 +46,11 @@ export interface GitHubEcosystemBreadthData {
   discussion_count: number;
 }
 
-// Commit count
-export interface CommitCountData extends RepoMonthMetric {
-  cumulative_commits: number;
-}
-
-// PR count
-export interface PullRequestCountData extends RepoMonthMetric {
-  cumulative_prs: number;
-}
-
-// GitHub releases
-export interface GitHubReleasesData extends RepoMonthMetric {
+// GitHub releases (still read server-side for merging)
+export interface GitHubReleasesData {
+  repo: string;
+  month: string;
   cumulative_release_count: number;
-}
-
-// Dependent packages
-export interface DependentPackagesData extends RepoMonthMetric {
-  ecosystem: string;
-  dependent_package_count: number;
-}
-
-// Dependent repos
-export interface DependentReposData extends RepoMonthMetric {
-  ecosystem: string;
-  dependent_repo_count: number;
-}
-
-// Docker Hub pulls
-export interface DockerHubPullsData extends RepoMonthMetric {
-  pull_count: number;
-}
-
-// Vulnerabilities
-export interface VulnerabilitiesData extends RepoMonthMetric {
-  vulnerabilities_count: number;
-}
-
-// COCOMO project value
-export interface CocomoValueData extends RepoMonthMetric {
-  estimated_cost_usd: number;
-}
-
-// Issue response time
-export interface IssueTimeToFirstResponseData extends RepoMonthMetric {
-  median_time_to_first_response_hours: number;
-}
-
-// Issue no response share
-export interface IssueNoResponseShareData extends RepoMonthMetric {
-  issues_no_response_pct_30d: number;
-}
-
-// PR time to resolve
-export interface PullRequestTimeToResolveData extends RepoMonthMetric {
-  median_time_to_resolve_days: number;
 }
 
 // Ecosystem layer definitions
@@ -214,16 +121,6 @@ export interface ProjectLeaderboardRow {
   dependentPackagesDelta: number | null;
 }
 
-// KPI summary data
-export interface AgenticKpiSummary {
-  projectsTracked: number;
-  totalStars: number;
-  totalContributors: number;
-  packageDownloads: number;
-  arxivPapersMonth: number;
-  ecosystemLayers: number;
-}
-
 // Metric explorer options
 export type MetricKey =
   | 'stars'
@@ -261,4 +158,115 @@ export interface ScatterDataPoint {
   x: number;
   y: number;
   githubUrl: string | null;
+}
+
+// Raw TB glance row (matches TB pipe output)
+export interface AgenticGlanceRow {
+  total_count: number;
+  total_software_value: number;
+  total_contributor_count: number;
+  total_contributor_count_30d: number;
+  commits_count_30d: number;
+  most_active_projects: string; // JSON string
+  median_issue_close_time_seconds: number;
+  median_issue_close_time_seconds_30d: number;
+  median_pr_resolution_time_seconds: number;
+  median_pr_resolution_time_seconds_30d: number;
+  projects_with_github_pr_activity: number;
+  projects_with_github_issue_activity: number;
+}
+
+// Processed glance data for frontend
+export interface AgenticGlanceData {
+  totalCount: number;
+  totalSoftwareValue: number;
+  totalContributorCount: number;
+  totalContributorCount30d: number;
+  commitsCount30d: number;
+  mostActiveProjects: Array<{ name: string; slug: string; newContributors: number }>;
+  medianIssueCloseTimeDays: number;
+  medianIssueCloseTimeDays30d: number;
+  medianPrResolutionTimeDays: number;
+  medianPrResolutionTimeDays30d: number;
+  projectsWithGithubPrActivity: number;
+  projectsWithGithubIssueActivity: number;
+}
+
+// Raw TB project row (matches TB pipe output)
+export interface AgenticTbProjectRow {
+  project_id: string;
+  name: string;
+  slug: string;
+  github_repo_link: string;
+  stars: number | null;
+  stars_30d: number | null;
+  forks: number | null;
+  forks_30d: number | null;
+  downloads: number | null;
+  downloads_30d: number | null;
+  docker_pulls: number | null;
+  docker_pulls_30d: number | null;
+  dependent_repos: number | null;
+  dependent_packages: number | null;
+  commits: number | null;
+  commits_30d: number | null;
+  contributors: number | null;
+  contributors_30d: number | null;
+  new_contributors_30d: number | null;
+  merge_rate: number | null;
+  merge_rate_30d: number | null;
+  pr_resolve_time_seconds: number | null;
+  pr_resolve_time_seconds_30d: number | null;
+  issue_close_time_seconds: number | null;
+  issue_close_time_seconds_30d: number | null;
+  issue_response_time_seconds: number | null;
+  issue_response_time_seconds_30d: number | null;
+  no_response_issues: number | null;
+  no_response_issues_30d: number | null;
+  vulnerabilities: number | null;
+  vulnerabilities_30d: number | null;
+  cocomo_value: number | null;
+}
+
+// Enriched project (TB data merged with layer/releases from static JSON)
+export interface AgenticEnrichedProject {
+  projectId: string;
+  name: string;
+  slug: string;
+  githubRepoLink: string;
+  layer: EcosystemLayer | string;
+  rank: number;
+  license: string;
+  // All-time values
+  stars: number | null;
+  forks: number | null;
+  downloads: number | null;
+  dockerPulls: number | null;
+  dependentRepos: number | null;
+  dependentPackages: number | null;
+  commits: number | null;
+  contributors: number | null;
+  newContributors30d: number | null;
+  mergeRate: number | null;
+  prResolveTimeDays: number | null;
+  issueCloseTimeDays: number | null;
+  issueResponseTimeDays: number | null;
+  noResponseIssues: number | null;
+  vulnerabilities: number | null;
+  cocomoValue: number | null;
+  githubReleases: number | null;
+  // 30d delta values
+  stars30d: number | null;
+  forks30d: number | null;
+  downloads30d: number | null;
+  dockerPulls30d: number | null;
+  commits30d: number | null;
+  contributors30d: number | null;
+  mergeRate30d: number | null;
+  prResolveTimeDays30d: number | null;
+  issueCloseTimeDays30d: number | null;
+  issueResponseTimeDays30d: number | null;
+  noResponseIssues30d: number | null;
+  vulnerabilities30d: number | null;
+  githubReleases30d: number | null;
 }

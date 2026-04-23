@@ -220,58 +220,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, h, type FunctionalComponent } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { getLayerHexColor } from '../config/layer-colors';
+import MetricPickerPanel from './metric-picker-panel.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
-  AgenticProject,
-  StargazersData,
-  ForkData,
-  CommitCountData,
-  ContributorData,
-  NewContributors90dData,
-  PackageDownloadsData,
-  PullRequestMergeRateData,
-  IssueTimeToCloseData,
-  IssueTimeToFirstResponseData,
-  IssueNoResponseShareData,
-  PullRequestTimeToResolveData,
-  VulnerabilitiesData,
-  CocomoValueData,
-  GitHubReleasesData,
-  DockerHubPullsData,
-  DependentReposData,
-  DependentPackagesData,
+  AgenticEnrichedProject,
   MetricKey,
   MetricOption,
   MetricGroup,
 } from '~~/types/report/agentic-ai-momentum.types';
 
 const props = defineProps<{
-  projectsData: AgenticProject[];
-  stargazersData: StargazersData[];
-  forksData: ForkData[];
-  commitsData: CommitCountData[];
-  contributorsData: ContributorData[];
-  newContributors90dData: NewContributors90dData[];
-  downloadsData: PackageDownloadsData[];
-  mergeRateData: PullRequestMergeRateData[];
-  timeToCloseData: IssueTimeToCloseData[];
-  issueResponseTimeData: IssueTimeToFirstResponseData[];
-  noResponseShareData: IssueNoResponseShareData[];
-  prTimeToResolveData: PullRequestTimeToResolveData[];
-  totalVulnerabilitiesData: VulnerabilitiesData[];
-  cocomoData: CocomoValueData[];
-  githubReleasesData: GitHubReleasesData[];
-  dockerPullsData: DockerHubPullsData[];
-  dependentReposData: DependentReposData[];
-  dependentPackagesData: DependentPackagesData[];
+  tbProjects: AgenticEnrichedProject[];
   isLoading: boolean;
 }>();
 
@@ -297,99 +263,11 @@ const METRIC_CONFIG: MetricOption[] = [
   { key: 'prTimeToResolve', label: 'PR Resolve Time', format: 'days', group: 'Health' },
   { key: 'timeToClose', label: 'Time to Close', format: 'days', group: 'Health' },
   { key: 'issueResponseTime', label: 'Issue Response', format: 'days', group: 'Health' },
-  { key: 'noResponseIssues', label: 'No-Response Issues', format: 'percent', group: 'Health' },
+  { key: 'noResponseIssues', label: 'No-Response Issues', format: 'number', group: 'Health' },
   { key: 'totalVulnerabilities', label: 'Vulnerabilities', format: 'number', group: 'Health' },
   // Value
   { key: 'cocomoValue', label: 'COCOMO Value', format: 'number', group: 'Value' },
 ];
-
-// ── Inline panel component ────────────────────────────────────────────────────
-
-/**
- * Renders the grouped metric picker panel, used by all three axis pickers.
- * Emits `select` (MetricKey) or `select-none` for the Z-axis "None" item.
- */
-const MetricPickerPanel: FunctionalComponent<
-  {
-    config: MetricOption[];
-    groups: MetricGroup[];
-    selected: MetricKey | null;
-    showNone?: boolean;
-  },
-  { select: [key: MetricKey]; 'select-none': [] }
-> = (panelProps, { emit }) => {
-  const { config, groups, selected, showNone = false } = panelProps;
-
-  const groupSections = groups.map((group) => {
-    const items = config.filter((c) => c.group === group);
-    return h('div', { class: 'mb-4 last:mb-0' }, [
-      h('p', { class: 'text-xs uppercase tracking-wide text-neutral-400 font-semibold mb-2' }, group),
-      h(
-        'div',
-        { class: 'grid grid-cols-2 gap-x-4 gap-y-2' },
-        items.map((opt) => {
-          const isSelected = selected === opt.key;
-          return h(
-            'button',
-            {
-              key: opt.key,
-              class:
-                'flex items-center gap-2 cursor-pointer text-body-2 text-left select-none w-full ' +
-                (isSelected ? 'text-primary-600 font-medium' : 'text-neutral-700 hover:text-neutral-900'),
-              onClick: () => emit('select', opt.key),
-            },
-            [
-              h(
-                'span',
-                {
-                  class:
-                    'w-3 h-3 rounded-sm flex-shrink-0 flex items-center justify-center border ' +
-                    (isSelected ? 'bg-primary-600 border-primary-600' : 'bg-white border-neutral-300'),
-                },
-                isSelected ? [h(LfxIcon, { name: 'check', type: 'regular', size: 8, class: 'text-white' })] : [],
-              ),
-              opt.label,
-            ],
-          );
-        }),
-      ),
-    ]);
-  });
-
-  const noneItem = showNone
-    ? h('div', { class: 'mb-4' }, [
-        h(
-          'button',
-          {
-            class:
-              'flex items-center gap-2 cursor-pointer text-body-2 text-left select-none w-full ' +
-              (selected === null ? 'text-primary-600 font-medium' : 'text-neutral-700 hover:text-neutral-900'),
-            onClick: () => emit('select-none'),
-          },
-          [
-            h(
-              'span',
-              {
-                class:
-                  'w-3 h-3 rounded-sm flex-shrink-0 flex items-center justify-center border ' +
-                  (selected === null ? 'bg-primary-600 border-primary-600' : 'bg-white border-neutral-300'),
-              },
-              selected === null ? [h(LfxIcon, { name: 'check', type: 'regular', size: 8, class: 'text-white' })] : [],
-            ),
-            'None',
-          ],
-        ),
-      ])
-    : null;
-
-  return h(
-    'div',
-    { class: 'bg-white border border-neutral-200 rounded shadow-lg p-4 w-[340px] max-h-[80vh] overflow-y-auto' },
-    [noneItem, ...groupSections].filter(Boolean),
-  );
-};
-MetricPickerPanel.props = ['config', 'groups', 'selected', 'showNone'];
-MetricPickerPanel.emits = ['select', 'select-none'];
 
 // ── Axis state ────────────────────────────────────────────────────────────────
 
@@ -424,69 +302,43 @@ const showTrendLine = computed(() => trendLineMode.value === 'on');
 
 // ── Data helpers ──────────────────────────────────────────────────────────────
 
-// Helper to get latest value from time series data
-function getLatestValue<T extends { month: string }>(data: T[], repo: string, valueKey: keyof T): number | null {
-  const repoData = data.filter((d) => d.repo === repo).sort((a, b) => b.month.localeCompare(a.month));
-  if (repoData.length === 0) return null;
-  return repoData[0][valueKey] as number;
-}
-
-// Get metric value for a project
-function getMetricValue(project: AgenticProject, metric: MetricKey): number | null {
-  const repo = project.github_url;
-  if (!repo) return null;
-
+// Get metric value for a project from flat TB data
+function getMetricValue(project: AgenticEnrichedProject, metric: MetricKey): number | null {
   switch (metric) {
     case 'stars':
-      return getLatestValue(props.stargazersData, repo, 'cumulative_stars');
+      return project.stars30d;
     case 'forks':
-      return getLatestValue(props.forksData, repo, 'cumulative_forks');
+      return project.forks;
     case 'commits':
-      return getLatestValue(props.commitsData, repo, 'cumulative_commits');
+      return project.commits;
     case 'contributors':
-      return getLatestValue(props.contributorsData, repo, 'cumulative_contributors');
+      return project.contributors30d;
     case 'newContributors':
-      return getLatestValue(props.newContributors90dData, repo, 'new_contributors_90d_count');
-    case 'downloads': {
-      const downloadsFiltered = props.downloadsData.filter((d) => d.repo === repo);
-      if (downloadsFiltered.length === 0) return null;
-      const latestMonth = downloadsFiltered.sort((a, b) => b.month.localeCompare(a.month))[0]?.month;
-      return downloadsFiltered.filter((d) => d.month === latestMonth).reduce((sum, d) => sum + d.download_counts, 0);
-    }
+      return project.newContributors30d;
+    case 'downloads':
+      return project.downloads;
     case 'dockerHubPulls':
-      return getLatestValue(props.dockerPullsData, repo, 'pull_count');
-    case 'dependentRepositories': {
-      const depRepos = props.dependentReposData.filter((d) => d.repo === repo);
-      const latestDepReposMonth = depRepos.sort((a, b) => b.month.localeCompare(a.month))[0]?.month;
-      return latestDepReposMonth
-        ? depRepos.filter((d) => d.month === latestDepReposMonth).reduce((s, d) => s + d.dependent_repo_count, 0)
-        : null;
-    }
-    case 'dependentPackages': {
-      const depPkgs = props.dependentPackagesData.filter((d) => d.repo === repo);
-      const latestDepPkgsMonth = depPkgs.sort((a, b) => b.month.localeCompare(a.month))[0]?.month;
-      return latestDepPkgsMonth
-        ? depPkgs.filter((d) => d.month === latestDepPkgsMonth).reduce((s, d) => s + d.dependent_package_count, 0)
-        : null;
-    }
+      return project.dockerPulls;
+    case 'dependentRepositories':
+      return project.dependentRepos;
+    case 'dependentPackages':
+      return project.dependentPackages;
     case 'mergeRate':
-      return getLatestValue(props.mergeRateData, repo, 'pr_merge_rate');
+      return project.mergeRate;
     case 'timeToClose':
-      return getLatestValue(props.timeToCloseData, repo, 'median_time_to_close_days');
-    case 'issueResponseTime': {
-      const hours = getLatestValue(props.issueResponseTimeData, repo, 'median_time_to_first_response_hours');
-      return hours !== null ? hours / 24 : null;
-    }
+      return project.issueCloseTimeDays;
+    case 'issueResponseTime':
+      return project.issueResponseTimeDays;
     case 'noResponseIssues':
-      return getLatestValue(props.noResponseShareData, repo, 'issues_no_response_pct_30d');
+      return project.noResponseIssues;
     case 'prTimeToResolve':
-      return getLatestValue(props.prTimeToResolveData, repo, 'median_time_to_resolve_days');
+      return project.prResolveTimeDays;
     case 'totalVulnerabilities':
-      return getLatestValue(props.totalVulnerabilitiesData, repo, 'vulnerabilities_count');
+      return project.vulnerabilities;
     case 'cocomoValue':
-      return getLatestValue(props.cocomoData, repo, 'estimated_cost_usd');
+      return project.cocomoValue;
     case 'releases':
-      return getLatestValue(props.githubReleasesData, repo, 'cumulative_release_count');
+      return project.githubReleases;
     default:
       return null;
   }
@@ -504,7 +356,7 @@ const scatterData = computed(() => {
     githubUrl: string | null;
   }> = [];
 
-  for (const project of props.projectsData) {
+  for (const project of props.tbProjects) {
     const xValue = getMetricValue(project, xAxisMetric.value);
     const yValue = getMetricValue(project, yAxisMetric.value);
     if (xValue === null || yValue === null) continue;
@@ -519,7 +371,7 @@ const scatterData = computed(() => {
       x: xValue,
       y: yValue,
       z: zValue,
-      githubUrl: project.github_url,
+      githubUrl: project.githubRepoLink,
     });
   }
 

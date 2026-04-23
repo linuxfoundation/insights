@@ -31,14 +31,9 @@ SPDX-License-Identifier: MIT
 
     <!-- Executive Summary -->
     <lfx-agentic-executive-summary
-      :projects-data="projectsData"
-      :contributors-data="contributorsData"
-      :commits-data="commitsData"
+      :glance-data="glanceData ?? null"
       :research-data="researchData"
       :github-breadth-data="githubBreadthData"
-      :cocomo-data="cocomoData"
-      :time-to-close-data="timeToCloseData"
-      :pr-time-to-resolve-data="prTimeToResolveData"
       :is-loading="isLoading"
     />
 
@@ -89,24 +84,7 @@ SPDX-License-Identifier: MIT
         class="p-4 md:p-6"
       >
         <lfx-agentic-project-leaderboard
-          :projects-data="projectsData"
-          :stargazers-data="stargazersData"
-          :forks-data="forksData"
-          :commits-data="commitsData"
-          :contributors-data="contributorsData"
-          :merge-rate-data="mergeRateData"
-          :time-to-close-data="timeToCloseData"
-          :downloads-data="downloadsData"
-          :cocomo-data="cocomoData"
-          :pr-time-to-resolve-data="prTimeToResolveData"
-          :vulnerabilities-data="totalVulnerabilitiesData"
-          :new-contributors-90d-data="newContributors90dData"
-          :docker-pulls-data="dockerPullsData"
-          :dependent-repos-data="dependentReposData"
-          :dependent-packages-data="dependentPackagesData"
-          :github-releases-data="githubReleasesData"
-          :issue-response-time-data="issueResponseTimeData"
-          :no-response-share-data="noResponseShareData"
+          :tb-projects="tbProjects"
           :is-loading="isLoading"
         />
       </lfx-card>
@@ -117,24 +95,7 @@ SPDX-License-Identifier: MIT
         class="p-4 md:p-6"
       >
         <lfx-agentic-metric-explorer
-          :projects-data="projectsData"
-          :stargazers-data="stargazersData"
-          :forks-data="forksData"
-          :contributors-data="contributorsData"
-          :downloads-data="downloadsData"
-          :merge-rate-data="mergeRateData"
-          :time-to-close-data="timeToCloseData"
-          :pr-time-to-resolve-data="prTimeToResolveData"
-          :total-vulnerabilities-data="totalVulnerabilitiesData"
-          :cocomo-data="cocomoData"
-          :github-releases-data="githubReleasesData"
-          :commits-data="commitsData"
-          :new-contributors-90d-data="newContributors90dData"
-          :docker-pulls-data="dockerPullsData"
-          :dependent-repos-data="dependentReposData"
-          :dependent-packages-data="dependentPackagesData"
-          :issue-response-time-data="issueResponseTimeData"
-          :no-response-share-data="noResponseShareData"
+          :tb-projects="tbProjects"
           :is-loading="isLoading"
         />
       </lfx-card>
@@ -154,58 +115,19 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
 // Fetch all data
-const { data: projectsResponse, status: projectsStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchProjects();
-const { data: stargazersResponse, status: stargazersStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchStargazers();
-const { data: forksResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchForks();
-const { data: commitsResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchCommits();
-const { data: contributorsResponse, status: contributorsStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchContributors();
-const { data: mergeRateResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchPullRequestMergeRate();
-const { data: timeToCloseResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchIssueTimeToClose();
-const { data: downloadsResponse, status: downloadsStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchPackageDownloads();
+const { data: glanceData, status: glanceStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchGlance();
+const { data: tbProjectsData, status: tbProjectsStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchTbProjects();
 const { data: researchResponse, status: researchStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchResearchPapers();
 const { data: githubBreadthResponse, status: githubBreadthStatus } =
   AGENTIC_AI_MOMENTUM_API_SERVICE.fetchGitHubEcosystemBreadth();
-const { data: cocomoResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchCocomoValue();
-const { data: newContributors90dResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchNewContributors90d();
-const { data: dockerPullsResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDockerHubPulls();
-const { data: dependentReposResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDependentRepos();
-const { data: dependentPackagesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDependentPackages();
-const { data: githubReleasesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchGitHubReleases();
-const { data: issueResponseTimeResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchIssueTimeToFirstResponse();
-const { data: noResponseShareResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchIssueNoResponseShare();
-const { data: prTimeToResolveResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchPullRequestTimeToResolve();
-const { data: totalVulnerabilitiesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchTotalVulnerabilities();
 
 // Extract data arrays
-const projectsData = computed(() => projectsResponse.value?.data ?? []);
-const stargazersData = computed(() => stargazersResponse.value?.data ?? []);
-const forksData = computed(() => forksResponse.value?.data ?? []);
-const commitsData = computed(() => commitsResponse.value?.data ?? []);
-const contributorsData = computed(() => contributorsResponse.value?.data ?? []);
-const mergeRateData = computed(() => mergeRateResponse.value?.data ?? []);
-const timeToCloseData = computed(() => timeToCloseResponse.value?.data ?? []);
-const downloadsData = computed(() => downloadsResponse.value?.data ?? []);
+const tbProjects = computed(() => tbProjectsData.value ?? []);
 const researchData = computed(() => researchResponse.value?.data ?? []);
 const githubBreadthData = computed(() => githubBreadthResponse.value?.data ?? []);
-const cocomoData = computed(() => cocomoResponse.value?.data ?? []);
-const newContributors90dData = computed(() => newContributors90dResponse.value?.data ?? []);
-const dockerPullsData = computed(() => dockerPullsResponse.value?.data ?? []);
-const dependentReposData = computed(() => dependentReposResponse.value?.data ?? []);
-const dependentPackagesData = computed(() => dependentPackagesResponse.value?.data ?? []);
-const githubReleasesData = computed(() => githubReleasesResponse.value?.data ?? []);
-const issueResponseTimeData = computed(() => issueResponseTimeResponse.value?.data ?? []);
-const noResponseShareData = computed(() => noResponseShareResponse.value?.data ?? []);
-const prTimeToResolveData = computed(() => prTimeToResolveResponse.value?.data ?? []);
-const totalVulnerabilitiesData = computed(() => totalVulnerabilitiesResponse.value?.data ?? []);
 
 // Loading states
-const isLoading = computed(
-  () =>
-    projectsStatus.value === 'pending' ||
-    stargazersStatus.value === 'pending' ||
-    contributorsStatus.value === 'pending' ||
-    downloadsStatus.value === 'pending',
-);
+const isLoading = computed(() => glanceStatus.value === 'pending' || tbProjectsStatus.value === 'pending');
 
 const researchLoading = computed(() => researchStatus.value === 'pending');
 const githubBreadthLoading = computed(() => githubBreadthStatus.value === 'pending');
