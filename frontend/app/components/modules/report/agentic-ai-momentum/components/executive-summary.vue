@@ -161,23 +161,23 @@ SPDX-License-Identifier: MIT
             </dt>
             <dd class="flex items-center flex-wrap gap-x-1">
               Median issue close time is
-              <span class="font-bold text-neutral-900">{{ healthMetrics.medianDays.toFixed(0) }} days</span>
+              <span class="font-bold text-neutral-900">{{ healthMetrics.medianDays.toFixed(1) }} days</span>
               across {{ healthMetrics.count }} projects<template v-if="healthMetrics.delta !== null">
                 (<span
                   class="font-bold"
                   :class="healthMetrics.delta > 0 ? 'text-negative-500' : 'text-positive-500'"
-                  >{{ healthMetrics.delta > 0 ? '+' : '' }}{{ healthMetrics.delta.toFixed(0) }}d</span
+                  >{{ healthMetrics.delta > 0 ? '+' : '' }}{{ healthMetrics.delta.toFixed(1) }}d</span
                 >
                 vs. last 30 days)</template
               >.
               <template v-if="prHealthMetrics.medianDays !== null">
                 Median pull request resolution time is
-                <span class="font-bold text-neutral-900">{{ prHealthMetrics.medianDays.toFixed(0) }} days</span>
+                <span class="font-bold text-neutral-900">{{ prHealthMetrics.medianDays.toFixed(1) }} days</span>
                 across {{ prHealthMetrics.count }} projects<template v-if="prHealthMetrics.delta !== null">
                   (<span
                     class="font-bold"
                     :class="prHealthMetrics.delta > 0 ? 'text-negative-500' : 'text-positive-500'"
-                    >{{ prHealthMetrics.delta > 0 ? '+' : '' }}{{ prHealthMetrics.delta.toFixed(0) }}d</span
+                    >{{ prHealthMetrics.delta > 0 ? '+' : '' }}{{ prHealthMetrics.delta.toFixed(1) }}d</span
                   >
                   vs. last 30 days)</template
                 >.
@@ -310,7 +310,7 @@ const researchHighlights = computed(() => {
 const healthMetrics = computed(() => {
   if (!props.glanceData) return { medianDays: null, count: 0, delta: null };
   const medianDays = props.glanceData.medianIssueCloseTimeDays;
-  const delta = props.glanceData.medianIssueCloseTimeDays30d - medianDays;
+  const delta = Math.round((props.glanceData.medianIssueCloseTimeDays30d - medianDays) * 10) / 10;
   return {
     medianDays,
     count: props.glanceData.projectsWithGithubIssueActivity,
@@ -321,7 +321,7 @@ const healthMetrics = computed(() => {
 const prHealthMetrics = computed(() => {
   if (!props.glanceData) return { medianDays: null, count: 0, delta: null };
   const medianDays = props.glanceData.medianPrResolutionTimeDays;
-  const delta = props.glanceData.medianPrResolutionTimeDays30d - medianDays;
+  const delta = Math.round((props.glanceData.medianPrResolutionTimeDays30d - medianDays) * 10) / 10;
   return {
     medianDays,
     count: props.glanceData.projectsWithGithubPrActivity,
