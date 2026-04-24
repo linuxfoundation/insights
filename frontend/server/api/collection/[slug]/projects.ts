@@ -5,6 +5,7 @@ import type { ProjectInsightsTinybird } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { postToTinybird } from '~~/server/data/tinybird/tinybird';
+import { getOptionalUser } from '~~/server/utils/jwt';
 
 /**
  * API Endpoint: /api/collection/:slug/projects
@@ -53,7 +54,8 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
 
   try {
     const repo = new CommunityCollectionRepository(cmDbPool);
-    const result = await repo.findProjectIdsBySlug(slug);
+    const user = getOptionalUser(event);
+    const result = await repo.findProjectIdsBySlug(slug, user?.sub ?? null);
 
     if (!result) {
       throw createError({ statusCode: 404, statusMessage: 'Collection not found' });

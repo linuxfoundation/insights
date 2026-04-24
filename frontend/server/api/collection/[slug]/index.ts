@@ -3,6 +3,7 @@
 import type { Pool } from 'pg';
 import type { Collection } from '~~/types/collection';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import { getOptionalUser } from '~~/server/utils/jwt';
 
 /**
  * API Endpoint: Fetch Collection Details by Slug
@@ -32,7 +33,8 @@ export default defineEventHandler(async (event): Promise<Collection | Error> => 
 
   try {
     const repo = new CommunityCollectionRepository(cmDbPool);
-    const collection = await repo.findBySlug(slug);
+    const user = getOptionalUser(event);
+    const collection = await repo.findBySlug(slug, user?.sub ?? null);
 
     if (!collection) {
       throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
