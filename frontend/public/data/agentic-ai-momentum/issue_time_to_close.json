@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T11:21:36.188200",
+    "fetched_at": "2026-04-01T07:13:57.413619",
     "schema": {
       "name": "issue_time_to_close",
       "description": "3-month trailing average of the monthly median time to close issues (days) per repo.",
@@ -155,112 +155,117 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "median_time_to_close_days": 1.3988078703703704
+      "median_time_to_close_days": 1.4041348379629628
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-05-01",
+      "median_time_to_close_days": 15.089477237654322
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-06-01",
-      "median_time_to_close_days": 0.958761574074074
+      "median_time_to_close_days": 17.076599151234568
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-07-01",
-      "median_time_to_close_days": 6.427947530864198
+      "median_time_to_close_days": 18.01484760802469
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-08-01",
-      "median_time_to_close_days": 16.585686728395064
+      "median_time_to_close_days": 14.094218750000001
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-09-01",
-      "median_time_to_close_days": 21.156755401234566
+      "median_time_to_close_days": 15.846869212962964
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-10-01",
-      "median_time_to_close_days": 18.252525077160495
+      "median_time_to_close_days": 18.457690972222224
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-11-01",
-      "median_time_to_close_days": 9.362478780864198
+      "median_time_to_close_days": 9.568084490740741
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-12-01",
-      "median_time_to_close_days": 7.820416666666667
+      "median_time_to_close_days": 8.02602237654321
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-01-01",
-      "median_time_to_close_days": 38.94594907407407
+      "median_time_to_close_days": 35.65976658950618
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "median_time_to_close_days": 43.11460841049382
+      "median_time_to_close_days": 39.01368634259259
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-03-01",
-      "median_time_to_close_days": 46.6105613425926
+      "median_time_to_close_days": 41.93561728395062
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-04-01",
-      "median_time_to_close_days": 14.880671296296297
+      "median_time_to_close_days": 13.492349537037036
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "median_time_to_close_days": 31.026934799382715
+      "median_time_to_close_days": 30.45291280864198
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "median_time_to_close_days": 28.49625578703704
+      "median_time_to_close_days": 40.21656828703704
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "median_time_to_close_days": 41.19291087962963
+      "median_time_to_close_days": 52.913223379629635
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "median_time_to_close_days": 34.31199652777778
+      "median_time_to_close_days": 40.27224729938272
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-09-01",
-      "median_time_to_close_days": 138.81870756172842
+      "median_time_to_close_days": 138.66550925925927
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "median_time_to_close_days": 125.16063271604939
+      "median_time_to_close_days": 125.00743441358024
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "median_time_to_close_days": 113.83159336419754
+      "median_time_to_close_days": 119.43845679012345
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "median_time_to_close_days": 16.802480709876544
+      "median_time_to_close_days": 23.973850308641975
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "median_time_to_close_days": 23.94892939814815
+      "median_time_to_close_days": 31.12029899691358
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "median_time_to_close_days": 21.430380015432096
+      "median_time_to_close_days": 28.674967206790125
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
@@ -380,7 +385,7 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "median_time_to_close_days": 3.7424826388888888
+      "median_time_to_close_days": 3.7380844907407407
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -410,52 +415,52 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "median_time_to_close_days": 23.626082175925927
+      "median_time_to_close_days": 23.626057098765433
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "median_time_to_close_days": 10.078586033950616
+      "median_time_to_close_days": 10.614618055555555
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "median_time_to_close_days": 0.6243904320987655
+      "median_time_to_close_days": 1.7728317901234567
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "median_time_to_close_days": 3.2232195216049386
+      "median_time_to_close_days": 4.411277006172839
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "median_time_to_close_days": 4.45558063271605
+      "median_time_to_close_days": 5.107565586419753
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "median_time_to_close_days": 3.8547492283950615
+      "median_time_to_close_days": 3.89433063271605
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "median_time_to_close_days": 1.3222569444444445
+      "median_time_to_close_days": 1.3266917438271604
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "median_time_to_close_days": 3.1093557098765428
+      "median_time_to_close_days": 3.4591763117283953
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-05-01",
-      "median_time_to_close_days": 3.1003086419753085
+      "median_time_to_close_days": 3.4501234567901236
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "median_time_to_close_days": 3.0358719135802468
+      "median_time_to_close_days": 3.3812422839506175
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -465,37 +470,37 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "median_time_to_close_days": 3.4483912037037037
+      "median_time_to_close_days": 3.3526774691358026
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "median_time_to_close_days": 7.307104552469135
+      "median_time_to_close_days": 7.211390817901235
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "median_time_to_close_days": 7.216456404320987
+      "median_time_to_close_days": 7.125127314814815
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "median_time_to_close_days": 6.06578125
+      "median_time_to_close_days": 6.070165895061728
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "median_time_to_close_days": 2.978387345679012
+      "median_time_to_close_days": 3.339444444444444
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "median_time_to_close_days": 4.755138888888889
+      "median_time_to_close_days": 4.272309027777777
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "median_time_to_close_days": 3.019014274691358
+      "median_time_to_close_days": 2.6621122685185186
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -720,137 +725,137 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-12-01",
-      "median_time_to_close_days": 15.679930555555556
+      "median_time_to_close_days": 25.885353009259262
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-01-01",
-      "median_time_to_close_days": 2.113599537037037
+      "median_time_to_close_days": 12.319021990740742
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-10-01",
-      "median_time_to_close_days": 8.685123456790123
+      "median_time_to_close_days": 18.890545910493827
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "median_time_to_close_days": 0.6400231481481482
+      "median_time_to_close_days": 0.6078587962962962
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "median_time_to_close_days": 0.6719386574074074
+      "median_time_to_close_days": 0.6473321759259258
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "median_time_to_close_days": 1.0771875
+      "median_time_to_close_days": 1.1810841049382714
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "median_time_to_close_days": 1.8531095679012346
+      "median_time_to_close_days": 3.7033892746913577
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "median_time_to_close_days": 3.0595351080246913
+      "median_time_to_close_days": 6.72457561728395
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "median_time_to_close_days": 3.840102237654321
+      "median_time_to_close_days": 7.384841820987654
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "median_time_to_close_days": 5.155619212962963
+      "median_time_to_close_days": 6.275750385802469
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "median_time_to_close_days": 4.19408950617284
+      "median_time_to_close_days": 3.5051427469135805
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "median_time_to_close_days": 3.475698302469136
+      "median_time_to_close_days": 2.9228163580246913
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "median_time_to_close_days": 2.4854359567901234
+      "median_time_to_close_days": 2.955061728395062
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "median_time_to_close_days": 2.9161612654320987
+      "median_time_to_close_days": 3.759224537037037
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "median_time_to_close_days": 2.980210262345679
+      "median_time_to_close_days": 5.108896604938272
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "median_time_to_close_days": 2.670353009259259
+      "median_time_to_close_days": 5.366454475308642
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "median_time_to_close_days": 2.6827912808641976
+      "median_time_to_close_days": 5.149646990740741
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "median_time_to_close_days": 2.641983024691358
+      "median_time_to_close_days": 3.687150848765432
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "median_time_to_close_days": 2.5994618055555554
+      "median_time_to_close_days": 2.710306712962963
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "median_time_to_close_days": 2.0925983796296297
+      "median_time_to_close_days": 2.6487268518518516
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "median_time_to_close_days": 2.687390046296296
+      "median_time_to_close_days": 3.69045524691358
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "median_time_to_close_days": 5.295779320987655
+      "median_time_to_close_days": 6.077318672839506
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "median_time_to_close_days": 6.570181327160494
+      "median_time_to_close_days": 7.460609567901234
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "median_time_to_close_days": 11.161006944444445
+      "median_time_to_close_days": 11.429328703703703
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "median_time_to_close_days": 9.021165123456791
+      "median_time_to_close_days": 9.551948302469137
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "median_time_to_close_days": 8.363387345679014
+      "median_time_to_close_days": 8.052631172839506
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "median_time_to_close_days": 7.268371913580247
+      "median_time_to_close_days": 9.168177083333333
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -980,27 +985,27 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "median_time_to_close_days": 4.308425925925926
+      "median_time_to_close_days": 4.059809027777778
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "median_time_to_close_days": 4.30085262345679
+      "median_time_to_close_days": 4.135108024691358
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "median_time_to_close_days": 5.69289737654321
+      "median_time_to_close_days": 5.645378086419753
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "median_time_to_close_days": 7.032750771604938
+      "median_time_to_close_days": 7.150976080246913
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "median_time_to_close_days": 7.892478780864198
+      "median_time_to_close_days": 8.010704089506172
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1010,62 +1015,62 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "median_time_to_close_days": 17.320702160493827
+      "median_time_to_close_days": 15.912119984567902
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "median_time_to_close_days": 16.478584104938275
+      "median_time_to_close_days": 15.070001929012344
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "median_time_to_close_days": 18.075208333333332
+      "median_time_to_close_days": 18.151907793209876
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "median_time_to_close_days": 6.552035108024691
+      "median_time_to_close_days": 8.03731674382716
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "median_time_to_close_days": 26.8839737654321
+      "median_time_to_close_days": 26.765239197530864
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "median_time_to_close_days": 36.28245177469136
+      "median_time_to_close_days": 34.64138117283951
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "median_time_to_close_days": 35.146967592592596
+      "median_time_to_close_days": 33.60226466049382
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "median_time_to_close_days": 20.06113811728395
+      "median_time_to_close_days": 27.21016589506173
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "median_time_to_close_days": 11.045198688271604
+      "median_time_to_close_days": 18.231280864197533
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "median_time_to_close_days": 12.379284336419753
+      "median_time_to_close_days": 18.95698688271605
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "median_time_to_close_days": 9.251344521604938
+      "median_time_to_close_days": 8.739332561728395
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-09-01",
-      "median_time_to_close_days": 10.746853780864198
+      "median_time_to_close_days": 10.234841820987654
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
@@ -1550,197 +1555,197 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "median_time_to_close_days": 3.5068923611111114
+      "median_time_to_close_days": 1.3935706018518519
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "median_time_to_close_days": 3.1927025462962964
+      "median_time_to_close_days": 1.7838213734567903
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "median_time_to_close_days": 7.54396412037037
+      "median_time_to_close_days": 6.394419367283951
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "median_time_to_close_days": 6.730557484567901
+      "median_time_to_close_days": 7.058248456790124
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "median_time_to_close_days": 7.706963734567901
+      "median_time_to_close_days": 8.052123842592593
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "median_time_to_close_days": 9.475144675925927
+      "median_time_to_close_days": 8.629565972222222
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "median_time_to_close_days": 9.125441743827162
+      "median_time_to_close_days": 8.21150848765432
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "median_time_to_close_days": 7.657025462962963
+      "median_time_to_close_days": 7.000868055555556
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "median_time_to_close_days": 59.69619984567902
+      "median_time_to_close_days": 58.36760802469136
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "median_time_to_close_days": 100.07948302469136
+      "median_time_to_close_days": 98.90470679012346
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "median_time_to_close_days": 100.13234182098766
+      "median_time_to_close_days": 98.76257716049383
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "median_time_to_close_days": 50.75713541666667
+      "median_time_to_close_days": 53.21338734567902
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "median_time_to_close_days": 10.761097608024691
+      "median_time_to_close_days": 12.939342206790123
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "median_time_to_close_days": 26.841790123456793
+      "median_time_to_close_days": 23.25223186728395
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "median_time_to_close_days": 25.58837962962963
+      "median_time_to_close_days": 19.722640817901233
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-03-01",
-      "median_time_to_close_days": 2.271261574074074
+      "median_time_to_close_days": 2.742164351851852
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "median_time_to_close_days": 26.957838541666668
+      "median_time_to_close_days": 27.193289930555558
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-05-01",
-      "median_time_to_close_days": 24.774909336419753
+      "median_time_to_close_days": 25.319000771604937
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-06-01",
-      "median_time_to_close_days": 28.79028163580247
+      "median_time_to_close_days": 29.177405478395062
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-07-01",
-      "median_time_to_close_days": 17.678227237654323
+      "median_time_to_close_days": 17.99539737654321
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-08-01",
-      "median_time_to_close_days": 13.665750385802468
+      "median_time_to_close_days": 13.595796682098765
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-09-01",
-      "median_time_to_close_days": 13.048341049382715
+      "median_time_to_close_days": 12.978387345679012
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-10-01",
-      "median_time_to_close_days": 9.684783950617286
+      "median_time_to_close_days": 9.59014660493827
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "median_time_to_close_days": 9.477206790123457
+      "median_time_to_close_days": 9.57752700617284
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "median_time_to_close_days": 12.298896604938273
+      "median_time_to_close_days": 12.6300887345679
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "median_time_to_close_days": 14.6353125
+      "median_time_to_close_days": 14.421668595679014
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "median_time_to_close_days": 15.513825231481482
+      "median_time_to_close_days": 14.255065586419752
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "median_time_to_close_days": 9.233138503086419
+      "median_time_to_close_days": 7.770295138888888
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "median_time_to_close_days": 5.802274305555556
+      "median_time_to_close_days": 4.978904320987653
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-05-01",
-      "median_time_to_close_days": 6.183283179012346
+      "median_time_to_close_days": 6.210071373456789
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-06-01",
-      "median_time_to_close_days": 7.59516010802469
+      "median_time_to_close_days": 7.600968364197531
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "median_time_to_close_days": 7.165719521604938
+      "median_time_to_close_days": 7.315578703703704
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "median_time_to_close_days": 10.15117862654321
+      "median_time_to_close_days": 10.010374228395062
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "median_time_to_close_days": 13.460347222222223
+      "median_time_to_close_days": 13.313734567901234
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "median_time_to_close_days": 14.13565200617284
+      "median_time_to_close_days": 14.90630787037037
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "median_time_to_close_days": 8.23949074074074
+      "median_time_to_close_days": 10.733541666666667
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "median_time_to_close_days": 4.174839891975309
+      "median_time_to_close_days": 6.882037037037037
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "median_time_to_close_days": 3.3304494598765437
+      "median_time_to_close_days": 6.288165509259259
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "median_time_to_close_days": 105.24056905864198
+      "median_time_to_close_days": 105.97466820987654
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -1960,7 +1965,7 @@
     {
       "repo": "https://github.com/cline/cline",
       "month": "2026-02-01",
-      "median_time_to_close_days": 127.40837962962962
+      "median_time_to_close_days": 127.39097608024692
     },
     {
       "repo": "https://github.com/comet-ml/opik",
@@ -1975,207 +1980,207 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-10-01",
-      "median_time_to_close_days": 4.1914390432098765
+      "median_time_to_close_days": 3.631597222222222
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "median_time_to_close_days": 5.606670524691357
+      "median_time_to_close_days": 5.228420138888889
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-12-01",
-      "median_time_to_close_days": 4.710295138888889
+      "median_time_to_close_days": 4.603867669753087
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-01-01",
-      "median_time_to_close_days": 4.852451774691358
+      "median_time_to_close_days": 5.162187500000001
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-02-01",
-      "median_time_to_close_days": 4.6522800925925925
+      "median_time_to_close_days": 4.845144675925926
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-03-01",
-      "median_time_to_close_days": 4.8053993055555555
+      "median_time_to_close_days": 3.7693942901234565
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-04-01",
-      "median_time_to_close_days": 5.068994984567901
+      "median_time_to_close_days": 4.156784336419753
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "median_time_to_close_days": 7.035451388888888
+      "median_time_to_close_days": 6.203501157407406
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "median_time_to_close_days": 6.165675154320987
+      "median_time_to_close_days": 7.825937499999999
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "median_time_to_close_days": 8.623086419753086
+      "median_time_to_close_days": 19.167189429012346
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "median_time_to_close_days": 21.423271604938275
+      "median_time_to_close_days": 31.25164351851852
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "median_time_to_close_days": 21.24688271604938
+      "median_time_to_close_days": 29.52224537037037
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "median_time_to_close_days": 18.50311728395062
+      "median_time_to_close_days": 17.990503472222223
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-11-01",
-      "median_time_to_close_days": 5.304359567901234
+      "median_time_to_close_days": 32.68640239197531
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "median_time_to_close_days": 7.406971450617284
+      "median_time_to_close_days": 33.486859567901234
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "median_time_to_close_days": 8.403003472222222
+      "median_time_to_close_days": 34.00304398148148
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "median_time_to_close_days": 17.885380015432098
+      "median_time_to_close_days": 22.712156635802472
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "median_time_to_close_days": 1.0201967592592593
+      "median_time_to_close_days": 0.8721006944444445
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-04-01",
-      "median_time_to_close_days": 2.9258622685185185
+      "median_time_to_close_days": 2.851814236111111
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "median_time_to_close_days": 3.5871334876543215
+      "median_time_to_close_days": 3.1768846450617283
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "median_time_to_close_days": 4.538753858024691
+      "median_time_to_close_days": 4.17787037037037
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "median_time_to_close_days": 3.6442631172839506
+      "median_time_to_close_days": 3.28337962962963
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-08-01",
-      "median_time_to_close_days": 2.837746913580247
+      "median_time_to_close_days": 2.52836612654321
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-09-01",
-      "median_time_to_close_days": 3.0287538580246913
+      "median_time_to_close_days": 2.004025848765432
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-10-01",
-      "median_time_to_close_days": 2.7105787037037037
+      "median_time_to_close_days": 1.818605324074074
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-11-01",
-      "median_time_to_close_days": 3.227548225308642
+      "median_time_to_close_days": 2.6449556327160493
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-12-01",
-      "median_time_to_close_days": 2.9946315586419754
+      "median_time_to_close_days": 4.149708719135803
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "median_time_to_close_days": 4.068337191358025
+      "median_time_to_close_days": 5.090659722222222
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-02-01",
-      "median_time_to_close_days": 4.358146219135802
+      "median_time_to_close_days": 5.375981867283951
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-03-01",
-      "median_time_to_close_days": 3.5878317901234564
+      "median_time_to_close_days": 3.611413966049383
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-04-01",
-      "median_time_to_close_days": 2.8506037808641977
+      "median_time_to_close_days": 2.9392881944444444
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-05-01",
-      "median_time_to_close_days": 1.9957233796296296
+      "median_time_to_close_days": 2.6405729166666663
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-06-01",
-      "median_time_to_close_days": 2.5117091049382716
+      "median_time_to_close_days": 3.1284895833333333
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-07-01",
-      "median_time_to_close_days": 3.1314197530864196
+      "median_time_to_close_days": 3.4510050154320986
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-08-01",
-      "median_time_to_close_days": 4.366319444444444
+      "median_time_to_close_days": 4.55953125
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "median_time_to_close_days": 4.2004166666666665
+      "median_time_to_close_days": 4.613859953703703
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "median_time_to_close_days": 5.593350694444445
+      "median_time_to_close_days": 5.9701967592592595
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-11-01",
-      "median_time_to_close_days": 4.055144675925926
+      "median_time_to_close_days": 4.270644290123457
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-12-01",
-      "median_time_to_close_days": 6.0591030092592595
+      "median_time_to_close_days": 5.619058641975308
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "median_time_to_close_days": 4.495717592592592
+      "median_time_to_close_days": 5.90636574074074
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "median_time_to_close_days": 7.03466049382716
+      "median_time_to_close_days": 9.652716049382716
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2235,17 +2240,17 @@
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-02-01",
-      "median_time_to_close_days": 11.101761188271604
+      "median_time_to_close_days": 10.431585648148149
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-03-01",
-      "median_time_to_close_days": 11.853198302469137
+      "median_time_to_close_days": 11.18302276234568
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-04-01",
-      "median_time_to_close_days": 6.388931327160493
+      "median_time_to_close_days": 5.718755787037036
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2430,107 +2435,112 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "median_time_to_close_days": 2.2130131172839507
+      "median_time_to_close_days": 2.2225096450617285
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "median_time_to_close_days": 5.410237268518519
+      "median_time_to_close_days": 6.336784336419753
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "median_time_to_close_days": 10.006992669753087
+      "median_time_to_close_days": 10.877332175925927
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "median_time_to_close_days": 12.067771990740743
+      "median_time_to_close_days": 13.868271604938272
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "median_time_to_close_days": 10.270590277777778
+      "median_time_to_close_days": 11.196728395061728
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "median_time_to_close_days": 13.70363425925926
+      "median_time_to_close_days": 16.196373456790123
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "median_time_to_close_days": 12.746379243827159
+      "median_time_to_close_days": 14.538734567901235
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "median_time_to_close_days": 15.527980324074074
+      "median_time_to_close_days": 17.596658950617286
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "median_time_to_close_days": 16.018501157407407
+      "median_time_to_close_days": 16.609689429012345
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "median_time_to_close_days": 28.379074074074072
+      "median_time_to_close_days": 28.033628472222222
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-03-01",
+      "median_time_to_close_days": 45.94268325617284
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "median_time_to_close_days": 90.63943287037036
+      "median_time_to_close_days": 98.75513503086421
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "median_time_to_close_days": 84.77018518518518
+      "median_time_to_close_days": 88.64604938271606
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "median_time_to_close_days": 70.68431134259258
+      "median_time_to_close_days": 66.16173225308641
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "median_time_to_close_days": 8.703277391975309
+      "median_time_to_close_days": 9.104587191358025
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "median_time_to_close_days": 6.146053240740741
+      "median_time_to_close_days": 6.435632716049383
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "median_time_to_close_days": 5.845565200617284
+      "median_time_to_close_days": 6.316898148148148
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "median_time_to_close_days": 17.828192515432097
+      "median_time_to_close_days": 22.997905092592593
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "median_time_to_close_days": 17.276030092592592
+      "median_time_to_close_days": 22.35474729938272
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "median_time_to_close_days": 17.976662808641976
+      "median_time_to_close_days": 27.700285493827163
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "median_time_to_close_days": 8.268011188271606
+      "median_time_to_close_days": 11.548775077160492
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "median_time_to_close_days": 13.960171682098766
+      "median_time_to_close_days": 20.77889081790123
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2684,13 +2694,18 @@
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-10-01",
+      "median_time_to_close_days": 10.081963734567902
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-11-01",
-      "median_time_to_close_days": 10.083144290123457
+      "median_time_to_close_days": 0.3622723765432099
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-01-01",
-      "median_time_to_close_days": 0.7150617283950617
+      "median_time_to_close_days": 0.355775462962963
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2740,167 +2755,172 @@
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "median_time_to_close_days": 1.3232407407407407
+      "median_time_to_close_days": 1.564849537037037
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "median_time_to_close_days": 6.43630787037037
+      "median_time_to_close_days": 5.0310706018518525
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "median_time_to_close_days": 5.905534336419753
+      "median_time_to_close_days": 5.502959104938271
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "median_time_to_close_days": 12.190947145061727
+      "median_time_to_close_days": 11.800144675925926
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "median_time_to_close_days": 14.371298225308642
+      "median_time_to_close_days": 25.144481095679012
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "median_time_to_close_days": 17.443356481481484
+      "median_time_to_close_days": 26.053730709876543
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "median_time_to_close_days": 33.43162229938272
+      "median_time_to_close_days": 58.01077739197532
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "median_time_to_close_days": 51.56930362654321
+      "median_time_to_close_days": 63.67240162037037
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "median_time_to_close_days": 48.411203703703706
+      "median_time_to_close_days": 70.61447530864199
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "median_time_to_close_days": 28.063863811728396
+      "median_time_to_close_days": 36.46321759259259
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "median_time_to_close_days": 6.161051311728396
+      "median_time_to_close_days": 25.909390432098764
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "median_time_to_close_days": 1.8204224537037037
+      "median_time_to_close_days": 1.1536458333333333
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "median_time_to_close_days": 6.028602430555555
+      "median_time_to_close_days": 1.9250405092592593
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-05-01",
-      "median_time_to_close_days": 7.026271219135803
+      "median_time_to_close_days": 4.290563271604938
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-06-01",
-      "median_time_to_close_days": 18.482351466049384
+      "median_time_to_close_days": 15.968902391975307
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-07-01",
-      "median_time_to_close_days": 24.132961033950618
+      "median_time_to_close_days": 25.730488040123458
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-08-01",
-      "median_time_to_close_days": 36.5306925154321
+      "median_time_to_close_days": 33.749375
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-09-01",
-      "median_time_to_close_days": 30.62729938271605
+      "median_time_to_close_days": 23.37541859567901
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-10-01",
-      "median_time_to_close_days": 24.910540123456787
+      "median_time_to_close_days": 16.061132330246913
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-11-01",
-      "median_time_to_close_days": 23.0624537037037
+      "median_time_to_close_days": 10.606404320987656
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-12-01",
-      "median_time_to_close_days": 16.917511574074073
+      "median_time_to_close_days": 8.932025462962963
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-01-01",
-      "median_time_to_close_days": 24.47611882716049
+      "median_time_to_close_days": 9.114261188271605
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-02-01",
-      "median_time_to_close_days": 49.979413580246906
+      "median_time_to_close_days": 42.603042052469135
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-03-01",
-      "median_time_to_close_days": 49.9735686728395
+      "median_time_to_close_days": 47.364511959876545
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-04-01",
-      "median_time_to_close_days": 43.18555555555556
+      "median_time_to_close_days": 47.95287037037037
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-05-01",
+      "median_time_to_close_days": 8.969421296296296
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-06-01",
-      "median_time_to_close_days": 4.227611882716049
+      "median_time_to_close_days": 4.295597993827161
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-07-01",
-      "median_time_to_close_days": 4.563989197530864
+      "median_time_to_close_days": 0.47555555555555556
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-09-01",
-      "median_time_to_close_days": 12.205794753086417
+      "median_time_to_close_days": 12.157372685185186
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "median_time_to_close_days": 12.203645833333333
+      "median_time_to_close_days": 12.151167052469134
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-11-01",
-      "median_time_to_close_days": 22.725983796296294
+      "median_time_to_close_days": 24.850042438271604
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "median_time_to_close_days": 17.971342592592595
+      "median_time_to_close_days": 16.642650462962965
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-01-01",
-      "median_time_to_close_days": 21.930019290123457
+      "median_time_to_close_days": 20.60538387345679
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "median_time_to_close_days": 22.404729938271604
+      "median_time_to_close_days": 18.95197916666667
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -2925,17 +2945,17 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-04-01",
-      "median_time_to_close_days": 3.6299710648148147
+      "median_time_to_close_days": 3.5298360339506174
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-05-01",
-      "median_time_to_close_days": 2.1086265432098767
+      "median_time_to_close_days": 2.008491512345679
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-06-01",
-      "median_time_to_close_days": 3.6491782407407407
+      "median_time_to_close_days": 3.5490432098765434
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -3035,17 +3055,17 @@
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-03-01",
-      "median_time_to_close_days": 5.613001543209877
+      "median_time_to_close_days": 5.578829089506173
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-04-01",
-      "median_time_to_close_days": 3.2891512345679015
+      "median_time_to_close_days": 3.2549787808641977
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-05-01",
-      "median_time_to_close_days": 3.754770447530864
+      "median_time_to_close_days": 3.7205979938271603
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3331,6 +3351,11 @@
       "repo": "https://github.com/janhq/jan",
       "month": "2026-02-01",
       "median_time_to_close_days": 42.72421682098766
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-07-01",
+      "median_time_to_close_days": 1.8687615740740742
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -3775,17 +3800,17 @@
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-07-01",
-      "median_time_to_close_days": 5.5482754629629625
+      "median_time_to_close_days": 5.543684413580247
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-08-01",
-      "median_time_to_close_days": 6.103217592592593
+      "median_time_to_close_days": 6.098626543209877
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-09-01",
-      "median_time_to_close_days": 6.060684799382716
+      "median_time_to_close_days": 6.05609375
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
@@ -3945,107 +3970,107 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "median_time_to_close_days": 2.3094020061728395
+      "median_time_to_close_days": 2.3078703703703707
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "median_time_to_close_days": 4.522860725308642
+      "median_time_to_close_days": 3.7277932098765434
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "median_time_to_close_days": 6.985985725308642
+      "median_time_to_close_days": 5.809068287037037
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "median_time_to_close_days": 8.312270447530864
+      "median_time_to_close_days": 7.136884645061728
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "median_time_to_close_days": 7.055163966049382
+      "median_time_to_close_days": 6.7688290895061725
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "median_time_to_close_days": 4.679708719135802
+      "median_time_to_close_days": 4.119143518518519
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "median_time_to_close_days": 4.057166280864197
+      "median_time_to_close_days": 3.568190586419753
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "median_time_to_close_days": 4.629097222222222
+      "median_time_to_close_days": 3.9867785493827164
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "median_time_to_close_days": 3.5015779320987654
+      "median_time_to_close_days": 3.616153549382716
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "median_time_to_close_days": 3.2859876543209876
+      "median_time_to_close_days": 3.330856481481481
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-04-01",
-      "median_time_to_close_days": 1.6178530092592591
+      "median_time_to_close_days": 1.6326736111111113
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-05-01",
-      "median_time_to_close_days": 1.878587962962963
+      "median_time_to_close_days": 1.619608410493827
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-06-01",
-      "median_time_to_close_days": 1.7432368827160492
+      "median_time_to_close_days": 1.477204861111111
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "median_time_to_close_days": 1.6033236882716049
+      "median_time_to_close_days": 1.3992862654320988
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "median_time_to_close_days": 1.8600848765432099
+      "median_time_to_close_days": 1.7274170524691357
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "median_time_to_close_days": 2.121280864197531
+      "median_time_to_close_days": 1.999770447530864
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "median_time_to_close_days": 2.6709780092592594
+      "median_time_to_close_days": 2.9879224537037037
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "median_time_to_close_days": 2.378107638888889
+      "median_time_to_close_days": 2.7164409722222227
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "median_time_to_close_days": 2.5707658179012345
+      "median_time_to_close_days": 2.753775077160494
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "median_time_to_close_days": 2.8651118827160498
+      "median_time_to_close_days": 2.4851851851851854
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "median_time_to_close_days": 2.509050925925926
+      "median_time_to_close_days": 2.434278549382716
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
@@ -4075,57 +4100,57 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "median_time_to_close_days": 2.806518132716049
+      "median_time_to_close_days": 2.7902507716049385
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "median_time_to_close_days": 5.499207175925926
+      "median_time_to_close_days": 5.482939814814816
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "median_time_to_close_days": 5.177438271604939
+      "median_time_to_close_days": 5.161170910493827
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "median_time_to_close_days": 5.6221759259259265
+      "median_time_to_close_days": 5.600653935185186
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "median_time_to_close_days": 3.7308526234567903
+      "median_time_to_close_days": 3.762283950617284
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "median_time_to_close_days": 4.192125771604938
+      "median_time_to_close_days": 4.35335262345679
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "median_time_to_close_days": 3.37947337962963
+      "median_time_to_close_days": 3.461446759259259
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "median_time_to_close_days": 14.325790895061727
+      "median_time_to_close_days": 6.5887172067901245
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "median_time_to_close_days": 21.788728780864194
+      "median_time_to_close_days": 7.738234953703704
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "median_time_to_close_days": 21.948921682098767
+      "median_time_to_close_days": 7.584760802469137
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "median_time_to_close_days": 11.199851466049383
+      "median_time_to_close_days": 4.566496913580247
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4150,27 +4175,27 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "median_time_to_close_days": 10.066792052469136
+      "median_time_to_close_days": 9.890241126543211
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "median_time_to_close_days": 10.619319058641976
+      "median_time_to_close_days": 10.442768132716049
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "median_time_to_close_days": 2.0220524691358026
+      "median_time_to_close_days": 1.8983101851851851
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-05-01",
-      "median_time_to_close_days": 1.4157021604938274
+      "median_time_to_close_days": 1.4685108024691358
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-06-01",
-      "median_time_to_close_days": 2.760389660493827
+      "median_time_to_close_days": 2.813198302469136
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4183,64 +4208,79 @@
       "median_time_to_close_days": 2.8717631172839506
     },
     {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-10-01",
+      "median_time_to_close_days": 0.21588734567901233
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-12-01",
+      "median_time_to_close_days": 0.010412808641975307
+    },
+    {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "median_time_to_close_days": 0.9093171296296296
+      "median_time_to_close_days": 2.456388888888889
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "median_time_to_close_days": 8.134236111111113
+      "median_time_to_close_days": 6.859739583333333
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "median_time_to_close_days": 5.849434799382717
+      "median_time_to_close_days": 5.106512345679012
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "median_time_to_close_days": 8.168142361111112
+      "median_time_to_close_days": 6.960551697530864
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "median_time_to_close_days": 6.873520447530865
+      "median_time_to_close_days": 10.553121141975309
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "median_time_to_close_days": 10.219124228395062
+      "median_time_to_close_days": 11.513342978395064
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-10-01",
-      "median_time_to_close_days": 26.81536844135803
+      "median_time_to_close_days": 34.2759625771605
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-11-01",
-      "median_time_to_close_days": 29.063312114197533
+      "median_time_to_close_days": 33.00206983024692
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-12-01",
-      "median_time_to_close_days": 31.556649305555556
+      "median_time_to_close_days": 37.774047067901236
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-01-01",
-      "median_time_to_close_days": 21.707457561728393
+      "median_time_to_close_days": 31.563117283950618
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-02-01",
+      "median_time_to_close_days": 28.266917438271605
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-03-01",
-      "median_time_to_close_days": 25.26951774691358
+      "median_time_to_close_days": 31.636466049382715
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-09-01",
-      "median_time_to_close_days": 85.24635416666666
+      "median_time_to_close_days": 72.63237075617285
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -4365,37 +4405,37 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "median_time_to_close_days": 7.048034336419754
+      "median_time_to_close_days": 6.75765625
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "median_time_to_close_days": 6.500036651234567
+      "median_time_to_close_days": 6.245731095679012
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "median_time_to_close_days": 3.6269560185185186
+      "median_time_to_close_days": 3.2215875771604936
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "median_time_to_close_days": 4.595345293209877
+      "median_time_to_close_days": 4.144342206790124
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "median_time_to_close_days": 6.645194830246914
+      "median_time_to_close_days": 5.805198688271605
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "median_time_to_close_days": 6.668400848765432
+      "median_time_to_close_days": 5.979467592592592
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "median_time_to_close_days": 8.51000385802469
+      "median_time_to_close_days": 8.157083333333334
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
@@ -4405,62 +4445,62 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "median_time_to_close_days": 56.09922067901235
+      "median_time_to_close_days": 56.22231288580247
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "median_time_to_close_days": 84.69160686728395
+      "median_time_to_close_days": 79.85704668209877
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "median_time_to_close_days": 34.16280671296297
+      "median_time_to_close_days": 29.32824652777778
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "median_time_to_close_days": 51.3382851080247
+      "median_time_to_close_days": 67.76850694444444
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "median_time_to_close_days": 34.00562114197531
+      "median_time_to_close_days": 51.51067708333334
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-08-01",
-      "median_time_to_close_days": 114.28066358024692
+      "median_time_to_close_days": 131.7177372685185
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "median_time_to_close_days": 106.57293209876543
+      "median_time_to_close_days": 102.5855613425926
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "median_time_to_close_days": 94.64542631172839
+      "median_time_to_close_days": 94.95731674382716
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "median_time_to_close_days": 94.92513310185184
+      "median_time_to_close_days": 95.30500578703703
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "median_time_to_close_days": 152.93959683641975
+      "median_time_to_close_days": 89.91700810185186
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-01-01",
-      "median_time_to_close_days": 153.57399305555558
+      "median_time_to_close_days": 111.61770447530864
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "median_time_to_close_days": 80.27050925925926
+      "median_time_to_close_days": 36.284124228395065
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -4585,122 +4625,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "median_time_to_close_days": 60.47935185185185
+      "median_time_to_close_days": 59.949068287037036
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "median_time_to_close_days": 44.201333912037036
+      "median_time_to_close_days": 43.11653645833333
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "median_time_to_close_days": 32.68970486111111
+      "median_time_to_close_days": 32.240125385802465
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "median_time_to_close_days": 20.245854552469137
+      "median_time_to_close_days": 20.45404320987654
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "median_time_to_close_days": 15.381481481481481
+      "median_time_to_close_days": 16.066531635802466
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "median_time_to_close_days": 16.79750771604938
+      "median_time_to_close_days": 17.56520833333333
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "median_time_to_close_days": 18.581051311728395
+      "median_time_to_close_days": 17.556377314814814
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "median_time_to_close_days": 22.104502314814813
+      "median_time_to_close_days": 20.214328703703703
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "median_time_to_close_days": 59.846678240740744
+      "median_time_to_close_days": 52.76315586419753
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "median_time_to_close_days": 90.39535300925927
+      "median_time_to_close_days": 81.01643518518519
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "median_time_to_close_days": 89.21534143518518
+      "median_time_to_close_days": 80.38631558641974
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "median_time_to_close_days": 50.62722415123457
+      "median_time_to_close_days": 45.78836033950617
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "median_time_to_close_days": 14.496552854938273
+      "median_time_to_close_days": 12.821369598765434
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "median_time_to_close_days": 14.300019290123457
+      "median_time_to_close_days": 12.249521604938272
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "median_time_to_close_days": 16.120148533950616
+      "median_time_to_close_days": 13.914596836419753
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "median_time_to_close_days": 18.04243634259259
+      "median_time_to_close_days": 14.913655478395063
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "median_time_to_close_days": 14.139376929012345
+      "median_time_to_close_days": 11.747943672839506
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "median_time_to_close_days": 12.509610339506173
+      "median_time_to_close_days": 11.133701774691358
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "median_time_to_close_days": 10.908568672839507
+      "median_time_to_close_days": 10.303344907407407
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "median_time_to_close_days": 18.21182484567901
+      "median_time_to_close_days": 16.69828896604938
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "median_time_to_close_days": 30.176678240740742
+      "median_time_to_close_days": 33.51347029320988
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "median_time_to_close_days": 39.27136574074074
+      "median_time_to_close_days": 44.91241898148147
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "median_time_to_close_days": 76.26054012345679
+      "median_time_to_close_days": 82.83305555555556
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "median_time_to_close_days": 130.12046103395062
+      "median_time_to_close_days": 103.88878858024691
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -5145,12 +5185,12 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "median_time_to_close_days": 3.1361882716049383
+      "median_time_to_close_days": 3.114158950617284
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "median_time_to_close_days": 3.374810956790123
+      "median_time_to_close_days": 3.352781635802469
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -5290,17 +5330,17 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-06-01",
-      "median_time_to_close_days": 8.123043981481482
+      "median_time_to_close_days": 8.108653549382717
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-07-01",
-      "median_time_to_close_days": 15.106759259259258
+      "median_time_to_close_days": 15.092368827160493
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-08-01",
-      "median_time_to_close_days": 11.381682098765431
+      "median_time_to_close_days": 11.367291666666667
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -5395,62 +5435,62 @@
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "median_time_to_close_days": 0.25631944444444443
+      "median_time_to_close_days": 0.2727546296296296
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "median_time_to_close_days": 0.6568981481481482
+      "median_time_to_close_days": 0.6974131944444444
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "median_time_to_close_days": 1.313846450617284
+      "median_time_to_close_days": 1.3408564814814816
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "median_time_to_close_days": 4.1393865740740745
+      "median_time_to_close_days": 4.206909722222222
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "median_time_to_close_days": 4.171597222222222
+      "median_time_to_close_days": 4.120663580246913
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "median_time_to_close_days": 5.401967592592592
+      "median_time_to_close_days": 4.94789737654321
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "median_time_to_close_days": 3.090779320987654
+      "median_time_to_close_days": 2.7173070987654326
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "median_time_to_close_days": 3.6583969907407408
+      "median_time_to_close_days": 3.4682445987654322
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "median_time_to_close_days": 2.0884085648148147
+      "median_time_to_close_days": 2.2226929012345678
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "median_time_to_close_days": 3.077145061728395
+      "median_time_to_close_days": 2.7504301697530864
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "median_time_to_close_days": 25.907887731481484
+      "median_time_to_close_days": 25.15259452160494
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "median_time_to_close_days": 26.407521219135806
+      "median_time_to_close_days": 25.40023726851852
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -5470,7 +5510,7 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "median_time_to_close_days": 1.4582754629629628
+      "median_time_to_close_days": 1.4569251543209878
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5485,17 +5525,17 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-05-01",
-      "median_time_to_close_days": 7.004349922839506
+      "median_time_to_close_days": 7.114668209876544
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-06-01",
-      "median_time_to_close_days": 12.326493055555554
+      "median_time_to_close_days": 12.436811342592591
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-07-01",
-      "median_time_to_close_days": 8.150283564814815
+      "median_time_to_close_days": 8.260601851851852
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -5520,57 +5560,57 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "median_time_to_close_days": 23.395663580246914
+      "median_time_to_close_days": 18.880248842592593
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "median_time_to_close_days": 68.8471662808642
+      "median_time_to_close_days": 64.33175154320988
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "median_time_to_close_days": 70.36121720679013
+      "median_time_to_close_days": 65.8458024691358
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "median_time_to_close_days": 54.35861304012346
+      "median_time_to_close_days": 53.93693479938272
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-08-01",
-      "median_time_to_close_days": 38.11503279320988
+      "median_time_to_close_days": 37.69335455246914
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-09-01",
-      "median_time_to_close_days": 39.31904899691358
+      "median_time_to_close_days": 38.89737075617284
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-10-01",
-      "median_time_to_close_days": 43.69781442901235
+      "median_time_to_close_days": 44.93656057098766
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-11-01",
-      "median_time_to_close_days": 17.373904320987652
+      "median_time_to_close_days": 18.61265046296296
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-12-01",
-      "median_time_to_close_days": 56.29499421296297
+      "median_time_to_close_days": 69.0449575617284
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "median_time_to_close_days": 51.24316165123457
+      "median_time_to_close_days": 62.754378858024694
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "median_time_to_close_days": 51.0446199845679
+      "median_time_to_close_days": 62.2504475308642
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
@@ -5595,102 +5635,102 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "median_time_to_close_days": 4.275061728395062
+      "median_time_to_close_days": 3.883966049382716
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "median_time_to_close_days": 3.9531192129629633
+      "median_time_to_close_days": 3.466375385802469
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "median_time_to_close_days": 3.9691917438271602
+      "median_time_to_close_days": 3.4824479166666666
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "median_time_to_close_days": 12.752721836419752
+      "median_time_to_close_days": 11.794899691358024
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "median_time_to_close_days": 29.95007523148148
+      "median_time_to_close_days": 29.22784336419753
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "median_time_to_close_days": 31.99496527777778
+      "median_time_to_close_days": 29.40886766975309
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "median_time_to_close_days": 29.168991126543208
+      "median_time_to_close_days": 26.85058834876543
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "median_time_to_close_days": 12.737679398148147
+      "median_time_to_close_days": 10.997729552469137
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "median_time_to_close_days": 10.511599151234568
+      "median_time_to_close_days": 10.635515046296296
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "median_time_to_close_days": 3.923904320987654
+      "median_time_to_close_days": 4.796342592592592
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "median_time_to_close_days": 4.389712577160494
+      "median_time_to_close_days": 4.441385030864198
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "median_time_to_close_days": 4.907274305555556
+      "median_time_to_close_days": 5.0063503086419745
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "median_time_to_close_days": 5.935229552469136
+      "median_time_to_close_days": 5.849297839506172
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "median_time_to_close_days": 6.1151022376543205
+      "median_time_to_close_days": 5.735976080246914
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "median_time_to_close_days": 5.541417824074074
+      "median_time_to_close_days": 5.026111111111111
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "median_time_to_close_days": 5.776911651234568
+      "median_time_to_close_days": 4.644301697530864
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "median_time_to_close_days": 5.460412808641975
+      "median_time_to_close_days": 4.50391975308642
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "median_time_to_close_days": 19.673084490740738
+      "median_time_to_close_days": 23.186315586419752
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "median_time_to_close_days": 19.825854552469135
+      "median_time_to_close_days": 25.382272376543213
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "median_time_to_close_days": 19.892393904320986
+      "median_time_to_close_days": 25.48037808641975
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -5885,12 +5925,12 @@
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2026-01-01",
-      "median_time_to_close_days": 3.7287712191358025
+      "median_time_to_close_days": 3.6656944444444446
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2026-02-01",
-      "median_time_to_close_days": 4.141394675925926
+      "median_time_to_close_days": 4.078317901234568
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
@@ -6170,17 +6210,17 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "median_time_to_close_days": 13.681722608024693
+      "median_time_to_close_days": 14.496577932098766
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-11-01",
-      "median_time_to_close_days": 6.136500771604939
+      "median_time_to_close_days": 6.951356095679013
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-12-01",
-      "median_time_to_close_days": 13.605590277777777
+      "median_time_to_close_days": 14.420445601851851
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -6195,62 +6235,62 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-03-01",
-      "median_time_to_close_days": 6.048545524691359
+      "median_time_to_close_days": 6.083491512345678
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-04-01",
-      "median_time_to_close_days": 5.350119598765431
+      "median_time_to_close_days": 5.424708719135803
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-05-01",
-      "median_time_to_close_days": 6.045046296296296
+      "median_time_to_close_days": 6.928242669753086
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-06-01",
-      "median_time_to_close_days": 8.547854938271605
+      "median_time_to_close_days": 9.396105324074075
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "median_time_to_close_days": 10.308406635802468
+      "median_time_to_close_days": 11.83484760802469
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "median_time_to_close_days": 9.02653549382716
+      "median_time_to_close_days": 9.77081211419753
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "median_time_to_close_days": 5.291030092592592
+      "median_time_to_close_days": 6.0937422839506175
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "median_time_to_close_days": 3.472299382716049
+      "median_time_to_close_days": 3.587739197530864
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "median_time_to_close_days": 4.468090277777778
+      "median_time_to_close_days": 5.444537037037037
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "median_time_to_close_days": 6.269481095679012
+      "median_time_to_close_days": 7.5218846450617285
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "median_time_to_close_days": 11.769490740740741
+      "median_time_to_close_days": 13.138703703703705
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "median_time_to_close_days": 12.007602237654323
+      "median_time_to_close_days": 12.917179783950617
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -6380,27 +6420,32 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-04-01",
-      "median_time_to_close_days": 0.03725983796296296
+      "median_time_to_close_days": 0.03777777777777778
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "median_time_to_close_days": 0.032991898148148145
+      "median_time_to_close_days": 0.03352237654320988
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "median_time_to_close_days": 0.7573283179012346
+      "median_time_to_close_days": 0.05042824074074074
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-03-01",
-      "median_time_to_close_days": 96.62885030864197
+      "median_time_to_close_days": 95.92160493827159
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-05-01",
+      "median_time_to_close_days": 96.04288580246913
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-06-01",
-      "median_time_to_close_days": 96.62142746913578
+      "median_time_to_close_days": 96.01735725308642
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -6525,17 +6570,17 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "median_time_to_close_days": 1.4162847222222221
+      "median_time_to_close_days": 2.4153067129629626
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "median_time_to_close_days": 2.5218692129629625
+      "median_time_to_close_days": 3.021380208333333
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-07-01",
-      "median_time_to_close_days": 2.911929012345679
+      "median_time_to_close_days": 3.244936342592592
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
@@ -6545,107 +6590,107 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "median_time_to_close_days": 3.326041666666667
+      "median_time_to_close_days": 3.3364062499999996
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "median_time_to_close_days": 2.811338734567901
+      "median_time_to_close_days": 2.7965297067901234
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "median_time_to_close_days": 2.385150462962963
+      "median_time_to_close_days": 2.3133661265432095
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "median_time_to_close_days": 3.002974537037037
+      "median_time_to_close_days": 2.7065239197530864
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "median_time_to_close_days": 7.625806327160493
+      "median_time_to_close_days": 7.197145061728396
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "median_time_to_close_days": 7.8675887345679
+      "median_time_to_close_days": 7.425659722222222
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "median_time_to_close_days": 7.380256558641975
+      "median_time_to_close_days": 7.351593364197531
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "median_time_to_close_days": 4.237814429012346
+      "median_time_to_close_days": 3.85188850308642
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "median_time_to_close_days": 14.816961805555556
+      "median_time_to_close_days": 14.226194058641974
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "median_time_to_close_days": 14.374569830246914
+      "median_time_to_close_days": 13.584837962962963
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "median_time_to_close_days": 25.344847608024693
+      "median_time_to_close_days": 26.637355324074075
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "median_time_to_close_days": 33.37519483024692
+      "median_time_to_close_days": 34.28287229938272
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "median_time_to_close_days": 40.45119020061728
+      "median_time_to_close_days": 44.50475887345679
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "median_time_to_close_days": 47.33585455246914
+      "median_time_to_close_days": 50.949176311728394
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "median_time_to_close_days": 57.00675347222222
+      "median_time_to_close_days": 75.65031057098766
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "median_time_to_close_days": 87.45004629629629
+      "median_time_to_close_days": 102.94771219135804
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
-      "median_time_to_close_days": 67.42653935185184
+      "median_time_to_close_days": 81.79685956790124
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "median_time_to_close_days": 48.47395640432098
+      "median_time_to_close_days": 57.74986111111111
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-03-01",
-      "median_time_to_close_days": 5.024618055555556
+      "median_time_to_close_days": 4.7716724537037045
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-04-01",
-      "median_time_to_close_days": 2.9229687500000003
+      "median_time_to_close_days": 2.7964959490740746
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-05-01",
-      "median_time_to_close_days": 8.386319444444444
+      "median_time_to_close_days": 8.302004243827161
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -6770,17 +6815,17 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-05-01",
-      "median_time_to_close_days": 1.3460185185185185
+      "median_time_to_close_days": 3.4815017361111114
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-06-01",
-      "median_time_to_close_days": 9.289569830246913
+      "median_time_to_close_days": 10.713225308641976
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-07-01",
-      "median_time_to_close_days": 9.91259837962963
+      "median_time_to_close_days": 11.33625385802469
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -6805,17 +6850,17 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-02-01",
-      "median_time_to_close_days": 2.881253858024691
+      "median_time_to_close_days": 2.1238792438271603
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-03-01",
-      "median_time_to_close_days": 2.8339313271604936
+      "median_time_to_close_days": 2.076556712962963
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-04-01",
-      "median_time_to_close_days": 3.639861111111111
+      "median_time_to_close_days": 2.88248649691358
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -6840,22 +6885,22 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-10-01",
-      "median_time_to_close_days": 11.130154320987655
+      "median_time_to_close_days": 12.257588734567902
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-11-01",
-      "median_time_to_close_days": 3.329166666666667
+      "median_time_to_close_days": 7.246386959876543
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "median_time_to_close_days": 12.058348765432099
+      "median_time_to_close_days": 15.975569058641973
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "median_time_to_close_days": 18.180013503086418
+      "median_time_to_close_days": 20.969799382716047
     }
   ]
 }

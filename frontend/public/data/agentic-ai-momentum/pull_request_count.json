@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:28:23.909937",
+    "fetched_at": "2026-04-01T07:14:01.300136",
     "schema": {
       "name": "pull_request_count",
       "description": "Cumulative monthly pull request counts for tracked repositories.",

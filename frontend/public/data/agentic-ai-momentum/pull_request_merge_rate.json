@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T11:21:38.609907",
+    "fetched_at": "2026-04-01T07:14:00.887848",
     "schema": {
       "name": "pull_request_merge_rate",
       "description": "3-month trailing average of the monthly PR merge rate per repo.",

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:28:03.757180",
+    "fetched_at": "2026-04-01T07:13:38.773922",
     "schema": {
       "name": "commit_count",
       "description": "Cumulative monthly commit counts for tracked repositories.",
@@ -150,122 +150,122 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-03-01",
-      "cumulative_commits": 296
+      "cumulative_commits": 666
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "cumulative_commits": 490
+      "cumulative_commits": 1035
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-05-01",
-      "cumulative_commits": 655
+      "cumulative_commits": 1351
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-06-01",
-      "cumulative_commits": 866
+      "cumulative_commits": 1636
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-07-01",
-      "cumulative_commits": 1017
+      "cumulative_commits": 1866
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-08-01",
-      "cumulative_commits": 1144
+      "cumulative_commits": 2132
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-09-01",
-      "cumulative_commits": 1429
+      "cumulative_commits": 2478
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-10-01",
-      "cumulative_commits": 1686
+      "cumulative_commits": 2893
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-11-01",
-      "cumulative_commits": 1857
+      "cumulative_commits": 3178
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-12-01",
-      "cumulative_commits": 1970
+      "cumulative_commits": 3459
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-01-01",
-      "cumulative_commits": 2019
+      "cumulative_commits": 3686
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "cumulative_commits": 2150
+      "cumulative_commits": 3941
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-03-01",
-      "cumulative_commits": 2486
+      "cumulative_commits": 4454
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-04-01",
-      "cumulative_commits": 2602
+      "cumulative_commits": 4724
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "cumulative_commits": 2643
+      "cumulative_commits": 4867
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "cumulative_commits": 2795
+      "cumulative_commits": 5110
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "cumulative_commits": 2883
+      "cumulative_commits": 5339
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "cumulative_commits": 2959
+      "cumulative_commits": 5610
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-09-01",
-      "cumulative_commits": 3022
+      "cumulative_commits": 5787
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "cumulative_commits": 3153
+      "cumulative_commits": 6108
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "cumulative_commits": 3285
+      "cumulative_commits": 6442
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "cumulative_commits": 3543
+      "cumulative_commits": 7038
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "cumulative_commits": 3673
+      "cumulative_commits": 7411
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "cumulative_commits": 4028
+      "cumulative_commits": 7877
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
@@ -385,7 +385,7 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "cumulative_commits": 73502
+      "cumulative_commits": 73510
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -395,117 +395,117 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-04-01",
-      "cumulative_commits": 400
+      "cumulative_commits": 403
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-05-01",
-      "cumulative_commits": 890
+      "cumulative_commits": 893
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-06-01",
-      "cumulative_commits": 1777
+      "cumulative_commits": 1782
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-07-01",
-      "cumulative_commits": 2630
+      "cumulative_commits": 2642
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-08-01",
-      "cumulative_commits": 3060
+      "cumulative_commits": 3102
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "cumulative_commits": 3411
+      "cumulative_commits": 3455
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "cumulative_commits": 3838
+      "cumulative_commits": 3883
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "cumulative_commits": 4291
+      "cumulative_commits": 4339
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "cumulative_commits": 5243
+      "cumulative_commits": 5291
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "cumulative_commits": 5774
+      "cumulative_commits": 5822
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "cumulative_commits": 6064
+      "cumulative_commits": 6112
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "cumulative_commits": 6416
+      "cumulative_commits": 6465
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "cumulative_commits": 6669
+      "cumulative_commits": 6724
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-05-01",
-      "cumulative_commits": 6969
+      "cumulative_commits": 7029
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "cumulative_commits": 7459
+      "cumulative_commits": 7657
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "cumulative_commits": 7708
+      "cumulative_commits": 7961
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "cumulative_commits": 7869
+      "cumulative_commits": 8134
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "cumulative_commits": 8260
+      "cumulative_commits": 8538
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "cumulative_commits": 8588
-    },
-    {
-      "repo": "https://github.com/ComposioHQ/composio",
-      "month": "2025-11-01",
       "cumulative_commits": 8881
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-11-01",
+      "cumulative_commits": 9183
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "cumulative_commits": 9425
+      "cumulative_commits": 9769
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "cumulative_commits": 10962
+      "cumulative_commits": 11361
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "cumulative_commits": 12445
+      "cumulative_commits": 12966
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -590,7 +590,7 @@
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2026-02-01",
-      "cumulative_commits": 12213
+      "cumulative_commits": 12216
     },
     {
       "repo": "https://github.com/OAI/OpenAPI-Specification",
@@ -715,272 +715,287 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
-      "cumulative_commits": 7
+      "cumulative_commits": 24
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-08-01",
-      "cumulative_commits": 13
+      "cumulative_commits": 32
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2024-10-01",
-      "cumulative_commits": 14
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2024-12-01",
-      "cumulative_commits": 15
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-02-01",
-      "cumulative_commits": 22
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-03-01",
-      "cumulative_commits": 31
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-04-01",
+      "month": "2024-09-01",
       "cumulative_commits": 43
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-10-01",
+      "cumulative_commits": 55
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-11-01",
+      "cumulative_commits": 58
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-12-01",
+      "cumulative_commits": 64
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-02-01",
+      "cumulative_commits": 71
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-03-01",
+      "cumulative_commits": 82
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-04-01",
+      "cumulative_commits": 94
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-05-01",
-      "cumulative_commits": 49
+      "cumulative_commits": 100
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-07-01",
+      "cumulative_commits": 102
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-11-01",
-      "cumulative_commits": 50
+      "cumulative_commits": 103
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "cumulative_commits": 982
+      "cumulative_commits": 1035
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "cumulative_commits": 3338
+      "cumulative_commits": 3476
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "cumulative_commits": 6079
+      "cumulative_commits": 6265
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "cumulative_commits": 7636
+      "cumulative_commits": 7889
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "cumulative_commits": 9459
+      "cumulative_commits": 9773
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "cumulative_commits": 10883
+      "cumulative_commits": 11280
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "cumulative_commits": 12316
+      "cumulative_commits": 12808
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "cumulative_commits": 14398
+      "cumulative_commits": 14965
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "cumulative_commits": 16407
+      "cumulative_commits": 17086
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "cumulative_commits": 18806
+      "cumulative_commits": 19576
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "cumulative_commits": 21003
+      "cumulative_commits": 21903
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "cumulative_commits": 22982
+      "cumulative_commits": 24010
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "cumulative_commits": 25629
+      "cumulative_commits": 26828
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "cumulative_commits": 28956
+      "cumulative_commits": 30371
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "cumulative_commits": 32014
+      "cumulative_commits": 33588
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "cumulative_commits": 34412
+      "cumulative_commits": 36171
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "cumulative_commits": 36530
+      "cumulative_commits": 38467
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "cumulative_commits": 39625
+      "cumulative_commits": 41711
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "cumulative_commits": 41201
+      "cumulative_commits": 43535
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "cumulative_commits": 42683
+      "cumulative_commits": 45191
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "cumulative_commits": 43620
+      "cumulative_commits": 46224
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "cumulative_commits": 44996
+      "cumulative_commits": 47688
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "cumulative_commits": 46388
+      "cumulative_commits": 49206
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "cumulative_commits": 47820
+      "cumulative_commits": 50941
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-03-01",
-      "cumulative_commits": 1345
+      "cumulative_commits": 3372
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-04-01",
-      "cumulative_commits": 1438
+      "cumulative_commits": 3549
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-05-01",
-      "cumulative_commits": 1504
+      "cumulative_commits": 3649
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-06-01",
-      "cumulative_commits": 1584
+      "cumulative_commits": 3807
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-07-01",
-      "cumulative_commits": 1698
+      "cumulative_commits": 4016
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-08-01",
-      "cumulative_commits": 1838
+      "cumulative_commits": 4241
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-09-01",
-      "cumulative_commits": 1876
+      "cumulative_commits": 4298
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-10-01",
-      "cumulative_commits": 1931
+      "cumulative_commits": 4395
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-11-01",
-      "cumulative_commits": 1999
+      "cumulative_commits": 4463
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-12-01",
-      "cumulative_commits": 2036
+      "cumulative_commits": 4500
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-01-01",
-      "cumulative_commits": 2057
+      "cumulative_commits": 4521
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-02-01",
-      "cumulative_commits": 2066
+      "cumulative_commits": 4530
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-03-01",
-      "cumulative_commits": 2106
+      "cumulative_commits": 4571
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-04-01",
-      "cumulative_commits": 2109
+      "cumulative_commits": 4577
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-07-01",
-      "cumulative_commits": 2114
+      "cumulative_commits": 4584
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-08-01",
-      "cumulative_commits": 2116
+      "cumulative_commits": 4594
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-10-01",
-      "cumulative_commits": 2145
+      "cumulative_commits": 4630
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-11-01",
-      "cumulative_commits": 2173
+      "cumulative_commits": 4660
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-12-01",
-      "cumulative_commits": 2179
+      "cumulative_commits": 4667
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-01-01",
-      "cumulative_commits": 2197
+      "cumulative_commits": 4685
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-02-01",
-      "cumulative_commits": 2201
+      "cumulative_commits": 4691
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1105,122 +1120,122 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "cumulative_commits": 604
+      "cumulative_commits": 721
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "cumulative_commits": 994
+      "cumulative_commits": 1144
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "cumulative_commits": 1137
+      "cumulative_commits": 1309
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "cumulative_commits": 1226
+      "cumulative_commits": 1408
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "cumulative_commits": 1544
+      "cumulative_commits": 1734
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "cumulative_commits": 1753
+      "cumulative_commits": 1958
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-09-01",
-      "cumulative_commits": 1914
+      "cumulative_commits": 2126
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "cumulative_commits": 2156
+      "cumulative_commits": 2453
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "cumulative_commits": 2415
+      "cumulative_commits": 2779
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "cumulative_commits": 2606
+      "cumulative_commits": 3009
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "cumulative_commits": 2682
+      "cumulative_commits": 3099
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "cumulative_commits": 2743
+      "cumulative_commits": 3174
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "cumulative_commits": 2858
+      "cumulative_commits": 3299
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "cumulative_commits": 3031
+      "cumulative_commits": 3492
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "cumulative_commits": 3073
+      "cumulative_commits": 3545
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "cumulative_commits": 3251
+      "cumulative_commits": 3758
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "cumulative_commits": 3329
+      "cumulative_commits": 3872
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "cumulative_commits": 3377
+      "cumulative_commits": 3926
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-09-01",
-      "cumulative_commits": 3429
+      "cumulative_commits": 4018
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-10-01",
-      "cumulative_commits": 3517
+      "cumulative_commits": 4169
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-11-01",
-      "cumulative_commits": 3582
+      "cumulative_commits": 4250
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-12-01",
-      "cumulative_commits": 3623
+      "cumulative_commits": 4295
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "cumulative_commits": 3633
+      "cumulative_commits": 4310
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "cumulative_commits": 3646
+      "cumulative_commits": 4324
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
@@ -1340,7 +1355,7 @@
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
-      "cumulative_commits": 35448
+      "cumulative_commits": 35449
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",
@@ -1705,7 +1720,7 @@
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-02-01",
-      "cumulative_commits": 20608
+      "cumulative_commits": 20610
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
@@ -1715,202 +1730,202 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "cumulative_commits": 564
+      "cumulative_commits": 567
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "cumulative_commits": 886
+      "cumulative_commits": 890
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "cumulative_commits": 1256
+      "cumulative_commits": 1320
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "cumulative_commits": 1825
+      "cumulative_commits": 1944
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "cumulative_commits": 2619
+      "cumulative_commits": 2819
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "cumulative_commits": 3462
+      "cumulative_commits": 3740
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "cumulative_commits": 4913
+      "cumulative_commits": 5295
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "cumulative_commits": 6820
+      "cumulative_commits": 7265
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "cumulative_commits": 8512
+      "cumulative_commits": 9079
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "cumulative_commits": 9935
+      "cumulative_commits": 10551
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "cumulative_commits": 10880
+      "cumulative_commits": 11622
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "cumulative_commits": 12179
+      "cumulative_commits": 13046
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "cumulative_commits": 12919
+      "cumulative_commits": 13875
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "cumulative_commits": 13208
+      "cumulative_commits": 14182
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "cumulative_commits": 13571
+      "cumulative_commits": 14636
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "cumulative_commits": 14197
+      "cumulative_commits": 15403
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-03-01",
-      "cumulative_commits": 2409
+      "cumulative_commits": 2505
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "cumulative_commits": 2602
+      "cumulative_commits": 2713
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-05-01",
-      "cumulative_commits": 2989
+      "cumulative_commits": 3133
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-06-01",
-      "cumulative_commits": 3316
+      "cumulative_commits": 3536
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-07-01",
-      "cumulative_commits": 3703
+      "cumulative_commits": 3971
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-08-01",
-      "cumulative_commits": 4011
+      "cumulative_commits": 4349
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-09-01",
-      "cumulative_commits": 4287
+      "cumulative_commits": 4686
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-10-01",
-      "cumulative_commits": 4722
+      "cumulative_commits": 5208
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "cumulative_commits": 5069
+      "cumulative_commits": 5620
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "cumulative_commits": 5595
+      "cumulative_commits": 6262
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "cumulative_commits": 6069
+      "cumulative_commits": 6836
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "cumulative_commits": 6591
+      "cumulative_commits": 7426
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "cumulative_commits": 7912
+      "cumulative_commits": 8946
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "cumulative_commits": 8580
+      "cumulative_commits": 9767
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-05-01",
-      "cumulative_commits": 9260
+      "cumulative_commits": 10652
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-06-01",
-      "cumulative_commits": 10044
+      "cumulative_commits": 11813
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "cumulative_commits": 10632
+      "cumulative_commits": 12611
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "cumulative_commits": 10979
+      "cumulative_commits": 13051
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "cumulative_commits": 11286
+      "cumulative_commits": 13504
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "cumulative_commits": 11578
+      "cumulative_commits": 13913
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "cumulative_commits": 11899
+      "cumulative_commits": 14375
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "cumulative_commits": 12243
+      "cumulative_commits": 14888
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "cumulative_commits": 12576
+      "cumulative_commits": 15371
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "cumulative_commits": 12862
+      "cumulative_commits": 15799
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -2160,212 +2175,212 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-09-01",
-      "cumulative_commits": 1268
+      "cumulative_commits": 1445
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-10-01",
-      "cumulative_commits": 1728
+      "cumulative_commits": 2041
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "cumulative_commits": 2215
+      "cumulative_commits": 2711
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-12-01",
-      "cumulative_commits": 2617
+      "cumulative_commits": 3234
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-01-01",
-      "cumulative_commits": 3099
+      "cumulative_commits": 3873
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-02-01",
-      "cumulative_commits": 3627
+      "cumulative_commits": 4537
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-03-01",
-      "cumulative_commits": 4192
+      "cumulative_commits": 5315
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-04-01",
-      "cumulative_commits": 4865
+      "cumulative_commits": 6205
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "cumulative_commits": 5808
+      "cumulative_commits": 7377
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "cumulative_commits": 6434
+      "cumulative_commits": 8238
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "cumulative_commits": 6980
+      "cumulative_commits": 8983
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "cumulative_commits": 7541
+      "cumulative_commits": 9856
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "cumulative_commits": 8682
+      "cumulative_commits": 11292
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "cumulative_commits": 10046
+      "cumulative_commits": 13141
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-11-01",
-      "cumulative_commits": 12245
+      "cumulative_commits": 15827
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "cumulative_commits": 13315
+      "cumulative_commits": 17361
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "cumulative_commits": 14820
+      "cumulative_commits": 19369
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "cumulative_commits": 16442
+      "cumulative_commits": 21465
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "cumulative_commits": 2270
+      "cumulative_commits": 4162
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-04-01",
-      "cumulative_commits": 2427
+      "cumulative_commits": 4510
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "cumulative_commits": 2518
+      "cumulative_commits": 4721
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "cumulative_commits": 2618
+      "cumulative_commits": 4951
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "cumulative_commits": 2730
+      "cumulative_commits": 5209
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-08-01",
-      "cumulative_commits": 2828
+      "cumulative_commits": 5449
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-09-01",
-      "cumulative_commits": 2903
+      "cumulative_commits": 5655
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-10-01",
-      "cumulative_commits": 2994
+      "cumulative_commits": 5891
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-11-01",
-      "cumulative_commits": 3076
+      "cumulative_commits": 6103
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-12-01",
-      "cumulative_commits": 3156
+      "cumulative_commits": 6241
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "cumulative_commits": 3365
+      "cumulative_commits": 6600
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-02-01",
-      "cumulative_commits": 3469
+      "cumulative_commits": 6859
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-03-01",
-      "cumulative_commits": 3599
+      "cumulative_commits": 7119
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-04-01",
-      "cumulative_commits": 3750
+      "cumulative_commits": 7438
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-05-01",
-      "cumulative_commits": 3922
+      "cumulative_commits": 7737
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-06-01",
-      "cumulative_commits": 4263
+      "cumulative_commits": 8216
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-07-01",
-      "cumulative_commits": 5048
+      "cumulative_commits": 9300
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-08-01",
-      "cumulative_commits": 5807
+      "cumulative_commits": 10371
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "cumulative_commits": 6590
+      "cumulative_commits": 11422
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "cumulative_commits": 7552
+      "cumulative_commits": 12672
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-11-01",
-      "cumulative_commits": 7756
+      "cumulative_commits": 12993
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-12-01",
-      "cumulative_commits": 8198
+      "cumulative_commits": 13800
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "cumulative_commits": 8505
+      "cumulative_commits": 14288
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "cumulative_commits": 8681
+      "cumulative_commits": 14598
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2485,7 +2500,7 @@
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-02-01",
-      "cumulative_commits": 39699
+      "cumulative_commits": 39700
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
@@ -2610,117 +2625,117 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "cumulative_commits": 642
+      "cumulative_commits": 696
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-04-01",
-      "cumulative_commits": 773
+      "cumulative_commits": 840
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "cumulative_commits": 963
+      "cumulative_commits": 1059
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "cumulative_commits": 1153
+      "cumulative_commits": 1261
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "cumulative_commits": 1335
+      "cumulative_commits": 1454
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "cumulative_commits": 1547
+      "cumulative_commits": 1685
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "cumulative_commits": 1738
+      "cumulative_commits": 1912
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "cumulative_commits": 1965
+      "cumulative_commits": 2180
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "cumulative_commits": 2130
+      "cumulative_commits": 2358
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "cumulative_commits": 2665
+      "cumulative_commits": 3055
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "cumulative_commits": 2825
+      "cumulative_commits": 3257
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "cumulative_commits": 2834
+      "cumulative_commits": 3266
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "cumulative_commits": 2904
+      "cumulative_commits": 3344
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "cumulative_commits": 3146
+      "cumulative_commits": 3622
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "cumulative_commits": 3329
+      "cumulative_commits": 3832
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "cumulative_commits": 3615
+      "cumulative_commits": 4156
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "cumulative_commits": 3817
+      "cumulative_commits": 4376
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "cumulative_commits": 4090
+      "cumulative_commits": 4687
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "cumulative_commits": 4339
+      "cumulative_commits": 4970
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "cumulative_commits": 4656
+      "cumulative_commits": 5336
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "cumulative_commits": 4998
+      "cumulative_commits": 5726
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "cumulative_commits": 5615
+      "cumulative_commits": 6418
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "cumulative_commits": 6242
+      "cumulative_commits": 7139
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2955,177 +2970,177 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2026-02-01",
-      "cumulative_commits": 1294
+      "cumulative_commits": 1295
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "cumulative_commits": 363
+      "cumulative_commits": 419
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "cumulative_commits": 1135
+      "cumulative_commits": 1500
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "cumulative_commits": 1823
+      "cumulative_commits": 2395
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "cumulative_commits": 2473
+      "cumulative_commits": 3308
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "cumulative_commits": 3179
+      "cumulative_commits": 4231
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "cumulative_commits": 3602
+      "cumulative_commits": 4804
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "cumulative_commits": 4145
+      "cumulative_commits": 5605
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "cumulative_commits": 4863
+      "cumulative_commits": 6671
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "cumulative_commits": 5436
+      "cumulative_commits": 7464
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "cumulative_commits": 6081
+      "cumulative_commits": 8426
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "cumulative_commits": 6757
+      "cumulative_commits": 9344
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "cumulative_commits": 3090
+      "cumulative_commits": 3367
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "cumulative_commits": 3238
+      "cumulative_commits": 3526
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-05-01",
-      "cumulative_commits": 3579
+      "cumulative_commits": 4043
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-06-01",
-      "cumulative_commits": 4046
+      "cumulative_commits": 4837
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-07-01",
-      "cumulative_commits": 4591
+      "cumulative_commits": 5552
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-08-01",
-      "cumulative_commits": 4845
+      "cumulative_commits": 5902
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-09-01",
-      "cumulative_commits": 5068
+      "cumulative_commits": 6201
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-10-01",
-      "cumulative_commits": 5257
+      "cumulative_commits": 6414
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-11-01",
-      "cumulative_commits": 5296
+      "cumulative_commits": 6478
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-12-01",
-      "cumulative_commits": 5336
+      "cumulative_commits": 6521
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-01-01",
-      "cumulative_commits": 5368
+      "cumulative_commits": 6560
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-02-01",
-      "cumulative_commits": 5399
+      "cumulative_commits": 6594
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-03-01",
-      "cumulative_commits": 5435
+      "cumulative_commits": 6650
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-04-01",
-      "cumulative_commits": 5449
+      "cumulative_commits": 6674
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-05-01",
-      "cumulative_commits": 5459
+      "cumulative_commits": 6684
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-06-01",
-      "cumulative_commits": 5468
+      "cumulative_commits": 6693
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-07-01",
-      "cumulative_commits": 5471
+      "cumulative_commits": 6696
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-09-01",
-      "cumulative_commits": 5543
+      "cumulative_commits": 6814
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "cumulative_commits": 5607
+      "cumulative_commits": 6901
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-11-01",
-      "cumulative_commits": 5641
+      "cumulative_commits": 6945
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "cumulative_commits": 5656
+      "cumulative_commits": 6968
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-01-01",
-      "cumulative_commits": 5680
+      "cumulative_commits": 6995
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "cumulative_commits": 5778
+      "cumulative_commits": 7135
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -3195,12 +3210,12 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-01-01",
-      "cumulative_commits": 5132
+      "cumulative_commits": 5133
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-02-01",
-      "cumulative_commits": 5190
+      "cumulative_commits": 5191
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3320,57 +3335,57 @@
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2026-02-01",
-      "cumulative_commits": 169498
+      "cumulative_commits": 169499
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-05-01",
-      "cumulative_commits": 107
+      "cumulative_commits": 118
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-06-01",
-      "cumulative_commits": 829
+      "cumulative_commits": 957
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-07-01",
-      "cumulative_commits": 1492
+      "cumulative_commits": 1873
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-08-01",
-      "cumulative_commits": 2542
+      "cumulative_commits": 3192
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-09-01",
-      "cumulative_commits": 3357
+      "cumulative_commits": 4251
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-10-01",
-      "cumulative_commits": 4069
+      "cumulative_commits": 5133
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-11-01",
-      "cumulative_commits": 4416
+      "cumulative_commits": 6010
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-12-01",
-      "cumulative_commits": 5075
+      "cumulative_commits": 6875
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-01-01",
-      "cumulative_commits": 6362
+      "cumulative_commits": 8466
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-02-01",
-      "cumulative_commits": 8491
+      "cumulative_commits": 11276
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
@@ -3615,82 +3630,92 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-03-01",
-      "cumulative_commits": 64
+      "cumulative_commits": 98
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-04-01",
-      "cumulative_commits": 68
+      "cumulative_commits": 104
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-05-01",
-      "cumulative_commits": 139
+      "cumulative_commits": 175
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-06-01",
-      "cumulative_commits": 150
+      "cumulative_commits": 186
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-07-01",
-      "cumulative_commits": 191
+      "cumulative_commits": 227
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-08-01",
-      "cumulative_commits": 214
+      "cumulative_commits": 252
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
-      "cumulative_commits": 231
+      "cumulative_commits": 272
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-10-01",
-      "cumulative_commits": 269
+      "cumulative_commits": 333
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "cumulative_commits": 292
+      "cumulative_commits": 356
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-12-01",
-      "cumulative_commits": 295
+      "cumulative_commits": 359
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-01-01",
-      "cumulative_commits": 314
+      "cumulative_commits": 378
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-02-01",
-      "cumulative_commits": 340
+      "cumulative_commits": 414
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-03-01",
-      "cumulative_commits": 358
+      "cumulative_commits": 438
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-04-01",
-      "cumulative_commits": 370
+      "cumulative_commits": 451
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-05-01",
-      "cumulative_commits": 396
+      "cumulative_commits": 494
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-08-01",
+      "cumulative_commits": 519
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-09-01",
+      "cumulative_commits": 565
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-12-01",
-      "cumulative_commits": 431
+      "cumulative_commits": 602
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -3770,47 +3795,47 @@
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-06-01",
-      "cumulative_commits": 15065
+      "cumulative_commits": 15066
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-07-01",
-      "cumulative_commits": 15849
+      "cumulative_commits": 15850
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-08-01",
-      "cumulative_commits": 16155
+      "cumulative_commits": 16156
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-09-01",
-      "cumulative_commits": 16632
+      "cumulative_commits": 16633
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-10-01",
-      "cumulative_commits": 17201
+      "cumulative_commits": 17202
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-11-01",
-      "cumulative_commits": 17619
+      "cumulative_commits": 17624
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-12-01",
-      "cumulative_commits": 18120
+      "cumulative_commits": 18125
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2026-01-01",
-      "cumulative_commits": 18963
+      "cumulative_commits": 18968
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2026-02-01",
-      "cumulative_commits": 19910
+      "cumulative_commits": 19944
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -3930,7 +3955,7 @@
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2026-02-01",
-      "cumulative_commits": 91912
+      "cumulative_commits": 91913
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
@@ -4295,217 +4320,217 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-03-01",
-      "cumulative_commits": 759
+      "cumulative_commits": 937
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "cumulative_commits": 959
+      "cumulative_commits": 1153
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "cumulative_commits": 1160
+      "cumulative_commits": 1367
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "cumulative_commits": 1355
+      "cumulative_commits": 1572
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "cumulative_commits": 1834
+      "cumulative_commits": 2118
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "cumulative_commits": 2303
+      "cumulative_commits": 2659
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "cumulative_commits": 2637
+      "cumulative_commits": 3041
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "cumulative_commits": 3053
+      "cumulative_commits": 3597
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "cumulative_commits": 3522
+      "cumulative_commits": 4121
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "cumulative_commits": 4171
+      "cumulative_commits": 4813
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "cumulative_commits": 4609
+      "cumulative_commits": 5288
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "cumulative_commits": 5148
+      "cumulative_commits": 5858
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "cumulative_commits": 6413
+      "cumulative_commits": 7314
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-04-01",
-      "cumulative_commits": 7529
+      "cumulative_commits": 8528
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-05-01",
-      "cumulative_commits": 8152
+      "cumulative_commits": 9217
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-06-01",
-      "cumulative_commits": 8895
+      "cumulative_commits": 10071
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "cumulative_commits": 9544
+      "cumulative_commits": 10839
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "cumulative_commits": 10038
+      "cumulative_commits": 11393
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "cumulative_commits": 10473
+      "cumulative_commits": 11891
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "cumulative_commits": 11001
+      "cumulative_commits": 12522
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "cumulative_commits": 11526
+      "cumulative_commits": 13324
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "cumulative_commits": 12053
+      "cumulative_commits": 14070
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "cumulative_commits": 12574
+      "cumulative_commits": 14835
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "cumulative_commits": 13307
+      "cumulative_commits": 15796
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-08-01",
-      "cumulative_commits": 1336
+      "cumulative_commits": 1594
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-09-01",
-      "cumulative_commits": 2399
+      "cumulative_commits": 2905
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-10-01",
-      "cumulative_commits": 3615
+      "cumulative_commits": 4309
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-11-01",
-      "cumulative_commits": 5139
+      "cumulative_commits": 6107
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-12-01",
-      "cumulative_commits": 7931
+      "cumulative_commits": 9143
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-01-01",
-      "cumulative_commits": 10010
+      "cumulative_commits": 11423
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "cumulative_commits": 11792
+      "cumulative_commits": 13250
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "cumulative_commits": 14243
+      "cumulative_commits": 15755
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "cumulative_commits": 16985
+      "cumulative_commits": 18596
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "cumulative_commits": 19285
+      "cumulative_commits": 20992
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "cumulative_commits": 21496
+      "cumulative_commits": 23275
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "cumulative_commits": 24701
+      "cumulative_commits": 26651
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "cumulative_commits": 27705
+      "cumulative_commits": 29736
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "cumulative_commits": 31169
+      "cumulative_commits": 33304
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "cumulative_commits": 36011
+      "cumulative_commits": 38341
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "cumulative_commits": 40117
+      "cumulative_commits": 42603
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "cumulative_commits": 43004
+      "cumulative_commits": 45564
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "cumulative_commits": 47592
+      "cumulative_commits": 50318
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "cumulative_commits": 52152
+      "cumulative_commits": 55008
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4515,152 +4540,187 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-10-01",
-      "cumulative_commits": 112
+      "cumulative_commits": 117
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "cumulative_commits": 159
+      "cumulative_commits": 164
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "cumulative_commits": 171
+      "cumulative_commits": 176
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "cumulative_commits": 200
+      "cumulative_commits": 229
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "cumulative_commits": 271
+      "cumulative_commits": 347
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "cumulative_commits": 303
+      "cumulative_commits": 380
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "cumulative_commits": 312
+      "cumulative_commits": 389
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-05-01",
-      "cumulative_commits": 340
+      "cumulative_commits": 417
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-06-01",
-      "cumulative_commits": 342
+      "cumulative_commits": 419
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-07-01",
-      "cumulative_commits": 343
+      "cumulative_commits": 421
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-08-01",
-      "cumulative_commits": 357
+      "cumulative_commits": 435
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-09-01",
-      "cumulative_commits": 367
+      "cumulative_commits": 445
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-10-01",
+      "cumulative_commits": 448
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-12-01",
+      "cumulative_commits": 449
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "cumulative_commits": 371
+      "cumulative_commits": 457
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2026-02-01",
+      "cumulative_commits": 458
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "cumulative_commits": 753
+      "cumulative_commits": 993
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "cumulative_commits": 832
+      "cumulative_commits": 1092
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "cumulative_commits": 895
+      "cumulative_commits": 1170
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "cumulative_commits": 913
+      "cumulative_commits": 1192
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "cumulative_commits": 931
+      "cumulative_commits": 1216
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-08-01",
-      "cumulative_commits": 940
+      "cumulative_commits": 1232
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "cumulative_commits": 968
+      "cumulative_commits": 1269
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-10-01",
-      "cumulative_commits": 977
+      "cumulative_commits": 1282
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-11-01",
-      "cumulative_commits": 981
+      "cumulative_commits": 1286
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-12-01",
-      "cumulative_commits": 990
+      "cumulative_commits": 1297
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-01-01",
-      "cumulative_commits": 1003
+      "cumulative_commits": 1311
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-02-01",
-      "cumulative_commits": 1007
+      "cumulative_commits": 1316
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-03-01",
-      "cumulative_commits": 1026
+      "cumulative_commits": 1348
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-04-01",
+      "cumulative_commits": 1350
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-05-01",
-      "cumulative_commits": 1030
+      "cumulative_commits": 1361
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-08-01",
+      "cumulative_commits": 1364
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-09-01",
+      "cumulative_commits": 1365
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-11-01",
+      "cumulative_commits": 1367
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-12-01",
-      "cumulative_commits": 1032
+      "cumulative_commits": 1376
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-01-01",
-      "cumulative_commits": 1050
+      "cumulative_commits": 1408
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-02-01",
-      "cumulative_commits": 1052
+      "cumulative_commits": 1413
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -4790,117 +4850,117 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-04-01",
-      "cumulative_commits": 655
+      "cumulative_commits": 662
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-05-01",
-      "cumulative_commits": 804
+      "cumulative_commits": 830
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-06-01",
-      "cumulative_commits": 933
+      "cumulative_commits": 968
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "cumulative_commits": 1314
+      "cumulative_commits": 1390
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "cumulative_commits": 1749
+      "cumulative_commits": 1902
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "cumulative_commits": 2159
+      "cumulative_commits": 2370
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "cumulative_commits": 2662
+      "cumulative_commits": 2929
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "cumulative_commits": 2975
+      "cumulative_commits": 3289
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "cumulative_commits": 3252
+      "cumulative_commits": 3622
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "cumulative_commits": 3526
+      "cumulative_commits": 3987
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-02-01",
-      "cumulative_commits": 3825
+      "cumulative_commits": 4318
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "cumulative_commits": 3909
+      "cumulative_commits": 4417
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "cumulative_commits": 4003
+      "cumulative_commits": 4548
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "cumulative_commits": 4079
+      "cumulative_commits": 4639
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "cumulative_commits": 4140
+      "cumulative_commits": 4704
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "cumulative_commits": 4189
+      "cumulative_commits": 4753
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-08-01",
-      "cumulative_commits": 4252
+      "cumulative_commits": 4818
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "cumulative_commits": 4353
+      "cumulative_commits": 4924
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "cumulative_commits": 4510
+      "cumulative_commits": 5081
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "cumulative_commits": 4578
+      "cumulative_commits": 5149
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "cumulative_commits": 4653
+      "cumulative_commits": 5225
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-01-01",
-      "cumulative_commits": 4764
+      "cumulative_commits": 5338
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "cumulative_commits": 4895
+      "cumulative_commits": 5486
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -5025,122 +5085,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "cumulative_commits": 19348
+      "cumulative_commits": 22525
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "cumulative_commits": 21031
+      "cumulative_commits": 24280
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "cumulative_commits": 22463
+      "cumulative_commits": 25771
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "cumulative_commits": 23724
+      "cumulative_commits": 27135
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "cumulative_commits": 25234
+      "cumulative_commits": 28872
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "cumulative_commits": 26314
+      "cumulative_commits": 30083
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "cumulative_commits": 27408
+      "cumulative_commits": 31320
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "cumulative_commits": 28676
+      "cumulative_commits": 32808
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "cumulative_commits": 29773
+      "cumulative_commits": 33994
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "cumulative_commits": 30153
+      "cumulative_commits": 34395
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "cumulative_commits": 30775
+      "cumulative_commits": 35084
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "cumulative_commits": 31887
+      "cumulative_commits": 36268
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "cumulative_commits": 33092
+      "cumulative_commits": 37687
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "cumulative_commits": 34386
+      "cumulative_commits": 39230
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "cumulative_commits": 35738
+      "cumulative_commits": 40766
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "cumulative_commits": 36211
+      "cumulative_commits": 41329
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "cumulative_commits": 36456
+      "cumulative_commits": 41639
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "cumulative_commits": 36722
+      "cumulative_commits": 41936
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "cumulative_commits": 36863
+      "cumulative_commits": 42088
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "cumulative_commits": 37028
+      "cumulative_commits": 42286
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "cumulative_commits": 37159
+      "cumulative_commits": 42438
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "cumulative_commits": 37232
+      "cumulative_commits": 42519
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "cumulative_commits": 37353
+      "cumulative_commits": 42646
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "cumulative_commits": 37495
+      "cumulative_commits": 42797
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -5250,92 +5310,92 @@
     {
       "repo": "https://github.com/milvus-io/milvus",
       "month": "2025-12-01",
-      "cumulative_commits": 75545
+      "cumulative_commits": 75557
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
       "month": "2026-01-01",
-      "cumulative_commits": 77082
+      "cumulative_commits": 77098
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
       "month": "2026-02-01",
-      "cumulative_commits": 79363
+      "cumulative_commits": 79417
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
-      "cumulative_commits": 70
+      "cumulative_commits": 86
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-05-01",
-      "cumulative_commits": 107
+      "cumulative_commits": 123
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-06-01",
-      "cumulative_commits": 141
+      "cumulative_commits": 159
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-07-01",
-      "cumulative_commits": 222
+      "cumulative_commits": 240
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-08-01",
-      "cumulative_commits": 235
+      "cumulative_commits": 253
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-09-01",
-      "cumulative_commits": 247
+      "cumulative_commits": 267
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-10-01",
-      "cumulative_commits": 259
+      "cumulative_commits": 279
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-11-01",
-      "cumulative_commits": 262
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-03-01",
-      "cumulative_commits": 281
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-07-01",
       "cumulative_commits": 282
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-03-01",
+      "cumulative_commits": 301
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-07-01",
+      "cumulative_commits": 303
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-08-01",
-      "cumulative_commits": 285
+      "cumulative_commits": 306
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-09-01",
-      "cumulative_commits": 286
+      "cumulative_commits": 309
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-11-01",
-      "cumulative_commits": 291
+      "cumulative_commits": 314
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-12-01",
-      "cumulative_commits": 292
+      "cumulative_commits": 315
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2026-02-01",
-      "cumulative_commits": 295
+      "cumulative_commits": 318
     },
     {
       "repo": "https://github.com/modelcontextprotocol/inspector",
@@ -5510,7 +5570,7 @@
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2026-02-01",
-      "cumulative_commits": 5466
+      "cumulative_commits": 5467
     },
     {
       "repo": "https://github.com/ollama/ollama",
@@ -5625,12 +5685,12 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "cumulative_commits": 15553
+      "cumulative_commits": 15555
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "cumulative_commits": 15870
+      "cumulative_commits": 15873
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -5870,67 +5930,67 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-02-01",
-      "cumulative_commits": 39215
+      "cumulative_commits": 39216
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "cumulative_commits": 591
+      "cumulative_commits": 847
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "cumulative_commits": 913
+      "cumulative_commits": 1221
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "cumulative_commits": 1145
+      "cumulative_commits": 1478
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "cumulative_commits": 1311
+      "cumulative_commits": 1676
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "cumulative_commits": 1677
+      "cumulative_commits": 2276
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "cumulative_commits": 1929
+      "cumulative_commits": 2660
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "cumulative_commits": 2191
+      "cumulative_commits": 2990
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "cumulative_commits": 2489
+      "cumulative_commits": 3332
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "cumulative_commits": 2609
+      "cumulative_commits": 3498
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "cumulative_commits": 2790
+      "cumulative_commits": 3707
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "cumulative_commits": 3120
+      "cumulative_commits": 4106
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "cumulative_commits": 3274
+      "cumulative_commits": 4363
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -5950,247 +6010,247 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "cumulative_commits": 39230
+      "cumulative_commits": 39237
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "cumulative_commits": 52
+      "cumulative_commits": 203
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-04-01",
-      "cumulative_commits": 71
+      "cumulative_commits": 263
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-05-01",
-      "cumulative_commits": 87
+      "cumulative_commits": 347
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-06-01",
-      "cumulative_commits": 101
+      "cumulative_commits": 442
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-07-01",
-      "cumulative_commits": 123
+      "cumulative_commits": 537
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-08-01",
-      "cumulative_commits": 137
+      "cumulative_commits": 602
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-09-01",
-      "cumulative_commits": 151
+      "cumulative_commits": 660
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-10-01",
-      "cumulative_commits": 162
+      "cumulative_commits": 718
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-11-01",
-      "cumulative_commits": 173
+      "cumulative_commits": 800
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-12-01",
-      "cumulative_commits": 184
+      "cumulative_commits": 858
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-01-01",
-      "cumulative_commits": 196
+      "cumulative_commits": 934
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "cumulative_commits": 215
+      "cumulative_commits": 1021
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "cumulative_commits": 227
+      "cumulative_commits": 1084
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "cumulative_commits": 231
+      "cumulative_commits": 1140
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-05-01",
-      "cumulative_commits": 241
+      "cumulative_commits": 1192
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "cumulative_commits": 247
+      "cumulative_commits": 1248
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "cumulative_commits": 252
+      "cumulative_commits": 1302
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-08-01",
-      "cumulative_commits": 254
+      "cumulative_commits": 1356
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-09-01",
-      "cumulative_commits": 255
+      "cumulative_commits": 1402
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-10-01",
-      "cumulative_commits": 267
+      "cumulative_commits": 1440
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-11-01",
-      "cumulative_commits": 277
+      "cumulative_commits": 1485
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-12-01",
-      "cumulative_commits": 285
+      "cumulative_commits": 1529
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "cumulative_commits": 331
+      "cumulative_commits": 1617
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "cumulative_commits": 339
+      "cumulative_commits": 1672
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-03-01",
-      "cumulative_commits": 320
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2024-04-01",
       "cumulative_commits": 505
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-04-01",
+      "cumulative_commits": 701
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-05-01",
-      "cumulative_commits": 911
+      "cumulative_commits": 1140
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-06-01",
-      "cumulative_commits": 1213
+      "cumulative_commits": 1475
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "cumulative_commits": 1447
+      "cumulative_commits": 1728
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "cumulative_commits": 1781
+      "cumulative_commits": 2104
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "cumulative_commits": 2051
+      "cumulative_commits": 2452
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "cumulative_commits": 2559
+      "cumulative_commits": 3107
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "cumulative_commits": 2759
+      "cumulative_commits": 3389
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "cumulative_commits": 3184
+      "cumulative_commits": 3964
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "cumulative_commits": 3742
+      "cumulative_commits": 4747
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "cumulative_commits": 4268
+      "cumulative_commits": 5421
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "cumulative_commits": 4787
+      "cumulative_commits": 6160
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "cumulative_commits": 5337
+      "cumulative_commits": 6989
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "cumulative_commits": 6090
+      "cumulative_commits": 8037
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "cumulative_commits": 6603
+      "cumulative_commits": 8743
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "cumulative_commits": 7171
+      "cumulative_commits": 9667
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "cumulative_commits": 7798
+      "cumulative_commits": 10661
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "cumulative_commits": 8349
+      "cumulative_commits": 11464
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "cumulative_commits": 9069
+      "cumulative_commits": 12540
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "cumulative_commits": 9613
+      "cumulative_commits": 13334
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "cumulative_commits": 10316
+      "cumulative_commits": 14197
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "cumulative_commits": 11311
+      "cumulative_commits": 15470
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "cumulative_commits": 11996
+      "cumulative_commits": 16646
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6310,7 +6370,7 @@
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2026-02-01",
-      "cumulative_commits": 29032
+      "cumulative_commits": 29034
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
@@ -6520,7 +6580,7 @@
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2026-02-01",
-      "cumulative_commits": 22968
+      "cumulative_commits": 23007
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
@@ -6645,122 +6705,122 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "cumulative_commits": 18083
+      "cumulative_commits": 18240
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-04-01",
-      "cumulative_commits": 18698
+      "cumulative_commits": 18857
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-05-01",
-      "cumulative_commits": 19361
+      "cumulative_commits": 19522
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-06-01",
-      "cumulative_commits": 19770
+      "cumulative_commits": 19934
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-07-01",
-      "cumulative_commits": 20232
+      "cumulative_commits": 20398
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-08-01",
-      "cumulative_commits": 20626
+      "cumulative_commits": 20794
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-09-01",
-      "cumulative_commits": 21299
+      "cumulative_commits": 21473
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "cumulative_commits": 22172
+      "cumulative_commits": 22413
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-11-01",
-      "cumulative_commits": 23067
+      "cumulative_commits": 23340
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-12-01",
-      "cumulative_commits": 23496
+      "cumulative_commits": 23784
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-01-01",
-      "cumulative_commits": 24125
+      "cumulative_commits": 24432
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-02-01",
-      "cumulative_commits": 25220
+      "cumulative_commits": 25548
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-03-01",
-      "cumulative_commits": 26091
+      "cumulative_commits": 26538
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-04-01",
-      "cumulative_commits": 27122
+      "cumulative_commits": 27795
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-05-01",
-      "cumulative_commits": 28671
+      "cumulative_commits": 29494
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-06-01",
-      "cumulative_commits": 30098
+      "cumulative_commits": 31158
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "cumulative_commits": 31410
+      "cumulative_commits": 32706
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "cumulative_commits": 32964
+      "cumulative_commits": 34715
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "cumulative_commits": 34328
+      "cumulative_commits": 36503
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "cumulative_commits": 35341
+      "cumulative_commits": 37861
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "cumulative_commits": 36454
+      "cumulative_commits": 39247
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "cumulative_commits": 37634
+      "cumulative_commits": 40657
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "cumulative_commits": 38844
+      "cumulative_commits": 42105
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "cumulative_commits": 39384
+      "cumulative_commits": 42764
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -6885,47 +6945,47 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-03-01",
-      "cumulative_commits": 10838
+      "cumulative_commits": 11647
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-04-01",
-      "cumulative_commits": 12158
+      "cumulative_commits": 13043
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "cumulative_commits": 13318
+      "cumulative_commits": 14270
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "cumulative_commits": 14299
+      "cumulative_commits": 15290
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-07-01",
-      "cumulative_commits": 14302
+      "cumulative_commits": 15293
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-08-01",
-      "cumulative_commits": 14304
+      "cumulative_commits": 15295
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-09-01",
-      "cumulative_commits": 14307
+      "cumulative_commits": 15298
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-02-01",
-      "cumulative_commits": 14309
+      "cumulative_commits": 15300
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-09-01",
-      "cumulative_commits": 14311
+      "cumulative_commits": 15302
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -7050,112 +7110,112 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "cumulative_commits": 97
+      "cumulative_commits": 98
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "cumulative_commits": 184
+      "cumulative_commits": 186
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-07-01",
-      "cumulative_commits": 203
+      "cumulative_commits": 208
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-08-01",
-      "cumulative_commits": 221
+      "cumulative_commits": 230
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "cumulative_commits": 259
+      "cumulative_commits": 268
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "cumulative_commits": 384
+      "cumulative_commits": 397
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "cumulative_commits": 769
+      "cumulative_commits": 792
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "cumulative_commits": 935
+      "cumulative_commits": 964
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "cumulative_commits": 1197
+      "cumulative_commits": 1229
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "cumulative_commits": 1320
+      "cumulative_commits": 1357
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "cumulative_commits": 1569
+      "cumulative_commits": 1611
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "cumulative_commits": 1739
+      "cumulative_commits": 1790
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "cumulative_commits": 1884
+      "cumulative_commits": 1957
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "cumulative_commits": 2000
+      "cumulative_commits": 2099
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "cumulative_commits": 2076
+      "cumulative_commits": 2198
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "cumulative_commits": 2162
+      "cumulative_commits": 2348
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "cumulative_commits": 2214
+      "cumulative_commits": 2446
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "cumulative_commits": 2341
+      "cumulative_commits": 2602
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "cumulative_commits": 2438
+      "cumulative_commits": 2729
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "cumulative_commits": 2498
+      "cumulative_commits": 2794
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
-      "cumulative_commits": 2579
+      "cumulative_commits": 2880
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "cumulative_commits": 2674
+      "cumulative_commits": 2976
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -7275,7 +7335,7 @@
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2026-02-01",
-      "cumulative_commits": 56452
+      "cumulative_commits": 56454
     },
     {
       "repo": "https://github.com/wong2/litemcp",
@@ -7300,122 +7360,122 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-03-01",
-      "cumulative_commits": 133
+      "cumulative_commits": 760
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-04-01",
-      "cumulative_commits": 166
+      "cumulative_commits": 820
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-05-01",
-      "cumulative_commits": 169
+      "cumulative_commits": 844
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-06-01",
-      "cumulative_commits": 216
+      "cumulative_commits": 913
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-07-01",
-      "cumulative_commits": 268
+      "cumulative_commits": 968
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-08-01",
-      "cumulative_commits": 270
+      "cumulative_commits": 976
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-09-01",
-      "cumulative_commits": 274
+      "cumulative_commits": 998
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-10-01",
-      "cumulative_commits": 287
+      "cumulative_commits": 1038
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-11-01",
-      "cumulative_commits": 359
+      "cumulative_commits": 1116
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-12-01",
-      "cumulative_commits": 361
+      "cumulative_commits": 1120
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-01-01",
-      "cumulative_commits": 372
+      "cumulative_commits": 1133
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-02-01",
-      "cumulative_commits": 387
+      "cumulative_commits": 1163
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-03-01",
-      "cumulative_commits": 407
+      "cumulative_commits": 1184
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-04-01",
-      "cumulative_commits": 418
+      "cumulative_commits": 1200
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-05-01",
-      "cumulative_commits": 450
+      "cumulative_commits": 1253
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-06-01",
-      "cumulative_commits": 572
+      "cumulative_commits": 1474
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-07-01",
-      "cumulative_commits": 725
+      "cumulative_commits": 1811
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-08-01",
-      "cumulative_commits": 796
+      "cumulative_commits": 1909
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-09-01",
-      "cumulative_commits": 805
+      "cumulative_commits": 1938
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-10-01",
-      "cumulative_commits": 814
+      "cumulative_commits": 1965
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-11-01",
-      "cumulative_commits": 821
+      "cumulative_commits": 1979
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "cumulative_commits": 830
+      "cumulative_commits": 1997
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "cumulative_commits": 860
+      "cumulative_commits": 2038
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "cumulative_commits": 882
+      "cumulative_commits": 2079
     }
   ]
 }
