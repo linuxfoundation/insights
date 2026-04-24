@@ -7,6 +7,8 @@ import type {
   GitHubReleasesData,
   AgenticEnrichedProject,
 } from '~~/types/report/agentic-ai-momentum.types';
+import projectsData from '~~/public/data/agentic-ai-momentum/projects.json';
+import releasesData from '~~/public/data/agentic-ai-momentum/github_releases_count.json';
 
 const SECONDS_PER_DAY = 86400;
 
@@ -18,20 +20,11 @@ function pctToDecimal(v: number | null): number | null {
   return v != null ? v / 100 : null;
 }
 
-export default defineEventHandler(async (event): Promise<AgenticEnrichedProject[]> => {
+export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject[]> => {
   try {
-    const { origin } = getRequestURL(event);
-
-    const [tbProjects, projectsJson, releasesJson] = await Promise.all([
-      fetchAgenticProjectsList(),
-      $fetch<AgenticDataResponse<AgenticProject>>('/data/agentic-ai-momentum/projects.json', {
-        baseURL: origin,
-      }),
-      $fetch<AgenticDataResponse<GitHubReleasesData>>(
-        '/data/agentic-ai-momentum/github_releases_count.json',
-        { baseURL: origin },
-      ),
-    ]);
+    const tbProjects = await fetchAgenticProjectsList();
+    const projectsJson = projectsData as AgenticDataResponse<AgenticProject>;
+    const releasesJson = releasesData as AgenticDataResponse<GitHubReleasesData>;
 
     // Build lookup: normalized github URL -> project metadata
     const projectMetaByUrl = new Map<string, AgenticProject>();
