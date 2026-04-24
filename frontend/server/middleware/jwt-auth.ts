@@ -21,7 +21,11 @@ export default defineEventHandler(async (event) => {
   ];
 
   // Public report routes that don't require authentication
-  const publicReportRoutes = ['/api/report/cncf/geo-distribution', '/api/report/ai-code-tracker'];
+  const publicReportRoutes = [
+    '/api/report/cncf/geo-distribution',
+    '/api/report/ai-code-tracker',
+    '/api/report/agentic-ai-momentum',
+  ];
   const isPublicReport = publicReportRoutes.some((route) => url.startsWith(route));
   if (isPublicReport) {
     return;
