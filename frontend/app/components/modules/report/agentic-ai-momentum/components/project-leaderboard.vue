@@ -386,7 +386,7 @@ SPDX-License-Identifier: MIT
         <tbody>
           <tr
             v-for="(row, i) in sortedData"
-            :key="row.name"
+            :key="row.slug"
             class="border-b border-neutral-100 hover:bg-neutral-50"
           >
             <td class="py-3 px-2 text-neutral-500">
@@ -822,6 +822,7 @@ function sortBy(column: SortColumn) {
 const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
   return props.tbProjects.map((p) => ({
     rank: p.rank,
+    slug: p.slug,
     name: p.name,
     layer: p.layer,
     license: p.license,

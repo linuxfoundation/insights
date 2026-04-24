@@ -227,6 +227,7 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
@@ -306,13 +307,13 @@ const showTrendLine = computed(() => trendLineMode.value === 'on');
 function getMetricValue(project: AgenticEnrichedProject, metric: MetricKey): number | null {
   switch (metric) {
     case 'stars':
-      return project.stars30d;
+      return project.stars;
     case 'forks':
       return project.forks;
     case 'commits':
       return project.commits;
     case 'contributors':
-      return project.contributors30d;
+      return project.contributors;
     case 'newContributors':
       return project.newContributors30d;
     case 'downloads':

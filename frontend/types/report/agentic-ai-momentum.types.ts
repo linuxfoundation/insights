@@ -82,6 +82,7 @@ export type ResearchTopic =
 // Aggregated project data for the leaderboard
 export interface ProjectLeaderboardRow {
   rank: number;
+  slug: string;
   name: string;
   layer: EcosystemLayer | string;
   license: string;
