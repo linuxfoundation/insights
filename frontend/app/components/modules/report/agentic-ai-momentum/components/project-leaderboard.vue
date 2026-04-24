@@ -431,7 +431,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.stars) ? formatNumberShort(row.stars) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.starsDelta !== null && row.starsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.starsDelta" />
                 </lfx-tooltip>
@@ -446,7 +446,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.forks) ? formatNumberShort(row.forks) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.forksDelta !== null && row.forksDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.forksDelta" />
                 </lfx-tooltip>
@@ -468,7 +468,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.dockerHubPulls) ? formatNumberShort(row.dockerHubPulls) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.dockerHubPullsDelta !== null && row.dockerHubPullsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.dockerHubPullsDelta" />
                 </lfx-tooltip>
@@ -485,7 +485,7 @@ SPDX-License-Identifier: MIT
                 }}</span>
                 <lfx-tooltip
                   v-if="row.dependentRepositoriesDelta !== null && row.dependentRepositoriesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.dependentRepositoriesDelta" />
                 </lfx-tooltip>
@@ -500,7 +500,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.dependentPackages) ? formatNumberShort(row.dependentPackages) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.dependentPackagesDelta !== null && row.dependentPackagesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.dependentPackagesDelta" />
                 </lfx-tooltip>
@@ -516,7 +516,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.commits) ? formatNumberShort(row.commits) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.commitsDelta !== null && row.commitsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.commitsDelta" />
                 </lfx-tooltip>
@@ -531,7 +531,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.contributors) ? formatNumberShort(row.contributors) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.contributorsDelta !== null && row.contributorsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.contributorsDelta" />
                 </lfx-tooltip>
@@ -546,7 +546,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.newContributors) ? formatNumberShort(row.newContributors) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.newContributorsDelta !== null && row.newContributorsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.newContributorsDelta" />
                 </lfx-tooltip>
@@ -561,7 +561,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.githubReleases) ? formatNumberShort(row.githubReleases) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.githubReleasesDelta !== null && row.githubReleasesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.githubReleasesDelta" />
                 </lfx-tooltip>
@@ -576,13 +576,10 @@ SPDX-License-Identifier: MIT
               <div class="flex items-center justify-end gap-1">
                 <span>{{ hasData(row.mergeRate) ? formatPercent(row.mergeRate) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.mergeRateDelta !== null && row.mergeRateDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.mergeRateDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.mergeRateDelta"
-                    format="percent"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatPercent(row.mergeRateDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
@@ -594,14 +591,10 @@ SPDX-License-Identifier: MIT
               <div class="flex items-center justify-end gap-1">
                 <span>{{ hasData(row.prTimeToResolve) ? formatDays(row.prTimeToResolve) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.prTimeToResolveDelta !== null && row.prTimeToResolveDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.prTimeToResolveDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.prTimeToResolveDelta"
-                    format="days"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatDays(row.prTimeToResolveDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
@@ -613,14 +606,10 @@ SPDX-License-Identifier: MIT
               <div class="flex items-center justify-end gap-1">
                 <span>{{ hasData(row.timeToClose) ? formatDays(row.timeToClose) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.timeToCloseDelta !== null && row.timeToCloseDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.timeToCloseDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.timeToCloseDelta"
-                    format="days"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatDays(row.timeToCloseDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
@@ -632,14 +621,10 @@ SPDX-License-Identifier: MIT
               <div class="flex items-center justify-end gap-1">
                 <span>{{ hasData(row.issueResponseTime) ? formatDays(row.issueResponseTime) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.issueResponseTimeDelta !== null && row.issueResponseTimeDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.issueResponseTimeDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.issueResponseTimeDelta"
-                    format="days"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatDays(row.issueResponseTimeDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
@@ -651,14 +636,10 @@ SPDX-License-Identifier: MIT
               <div class="flex items-center justify-end gap-1">
                 <span>{{ hasData(row.noResponseIssues) ? formatNumberShort(row.noResponseIssues) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.noResponseIssuesDelta !== null && row.noResponseIssuesDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.noResponseIssuesDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.noResponseIssuesDelta"
-                    format="number"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatNumberShort(row.noResponseIssuesDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
@@ -671,7 +652,7 @@ SPDX-License-Identifier: MIT
                 <span>{{ hasData(row.totalVulnerabilities) ? formatNumberShort(row.totalVulnerabilities) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.totalVulnerabilitiesDelta !== null && row.totalVulnerabilitiesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <vuln-delta-indicator :value="row.totalVulnerabilitiesDelta" />
                 </lfx-tooltip>
@@ -806,8 +787,8 @@ type SortColumn =
   | 'prTimeToResolve'
   | 'totalVulnerabilities';
 
-const sortColumn = ref<SortColumn>('rank');
-const sortDirection = ref<'asc' | 'desc'>('asc');
+const sortColumn = ref<SortColumn>('contributors');
+const sortDirection = ref<'asc' | 'desc'>('desc');
 
 function sortBy(column: SortColumn) {
   if (sortColumn.value === column) {
@@ -846,18 +827,18 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     dependentPackages: p.dependentPackages,
     dependentPackagesDelta: null,
     mergeRate: p.mergeRate,
-    mergeRateDelta: delta(p.mergeRate30d, p.mergeRate),
+    mergeRateDelta: p.mergeRate30d,
     timeToClose: p.issueCloseTimeDays,
-    timeToCloseDelta: delta(p.issueCloseTimeDays30d, p.issueCloseTimeDays),
+    timeToCloseDelta: p.issueCloseTimeDays30d,
     issueResponseTime: p.issueResponseTimeDays,
-    issueResponseTimeDelta: delta(p.issueResponseTimeDays30d, p.issueResponseTimeDays),
+    issueResponseTimeDelta: p.issueResponseTimeDays30d,
     noResponseIssues: p.noResponseIssues,
-    noResponseIssuesDelta: delta(p.noResponseIssues30d, p.noResponseIssues),
+    noResponseIssuesDelta: p.noResponseIssues30d,
     downloads: p.downloads,
     downloadsDelta: p.downloads30d,
     cocomoValue: p.cocomoValue,
     prTimeToResolve: p.prResolveTimeDays,
-    prTimeToResolveDelta: delta(p.prResolveTimeDays30d, p.prResolveTimeDays),
+    prTimeToResolveDelta: p.prResolveTimeDays30d,
     totalVulnerabilities: p.vulnerabilities,
     totalVulnerabilitiesDelta: p.vulnerabilities30d,
   }));
@@ -960,11 +941,6 @@ const sortedData = computed(() => {
 // Returns true when a metric has data (not null/undefined)
 function hasData(value: number | null | undefined): value is number {
   return value != null;
-}
-
-// Null-safe subtraction for delta values
-function delta(a: number | null, b: number | null): number | null {
-  return a != null && b != null ? a - b : null;
 }
 
 // Format helpers
