@@ -1,0 +1,40 @@
+# LFX Insights
+
+> LFX Insights is the Linux Foundation's open source analytics platform — "TrustPilot for open source." It helps evaluate the health and trustworthiness of open source projects through contributor, security, community, and popularity metrics.
+
+## About
+
+LFX Insights provides data-driven insights for 13,000+ open source projects, tracking over 1 billion activities across 20+ data sources. It answers two key questions: "Is my project healthy?" and "Is this project trustworthy?"
+
+Backed by the Linux Foundation, Insights offers the deepest contributor profile data and organization affiliation mapping in the industry.
+
+## Main Pages
+
+- /: Explore and discover open source projects
+- /open-source-index: Linux Foundation Open Source Index — curated critical projects
+- /project/[slug]: Individual project dashboards with development, contributor, security, and popularity metrics
+- /collection: Community-curated collections of related projects
+- /leaderboards: Project rankings by various metrics
+- /docs: Documentation and user guides
+- /blog: News and updates
+
+## Key Features
+
+- **Project Health Metrics**: Development velocity, contributor diversity, release cadence
+- **Security Insights**: Vulnerability tracking, security posture assessment
+- **Contributor Analytics**: Individual and organizational contribution tracking
+- **Community Voice**: Sentiment analysis from community discussions
+- **Popularity Metrics**: GitHub stars, forks, downloads, adoption trends
+- **Collections**: "Spotify playlists for open source" — curated project groupings
+- **Embeddable Widgets**: Badges and widgets for project READMEs
+
+## Data Coverage
+
+- 13,000+ projects (1,500+ Linux Foundation, 10,000+ most critical projects in the world)
+- 1B+ activities tracked
+- 20+ data sources (GitHub, Gerrit, mailing lists, etc.)
+
+## Contact
+
+- GitHub: https://github.com/linuxfoundation/insights
+- Organization: The Linux Foundation (https://linuxfoundation.org)
