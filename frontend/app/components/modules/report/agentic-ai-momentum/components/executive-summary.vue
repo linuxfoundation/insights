@@ -310,7 +310,7 @@ const researchHighlights = computed(() => {
 const healthMetrics = computed(() => {
   if (!props.glanceData) return { medianDays: null, count: 0, delta: null };
   const medianDays = props.glanceData.medianIssueCloseTimeDays;
-  const delta = props.glanceData.medianIssueCloseTimeDays30d - medianDays;
+  const delta = Math.round((props.glanceData.medianIssueCloseTimeDays30d - medianDays) * 10) / 10;
   return {
     medianDays,
     count: props.glanceData.projectsWithGithubIssueActivity,
@@ -321,7 +321,7 @@ const healthMetrics = computed(() => {
 const prHealthMetrics = computed(() => {
   if (!props.glanceData) return { medianDays: null, count: 0, delta: null };
   const medianDays = props.glanceData.medianPrResolutionTimeDays;
-  const delta = props.glanceData.medianPrResolutionTimeDays30d - medianDays;
+  const delta = Math.round((props.glanceData.medianPrResolutionTimeDays30d - medianDays) * 10) / 10;
   return {
     medianDays,
     count: props.glanceData.projectsWithGithubPrActivity,
