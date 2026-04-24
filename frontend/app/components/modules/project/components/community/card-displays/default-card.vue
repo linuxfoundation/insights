@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 <!-- SPDX-License-Identifier: MIT -->
 <template>
   <nuxt-link
-    :to="mention.url"
+    :to="safeMentionUrl"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -16,13 +16,13 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-col md:gap-5 gap-3">
         <slot>
           <!-- Header Section -->
-          <lfx-community-card-header :mention="mention" />
+          <lfx-community-card-header :mention="props.mention" />
 
           <!-- Content Section -->
-          <lfx-community-card-content :mention="mention" />
+          <lfx-community-card-content :mention="props.mention" />
 
           <!-- Relevance Comment Section -->
-          <lfx-community-card-footer :mention="mention" />
+          <lfx-community-card-footer :mention="props.mention" />
         </slot>
       </div>
     </lfx-card>
@@ -31,15 +31,26 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 // Default card display component for community mentions
+import { computed } from 'vue';
 import LfxCommunityCardHeader from '../fragments/card-header.vue';
 import LfxCommunityCardContent from '../fragments/card-content.vue';
 import LfxCommunityCardFooter from '../fragments/card-footer.vue';
 import type { CommunityMentions } from '~~/types/community/community';
 import LfxCard from '~/components/uikit/card/card.vue';
 
-defineProps<{
+const props = defineProps<{
   mention: CommunityMentions;
 }>();
+
+const safeMentionUrl = computed(() => {
+  try {
+    const parsedUrl = new URL(props.mention?.url);
+
+    return ['http:', 'https:'].includes(parsedUrl.protocol) ? parsedUrl.toString() : '#';
+  } catch {
+    return '#';
+  }
+});
 </script>
 
 <script lang="ts">
