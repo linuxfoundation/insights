@@ -79,7 +79,10 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       expiresIn,
     };
   } catch (error) {
-    console.error('Token refresh failed:', error);
+    // Scrub: openid-client errors can carry the response body in the message,
+    // which on some Auth0 failure paths includes a refresh_token field.
+    const message = error instanceof Error ? error.name : 'unknown';
+    console.error('Token refresh failed:', message);
     return null;
   }
 };
