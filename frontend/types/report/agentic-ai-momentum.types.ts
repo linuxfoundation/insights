@@ -25,7 +25,6 @@ export interface AgenticProject {
   rank: number;
   name: string;
   layer: string;
-  license: string;
   github_url: string | null;
   github_url_display: string | null;
 }
@@ -85,7 +84,6 @@ export interface ProjectLeaderboardRow {
   slug: string;
   name: string;
   layer: EcosystemLayer | string;
-  license: string;
   githubUrl: string | null;
   stars: number | null;
   starsDelta: number | null;
@@ -237,7 +235,6 @@ export interface AgenticEnrichedProject {
   githubRepoLink: string;
   layer: EcosystemLayer | string;
   rank: number;
-  license: string;
   // All-time values
   stars: number | null;
   forks: number | null;
