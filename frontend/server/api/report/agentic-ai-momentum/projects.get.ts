@@ -47,7 +47,7 @@ export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject
       releasesByUrl.set(normalizeUrl(repo), { latest: latestValue, delta });
     }
 
-    return tbProjects.map((p, index): AgenticEnrichedProject => {
+    return tbProjects.map((p): AgenticEnrichedProject => {
       const normalizedUrl = normalizeUrl(p.github_repo_link);
       const meta = projectMetaByUrl.get(normalizedUrl);
       const releases = releasesByUrl.get(normalizedUrl);
@@ -58,7 +58,6 @@ export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject
         slug: p.slug,
         githubRepoLink: meta?.github_url_display ?? p.github_repo_link,
         layer: meta?.layer ?? '',
-        rank: meta?.rank ?? index + 1,
         // All-time values
         stars: p.stars,
         forks: p.forks,
