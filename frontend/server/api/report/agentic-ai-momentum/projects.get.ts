@@ -59,7 +59,6 @@ export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject
         githubRepoLink: meta?.github_url_display ?? p.github_repo_link,
         layer: meta?.layer ?? '',
         rank: meta?.rank ?? index + 1,
-        license: meta?.license ?? '',
         // All-time values
         stars: p.stars,
         forks: p.forks,

@@ -806,7 +806,6 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     slug: p.slug,
     name: p.name,
     layer: p.layer,
-    license: p.license,
     githubUrl: p.githubRepoLink,
     stars: p.stars,
     starsDelta: p.stars30d,
