@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:43:24.226770",
+    "fetched_at": "2026-04-30T16:02:02.240779",
     "schema": {
       "name": "research_papers_count",
       "description": "Monthly arXiv paper counts for agentic-AI topics.",
@@ -24,404 +24,17 @@
           "optional": false
         }
       ]
-    }
+    },
+    "covered_items": [
+      "agent_memory_planning",
+      "agent_safety_alignment",
+      "agentic_rag",
+      "autonomous_agents",
+      "llm_tool_use",
+      "multi_agent_systems"
+    ]
   },
   "data": [
-    {
-      "topic": "autonomous_agents",
-      "month": "pre_window",
-      "paper_count": 409
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-03",
-      "paper_count": 20
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-04",
-      "paper_count": 15
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-05",
-      "paper_count": 26
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-06",
-      "paper_count": 23
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-07",
-      "paper_count": 37
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-08",
-      "paper_count": 17
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-09",
-      "paper_count": 23
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-10",
-      "paper_count": 50
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-11",
-      "paper_count": 33
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2024-12",
-      "paper_count": 36
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-01",
-      "paper_count": 37
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-02",
-      "paper_count": 53
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-03",
-      "paper_count": 53
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-04",
-      "paper_count": 57
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-05",
-      "paper_count": 93
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-06",
-      "paper_count": 88
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-07",
-      "paper_count": 85
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-08",
-      "paper_count": 105
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-09",
-      "paper_count": 110
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-10",
-      "paper_count": 122
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-11",
-      "paper_count": 92
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2025-12",
-      "paper_count": 108
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2026-01",
-      "paper_count": 134
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2026-02",
-      "paper_count": 163
-    },
-    {
-      "topic": "autonomous_agents",
-      "month": "2026-03",
-      "paper_count": 160
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "pre_window",
-      "paper_count": 2640
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-03",
-      "paper_count": 81
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-04",
-      "paper_count": 74
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-05",
-      "paper_count": 76
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-06",
-      "paper_count": 81
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-07",
-      "paper_count": 69
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-08",
-      "paper_count": 89
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-09",
-      "paper_count": 83
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-10",
-      "paper_count": 150
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-11",
-      "paper_count": 102
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2024-12",
-      "paper_count": 130
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-01",
-      "paper_count": 90
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-02",
-      "paper_count": 170
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-03",
-      "paper_count": 186
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-04",
-      "paper_count": 137
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-05",
-      "paper_count": 267
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-06",
-      "paper_count": 209
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-07",
-      "paper_count": 223
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-08",
-      "paper_count": 288
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-09",
-      "paper_count": 269
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-10",
-      "paper_count": 370
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-11",
-      "paper_count": 331
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2025-12",
-      "paper_count": 262
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2026-01",
-      "paper_count": 319
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2026-02",
-      "paper_count": 337
-    },
-    {
-      "topic": "multi_agent_systems",
-      "month": "2026-03",
-      "paper_count": 383
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "pre_window",
-      "paper_count": 23
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-03",
-      "paper_count": 1
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-04",
-      "paper_count": 1
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-05",
-      "paper_count": 4
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-06",
-      "paper_count": 3
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-07",
-      "paper_count": 4
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-08",
-      "paper_count": 2
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-09",
-      "paper_count": 2
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-10",
-      "paper_count": 4
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-11",
-      "paper_count": 4
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2024-12",
-      "paper_count": 3
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-01",
-      "paper_count": 3
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-02",
-      "paper_count": 3
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-03",
-      "paper_count": 4
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-04",
-      "paper_count": 7
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-05",
-      "paper_count": 8
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-06",
-      "paper_count": 5
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-07",
-      "paper_count": 1
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-08",
-      "paper_count": 5
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-09",
-      "paper_count": 6
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-10",
-      "paper_count": 17
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-11",
-      "paper_count": 4
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2025-12",
-      "paper_count": 7
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2026-01",
-      "paper_count": 10
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2026-02",
-      "paper_count": 7
-    },
-    {
-      "topic": "llm_tool_use",
-      "month": "2026-03",
-      "paper_count": 13
-    },
-    {
-      "topic": "agent_memory_planning",
-      "month": "pre_window",
-      "paper_count": 177
-    },
     {
       "topic": "agent_memory_planning",
       "month": "2024-03",
@@ -520,7 +133,7 @@
     {
       "topic": "agent_memory_planning",
       "month": "2025-10",
-      "paper_count": 81
+      "paper_count": 80
     },
     {
       "topic": "agent_memory_planning",
@@ -545,12 +158,22 @@
     {
       "topic": "agent_memory_planning",
       "month": "2026-03",
-      "paper_count": 97
+      "paper_count": 84
     },
     {
-      "topic": "agent_safety_alignment",
+      "topic": "agent_memory_planning",
+      "month": "2026-04",
+      "paper_count": 108
+    },
+    {
+      "topic": "agent_memory_planning",
+      "month": "2026-05",
+      "paper_count": 0
+    },
+    {
+      "topic": "agent_memory_planning",
       "month": "pre_window",
-      "paper_count": 36
+      "paper_count": 177
     },
     {
       "topic": "agent_safety_alignment",
@@ -675,12 +298,22 @@
     {
       "topic": "agent_safety_alignment",
       "month": "2026-03",
-      "paper_count": 19
+      "paper_count": 17
     },
     {
-      "topic": "agentic_rag",
+      "topic": "agent_safety_alignment",
+      "month": "2026-04",
+      "paper_count": 33
+    },
+    {
+      "topic": "agent_safety_alignment",
+      "month": "2026-05",
+      "paper_count": 0
+    },
+    {
+      "topic": "agent_safety_alignment",
       "month": "pre_window",
-      "paper_count": 191
+      "paper_count": 36
     },
     {
       "topic": "agentic_rag",
@@ -780,7 +413,7 @@
     {
       "topic": "agentic_rag",
       "month": "2025-10",
-      "paper_count": 137
+      "paper_count": 136
     },
     {
       "topic": "agentic_rag",
@@ -805,7 +438,442 @@
     {
       "topic": "agentic_rag",
       "month": "2026-03",
+      "paper_count": 149
+    },
+    {
+      "topic": "agentic_rag",
+      "month": "2026-04",
+      "paper_count": 186
+    },
+    {
+      "topic": "agentic_rag",
+      "month": "2026-05",
+      "paper_count": 0
+    },
+    {
+      "topic": "agentic_rag",
+      "month": "pre_window",
+      "paper_count": 191
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-03",
+      "paper_count": 20
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-04",
+      "paper_count": 15
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-05",
+      "paper_count": 26
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-06",
+      "paper_count": 23
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-07",
+      "paper_count": 37
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-08",
+      "paper_count": 17
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-09",
+      "paper_count": 23
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-10",
+      "paper_count": 50
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-11",
+      "paper_count": 33
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2024-12",
+      "paper_count": 36
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-01",
+      "paper_count": 37
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-02",
+      "paper_count": 53
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-03",
+      "paper_count": 54
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-04",
+      "paper_count": 57
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-05",
+      "paper_count": 93
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-06",
+      "paper_count": 88
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-07",
+      "paper_count": 85
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-08",
+      "paper_count": 105
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-09",
+      "paper_count": 110
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-10",
+      "paper_count": 121
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-11",
+      "paper_count": 92
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2025-12",
+      "paper_count": 108
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2026-01",
+      "paper_count": 134
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2026-02",
+      "paper_count": 163
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2026-03",
+      "paper_count": 132
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2026-04",
+      "paper_count": 161
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "2026-05",
+      "paper_count": 0
+    },
+    {
+      "topic": "autonomous_agents",
+      "month": "pre_window",
+      "paper_count": 409
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-03",
+      "paper_count": 1
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-04",
+      "paper_count": 1
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-05",
+      "paper_count": 4
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-06",
+      "paper_count": 3
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-07",
+      "paper_count": 4
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-08",
+      "paper_count": 2
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-09",
+      "paper_count": 2
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-10",
+      "paper_count": 4
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-11",
+      "paper_count": 4
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2024-12",
+      "paper_count": 3
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-01",
+      "paper_count": 3
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-02",
+      "paper_count": 3
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-03",
+      "paper_count": 4
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-04",
+      "paper_count": 7
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-05",
+      "paper_count": 8
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-06",
+      "paper_count": 5
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-07",
+      "paper_count": 1
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-08",
+      "paper_count": 5
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-09",
+      "paper_count": 6
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-10",
+      "paper_count": 17
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-11",
+      "paper_count": 4
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2025-12",
+      "paper_count": 7
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2026-01",
+      "paper_count": 10
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2026-02",
+      "paper_count": 7
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2026-03",
+      "paper_count": 10
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2026-04",
+      "paper_count": 13
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "2026-05",
+      "paper_count": 0
+    },
+    {
+      "topic": "llm_tool_use",
+      "month": "pre_window",
+      "paper_count": 23
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-03",
+      "paper_count": 81
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-04",
+      "paper_count": 74
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-05",
+      "paper_count": 76
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-06",
+      "paper_count": 81
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-07",
+      "paper_count": 69
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-08",
+      "paper_count": 89
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-09",
+      "paper_count": 83
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-10",
+      "paper_count": 150
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-11",
+      "paper_count": 102
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2024-12",
+      "paper_count": 130
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-01",
+      "paper_count": 90
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-02",
       "paper_count": 170
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-03",
+      "paper_count": 187
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-04",
+      "paper_count": 137
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-05",
+      "paper_count": 267
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-06",
+      "paper_count": 209
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-07",
+      "paper_count": 223
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-08",
+      "paper_count": 288
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-09",
+      "paper_count": 269
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-10",
+      "paper_count": 370
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-11",
+      "paper_count": 331
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2025-12",
+      "paper_count": 262
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2026-01",
+      "paper_count": 319
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2026-02",
+      "paper_count": 337
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2026-03",
+      "paper_count": 331
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2026-04",
+      "paper_count": 426
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "2026-05",
+      "paper_count": 0
+    },
+    {
+      "topic": "multi_agent_systems",
+      "month": "pre_window",
+      "paper_count": 2640
     }
   ]
 }
