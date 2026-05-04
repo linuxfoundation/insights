@@ -1,0 +1,3 @@
+# API keys are long-lived with no auto-expiry in v1
+
+API keys do not expire automatically. Rotation is encouraged (documented best practice) but never enforced. Multiple active keys per User are supported so rotation is zero-downtime: mint new key → switch integrations → revoke old key. Revocation is enforced by deleting the key from Auth0 via the Management API — the key ceases to exist, so the next request using it fails JWKS verification and returns 401 immediately. Long-lived keys are a simplicity decision for v1. Short-lived keys with refresh tokens can be introduced iteratively in v2 without breaking existing integrations.
