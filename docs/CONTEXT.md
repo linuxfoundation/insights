@@ -33,7 +33,7 @@ Any modification that forces existing callers to update their integration: remov
 _Avoid_: non-backwards-compatible change
 
 **Error Envelope**:
-The standard JSON wrapper for all error responses: `{ error: { code, message, requestId, docs_url } }`. `code` is a machine-readable snake_case string; `docs_url` is always present — it deep-links to a specific docs page when one exists, otherwise to the general errors reference page.
+The standard JSON wrapper for all error responses: `{ error: { code, message, requestId, docsUrl } }`. `code` is a machine-readable snake_case string; `docsUrl` is always present — it deep-links to a specific docs page when one exists, otherwise to the general errors reference page.
 _Avoid_: error body, error payload
 
 **Request ID**:
@@ -69,7 +69,7 @@ _Avoid_: stable, released, GA
 - A **User** holds one or more **API Keys**
 - A **User** belongs to one **Organization**; the **Organization** owns the **Rate-limit Pool**
 - A **Tier** is attached to an **Organization** and governs the size of its **Rate-limit Pool**
-- A **Collection** belongs to a **User** (or org); a **Permission Check** gates access per request
+- A **Collection** is owned by a single **User** (the creator, identified by `ssoUserId`); curated/system Collections have `ssoUserId = null`. There is no collaborator or org-ownership model in v1. A **Permission Check** gates access per request for private Collections (see ADR-0007)
 - An **Endpoint Group** contains many endpoints; endpoints are promoted through launch stages independently
 
 ## Example dialogue

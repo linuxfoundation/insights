@@ -22,7 +22,7 @@ Fastify has first-class support for this pairing via `@fastify/type-provider-typ
 
 Zod was considered as an alternative (more ergonomic API, larger community) but rejected because Zod's native type is not JSON Schema — a conversion layer (`zod-to-json-schema`) is required, which reintroduces a transformation step that can drift. The Fastify+TypeBox integration is zero-transformation: the schema object _is_ the JSON Schema.
 
-Hand-written OpenAPI YAML was rejected outright: with ~100 endpoints, drift between the YAML spec and the actual handler behavior is high maintanence. TypeBox is the single validation and schema boundary.
+Hand-written OpenAPI YAML was rejected outright: with ~100 endpoints, drift between the YAML spec and the actual handler behavior is high maintenance. TypeBox is the single validation and schema boundary.
 
 ### API docs: VitePress + Scalar at `api.insights.linuxfoundation.org/docs` — [docs/adr/0016](../adr/0016-vitepress-scalar-api-docs.md)
 
@@ -98,6 +98,6 @@ All responses carry `Cache-Control: private, max-age=0`. A Redis cache with two 
 
 API access is included in the user's existing LFX membership tier. No separate billing infrastructure or usage-based pricing in v1.
 
-### Datadog: hybrid custom metrics + APM trace metrics — [docs/adr/0001](../adr/0001-fastify-over-nestjs.md) (§D5)
+### Datadog: hybrid custom metrics + APM trace metrics — [PUBLIC_API_PLAN.md §3 D5 + §6](../PUBLIC_API_PLAN.md#d5-datadog-metrics-strategy--custom-metrics-vs-apm-trace-metrics)
 
-Low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class(2xx,3xx,4xx)`) power SRE dashboards and alerting. High-cardinality dimensions (`customer_id`, `api_key_id`) live in APM span attributes — not billed as custom metrics. Estimated budget: ~5,400 timeseries at ~$270/mo above DD quota. Pure custom metrics were rejected because per-customer cardinality would blow the cost budget.
+Low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class(2xx,4xx,5xx)`) power SRE dashboards and alerting. High-cardinality dimensions (`customer_id`, `api_key_id`) live in APM span attributes — not billed as custom metrics. Estimated budget: ~5,400 timeseries at ~$270/mo above DD quota. Pure custom metrics were rejected because per-customer cardinality would blow the cost budget.
