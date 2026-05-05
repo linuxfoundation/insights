@@ -167,8 +167,8 @@ class CollectionsApiService {
       });
   }
 
-  fetchCollection(slug: string): QueryFunction<Collection> {
-    return () => $fetch(`/api/collection/${slug}`);
+  fetchCollection(slug: string, fetchFn: typeof $fetch = $fetch): QueryFunction<Collection> {
+    return () => fetchFn(`/api/collection/${slug}`);
   }
 
   fetchCategoryGroups(params: ComputedRef<CategoryGroupsQueryParams>) {
@@ -477,7 +477,10 @@ class CollectionsApiService {
     });
   }
 
-  fetchCollectionProjects(params: ComputedRef<CollectionProjectsQueryParams>) {
+  fetchCollectionProjects(
+    params: ComputedRef<CollectionProjectsQueryParams>,
+    fetchFn: typeof $fetch = $fetch,
+  ) {
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_PROJECTS,
       params.value.slug,
@@ -487,9 +490,12 @@ class CollectionsApiService {
       params.value.pageSize,
     ]);
 
-    const queryFn = this.fetchCollectionProjectsQueryFn(() => ({
-      ...params.value,
-    }));
+    const queryFn = this.fetchCollectionProjectsQueryFn(
+      () => ({
+        ...params.value,
+      }),
+      fetchFn,
+    );
 
     return useInfiniteQuery<
       Pagination<ProjectInsights>,
@@ -512,10 +518,11 @@ class CollectionsApiService {
 
   fetchCollectionProjectsQueryFn(
     query: () => CollectionProjectsQueryParams,
+    fetchFn: typeof $fetch = $fetch,
   ): QueryFunction<Pagination<ProjectInsights>, readonly unknown[], number> {
     return async ({ pageParam = 0 }) => {
       const { slug, isLF, ...rest } = query();
-      return await $fetch(`/api/collection/${slug}/project-repos`, {
+      return await fetchFn(`/api/collection/${slug}/project-repos`, {
         params: {
           page: pageParam,
           ...rest,
@@ -525,7 +532,10 @@ class CollectionsApiService {
     };
   }
 
-  async prefetchCollectionProjects(params: ComputedRef<CollectionProjectsQueryParams>) {
+  async prefetchCollectionProjects(
+    params: ComputedRef<CollectionProjectsQueryParams>,
+    fetchFn: typeof $fetch = $fetch,
+  ) {
     const queryClient = useQueryClient();
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_PROJECTS,
@@ -536,9 +546,12 @@ class CollectionsApiService {
       params.value.pageSize,
     ]);
 
-    const queryFn = this.fetchCollectionProjectsQueryFn(() => ({
-      ...params.value,
-    }));
+    const queryFn = this.fetchCollectionProjectsQueryFn(
+      () => ({
+        ...params.value,
+      }),
+      fetchFn,
+    );
 
     return await queryClient.prefetchInfiniteQuery<
       Pagination<ProjectInsights>,

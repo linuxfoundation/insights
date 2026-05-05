@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
                 <lfx-organization-logo
                   class="mr-4 max-h-8 md:max-h-12"
                   :src="props.project?.logo || ''"
-                  :size="scrollTop > 50 ? 'normal' : pageWidth < 768 && pageWidth > 0 ? 'normal' : 'large'"
+                  :size="scrollTop > 50 ? 'normal' : 'large'"
                   :is-lf="!!props.project?.isLF"
                   :alt="props.project?.name"
                 />

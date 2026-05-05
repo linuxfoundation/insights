@@ -197,8 +197,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, watch, ref } from 'vue';
-import { createError, showError } from 'nuxt/app';
-import { useQuery } from '@tanstack/vue-query';
+import { createError, showError, useRequestFetch } from 'nuxt/app';
+import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
@@ -231,7 +231,9 @@ const props = defineProps<{
 
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
+const requestFetch = useRequestFetch();
 
+const queryClient = useQueryClient();
 const queryKey = computed(() => [TanstackKey.COLLECTION, props.slug]);
 
 const {
@@ -242,15 +244,11 @@ const {
   error,
 } = useQuery<Collection>({
   queryKey,
-  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(props.slug),
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(props.slug, requestFetch),
   retry: false,
 });
 
-const currentCollection = ref<Collection | undefined>(collection.value);
-
-watch(collection, (newCollection) => {
-  currentCollection.value = newCollection;
-});
+const currentCollection = computed<Collection | undefined>(() => collection.value);
 
 const detailCollectionIds = computed(() => (currentCollection.value ? [currentCollection.value.id] : []));
 useLikeCounts(detailCollectionIds);
@@ -285,7 +283,7 @@ const params = computed(() => ({
 // const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
 //   PROJECT_API_SERVICE.fetchProjects(params);
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, refetch } =
-  COLLECTIONS_API_SERVICE.fetchCollectionProjects(params);
+  COLLECTIONS_API_SERVICE.fetchCollectionProjects(params, requestFetch);
 
 // @ts-expect-error - TanStack Query type inference issue with Vue
 const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<ProjectInsights>) => page.data) || []);
@@ -346,7 +344,7 @@ const updateOnlyLFProjects = (value: boolean) => {
 };
 
 const handleCollectionUpdated = (collection: Collection) => {
-  currentCollection.value = collection;
+  queryClient.setQueryData(queryKey.value, collection);
   refetch();
 };
 
