@@ -124,13 +124,24 @@ SPDX-License-Identifier: MIT
             "
           >
             <div
-              v-if="props.collection?.logoUrl"
-              class="shrink-0"
+              v-if="loading || props.collection?.logoUrl"
+              class="shrink-0 flex items-center justify-start"
+              :class="scrollTop > 50 ? 'h-8 md:h-10' : 'h-12 md:h-30'"
             >
               <img
+                v-if="props.collection?.logoUrl"
                 :src="props.collection?.logoUrl"
                 alt="Collection image"
+                width="120"
+                height="120"
+                fetchpriority="high"
+                decoding="async"
                 :class="scrollTop > 50 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 md:h-30 w-auto'"
+              />
+              <lfx-skeleton
+                v-else
+                :class="scrollTop > 50 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 w-12 md:h-30 md:w-30'"
+                class="rounded-md"
               />
             </div>
             <div class="w-full flex flex-col justify-center min-w-0">
@@ -153,9 +164,9 @@ SPDX-License-Identifier: MIT
               </div>
               <lfx-skeleton
                 v-if="loading"
-                height="2rem"
-                width="25rem"
+                width="80%"
                 class="rounded-sm"
+                :class="scrollTop > 50 ? 'h-6 md:h-9' : 'h-9 md:h-13'"
               />
               <h1
                 v-else-if="props.collection"
@@ -168,12 +179,21 @@ SPDX-License-Identifier: MIT
                 :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-1 md:mt-0'"
                 class="w-full transition-all ease-linear"
               >
-                <lfx-skeleton
+                <div
                   v-if="loading"
-                  height="1.25rem"
-                  width="100%"
-                  class="rounded-sm"
-                />
+                  class="flex flex-col gap-1.5"
+                >
+                  <lfx-skeleton
+                    height="1rem"
+                    width="100%"
+                    class="rounded-sm"
+                  />
+                  <lfx-skeleton
+                    height="1rem"
+                    width="60%"
+                    class="rounded-sm"
+                  />
+                </div>
                 <p
                   v-else-if="props.collection"
                   class="text-sm md:text-body-1 text-neutral-500 line-clamp-2 md:line-clamp-none"
@@ -247,6 +267,18 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
 
+        <!-- Loading placeholder keeps meta-row height reserved so data resolution doesn't reflow the page -->
+        <div
+          v-if="loading"
+          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3 md:mt-10'"
+          class="flex items-center gap-2 w-full transition-all ease-linear"
+        >
+          <lfx-skeleton
+            height="1.25rem"
+            width="14rem"
+            class="rounded-sm"
+          />
+        </div>
         <!-- Owner + project count + LF toggle (desktop only for toggle) -->
         <div
           v-if="!loading && props.collection"

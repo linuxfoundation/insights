@@ -198,7 +198,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch, watch, ref } from 'vue';
 import { createError, showError, useRequestFetch } from 'nuxt/app';
-import { useQuery } from '@tanstack/vue-query';
+import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
@@ -233,6 +233,7 @@ const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
 const requestFetch = useRequestFetch();
 
+const queryClient = useQueryClient();
 const queryKey = computed(() => [TanstackKey.COLLECTION, props.slug]);
 
 const {
@@ -247,11 +248,7 @@ const {
   retry: false,
 });
 
-const currentCollection = ref<Collection | undefined>(collection.value);
-
-watch(collection, (newCollection) => {
-  currentCollection.value = newCollection;
-});
+const currentCollection = computed<Collection | undefined>(() => collection.value);
 
 const detailCollectionIds = computed(() => (currentCollection.value ? [currentCollection.value.id] : []));
 useLikeCounts(detailCollectionIds);
@@ -347,7 +344,7 @@ const updateOnlyLFProjects = (value: boolean) => {
 };
 
 const handleCollectionUpdated = (collection: Collection) => {
-  currentCollection.value = collection;
+  queryClient.setQueryData(queryKey.value, collection);
   refetch();
 };
 
