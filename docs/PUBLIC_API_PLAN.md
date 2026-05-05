@@ -143,9 +143,9 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 |---|---|---|
 | **Custom metrics** (DogStatsD / OTel metrics → DD custom metrics) | Explicit metric names; dashboards/monitors trivial to build; predictable aggregation semantics; fast queries. | Billed per unique tag-combination per metric (≈$0.05/series/month above quota); cardinality explosion is easy and expensive; high-cardinality dimensions (`customer_id`, `api_key_id`) blow the budget fast. |
 | **APM trace metrics** (derived from span attributes) | Slicing by span attributes is not billed as custom metrics; can slice by `customer_id` / `api_key_id` without cost spike; flame-graph + latency-breakdown per request; ingestion cost is per-span, not per-tag. | APM has its own ingestion cost; span sampling can drop rare events at scale; alerting ergonomics are slightly different; counters for rate-limit rejections still want every event. |
-| **Hybrid (both)** ⭐ | Low-cardinality custom metrics for SRE dashboards/alerting; high-cardinality slicing happens in APM; cost-controlled and complete. | Two systems to learn; need a clear rule for "what goes where" (covered in §7). |
+| **Hybrid (both)** ⭐ | Low-cardinality custom metrics for SRE dashboards/alerting; high-cardinality slicing happens in APM; cost-controlled and complete. | Two systems to learn; need a clear rule for "what goes where" (covered in §6). |
 
-**Recommendation: Hybrid.** A small set of low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class`) for dashboards and alerts, and APM trace metrics (span attributes: `customer_id`, `api_key_id`, `bucket_id`, `pipe_id`, numeric `status_code`) for per-customer drilldowns. Catalog in §7.
+**Recommendation: Hybrid.** A small set of low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class`) for dashboards and alerts, and APM trace metrics (span attributes: `customer_id`, `api_key_id`, `bucket_id`, `pipe_id`, numeric `status_code`) for per-customer drilldowns. Catalog in §6.
 
 ---
 
@@ -163,8 +163,8 @@ Bootstrap the standalone service per §3 D1 (Fastify) and share code with fronte
 - **T-004** Extract Tinybird client (`adaptive-semaphore.ts`, `bucket-cache.ts`, `TinybirdResponse<T>` type, core HTTP fetch logic) into `libs/tinybird-client`. Replace `ofetch` with native `fetch` (Node 18+). Remove Luxon and H3/Nuxt-specific dependencies — the lib is framework-agnostic. Frontend and API both depend on it.
 - **T-005** Extract shared enum definitions (`ActivityPlatforms`, `ActivityTypes`, `Granularity`) into `libs/insights-types`. Request/response shape types are defined separately in each app — the frontend keeps its Luxon-based types; `/api` defines its own TypeBox schemas.
 - **T-006** Standard health endpoints: `/health/live`, `/health/ready` (TB ping, Redis ping, PG ping).
-- **T-007** Error envelope ADR + Fastify error hook — single shape for all errors (`{ error: { code, message, requestId, docs_url } }`).
-- **T-008** Request ID propagation (incoming `X-Request-ID` honored, generated otherwise, attached to logs/traces/responses).
+- **T-007** Error envelope ADR + Fastify error hook — single shape for all errors (`{ error: { code, message, requestId, docsUrl } }`).
+- **T-008** Request ID propagation (incoming `X-Request-Id` honored, generated otherwise, attached to logs/traces/responses).
 - **T-009** Local dev story: `pnpm dev` from `api/`, hot reload via `tsx watch` or `fastify-cli`, env file template.
 
 ### Epic E2 — Tinybird Read Replica
@@ -195,8 +195,8 @@ Per-key auth with tier-aware authorization and rate limiting. Reuse existing LFX
 No hard SLAs in v1 — everything is **observational** for now. Implements the hybrid strategy from §3 D5.
 
 - **T-023** Integrate OpenTelemetry SDK: HTTP auto-instrumentation, custom spans around Tinybird and Postgres calls. Span attributes carry high-cardinality dimensions (`customer_id`, `api_key_id`, `bucket_id`, `pipe`, numeric `status_code`).
-- **T-024** Implement low-cardinality custom metrics per §7 catalog. Helper module so handlers emit consistently.
-- **T-025** OTel Collector deployment + Datadog exporter (use existing DD agent if one exists in cluster — see §11 open question 1).
+- **T-024** Implement low-cardinality custom metrics per §6 catalog. Helper module so handlers emit consistently.
+- **T-025** OTel Collector deployment + Datadog exporter (use existing DD agent if one exists in cluster — see §9 open question 1).
 - **T-026** Datadog dashboards: per-endpoint, per-tier, per-customer top-N (via APM trace metrics), upstream TB health.
 - **T-027** Datadog monitors: 5xx rate, TB failure rate, auth-failure spike, rate-limit-rejection spike. Latency thresholds left open — we baseline first, then dial in.
 - **T-028** Structured JSON logging (pino), shipped to Datadog Logs with trace correlation.
@@ -224,10 +224,10 @@ Implements URL-prefix versioning (`/v1`, `/v2`).
 
 ### Epic E7 — Endpoint Migration Phase 1: Development
 
-One ticket per endpoint. Each ticket: port handler, define TypeBox schema, write integration test, OpenAPI tag, document, ship to production (soft-launch model — per §10 #23). No feature flag.
+One ticket per endpoint. Each ticket: port handler, define TypeBox schema, write integration test, OpenAPI tag, document, ship to production (soft-launch model — per §9 #23). No feature flag.
 
 - **T-040** Inventory all `frontend/server/api/**` endpoints used by the Development tab. Produce a checklist.
-- **T-041 .. T-04N** One task per endpoint (N tickets — fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E12). Each endpoint goes live to production when its ticket completes — no batched "Phase 1 launch" event (per §10 #23 soft-launch model).
+- **T-041 .. T-04N** One task per endpoint (N tickets — fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E12). Each endpoint goes live to production when its ticket completes — no batched "Phase 1 launch" event (per §9 #23 soft-launch model).
 
 ### Epic E8 — Endpoint Migration Phase 2: Contributors
 - Inventory + one ticket per endpoint + launch.
@@ -275,10 +275,10 @@ Self-service key management built inside the LFX Insights frontend. Hard depende
 
 ### Epic E16 — Pre-Launch
 
-These are the gates for the **launch** (per §10 #23) — not for individual endpoints, which roll out per-endpoint through closed alpha → silent public.
+These are the gates for the **launch** (per §9 #23) — not for individual endpoints, which roll out per-endpoint through closed alpha → silent public.
 
 - **T-090** Load testing (k6 or artillery) — establish baseline req/s per pod, validate rate limiter under load. Required gate for promoting an endpoint from closed alpha → silent public.
-- **T-091** Tier-to-API-access mapping finalized with product (per §10 #2 reuses existing LFX tiers, but rate-limit numbers per tier need product sign-off).
+- **T-091** Tier-to-API-access mapping finalized with product (per §9 #2 reuses existing LFX tiers, but rate-limit numbers per tier need product sign-off).
 
 ---
 
@@ -321,7 +321,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 ---
 
-## 8. Critical Files / Areas to Reference During Implementation
+## 7. Critical Files / Areas to Reference During Implementation
 
 - `frontend/server/data/tinybird/tinybird.ts` — TB client with `AdaptiveSemaphore`, bucket routing, response typing. Extract to shared lib ([T-004](#epic-e1--foundation--framework)).
 - `frontend/server/data/types.ts` — shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). Extract to shared lib ([T-005](#epic-e1--foundation--framework)).
@@ -333,7 +333,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 ---
 
-## 9. Verification (post-implementation)
+## 8. Verification (post-implementation)
 
 - Unit + integration tests per endpoint (mocked TB).
 - Contract tests against staging TB for each endpoint family.
@@ -344,7 +344,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 ---
 
-## 10. Decisions So Far + Remaining Open Questions
+## 9. Decisions So Far + Remaining Open Questions
 
 **Decided (this plan):**
 
@@ -355,7 +355,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 5. **OpenAPI source:** code-first via TypeBox (§3 D3).
 6. **Versioning:** URL prefix `/v1`, `/v2` (§3 + E6).
 7. **Conversion tooling:** Claude skill `nuxt-to-api` (§3 D4). Produces a complete, ready-to-review Fastify handler (TypeBox schema, Tinybird/Postgres calls, response mapping, integration test) — not a skeleton. Developer's job is review, not writing.
-8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §7).
+8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §6).
 9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
 10. **Customer model:** the API principal is a **user** (`sub` = user ID, used for key revocation and the `customer_id` field in error envelopes). The user's **organization** (`org_id` claim) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Follow-ups for T-015 with Auth0 team: behavior when a user has no org, and when a user belongs to multiple orgs.
 11. **Data scope (v1):**
@@ -370,7 +370,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 17. **Versioning semantics ("breaking change" definition):** **tolerant-reader / additive-only**. Within a version, allowed: adding response fields, adding optional query params, adding endpoints, expanding accepted enum INPUT values, adding new error codes, adding new success status codes. Requires a major version bump: removing/renaming a response field, changing a field's type, making an optional input required, narrowing accepted input values, removing an endpoint, changing the error envelope shape, changing default pagination values. **Customers commit to ignoring unknown response fields** (documented prominently). Matches Stripe/GitHub/Google.
 18. **Caching contract (v1):** origin-side Redis cache only (~5–60s TTL depending on endpoint). All responses set `Cache-Control: private, max-age=0` — customers do not cache, intermediaries do not cache. Lets us tune TTL without breaking customers. Public/CDN cache headers can be introduced later as a non-breaking improvement once we have real traffic data.
 19. **JSON key casing:** **camelCase** for all request and response JSON keys (`startDate`, `activityTypes`, `includeCodeContributions`). The existing Nuxt code is mixed (some snake_case fields like `activity_types`); the `nuxt-to-api` skill normalizes these to camelCase at port time. Date values are ISO-8601 strings in UTC (`2025-12-31T23:59:59Z`) — committed as a convention, not a question.
-20. **Tier gating (v1):** all tiers see all endpoints; **tiers control rate limits only** in v1. The per-route "required tier" mechanism IS built into the framework (so individual endpoints can be gated later without an architectural change), but every v1 endpoint declares the lowest tier. When a future endpoint is gated above a user's tier, the response is **403 with `code: tier_forbidden`** and the error envelope's `docs_url` deep-links to the tier-capability matrix.
+20. **Tier gating (v1):** all tiers see all endpoints; **tiers control rate limits only** in v1. The per-route "required tier" mechanism IS built into the framework (so individual endpoints can be gated later without an architectural change), but every v1 endpoint declares the lowest tier. When a future endpoint is gated above a user's tier, the response is **403 with `code: tier_forbidden`** and the error envelope's `docsUrl` deep-links to the tier-capability matrix.
 21. **API key lifecycle:** long-lived. **No auto-expiry.** Customers rotate manually via LFX dashboard. **Multiple active keys per user supported** so rotation is zero-downtime (mint new → switch → revoke old). Revocation enforced by deleting the key from Auth0 — instant, no deny-list, no TTL window. Best practice rotation guidance documented but never forced.
 22. **SDKs (v1):** none. Customers integrate against the OpenAPI spec directly, plus `curl`/`fetch`/`requests` examples in docs. SDK strategy revisited post-v1 once we see what languages customers actually use.
 23. **Launch model:** Endpoints roll out per-endpoint through two stability stages:

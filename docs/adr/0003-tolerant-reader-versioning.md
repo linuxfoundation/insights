@@ -34,7 +34,7 @@ An endpoint can be promoted when all of the following are true:
 When a field, parameter, or endpoint needs to be removed, the process is:
 
 1. **Mark it deprecated** in the TypeBox schema using a `description` annotation starting with `DEPRECATED:` and a short reason. The OpenAPI spec will surface this to consumers.
-2. **Add response headers** on the affected endpoint: `Deprecation: true` and `Sunset: <ISO-8601 date>` (the earliest date we will remove it), plus `Link: <docs_url>; rel="deprecation"` pointing to the migration guide.
+2. **Add response headers** on the affected endpoint: `Deprecation: true` and `Sunset: <ISO-8601 date>` (the earliest date we will remove it), plus `Link: <migration-guide-url>; rel="deprecation"` pointing to the migration guide.
 3. **Communicate** — add an entry to the changelog page in docs and, where possible, notify known consumers directly.
 4. **Honour the sunset window** — the field or endpoint must remain functional until the `Sunset` date. Removal before that date is a contract violation.
 5. **Remove in the next major version** — the actual removal ships in `/v2`, not `/v1`. The `/v1` endpoint or field stays alive (even if just returning empty/stub data) until v1 is fully sunset.

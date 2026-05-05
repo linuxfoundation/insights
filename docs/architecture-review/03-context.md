@@ -2,7 +2,7 @@
 
 This page defines the canonical language for the LFX Insights Public API. When writing tasks, docs, or code comments, use these terms precisely. Ambiguities from earlier design discussions are recorded in the **Flagged ambiguities** section.
 
-The full machine-readable version lives in `CONTEXT.md` at the repo root.
+The full machine-readable version lives at [`docs/CONTEXT.md`](../CONTEXT.md).
 
 ---
 
@@ -44,11 +44,11 @@ The standard JSON shape for all error responses:
     "code": "rate_limit_exceeded",
     "message": "You have exceeded your rate limit.",
     "requestId": "01HZ...",
-    "docs_url": "https://docs.../errors#rate_limit_exceeded"
+    "docsUrl": "https://docs.../errors#rate_limit_exceeded"
   }
 }
 ```
-`code` is a machine-readable snake_case string. `docs_url` deep-links to the relevant docs page.
+`code` is a machine-readable snake_case string. `docsUrl` deep-links to the relevant docs page.
 _Avoid:_ error body, error payload
 
 **Request ID**
@@ -107,7 +107,7 @@ Organization  ──has──▶  Tier
 Organization  ──has──▶  Rate-limit Pool
 Endpoint Group  ──contains──▶  many Endpoints
 Endpoint  ──transitions through──▶  /v1-alpha → /v1
-Collection  ──owned by──▶  User / Organization
+Collection  ──owned by──▶  User  (creator only, via `ssoUserId`; null for curated/system Collections)
 Collection endpoint  ──requires──▶  Permission Check  (Postgres + Redis cache)
 ```
 
