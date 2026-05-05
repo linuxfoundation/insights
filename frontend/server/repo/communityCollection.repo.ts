@@ -412,7 +412,10 @@ export class CommunityCollectionRepository {
     };
   }
 
-  async findBySlug(slug: string): Promise<
+  async findBySlug(
+    slug: string,
+    ssoUserId?: string | null,
+  ): Promise<
     | (CommunityCollection & {
         projectCount: number;
         featuredProjects: { name: string; slug: string; logo: string }[];
@@ -423,8 +426,9 @@ export class CommunityCollectionRepository {
       `SELECT c.*, u."displayName" AS "ownerName", u."avatarUrl" AS "ownerLogo"
        FROM collections c
        LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
-      [slug],
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL
+         AND (c."isPrivate" = false OR c."ssoUserId" = $2)`,
+      [slug, ssoUserId ?? null],
     );
 
     if (collectionResult.rows.length === 0) {
@@ -583,11 +587,13 @@ export class CommunityCollectionRepository {
 
   async findProjectIdsBySlug(
     slug: string,
+    ssoUserId?: string | null,
   ): Promise<{ collectionId: string; projectIds: string[]; repositoryUrls: string[] } | null> {
     const collectionResult = await this.pool.query(
       `SELECT c.id FROM collections c
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
-      [slug],
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL
+         AND (c."isPrivate" = false OR c."ssoUserId" = $2)`,
+      [slug, ssoUserId ?? null],
     );
 
     if (collectionResult.rows.length === 0) {

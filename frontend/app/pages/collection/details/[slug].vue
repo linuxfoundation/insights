@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
+import { useRoute, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import type { Collection } from '~~/types/collection';
@@ -20,13 +20,14 @@ import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();
 const { slug } = route.params;
+const requestFetch = useRequestFetch();
 const { getCollectionSchema } = useRichSchema();
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
 const { data } = useQuery<Collection>({
   queryKey,
-  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string),
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string, requestFetch),
   retry: false,
 });
 
