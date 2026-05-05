@@ -110,8 +110,16 @@ const setRefreshedCookies = (event: H3Event, result: RawRefresh) => {
 };
 
 const clearAuthCookies = (event: H3Event) => {
-  deleteCookie(event, 'auth_oidc_token');
-  deleteCookie(event, 'auth_refresh_token');
+  const config = useRuntimeConfig();
+  const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'lax' as const,
+    path: '/',
+    ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
+  };
+  deleteCookie(event, 'auth_oidc_token', cookieOptions);
+  deleteCookie(event, 'auth_refresh_token', cookieOptions);
 };
 
 /**
