@@ -84,7 +84,7 @@
     {
       "name": "A2UI",
       "layer": "Protocols & Standards",
-      "github_url": "https://github.com/google/a2ui",
+      "github_url": "https://github.com/google/A2UI",
       "github_url_display": "https://github.com/google/a2ui"
     },
     {
@@ -318,7 +318,7 @@
     {
       "name": "Hermes",
       "layer": "Personal & Coding Agents",
-      "github_url": "https://github.com/NousResearch/hermes-agent",
+      "github_url": "https://github.com/nousresearch/hermes-agent",
       "github_url_display": "https://github.com/NousResearch/hermes-agent"
     },
     {
