@@ -22,10 +22,8 @@ export interface AgenticDataResponse<T> {
 
 // Project metadata
 export interface AgenticProject {
-  rank: number;
   name: string;
   layer: string;
-  license: string;
   github_url: string | null;
   github_url_display: string | null;
 }
@@ -81,11 +79,9 @@ export type ResearchTopic =
 
 // Aggregated project data for the leaderboard
 export interface ProjectLeaderboardRow {
-  rank: number;
   slug: string;
   name: string;
   layer: EcosystemLayer | string;
-  license: string;
   githubUrl: string | null;
   stars: number | null;
   starsDelta: number | null;
@@ -236,8 +232,6 @@ export interface AgenticEnrichedProject {
   slug: string;
   githubRepoLink: string;
   layer: EcosystemLayer | string;
-  rank: number;
-  license: string;
   // All-time values
   stars: number | null;
   forks: number | null;
