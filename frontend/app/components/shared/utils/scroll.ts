@@ -5,6 +5,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 const useScroll = () => {
   const scrollTop = ref(0);
   let html: HTMLElement | null = null;
+  let rafId = 0;
 
   const scrollTopPercentage = computed(() => {
     const scrollHeight = html?.scrollHeight || 1;
@@ -12,8 +13,16 @@ const useScroll = () => {
     return (scrollTop.value / (scrollHeight - clientHeight)) * 100;
   });
 
+  // Scroll events fire at display refresh rate (often 60–120 Hz). Batching updates
+  // with requestAnimationFrame avoids doing reactive work more than once per frame,
+  // which keeps interaction-to-next-paint low for the many components that react
+  // to scrollTop (project header, collection header, etc.).
   const updateScrollTop = () => {
-    scrollTop.value = html?.scrollTop || 0;
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = 0;
+      scrollTop.value = html?.scrollTop || 0;
+    });
   };
 
   const scrollToTop = (value: number = 0, behavior: 'smooth' | 'instant' = 'smooth') => {
@@ -47,12 +56,16 @@ const useScroll = () => {
 
   onMounted(() => {
     html = document.documentElement;
-    document?.addEventListener('scroll', updateScrollTop);
-    updateScrollTop();
+    document?.addEventListener('scroll', updateScrollTop, { passive: true });
+    scrollTop.value = html?.scrollTop || 0;
   });
 
   onUnmounted(() => {
     document?.removeEventListener('scroll', updateScrollTop);
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
   });
 
   return {
