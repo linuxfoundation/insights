@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
     <div class="border-r border-neutral-200 h-6" />
   </div>
   <!-- Fixed-width wrapper keeps the search bar layout stable between SSR (empty) and hydrated (button/avatar). -->
-  <div class="h-9 min-w-24 flex items-center justify-end shrink-0">
+  <div class="h-9 flex items-center justify-end shrink-0">
     <client-only>
       <lfx-login />
     </client-only>
