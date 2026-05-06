@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
     const redirectUri = config.public.auth0RedirectUri;
 
     const authorizationUrl = buildAuthorizationUrl(authConfig, {
-      scope: 'openid profile email',
+      scope: 'openid profile email offline_access',
       audience: config.public.auth0Audience,
       state,
       code_challenge: codeChallenge,

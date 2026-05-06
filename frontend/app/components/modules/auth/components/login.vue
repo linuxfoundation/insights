@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <lfx-button
       v-if="!isAuthenticated"
       type="transparent"
-      class="!rounded-full text-nowrap !text-brand-500"
+      class="!rounded-full text-nowrap !text-brand-500 min-w-24"
       :disabled="isLoading"
       @click="loginHandler()"
     >

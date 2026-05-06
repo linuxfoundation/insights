@@ -128,5 +128,6 @@ jobs:
         run: |
           REDIS_URL=$(kubectl get configmap insights-config-map -n insights -o jsonpath="{.data.NUXT_REDIS_URL}")
           PASSWORD=$(echo "$REDIS_URL" | sed -n 's|.*://:\([^@]*\)@.*|\1|p')
-          kubectl exec -i redis-client -n insights -- \
+          REDIS_POD=$(kubectl get pod -n insights -l app=redis -o jsonpath='{.items[0].metadata.name}')
+          kubectl exec -i "$REDIS_POD" -n insights -- \
             redis-cli -h redis-svc -a "$PASSWORD" FLUSHALL
