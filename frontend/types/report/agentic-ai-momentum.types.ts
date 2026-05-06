@@ -22,7 +22,6 @@ export interface AgenticDataResponse<T> {
 
 // Project metadata
 export interface AgenticProject {
-  name: string;
   layer: string;
   github_url: string | null;
   github_url_display: string | null;

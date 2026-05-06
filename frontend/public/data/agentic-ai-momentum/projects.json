@@ -6,12 +6,6 @@
       "description": "Top-100 agentic AI projects metadata.",
       "fields": [
         {
-          "name": "name",
-          "type": "string",
-          "description": "Project display name",
-          "optional": false
-        },
-        {
           "name": "layer",
           "type": "string",
           "description": "Ecosystem layer",
@@ -28,673 +22,561 @@
   },
   "data": [
     {
-      "name": "MCP (Model Context Protocol)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "github_url_display": "https://github.com/modelcontextprotocol/modelcontextprotocol"
     },
     {
-      "name": "Agent2Agent (A2A) Protocol",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/google/A2A",
       "github_url_display": "https://github.com/a2aproject/A2A"
     },
     {
-      "name": "AGENTS.md",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/agentsmd/agentsmd",
       "github_url_display": "https://github.com/agentsmd/agents.md"
     },
     {
-      "name": "AGNTCY",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/agntcy/acp-spec",
       "github_url_display": "https://github.com/agntcy/acp-spec"
     },
     {
-      "name": "OpenTelemetry AI Semantic Conventions",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/open-telemetry/semantic-conventions",
       "github_url_display": "https://github.com/open-telemetry/semantic-conventions"
     },
     {
-      "name": "OpenAPI Specification",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/OAI/OpenAPI-Specification",
       "github_url_display": "https://github.com/OAI/OpenAPI-Specification"
     },
     {
-      "name": "W3C DID / Verifiable Credentials",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/w3c/did-core",
       "github_url_display": "https://github.com/w3c/did"
     },
     {
-      "name": "SLIM (LF)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/agntcy/slim",
       "github_url_display": "https://github.com/agntcy/slim"
     },
     {
-      "name": "Open Agent Schema Framework (OASF)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/agntcy/oasf",
       "github_url_display": "https://github.com/agntcy/oasf"
     },
     {
-      "name": "A2UI",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/google/A2UI",
       "github_url_display": "https://github.com/google/a2ui"
     },
     {
-      "name": "Agentic Commerce Protocol (ACP)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol",
       "github_url_display": "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol"
     },
     {
-      "name": "Universal Commerce Protocol (UCP)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/Universal-Commerce-Protocol/ucp",
       "github_url_display": "https://github.com/Universal-Commerce-Protocol/ucp"
     },
     {
-      "name": "Agent Payments Protocol (AP2)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/google-agentic-commerce/AP2",
       "github_url_display": "https://github.com/google-agentic-commerce/AP2"
     },
     {
-      "name": "Machine Payments Protocol (MPP)",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/tempoxyz/mpp",
       "github_url_display": "https://github.com/tempoxyz/mpp"
     },
     {
-      "name": "Open Plugins Specification",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/vercel-labs/open-plugin-spec",
       "github_url_display": "https://github.com/vercel-labs/open-plugin-spec"
     },
     {
-      "name": "Open Responses",
       "layer": "Protocols & Standards",
       "github_url": "https://github.com/openresponses/openresponses",
       "github_url_display": "https://github.com/openresponses/openresponses"
     },
     {
-      "name": "LangGraph",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/langchain-ai/langgraph",
       "github_url_display": "https://github.com/langchain-ai/langgraph"
     },
     {
-      "name": "LangChain",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/langchain-ai/langchain",
       "github_url_display": "https://github.com/langchain-ai/langchain"
     },
     {
-      "name": "CrewAI",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/crewAIInc/crewAI",
       "github_url_display": "https://github.com/crewAIInc/crewAI"
     },
     {
-      "name": "AutoGen (Microsoft)",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/microsoft/autogen",
       "github_url_display": "https://github.com/microsoft/autogen"
     },
     {
-      "name": "OpenAI Agents SDK",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/openai/openai-agents-python",
       "github_url_display": "https://github.com/openai/openai-agents-python"
     },
     {
-      "name": "Semantic Kernel (Microsoft)",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/microsoft/semantic-kernel",
       "github_url_display": "https://github.com/microsoft/semantic-kernel"
     },
     {
-      "name": "PydanticAI",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/pydantic/pydantic-ai",
       "github_url_display": "https://github.com/pydantic/pydantic-ai"
     },
     {
-      "name": "Mastra",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/mastra-ai/mastra",
       "github_url_display": "https://github.com/mastra-ai/mastra"
     },
     {
-      "name": "CAMEL-AI / OWL",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/camel-ai/agent-s",
       "github_url_display": "https://github.com/camel-ai/camel"
     },
     {
-      "name": "Google Agent Development Kit (ADK)",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/google/adk-python",
       "github_url_display": "https://github.com/google/adk-python"
     },
     {
-      "name": "goose (Block)",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/block/goose",
       "github_url_display": "https://github.com/block/goose"
     },
     {
-      "name": "MetaGPT",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/geekan/MetaGPT",
       "github_url_display": "https://github.com/FoundationAgents/MetaGPT"
     },
     {
-      "name": "Temporal",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/temporalio/temporal",
       "github_url_display": "https://github.com/temporalio/temporal"
     },
     {
-      "name": "Prefect",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/PrefectHQ/prefect",
       "github_url_display": "https://github.com/PrefectHQ/prefect"
     },
     {
-      "name": "AutoGPT",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/Significant-Gravitas/AutoGPT",
       "github_url_display": "https://github.com/Significant-Gravitas/AutoGPT"
     },
     {
-      "name": "RAGFlow",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/infiniflow/ragflow",
       "github_url_display": "https://github.com/infiniflow/ragflow"
     },
     {
-      "name": "AgentScope (Alibaba)",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/modelscope/agentscope",
       "github_url_display": "https://github.com/agentscope-ai/agentscope"
     },
     {
-      "name": "OWL",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/camel-ai/owl",
       "github_url_display": "https://github.com/camel-ai/owl"
     },
     {
-      "name": "Agno",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/agno-agi/agno",
       "github_url_display": "https://github.com/agno-agi/agno"
     },
     {
-      "name": "DeerFlow",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/bytedance/deer-flow",
       "github_url_display": "https://github.com/bytedance/deer-flow"
     },
     {
-      "name": "OpenClaw",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/openclaw/openclaw",
       "github_url_display": "https://github.com/openclaw/openclaw"
     },
     {
-      "name": "OpenHands (OpenDevin)",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/OpenHands/OpenHands",
       "github_url_display": "https://github.com/OpenHands/OpenHands"
     },
     {
-      "name": "Cline",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/cline/cline",
       "github_url_display": "https://github.com/cline/cline"
     },
     {
-      "name": "Aider",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/Aider-AI/aider",
       "github_url_display": "https://github.com/Aider-AI/aider"
     },
     {
-      "name": "SWE-agent (Princeton)",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/princeton-nlp/SWE-agent",
       "github_url_display": "https://github.com/SWE-agent/SWE-agent"
     },
     {
-      "name": "Agentless (UIUC)",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/OpenAutoCoder/Agentless",
       "github_url_display": "https://github.com/OpenAutoCoder/Agentless"
     },
     {
-      "name": "GPT Researcher",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/assafelovic/gpt-researcher",
       "github_url_display": "https://github.com/assafelovic/gpt-researcher"
     },
     {
-      "name": "Open Interpreter",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/OpenInterpreter/open-interpreter",
       "github_url_display": "https://github.com/OpenInterpreter/open-interpreter"
     },
     {
-      "name": "Sweep",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/sweepai/sweep",
       "github_url_display": "https://github.com/sweepai/sweep"
     },
     {
-      "name": "OpenCode",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/anomalyco/opencode",
       "github_url_display": "https://github.com/anomalyco/opencode"
     },
     {
-      "name": "Kilo",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/Kilo-Org/kilocode",
       "github_url_display": "https://github.com/Kilo-Org/kilocode"
     },
     {
-      "name": "Hermes",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/nousresearch/hermes-agent",
       "github_url_display": "https://github.com/NousResearch/hermes-agent"
     },
     {
-      "name": "Warp",
       "layer": "Personal & Coding Agents",
       "github_url": "https://github.com/warpdotdev/warp",
       "github_url_display": "https://github.com/warpdotdev/warp"
     },
     {
-      "name": "Browser-Use",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/browser-use/browser-use",
       "github_url_display": "https://github.com/browser-use/browser-use"
     },
     {
-      "name": "Firecrawl",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/mendableai/firecrawl",
       "github_url_display": "https://github.com/firecrawl/firecrawl"
     },
     {
-      "name": "Crawl4AI",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/unclecode/crawl4ai",
       "github_url_display": "https://github.com/unclecode/crawl4ai"
     },
     {
-      "name": "OSWorld / WindowsAgentArena",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/xlang-ai/OSWorld",
       "github_url_display": "https://github.com/xlang-ai/OSWorld"
     },
     {
-      "name": "Agent S (Simular AI)",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/simular-ai/Agent-S",
       "github_url_display": "https://github.com/simular-ai/Agent-S"
     },
     {
-      "name": "E2B Code Interpreter SDK",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/e2b-dev/code-interpreter",
       "github_url_display": "https://github.com/e2b-dev/code-interpreter"
     },
     {
-      "name": "OmniParser (Microsoft Research)",
       "layer": "Computer Use & Browser Agents",
       "github_url": "https://github.com/microsoft/OmniParser",
       "github_url_display": "https://github.com/microsoft/OmniParser"
     },
     {
-      "name": "MCP Inspector",
       "layer": "MCP Infrastructure",
       "github_url": "https://github.com/modelcontextprotocol/inspector",
       "github_url_display": "https://github.com/modelcontextprotocol/inspector"
     },
     {
-      "name": "FastMCP",
       "layer": "MCP Infrastructure",
       "github_url": "https://github.com/PrefectHQ/fastmcp",
       "github_url_display": "https://github.com/PrefectHQ/fastmcp"
     },
     {
-      "name": "LiteMCP",
       "layer": "MCP Infrastructure",
       "github_url": "https://github.com/wong2/litemcp",
       "github_url_display": "https://github.com/wong2/litemcp"
     },
     {
-      "name": "IBM MCP Context Forge",
       "layer": "MCP Infrastructure",
       "github_url": "https://github.com/ibm/mcp-context-forge",
       "github_url_display": "https://github.com/ibm/mcp-context-forge"
     },
     {
-      "name": "Unla MCP Gateway",
       "layer": "MCP Infrastructure",
       "github_url": "https://github.com/AmoyLab/Unla",
       "github_url_display": "https://github.com/AmoyLab/Unla"
     },
     {
-      "name": "Letta (MemGPT)",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/letta-ai/letta",
       "github_url_display": "https://github.com/letta-ai/letta"
     },
     {
-      "name": "LlamaIndex",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/run-llama/llama_index",
       "github_url_display": "https://github.com/run-llama/llama_index"
     },
     {
-      "name": "GraphRAG (Microsoft)",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/microsoft/graphrag",
       "github_url_display": "https://github.com/microsoft/graphrag"
     },
     {
-      "name": "LightRAG",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/HKUDS/LightRAG",
       "github_url_display": "https://github.com/HKUDS/LightRAG"
     },
     {
-      "name": "DSPy (Stanford)",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/stanfordnlp/dspy",
       "github_url_display": "https://github.com/stanfordnlp/dspy"
     },
     {
-      "name": "Ragas",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/explodinggradients/ragas",
       "github_url_display": "https://github.com/vibrantlabsai/ragas"
     },
     {
-      "name": "Weaviate",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/weaviate/weaviate",
       "github_url_display": "https://github.com/weaviate/weaviate"
     },
     {
-      "name": "Qdrant",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/qdrant/qdrant",
       "github_url_display": "https://github.com/qdrant/qdrant"
     },
     {
-      "name": "Chroma",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/chroma-core/chroma",
       "github_url_display": "https://github.com/chroma-core/chroma"
     },
     {
-      "name": "Milvus",
       "layer": "Memory & Retrieval",
       "github_url": "https://github.com/milvus-io/milvus",
       "github_url_display": "https://github.com/milvus-io/milvus"
     },
     {
-      "name": "Playwright (Microsoft)",
       "layer": "Tool Use & Integration",
       "github_url": "https://github.com/microsoft/playwright",
       "github_url_display": "https://github.com/microsoft/playwright"
     },
     {
-      "name": "Composio",
       "layer": "Tool Use & Integration",
       "github_url": "https://github.com/ComposioHQ/composio",
       "github_url_display": "https://github.com/ComposioHQ/composio"
     },
     {
-      "name": "Instructor",
       "layer": "Tool Use & Integration",
       "github_url": "https://github.com/jxnl/instructor",
       "github_url_display": "https://github.com/567-labs/instructor"
     },
     {
-      "name": "Haystack (deepset)",
       "layer": "Tool Use & Integration",
       "github_url": "https://github.com/deepset-ai/haystack",
       "github_url_display": "https://github.com/deepset-ai/haystack"
     },
     {
-      "name": "LiteLLM",
       "layer": "Tool Use & Integration",
       "github_url": "https://github.com/BerriAI/litellm",
       "github_url_display": "https://github.com/BerriAI/litellm"
     },
     {
-      "name": "Pathway",
       "layer": "Tool Use & Integration",
       "github_url": "https://github.com/pathwaycom/pathway",
       "github_url_display": "https://github.com/pathwaycom/pathway"
     },
     {
-      "name": "Langfuse",
       "layer": "Evaluation & Observability",
       "github_url": "https://github.com/langfuse/langfuse",
       "github_url_display": "https://github.com/langfuse/langfuse"
     },
     {
-      "name": "Arize Phoenix",
       "layer": "Evaluation & Observability",
       "github_url": "https://github.com/Arize-ai/phoenix",
       "github_url_display": "https://github.com/Arize-ai/phoenix"
     },
     {
-      "name": "Comet Opik",
       "layer": "Evaluation & Observability",
       "github_url": "https://github.com/comet-ml/opik",
       "github_url_display": "https://github.com/comet-ml/opik"
     },
     {
-      "name": "DeepEval",
       "layer": "Evaluation & Observability",
       "github_url": "https://github.com/confident-ai/deepeval",
       "github_url_display": "https://github.com/confident-ai/deepeval"
     },
     {
-      "name": "SWE-bench",
       "layer": "Evaluation & Observability",
       "github_url": "https://github.com/princeton-nlp/SWE-bench",
       "github_url_display": "https://github.com/SWE-bench/SWE-bench"
     },
     {
-      "name": "Inspect AI (UK AISI)",
       "layer": "Evaluation & Observability",
       "github_url": null,
       "github_url_display": null
     },
     {
-      "name": "PromptFoo",
       "layer": "Evaluation & Observability",
       "github_url": "https://github.com/promptfoo/promptfoo",
       "github_url_display": "https://github.com/promptfoo/promptfoo"
     },
     {
-      "name": "Qwen2.5 / Qwen3 (Alibaba)",
       "layer": "Agent-Optimized Models",
       "github_url": null,
       "github_url_display": null
     },
     {
-      "name": "xLAM (Salesforce)",
       "layer": "Agent-Optimized Models",
       "github_url": null,
       "github_url_display": null
     },
     {
-      "name": "Gorilla LLM (Berkeley)",
       "layer": "Agent-Optimized Models",
       "github_url": "https://github.com/ShishirPatil/gorilla",
       "github_url_display": "https://github.com/ShishirPatil/gorilla"
     },
     {
-      "name": "Mistral Tool-Use Variants",
       "layer": "Agent-Optimized Models",
       "github_url": "https://github.com/mistralai/mistral-inference",
       "github_url_display": "https://github.com/mistralai/mistral-inference"
     },
     {
-      "name": "Llama 3 Tool-Use (Meta)",
       "layer": "Agent-Optimized Models",
       "github_url": null,
       "github_url_display": null
     },
     {
-      "name": "Granite (IBM)",
       "layer": "Agent-Optimized Models",
       "github_url": null,
       "github_url_display": null
     },
     {
-      "name": "DeepSeek-R1",
       "layer": "Agent-Optimized Models",
       "github_url": "https://huggingface.co/collections/deepseek-ai/deepseek-r1",
       "github_url_display": "https://huggingface.co/collections/deepseek-ai/deepseek-r1"
     },
     {
-      "name": "DeepSeek-V3.2",
       "layer": "Agent-Optimized Models",
       "github_url": "https://huggingface.co/collections/deepseek-ai/deepseek-v32",
       "github_url_display": "https://huggingface.co/collections/deepseek-ai/deepseek-v32"
     },
     {
-      "name": "LlamaGuard (Meta)",
       "layer": "Safety & Guardrails",
       "github_url": null,
       "github_url_display": null
     },
     {
-      "name": "NeMo Guardrails (NVIDIA)",
       "layer": "Safety & Guardrails",
       "github_url": "https://github.com/NVIDIA/NeMo-Guardrails",
       "github_url_display": "https://github.com/NVIDIA-NeMo/Guardrails"
     },
     {
-      "name": "Guardrails AI",
       "layer": "Safety & Guardrails",
       "github_url": "https://github.com/guardrails-ai/guardrails",
       "github_url_display": "https://github.com/guardrails-ai/guardrails"
     },
     {
-      "name": "Microsoft PyRIT",
       "layer": "Safety & Guardrails",
       "github_url": "https://github.com/Azure/PyRIT",
       "github_url_display": "https://github.com/Azure/PyRIT"
     },
     {
-      "name": "Garak",
       "layer": "Safety & Guardrails",
       "github_url": "https://github.com/leondz/garak",
       "github_url_display": "https://github.com/NVIDIA/garak"
     },
     {
-      "name": "Ollama",
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/ollama/ollama",
       "github_url_display": "https://github.com/ollama/ollama"
     },
     {
-      "name": "Continue.dev",
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/continuedev/continue",
       "github_url_display": "https://github.com/continuedev/continue"
     },
     {
-      "name": "Semantic Router",
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/aurelio-ai/semantic-router",
       "github_url_display": "https://github.com/aurelio-labs/semantic-router"
     },
     {
-      "name": "TaskWeaver (Microsoft)",
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/microsoft/TaskWeaver",
       "github_url_display": "https://github.com/microsoft/TaskWeaver"
     },
     {
-      "name": "pi-mono",
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/badlogic/pi-mono",
       "github_url_display": "https://github.com/badlogic/pi-mono"
     },
     {
-      "name": "Agent Skills",
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/agentskills/agentskills",
       "github_url_display": "https://github.com/agentskills/agentskills"
     },
     {
-      "name": "SkyPilot",
       "layer": "Agent Infrastructure",
       "github_url": "https://github.com/skypilot-org/skypilot",
       "github_url_display": "https://github.com/skypilot-org/skypilot"
     },
     {
-      "name": "KServe",
       "layer": "Agent Infrastructure",
       "github_url": "https://github.com/kserve/kserve",
       "github_url_display": "https://github.com/kserve/kserve"
     },
     {
-      "name": "Daytona",
       "layer": "Agent Infrastructure",
       "github_url": "https://github.com/daytonaio/daytona",
       "github_url_display": "https://github.com/daytonaio/daytona"
     },
     {
-      "name": "OpenWebUI",
       "layer": "Agent Infrastructure",
       "github_url": "https://github.com/open-webui/open-webui",
       "github_url_display": "https://github.com/open-webui/open-webui"
     },
     {
-      "name": "Jan (Local AI)",
       "layer": "Agent Infrastructure",
       "github_url": "https://github.com/janhq/jan",
       "github_url_display": "https://github.com/janhq/jan"
     },
     {
-      "name": "Livekit Agents",
       "layer": "Voice & Multimodal Agents",
       "github_url": "https://github.com/livekit/agents",
       "github_url_display": "https://github.com/livekit/agents"
     },
     {
-      "name": "Pipecat",
       "layer": "Voice & Multimodal Agents",
       "github_url": "https://github.com/pipecat-ai/pipecat",
       "github_url_display": "https://github.com/pipecat-ai/pipecat"
     },
     {
-      "name": "PR-Agent (CodiumAI)",
       "layer": "Research & Vertical Agents",
       "github_url": "https://github.com/Codium-ai/pr-agent",
       "github_url_display": "https://github.com/qodo-ai/pr-agent"
     },
     {
-      "name": "Tavily",
       "layer": "Research & Vertical Agents",
       "github_url": "https://github.com/tavily-com/tavily-python",
       "github_url_display": "https://github.com/tavily-ai/tavily-python"
