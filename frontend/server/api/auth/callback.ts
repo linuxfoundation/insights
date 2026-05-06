@@ -9,6 +9,8 @@ import { Pool } from 'pg';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
+import { getAuthUsername } from '../../utils/common';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -165,6 +167,22 @@ export default defineEventHandler(async (event) => {
 
     // Store the single OpenID Connect token
     setCookie(event, 'auth_oidc_token', oidcToken, tokenCookieOptions);
+
+    // Upsert SSO user on every login so the row exists before any collection action.
+    // Fire-and-forget: a DB failure must not block the login redirect.
+    const cmDbPool = event.context.cmDbPool as Pool | undefined;
+    if (cmDbPool && decodedIdToken.sub) {
+      const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);
+      ssoUserRepo
+        .upsert({
+          id: decodedIdToken.sub,
+          username: getAuthUsername(decodedIdToken.sub),
+          displayName: decodedIdToken.name,
+          avatarUrl: decodedIdToken.picture,
+          email: decodedIdToken.email,
+        })
+        .catch((err) => console.error('[auth/callback] sso user upsert failed:', err));
+    }
 
     // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
