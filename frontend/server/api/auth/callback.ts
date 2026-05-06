@@ -71,18 +71,17 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!query.code || !codeVerifier) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Missing authorization code or code verifier',
-      });
+      // Stale or missing PKCE cookie (direct navigation to callback, bot crawl, etc.)
+      // Restart the login flow rather than showing an error page.
+      deleteCookie(event, 'auth_pkce');
+      return sendRedirect(event, '/api/auth/login');
     }
 
     // Validate state from cookie against URL to prevent CSRF and detect concurrent login races
     if (!storedState || storedState !== query.state) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Invalid state parameter — please try logging in again',
-      });
+      // State mismatch: multi-tab login or cookie race — restart cleanly.
+      deleteCookie(event, 'auth_pkce');
+      return sendRedirect(event, '/api/auth/login');
     }
 
     // Discover Auth0 configuration
@@ -182,9 +181,17 @@ export default defineEventHandler(async (event) => {
 
     await sendRedirect(event, finalRedirect);
   } catch (error) {
+    // OAuth recoverable errors (invalid_grant = code reused/replayed, back button, page refresh).
+    // Restart the login flow rather than surfacing a 500.
+    const oauthError = error as { code?: string; error?: string };
+    if (oauthError?.code === 'OAUTH_RESPONSE_BODY_ERROR' && oauthError?.error === 'invalid_grant') {
+      deleteCookie(event, 'auth_pkce');
+      return sendRedirect(event, '/api/auth/login');
+    }
+
     console.error('Auth callback error:', error);
 
-    // Clean up cookies on error
+    // Clean up all auth cookies on unrecoverable error
     deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
     deleteCookie(event, 'auth_oidc_token');
