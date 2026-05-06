@@ -160,12 +160,6 @@
       "github_url_display": "https://github.com/microsoft/semantic-kernel"
     },
     {
-      "name": "SmolAgents (Hugging Face)",
-      "layer": "Orchestration & Multi-Agent",
-      "github_url": "https://github.com/huggingface/smolagents",
-      "github_url_display": "https://github.com/huggingface/smolagents"
-    },
-    {
       "name": "PydanticAI",
       "layer": "Orchestration & Multi-Agent",
       "github_url": "https://github.com/pydantic/pydantic-ai",
@@ -620,12 +614,6 @@
       "layer": "Developer Tooling & SDKs",
       "github_url": "https://github.com/ollama/ollama",
       "github_url_display": "https://github.com/ollama/ollama"
-    },
-    {
-      "name": "Hugging Face Transformers",
-      "layer": "Developer Tooling & SDKs",
-      "github_url": "https://github.com/huggingface/transformers",
-      "github_url_display": "https://github.com/huggingface/transformers"
     },
     {
       "name": "Continue.dev",
