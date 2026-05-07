@@ -96,6 +96,7 @@ export interface ProjectTinybird {
   repoData: ProjectRepoData[];
   status: string;
   lastVulnerabilityScanStatus: string;
+  maturity?: string;
 }
 
 export interface ProjectInsightsAchievement {
@@ -113,6 +114,7 @@ export interface ProjectInsightsTinybird {
   logoUrl: string;
   isLF: number;
   status: string;
+  maturity?: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -146,6 +148,7 @@ export interface ProjectInsights {
   logoUrl: string;
   isLF: boolean;
   status: string;
+  maturity?: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;

@@ -120,6 +120,10 @@ SPDX-License-Identifier: MIT
           label="Archived"
           type="project"
         />
+        <lfx-maturity-tag
+          v-if="props.project.isLF && !!props.project.maturity?.trim()"
+          :maturity="props.project.maturity"
+        />
       </div>
       <!-- Repo URL for repo type -->
       <div
@@ -172,6 +176,7 @@ import { useRouter } from 'vue-router';
 import type { ProjectInsights } from '~~/types/project';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import LfxMaturityTag from '~/components/shared/components/maturity-tag.vue';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
