@@ -42,6 +42,22 @@ SPDX-License-Identifier: MIT
             />
             <span class="truncate">{{ repoShortUrl }}</span>
           </div>
+          <lfx-tooltip
+            v-if="!!maturity.trim()"
+            placement="top"
+          >
+            <template #content>
+              <div class="flex flex-col gap-1">
+                <p class="text-xs text-white">Based on CNCF Project Maturity Model</p>
+                <p class="text-xs text-neutral-300">
+                  From experimental (Sandbox), through growing adoption (Incubating), to production-ready (Graduated).
+                </p>
+              </div>
+            </template>
+            <div class="truncate text-neutral-500 text-xs font-normal leading-4 underline decoration-dotted">
+              {{ maturity }}
+            </div>
+          </lfx-tooltip>
         </div>
       </div>
     </td>
@@ -120,11 +136,18 @@ SPDX-License-Identifier: MIT
           label="Archived"
           type="project"
         />
-        <lfx-maturity-tag
-          v-if="props.project.isLF && !!props.project.maturity?.trim()"
-          :maturity="props.project.maturity"
-        />
       </div>
+      <lfx-tooltip
+        v-if="props.project.isLF && !!maturity.trim()"
+        placement="top"
+      >
+        <template #content>
+          <div class="text-xs text-white">Maturity level as defined by the Linux Foundation</div>
+        </template>
+        <div class="truncate text-neutral-500 text-xs font-normal leading-4 underline decoration-dotted">
+          {{ maturity }}
+        </div>
+      </lfx-tooltip>
       <!-- Repo URL for repo type -->
       <div
         v-if="props.project.type === 'repo'"
@@ -176,7 +199,7 @@ import { useRouter } from 'vue-router';
 import type { ProjectInsights } from '~~/types/project';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
-import LfxMaturityTag from '~/components/shared/components/maturity-tag.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
@@ -204,6 +227,8 @@ const router = useRouter();
 const status = computed(() => {
   return props.project.status;
 });
+
+const maturity = computed(() => props.project.maturity ?? '');
 
 const repoShortUrl = computed(() => {
   if (props.project.type === 'repo') {
