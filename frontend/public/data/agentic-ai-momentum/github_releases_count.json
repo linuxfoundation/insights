@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:30:18.373850",
+    "fetched_at": "2026-04-30T16:00:55.422103",
     "schema": {
       "name": "github_releases_count",
       "description": "Cumulative monthly release counts for tracked repositories.",
@@ -24,7 +24,116 @@
           "optional": false
         }
       ]
-    }
+    },
+    "covered_items": [
+      "https://github.com/567-labs/instructor",
+      "https://github.com/Aider-AI/aider",
+      "https://github.com/AmoyLab/Unla",
+      "https://github.com/Arize-ai/phoenix",
+      "https://github.com/Azure/PyRIT",
+      "https://github.com/BerriAI/litellm",
+      "https://github.com/ComposioHQ/composio",
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/HKUDS/LightRAG",
+      "https://github.com/Kilo-Org/kilocode",
+      "https://github.com/NVIDIA-NeMo/Guardrails",
+      "https://github.com/NVIDIA/garak",
+      "https://github.com/NousResearch/hermes-agent",
+      "https://github.com/OAI/OpenAPI-Specification",
+      "https://github.com/OpenAutoCoder/Agentless",
+      "https://github.com/OpenHands/OpenHands",
+      "https://github.com/OpenInterpreter/open-interpreter",
+      "https://github.com/PrefectHQ/fastmcp",
+      "https://github.com/PrefectHQ/prefect",
+      "https://github.com/SWE-agent/SWE-agent",
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/ShishirPatil/gorilla",
+      "https://github.com/Significant-Gravitas/AutoGPT",
+      "https://github.com/Universal-Commerce-Protocol/ucp",
+      "https://github.com/a2aproject/A2A",
+      "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol",
+      "https://github.com/agentscope-ai/agentscope",
+      "https://github.com/agentskills/agentskills",
+      "https://github.com/agentsmd/agents.md",
+      "https://github.com/agno-agi/agno",
+      "https://github.com/agntcy/acp-spec",
+      "https://github.com/agntcy/oasf",
+      "https://github.com/agntcy/slim",
+      "https://github.com/anomalyco/opencode",
+      "https://github.com/assafelovic/gpt-researcher",
+      "https://github.com/aurelio-labs/semantic-router",
+      "https://github.com/badlogic/pi-mono",
+      "https://github.com/block/goose",
+      "https://github.com/browser-use/browser-use",
+      "https://github.com/bytedance/deer-flow",
+      "https://github.com/camel-ai/camel",
+      "https://github.com/camel-ai/owl",
+      "https://github.com/chroma-core/chroma",
+      "https://github.com/cline/cline",
+      "https://github.com/comet-ml/opik",
+      "https://github.com/confident-ai/deepeval",
+      "https://github.com/continuedev/continue",
+      "https://github.com/crewAIInc/crewAI",
+      "https://github.com/daytonaio/daytona",
+      "https://github.com/deepset-ai/haystack",
+      "https://github.com/e2b-dev/code-interpreter",
+      "https://github.com/firecrawl/firecrawl",
+      "https://github.com/google-agentic-commerce/AP2",
+      "https://github.com/google/a2ui",
+      "https://github.com/google/adk-python",
+      "https://github.com/guardrails-ai/guardrails",
+      "https://github.com/huggingface/smolagents",
+      "https://github.com/huggingface/transformers",
+      "https://github.com/ibm/mcp-context-forge",
+      "https://github.com/infiniflow/ragflow",
+      "https://github.com/janhq/jan",
+      "https://github.com/joonspk-research/generative_agents",
+      "https://github.com/kserve/kserve",
+      "https://github.com/langchain-ai/langchain",
+      "https://github.com/langchain-ai/langgraph",
+      "https://github.com/langfuse/langfuse",
+      "https://github.com/letta-ai/letta",
+      "https://github.com/livekit/agents",
+      "https://github.com/mastra-ai/mastra",
+      "https://github.com/microsoft/OmniParser",
+      "https://github.com/microsoft/TaskWeaver",
+      "https://github.com/microsoft/autogen",
+      "https://github.com/microsoft/graphrag",
+      "https://github.com/microsoft/playwright",
+      "https://github.com/microsoft/semantic-kernel",
+      "https://github.com/milvus-io/milvus",
+      "https://github.com/mistralai/mistral-inference",
+      "https://github.com/modelcontextprotocol/inspector",
+      "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "https://github.com/ollama/ollama",
+      "https://github.com/open-telemetry/semantic-conventions",
+      "https://github.com/open-webui/open-webui",
+      "https://github.com/openai/openai-agents-python",
+      "https://github.com/openclaw/openclaw",
+      "https://github.com/openresponses/openresponses",
+      "https://github.com/pathwaycom/pathway",
+      "https://github.com/pipecat-ai/pipecat",
+      "https://github.com/promptfoo/promptfoo",
+      "https://github.com/pydantic/pydantic-ai",
+      "https://github.com/qdrant/qdrant",
+      "https://github.com/qodo-ai/pr-agent",
+      "https://github.com/run-llama/llama_index",
+      "https://github.com/simular-ai/Agent-S",
+      "https://github.com/skypilot-org/skypilot",
+      "https://github.com/stanfordnlp/dspy",
+      "https://github.com/sweepai/sweep",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/temporalio/temporal",
+      "https://github.com/tempoxyz/mpp",
+      "https://github.com/unclecode/crawl4ai",
+      "https://github.com/vercel-labs/open-plugin-spec",
+      "https://github.com/vibrantlabsai/ragas",
+      "https://github.com/w3c/did",
+      "https://github.com/warpdotdev/warp",
+      "https://github.com/weaviate/weaviate",
+      "https://github.com/wong2/litemcp",
+      "https://github.com/xlang-ai/OSWorld"
+    ]
   },
   "data": [
     {
@@ -66,6 +175,11 @@
       "repo": "https://github.com/a2aproject/A2A",
       "month": "2025-07-01",
       "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2026-03-01",
+      "cumulative_release_count": 10
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -136,6 +250,11 @@
       "repo": "https://github.com/open-telemetry/semantic-conventions",
       "month": "2026-02-01",
       "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-04-01",
+      "cumulative_release_count": 22
     },
     {
       "repo": "https://github.com/OAI/OpenAPI-Specification",
@@ -213,6 +332,16 @@
       "cumulative_release_count": 294
     },
     {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-03-01",
+      "cumulative_release_count": 350
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-04-01",
+      "cumulative_release_count": 375
+    },
+    {
       "repo": "https://github.com/agntcy/oasf",
       "month": "2025-03-01",
       "cumulative_release_count": 2
@@ -261,6 +390,11 @@
       "repo": "https://github.com/agntcy/oasf",
       "month": "2026-02-01",
       "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-03-01",
+      "cumulative_release_count": 34
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
@@ -366,6 +500,16 @@
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2026-02-01",
       "cumulative_release_count": 473
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-03-01",
+      "cumulative_release_count": 488
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-04-01",
+      "cumulative_release_count": 514
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -488,6 +632,16 @@
       "cumulative_release_count": 1167
     },
     {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-03-01",
+      "cumulative_release_count": 1191
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-04-01",
+      "cumulative_release_count": 1226
+    },
+    {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-03-01",
       "cumulative_release_count": 25
@@ -606,6 +760,16 @@
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2026-02-01",
       "cumulative_release_count": 140
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-03-01",
+      "cumulative_release_count": 159
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-04-01",
+      "cumulative_release_count": 183
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -758,6 +922,16 @@
       "cumulative_release_count": 63
     },
     {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-03-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-04-01",
+      "cumulative_release_count": 90
+    },
+    {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
       "cumulative_release_count": 81
@@ -876,6 +1050,16 @@
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
       "cumulative_release_count": 256
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-03-01",
+      "cumulative_release_count": 263
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-04-01",
+      "cumulative_release_count": 267
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -1023,6 +1207,16 @@
       "cumulative_release_count": 212
     },
     {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-03-01",
+      "cumulative_release_count": 223
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-04-01",
+      "cumulative_release_count": 240
+    },
+    {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
       "cumulative_release_count": 6
@@ -1071,6 +1265,16 @@
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
       "cumulative_release_count": 68
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-03-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-04-01",
+      "cumulative_release_count": 82
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -1188,6 +1392,16 @@
       "cumulative_release_count": 202
     },
     {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-03-01",
+      "cumulative_release_count": 205
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-04-01",
+      "cumulative_release_count": 210
+    },
+    {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
       "cumulative_release_count": 3
@@ -1241,6 +1455,16 @@
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
       "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-03-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-04-01",
+      "cumulative_release_count": 56
     },
     {
       "repo": "https://github.com/block/goose",
@@ -1333,6 +1557,16 @@
       "cumulative_release_count": 118
     },
     {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-03-01",
+      "cumulative_release_count": 125
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-04-01",
+      "cumulative_release_count": 132
+    },
+    {
       "repo": "https://github.com/FoundationAgents/MetaGPT",
       "month": "2024-03-01",
       "cumulative_release_count": 20
@@ -1421,6 +1655,16 @@
       "repo": "https://github.com/temporalio/temporal",
       "month": "2026-02-01",
       "cumulative_release_count": 152
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-03-01",
+      "cumulative_release_count": 158
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-04-01",
+      "cumulative_release_count": 164
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1543,6 +1787,16 @@
       "cumulative_release_count": 739
     },
     {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-03-01",
+      "cumulative_release_count": 768
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-04-01",
+      "cumulative_release_count": 795
+    },
+    {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-04-01",
       "cumulative_release_count": 21
@@ -1631,6 +1885,16 @@
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
       "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-03-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-04-01",
+      "cumulative_release_count": 102
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
@@ -1728,6 +1992,11 @@
       "cumulative_release_count": 40
     },
     {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-04-01",
+      "cumulative_release_count": 42
+    },
+    {
       "repo": "https://github.com/agentscope-ai/agentscope",
       "month": "2024-03-01",
       "cumulative_release_count": 2
@@ -1808,6 +2077,16 @@
       "cumulative_release_count": 31
     },
     {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2026-03-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2026-04-01",
+      "cumulative_release_count": 35
+    },
+    {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2025-11-01",
       "cumulative_release_count": 7
@@ -1826,6 +2105,16 @@
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
       "cumulative_release_count": 56
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-03-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-04-01",
+      "cumulative_release_count": 125
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
@@ -1933,6 +2222,11 @@
       "cumulative_release_count": 99
     },
     {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-03-01",
+      "cumulative_release_count": 101
+    },
+    {
       "repo": "https://github.com/cline/cline",
       "month": "2024-07-01",
       "cumulative_release_count": 9
@@ -2026,6 +2320,16 @@
       "repo": "https://github.com/cline/cline",
       "month": "2026-02-01",
       "cumulative_release_count": 237
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-03-01",
+      "cumulative_release_count": 245
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-04-01",
+      "cumulative_release_count": 250
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
@@ -2273,6 +2577,16 @@
       "cumulative_release_count": 66
     },
     {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-03-01",
+      "cumulative_release_count": 68
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-04-01",
+      "cumulative_release_count": 69
+    },
+    {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-03-01",
       "cumulative_release_count": 31
@@ -2378,6 +2692,16 @@
       "cumulative_release_count": 117
     },
     {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-03-01",
+      "cumulative_release_count": 122
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-04-01",
+      "cumulative_release_count": 123
+    },
+    {
       "repo": "https://github.com/firecrawl/firecrawl",
       "month": "2024-09-01",
       "cumulative_release_count": 1
@@ -2453,6 +2777,11 @@
       "cumulative_release_count": 32
     },
     {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2026-04-01",
+      "cumulative_release_count": 33
+    },
+    {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
       "cumulative_release_count": 1
@@ -2496,6 +2825,11 @@
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
       "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-03-01",
+      "cumulative_release_count": 14
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
@@ -2643,6 +2977,16 @@
       "cumulative_release_count": 76
     },
     {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-03-01",
+      "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-04-01",
+      "cumulative_release_count": 89
+    },
+    {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
       "cumulative_release_count": 2
@@ -2733,6 +3077,11 @@
       "cumulative_release_count": 49
     },
     {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-04-01",
+      "cumulative_release_count": 50
+    },
+    {
       "repo": "https://github.com/PrefectHQ/fastmcp",
       "month": "2024-11-01",
       "cumulative_release_count": 2
@@ -2798,6 +3147,16 @@
       "cumulative_release_count": 87
     },
     {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-03-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-04-01",
+      "cumulative_release_count": 96
+    },
+    {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-06-01",
       "cumulative_release_count": 3
@@ -2841,6 +3200,16 @@
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-02-01",
       "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-03-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-04-01",
+      "cumulative_release_count": 16
     },
     {
       "repo": "https://github.com/AmoyLab/Unla",
@@ -2988,6 +3357,11 @@
       "cumulative_release_count": 174
     },
     {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-03-01",
+      "cumulative_release_count": 176
+    },
+    {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-03-01",
       "cumulative_release_count": 332
@@ -3108,6 +3482,16 @@
       "cumulative_release_count": 488
     },
     {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-03-01",
+      "cumulative_release_count": 491
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-04-01",
+      "cumulative_release_count": 493
+    },
+    {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
       "cumulative_release_count": 2
@@ -3188,6 +3572,16 @@
       "cumulative_release_count": 35
     },
     {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-03-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-04-01",
+      "cumulative_release_count": 39
+    },
+    {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2024-12-01",
       "cumulative_release_count": 6
@@ -3261,6 +3655,16 @@
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2026-02-01",
       "cumulative_release_count": 64
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-03-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-04-01",
+      "cumulative_release_count": 71
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -3361,6 +3765,11 @@
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2026-02-01",
       "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-04-01",
+      "cumulative_release_count": 107
     },
     {
       "repo": "https://github.com/vibrantlabsai/ragas",
@@ -3583,6 +3992,16 @@
       "cumulative_release_count": 502
     },
     {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-03-01",
+      "cumulative_release_count": 515
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-04-01",
+      "cumulative_release_count": 526
+    },
+    {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2024-03-01",
       "cumulative_release_count": 66
@@ -3688,6 +4107,11 @@
       "cumulative_release_count": 110
     },
     {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-03-01",
+      "cumulative_release_count": 111
+    },
+    {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-04-01",
       "cumulative_release_count": 55
@@ -3781,6 +4205,16 @@
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2026-02-01",
       "cumulative_release_count": 127
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-03-01",
+      "cumulative_release_count": 129
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-04-01",
+      "cumulative_release_count": 134
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -3903,6 +4337,16 @@
       "cumulative_release_count": 153
     },
     {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-03-01",
+      "cumulative_release_count": 156
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-04-01",
+      "cumulative_release_count": 158
+    },
+    {
       "repo": "https://github.com/microsoft/playwright",
       "month": "2024-03-01",
       "cumulative_release_count": 121
@@ -4006,6 +4450,11 @@
       "repo": "https://github.com/microsoft/playwright",
       "month": "2026-02-01",
       "cumulative_release_count": 158
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-04-01",
+      "cumulative_release_count": 160
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -4128,6 +4577,16 @@
       "cumulative_release_count": 584
     },
     {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-03-01",
+      "cumulative_release_count": 652
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-04-01",
+      "cumulative_release_count": 744
+    },
+    {
       "repo": "https://github.com/567-labs/instructor",
       "month": "2024-03-01",
       "cumulative_release_count": 46
@@ -4226,6 +4685,11 @@
       "repo": "https://github.com/567-labs/instructor",
       "month": "2026-01-01",
       "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2026-04-01",
+      "cumulative_release_count": 108
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -4348,6 +4812,16 @@
       "cumulative_release_count": 212
     },
     {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-03-01",
+      "cumulative_release_count": 219
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-04-01",
+      "cumulative_release_count": 223
+    },
+    {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-03-01",
       "cumulative_release_count": 197
@@ -4468,6 +4942,16 @@
       "cumulative_release_count": 1222
     },
     {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-03-01",
+      "cumulative_release_count": 1290
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-04-01",
+      "cumulative_release_count": 1314
+    },
+    {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
       "cumulative_release_count": 31
@@ -4581,6 +5065,16 @@
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
       "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-03-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-04-01",
+      "cumulative_release_count": 86
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
@@ -4703,6 +5197,16 @@
       "cumulative_release_count": 536
     },
     {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-03-01",
+      "cumulative_release_count": 544
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-04-01",
+      "cumulative_release_count": 558
+    },
+    {
       "repo": "https://github.com/Arize-ai/phoenix",
       "month": "2024-03-01",
       "cumulative_release_count": 138
@@ -4823,6 +5327,16 @@
       "cumulative_release_count": 621
     },
     {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2026-03-01",
+      "cumulative_release_count": 647
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2026-04-01",
+      "cumulative_release_count": 685
+    },
+    {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-03-01",
       "cumulative_release_count": 21
@@ -4936,6 +5450,16 @@
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
       "cumulative_release_count": 379
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-03-01",
+      "cumulative_release_count": 403
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-04-01",
+      "cumulative_release_count": 440
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
@@ -5128,6 +5652,16 @@
       "cumulative_release_count": 393
     },
     {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-03-01",
+      "cumulative_release_count": 399
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-04-01",
+      "cumulative_release_count": 406
+    },
+    {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
       "cumulative_release_count": 2
@@ -5268,6 +5802,11 @@
       "cumulative_release_count": 29
     },
     {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2026-03-01",
+      "cumulative_release_count": 30
+    },
+    {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
       "cumulative_release_count": 27
@@ -5353,74 +5892,14 @@
       "cumulative_release_count": 64
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-03-01",
-      "cumulative_release_count": 3
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-03-01",
+      "cumulative_release_count": 65
     },
     {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-04-01",
-      "cumulative_release_count": 4
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-05-01",
-      "cumulative_release_count": 5
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-06-01",
-      "cumulative_release_count": 6
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-08-01",
-      "cumulative_release_count": 7
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-11-01",
-      "cumulative_release_count": 8
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-12-01",
-      "cumulative_release_count": 9
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-02-01",
-      "cumulative_release_count": 10
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-03-01",
-      "cumulative_release_count": 12
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-04-01",
-      "cumulative_release_count": 13
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-05-01",
-      "cumulative_release_count": 14
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-09-01",
-      "cumulative_release_count": 15
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-12-01",
-      "cumulative_release_count": 16
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2026-02-01",
-      "cumulative_release_count": 17
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-04-01",
+      "cumulative_release_count": 67
     },
     {
       "repo": "https://github.com/NVIDIA/garak",
@@ -5496,6 +5975,11 @@
       "repo": "https://github.com/NVIDIA/garak",
       "month": "2026-02-01",
       "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2026-04-01",
+      "cumulative_release_count": 29
     },
     {
       "repo": "https://github.com/ollama/ollama",
@@ -5618,6 +6102,16 @@
       "cumulative_release_count": 186
     },
     {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-03-01",
+      "cumulative_release_count": 196
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-04-01",
+      "cumulative_release_count": 210
+    },
+    {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-03-01",
       "cumulative_release_count": 137
@@ -5738,6 +6232,16 @@
       "cumulative_release_count": 236
     },
     {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-03-01",
+      "cumulative_release_count": 238
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-04-01",
+      "cumulative_release_count": 247
+    },
+    {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-03-01",
       "cumulative_release_count": 5
@@ -5856,6 +6360,11 @@
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-02-01",
       "cumulative_release_count": 801
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-03-01",
+      "cumulative_release_count": 822
     },
     {
       "repo": "https://github.com/aurelio-labs/semantic-router",
@@ -6023,6 +6532,11 @@
       "cumulative_release_count": 32
     },
     {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2026-03-01",
+      "cumulative_release_count": 34
+    },
+    {
       "repo": "https://github.com/kserve/kserve",
       "month": "2024-04-01",
       "cumulative_release_count": 31
@@ -6086,6 +6600,16 @@
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-11-01",
       "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-03-01",
+      "cumulative_release_count": 50
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-04-01",
+      "cumulative_release_count": 53
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
@@ -6181,6 +6705,16 @@
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
       "cumulative_release_count": 161
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-03-01",
+      "cumulative_release_count": 174
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-04-01",
+      "cumulative_release_count": 186
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
@@ -6303,6 +6837,16 @@
       "cumulative_release_count": 149
     },
     {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-03-01",
+      "cumulative_release_count": 156
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-04-01",
+      "cumulative_release_count": 159
+    },
+    {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-03-01",
       "cumulative_release_count": 18
@@ -6418,6 +6962,11 @@
       "cumulative_release_count": 97
     },
     {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-03-01",
+      "cumulative_release_count": 99
+    },
+    {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
       "cumulative_release_count": 19
@@ -6516,6 +7065,16 @@
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
       "cumulative_release_count": 339
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-03-01",
+      "cumulative_release_count": 344
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-04-01",
+      "cumulative_release_count": 350
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
@@ -6628,6 +7187,16 @@
       "cumulative_release_count": 102
     },
     {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-03-01",
+      "cumulative_release_count": 107
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-04-01",
+      "cumulative_release_count": 109
+    },
+    {
       "repo": "https://github.com/qodo-ai/pr-agent",
       "month": "2024-03-01",
       "cumulative_release_count": 8
@@ -6681,6 +7250,286 @@
       "repo": "https://github.com/qodo-ai/pr-agent",
       "month": "2026-02-01",
       "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2026-03-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2026-04-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/Universal-Commerce-Protocol/ucp",
+      "month": "2026-01-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/Universal-Commerce-Protocol/ucp",
+      "month": "2026-04-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/google-agentic-commerce/AP2",
+      "month": "2025-09-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/google-agentic-commerce/AP2",
+      "month": "2026-04-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-01-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-02-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-03-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-04-01",
+      "cumulative_release_count": 54
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-05-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-06-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-07-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-08-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-09-01",
+      "cumulative_release_count": 103
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-10-01",
+      "cumulative_release_count": 120
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-11-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-12-01",
+      "cumulative_release_count": 150
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-01-01",
+      "cumulative_release_count": 163
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-02-01",
+      "cumulative_release_count": 170
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-03-01",
+      "cumulative_release_count": 177
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-04-01",
+      "cumulative_release_count": 187
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-05-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-06-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-07-01",
+      "cumulative_release_count": 273
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-08-01",
+      "cumulative_release_count": 351
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-09-01",
+      "cumulative_release_count": 404
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-10-01",
+      "cumulative_release_count": 450
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-11-01",
+      "cumulative_release_count": 563
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2025-12-01",
+      "cumulative_release_count": 645
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2026-01-01",
+      "cumulative_release_count": 692
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2026-02-01",
+      "cumulative_release_count": 725
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2026-03-01",
+      "cumulative_release_count": 750
+    },
+    {
+      "repo": "https://github.com/anomalyco/opencode",
+      "month": "2026-04-01",
+      "cumulative_release_count": 781
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-03-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-04-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-05-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-06-01",
+      "cumulative_release_count": 71
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-07-01",
+      "cumulative_release_count": 129
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-08-01",
+      "cumulative_release_count": 155
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-09-01",
+      "cumulative_release_count": 178
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-10-01",
+      "cumulative_release_count": 202
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-11-01",
+      "cumulative_release_count": 226
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2025-12-01",
+      "cumulative_release_count": 258
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2026-01-01",
+      "cumulative_release_count": 292
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2026-02-01",
+      "cumulative_release_count": 308
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2026-03-01",
+      "cumulative_release_count": 339
+    },
+    {
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "month": "2026-04-01",
+      "cumulative_release_count": 375
+    },
+    {
+      "repo": "https://github.com/NousResearch/hermes-agent",
+      "month": "2026-03-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/NousResearch/hermes-agent",
+      "month": "2026-04-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/warpdotdev/warp",
+      "month": "2026-04-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/badlogic/pi-mono",
+      "month": "2025-12-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/badlogic/pi-mono",
+      "month": "2026-01-01",
+      "cumulative_release_count": 132
+    },
+    {
+      "repo": "https://github.com/badlogic/pi-mono",
+      "month": "2026-02-01",
+      "cumulative_release_count": 162
+    },
+    {
+      "repo": "https://github.com/badlogic/pi-mono",
+      "month": "2026-03-01",
+      "cumulative_release_count": 183
+    },
+    {
+      "repo": "https://github.com/badlogic/pi-mono",
+      "month": "2026-04-01",
+      "cumulative_release_count": 207
     }
   ]
 }
