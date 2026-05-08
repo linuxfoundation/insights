@@ -7,7 +7,7 @@ ARG NODE_VERSION=24
 FROM node:$NODE_VERSION-slim AS base
 
 # Enable corepack and install pnpm (faster than npm install -g pnpm)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
 
 WORKDIR /app
 
