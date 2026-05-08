@@ -93,6 +93,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       projectLinks,
       repoData: undefined,
       tags: project?.keywords || [],
+      maturityStatus: project?.maturity || undefined,
     };
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'statusCode' in err) {
