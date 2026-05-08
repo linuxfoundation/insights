@@ -4,7 +4,7 @@
 **Author:** LFX Insights Engineering  
 **Status:** Pending architecture team approval
 
-**ADRs:** Architecture Decision Records are committed to the codebase at [`docs/adr/`](../adr/) alongside the code they describe. Future engineers can find the reasoning for any decision without hunting through wikis or Notion. ADRs are append-only — past decisions are never edited, only superseded by new ones.
+**ADRs:** Architecture Decision Records are committed to the codebase at [`api/docs/arch/adr/`](../adr/) alongside the code they describe. Future engineers can find the reasoning for any decision without hunting through wikis or Notion. ADRs are append-only — past decisions are never edited, only superseded by new ones.
 
 ---
 
@@ -36,7 +36,7 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 | Rate limiting | Redis sliding window, per-org pool, tier-driven |
 | Versioning | URL prefix (`/v1`, `/v2`); additive-only within a version |
 | Contract | Tolerant-reader; no breaking changes within a major version |
-| Docs | VitePress + Scalar at `api.insights.linuxfoundation.org/docs` (served by Fastify from `api/docs/`) |
+| Docs | VitePress + Scalar at `api.insights.linuxfoundation.org/docs` (served by Fastify from `api/docs/site/`) |
 | Observability | OpenTelemetry → Datadog (hybrid custom metrics + APM) |
 | Callers | Server-to-server only in v1; CORS denies all browser origins |
 | Billing | Bundled with existing LFX membership tiers; no standalone billing |

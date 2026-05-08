@@ -116,7 +116,7 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 | **Stoplight Elements** | OSS web component; drop-in API reference; mature (Stoplight has been doing this for years); high OpenAPI 3.x fidelity. | Looks dated next to Scalar/Mintlify; Stoplight's commercial focus is on Stoplight Platform — OSS Elements gets less love; weak narrative-doc story. |
 | **VitePress + Swagger UI** | VitePress already in repo (powering `/docs` and `/blog`); zero new tooling; full control; Swagger UI is the most universally-recognized OpenAPI viewer. | Swagger UI is ugly and dated; integration is DIY; "try it" UX is mediocre; reference + guides feel disjointed (two render styles). |
 
-**Decision: VitePress + Scalar under `api/docs/`.** Standalone VitePress site co-located with the API service. Scalar embedded for the interactive OpenAPI reference, reading the generated spec — the reference cannot drift. Deployed independently of the frontend with its own subdomain.
+**Decision: VitePress + Scalar under `api/docs/site/`.** Standalone VitePress site co-located with the API service. Scalar embedded for the interactive OpenAPI reference, reading the generated spec — the reference cannot drift. Deployed independently of the frontend with its own subdomain.
 
 ### D3. OpenAPI Source — Code-first vs Spec-first
 
@@ -203,9 +203,9 @@ No hard SLAs in v1 — everything is **observational** for now. Implements the h
 
 ### Epic E5 — API Documentation
 
-Implements §3 D2. **VitePress + Scalar** under `api/docs/` — standalone site co-located with the API service, deployed independently of the frontend.
+Implements §3 D2. **VitePress + Scalar** under `api/docs/site/` — standalone site co-located with the API service, deployed independently of the frontend.
 
-- **T-029** Bootstrap `api/docs/` as a VitePress site — quickstart, authentication, pagination, error codes, changelog pages.
+- **T-029** Bootstrap `api/docs/site/` as a VitePress site — quickstart, authentication, pagination, error codes, changelog pages.
 - **T-030** Embed Scalar on the reference page; wire it to ingest the generated OpenAPI spec (`api/openapi.json`) on every release. Serve the static VitePress build at `api.insights.linuxfoundation.org/docs` via Fastify's static file serving under `/docs`.
 - **T-031** Wire Fastify OpenAPI export so docs ingest the generated spec on every release.
 - **T-032** Quickstart guide: auth, first request, error envelope, rate limits.
@@ -356,7 +356,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 6. **Versioning:** URL prefix `/v1`, `/v2` (§3 + E6).
 7. **Conversion tooling:** Claude skill `nuxt-to-api` (§3 D4). Produces a complete, ready-to-review Fastify handler (TypeBox schema, Tinybird/Postgres calls, response mapping, integration test) — not a skeleton. Developer's job is review, not writing.
 8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §6).
-9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
+9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/site/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
 10. **Customer model:** the API principal is a **user** (`sub` = user ID, used for key revocation and the `customer_id` field in error envelopes). The user's **organization** (`org_id` claim) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Follow-ups for T-015 with Auth0 team: behavior when a user has no org, and when a user belongs to multiple orgs.
 11. **Data scope (v1):**
     - **Phases 1–4 (Development, Contributors, Popularity, Security & Best Practices):** public OSS data, **no per-project permission check**. Tier check only.

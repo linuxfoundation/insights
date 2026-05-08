@@ -8,5 +8,13 @@ if git diff --diff-filter=d --name-only --cached | grep 'frontend/';
     git add -u $(git diff --diff-filter=d --name-only --cached --relative)
 fi
 
+if git diff --diff-filter=d --name-only --cached | grep 'api/';
+  then
+    echo "API FOLDER CHANGED --> running api checks..."
+    cd api && \
+    pnpm lint && \
+    pnpm tsc-check
+fi
+
 #run lint-staged to add copyright license on top of all new files
 npx lint-staged

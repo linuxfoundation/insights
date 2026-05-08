@@ -6,3 +6,5 @@ packages:
   - 'workers/temporal/*'
   - 'frontend'
   - 'services'
+  - 'api'
+  - 'libs/*'
