@@ -12,7 +12,7 @@ The API is a top-level directory `/api` at the repo root, sibling to `frontend/`
 
 ### Framework: Fastify over NestJS — [docs/adr/0001](../adr/0001-fastify-over-nestjs.md)
 
-We chose Fastify over NestJS (the leading alternative) because: NestJS adds 3–5× boilerplate for a read-only proxy service; it couples schema validation to class-validator, where we want TypeBox; and Fastify's `genReqId` hook is a first-class primitive for Request ID propagation. Express was rejected for lack of built-in validation and lower throughput. Hono was rejected because it is designed for edge runtimes (Cloudflare Workers, Deno Deploy) first and Node second — the Tinybird and Postgres clients rely on Node-native APIs (`net`, `tls`, `Buffer`) that edge runtimes don't provide, so running Hono on Node requires an adapter layer that reintroduces the compatibility risk Hono was chosen to avoid. Fastify is Node-native and battle-tested at scale with no runtime adapter between the framework and the OS.
+We chose Fastify over NestJS (the leading alternative) because: NestJS adds 3–5× boilerplate for a read-only proxy service; it couples schema validation to class-validator, where we want TypeBox (see ADR-0008); and Fastify's plugin isolation maps cleanly onto our endpoint-group structure. Express was rejected for lack of built-in validation and lower throughput. Hono was rejected because it is designed for edge runtimes (Cloudflare Workers, Deno Deploy) first and Node second — the Tinybird and Postgres clients rely on Node-native APIs (`net`, `tls`, `Buffer`) that edge runtimes don't provide, so running Hono on Node requires an adapter layer that reintroduces the compatibility risk Hono was chosen to avoid. Fastify is Node-native and battle-tested at scale with no runtime adapter between the framework and the OS.
 
 ### OpenAPI: TypeBox code-first — [docs/adr/0008](../adr/0008-typebox-code-first-openapi.md)
 
@@ -36,19 +36,21 @@ API docs live in `api/docs/` as a standalone VitePress site, served by Fastify u
 
 All endpoints, including those serving public project data, require a valid API key. There is no unauthenticated path. A missing or invalid key returns 401 immediately. This is intentional: rate limiting requires a stable identity, and attribution data is essential for roadmap prioritization. 
 
-### API keys stored in Auth0 — [docs/adr/0015](../adr/0015-api-keys-stored-in-auth0.md)
+### API keys are issued by the LFX Self-Serve App — [docs/adr/0015](../adr/0015-api-keys-issued-by-lfx-self-serve.md)
 
-API keys are issued and persisted as Auth0 credentials, managed via the Auth0 Management API. JWT signing and JWKS verification are handled by Auth0, consistent with the existing auth infrastructure. Storing keys in our own Postgres was rejected — it would require owning the signing key, the revocation surface, and the token lifecycle.
+API keys are refresh tokens issued by the LFX Self-Serve App at `app.lfx.dev/settings`. Customer code exchanges refresh tokens for short-lived access tokens via `POST api.insights.linuxfoundation.org/v1/auth/token` — a thin proxy to Self-Serve's `/token` endpoint so customers configure only one host. The Insights API JWKS-verifies the access token on every request and reads `sub`, `org`, and `tier` from the verified claims — Insights stores no keys and runs no key-management UI of its own.
+
+Whether the existing `app.lfx.dev/settings` personal access token is reused as the refresh token or a new Insights-scoped refresh token is minted is an open product question — see ADR-0015 and §9 of the plan.
+
+Storing keys in Auth0 (and building an Insights-side management UI) was rejected because it duplicates a UI the LFX Self-Serve App already runs. Storing keys in our own Postgres was rejected — we'd own the signing key, the revocation surface, and the token lifecycle.
 
 ### Tiers control rate limits only in v1 — [docs/adr/0005](../adr/0005-tiers-control-rate-limits-only.md)
 
 All tiers see all endpoints in v1 (which are existing endpoints that power the widgets in Insights). The Tier attached to an Organization only determines the size of its Rate-limit Pool. The per-route "required tier" mechanism is built into the framework (future gating is a config change, not an architecture change), but every v1 endpoint declares the minimum tier. Engineers must not add per-endpoint tier checks without a product decision — doing so breaks callers who integrated assuming open access.
 
-### API keys are long-lived, no auto-expiry — [docs/adr/0006](../adr/0006-long-lived-api-keys.md)
+### Refresh tokens are long-lived; access tokens are short-lived — [docs/adr/0006](../adr/0006-refresh-and-short-lived-access-tokens.md)
 
-Keys do not expire automatically. Multiple active keys per user are supported for zero-downtime rotation (mint new → switch → revoke old). Revocation is enforced by deleting the key from Auth0 — the next request using it fails JWKS verification instantly. No deny-list needed.
-
-Refresh tokens and expiring tokens can be introduced in v2 — long-lived keys are a simplicity decision for v1.
+Refresh tokens do not expire automatically. Multiple active refresh tokens per user are supported for zero-downtime rotation (mint new → switch → revoke old). Access tokens are short-lived (~15 min, confirmed at T-015). Revocation is owned by LFX Self-Serve — revoking a refresh token prevents future access token mints; in-flight access tokens expire naturally. No Insights-side deny-list or introspection endpoint needed.
 
 ### Collections-only permission check — [docs/adr/0007](../adr/0007-collections-only-permission-check.md)
 
@@ -70,9 +72,15 @@ Endpoints go through two URL-level stability stages. During closed alpha they ar
 
 When a field, parameter, or endpoint needs to eventually be removed, the deprecation process is: (1) annotate it as `DEPRECATED:` in the TypeBox schema so it surfaces in the OpenAPI spec; (2) add `Deprecation: true`, `Sunset: <date>`, and `Link: <migration-guide>; rel="deprecation"` response headers on every response from that route; (3) publish a changelog entry and notify known consumers; (4) honour the sunset window — removal before the `Sunset` date is a contract violation; (5) do the actual removal in `/v2`, not `/v1`. Full details in [docs/adr/0003](../adr/0003-tolerant-reader-versioning.md).
 
-### Pagination: `page` + `pageSize`, zero-indexed — [docs/adr/0011](../adr/0011-pagination-page-pagesize-zero-indexed.md)
+### Pagination: cursor-based — [docs/adr/0011](../adr/0011-pagination-cursor-based.md)
 
-All paginated endpoints use `page` (zero-indexed) + `pageSize` query params, returning `{ data, page, pageSize, total }`. The existing Nuxt codebase already uses this convention as the dominant pattern — preserving it avoids off-by-one translation bugs during the port. A handful of Nuxt endpoints use `limit`/`offset` instead; those are normalized to `page`/`pageSize` at port time so the public API stays consistent. External developers used to 1-based pagination will need to start at `page=0` — this is called out prominently in the docs quickstart.
+All paginated endpoints accept `cursor` (opaque base64url, omit on first page) + `pageSize` (default 50, max 200) and return `{ data, pageSize, nextCursor }`. `nextCursor: null` means end of list. No `total` field — counting on every request doubles Tinybird load and offset semantics don't fit cursor pagination.
+
+Cursor-based was chosen over the existing Nuxt `page` + `pageSize` convention for three reasons: (1) stability under inserts/deletes (offset pagination skips or duplicates rows when the underlying set mutates between calls — common for live analytics); (2) O(log N) cost on an indexed sort key vs O(N+offset) for `LIMIT … OFFSET`; (3) v1 is server-to-server, so callers iterate end-to-end and don't need "jump to page 5" UI affordances. Industry alignment (Stripe, GitHub, AWS, Linear) is a side benefit.
+
+The `nuxt-to-api` skill rewrites Nuxt's `page`/`pageSize`/`total` handlers (and `limit`/`offset` handlers) into cursor handlers at port time. Top-N leaderboards (hard-capped, no second page) and time-series charts stay non-paginated.
+
+Sort order is caller-selectable from a per-endpoint allow-list (`?sort=name_asc`, `?sort=commits_desc`). Each accepted `sort` value is index-backed; values outside the list return `400 invalid_sort`. Removing an allowed value or changing an endpoint's default sort is a breaking change per ADR-0003. Full details in [docs/adr/0011](../adr/0011-pagination-cursor-based.md).
 
 ### camelCase JSON + ISO-8601 UTC dates — [docs/adr/0014](../adr/0014-camelcase-json-iso8601-dates.md)
 
@@ -98,6 +106,16 @@ All responses carry `Cache-Control: private, max-age=0`. A Redis cache with two 
 
 API access is included in the user's existing LFX membership tier. No separate billing infrastructure or usage-based pricing in v1.
 
+Enforcement is split: **token-mint time** (LFX Self-Serve validates membership via OpenFGA `v2_organization` entities — confirm at T-015 — and bakes `tier` + `org` into the access token) and **request time** (Insights verifies the JWT signature, reads `tier` and `org` from the verified claims, and enforces rate limits and future per-endpoint tier gating — it never re-queries any membership system). Revoking a membership does not immediately invalidate existing refresh tokens — Full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
+
 ### Datadog: hybrid custom metrics + APM trace metrics — [PUBLIC_API_PLAN.md §3 D5 + §6](../PUBLIC_API_PLAN.md#d5-datadog-metrics-strategy--custom-metrics-vs-apm-trace-metrics)
 
 Low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class(2xx,4xx,5xx)`) power SRE dashboards and alerting. High-cardinality dimensions (`customer_id`, `api_key_id`) live in APM span attributes — not billed as custom metrics. Estimated budget: ~5,400 timeseries at ~$270/mo above DD quota. Pure custom metrics were rejected because per-customer cardinality would blow the cost budget.
+
+### Structured JSON logging via pino — [docs/adr/0018](../adr/0018-structured-json-logging.md)
+
+pino emits single-line JSON to stdout (no literal newlines, no leading/trailing characters), collected and shipped to Datadog Logs by the cluster log collector. Log levels follow the LFX platform standard ([lfx-architecture-decisions/0002](https://github.com/linuxfoundation/lfx-architecture-decisions/blob/main/decisions/0002-structured-json-logging.md)): `error` for non-recoverable failures, `warn` for recoverable/client errors, `info` for successful mutating requests only. Because v1 is a read-only API, read endpoints must not emit info logs. pino's OTel mixin injects `trace_id` and `span_id` into every line so logs correlate to traces in Datadog automatically — `trace_id` is the canonical correlation key; no parallel `requestId` field is used for log correlation.
+
+### OpenTelemetry instrumentation; trace ID is the request ID — [docs/adr/0019](../adr/0019-opentelemetry-instrumentation.md)
+
+The API uses `@opentelemetry/sdk-node` with HTTP, Postgres, and pino auto-instrumentation. W3C TraceContext propagation is automatic — inbound `traceparent` headers are honoured, outbound HTTP calls inject them, and the active trace context flows through async operations without manual plumbing. Inheriting [LFX-0003](https://github.com/linuxfoundation/lfx-architecture-decisions/blob/main/decisions/0003-opentelemetry-instrumentation.md). W3C `traceparent` is the sole HTTP propagation channel — no `X-Request-Id` response header is set. The OTel trace ID **is** the request ID: it surfaces in the error envelope's `requestId` field, so a support ticket carrying a `requestId` joins logs ↔ APM traces in Datadog without translation. There is no parallel ULID generator. Logs include `trace_id`/`span_id` (OTel hex format); Datadog's APM ingester recognises OTel-format IDs natively — no parallel `dd.trace_id`/`dd.span_id` fields are emitted. Sampling is 100% in v1 — revisit when RPS data is available. The SDK exports OTLP to a co-located `opentelemetry-collector` sidecar (`localhost:4317`), which forwards to Datadog in prod/staging — following LFX-0003's recommendation and keeping the configuration self-contained in the pod with no changes to the shared cluster Datadog agent.
