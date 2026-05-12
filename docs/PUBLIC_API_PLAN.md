@@ -15,7 +15,7 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
 
 ### Goals
 - Standalone API app, independently deployable.
-- API key auth via LFX Self-Serve (`app.lfx.dev/settings`) — customers receive refresh tokens; their code mints short-lived access tokens via Insights' proxied `/v1/auth/token` endpoint. Access tokens carry membership tier claims that drive both **rate limits** and **endpoint breadth**.
+- API key auth via LFX Self-Serve (`app.lfx.dev/settings`) — customers receive refresh tokens; their code mints short-lived access tokens via Insights' proxied `/v1/auth/token` endpoint. Access tokens carry membership tier claims that drive **rate limits** in v1; endpoint-level tier gating is a future capability.
 - URL-versioned (`/v1`, `/v2`); breaking changes only across versions.
 - Heavy observability (OTel → Datadog) so we can offer SLAs and bill by tier confidently.
 - Phased rollout: **Development → Contributors → Popularity → Security & Best Practices → Collections** (more later).
@@ -357,7 +357,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 7. **Conversion tooling:** Claude skill `nuxt-to-api` (§3 D4). Produces a complete, ready-to-review Fastify handler (TypeBox schema, Tinybird/Postgres calls, response mapping, integration test) — not a skeleton. Developer's job is review, not writing.
 8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §6).
 9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
-10. **Customer model:** the API principal is a **user** (`sub` = user ID, used for the `customer_id` field in error envelopes). The user's **organization** (`org` claim, exact name confirmed at T-015) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Both claims come from the LFX Self-Serve JWT (per ADR-0015). The exact claim names, behavior when a user has no org, and behavior when a user belongs to multiple orgs are follow-ups for T-015 with the LFX Self-Serve team. Whether the token is an existing platform PAT or a new Insights-scoped token is the open question at §9 #4.
+10. **Customer model:** the API principal is a **user** (`sub` = user ID, used as the `customer_id` span attribute in APM traces). The user's **organization** (`org` claim, exact name confirmed at T-015) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Both claims come from the LFX Self-Serve JWT (per ADR-0015). The exact claim names, behavior when a user has no org, and behavior when a user belongs to multiple orgs are follow-ups for T-015 with the LFX Self-Serve team. Whether the token is an existing platform PAT or a new Insights-scoped token is the open question at §9 #4.
 11. **Data scope (v1):**
     - **Phases 1–4 (Development, Contributors, Popularity, Security & Best Practices):** public OSS data, **no per-project permission check**. Tier check only.
     - **Phase 5 (Collections):** tier check + permission check (private collections gated by ownership/membership; public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL). Decision deferred to Phase 5 — does not block earlier phases.
