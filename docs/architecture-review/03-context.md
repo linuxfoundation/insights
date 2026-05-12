@@ -18,6 +18,7 @@ _Avoid:_ long-lived JWT, API key (when referring to the credential type specific
 
 **Access Token**
 A short-lived JWT (~15 min) minted from the Refresh Token. Sent to the Insights API as `Authorization: Bearer <access_token>`. Carries the verified `sub`, `org`, `tier`, `iss`, `kid`, and possibly `aud` claims. JWKS-verified on every request.
+_Note:_ the presence of `org` and `tier` in the LFX Self-Serve access token is an assumption pending confirmation with the Self-Serve team (T-015). If the existing PAT is reused, these claims may need to be added.
 _Avoid:_ calling it just "a JWT" or "the bearer token" — always use "access token" so it's clear which credential is meant
 
 **User**
@@ -51,7 +52,7 @@ The standard JSON shape for all error responses:
   "error": {
     "code": "rate_limit_exceeded",
     "message": "You have exceeded your rate limit.",
-    "requestId": "01HZ...",
+    "requestId": "4bf92f3577b34da6a3ce929d0e0e4736",
     "docsUrl": "https://docs.../errors#rate_limit_exceeded"
   }
 }
