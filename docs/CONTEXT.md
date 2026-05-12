@@ -16,6 +16,7 @@ _Avoid_: long-lived JWT, API key (when referring to the credential type specific
 
 **Access Token**:
 A short-lived JWT (~15 min) minted from the Refresh Token via the proxied `/v1/auth/token` endpoint. Sent to the Insights API as `Authorization: Bearer <access_token>`. Carries the verified `sub`, `org`, `tier`, `iss`, `kid`, and possibly `aud` claims. JWKS-verified on every request. Customers typically don't handle these directly — a short `getAccessToken()` helper or SDK manages the lifecycle.
+_Note:_ the presence of `org` and `tier` in the LFX Self-Serve access token is an assumption pending confirmation with the Self-Serve team (T-015). If the existing PAT is reused, these claims may need to be added.
 _Avoid_: calling it just "a JWT" or "the bearer token" — always use "access token" so it's clear which credential is meant
 
 **User**:

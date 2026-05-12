@@ -165,6 +165,6 @@ The following items are unresolved and need input before or during implementatio
 
 - Deployed on the same Kubernetes cluster as `frontend/`. ([T-002](../PUBLIC_API_PLAN.md#epic-e1--foundation--framework))
 - Using the existing Datadog org and APM agent in the cluster. ([T-025](../PUBLIC_API_PLAN.md#epic-e4--observability-opentelemetry--datadog))
-- Hour-granularity datetime filters (`2024-01-01T14:00:00`) are supported and will be accepted.
+- Hour-granularity datetime filters (`2024-01-01T14:00:00Z`) are supported and will be accepted.
 - The most granular `granularity` option will be `daily` — no `hourly` option. ([E7](../PUBLIC_API_PLAN.md#epic-e7--endpoint-migration-phase-1-development)–[E11](../PUBLIC_API_PLAN.md#epic-e11--endpoint-migration-phase-5-overviews))
 - API docs will be gated (not publicly indexable) until launch. ([E5](../PUBLIC_API_PLAN.md#epic-e5--api-documentation))

@@ -152,7 +152,7 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 
 ## 4. Epics / Milestones for Jira
 
-Recommended ordering: **E1 → E2 → E3 (in parallel with E4, E5) → E6 (Development) → E7 (Contributors) → ...**
+Recommended ordering: **E1 → E2 → E3 (in parallel with E4, E5) → E6 → E7 (Development) → E8 (Contributors) → ...**
 
 ### Epic E1 — Foundation & Framework
 
@@ -229,7 +229,7 @@ Implements URL-prefix versioning (`/v1`, `/v2`).
 One ticket per endpoint. Each ticket: port handler, define TypeBox schema, write integration test, OpenAPI tag, document, ship to production (soft-launch model — per §9 #23). No feature flag.
 
 - **T-040** Inventory all `frontend/server/api/**` endpoints used by the Development tab. Produce a checklist.
-- **T-041 .. T-04N** One task per endpoint (N tickets — fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E12). Each endpoint goes live to production when its ticket completes — no batched "Phase 1 launch" event (per §9 #23 soft-launch model).
+- **T-041 .. T-04N** One task per endpoint (N tickets — fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E14). Each endpoint goes live to production when its ticket completes — no batched "Phase 1 launch" event (per §9 #23 soft-launch model).
 
 ### Epic E8 — Endpoint Migration Phase 2: Contributors
 - Inventory + one ticket per endpoint + launch.
@@ -324,8 +324,8 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 ## 7. Critical Files / Areas to Reference During Implementation
 
 - `frontend/server/data/tinybird/tinybird.ts` — TB client with `AdaptiveSemaphore`, bucket routing, response typing. Extract to shared lib ([T-004](#epic-e1--foundation--framework)).
-- `frontend/server/data/types.ts` — shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). Extract to shared lib ([T-005](#epic-e1--foundation--framework)).
-- `frontend/server/utils/rate-limiter.ts` — Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3--auth--rate-limiting-api-keys-via-lfx-auth0)).
+- `frontend/server/data/types.ts` — shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). These are **not** extracted to a shared lib — `/api` defines its own TypeBox equivalents per endpoint (filter shapes are TypeBox schemas, not shared runtime types). Use this file as a reference when porting handlers.
+- `frontend/server/utils/rate-limiter.ts` — Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
 - `frontend/server/utils/jwt.ts` — existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with the LFX Self-Serve JWKS endpoint (per ADR-0015), not Auth0 JWKS ([T-017](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
 - `frontend/setup/rate-limiter.ts` — current rate-limiter rules. Inspiration for tier-based rules.
 - `frontend/server/api/development/**` — all endpoints to inventory in [T-040](#epic-e7--endpoint-migration-phase-1-development).
@@ -379,10 +379,9 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 **Still open:**
 
-1. Who is the named LFX Self-Serve contact for T-015 coordination?
-2. Can a Key Contact hold that role in more than one Organization, or carry more than one membership tier? If yes, the JWT must carry `org` as an array (or the user must re-mint choosing which org to act as), and the rate-limit pool resolution logic must handle multiple orgs. Confirm with LFX Self-Serve team at [T-015](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve).
-3. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
-4. **Reuse `app.lfx.dev/settings` personal access token as the refresh token, or mint a new Insights-scoped refresh token?** Drives the JWT claim shape, whether `aud` is required, and the LFX Self-Serve UI work. Trade-offs:
+1. Can a Key Contact hold that role in more than one Organization, or carry more than one membership tier? If yes, the JWT must carry `org` as an array (or the user must re-mint choosing which org to act as), and the rate-limit pool resolution logic must handle multiple orgs. Confirm with LFX Self-Serve team at [T-015](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve).
+2. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
+3. **Reuse `app.lfx.dev/settings` personal access token as the refresh token, or mint a new Insights-scoped refresh token?** Drives the JWT claim shape, whether `aud` is required, and the LFX Self-Serve UI work. Trade-offs:
    - **Reuse:** one platform-wide refresh token across every LFX service — best UX. Compromise blast radius is wider than Insights alone, so a service-scope claim (e.g. `aud` or `scopes`) would be needed for Insights to safely refuse out-of-scope use. Requires LFX Self-Serve to ensure the existing token carries (or can be made to carry) `org` and `tier`.
    - **Mint new:** Insights-scoped refresh token isolated from the user's other LFX integrations; per-service revocation. Cost: extra "Create Insights API token" affordance in `app.lfx.dev/settings` and a new token type for LFX Self-Serve to support.
 

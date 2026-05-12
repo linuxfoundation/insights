@@ -2,6 +2,8 @@
 
 API keys are refresh tokens issued by the LFX Self-Serve App at `app.lfx.dev/settings`. The Insights API exposes a proxied `/v1/auth/token` endpoint (forwarding to Self-Serve's `/token`) so customers configure only one host. Customer code exchanges refresh tokens for short-lived access tokens via that proxy (per ADR-0006); the Insights API receives only access tokens on actual API requests. The Insights API is a verifier only: it fetches the LFX Self-Serve JWKS endpoint, verifies the access token's signature, and reads identity + authorization claims from the verified payload. Insights stores no keys, runs no key-management UI, and has no dependency on the Auth0 Management API.
 
+> **Note:** this decision assumes LFX Self-Serve can support the required token model (Key Contact gating, `org`/`tier` claims, JWKS exposure, and the `/token` proxy endpoint). Coordination with the Self-Serve team is required at T-015 before implementation — the exact shape of the solution may change based on what Self-Serve can provide.
+
 ## JWT claims used by the Insights API
 
 These claims live on the **access token**, not the refresh token.
@@ -10,8 +12,8 @@ These claims live on the **access token**, not the refresh token.
 |---|---|
 | `iss` | LFX Self-Serve issuer URL — used to select the right JWKS and reject foreign tokens. |
 | `sub` | User ID — used for revocation reference and the `customer_id` field in error envelopes. |
-| `org` | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). Exact claim name confirmed at T-015. |
-| `tier` | LFX membership tier (`silver` / `gold` / `platinum`) — drives rate-limit pool size and any future per-route tier gating. Confirmed at T-015. |
+| `org` | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). **Assumption:** Self-Serve includes this in the access token. Exact claim name and feasibility confirmed at T-015. |
+| `tier` | LFX membership tier (`silver` / `gold` / `platinum`) — drives rate-limit pool size and any future per-route tier gating. **Assumption:** Self-Serve includes this in the access token. Confirmed at T-015. |
 | `kid` | Key ID — selects the right key in the JWKS response for signature verification. |
 | `aud` | Service audience — required if the open question below resolves to using the existing platform PAT with scope enforcement. |
 
