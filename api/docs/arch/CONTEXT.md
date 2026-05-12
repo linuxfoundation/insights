@@ -1,21 +1,30 @@
 # LFX Insights Public API
 
-A server-to-server HTTP API that exposes LFX Insights analytics data (contributor activity, project health, security posture) to external developers. It is a standalone service (`/api`) backed by the same Tinybird workspace and Postgres database as the existing Nuxt frontend, but with a formal versioned contract, API key authentication, and rate limiting.
+A server-to-server HTTP API that exposes LFX Insights analytics data (contributor activity, project health, security posture) to external developers. It is a standalone service (repo root `api/` directory, base URL `api.insights.linuxfoundation.org`) backed by the same Tinybird workspace and Postgres database as the existing Nuxt frontend, but with a formal versioned contract, API key authentication, and rate limiting.
 
 ## Language
 
 ### Auth & Identity
 
 **API Key**:
-A long-lived credential issued to a User that authenticates every request. Carried as a Bearer token. Maps to exactly one User; multiple active keys per User are allowed for zero-downtime rotation. Keys are created by the User inside LFX Insights — only users whose Organization holds an active LFX membership are permitted to create keys.
+The long-lived credential a User receives from the LFX Self-Serve App at `app.lfx.dev/settings` — technically a Refresh Token. Customers see and handle this as their "API key." Only Key Contacts in member organizations are permitted to create them. The actual Bearer value sent to the Insights API on each request is a short-lived Access Token derived from it.
 _Avoid_: token, secret, access key
 
+**Refresh Token**:
+The long-lived credential held by the customer (what they receive as their "API key"). Used at `POST api.insights.linuxfoundation.org/v1/auth/token` (which Insights proxies to LFX Self-Serve) to mint Access Tokens. Never sent to the Insights API as a Bearer credential. Revoking it stops the customer's code from minting new Access Tokens; in-flight Access Tokens continue to work until their `exp`. Multiple active Refresh Tokens per User are supported for zero-downtime rotation.
+_Avoid_: long-lived JWT, API key (when referring to the credential type specifically)
+
+**Access Token**:
+A short-lived JWT (~15 min) minted from the Refresh Token via the proxied `/v1/auth/token` endpoint. Sent to the Insights API as `Authorization: Bearer <access_token>`. Carries the verified `sub`, `org`, `tier`, `iss`, `kid`, and possibly `aud` claims. JWKS-verified on every request. Customers typically don't handle these directly — a short `getAccessToken()` helper or SDK manages the lifecycle.
+_Note:_ the presence of `org` and `tier` in the LFX Self-Serve access token is an assumption pending confirmation with the Self-Serve team (T-015). If the existing PAT is reused, these claims may need to be added.
+_Avoid_: calling it just "a JWT" or "the bearer token" — always use "access token" so it's clear which credential is meant
+
 **User**:
-The human account that owns an API Key and is the billing principal. Identified by the Auth0 `sub` claim inside the JWT.
+The human account that owns one or more API Keys (Refresh Tokens) and is the billing principal. Identified by the JWT `sub` claim issued by the LFX Self-Serve App.
 _Avoid_: account, customer, client
 
 **Organization (org_id)**:
-The LFX organization a User belongs to, extracted from the JWT. Used as the shared bucket for rate-limit quotas — all keys belonging to users in the same org share a pool.
+The LFX organization tied to a User's API access, encoded in the `org` claim of the LFX Self-Serve access token. "Belongs to" is narrow here: only authorized **Key Contacts** of an organization with an active LFX membership can hold API keys — not every employee or self-attested affiliate of the organization. Used as the shared bucket for rate-limit quotas — all keys belonging to Key Contacts in the same org share a pool.
 _Avoid_: tenant, workspace, team
 
 **Tier**:
@@ -29,7 +38,7 @@ A logical cluster of related endpoints released together as a unit (Development,
 _Avoid_: phase, module, domain
 
 **Breaking Change**:
-Any modification that forces existing callers to update their integration: removing or renaming a response field, changing a field's type, making an optional input required, removing an endpoint, or changing the error envelope shape. Governed by the tolerant-reader contract (see ADR-0003).
+Any modification that forces existing callers to update their integration: removing or renaming a response field, changing a field's type, making an optional input required, removing an endpoint, or changing the error envelope shape. Governed by the tolerant-reader contract (see ADR-0003). Changing default or max pageSize, changing the cursor encoding semantics, removing a value from an endpoint's `sort` allow-list, or changing an endpoint's default `sort` value also counts.
 _Avoid_: non-backwards-compatible change
 
 **Error Envelope**:
@@ -37,8 +46,8 @@ The standard JSON wrapper for all error responses: `{ error: { code, message, re
 _Avoid_: error body, error payload
 
 **Request ID**:
-A ULID generated per-request, propagated as `X-Request-Id` response header and attached to all log lines and OTel spans. Used by support for tracing a specific request.
-_Avoid_: trace ID, correlation ID
+The OpenTelemetry trace ID for the request — a 32-char lowercase hex string (128-bit). Exposed in the error envelope's `requestId` field; this is the value a customer quotes in a support ticket. The same value appears in pino log lines as `trace_id` and on the active OTel span, so logs ↔ APM traces join in Datadog without translation. W3C `traceparent` is the sole HTTP propagation channel — honoured inbound, injected outbound; no `X-Request-Id` response header is set. There is no separate ULID/UUID request ID — see ADR-0019.
+_Avoid_: ULID, UUID, separate correlation ID, X-Request-Id
 
 ### Data & Infrastructure
 
@@ -67,7 +76,7 @@ _Avoid_: stable, released, GA
 ## Relationships
 
 - A **User** holds one or more **API Keys**
-- A **User** belongs to one **Organization**; the **Organization** owns the **Rate-limit Pool**
+- A **User** is an authorized **Key Contact** of one **Organization** (v1); the **Organization** owns the **Rate-limit Pool**
 - A **Tier** is attached to an **Organization** and governs the size of its **Rate-limit Pool**
 - A **Collection** is owned by a single **User** (the creator, identified by `ssoUserId`); curated/system Collections have `ssoUserId = null`. There is no collaborator or org-ownership model in v1. A **Permission Check** gates access per request for private Collections (see ADR-0007)
 - An **Endpoint Group** contains many endpoints; endpoints are promoted through launch stages independently
@@ -83,7 +92,7 @@ These are committed wire-format decisions — changing them within v1 would be a
 
 - **JSON key casing:** camelCase for all request and response fields (`startDate`, `activityTypes`). The Nuxt layer uses mixed casing; the `nuxt-to-api` skill normalizes to camelCase at port time.
 - **Date format:** ISO-8601 UTC strings only (`2025-12-31T23:59:59Z`). Never Unix timestamps or locale-formatted strings.
-- **Pagination:** `page` + `pageSize` query params, zero-indexed (`page=0` is the first page). Response: `{ data, page, pageSize, total }`.
+- **Pagination:** cursor-based. Request: `cursor` (opaque, omit on first page) + `pageSize` (default 50, max 200) + `sort` from a per-endpoint allow-list (e.g. `name_asc`, `commits_desc`). Response: `{ data, pageSize, nextCursor }` — `nextCursor: null` means end of list. No `total` field. Removing an allowed `sort` value or changing an endpoint's default sort is a breaking change. See [ADR-0011](adr/0011-pagination-cursor-based.md).
 - **Error codes:** machine-readable snake_case strings in the Error Envelope `code` field (e.g. `tier_forbidden`, `rate_limit_exceeded`, `unauthorized`, `upstream_unavailable`).
 - **Cache TTLs:** two tiers — long cache (24h) for stable data (project lists, leaderboards, categories); short cache (1h) for time-series analytics. Mirrors the existing Nuxt API caching model.
 - **Tinybird error handling:** when Tinybird is unavailable, the cached Redis response is served if one exists within its normal TTL. If the cache is empty or expired, 503 with `code: upstream_unavailable` is returned.

@@ -32,7 +32,7 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 | Base URL | `https://api.insights.linuxfoundation.org/v1/...` |
 | Location | `/api` at monorepo root, added to `pnpm-workspace.yaml` |
 | Framework | Fastify + TypeScript + TypeBox |
-| Auth | LFX Auth0 API keys — JWT Bearer, JWKS-verified |
+| Auth | Refresh tokens issued by LFX Self-Serve (`app.lfx.dev/settings`); customer code mints short-lived access tokens via Insights `/v1/auth/token` (proxied to Self-Serve); Insights JWKS-verifies access tokens on every request |
 | Rate limiting | Redis sliding window, per-org pool, tier-driven |
 | Versioning | URL prefix (`/v1`, `/v2`); additive-only within a version |
 | Contract | Tolerant-reader; no breaking changes within a major version |
@@ -47,51 +47,54 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 ## Architecture
 
 ```
-┌─────────────────────┐  1. create key   ┌─────────────────────────────────────┐
-│  User (browser)     │ ───────────────▶ │  LFX Insights frontend              │
-│                     │                  │  /settings/api-keys                 │
-│                     │ ◀─────────────── │  (membership check → Auth0 Mgmt API)│
-│                     │  2. receives key └─────────────────────────────────────┘
-└─────────────────────┘                                   │
-          │                                               │ create/revoke key
-          │ 3. use key                                    ▼
-          │                                  ┌────────────────────┐
-          │   Bearer <api-key>               │  LFX Auth0         │
-          ▼ ──────────────────────────────▶  │  Key store (JWT)   │
-┌─────────────────────┐                      │  JWKS endpoint     │
-│  Customer server    │ ──────────────────▶  │  Key revocation    │
-└─────────────────────┘  Bearer <api-key>    └────────────────────┘
-          │                                               ▲
-          │                                               │ JWKS verify
-          ▼                                               │
-┌─────────────────────────────────────────────────────────────────┐
-│  api.insights.linuxfoundation.org  (Fastify, TypeScript)        │
-│  /v1/development/...  /v1/contributors/...  /v1/popularity/...  │
-│  /v1/security/...     /v1/collections/...                       │
-└───────────────────┬──────────────────┬──────────────────────────┘
-                    │                  │
-                    ▼                  ▼
-       ┌────────────────────────────────────────┐
-       │  Redis                                 │
-       │  Rate-limit counters                   │
-       │  Response cache (cache hit → return)   │
-       └──────────────┬─────────────────────────┘
-                      │ cache miss
-          ┌───────────┴───────────┐
-          ▼                       ▼
-┌─────────────────┐     ┌────────────────────┐
-│  Tinybird       │     │  Postgres          │
-│  (analytics)    │     │  (read host)       │
-│  dedicated read │     │  Collections auth  │
-│  replica *      │     └────────────────────┘
-└─────────────────┘
+┌─────────────────────┐  1. create token  ┌──────────────────────────────────┐
+│  User (browser)     │ ────────────────▶ │  LFX Self-Serve App              │
+│                     │                   │  app.lfx.dev/settings            │
+│                     │ ◀──────────────── │  Issues + revokes refresh tokens │
+│                     │  2. refresh token  │  Publishes JWKS endpoint         │
+└─────────────────────┘                   └──────────────────┬───────────────┘
+          │                                                   ▲
+          │ 3. paste refresh token                            │ 4. forward /token
+          │    into server env                                │    request
+          ▼                                                   │
+┌─────────────────────┐  POST /v1/auth/token  ┌──────────────┴──────────────────┐
+│  Customer server    │ ────────────────────▶ │  api.insights.linuxfoundation   │
+│                     │ ◀──────────────────── │  .org  (Fastify, TypeScript)    │
+│                     │  5. access token       │                                 │
+│                     │     (~15 min)          │  /v1/auth/token  (proxy)        │
+│                     │                        │  /v1/development/...            │
+│                     │  6. Bearer <access_token>  /v1/contributors/...          │
+│                     │ ────────────────────▶  │  /v1/popularity/...             │
+└─────────────────────┘                        │  /v1/security/...               │
+                                               │  /v1/collections/...            │
+                               7. JWKS verify  └───────────┬─────────────────────┘
+                     ┌─────────────────────────────────────┘
+                     ▼
+          (LFX Self-Serve JWKS endpoint — cached)
+                                               └───────────┬─────────────────────┐
+                                                           │                     │
+                                                           ▼                     ▼
+                                              ┌────────────────────────────────────────┐
+                                              │  Redis                                 │
+                                              │  Rate-limit counters                   │
+                                              │  Response cache (cache hit → return)   │
+                                              └──────────────┬─────────────────────────┘
+                                                            │ cache miss
+                                                ┌───────────┴───────────┐
+                                                ▼                       ▼
+                                     ┌─────────────────┐     ┌────────────────────┐
+                                     │  Tinybird       │     │  Postgres          │
+                                     │  (analytics)    │     │  (read host)       │
+                                     │  dedicated read │     │  Collections auth  │
+                                     │  replica *      │     └────────────────────┘
+                                     └─────────────────┘
 
   * dedicated Tinybird read replica is the goal; pending
     confirmation from the Tinybird team on whether per-app
     replica isolation is supported.
 
        ┌────────────────────────────────────────────────────────────────────────┐
-       │  OpenTelemetry Collector → Datadog                                     │
+       │  App OTel SDK ──OTLP──▶ otel-collector sidecar ──▶ Datadog              │
        │                                                                        │
        │  Custom metrics  — low-cardinality tags only (endpoint, version,       │
        │                    tier, status_class). Billed per unique tag combo.   │
@@ -101,27 +104,30 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
        │                    (customer_id, api_key_id). Not billed as metrics.   │
        │                    Used for: per-customer drilldowns, debugging.       │
        │                                                                        │
-       │  Structured logs via pino, correlated to traces via trace_id.          │
+       │  Structured logs via pino, correlated to traces via trace_id / span_id  │
+       │  (OTel hex format; Datadog ingests natively). Local dev: stdout.        │
        └────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Key management UI
+### Key management
 
-API keys are created and managed by users inside LFX Insights (not a separate LFX platform). Key creation is gated on the user's Organization holding an active LFX membership. The UI ([E15](../PUBLIC_API_PLAN.md#epic-e15--api-key-management-ui-lfx-insights-frontend)) covers: membership check, create/list/revoke keys, one-time key display on creation, and closed-alpha access gating. This is a hard dependency for the closed-alpha launch.
+Refresh tokens (what customers call their "API key") are created and managed entirely in the LFX Self-Serve App at `app.lfx.dev/settings`. The LFX Insights frontend deep-links to that page from a `/settings/api-keys` placeholder ([E15](../PUBLIC_API_PLAN.md#epic-e15--key-management-entry-point-lfx-insights-frontend)); it does not implement create / list / revoke. Membership gating (only Key Contacts in member organizations can create keys) is enforced by LFX Self-Serve, not by Insights. What the customer pastes into their environment is a refresh token; their code mints short-lived access tokens from it via Insights' proxied `/v1/auth/token` endpoint (per ADR-0006 and ADR-0015).
+
+Whether the existing `app.lfx.dev/settings` personal access token is reused as the refresh token or a new Insights-scoped refresh token is minted is an open product question; see ADR-0015.
 
 ### Shared library strategy
 
-Rather than duplicating Tinybird query logic, two workspace libraries are extracted:
+Rather than duplicating Tinybird query logic, three workspace libraries are extracted:
 
 - `libs/tinybird-client` — Tinybird HTTP client, AdaptiveSemaphore, bucket-per-project routing. Both `frontend/` and `api/` depend on it.
-- `libs/insights-types` — shared filter/response type definitions.
+- `libs/insights-types` — shared enum definitions only (`ActivityPlatforms`, `ActivityTypes`, `Granularity`). Request/response shapes are defined separately per app.
 - `libs/rate-limiter` — Redis sliding-window rate limiter, forked from `frontend/server/utils/rate-limiter.ts`.
 
 ---
 
 ## Endpoint Rollout
 
-Endpoints are ported in five groups, each mapped to a Jira epic. Each endpoint ships through two stability stages: `/v1-alpha` → `/v1` (see Endpoint Stability below).
+Endpoints are ported in seven groups, each mapped to a Jira epic. Each endpoint ships through two stability stages: `/v1-alpha` → `/v1` (see Endpoint Stability below).
 
 | Group | Content | Status |
 |---|---|---|
@@ -152,12 +158,13 @@ The following items are unresolved and need input before or during implementatio
 
 | # | Question | Drives |
 |---|---|---|
-| 1 | Who is the named LFX Auth0 contact for API key claims schema coordination? | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-auth0) |
-| 2 | Can a user belong to more than one org, or hold more than one membership tier? Affects how the rate-limit pool and tier are resolved per request. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-auth0) |
+| 1 | Who is the named LFX Self-Serve contact for API key claims schema coordination? | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 2 | Can a user belong to more than one org, or hold more than one membership tier? Affects how the rate-limit pool and tier are resolved per request. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 3 | Reuse existing `app.lfx.dev/settings` personal access token, or mint a new Insights-scoped token? See ADR-0015 for trade-off table. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
 **Notes:**
 
 - Deployed on the same Kubernetes cluster as `frontend/`. ([T-002](../PUBLIC_API_PLAN.md#epic-e1--foundation--framework))
 - Using the existing Datadog org and APM agent in the cluster. ([T-025](../PUBLIC_API_PLAN.md#epic-e4--observability-opentelemetry--datadog))
-- Hour-granularity datetime filters (`2024-01-01T14:00:00`) are supported and will be accepted.
+- Hour-granularity datetime filters (`2024-01-01T14:00:00Z`) are supported and will be accepted.
 - The most granular `granularity` option will be `daily` — no `hourly` option. ([E7](../PUBLIC_API_PLAN.md#epic-e7--endpoint-migration-phase-1-development)–[E11](../PUBLIC_API_PLAN.md#epic-e11--endpoint-migration-phase-5-overviews))
 - API docs will be gated (not publicly indexable) until launch. ([E5](../PUBLIC_API_PLAN.md#epic-e5--api-documentation))

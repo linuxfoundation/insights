@@ -15,7 +15,7 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
 
 ### Goals
 - Standalone API app, independently deployable.
-- API key auth via LFX Auth0 — keys carry membership tier claims that drive both **rate limits** and **endpoint breadth**.
+- API key auth via LFX Self-Serve (`app.lfx.dev/settings`) — customers receive refresh tokens; their code mints short-lived access tokens via Insights' proxied `/v1/auth/token` endpoint. Access tokens carry membership tier claims that drive **rate limits** in v1; endpoint-level tier gating is a future capability.
 - URL-versioned (`/v1`, `/v2`); breaking changes only across versions.
 - Heavy observability (OTel → Datadog) so we can offer SLAs and bill by tier confidently.
 - Phased rollout: **Development → Contributors → Popularity → Security & Best Practices → Collections** (more later).
@@ -26,51 +26,51 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
 ## 2. Architecture Overview
 
 ```
-┌─────────────────────┐  1. create key   ┌─────────────────────────────────────┐
-│  User (browser)     │ ───────────────▶ │  LFX Insights frontend              │
-│                     │                  │  /settings/api-keys                 │
-│                     │ ◀─────────────── │  (membership check → Auth0 Mgmt API)│
-│                     │  2. receives key └─────────────────────────────────────┘
-└─────────────────────┘                                   │
-          │                                               │ create/revoke key
-          │ 3. use key                                    ▼
-          │                                  ┌────────────────────┐
-          │   Bearer <api-key>               │  LFX Auth0         │
-          ▼ ──────────────────────────────▶  │  Key store (JWT)   │
-┌─────────────────────┐                      │  JWKS endpoint     │
-│  Customer server    │ ──────────────────▶  │  Key revocation    │
-└─────────────────────┘  Bearer <api-key>    └────────────────────┘
-          │                                               ▲
-          │                                               │ JWKS verify
-          ▼                                               │
-┌─────────────────────────────────────────────────────────────────┐
-│  api.insights.linuxfoundation.org  (Fastify, TypeScript)        │
-│  /v1/development/...  /v1/contributors/...  /v1/popularity/...  │
-│  /v1/security/...     /v1/collections/...                       │
-└───────────────────┬──────────────────┬──────────────────────────┘
-                    │                  │
-                    ▼                  ▼
-       ┌────────────────────────────────────────┐
-       │  Redis                                 │
-       │  Rate-limit counters                   │
-       │  Response cache (cache hit → return)   │
-       └──────────────┬─────────────────────────┘
-                      │ cache miss
-          ┌───────────┴───────────┐
-          ▼                       ▼
-┌─────────────────┐     ┌────────────────────┐
-│  Tinybird       │     │  Postgres          │
-│  (analytics)    │     │  (read host)       │
-│  dedicated read │     │  Collections auth  │
-│  replica *      │     └────────────────────┘
-└─────────────────┘
+┌─────────────────────┐  1. create token  ┌──────────────────────────────────┐
+│  User (browser)     │ ────────────────▶ │  LFX Self-Serve App              │
+│                     │                   │  app.lfx.dev/settings            │
+│                     │ ◀──────────────── │  Issues + revokes refresh tokens │
+│                     │  2. refresh token  │  Publishes JWKS endpoint         │
+└─────────────────────┘                   └──────────────────┬───────────────┘
+          │                                                   ▲
+          │ 3. paste refresh token                            │ 4. forward
+          │    into server env                                │    /token request
+          ▼                                                   │
+┌─────────────────────┐  POST /v1/auth/token  ┌──────────────┴──────────────────────────┐
+│  Customer server    │ ────────────────────▶ │  api.insights.linuxfoundation.org        │
+│                     │ ◀──────────────────── │  (Fastify, TypeScript)                   │
+│                     │  5. access token       │                                          │
+│                     │     (~15 min)          │  /v1/auth/token  (proxy)                 │
+│                     │                        │  /v1/development/...                     │
+│                     │  6. Bearer             │  /v1/contributors/...                    │
+│                     │     <access_token>     │  /v1/popularity/...                      │
+│                     │ ────────────────────▶  │  /v1/security/...                        │
+└─────────────────────┘                        │  /v1/collections/...                     │
+                                               └───────────┬──────────────┬──────────────┘
+                            7. JWKS verify                 │              │
+              (LFX Self-Serve JWKS — cached) ◀─────────────┘              │
+                                                                          ▼
+                                                           ┌────────────────────────────────────────┐
+                                                           │  Redis                                 │
+                                                           │  Rate-limit counters                   │
+                                                           │  Response cache (cache hit → return)   │
+                                                           └──────────────┬─────────────────────────┘
+                                                                         │ cache miss
+                                                             ┌───────────┴───────────┐
+                                                             ▼                       ▼
+                                                  ┌─────────────────┐     ┌────────────────────┐
+                                                  │  Tinybird       │     │  Postgres          │
+                                                  │  (analytics)    │     │  (read host)       │
+                                                  │  dedicated read │     │  Collections auth  │
+                                                  │  replica *      │     └────────────────────┘
+                                                  └─────────────────┘
 
   * dedicated Tinybird read replica is the goal; pending
     confirmation from the Tinybird team on whether per-app
     replica isolation is supported.
 
        ┌────────────────────────────────────────────────────────────────────────┐
-       │  OpenTelemetry Collector → Datadog                                     │
+       │  App OTel SDK ──OTLP──▶ otel-collector sidecar ──▶ Datadog              │
        │                                                                        │
        │  Custom metrics  — low-cardinality tags only (endpoint, version,       │
        │                    tier, status_class). Billed per unique tag combo.   │
@@ -80,7 +80,8 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
        │                    (customer_id, api_key_id). Not billed as metrics.   │
        │                    Used for: per-customer drilldowns, debugging.       │
        │                                                                        │
-       │  Structured logs via pino, correlated to traces via trace_id.          │
+       │  Structured logs via pino, correlated to traces via trace_id           │
+       │  (OTel hex format; Datadog ingests natively, no dd.trace_id needed).  │
        └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -151,7 +152,7 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 
 ## 4. Epics / Milestones for Jira
 
-Recommended ordering: **E1 → E2 → E3 (in parallel with E4, E5) → E6 (Development) → E7 (Contributors) → ...**
+Recommended ordering: **E1 → E2 → E3 (in parallel with E4, E5) → E6 → E7 (Development) → E8 (Contributors) → ...**
 
 ### Epic E1 — Foundation & Framework
 
@@ -164,7 +165,7 @@ Bootstrap the standalone service per §3 D1 (Fastify) and share code with fronte
 - **T-005** Extract shared enum definitions (`ActivityPlatforms`, `ActivityTypes`, `Granularity`) into `libs/insights-types`. Request/response shape types are defined separately in each app — the frontend keeps its Luxon-based types; `/api` defines its own TypeBox schemas.
 - **T-006** Standard health endpoints: `/health/live`, `/health/ready` (TB ping, Redis ping, PG ping).
 - **T-007** Error envelope ADR + Fastify error hook — single shape for all errors (`{ error: { code, message, requestId, docsUrl } }`).
-- **T-008** Request ID propagation (incoming `X-Request-Id` honored, generated otherwise, attached to logs/traces/responses).
+- **T-008** Wire OTel trace ID as the request ID — error envelope's `requestId` = OTel trace ID. Inbound `traceparent` honoured via the W3C propagator (auto); outbound calls inject it automatically. W3C `traceparent` is the sole HTTP propagation channel — no `X-Request-Id` response header. No separate ULID generator (per ADR-0019).
 - **T-009** Local dev story: `pnpm dev` from `api/`, hot reload via `tsx watch` or `fastify-cli`, env file template.
 
 ### Epic E2 — Tinybird Read Replica
@@ -177,29 +178,30 @@ Prepare upstream so the API does not contend with the frontend for TB capacity.
 - **T-013** Move TB token + host config to runtime env (`API_TB_TOKEN`, `API_TB_HOST`).
 - **T-014** Add upstream Tinybird latency + error metrics (covered in E4) so we can compare replica vs frontend behavior.
 
-### Epic E3 — Auth & Rate Limiting (API Keys via LFX Auth0)
+### Epic E3 — Auth & Rate Limiting (API Keys via LFX Self-Serve)
 
 Per-key auth with tier-aware authorization and rate limiting. Reuse existing LFX membership tiers — we consume them from JWT claims, we don't invent a new tier model.
 
-- **T-015** Coordinate with LFX Auth0 team: confirm how API keys are minted, and how existing LFX membership tiers are surfaced as JWT claims (`tier`, `customer_id`, `kid` for rotation, `exp`).
-- **T-016** ADR: API key claims schema + tier → capability matrix (which existing LFX tiers map to which endpoints and rate limits).
-- **T-017** API key verification middleware (verify JWT signature against Auth0 JWKS, cache JWKS, accept `Authorization: Bearer <key>` and `X-API-Key`).
+- **T-015** Coordinate with the LFX Self-Serve team: confirm the JWKS endpoint URL, the JWT claim names for `org` and `tier`, the `iss` value, the access-token lifetime (target: ~15 min), the `/token` endpoint shape on Self-Serve (RFC 6749 §6 `grant_type=refresh_token`), and **resolve the open question of whether the Insights API reuses the existing `app.lfx.dev/settings` personal access token as the refresh token or mints a new Insights-scoped refresh token** (see §9 Open Questions and ADR-0015).
+- **T-015b** Implement `POST /v1/auth/token` proxy in Insights — forwards request body and headers to Self-Serve's `/token` verbatim, returns the response verbatim. Maps Self-Serve unreachable to `503 upstream_unavailable`. This is the sole endpoint customers use to exchange refresh tokens for access tokens.
+- **T-016** ADR: API key claims schema + tier → capability matrix (which existing LFX tiers map to which endpoints and rate limits). Reference LFX Self-Serve as the claims issuer.
+- **T-017** Access token verification middleware: verify JWT signature of the **access token** against the LFX Self-Serve JWKS endpoint, cache JWKS, accept `Authorization: Bearer <access_token>`. Insights never receives refresh tokens on `/v1/...` endpoints. Reject tokens whose `iss` does not match the configured LFX Self-Serve issuer (and `aud`, if the open question lands on a scoped token).
 - **T-018** Tier-based authorization: route-level decorator/config that checks the key's tier against the route's required tier, lives next to the route definition.
 - **T-019** Per-org rate limiting (Redis sliding window) — extract only the Redis sorted-set sliding-window primitive from `frontend/server/utils/rate-limiter.ts` into `libs/rate-limiter`. The public API writes its own org-aware wrapper keyed by `org_id` on top of this primitive. The IP-based identity resolution and H3-specific code stays in the frontend.
 - **T-020** Standard rate-limit response headers (`X-RateLimit-*`, `Retry-After`) and 429 envelope.
-- **T-021** Key revocation: delete the key from Auth0 via Management API. The key ceases to exist; next request fails JWKS verification and returns 401 immediately.
-- **T-022** Customer-facing docs: how to obtain and rotate API keys (links into E5).
+- **T-021** Document and test the revocation flow: revoking a refresh token in `app.lfx.dev/settings` causes the next `POST /v1/auth/token` (forwarded to Self-Serve) to return `400 invalid_grant`; in-flight access tokens expire naturally (~15 min). Insights has nothing to delete or maintain. Cover in an integration test.
+- **T-022** Customer-facing docs: explain the refresh-token / access-token split; provide a ~30-line `getAccessToken()` snippet pointing at `api.insights.linuxfoundation.org/v1/auth/token`. Link to `app.lfx.dev/settings` for token creation — Insights docs do not duplicate that flow.
 
 ### Epic E4 — Observability (OpenTelemetry + Datadog)
 
 No hard SLAs in v1 — everything is **observational** for now. Implements the hybrid strategy from §3 D5.
 
-- **T-023** Integrate OpenTelemetry SDK: HTTP auto-instrumentation, custom spans around Tinybird and Postgres calls. Span attributes carry high-cardinality dimensions (`customer_id`, `api_key_id`, `bucket_id`, `pipe`, numeric `status_code`).
+- **T-023** Integrate OpenTelemetry SDK (`@opentelemetry/sdk-node`): HTTP auto-instrumentation, Postgres auto-instrumentation, custom spans around Tinybird calls. W3C TraceContext propagator (default). Span attributes carry high-cardinality dimensions (`customer_id`, `api_key_id`, `bucket_id`, `pipe`, numeric `status_code`). Per ADR-0019.
 - **T-024** Implement low-cardinality custom metrics per §6 catalog. Helper module so handlers emit consistently.
-- **T-025** OTel Collector deployment + Datadog exporter (use existing DD agent if one exists in cluster — see §9 open question 1).
+- **T-025** Add `opentelemetry-collector` sidecar to the API pod spec. Configure the SDK to export OTLP to `localhost:4317`. Collector forwards to Datadog in prod/staging; stdout exporter in local dev (per ADR-0019).
 - **T-026** Datadog dashboards: per-endpoint, per-tier, per-customer top-N (via APM trace metrics), upstream TB health.
 - **T-027** Datadog monitors: 5xx rate, TB failure rate, auth-failure spike, rate-limit-rejection spike. Latency thresholds left open — we baseline first, then dial in.
-- **T-028** Structured JSON logging (pino), shipped to Datadog Logs with trace correlation.
+- **T-028** Structured JSON logging (pino), shipped to Datadog Logs with trace correlation (per ADR-0018). Logs include `trace_id`/`span_id` (OTel hex format); Datadog ingests OTel-format IDs natively.
 
 ### Epic E5 — API Documentation
 
@@ -227,7 +229,7 @@ Implements URL-prefix versioning (`/v1`, `/v2`).
 One ticket per endpoint. Each ticket: port handler, define TypeBox schema, write integration test, OpenAPI tag, document, ship to production (soft-launch model — per §9 #23). No feature flag.
 
 - **T-040** Inventory all `frontend/server/api/**` endpoints used by the Development tab. Produce a checklist.
-- **T-041 .. T-04N** One task per endpoint (N tickets — fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E12). Each endpoint goes live to production when its ticket completes — no batched "Phase 1 launch" event (per §9 #23 soft-launch model).
+- **T-041 .. T-04N** One task per endpoint (N tickets — fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E14). Each endpoint goes live to production when its ticket completes — no batched "Phase 1 launch" event (per §9 #23 soft-launch model).
 
 ### Epic E8 — Endpoint Migration Phase 2: Contributors
 - Inventory + one ticket per endpoint + launch.
@@ -262,16 +264,14 @@ Implements §3 D4 (Claude skill).
   - Adds entries to docs (or at least a stub) and to the per-version OpenAPI.
 - **T-081** Test the skill on 3 representative endpoints from the Development tab; iterate.
 - **T-082** Document the skill in `CONTRIBUTING.md` of `api`.
+- **T-083** Cursor pagination rewrite: the skill must convert Nuxt `page`/`pageSize`/`total` handlers (and `limit`/`offset` variants) into cursor-based handlers — encoding `{ k, id }` as `base64url`, using the lookahead-LIMIT trick (`LIMIT pageSize + 1`) to set `nextCursor` without a second count query, and dropping the `total` field from the response.
 
-### Epic E15 — API Key Management UI (LFX Insights Frontend)
+### Epic E15 — Key Management Entry Point (LFX Insights Frontend)
 
-Self-service key management built inside the LFX Insights frontend. Hard dependency for closed-alpha launch — no one can use the API without a key.
+Key creation, listing, and revocation live entirely in the LFX Self-Serve App (per ADR-0015). The LFX Insights frontend only needs a small placeholder that deep-links to `app.lfx.dev/settings`.
 
-- **T-095** Membership gate: check that the user's Organization holds an active LFX membership before allowing key creation. Integrate with existing LFX membership claim in the Auth0 JWT.
-- **T-096** Key management page: list existing keys (name, created date, last used, status), create new key, revoke key. Lives in LFX Insights settings or a dedicated "Developer" section.
-- **T-097** Key display on creation: show the full key value exactly once with a copy prompt. Never shown again after dismissal.
-- **T-098** Wire key store to Auth0 Management API (ADR-0015): implement create/list/revoke calls from the LFX Insights frontend. Keys are Auth0 credentials; JWT signing and JWKS verification remain in Auth0.
-- **T-099** Closed-alpha gating: during closed alpha, key creation is restricted to the allow-listed accounts ([T-089](#epic-e16--pre-launch)). Show a "request access" state for non-allow-listed users.
+- **T-095** Add a `/settings/api-keys` page in the LFX Insights frontend with a single "Manage API keys" CTA that opens `app.lfx.dev/settings` in a new tab. No list, no create, no revoke UI.
+- **T-096** Closed-alpha gating signal: surface a "request access" state for users whose org is not on the closed-alpha allowlist ([T-089](#epic-e16--pre-launch)), so they understand why their key (if any) returns 403 against `/v1-alpha`.
 
 ### Epic E16 — Pre-Launch
 
@@ -324,9 +324,9 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 ## 7. Critical Files / Areas to Reference During Implementation
 
 - `frontend/server/data/tinybird/tinybird.ts` — TB client with `AdaptiveSemaphore`, bucket routing, response typing. Extract to shared lib ([T-004](#epic-e1--foundation--framework)).
-- `frontend/server/data/types.ts` — shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). Extract to shared lib ([T-005](#epic-e1--foundation--framework)).
-- `frontend/server/utils/rate-limiter.ts` — Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3--auth--rate-limiting-api-keys-via-lfx-auth0)).
-- `frontend/server/utils/jwt.ts` — existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with Auth0 JWKS ([T-017](#epic-e3--auth--rate-limiting-api-keys-via-lfx-auth0)).
+- `frontend/server/data/types.ts` — shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). These are **not** extracted to a shared lib — `/api` defines its own TypeBox equivalents per endpoint (filter shapes are TypeBox schemas, not shared runtime types). Use this file as a reference when porting handlers.
+- `frontend/server/utils/rate-limiter.ts` — Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
+- `frontend/server/utils/jwt.ts` — existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with the LFX Self-Serve JWKS endpoint (per ADR-0015), not Auth0 JWKS ([T-017](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
 - `frontend/setup/rate-limiter.ts` — current rate-limiter rules. Inspiration for tier-based rules.
 - `frontend/server/api/development/**` — all endpoints to inventory in [T-040](#epic-e7--endpoint-migration-phase-1-development).
 - `pnpm-workspace.yaml` — currently lists `frontend`, `workers/*`. Add `api` and `libs/*` entries when bootstrapping ([T-001](#epic-e1--foundation--framework)).
@@ -356,22 +356,22 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 6. **Versioning:** URL prefix `/v1`, `/v2` (§3 + E6).
 7. **Conversion tooling:** Claude skill `nuxt-to-api` (§3 D4). Produces a complete, ready-to-review Fastify handler (TypeBox schema, Tinybird/Postgres calls, response mapping, integration test) — not a skeleton. Developer's job is review, not writing.
 8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §6).
-9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/site/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
-10. **Customer model:** the API principal is a **user** (`sub` = user ID, used for key revocation and the `customer_id` field in error envelopes). The user's **organization** (`org_id` claim) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Follow-ups for T-015 with Auth0 team: behavior when a user has no org, and when a user belongs to multiple orgs.
+9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
+10. **Customer model:** the API principal is a **user** (`sub` = user ID, used as the `customer_id` span attribute in APM traces). The user's **organization** (`org` claim, exact name confirmed at T-015) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Both claims come from the LFX Self-Serve JWT (per ADR-0015). The exact claim names, behavior when a user has no org, and behavior when a user belongs to multiple orgs are follow-ups for T-015 with the LFX Self-Serve team. Whether the token is an existing platform PAT or a new Insights-scoped token is the open question at §9 #4.
 11. **Data scope (v1):**
     - **Phases 1–4 (Development, Contributors, Popularity, Security & Best Practices):** public OSS data, **no per-project permission check**. Tier check only.
-    - **Phase 5 (Collections):** tier check + permission check (private collections gated by ownership/membership; public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL). Decision deferred to Phase 5 — does not block earlier phases.
+    - **Phase 5 (Overviews) + Phase 6 (Collections):** Collections add a tier check + permission check (private collections gated by ownership/membership; public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL). Decision deferred to Phase 6 — does not block earlier phases.
     - No general project-membership authorization graph in v1.
 12. **Authentication floor:** every request requires a valid API key. No anonymous access path. 401 on missing/invalid key, full stop.
 13. **Caller scope (v1):** server-to-server only. CORS responds with no `Access-Control-Allow-Origin` for the API, which blocks browser callers. **Revisit before GA** — we may extend to browser support (per-key origin allowlist or a publishable+secret key model) if customer demand emerges. Track as a follow-up.
-14. **Billing model:** bundled with existing LFX membership. No standalone billing infra in v1. Tier comes from the existing LFX tier on the user's org. Usage is metered only for rate-limit enforcement and Datadog dashboards — not for invoicing.
-15. **Pagination:** standard `page` + `pageSize` query params, **zero-indexed** (`page=0` is the first page — matches the dominant existing Nuxt convention, no translation overhead during port). Response shape: `{ data: [...], page, pageSize, total }` (`total` from Tinybird's `rows_before_limit_at_least`). Endpoints currently using `limit`/`offset` get normalized during port.
+14. **Billing model:** bundled with existing LFX membership. No standalone billing infra in v1. Tier comes from the existing LFX tier on the user's org. Usage is metered only for rate-limit enforcement and Datadog dashboards — not for invoicing. Enforcement is split: (a) **token-mint time** — Self-Serve validates Key Contact status via OpenFGA `v2_organization` entities before issuing an Insights access token; the precise moment depends on the PAT model (new Insights-scoped refresh token → check at issuance; existing PAT reused → check at `/v1/auth/token` exchange time — open question ADR-0015 Q1); either way, non-Key-Contacts never receive a valid Insights access token; (b) **request time** — the Insights API reads `tier` and `org` from the JWKS-verified claims on every request to enforce rate limits and future per-endpoint tier gating, but never re-queries OpenFGA or any membership system. See ADR-0010.
+15. **Pagination:** cursor-based. Request: `cursor` (opaque base64url, omit on first page) + `pageSize` (default 50, max 200). Response: `{ data, pageSize, nextCursor }`; `nextCursor: null` indicates end of list. No `total` field (counting on every request doubles Tinybird load). Cursor-based chosen over the Nuxt `page`/`pageSize` convention for stability under mutations, O(log N) cost vs offset scan, and fit with server-to-server iteration. See ADR-0011.
 16. **URL port strategy:** **hybrid**. Default to port-as-is from Nuxt to `/v1/...`, applying only light normalization (kebab-case path segments, plural collection nouns). Rename only when the existing URL is **genuinely misleading** to an external developer. The `nuxt-to-api` skill ([T-080](#epic-e14--endpoint-conversion-tooling)) defaults to port-as-is and surfaces the URL for explicit reviewer approval; renames are a per-endpoint judgement call recorded in the PR.
-17. **Versioning semantics ("breaking change" definition):** **tolerant-reader / additive-only**. Within a version, allowed: adding response fields, adding optional query params, adding endpoints, expanding accepted enum INPUT values, adding new error codes, adding new success status codes. Requires a major version bump: removing/renaming a response field, changing a field's type, making an optional input required, narrowing accepted input values, removing an endpoint, changing the error envelope shape, changing default pagination values. **Customers commit to ignoring unknown response fields** (documented prominently). Matches Stripe/GitHub/Google.
+17. **Versioning semantics ("breaking change" definition):** **tolerant-reader / additive-only**. Within a version, allowed: adding response fields, adding optional query params, adding endpoints, expanding accepted enum INPUT values, adding new error codes, adding new success status codes. Requires a major version bump: removing/renaming a response field, changing a field's type, making an optional input required, narrowing accepted input values, removing an endpoint, changing the error envelope shape, changing default or max pageSize, or changing the cursor encoding semantics. **Customers commit to ignoring unknown response fields** (documented prominently). Matches Stripe/GitHub/Google.
 18. **Caching contract (v1):** origin-side Redis cache only (~5–60s TTL depending on endpoint). All responses set `Cache-Control: private, max-age=0` — customers do not cache, intermediaries do not cache. Lets us tune TTL without breaking customers. Public/CDN cache headers can be introduced later as a non-breaking improvement once we have real traffic data.
 19. **JSON key casing:** **camelCase** for all request and response JSON keys (`startDate`, `activityTypes`, `includeCodeContributions`). The existing Nuxt code is mixed (some snake_case fields like `activity_types`); the `nuxt-to-api` skill normalizes these to camelCase at port time. Date values are ISO-8601 strings in UTC (`2025-12-31T23:59:59Z`) — committed as a convention, not a question.
 20. **Tier gating (v1):** all tiers see all endpoints; **tiers control rate limits only** in v1. The per-route "required tier" mechanism IS built into the framework (so individual endpoints can be gated later without an architectural change), but every v1 endpoint declares the lowest tier. When a future endpoint is gated above a user's tier, the response is **403 with `code: tier_forbidden`** and the error envelope's `docsUrl` deep-links to the tier-capability matrix.
-21. **API key lifecycle:** long-lived. **No auto-expiry.** Customers rotate manually via LFX dashboard. **Multiple active keys per user supported** so rotation is zero-downtime (mint new → switch → revoke old). Revocation enforced by deleting the key from Auth0 — instant, no deny-list, no TTL window. Best practice rotation guidance documented but never forced.
+21. **API key lifecycle:** refresh tokens are long-lived with **no auto-expiry**. Access tokens are short-lived (~15 min, confirmed at T-015). Customers rotate refresh tokens manually via `app.lfx.dev/settings`. **Multiple active refresh tokens per user supported** so rotation is zero-downtime (mint new → switch → revoke old). Revocation enforced by LFX Self-Serve — once a refresh token is revoked, the next `POST /v1/auth/token` call returns `400 invalid_grant`; in-flight access tokens expire naturally. No Insights-side deny-list. Best practice rotation guidance documented but never forced.
 22. **SDKs (v1):** none. Customers integrate against the OpenAPI spec directly, plus `curl`/`fetch`/`requests` examples in docs. SDK strategy revisited post-v1 once we see what languages customers actually use.
 23. **Launch model:** Endpoints roll out per-endpoint through two stability stages:
     1. **`/v1-alpha`:** endpoint is served under `/v1-alpha/...` with no contract guarantees. Access is restricted to an allow-listed cohort (LFX-internal devs + external design partners). Breaking changes are allowed freely. Used to validate contract and performance before broad exposure.
@@ -379,9 +379,10 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 **Still open:**
 
-1. Who owns coordination with LFX Auth0 for T-015 — is there a named contact?
-2. Can a user belong to more than one org, or have more than one membership tier? This affects how rate-limit pool and tier are resolved per request. Confirm with Auth0 team at [T-015](#epic-e3--auth--rate-limiting-api-keys-via-lfx-auth0).
-3. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
+1. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
+2. **Reuse `app.lfx.dev/settings` personal access token as the refresh token, or mint a new Insights-scoped refresh token?** Drives the JWT claim shape, whether `aud` is required, and the LFX Self-Serve UI work. Trade-offs:
+   - **Reuse:** one platform-wide refresh token across every LFX service — best UX. Compromise blast radius is wider than Insights alone, so a service-scope claim (e.g. `aud` or `scopes`) would be needed for Insights to safely refuse out-of-scope use. Requires LFX Self-Serve to ensure the existing token carries (or can be made to carry) `org` and `tier`.
+   - **Mint new:** Insights-scoped refresh token isolated from the user's other LFX integrations; per-service revocation. Cost: extra "Create Insights API token" affordance in `app.lfx.dev/settings` and a new token type for LFX Self-Serve to support.
 
 **Resolved:**
 - Deployed on the same Kubernetes cluster as frontend. ([T-002](#epic-e1--foundation--framework))
@@ -389,7 +390,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 - `granularity` most granular option will be `daily` — no `hourly`. (E7–E11)
 - API docs gated until launch. (E5)
 - Base URL: `https://api.insights.linuxfoundation.org/v1/...`
-- Keys stored in Auth0, managed via Management API. (ADR-0015)
+- Keys issued by LFX Self-Serve App (`app.lfx.dev/settings`); Insights stores no keys. (ADR-0015)
 - Tinybird errors: serve stale Redis cache, 503 if no cache. (ADR-0016)
 - Collections: read-only in v1, both metadata and analytics exposed.
 - Slug validation: pass-through (unknown slugs return empty data, not 404).

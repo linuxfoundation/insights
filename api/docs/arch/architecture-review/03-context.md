@@ -9,15 +9,24 @@ The full machine-readable version lives at [`api/docs/arch/CONTEXT.md`](../CONTE
 ## Auth & Identity
 
 **API Key**
-A long-lived credential issued to a User that authenticates every request. Carried as a Bearer token in the `Authorization` header. Maps to exactly one User; multiple active keys per User are supported for zero-downtime rotation.
+The long-lived credential a User receives from the LFX Self-Serve App at `app.lfx.dev/settings` — technically a Refresh Token. Customers see and handle this as their "API key." Only Key Contacts in member organizations are permitted to create them. The actual Bearer value sent to the Insights API is a short-lived Access Token derived from it.
 _Avoid:_ token, secret, access key
 
+**Refresh Token**
+The long-lived credential held by the customer (what they receive as their "API key"). Used at `POST api.insights.linuxfoundation.org/v1/auth/token` (proxied to LFX Self-Serve) to mint Access Tokens. Never sent to the Insights API as a Bearer credential. Revoking it stops future Access Token mints; in-flight Access Tokens continue to work until their `exp`. Multiple active Refresh Tokens per User are supported for zero-downtime rotation.
+_Avoid:_ long-lived JWT, API key (when referring to the credential type specifically)
+
+**Access Token**
+A short-lived JWT (~15 min) minted from the Refresh Token. Sent to the Insights API as `Authorization: Bearer <access_token>`. Carries the verified `sub`, `org`, `tier`, `iss`, `kid`, and possibly `aud` claims. JWKS-verified on every request.
+_Note:_ the presence of `org` and `tier` in the LFX Self-Serve access token is an assumption pending confirmation with the Self-Serve team (T-015). If the existing PAT is reused, these claims may need to be added.
+_Avoid:_ calling it just "a JWT" or "the bearer token" — always use "access token" so it's clear which credential is meant
+
 **User**
-The human account that owns an API Key and is the billing principal. Identified by the Auth0 `sub` claim inside the JWT.
+The human account that owns one or more API Keys (Refresh Tokens) and is the billing principal. Identified by the JWT `sub` claim issued by the LFX Self-Serve App.
 _Avoid:_ account, customer, client
 
 **Organization** (`org_id`)
-The LFX organization a User belongs to, extracted from the JWT. Used as the shared bucket for rate-limit quotas — all API keys belonging to users in the same org draw from one pool.
+The LFX organization tied to a User's API access, encoded in the `org` claim of the LFX Self-Serve access token. "Belongs to" is narrow here: only authorized **Key Contacts** of an organization with an active LFX membership can hold API keys — not every employee or self-attested affiliate of the organization. Used as the shared bucket for rate-limit quotas — all API keys belonging to Key Contacts in the same org draw from one pool.
 _Avoid:_ tenant, workspace, team
 
 **Tier**
@@ -33,7 +42,7 @@ A logical cluster of related endpoints released together (Development, Contribut
 _Avoid:_ phase, module, domain
 
 **Breaking Change**
-Any modification that forces existing callers to update their integration: removing or renaming a response field, changing a field's type, making an optional input required, removing an endpoint, or changing the Error Envelope shape. Governed by the tolerant-reader contract (ADR-0003). Changing default pagination values also counts.
+Any modification that forces existing callers to update their integration: removing or renaming a response field, changing a field's type, making an optional input required, removing an endpoint, or changing the Error Envelope shape. Governed by the tolerant-reader contract (ADR-0003). Changing default or max pageSize, changing the cursor encoding semantics, removing a value from an endpoint's `sort` allow-list, or changing an endpoint's default `sort` value also counts.
 _Avoid:_ non-backwards-compatible change
 
 **Error Envelope**
@@ -43,7 +52,7 @@ The standard JSON shape for all error responses:
   "error": {
     "code": "rate_limit_exceeded",
     "message": "You have exceeded your rate limit.",
-    "requestId": "01HZ...",
+    "requestId": "4bf92f3577b34da6a3ce929d0e0e4736",
     "docsUrl": "https://docs.../errors#rate_limit_exceeded"
   }
 }
@@ -52,8 +61,8 @@ The standard JSON shape for all error responses:
 _Avoid:_ error body, error payload
 
 **Request ID**
-A ULID generated per-request, propagated as the `X-Request-Id` response header and attached to all log lines and OTel spans. Used by support for tracing a specific request across systems.
-_Avoid:_ trace ID, correlation ID
+The OpenTelemetry trace ID for the request — a 32-char lowercase hex string (128-bit). Exposed in the error envelope's `requestId` field; this is the value a customer quotes in a support ticket. The same value appears in pino log lines as `trace_id` and on the active OTel span, so logs ↔ APM traces join in Datadog without translation. W3C `traceparent` is the sole HTTP propagation channel — honoured inbound, injected outbound; no `X-Request-Id` response header is set. There is no separate ULID/UUID request ID — see ADR-0019.
+_Avoid:_ ULID, UUID, separate correlation ID, X-Request-Id
 
 ---
 
@@ -64,7 +73,7 @@ The columnar analytics database backing all time-series metrics (contributor act
 _Avoid:_ analytics DB, ClickHouse (Tinybird is the canonical name in this repo)
 
 **Collection**
-A user-curated named group of projects, stored in Postgres. The only Endpoint Group (Phase 5) that requires a per-request permission check — callers must prove they have access to the specific Collection they are querying.
+A user-curated named group of projects, stored in Postgres. The only Endpoint Group (Group 6) that requires a per-request permission check — callers must prove they have access to the specific Collection they are querying.
 _Avoid:_ project group, saved filter, list
 
 **Rate-limit Pool**
@@ -93,7 +102,7 @@ These are committed in v1. Changing any of them within v1 is a Breaking Change.
 |---|---|
 | JSON key casing | camelCase for all request and response fields (`startDate`, `activityTypes`) |
 | Date format | ISO-8601 UTC strings only (`2025-12-31T23:59:59Z`) — never Unix timestamps |
-| Pagination | `page` + `pageSize`, zero-indexed (`page=0` = first page); response: `{ data, page, pageSize, total }` |
+| Pagination | cursor-based: `cursor` (opaque base64url) + `pageSize` (default 50, max 200) + `sort` from a per-endpoint allow-list (e.g. `name_asc`, `commits_desc`); response: `{ data, pageSize, nextCursor }`; `nextCursor: null` ⇒ end; removing an allowed `sort` value or changing its default is a breaking change |
 | Error codes | snake_case machine-readable strings (`tier_forbidden`, `rate_limit_exceeded`, `unauthorized`) |
 
 ---
@@ -102,7 +111,7 @@ These are committed in v1. Changing any of them within v1 is a Breaking Change.
 
 ```
 User  ──owns──▶  API Key  (many keys per user)
-User  ──belongs to──▶  Organization  (one org per user, v1)
+User  ──is Key Contact of──▶  Organization  (one org per user, v1)
 Organization  ──has──▶  Tier
 Organization  ──has──▶  Rate-limit Pool
 Endpoint Group  ──contains──▶  many Endpoints
