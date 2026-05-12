@@ -379,9 +379,8 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 **Still open:**
 
-1. Can a Key Contact hold that role in more than one Organization, or carry more than one membership tier? If yes, the JWT must carry `org` as an array (or the user must re-mint choosing which org to act as), and the rate-limit pool resolution logic must handle multiple orgs. Confirm with LFX Self-Serve team at [T-015](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve).
-2. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
-3. **Reuse `app.lfx.dev/settings` personal access token as the refresh token, or mint a new Insights-scoped refresh token?** Drives the JWT claim shape, whether `aud` is required, and the LFX Self-Serve UI work. Trade-offs:
+1. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
+2. **Reuse `app.lfx.dev/settings` personal access token as the refresh token, or mint a new Insights-scoped refresh token?** Drives the JWT claim shape, whether `aud` is required, and the LFX Self-Serve UI work. Trade-offs:
    - **Reuse:** one platform-wide refresh token across every LFX service — best UX. Compromise blast radius is wider than Insights alone, so a service-scope claim (e.g. `aud` or `scopes`) would be needed for Insights to safely refuse out-of-scope use. Requires LFX Self-Serve to ensure the existing token carries (or can be made to carry) `org` and `tier`.
    - **Mint new:** Insights-scoped refresh token isolated from the user's other LFX integrations; per-service revocation. Cost: extra "Create Insights API token" affordance in `app.lfx.dev/settings` and a new token type for LFX Self-Serve to support.
 
