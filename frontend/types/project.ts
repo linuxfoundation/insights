@@ -6,6 +6,7 @@ export interface ProjectRepository {
   slug: string;
   score: number;
   rank: number;
+  licenses: string[];
 }
 
 export interface ProjectRepositoryGroup {
@@ -94,6 +95,7 @@ export interface ProjectTinybird {
   firstCommitUrl?: string;
   connectedPlatforms: string[];
   repoData: ProjectRepoData[];
+  repoLicenses: [string, string][];
   status: string;
   lastVulnerabilityScanStatus: string;
   maturity?: string;
