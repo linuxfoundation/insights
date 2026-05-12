@@ -54,7 +54,7 @@ Refresh tokens do not expire automatically. Multiple active refresh tokens per u
 
 ### Collections-only permission check — [docs/adr/0007](../adr/0007-collections-only-permission-check.md)
 
-Endpoint Groups 1–4 (Development, Contributors, Popularity, Security, Overview) expose aggregated public data — a valid API key is sufficient. Only Group 5 (Collections) requires a per-request ownership check (Postgres lookup, Redis-cached at 60s TTL) because Collections are user-created private groupings. Engineers must not add ownership checks to Groups 1–4.
+Endpoint Groups 1–5 (Development, Contributors, Popularity, Security, Overviews) expose aggregated public data — a valid API key is sufficient. Only Group 6 (Collections) requires a per-request ownership check (Postgres lookup, Redis-cached at 60s TTL) because Collections are user-created private groupings. Engineers must not add ownership checks to Groups 1–5.
 
 ### Collections Postgres queries written fresh in `/api` — [docs/adr/0017](../adr/0017-collections-queries-not-shared.md)
 

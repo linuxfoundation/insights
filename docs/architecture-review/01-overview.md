@@ -127,7 +127,7 @@ Rather than duplicating Tinybird query logic, three workspace libraries are extr
 
 ## Endpoint Rollout
 
-Endpoints are ported in five groups, each mapped to a Jira epic. Each endpoint ships through two stability stages: `/v1-alpha` → `/v1` (see Endpoint Stability below).
+Endpoints are ported in seven groups, each mapped to a Jira epic. Each endpoint ships through two stability stages: `/v1-alpha` → `/v1` (see Endpoint Stability below).
 
 | Group | Content | Status |
 |---|---|---|
