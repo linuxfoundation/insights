@@ -11,7 +11,7 @@ These claims live on the **access token**, not the refresh token.
 | Claim | Purpose |
 |---|---|
 | `iss` | LFX Self-Serve issuer URL — used to select the right JWKS and reject foreign tokens. |
-| `sub` | User ID — used for revocation reference and the `customer_id` field in error envelopes. |
+| `sub` | User ID — used for revocation reference and as the `customer_id` span attribute in APM traces. |
 | `org` | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). **Assumption:** Self-Serve includes this in the access token. Exact claim name and feasibility confirmed at T-015. |
 | `tier` | LFX membership tier (`silver` / `gold` / `platinum`) — drives rate-limit pool size and any future per-route tier gating. **Assumption:** Self-Serve includes this in the access token. Confirmed at T-015. |
 | `kid` | Key ID — selects the right key in the JWKS response for signature verification. |

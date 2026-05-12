@@ -117,10 +117,10 @@ Whether the existing `app.lfx.dev/settings` personal access token is reused as t
 
 ### Shared library strategy
 
-Rather than duplicating Tinybird query logic, two workspace libraries are extracted:
+Rather than duplicating Tinybird query logic, three workspace libraries are extracted:
 
 - `libs/tinybird-client` — Tinybird HTTP client, AdaptiveSemaphore, bucket-per-project routing. Both `frontend/` and `api/` depend on it.
-- `libs/insights-types` — shared filter/response type definitions.
+- `libs/insights-types` — shared enum definitions only (`ActivityPlatforms`, `ActivityTypes`, `Granularity`). Request/response shapes are defined separately per app.
 - `libs/rate-limiter` — Redis sliding-window rate limiter, forked from `frontend/server/utils/rate-limiter.ts`.
 
 ---
