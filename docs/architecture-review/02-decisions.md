@@ -106,7 +106,12 @@ All responses carry `Cache-Control: private, max-age=0`. A Redis cache with two 
 
 API access is included in the user's existing LFX membership tier. No separate billing infrastructure or usage-based pricing in v1.
 
-Enforcement is split: **token-mint time** (LFX Self-Serve validates membership via OpenFGA `v2_organization` entities — confirm at T-015 — and bakes `tier` + `org` into the access token) and **request time** (Insights verifies the JWT signature, reads `tier` and `org` from the verified claims, and enforces rate limits and future per-endpoint tier gating — it never re-queries any membership system). Revoking a membership does not immediately invalidate existing refresh tokens — Full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
+Enforcement is split across two boundaries:
+
+- **Token-mint time (LFX Self-Serve):** Self-Serve checks Key Contact status via OpenFGA `v2_organization` entities before issuing an Insights access token. The precise moment depends on the PAT model (open — ADR-0015 Q1): with a new Insights-scoped refresh token the check happens at token issuance; with the existing PAT reused, the check happens at `POST /v1/auth/token` exchange time. Either way the check is in Self-Serve; non-Key-Contacts never receive a valid Insights access token.
+- **Request time (Insights API):** Insights verifies the JWT signature, reads `tier` and `org` from the verified claims, and uses them for rate limits and future per-endpoint tier gating. It never re-queries OpenFGA or any membership system.
+
+Revoking a membership does not immediately invalidate existing refresh tokens — full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
 
 ### Datadog: hybrid custom metrics + APM trace metrics — [PUBLIC_API_PLAN.md §3 D5 + §6](../PUBLIC_API_PLAN.md#d5-datadog-metrics-strategy--custom-metrics-vs-apm-trace-metrics)
 
