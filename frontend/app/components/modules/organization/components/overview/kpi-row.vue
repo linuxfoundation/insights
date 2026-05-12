@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="c-card org-kpi-row">
     <div
-      v-for="(kpi, index) in kpis"
+      v-for="kpi in kpis"
       :key="kpi.label"
       class="org-kpi-item"
     >

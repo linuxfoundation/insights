@@ -80,8 +80,6 @@ import LfxOrganizationLogo from '~/components/uikit/organization-logo/organizati
 import LfxBack from '~/components/uikit/back/back.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = defineProps<{
   organization: OrganizationProfile | undefined;
