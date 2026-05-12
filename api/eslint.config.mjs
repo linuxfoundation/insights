@@ -47,7 +47,7 @@ export default [
       'import/extensions': [
         'error',
         'ignorePackages',
-        { js: 'never', ts: 'never' },
+        { js: 'always', ts: 'never' },
       ],
       'max-len': 'off',
       'class-methods-use-this': 'off',
