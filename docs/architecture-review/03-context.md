@@ -73,7 +73,7 @@ The columnar analytics database backing all time-series metrics (contributor act
 _Avoid:_ analytics DB, ClickHouse (Tinybird is the canonical name in this repo)
 
 **Collection**
-A user-curated named group of projects, stored in Postgres. The only Endpoint Group (Phase 5) that requires a per-request permission check — callers must prove they have access to the specific Collection they are querying.
+A user-curated named group of projects, stored in Postgres. The only Endpoint Group (Group 6) that requires a per-request permission check — callers must prove they have access to the specific Collection they are querying.
 _Avoid:_ project group, saved filter, list
 
 **Rate-limit Pool**

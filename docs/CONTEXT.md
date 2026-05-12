@@ -1,6 +1,6 @@
 # LFX Insights Public API
 
-A server-to-server HTTP API that exposes LFX Insights analytics data (contributor activity, project health, security posture) to external developers. It is a standalone service (`/api`) backed by the same Tinybird workspace and Postgres database as the existing Nuxt frontend, but with a formal versioned contract, API key authentication, and rate limiting.
+A server-to-server HTTP API that exposes LFX Insights analytics data (contributor activity, project health, security posture) to external developers. It is a standalone service (repo root `api/` directory, base URL `api.insights.linuxfoundation.org`) backed by the same Tinybird workspace and Postgres database as the existing Nuxt frontend, but with a formal versioned contract, API key authentication, and rate limiting.
 
 ## Language
 
