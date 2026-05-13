@@ -2,7 +2,7 @@
 
 This page defines the canonical language for the LFX Insights Public API. When writing tasks, docs, or code comments, use these terms precisely. Ambiguities from earlier design discussions are recorded in the **Flagged ambiguities** section.
 
-The full machine-readable version lives at [`docs/CONTEXT.md`](../CONTEXT.md).
+The full machine-readable version lives at [`api/docs/arch/CONTEXT.md`](../CONTEXT.md).
 
 ---
 
