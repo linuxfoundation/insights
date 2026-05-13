@@ -117,8 +117,6 @@ class ProjectApiService {
     return useQuery<ProjectCollectionsResponse>({
       queryKey,
       queryFn,
-      staleTime: 0,
-      gcTime: 0,
     });
   }
 
@@ -134,8 +132,6 @@ class ProjectApiService {
       queryKey,
       queryFn,
       enabled: computed(() => !!url.value),
-      staleTime: 0,
-      gcTime: 0,
     });
   }
 }
