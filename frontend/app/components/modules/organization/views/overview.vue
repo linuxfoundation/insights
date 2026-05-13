@@ -44,6 +44,10 @@ export default {
   grid-template-columns: 1fr;
   gap: 2rem;
 
+  > * {
+    min-width: 0;
+  }
+
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr;
   }

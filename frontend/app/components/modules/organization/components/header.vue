@@ -33,7 +33,10 @@ SPDX-License-Identifier: MIT
               class="flex-shrink-0 ease-linear transition-all"
             />
 
-            <div class="min-w-0 flex-1 flex items-start justify-between gap-3">
+            <div
+              class="min-w-0 flex-1 flex justify-between gap-3"
+              :class="scrollTop > 50 ? 'items-center' : 'items-start'"
+            >
               <!-- Left: name / description / meta -->
               <div class="min-w-0 flex-1">
                 <!-- Name row — membership badge (outline) appears here in sticky state -->
@@ -89,7 +92,7 @@ SPDX-License-Identifier: MIT
                 <!-- Meta row — hidden in sticky state -->
                 <div
                   v-if="(props.organization?.membershipTier || hasMetadata) && scrollTop <= 50"
-                  class="flex items-center gap-1.5 mt-3 flex-wrap"
+                  class="flex items-center gap-1.5 mt-5 flex-wrap"
                 >
                   <!-- Membership badge — outline with border -->
                   <lfx-tooltip
