@@ -34,4 +34,5 @@ export interface Collection {
   isPrivate?: boolean;
   ssoUserId?: string | null;
   likeCount?: number;
+  repositoryUrls?: string[];
 }

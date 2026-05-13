@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <!-- Desktop: table row (rendered when as='row') -->
   <tr
     v-if="props.as === 'row'"
-    class="text-neutral-900 text-sm cursor-pointer hover:bg-neutral-50 transition-all duration-300 align-middle"
+    class="text-neutral-900 text-sm cursor-pointer hover:bg-neutral-50 transition-all duration-300 align-middle group/row"
     @click="navigateToItem"
   >
     <td class="w-3/12 py-4 px-2 font-semibold">
@@ -113,6 +113,24 @@ SPDX-License-Identifier: MIT
       <td class="w-3/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
     </template>
+    <td
+      v-if="props.canRemove"
+      class="py-4 px-2 text-right"
+      @click.stop
+    >
+      <lfx-icon-button
+        v-if="props.project.type === 'repo'"
+        :icon="props.isRemoving ? 'spinner-third' : 'xmark'"
+        size="small"
+        type="transparent"
+        :class="[
+          'opacity-0 group-hover/row:opacity-100 transition-opacity !text-neutral-400',
+          props.isRemoving ? 'animate-spin' : 'hover:!text-negative-500',
+        ]"
+        :disabled="props.isRemoving"
+        @click="emit('remove', props.project.repoUrl)"
+      />
+    </td>
   </tr>
 
   <!-- Mobile: simplified card row (rendered when as='card', the default) -->
@@ -135,6 +153,18 @@ SPDX-License-Identifier: MIT
           :archived="true"
           label="Archived"
           type="project"
+        />
+        <lfx-icon-button
+          v-if="props.canRemove && props.project.type === 'repo'"
+          :icon="props.isRemoving ? 'spinner-third' : 'xmark'"
+          size="small"
+          type="transparent"
+          :class="[
+            'ml-auto shrink-0 !text-neutral-400',
+            props.isRemoving ? 'animate-spin' : 'hover:!text-negative-500',
+          ]"
+          :disabled="props.isRemoving"
+          @click.stop="emit('remove', props.project.repoUrl)"
         />
       </div>
       <lfx-tooltip
@@ -209,6 +239,7 @@ import LfxDependencyDetails from '~/components/modules/collection/components/det
 import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
 
@@ -216,11 +247,19 @@ const props = withDefaults(
   defineProps<{
     project: ProjectInsights;
     as?: 'row' | 'card';
+    canRemove?: boolean;
+    isRemoving?: boolean;
   }>(),
   {
     as: 'card',
+    canRemove: false,
+    isRemoving: false,
   },
 );
+
+const emit = defineEmits<{
+  remove: [repoUrl: string];
+}>();
 
 const router = useRouter();
 

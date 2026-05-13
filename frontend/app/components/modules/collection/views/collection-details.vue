@@ -29,7 +29,10 @@ SPDX-License-Identifier: MIT
           v-for="project in flatData"
           :key="project.slug"
           :project="project"
+          :can-remove="isOwner"
+          :is-removing="removingRepoUrl === project.repoUrl"
           as="card"
+          @remove="handleRemoveRepo"
         />
       </div>
 
@@ -70,6 +73,10 @@ SPDX-License-Identifier: MIT
                 Contributor/Organization dependency
               </th>
               <th class="w-2/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Achievements</th>
+              <th
+                v-if="isOwner"
+                class="py-5 px-2"
+              />
             </tr>
           </thead>
           <tbody>
@@ -77,7 +84,10 @@ SPDX-License-Identifier: MIT
               v-for="project in flatData"
               :key="project.slug"
               :project="project"
+              :can-remove="isOwner"
+              :is-removing="removingRepoUrl === project.repoUrl"
               as="row"
+              @remove="handleRemoveRepo"
             />
           </tbody>
         </table>
@@ -202,6 +212,7 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
+import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
 import type { Collection, CollectionType } from '~~/types/collection';
 
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
@@ -267,6 +278,36 @@ const collectionType = computed<CollectionType>(() => {
 
   return currentCollection.value?.ssoUserId ? CollectionTypeEnum.COMMUNITY : CollectionTypeEnum.CURATED;
 });
+
+const isOwner = computed(() => collectionType.value === CollectionTypeEnum.MY_COLLECTIONS);
+
+const { openConfirmModal } = useConfirmStore();
+const removingRepoUrl = ref<string | null>(null);
+
+const handleRemoveRepo = async (repoUrl: string) => {
+  const confirmed = await openConfirmModal({
+    title: 'Remove repository',
+    message: `Are you sure you want to remove this repository from the collection?`,
+    confirmLabel: 'Remove',
+    cancelLabel: 'Cancel',
+  });
+
+  if (!confirmed || !currentCollection.value) return;
+
+  const currentUrls = currentCollection.value.repositoryUrls ?? [];
+  const updatedUrls = currentUrls.filter((url) => url !== repoUrl);
+
+  removingRepoUrl.value = repoUrl;
+  try {
+    const updated = await COLLECTIONS_API_SERVICE.updateCollection(currentCollection.value.id, {
+      name: currentCollection.value.name,
+      repositoryUrls: updatedUrls,
+    });
+    handleCollectionUpdated(updated);
+  } finally {
+    removingRepoUrl.value = null;
+  }
+};
 
 const sort = ref(collectionSort || 'contributorCount_desc');
 const isLFOnly = ref(onlyLFProjects === 'true');
