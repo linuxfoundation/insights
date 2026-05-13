@@ -9,7 +9,7 @@ export interface OrganizationProfile {
   description: string;
   domain?: string;
   employeeCount?: number;
-  industry?: string;
+  industry?: string[];
   website?: string;
   membershipTier?: 'silver' | 'gold' | 'platinum';
 }
@@ -17,6 +17,8 @@ export interface OrganizationProfile {
 export interface OrganizationKpis {
   activeContributors: number;
   activeContributorsTrend: number;
+  activeContributorsTrendAbsolute: number;
+  activeContributorsTrendPrevious: number;
   maintainerRoles: number;
   criticalProjects: number;
 }

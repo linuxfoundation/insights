@@ -3,87 +3,251 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="org-header-outer">
-    <section class="container">
-      <div class="org-header-inner">
-        <div class="org-header-top">
-          <lfx-back>
-            <lfx-icon-button
-              type="transparent"
-              icon="angle-left"
+  <lfx-maintain-height
+    :scroll-top="scrollTop"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
+    class="z-10 w-full"
+    :loaded="!!props.organization"
+  >
+    <div class="bg-white outline outline-1 outline-neutral-200">
+      <section class="container">
+        <div
+          class="ease-linear transition-all"
+          :class="scrollTop > 50 ? 'py-3 lg:py-4' : 'py-3 lg:py-6'"
+        >
+          <div
+            class="flex gap-4 ease-linear transition-all"
+            :class="scrollTop > 50 ? 'items-center' : 'items-start'"
+          >
+            <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
+              <lfx-icon-button
+                type="transparent"
+                icon="angle-left"
+              />
+            </lfx-back>
+
+            <lfx-organization-logo
+              :src="props.organization?.logo || ''"
+              :size="scrollTop > 50 ? 'normal' : 'large'"
+              :alt="props.organization?.displayName"
+              class="flex-shrink-0 ease-linear transition-all"
             />
-          </lfx-back>
-          <lfx-organization-logo
-            :src="props.organization?.logo || ''"
-            size="large"
-            :alt="props.organization?.displayName"
-            class="org-header-logo"
-          />
-          <div class="org-header-info">
-            <div class="org-header-name-row">
-              <h1 class="text-heading-4 font-bold font-secondary org-header-name">
-                {{ props.organization?.displayName }}
-              </h1>
-              <a
-                v-if="props.organization?.membershipTier"
-                href="https://www.linuxfoundation.org/about/members"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="org-tier-badge"
-                :class="tierClass"
-              >
-                <img
-                  src="~/assets/images/icon.svg"
-                  alt="LF"
-                  class="org-tier-lf-icon"
-                />
-                {{
-                  props.organization.membershipTier.charAt(0).toUpperCase() + props.organization.membershipTier.slice(1)
-                }}
-                Member
-              </a>
+
+            <div class="min-w-0 flex-1 flex items-start justify-between gap-3">
+              <!-- Left: name / description / meta -->
+              <div class="min-w-0 flex-1">
+                <!-- Name row — membership badge (outline) appears here in sticky state -->
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h1
+                    class="font-bold font-secondary ease-linear transition-all duration-200 text-heading-4 line-clamp-1 truncate"
+                    :class="scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'"
+                  >
+                    {{ props.organization?.displayName }}
+                  </h1>
+                  <lfx-tooltip
+                    v-if="props.organization?.membershipTier && scrollTop > 50"
+                    placement="top"
+                  >
+                    <a
+                      href="https://www.linuxfoundation.org/about/members"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="no-underline flex-shrink-0 inline-flex items-center"
+                    >
+                      <lfx-tag
+                        size="small"
+                        type="outline"
+                        class="hover:!bg-neutral-50 transition-colors"
+                      >
+                        <img
+                          src="~/assets/images/icon.svg"
+                          alt=""
+                          class="inline-block w-3.5 h-3.5 mr-1 align-middle"
+                        />{{ tierLabel }}
+                      </lfx-tag>
+                    </a>
+                    <template #content>
+                      <span class="whitespace-nowrap inline-flex items-center gap-1">
+                        Know more about Linux Foundation memberships
+                        <lfx-icon
+                          name="arrow-up-right-from-square"
+                          :size="10"
+                        />
+                      </span>
+                    </template>
+                  </lfx-tooltip>
+                </div>
+
+                <!-- Description — hidden in sticky state -->
+                <p
+                  v-if="props.organization?.description && scrollTop <= 50"
+                  class="text-neutral-500 text-sm mt-1 max-w-3xl"
+                >
+                  {{ props.organization?.description }}
+                </p>
+
+                <!-- Meta row — hidden in sticky state -->
+                <div
+                  v-if="(props.organization?.membershipTier || hasMetadata) && scrollTop <= 50"
+                  class="flex items-center gap-1.5 mt-3 flex-wrap"
+                >
+                  <!-- Membership badge — outline with border -->
+                  <lfx-tooltip
+                    v-if="props.organization?.membershipTier"
+                    placement="top"
+                  >
+                    <a
+                      href="https://www.linuxfoundation.org/about/members"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="no-underline inline-flex items-center"
+                    >
+                      <lfx-tag
+                        size="small"
+                        type="outline"
+                        class="hover:!bg-neutral-50 transition-colors"
+                      >
+                        <img
+                          src="~/assets/images/icon.svg"
+                          alt=""
+                          class="inline-block w-3.5 h-3.5 mr-1 align-middle"
+                        />{{ tierLabel }}
+                      </lfx-tag>
+                    </a>
+                    <template #content>
+                      <span class="whitespace-nowrap inline-flex items-center gap-1">
+                        Know more about Linux Foundation memberships
+                        <lfx-icon
+                          name="arrow-up-right-from-square"
+                          :size="10"
+                        />
+                      </span>
+                    </template>
+                  </lfx-tooltip>
+
+                  <!-- Separator before employees -->
+                  <span
+                    v-if="props.organization?.membershipTier && props.organization?.employeeCount"
+                    class="text-neutral-400 select-none"
+                    >・</span
+                  >
+
+                  <!-- Employees — no border, with icon -->
+                  <lfx-tag
+                    v-if="props.organization?.employeeCount"
+                    size="small"
+                    type="transparent"
+                    class="!text-neutral-900 !font-normal"
+                  >
+                    <lfx-icon
+                      name="people-group"
+                      :size="12"
+                      class="mr-1"
+                    />
+                    {{ employeeRange }} employees
+                  </lfx-tag>
+
+                  <!-- Separator before industry -->
+                  <span
+                    v-if="
+                      props.organization?.industry?.length &&
+                      (props.organization?.membershipTier || props.organization?.employeeCount)
+                    "
+                    class="text-neutral-400 select-none"
+                    >・</span
+                  >
+
+                  <!-- Industry — no border, with icon -->
+                  <lfx-tag
+                    v-if="props.organization?.industry?.length"
+                    size="small"
+                    type="transparent"
+                    class="!text-neutral-900 !font-normal"
+                  >
+                    <lfx-icon
+                      name="tag"
+                      :size="12"
+                      class="mr-1"
+                    />
+                    {{ props.organization.industry.join(', ') }}
+                  </lfx-tag>
+                </div>
+              </div>
+
+              <!-- Right: actions — always visible -->
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <lfx-button
+                  type="ghost"
+                  size="medium"
+                  button-style="pill"
+                  class="h-9"
+                  @click="handleShare"
+                >
+                  <lfx-icon
+                    name="share-nodes"
+                    :size="16"
+                  />
+                  Share
+                </lfx-button>
+                <lfx-tooltip placement="top">
+                  <a
+                    href="https://myorg.lfx.dev"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="no-underline"
+                  >
+                    <lfx-button
+                      type="transparent"
+                      size="medium"
+                      button-style="pill"
+                      class="h-9"
+                    >
+                      <lfx-icon
+                        name="arrow-up-right-from-square"
+                        :size="14"
+                      />
+                      Open in LFX Self-Serve
+                    </lfx-button>
+                  </a>
+                  <template #content>
+                    <span class="whitespace-nowrap flex flex-col gap-0.5 items-center text-center">
+                      <span class="font-semibold text-white">Working at {{ props.organization?.displayName }}?</span>
+                      <span>Get person-level insights about your open source contributions</span>
+                    </span>
+                  </template>
+                </lfx-tooltip>
+              </div>
             </div>
-            <p
-              v-if="props.organization?.description"
-              class="org-header-description"
-            >
-              {{ props.organization?.description }}
-            </p>
           </div>
         </div>
-        <div
-          v-if="hasMetadata"
-          class="org-header-meta"
-        >
-          <lfx-tag
-            v-if="props.organization?.employeeCount"
-            size="small"
-          >
-            {{ employeeRange }} employees
-          </lfx-tag>
-          <lfx-tag
-            v-if="props.organization?.industry"
-            size="small"
-          >
-            {{ props.organization.industry }}
-          </lfx-tag>
-        </div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
+  </lfx-maintain-height>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { OrganizationProfile } from '~~/types/organization-page';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import LfxBack from '~/components/uikit/back/back.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import useScroll from '~/components/shared/utils/scroll';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 
 const props = defineProps<{
   organization: OrganizationProfile | undefined;
 }>();
+
+const { scrollTop } = useScroll();
+const { headerTopClass } = storeToRefs(useBannerStore());
+const { openShareModal } = useShareStore();
 
 const employeeRange = computed(() => {
   const count = props.organization?.employeeCount;
@@ -98,22 +262,23 @@ const employeeRange = computed(() => {
   return '10,001+';
 });
 
-const hasMetadata = computed(
-  () => props.organization?.domain || props.organization?.employeeCount || props.organization?.industry,
-);
+const hasMetadata = computed(() => !!(props.organization?.employeeCount || props.organization?.industry?.length));
 
-const tierClass = computed(() => {
-  switch (props.organization?.membershipTier) {
-    case 'platinum':
-      return 'org-tier-platinum';
-    case 'gold':
-      return 'org-tier-gold';
-    case 'silver':
-      return 'org-tier-silver';
-    default:
-      return '';
-  }
+const tierLabel = computed(() => {
+  const tier = props.organization?.membershipTier;
+  if (!tier) return '';
+  return `${tier.charAt(0).toUpperCase()}${tier.slice(1)} Member`;
 });
+
+const handleShare = () => {
+  const url = new URL(window.location.href);
+  url.hash = '';
+  openShareModal({
+    url: url.toString(),
+    title: `LFX Insights | ${props.organization?.displayName || 'Organization'}`,
+    area: props.organization?.displayName,
+  });
+};
 </script>
 
 <script lang="ts">
@@ -121,111 +286,3 @@ export default {
   name: 'LfxOrgHeader',
 };
 </script>
-
-<style lang="scss" scoped>
-.org-header-outer {
-  background-color: #fff;
-  outline: 1px solid #e2e8f0;
-}
-
-.org-header-inner {
-  padding: 0.75rem 0;
-
-  @media (min-width: 1024px) {
-    padding: 1.5rem 0;
-  }
-}
-
-.org-header-top {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.org-header-logo {
-  margin-right: 0.25rem;
-}
-
-.org-header-info {
-  min-width: 0;
-}
-
-.org-header-name-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.org-header-name {
-  white-space: nowrap;
-}
-
-.org-header-description {
-  color: #64748b;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  max-width: 48rem;
-}
-
-.org-header-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  margin-left: 3.5rem;
-  flex-wrap: wrap;
-}
-
-.org-header-website {
-  font-size: 0.875rem;
-  color: #0094ff;
-  text-decoration: none;
-  transition: color 0.15s;
-
-  &:hover {
-    color: #006dbe;
-  }
-}
-
-.org-header-website-icon {
-  font-size: 0.75rem;
-  margin-right: 0.25rem;
-}
-
-.org-tier-badge {
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.org-tier-lf-icon {
-  width: 14px;
-  height: 14px;
-  display: block;
-}
-
-.org-tier-platinum {
-  background-color: #f1f5f9;
-  color: #0f172a;
-  border: 1px solid #cbd5e1;
-}
-
-.org-tier-gold {
-  background-color: #fffbeb;
-  color: #92400e;
-  border: 1px solid #fde68a;
-}
-
-.org-tier-silver {
-  background-color: #f8fafc;
-  color: #475569;
-  border: 1px solid #e2e8f0;
-}
-</style>

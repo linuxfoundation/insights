@@ -10,25 +10,41 @@ SPDX-License-Identifier: MIT
       class="org-kpi-item"
     >
       <template v-if="!isLoading">
-        <div class="org-kpi-value-row">
-          <p class="text-heading-3 font-bold font-secondary org-kpi-value">
-            {{ formatNumber(kpi.value) }}
-          </p>
-          <span
-            v-if="kpi.trend !== undefined"
-            class="org-kpi-trend"
-            :class="kpi.trend >= 0 ? 'org-kpi-trend-up' : 'org-kpi-trend-down'"
+        <div class="flex gap-3">
+          <div
+            class="size-12 bg-white border border-neutral-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
           >
             <lfx-icon
-              :name="kpi.trend >= 0 ? 'arrow-up' : 'arrow-down'"
-              :size="10"
+              :name="kpi.icon"
+              :size="20"
             />
-            {{ Math.abs(kpi.trend) }}%
-          </span>
+          </div>
+          <div class="min-w-0">
+            <div class="org-kpi-value-row">
+              <p class="text-heading-2 font-bold org-kpi-value">
+                {{ formatNumber(kpi.value) }}
+              </p>
+              <span
+                v-if="kpi.trend !== undefined"
+                class="org-kpi-trend"
+                :class="kpi.trend >= 0 ? 'org-kpi-trend-up' : 'org-kpi-trend-down'"
+              >
+                <lfx-icon
+                  :name="kpi.trend >= 0 ? 'circle-arrow-up' : 'circle-arrow-down'"
+                  type="solid"
+                  :size="12"
+                />
+                {{ Math.abs(kpi.trend) }}%
+                <span v-if="kpi.trendAbsolute !== undefined">
+                  ({{ kpi.trendAbsolute >= 0 ? '+' : '' }}{{ formatNumber(kpi.trendAbsolute) }})
+                </span>
+              </span>
+            </div>
+            <p class="org-kpi-label">
+              {{ kpi.label }}
+            </p>
+          </div>
         </div>
-        <p class="org-kpi-label">
-          {{ kpi.label }}
-        </p>
       </template>
     </div>
   </div>
@@ -49,7 +65,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 const route = useRoute();
 const orgName = route.params.orgName as string;
 const { organization } = storeToRefs(useOrganizationPageStore());
-const orgDisplayName = computed(() => organization.value?.displayName || 'This Organization');
+const orgDisplayName = computed(() => organization.value?.displayName || 'this organization');
 
 const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_KPIS, orgName]);
 
@@ -60,19 +76,28 @@ const { data, isLoading } = useQuery<OrganizationKpis>({
 
 const kpis = computed(() => [
   {
+    icon: 'people-group',
     value: data.value?.activeContributors ?? 0,
     trend: data.value?.activeContributorsTrend,
-    label: `Active ${orgDisplayName.value} Contributors (last 365d)`,
+    trendAbsolute: data.value?.activeContributorsTrendAbsolute,
+    trendPrevious: data.value?.activeContributorsTrendPrevious,
+    label: `Active ${orgDisplayName.value} contributors (last 365d)`,
   },
   {
+    icon: 'user-shield',
     value: data.value?.maintainerRoles ?? 0,
     trend: undefined,
-    label: `Maintainer Roles Held by ${orgDisplayName.value} Contributors`,
+    trendAbsolute: undefined,
+    trendPrevious: undefined,
+    label: `Maintainer roles held by ${orgDisplayName.value} contributors`,
   },
   {
+    icon: 'laptop-code',
     value: data.value?.criticalProjects ?? 0,
     trend: undefined,
-    label: `Critical Projects ${orgDisplayName.value} Contributors Contributed To`,
+    trendAbsolute: undefined,
+    trendPrevious: undefined,
+    label: `Critical projects ${orgDisplayName.value} employees contributed to`,
   },
 ]);
 </script>
@@ -113,7 +138,7 @@ export default {
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 0.125rem;
+  gap: 0.25rem;
 }
 
 .org-kpi-trend-up {
@@ -125,8 +150,8 @@ export default {
 }
 
 .org-kpi-label {
-  font-size: 0.875rem;
-  color: #64748b;
-  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #475569;
+  margin-top: 0.125rem;
 }
 </style>

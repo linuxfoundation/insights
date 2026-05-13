@@ -5,9 +5,20 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-card>
     <div class="org-chart-wrapper">
-      <h2 class="text-heading-5 font-bold font-secondary org-chart-title">
-        Commit Activities by {{ orgDisplayName }} Contributors
-      </h2>
+      <div class="flex gap-3 items-center mb-4">
+        <div
+          class="size-12 bg-white border border-neutral-200 rounded-full flex items-center justify-center flex-shrink-0"
+        >
+          <lfx-icon
+            name="code-commit"
+            :size="20"
+          />
+        </div>
+        <div>
+          <h2 class="text-heading-5 font-bold font-secondary">Commit activities</h2>
+          <p class="org-chart-description">by {{ orgDisplayName }} contributors over the years</p>
+        </div>
+      </div>
       <div
         v-if="isLoading"
         class="org-chart-area"
@@ -42,6 +53,7 @@ import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import type { OrgActivityTimeseries } from '~~/types/organization-page';
 import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
@@ -100,8 +112,10 @@ export default {
   padding: 1.25rem;
 }
 
-.org-chart-title {
-  margin-bottom: 1rem;
+.org-chart-description {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.125rem;
 }
 
 .org-chart-area {

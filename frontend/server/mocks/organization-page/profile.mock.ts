@@ -23,7 +23,7 @@ export const mockOrganizationProfile = {
         'Google LLC is a global technology leader specializing in internet services, cloud computing, software, and hardware. A major contributor to open source, Google has created and maintains some of the most widely used projects in the world.',
       domain: 'google.com',
       employeeCount: 182000,
-      industry: 'Technology',
+      industry: ['Technology', 'Security'],
       website: 'https://about.google',
       membershipTier: 'platinum',
     },
