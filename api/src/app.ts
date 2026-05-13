@@ -5,7 +5,10 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
 
 export async function buildApp(): Promise<FastifyInstance> {
-  const app = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>();
+  const app = Fastify({
+    logger: { level: 'warn' },
+    disableRequestLogging: true,
+  }).withTypeProvider<TypeBoxTypeProvider>();
 
   const publicUrl = process.env.API_PUBLIC_URL ?? 'http://localhost:4000';
 
