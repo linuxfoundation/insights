@@ -53,7 +53,7 @@ export default defineEventHandler(async (event): Promise<Pagination<CommunityMen
       data: response.data,
       page: page,
       pageSize: pageSize,
-      total: response.rows_before_limit_at_least,
+      total: response.rows_before_limit_at_least ?? 0,
     };
   } catch (error) {
     console.error('Error fetching mentions list:', error);

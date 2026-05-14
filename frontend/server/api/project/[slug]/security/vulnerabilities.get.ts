@@ -43,7 +43,7 @@ export default defineEventHandler(
         data: res.data,
         page,
         pageSize,
-        total: res.rows_before_limit_at_least,
+        total: res.rows_before_limit_at_least ?? 0,
       };
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404)
