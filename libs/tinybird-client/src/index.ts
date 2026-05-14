@@ -1,14 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-export { createTinybirdClient } from './client';
-export { AdaptiveSemaphore } from './adaptive-semaphore';
+export { createTinybirdClient } from './client.js';
+export { AdaptiveSemaphore } from './adaptive-semaphore.js';
 export {
   TinybirdClientError,
   TinybirdQueueFullError,
   TinybirdQueueTimeoutError,
   TinybirdProjectNotFoundError,
   TinybirdInvalidResponseError,
-} from './errors';
+} from './errors.js';
 export type {
   TinybirdClient,
   TinybirdClientConfig,
@@ -17,4 +17,4 @@ export type {
   TinybirdQuery,
   BucketCacheStorage,
   TinybirdLogger,
-} from './types';
+} from './types.js';

@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { AdaptiveSemaphore } from './adaptive-semaphore';
-import { createBucketCache } from './bucket-cache';
+import { AdaptiveSemaphore } from './adaptive-semaphore.js';
+import { createBucketCache } from './bucket-cache.js';
 import {
   TinybirdClientError,
   TinybirdInvalidResponseError,
   TinybirdProjectNotFoundError,
-} from './errors';
+} from './errors.js';
 import type {
   TinybirdClient,
   TinybirdClientConfig,
@@ -14,7 +14,7 @@ import type {
   TinybirdQuery,
   TinybirdQueryValue,
   TinybirdResponse,
-} from './types';
+} from './types.js';
 
 const DEFAULT_BASE_URL = 'https://api.us-west-2.aws.tinybird.co';
 const DEFAULT_MAX_CONCURRENT = 35;
@@ -47,7 +47,12 @@ function buildBodyString(params: TinybirdQuery): string {
 
 async function parseResponse<T>(response: Response): Promise<TinybirdResponse<T>> {
   if (!response.ok) {
-    throw new TinybirdClientError(response.status, `Tinybird request failed: ${response.statusText}`);
+    const body = await response.text().catch(() => '');
+    const detail = body ? ` — ${body.slice(0, 300)}` : '';
+    throw new TinybirdClientError(
+      response.status,
+      `Tinybird request failed: ${response.statusText}${detail}`,
+    );
   }
   const data = (await response.json()) as TinybirdResponse<T>;
   if (!data || !data.data) {
@@ -57,6 +62,10 @@ async function parseResponse<T>(response: Response): Promise<TinybirdResponse<T>
 }
 
 export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClient {
+  if (!config.token) {
+    throw new Error('createTinybirdClient: token is required');
+  }
+
   const {
     baseUrl = DEFAULT_BASE_URL,
     token,
@@ -123,6 +132,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
           JSON.stringify({
             message: 'tinybird_slow_request',
             pipe: path,
+            params: query,
             durationMs,
             wasQueued,
             active: semaphore.getActive(),
@@ -143,6 +153,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
         JSON.stringify({
           message: 'tinybird_request_error',
           pipe: path,
+          params: query,
           status,
           durationMs: Date.now() - fetchStart,
           wasQueued,
@@ -198,5 +209,4 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
   };
 }
 
-// Re-export for callers that need to build a TinybirdQuery manually
 export type { TinybirdQueryValue };

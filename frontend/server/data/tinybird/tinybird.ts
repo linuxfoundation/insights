@@ -8,7 +8,6 @@ import {
 } from '@lfx-insights/tinybird-client';
 import type { BucketCacheStorage } from '@lfx-insights/tinybird-client';
 
-// Re-export for callers that reference TinybirdResponse directly from this module
 export type { TinybirdResponse };
 
 function createNitroRedisAdapter(): BucketCacheStorage | undefined {
@@ -29,9 +28,9 @@ function createNitroRedisAdapter(): BucketCacheStorage | undefined {
   };
 }
 
-const client = createTinybirdClient({
+export const client = createTinybirdClient({
   baseUrl: process.env.NUXT_TINYBIRD_BASE_URL ?? 'https://api.us-west-2.aws.tinybird.co',
-  token: process.env.NUXT_TINYBIRD_TOKEN ?? '',
+  token: process.env.NUXT_TINYBIRD_TOKEN!,
   maxConcurrent: parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT ?? '35', 10),
   maxQueueSize: parseInt(process.env.NUXT_TINYBIRD_MAX_QUEUE_SIZE ?? '500', 10),
   queueTimeoutMs: parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS ?? '10000', 10),
@@ -42,11 +41,19 @@ const client = createTinybirdClient({
   bucketCache: createNitroRedisAdapter(),
 });
 
-type DateTimeOrPrimitive = string | number | boolean | string[] | DateTime | undefined | null;
+type DateTimeOrPrimitive =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | DateTime
+  | undefined
+  | null;
 
 function serializeQuery(
   query: Record<string, DateTimeOrPrimitive>,
-): Record<string, string | number | boolean | string[] | undefined | null> {
+): Record<string, string | number | boolean | string[] | number[] | undefined | null> {
   return Object.fromEntries(
     Object.entries(query).map(([k, v]) => [
       k,

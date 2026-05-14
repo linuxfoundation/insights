@@ -88,6 +88,7 @@ describe('createTinybirdClient — fetch()', () => {
       ok: false,
       status: 500,
       statusText: 'Internal Server Error',
+      text: () => Promise.resolve('Internal Server Error'),
       json: () => Promise.resolve({}),
     } as unknown as Response);
 

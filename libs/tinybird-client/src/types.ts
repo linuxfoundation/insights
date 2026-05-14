@@ -38,7 +38,8 @@ export interface BucketCacheStorage {
 }
 
 export interface TinybirdClientConfig {
-  baseUrl: string;
+  /** Defaults to https://api.us-west-2.aws.tinybird.co */
+  baseUrl?: string;
   token: string;
   maxConcurrent?: number;
   maxQueueSize?: number;

@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { TinybirdLogger, TinybirdQuery, TinybirdResponse, BucketCacheStorage } from './types';
+import type { TinybirdLogger, TinybirdQuery, TinybirdResponse, BucketCacheStorage } from './types.js';
 
 interface ProjectBucketResponse {
   bucketId: number;

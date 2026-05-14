@@ -66,6 +66,7 @@ describe('fetchFromTinybird throttle behavior', () => {
       ok: false,
       status: 500,
       statusText: 'Server Error',
+      text: () => Promise.resolve(''),
       json: () => Promise.resolve({}),
     } as unknown as Response);
 
@@ -82,6 +83,7 @@ describe('fetchFromTinybird throttle behavior', () => {
       ok: false,
       status: 429,
       statusText: 'Too Many Requests',
+      text: () => Promise.resolve(''),
       json: () => Promise.resolve({}),
     } as unknown as Response);
 
@@ -99,6 +101,7 @@ describe('fetchFromTinybird throttle behavior', () => {
       ok: false,
       status: 500,
       statusText: 'Server Error',
+      text: () => Promise.resolve(''),
       json: () => Promise.resolve({}),
     } as unknown as Response);
 

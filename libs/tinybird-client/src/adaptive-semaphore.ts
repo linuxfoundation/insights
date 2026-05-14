@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from './errors';
-import type { TinybirdLogger } from './types';
+import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from './errors.js';
+import type { TinybirdLogger } from './types.js';
 
 /**
  * Concurrency limiter for outbound Tinybird requests.
