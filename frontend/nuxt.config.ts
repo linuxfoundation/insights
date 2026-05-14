@@ -13,7 +13,6 @@ import image from './setup/image';
 import ogImage from './setup/og-image';
 import runtimeConfig from './setup/runtime-config';
 import vite from './setup/vite';
-import nitro from './setup/nitro';
 import { gtag, plausible } from './setup/analytics';
 import vue from './setup/vue';
 import robots from './setup/robots';
@@ -51,7 +50,6 @@ export default defineNuxtConfig({
   gtag,
   plausible,
   vite,
-  nitro,
   robots,
   ...sitemap,
   ...caching,
