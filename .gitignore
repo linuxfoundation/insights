@@ -8,6 +8,7 @@ scripts/services
 scripts/scaffold.yaml
 
 node_modules
+libs/*/dist
 .prettierrc
 **/.env*
 !.env.dist
