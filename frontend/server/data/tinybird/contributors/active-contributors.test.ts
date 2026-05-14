@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import {
   mockMonthlyTimeseries,
   mockCurrentMonthlySummary,
   mockPreviousMonthlySummary,
 } from '../../../mocks/tinybird-active-contributors-response.mock';
-import { Granularity } from '~~/types/shared/granularity';
 import type { ActiveContributorsResponse } from '~~/server/data/tinybird/contributors/active-contributors';
 
 const mockFetchFromTinybird = vi.fn();

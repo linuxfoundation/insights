@@ -49,6 +49,7 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import type { Granularity } from '@lfx-insights/types';
 import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.vue';
 import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
@@ -63,7 +64,6 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
-import type { Granularity } from '~~/types/shared/granularity';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { Widget } from '~/components/modules/widget/types/widget';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';

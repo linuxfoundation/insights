@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 import type { CallbackDataParams, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import type {
   MultipleTooltipFormatterParams,
   SingleTooltipFormatterParams,
 } from '../types/EChartTypes';
 import type { ChartData, ChartSeries } from '../types/ChartTypes';
-import { Granularity } from '~~/types/shared/granularity';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 

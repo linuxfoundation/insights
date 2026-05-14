@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityTypes } from '@lfx-insights/types';
 import type { CodeReviewEngagement } from '~~/types/development/responses.types';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';

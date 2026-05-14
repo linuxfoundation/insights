@@ -27,9 +27,9 @@
  */
 import { DateTime } from 'luxon';
 
+import { Granularity } from '@lfx-insights/types';
 import { createDataSource } from '~~/server/data/data-sources';
 import type { ActiveContributorsFilter } from '~~/server/data/types';
-import { Granularity } from '~~/types/shared/granularity';
 import { getBooleanQueryParam } from '~~/server/utils/common';
 
 export default defineEventHandler(async (event) => {

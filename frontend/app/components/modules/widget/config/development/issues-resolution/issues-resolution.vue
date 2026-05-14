@@ -91,6 +91,7 @@ import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -104,7 +105,6 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { Granularity } from '~~/types/shared/granularity';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { Widget } from '~/components/modules/widget/types/widget';
