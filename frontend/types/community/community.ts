@@ -16,13 +16,18 @@ export interface CommunityMentionsData {
   keywords: string[];
   sentimentLabel: string;
   subreddit?: string;
-  viewId: string;
+  // Tinybird schema expects Int64; Octolens may send as string or number
+  viewId: number | string;
   viewName: string;
   viewKeywords: string[];
+  language?: string;
+  bookmarked?: number;
+  authorFollowerCount?: number | null;
+  tags?: (string | null)[];
 }
 export interface OctolensWebhook {
   action: string;
-  data: CommunityMentions;
+  data: CommunityMentionsData;
 }
 
 export interface CommunityMentions extends CommunityMentionsData {
