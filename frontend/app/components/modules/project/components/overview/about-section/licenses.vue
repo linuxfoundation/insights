@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
           :key="license"
         >
           <div
-            v-if="isRepoSelected"
+            v-if="isRepoSelected || isSingleRepoProject"
             class="bg-white border border-neutral-200 h-6 rounded-full px-2.5 flex items-center gap-1 cursor-default shrink-0"
           >
             <lfx-icon
@@ -110,6 +110,8 @@ const route = useRoute();
 const isExpanded = ref(false);
 
 const isRepoSelected = computed(() => selectedRepositories.value.length > 0);
+
+const isSingleRepoProject = computed(() => projectRepos.value.length <= 1);
 
 const activeRepos = computed(() => (isRepoSelected.value ? selectedRepositories.value : projectRepos.value));
 
