@@ -58,7 +58,9 @@ SPDX-License-Identifier: MIT
               <div class="text-neutral-900 font-normal whitespace-nowrap">{{ formatLicense(license) }}</div>
             </div>
             <template #content>
-              <div class="bg-white border border-neutral-100 rounded-xl shadow-lg p-2 flex flex-col overflow-hidden">
+              <div
+                class="bg-white border border-neutral-100 rounded-xl shadow-lg p-2 flex flex-col max-h-56 overflow-y-auto"
+              >
                 <div
                   v-for="repo of getReposForLicense(license)"
                   :key="repo.url"
@@ -128,7 +130,7 @@ const activeLicenses = computed(() => {
 const displayedLicenses = computed(() => (isExpanded.value ? activeLicenses.value : activeLicenses.value.slice(0, 5)));
 
 const isSharedByAllRepos = (license: string): boolean =>
-  projectRepos.value.length > 0 && projectRepos.value.every((repo) => repo.licenses?.includes(license));
+  projectRepos.value.length > 1 && projectRepos.value.every((repo) => repo.licenses?.includes(license));
 
 const getReposForLicense = (license: string) => projectRepos.value.filter((repo) => repo.licenses?.includes(license));
 
