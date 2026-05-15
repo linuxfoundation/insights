@@ -109,23 +109,17 @@ The build must succeed. If it fails:
 
 ## Check 6: Protected Files Check
 
-Verify no protected infrastructure files were modified:
+The authoritative list of protected files is maintained in `.claude/hooks/guard-protected-files.sh`. Cross-reference the diff against that hook — do not rely on any hardcoded list here, which may be stale.
 
 ```bash
+# Get changed files
 git diff --name-only origin/main...HEAD
+
+# Extract the protected path patterns from the hook
+grep -E "^\s+(frontend/|\.husky/|eslint|\.prettier|CLAUDE|\.claude/|scripts/|COPYRIGHT|package\.json|pnpm-lock)" .claude/hooks/guard-protected-files.sh
 ```
 
-**Flag any changes to these files** — they should NOT be modified without code owner approval:
-
-- `frontend/nuxt.config.ts`
-- `frontend/setup/modules.ts`, `vite.ts`, `runtime-config.ts`, `primevue.ts`
-- `frontend/server/middleware/*`
-- `frontend/app/plugins/auth.client.ts`, `vue-query.ts`
-- `frontend/server/middleware/jwt-auth.ts`
-- `frontend/package.json`, `package.json`, `pnpm-lock.yaml`
-- `CLAUDE.md`, `.claude/settings.json`
-- `scripts/add-license.js`, `COPYRIGHT_HEADER.txt`, `COPYRIGHT_HEADER_vue.txt`
-- `.husky/*`, `eslint.config.*`, `.prettierrc*`
+For each changed file, check whether it matches any `case` pattern or glob (`[[ ... == glob ]]`) in the hook. If it does, flag it — those files should NOT be modified without code owner approval.
 
 If protected files appear in the diff, warn the contributor and ask them to revert or get code owner approval.
 

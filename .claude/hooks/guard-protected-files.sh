@@ -8,11 +8,18 @@
 
 set -euo pipefail
 
-# Read tool input from stdin (JSON with file_path field)
+# Read tool input from stdin (JSON with tool_input.file_path field)
 INPUT=$(cat)
 
-# Extract file_path from the JSON input
-FILE_PATH=$(echo "$INPUT" | grep -o '"file_path"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"file_path"[[:space:]]*:[[:space:]]*"//;s/"$//' || true)
+# Extract file_path from nested tool_input (PreToolUse payload structure)
+FILE_PATH=$(echo "$INPUT" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    print(d.get('tool_input', {}).get('file_path', '') or d.get('file_path', ''))
+except Exception:
+    pass
+" 2>/dev/null || true)
 
 # If no file_path found, allow the operation
 if [ -z "$FILE_PATH" ]; then

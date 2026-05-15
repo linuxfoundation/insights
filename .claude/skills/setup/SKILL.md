@@ -35,10 +35,8 @@ If Docker is not running: start Docker Desktop before continuing.
 Run from the repo root:
 
 ```bash
-pnpm install --filter lfx-insights
+pnpm install --filter frontend
 ```
-
-> The workspace filter uses the package name (`lfx-insights`), not the directory name (`frontend`).
 
 ---
 

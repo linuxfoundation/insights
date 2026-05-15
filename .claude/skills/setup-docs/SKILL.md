@@ -9,7 +9,7 @@ allowed-tools: Bash
 
 # Local Docs, Blog & Storybook Setup
 
-These are all independent of the main dev server — you don't need the database or Auth0 configured to run any of them. Just make sure dependencies are installed first (`pnpm install --filter lfx-insights` from the repo root).
+These are all independent of the main dev server — you don't need the database or Auth0 configured to run any of them. Just make sure dependencies are installed first (`pnpm install --filter frontend` from the repo root).
 
 All commands run from the `frontend/` directory.
 
@@ -63,5 +63,5 @@ cd frontend && pnpm storybook:build
 ## Troubleshooting
 
 - **Port already in use** — kill the process using the port or change it with `--port <N>`
-- **Missing dependencies** — run `pnpm install --filter lfx-insights` from the repo root first
+- **Missing dependencies** — run `pnpm install --filter frontend` from the repo root first
 - **Storybook build errors** — usually a component import issue; check the console output for the failing story
