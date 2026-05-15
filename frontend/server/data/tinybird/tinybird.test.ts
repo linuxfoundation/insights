@@ -1,126 +1,95 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { beforeEach, afterAll, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DateTime } from 'luxon';
 
-const mockTinybirdBaseUrl = 'https://tb.lf.org';
-const mockTinybirdToken = 'mockToken';
+// Mock the entire lib so the shim is isolated
+const mockClientFetch = vi.fn();
+const mockClientPost = vi.fn();
+const mockClientIngest = vi.fn();
 
-const mockTinybirdResult = {
-  data: [
-    {
-      key: 'value',
-    },
-  ],
-  meta: [
-    {
-      name: 'startDate',
-      type: 'Nullable(Date)',
-    },
-    {
-      name: 'endDate',
-      type: 'Nullable(Date)',
-    },
-    {
-      name: 'contributorCount',
-      type: 'UInt64',
-    },
-  ],
-  rows: 13,
-  statistics: {
-    elapsed: 0.303075811,
-    rows_read: 349219,
-    bytes_read: 27822157,
+vi.mock('@lfx-insights/tinybird-client', () => ({
+  createTinybirdClient: () => ({
+    fetch: mockClientFetch,
+    post: mockClientPost,
+    ingest: mockClientIngest,
+    getBucketIdForProject: vi.fn(),
+  }),
+  TinybirdClientError: class TinybirdClientError extends Error {
+    constructor(
+      public statusCode: number,
+      message: string,
+    ) {
+      super(message);
+    }
   },
-};
-
-const mockOfetch = vi.fn();
-
-vi.mock('ofetch', () => ({
-  ofetch: mockOfetch,
 }));
 
-describe('fetchFromTinybird', () => {
+const mockResult = {
+  data: [{ key: 'value' }],
+  meta: [{ name: 'key', type: 'String' }],
+  rows: 1,
+  statistics: { elapsed: 0.1, rows_read: 100, bytes_read: 1000 },
+};
+
+describe('fetchFromTinybird shim', () => {
   beforeEach(() => {
-    process.env.NUXT_TINYBIRD_BASE_URL = mockTinybirdBaseUrl;
-    process.env.NUXT_TINYBIRD_TOKEN = mockTinybirdToken;
-
-    mockOfetch.mockClear();
-    mockOfetch.mockResolvedValue(mockTinybirdResult);
+    mockClientFetch.mockReset().mockResolvedValue(mockResult);
+    mockClientPost.mockReset().mockResolvedValue(mockResult);
+    mockClientIngest.mockReset().mockResolvedValue(true);
   });
 
-  afterAll(async () => {
-    delete process.env.NUXT_TINYBIRD_BASE_URL;
-    delete process.env.NUXT_TINYBIRD_TOKEN;
-    vi.clearAllMocks();
-  });
-
-  it('should not send empty strings, undefined, or null values in the query', async () => {
+  it('passes query through to the client', async () => {
     const { fetchFromTinybird } = await import('./tinybird');
 
-    const query = {
-      param1: 'value1',
-      param2: '',
-      param3: undefined,
-      param4: null,
-    };
-
-    await fetchFromTinybird('/mock-path', query);
-
-    const calledUrl = mockOfetch.mock.calls[0][0];
-    expect(calledUrl).toMatch(`${mockTinybirdBaseUrl}/mock-path?param1=value1`);
-    const calledOptions = mockOfetch.mock.calls[0][1];
-    expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
-  });
-
-  it('uses the default base URL if tinybirdBaseUrl is not defined', async () => {
-    const { fetchFromTinybird } = await import('./tinybird');
-
-    delete process.env.NUXT_TINYBIRD_BASE_URL;
     await fetchFromTinybird('/mock-path', { key: 'value' });
-    const calledUrl = mockOfetch.mock.calls[0][0];
-    expect(calledUrl).toBe('https://api.us-west-2.aws.tinybird.co/mock-path?key=value');
-    process.env.NUXT_TINYBIRD_BASE_URL = mockTinybirdBaseUrl; // restore for other tests
+
+    expect(mockClientFetch).toHaveBeenCalledWith('/mock-path', { key: 'value' });
   });
 
-  it('throws if tinybirdToken is not defined', async () => {
+  it('serializes DateTime values to tinybird date strings', async () => {
     const { fetchFromTinybird } = await import('./tinybird');
 
-    delete process.env.NUXT_TINYBIRD_TOKEN;
-    await expect(fetchFromTinybird('/mock-path', { key: 'value' })).rejects.toThrowError(
-      'Tinybird token is not defined',
-    );
-    process.env.NUXT_TINYBIRD_TOKEN = mockTinybirdToken; // restore for other tests
-  });
-
-  it('makes a request with the correct URL and query', async () => {
-    const { fetchFromTinybird } = await import('./tinybird');
-
-    const result = await fetchFromTinybird<{ key: string }>('/mock-path', {
-      key: 'value',
+    await fetchFromTinybird('/mock-path', {
+      dateParam: DateTime.fromISO('2025-03-20T12:30:00'),
     });
 
-    const calledUrl = mockOfetch.mock.calls[0][0];
-    expect(calledUrl).toBe(`${mockTinybirdBaseUrl}/mock-path?key=value`);
-    const calledOptions = mockOfetch.mock.calls[0][1];
-    expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
-    expect(result).toEqual(mockTinybirdResult);
+    const [, query] = mockClientFetch.mock.calls[0] as [string, Record<string, unknown>];
+    expect(query.dateParam).toBe('2025-03-20 00:00:00');
   });
 
-  it('should correctly format DateTime objects in the query', async () => {
+  it('passes undefined/null values through (client filters them)', async () => {
     const { fetchFromTinybird } = await import('./tinybird');
 
-    const query = {
-      dateParam: DateTime.fromISO('2025-03-20T12:30:00'),
-    };
+    await fetchFromTinybird('/mock-path', {
+      present: 'yes',
+      missing: undefined,
+      empty: null,
+    });
 
-    await fetchFromTinybird('/mock-path', query);
+    const [, query] = mockClientFetch.mock.calls[0] as [string, Record<string, unknown>];
+    expect(query.present).toBe('yes');
+    expect(query.missing).toBeUndefined();
+    expect(query.empty).toBeNull();
+  });
 
-    const calledUrl = mockOfetch.mock.calls[0][0];
-    expect(calledUrl).toEqual(
-      `${mockTinybirdBaseUrl}/mock-path?dateParam=2025-03-20%2000%3A00%3A00`,
-    );
-    const calledOptions = mockOfetch.mock.calls[0][1];
-    expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
+  it('re-throws TinybirdClientError as H3 createError with the same statusCode', async () => {
+    const { TinybirdClientError } = await import('@lfx-insights/tinybird-client');
+    mockClientFetch.mockRejectedValue(new TinybirdClientError(429, 'rate limited'));
+
+    const { fetchFromTinybird } = await import('./tinybird');
+
+    await expect(fetchFromTinybird('/mock-path', {})).rejects.toMatchObject({
+      statusCode: 429,
+    });
+  });
+
+  it('re-throws non-TinybirdClientError errors unchanged', async () => {
+    const original = new Error('network failure');
+    mockClientFetch.mockRejectedValue(original);
+
+    const { fetchFromTinybird } = await import('./tinybird');
+
+    await expect(fetchFromTinybird('/mock-path', {})).rejects.toThrow('network failure');
   });
 });

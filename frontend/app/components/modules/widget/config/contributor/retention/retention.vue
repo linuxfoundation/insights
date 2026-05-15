@@ -50,6 +50,7 @@ import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -59,7 +60,6 @@ import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
-import { Granularity } from '~~/types/shared/granularity';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { Widget } from '~/components/modules/widget/types/widget';
 import {

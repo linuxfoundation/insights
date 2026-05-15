@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 import { computed, type Ref } from 'vue';
+import { Granularity } from '@lfx-insights/types';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 import { Widget } from '~/components/modules/widget/types/widget';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
-import { Granularity } from '~~/types/shared/granularity';
 
 interface PopularityExcludedWidgetsParams {
   projectSlug: Ref<string>;

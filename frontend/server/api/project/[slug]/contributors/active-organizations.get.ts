@@ -19,9 +19,9 @@
  * }
  */
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import type { ActiveOrganizationsFilter } from '~~/server/data/types';
 import { createDataSource } from '~~/server/data/data-sources';
-import { Granularity } from '~~/types/shared/granularity';
 import { getBooleanQueryParam } from '~~/server/utils/common';
 
 /**

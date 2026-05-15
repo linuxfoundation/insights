@@ -1,11 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
+import { ActivityTypes, Granularity } from '@lfx-insights/types';
 import type { RetentionFilter } from '~~/server/data/types';
 import { DemographicType } from '~~/server/data/types';
 import { createDataSource } from '~~/server/data/data-sources';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { Granularity } from '~~/types/shared/granularity';
 import { getBooleanQueryParam } from '~~/server/utils/common';
 
 /**

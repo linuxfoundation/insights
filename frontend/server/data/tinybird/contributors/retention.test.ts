@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import {
   mockContributorRetentionData,
   mockOrganizationRetentionData,
 } from '../../../mocks/tinybird-retention-response.mock';
 import { DemographicType } from '~~/server/data/types';
-import { Granularity } from '~~/types/shared/granularity';
 import type {
   RetentionDataPoint,
   RetentionResponse,

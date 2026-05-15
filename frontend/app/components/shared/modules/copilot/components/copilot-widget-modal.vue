@@ -53,12 +53,12 @@ SPDX-License-Identifier: MIT
 import { ref, computed, nextTick } from 'vue';
 import { storeToRefs } from 'pinia';
 // import LfxIcon from '~/components/uikit/icon/icon.vue'
+import type { Granularity } from '@lfx-insights/types';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities } from '~/components/shared/types/granularity';
 
 const props = defineProps<{

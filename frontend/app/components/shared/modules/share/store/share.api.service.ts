@@ -3,9 +3,9 @@
 import type { QueryFunction } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
+import { Granularity } from '@lfx-insights/types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { ActiveContributors } from '~~/types/contributors/responses.types';
-import { Granularity } from '~~/types/shared/granularity';
 
 export interface ActiveContributorsQueryParams {
   projectSlug: string;
