@@ -58,6 +58,10 @@ export default defineConfig({
           { text: 'Data Sources', link: '/introduction/data-sources/index.md' },
           { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
           {
+            text: 'Contributor Affiliations',
+            link: '/introduction/contributor-affiliations/index.md',
+          },
+          {
             text: 'Code contributions & Collaborations',
             link: '/introduction/contributions/index.md',
           },
