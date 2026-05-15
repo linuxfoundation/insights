@@ -44,8 +44,6 @@ pnpm install --filter lfx-insights
 
 ## Step 3: Environment variables
 
-> **Note:** Claude cannot read or write `frontend/.env` — you must create and edit it yourself.
-
 Create `frontend/.env` and populate it with the values below. Ask a team member for the secret values — they are shared via the team's secrets manager.
 
 **Required secrets (get from team):**

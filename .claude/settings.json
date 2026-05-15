@@ -32,6 +32,7 @@
         "Bash(git log *)",
         "Bash(git checkout *)",
         "Bash(git commit *)",
+        "Bash(git push *)",
         "Read",
         "Write",
         "Edit"

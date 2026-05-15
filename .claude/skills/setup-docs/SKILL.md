@@ -63,5 +63,5 @@ cd frontend && pnpm storybook:build
 ## Troubleshooting
 
 - **Port already in use** — kill the process using the port or change it with `--port <N>`
-- **Missing dependencies** — run `pnpm install --filter frontend` from the repo root first
+- **Missing dependencies** — run `pnpm install --filter lfx-insights` from the repo root first
 - **Storybook build errors** — usually a component import issue; check the console output for the failing story
