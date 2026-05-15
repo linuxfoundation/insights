@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <lfx-card>
     <div class="p-5">
       <!-- Card header -->
-      <div class="flex gap-3 items-center mb-5">
+      <div class="flex flex-wrap gap-3 items-center mb-5">
         <div
           class="size-12 bg-white border border-neutral-200 rounded-full flex items-center justify-center flex-shrink-0"
         >
@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
           <h2 class="text-heading-5 font-bold font-secondary">Critical Projects</h2>
           <p class="text-xs text-neutral-500 mt-0.5">{{ orgDisplayName }} contributors are involved in</p>
         </div>
-        <span class="text-xs text-neutral-500 flex items-center gap-1.5 flex-shrink-0">
+        <span class="w-full sm:w-auto text-xs text-neutral-500 flex items-center gap-1.5 sm:flex-shrink-0">
           <lfx-icon
             name="arrow-down-wide-short"
             :size="12"
@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
       <!-- Loading -->
       <template v-if="isLoading">
         <div class="lfx-table">
-          <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2">
+          <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2 !hidden sm:!flex">
             <div class="flex-[2]">Project</div>
             <div class="flex-1">Technical influence</div>
             <div class="flex-1">Code contributors</div>
@@ -73,7 +73,7 @@ SPDX-License-Identifier: MIT
       <!-- Table -->
       <template v-else-if="projects?.length">
         <div class="lfx-table has-hover">
-          <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2">
+          <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2 !hidden sm:!flex">
             <div class="flex-[2]">Project</div>
             <div class="flex-1 flex items-center gap-1">
               Technical influence
@@ -109,55 +109,61 @@ SPDX-License-Identifier: MIT
             class="lfx-table-row no-underline !text-neutral-900 border-b border-neutral-100 last:border-b-0"
           >
             <!-- Project: logo + name -->
-            <div class="flex items-center gap-3 flex-[2] min-w-0">
-              <lfx-organization-logo
-                :src="project.projectLogo"
-                size="large"
-                :alt="project.projectName"
-                class="flex-shrink-0"
-              />
-              <span class="font-medium text-sm truncate">{{ project.projectName }}</span>
-            </div>
-
-            <!-- Technical influence -->
-            <div class="flex-1 flex items-center gap-1.5">
-              <div
-                class="org-influence-bars"
-                :class="influenceClass(project.technicalInfluence)"
-              >
-                <span class="org-bar org-bar-1" />
-                <span class="org-bar org-bar-2" />
-                <span class="org-bar org-bar-3" />
+            <div class="flex items-center gap-3 flex-1 sm:flex-[2] min-w-0 overflow-hidden">
+              <div class="org-project-logo-wrap flex-shrink-0 flex items-center">
+                <lfx-organization-logo
+                  :src="project.projectLogo"
+                  size="large"
+                  :alt="project.projectName"
+                />
               </div>
-              <span class="text-sm">{{ influenceLabel(project.technicalInfluence) }}</span>
+              <span class="font-medium text-xs sm:text-sm truncate min-w-0">{{ project.projectName }}</span>
             </div>
 
-            <!-- Code contributors -->
-            <div class="flex-1 text-sm flex items-center gap-2">
+            <!-- Data columns: inline group on mobile, transparent on sm+ -->
+            <div class="flex flex-row gap-3 items-center flex-shrink-0 sm:contents">
+              <!-- Technical influence -->
+              <div class="sm:flex-1 flex items-center gap-1.5">
+                <div
+                  class="org-influence-bars"
+                  :class="influenceClass(project.technicalInfluence)"
+                >
+                  <span class="org-bar org-bar-1" />
+                  <span class="org-bar org-bar-2" />
+                  <span class="org-bar org-bar-3" />
+                </div>
+                <span class="text-xs sm:text-sm">{{ influenceLabel(project.technicalInfluence) }}</span>
+              </div>
+
+              <!-- Code contributors -->
+              <div class="sm:flex-1 text-xs sm:text-sm flex items-center gap-2">
+                <lfx-icon
+                  name="people-group"
+                  :size="14"
+                  class="text-neutral-500 flex-shrink-0 org-row-icon"
+                />
+                {{ formatNumber(project.contributorCount) }}
+              </div>
+
+              <!-- Activities -->
+              <div class="sm:flex-1 text-xs sm:text-sm flex items-center gap-2">
+                <lfx-icon
+                  name="code"
+                  :size="14"
+                  class="text-neutral-500 flex-shrink-0 org-row-icon"
+                />
+                {{ formatNumber(project.activityCount) }}
+              </div>
+            </div>
+
+            <!-- Chevron — hidden on mobile -->
+            <span class="hidden sm:flex w-5 flex-shrink-0 items-center justify-center">
               <lfx-icon
-                name="people-group"
-                :size="14"
-                class="text-neutral-500 flex-shrink-0"
+                name="angle-right"
+                :size="16"
+                class="text-neutral-400"
               />
-              {{ formatNumber(project.contributorCount) }}
-            </div>
-
-            <!-- Activities -->
-            <div class="flex-1 text-sm flex items-center gap-2">
-              <lfx-icon
-                name="code"
-                :size="14"
-                class="text-neutral-500 flex-shrink-0"
-              />
-              {{ formatNumber(project.activityCount) }}
-            </div>
-
-            <!-- Chevron -->
-            <lfx-icon
-              name="angle-right"
-              :size="16"
-              class="text-neutral-400 flex-shrink-0 w-5"
-            />
+            </span>
           </nuxt-link>
         </div>
       </template>
@@ -253,6 +259,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.org-project-logo-wrap {
+  :deep(.c-organization-logo) {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  @media (max-width: 767px) {
+    :deep(.c-organization-logo) {
+      width: 2rem !important;
+      height: 2rem !important;
+      overflow: hidden;
+    }
+
+    :deep(.p-avatar),
+    :deep(.p-avatar-image) {
+      width: 2rem !important;
+      height: 2rem !important;
+      min-width: 2rem !important;
+    }
+
+    :deep(img) {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .org-row-icon {
+    font-size: 11px !important;
+  }
+}
+
 .has-hover .lfx-table-row {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;

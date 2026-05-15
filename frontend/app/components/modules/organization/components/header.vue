@@ -13,11 +13,11 @@ SPDX-License-Identifier: MIT
       <section class="container">
         <div
           class="ease-linear transition-all"
-          :class="scrollTop > 50 ? 'py-3 lg:py-4' : 'py-3 lg:py-6'"
+          :class="isSticky ? 'py-3 lg:py-4' : 'py-3 lg:py-6'"
         >
           <div
             class="flex gap-4 ease-linear transition-all"
-            :class="scrollTop > 50 ? 'items-center' : 'items-start'"
+            :class="isSticky ? 'items-center' : 'items-start'"
           >
             <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
               <lfx-icon-button
@@ -26,159 +26,228 @@ SPDX-License-Identifier: MIT
               />
             </lfx-back>
 
+            <!-- Logo: desktop only (in main flex row) -->
             <lfx-organization-logo
               :src="props.organization?.logo || ''"
-              :size="scrollTop > 50 ? 'normal' : 'large'"
+              :size="isSticky ? 'normal' : 'large'"
               :alt="props.organization?.displayName"
-              class="flex-shrink-0 ease-linear transition-all"
+              class="!hidden sm:!block flex-shrink-0 ease-linear transition-all"
             />
 
             <div
-              class="min-w-0 flex-1 flex justify-between gap-3"
-              :class="scrollTop > 50 ? 'items-center' : 'items-start'"
+              class="min-w-0 flex-1 flex flex-col sm:flex-row sm:gap-3 ease-linear transition-all"
+              :class="isSticky ? 'sm:items-center' : 'sm:items-start'"
             >
-              <!-- Left: name / description / meta -->
-              <div class="min-w-0 flex-1">
-                <!-- Name row — membership badge (outline) appears here in sticky state -->
-                <div class="flex items-center gap-3 flex-wrap">
-                  <h1
-                    class="font-bold font-secondary ease-linear transition-all duration-200 text-heading-4 line-clamp-1 truncate"
-                    :class="scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'"
-                  >
-                    {{ props.organization?.displayName }}
-                  </h1>
-                  <lfx-tooltip
-                    v-if="props.organization?.membershipTier && scrollTop > 50"
-                    placement="top"
-                  >
-                    <a
-                      href="https://www.linuxfoundation.org/about/members"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="no-underline flex-shrink-0 inline-flex items-center"
+              <!-- Mobile top row: always visible, middle content transitions -->
+              <div class="flex sm:hidden items-center gap-3">
+                <lfx-organization-logo
+                  :src="props.organization?.logo || ''"
+                  size="large"
+                  :alt="props.organization?.displayName"
+                  class="flex-shrink-0"
+                />
+
+                <!-- Middle: spacer when expanded, name+tag when sticky -->
+                <div class="flex-1 min-w-0 overflow-hidden">
+                  <Transition name="org-mobile-name">
+                    <div
+                      v-if="isSticky"
+                      class="flex flex-col justify-center gap-0.5 min-w-0 overflow-hidden"
                     >
-                      <lfx-tag
-                        size="small"
-                        type="outline"
-                        class="hover:!bg-neutral-50 transition-colors"
+                      <h1 class="font-bold font-secondary text-heading-4 truncate min-w-0">
+                        {{ props.organization?.displayName }}
+                      </h1>
+                      <lfx-tooltip
+                        v-if="props.organization?.membershipTier"
+                        placement="top"
                       >
-                        <img
-                          src="~/assets/images/icon.svg"
-                          alt=""
-                          class="inline-block w-3.5 h-3.5 mr-1 align-middle"
-                        />{{ tierLabel }}
-                      </lfx-tag>
-                    </a>
-                    <template #content>
-                      <span class="whitespace-nowrap inline-flex items-center gap-1">
-                        Know more about Linux Foundation memberships
-                        <lfx-icon
-                          name="arrow-up-right-from-square"
-                          :size="10"
-                        />
-                      </span>
-                    </template>
-                  </lfx-tooltip>
+                        <a
+                          href="https://www.linuxfoundation.org/about/members"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="no-underline inline-flex items-center"
+                        >
+                          <lfx-tag
+                            size="small"
+                            type="outline"
+                            class="hover:!bg-neutral-50 transition-colors !text-[10px] !px-1 !py-0"
+                          >
+                            <img
+                              src="~/assets/images/icon.svg"
+                              alt=""
+                              class="inline-block w-3 h-3 mr-0.5 align-middle"
+                            />{{ tierLabel }}
+                          </lfx-tag>
+                        </a>
+                        <template #content>
+                          <span class="whitespace-nowrap inline-flex items-center gap-1">
+                            Know more about Linux Foundation memberships
+                            <lfx-icon
+                              name="arrow-up-right-from-square"
+                              :size="10"
+                            />
+                          </span>
+                        </template>
+                      </lfx-tooltip>
+                    </div>
+                  </Transition>
                 </div>
 
-                <!-- Description — hidden in sticky state -->
-                <p
-                  v-if="props.organization?.description && scrollTop <= 50"
-                  class="text-neutral-500 text-sm mt-1 max-w-3xl"
-                >
-                  {{ props.organization?.description }}
-                </p>
+                <lfx-icon-button
+                  type="outline"
+                  icon="share-nodes"
+                  class="flex-shrink-0"
+                  @click="handleShare"
+                />
+              </div>
 
-                <!-- Meta row — hidden in sticky state -->
-                <div
-                  v-if="(props.organization?.membershipTier || hasMetadata) && scrollTop <= 50"
-                  class="flex items-center gap-1.5 mt-5 flex-wrap"
-                >
-                  <!-- Membership badge — outline with border -->
-                  <lfx-tooltip
-                    v-if="props.organization?.membershipTier"
-                    placement="top"
-                  >
-                    <a
-                      href="https://www.linuxfoundation.org/about/members"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="no-underline inline-flex items-center"
+              <!-- Content: name / description / meta — collapses on mobile when sticky -->
+              <div
+                class="org-header-body-wrap sm:flex-1 sm:min-w-0"
+                :class="{ 'org-header-body-wrap--hidden': isSticky }"
+              >
+                <div class="org-header-body min-w-0">
+                  <!-- Name row — membership badge (outline) appears here in desktop sticky state -->
+                  <div class="flex items-center gap-3 flex-wrap">
+                    <h1
+                      class="font-bold font-secondary ease-linear transition-all duration-200 text-heading-4 line-clamp-1 truncate"
+                      :class="isSticky ? 'md:text-heading-3' : 'md:text-heading-2'"
                     >
-                      <lfx-tag
-                        size="small"
-                        type="outline"
-                        class="hover:!bg-neutral-50 transition-colors"
+                      {{ props.organization?.displayName }}
+                    </h1>
+                    <lfx-tooltip
+                      v-if="props.organization?.membershipTier && isSticky"
+                      placement="top"
+                    >
+                      <a
+                        href="https://www.linuxfoundation.org/about/members"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="no-underline flex-shrink-0 inline-flex items-center"
                       >
-                        <img
-                          src="~/assets/images/icon.svg"
-                          alt=""
-                          class="inline-block w-3.5 h-3.5 mr-1 align-middle"
-                        />{{ tierLabel }}
-                      </lfx-tag>
-                    </a>
-                    <template #content>
-                      <span class="whitespace-nowrap inline-flex items-center gap-1">
-                        Know more about Linux Foundation memberships
-                        <lfx-icon
-                          name="arrow-up-right-from-square"
-                          :size="10"
-                        />
-                      </span>
-                    </template>
-                  </lfx-tooltip>
+                        <lfx-tag
+                          size="small"
+                          type="outline"
+                          class="hover:!bg-neutral-50 transition-colors"
+                        >
+                          <img
+                            src="~/assets/images/icon.svg"
+                            alt=""
+                            class="inline-block w-3.5 h-3.5 mr-1 align-middle"
+                          />{{ tierLabel }}
+                        </lfx-tag>
+                      </a>
+                      <template #content>
+                        <span class="whitespace-nowrap inline-flex items-center gap-1">
+                          Know more about Linux Foundation memberships
+                          <lfx-icon
+                            name="arrow-up-right-from-square"
+                            :size="10"
+                          />
+                        </span>
+                      </template>
+                    </lfx-tooltip>
+                  </div>
 
-                  <!-- Separator before employees -->
-                  <span
-                    v-if="props.organization?.membershipTier && props.organization?.employeeCount"
-                    class="text-neutral-400 select-none"
-                    >・</span
+                  <!-- Description — hidden in sticky state -->
+                  <p
+                    v-if="props.organization?.description && !isSticky"
+                    class="text-neutral-500 text-sm mt-1 max-w-3xl"
                   >
+                    {{ props.organization?.description }}
+                  </p>
 
-                  <!-- Employees — no border, with icon -->
-                  <lfx-tag
-                    v-if="props.organization?.employeeCount"
-                    size="small"
-                    type="transparent"
-                    class="!text-neutral-900 !font-normal"
+                  <!-- Meta row — hidden in sticky state -->
+                  <div
+                    v-if="(props.organization?.membershipTier || hasMetadata) && !isSticky"
+                    class="flex items-center gap-1.5 mt-5 flex-wrap"
                   >
-                    <lfx-icon
-                      name="people-group"
-                      :size="12"
-                      class="mr-1"
-                    />
-                    {{ employeeRange }} employees
-                  </lfx-tag>
+                    <!-- Membership badge — outline with border -->
+                    <lfx-tooltip
+                      v-if="props.organization?.membershipTier"
+                      placement="top"
+                    >
+                      <a
+                        href="https://www.linuxfoundation.org/about/members"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="no-underline inline-flex items-center"
+                      >
+                        <lfx-tag
+                          size="small"
+                          type="outline"
+                          class="hover:!bg-neutral-50 transition-colors"
+                        >
+                          <img
+                            src="~/assets/images/icon.svg"
+                            alt=""
+                            class="inline-block w-3.5 h-3.5 mr-1 align-middle"
+                          />{{ tierLabel }}
+                        </lfx-tag>
+                      </a>
+                      <template #content>
+                        <span class="whitespace-nowrap inline-flex items-center gap-1">
+                          Know more about Linux Foundation memberships
+                          <lfx-icon
+                            name="arrow-up-right-from-square"
+                            :size="10"
+                          />
+                        </span>
+                      </template>
+                    </lfx-tooltip>
 
-                  <!-- Separator before industry -->
-                  <span
-                    v-if="
-                      props.organization?.industry?.length &&
-                      (props.organization?.membershipTier || props.organization?.employeeCount)
-                    "
-                    class="text-neutral-400 select-none"
-                    >・</span
-                  >
+                    <!-- Separator before employees -->
+                    <span
+                      v-if="props.organization?.membershipTier && props.organization?.employeeCount"
+                      class="text-neutral-400 select-none"
+                      >・</span
+                    >
 
-                  <!-- Industry — no border, with icon -->
-                  <lfx-tag
-                    v-if="props.organization?.industry?.length"
-                    size="small"
-                    type="transparent"
-                    class="!text-neutral-900 !font-normal"
-                  >
-                    <lfx-icon
-                      name="tag"
-                      :size="12"
-                      class="mr-1"
-                    />
-                    {{ props.organization.industry.join(', ') }}
-                  </lfx-tag>
+                    <!-- Employees — no border, with icon -->
+                    <lfx-tag
+                      v-if="props.organization?.employeeCount"
+                      size="small"
+                      type="transparent"
+                      class="!text-neutral-900 !font-normal"
+                    >
+                      <lfx-icon
+                        name="people-group"
+                        :size="12"
+                        class="mr-1"
+                      />
+                      {{ employeeRange }} employees
+                    </lfx-tag>
+
+                    <!-- Separator before industry -->
+                    <span
+                      v-if="
+                        props.organization?.industry?.length &&
+                        (props.organization?.membershipTier || props.organization?.employeeCount)
+                      "
+                      class="text-neutral-400 select-none"
+                      >・</span
+                    >
+
+                    <!-- Industry — no border, with icon -->
+                    <lfx-tag
+                      v-if="props.organization?.industry?.length"
+                      size="small"
+                      type="transparent"
+                      class="!text-neutral-900 !font-normal"
+                    >
+                      <lfx-icon
+                        name="tag"
+                        :size="12"
+                        class="mr-1"
+                      />
+                      {{ props.organization.industry.join(', ') }}
+                    </lfx-tag>
+                  </div>
                 </div>
               </div>
 
-              <!-- Right: actions — always visible -->
-              <div class="flex items-center gap-2 flex-shrink-0">
+              <!-- Right: actions — desktop only -->
+              <div class="hidden sm:flex items-center gap-2 flex-shrink-0">
                 <lfx-button
                   type="ghost"
                   size="medium"
@@ -252,6 +321,8 @@ const { scrollTop } = useScroll();
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { openShareModal } = useShareStore();
 
+const isSticky = computed(() => scrollTop.value > 80);
+
 const employeeRange = computed(() => {
   const count = props.organization?.employeeCount;
   if (!count) return '';
@@ -289,3 +360,47 @@ export default {
   name: 'LfxOrgHeader',
 };
 </script>
+
+<style lang="scss" scoped>
+/* Mobile name/tag fade in when sticky */
+.org-mobile-name-enter-active,
+.org-mobile-name-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.org-mobile-name-enter-from,
+.org-mobile-name-leave-to {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* Mobile content area collapses smoothly when sticky — grid trick avoids max-height glitch */
+.org-header-body-wrap {
+  @media (max-width: 767px) {
+    display: grid;
+    grid-template-rows: 1fr;
+    margin-top: 0.75rem; /* gap between top row and content — on wrapper so it collapses cleanly */
+    opacity: 1;
+    transition:
+      grid-template-rows 0.3s ease,
+      margin-top 0.3s ease,
+      opacity 0.25s ease;
+
+    &--hidden {
+      grid-template-rows: 0fr;
+      margin-top: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+
+.org-header-body {
+  @media (max-width: 767px) {
+    overflow: hidden;
+    min-height: 0; /* required for grid-template-rows: 0fr to fully collapse */
+  }
+}
+</style>

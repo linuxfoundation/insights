@@ -111,7 +111,11 @@ export default {
 <style lang="scss" scoped>
 .org-kpi-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 }
 
 .org-kpi-item {
@@ -119,7 +123,12 @@ export default {
   padding: 1.25rem;
 
   & + & {
-    border-left: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+
+    @media (min-width: 768px) {
+      border-top: none;
+      border-left: 1px solid #e2e8f0;
+    }
   }
 }
 

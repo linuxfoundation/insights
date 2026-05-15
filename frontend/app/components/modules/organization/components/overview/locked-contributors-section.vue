@@ -20,7 +20,8 @@ SPDX-License-Identifier: MIT
           button-style="pill"
           size="medium"
         >
-          Check your organization data in LFX Self-Serve
+          <span class="sm:hidden">Open in LFX Self-Serve</span>
+          <span class="hidden sm:inline">Check your organization data in LFX Self-Serve</span>
           <lfx-icon
             name="arrow-up-right-from-square"
             :size="12"

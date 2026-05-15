@@ -34,21 +34,27 @@ export default {
 .org-overview {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding-top: 2.5rem;
+  gap: 1.25rem;
+  padding-top: 1.25rem;
   padding-bottom: 0;
+
+  @media (min-width: 768px) {
+    gap: 2rem;
+    padding-top: 2.5rem;
+  }
 }
 
 .org-charts-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1.25rem;
 
   > * {
     min-width: 0;
   }
 
   @media (min-width: 768px) {
+    gap: 2rem;
     grid-template-columns: 1fr 1fr;
   }
 }
