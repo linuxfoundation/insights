@@ -55,6 +55,12 @@ case "$FILE_PATH" in
 esac
 
 # ── Server Infrastructure ──────────────────────────────────────
+# Check jwt-auth.ts before the generic middleware glob so the specific reason is shown.
+case "$FILE_PATH" in
+  frontend/server/middleware/jwt-auth.ts)
+    warn "JWT auth middleware — changes affect the API route authentication allowlist." ;;
+esac
+
 if [[ "$FILE_PATH" == frontend/server/middleware/* ]]; then
   warn "Server middleware — changes affect request processing for all API routes."
 fi
@@ -65,8 +71,6 @@ case "$FILE_PATH" in
     warn "Auth0 client plugin — changes affect authentication across the entire app." ;;
   frontend/app/plugins/vue-query.ts)
     warn "TanStack Query plugin — changes affect all data fetching and caching." ;;
-  frontend/server/middleware/jwt-auth.ts)
-    warn "JWT auth middleware — changes affect the API route authentication allowlist." ;;
 esac
 
 if [[ "$FILE_PATH" == frontend/server/plugins/* ]]; then

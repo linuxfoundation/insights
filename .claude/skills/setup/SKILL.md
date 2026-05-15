@@ -64,7 +64,7 @@ NUXT_INSIGHTS_DB_PASSWORD=example
 NUXT_INSIGHTS_DB_DATABASE=insights
 ```
 
-> All vars must have the `NUXT_` prefix — Nuxt ignores vars without it.
+> Database, auth, and other runtime config vars must use the `NUXT_` prefix so Nuxt's runtime config picks them up automatically. A few server-only vars (e.g. `APP_ENV`) are read directly via `process.env` and do not need the prefix — check `frontend/setup/runtime-config.ts` for the full list.
 
 **Collections feature** — only needed if working on collections endpoints:
 ```
@@ -95,7 +95,7 @@ If the answer is **yes**, continue with the steps below.
 lsof -i :5450 | grep LISTEN
 ```
 
-Use port `5450` (the default). If it's already occupied, pick a free port, use it in the `docker run -p` flag below, and update `NUXT_INSIGHTS_DB_PORT` in `frontend/.env` to match.
+Use port `5450` (the port used throughout this guide — the Nuxt runtime default is `5432`, but we use `5450` here to avoid colliding with any local Postgres instance). If it's already occupied, pick a free port, use it in the `docker run -p` flag below, and update `NUXT_INSIGHTS_DB_PORT` in `frontend/.env` to match.
 
 ### 4b. Start Postgres
 
@@ -191,7 +191,7 @@ The app will be available at `http://localhost:3000`.
 |---|---|
 | Port 3000 already in use | Run `lsof -ti tcp:3000 \| xargs kill` — do not switch ports, Auth0 callback is hardcoded to :3000 |
 | DB errors but I skipped Step 4 | Expected for auth/collections/chat routes — run Step 4 if you need those features |
-| Port 5450 already in use | Use a different port (`-p 5455:5432`) and update `NUXT_INSIGHTS_DB_PORT` in `.env` |
+| Port 5450 already in use | Pick a free port (e.g. `-p 5455:5432`) and update `NUXT_INSIGHTS_DB_PORT` in `.env` |
 | `host.docker.internal` not resolving (Linux) | Use `PGHOST=localhost` with `--host-network` |
 | Migration checksum mismatch | Never edit an applied migration — create a new one with `/db-migrate new <name>` |
 | Auth errors in browser | Check Auth0 env vars in `frontend/.env` |

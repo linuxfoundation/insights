@@ -9,7 +9,7 @@ allowed-tools: Bash
 
 # Local Docs, Blog & Storybook Setup
 
-These are all independent of the main dev server — you don't need the database or Auth0 configured to run any of them. Just make sure dependencies are installed first (`pnpm install --filter frontend` from the repo root).
+These are all independent of the main dev server — you don't need the database or Auth0 configured to run any of them. Just make sure dependencies are installed first (`pnpm install --filter lfx-insights` from the repo root).
 
 All commands run from the `frontend/` directory.
 
