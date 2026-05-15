@@ -42,7 +42,7 @@ Contributors often appear under multiple identities — different email addresse
 - **Organization normalization** — We resolve different names for the same organization (e.g., "Google LLC", "Google Inc.", "Alphabet") into a canonical entity.
 - **Historical tracking** — We maintain affiliation history so that past contributions are attributed to the correct organization at the time they were made.
 
-For more details on how we handle data quality across the platform, see [Data Quality](/docs/introduction/data-quality/index.md).
+For more details on how we handle data quality across the platform, see [Data Quality](/introduction/data-quality/).
 
 ## Review & Edit Your Affiliations
 
