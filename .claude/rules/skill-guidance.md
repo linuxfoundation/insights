@@ -18,6 +18,7 @@ This project has guided skills for common workflows. **Proactively suggest the r
 | `/setup-docs`  | Run docs site, blog, or Storybook locally                                                           |
 | `/db-migrate`  | Apply pending migrations, create a new migration, check migration status                            |
 | `/tech-writer` | Write or improve documentation, update READMEs, draft technical content                             |
+| `/adr`         | Record an architecture decision, choose between frameworks/libraries/patterns, query past decisions  |
 
 ## Trigger Phrases
 
@@ -54,3 +55,10 @@ This project has guided skills for common workflows. **Proactively suggest the r
 **`/tech-writer`** — match any of these intents:
 - "Write docs", "Update README", "Document this feature"
 - "Draft technical content", "Improve documentation"
+
+**`/adr`** — match any of these intents:
+- "Record this decision", "Let's write an ADR", "ADR for…"
+- "Why did we choose X?", "What was the reason for…", "What decided us on…"
+- "Should we use X or Y?" when the choice is architectural (framework, database, pattern, API style)
+- "Document this trade-off", "Capture this as an ADR"
+- Any moment where a significant technical alternative was considered and rejected
