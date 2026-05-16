@@ -12,6 +12,9 @@ SPDX-License-Identifier: MIT
       <lfx-tags-and-languages />
     </lfx-project-about-section-loading>
     <lfx-project-about-section-loading :is-loading="isProjectLoading">
+      <lfx-licenses />
+    </lfx-project-about-section-loading>
+    <lfx-project-about-section-loading :is-loading="isProjectLoading">
       <lfx-links />
       <lfx-project-about-section-connected-platforms />
     </lfx-project-about-section-loading>
@@ -23,6 +26,7 @@ SPDX-License-Identifier: MIT
 import { storeToRefs } from 'pinia';
 import LfxProjectAboutSoftwareValue from './about-section/about-software-value.vue';
 import LfxTagsAndLanguages from './about-section/tags-ang-languages.vue';
+import LfxLicenses from './about-section/licenses.vue';
 import LfxLinks from './about-section/links.vue';
 import LfxProjectAboutSectionLoading from './about-section/about-section-loading.vue';
 import LfxProjectAboutSectionConnectedPlatforms from '~/components/modules/project/components/overview/about-section/connected-platforms.vue';
