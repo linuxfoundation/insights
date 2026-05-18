@@ -131,7 +131,6 @@ import type { OrganizationProject } from '~~/types/organization-page';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
