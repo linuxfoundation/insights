@@ -19,28 +19,6 @@ SPDX-License-Identifier: MIT
           <h2 class="text-heading-5 font-bold font-secondary">Critical Projects</h2>
           <p class="text-xs text-neutral-500 mt-0.5">{{ orgDisplayName }} contributors are involved in</p>
         </div>
-        <span class="w-full sm:w-auto text-xs text-neutral-500 flex items-center gap-1.5 sm:flex-shrink-0">
-          <lfx-icon
-            name="arrow-down-wide-short"
-            :size="12"
-          />
-          Sorted by
-          <lfx-tooltip placement="top">
-            <span class="border-b border-dotted border-neutral-500 cursor-help">Technical influence</span>
-            <template #content>
-              <div class="flex flex-col gap-2 max-w-xs text-xs leading-relaxed">
-                <span
-                  >Technical influence examines code activities (commits, PRs) while ecosystem influence examines
-                  non-code collaboration activities (documentation, committees, meetings, events).</span
-                >
-                <span
-                  >Comparing a company's share of these activities to the project total indicates greater influence in
-                  the project.</span
-                >
-              </div>
-            </template>
-          </lfx-tooltip>
-        </span>
       </div>
 
       <!-- Loading -->
@@ -75,35 +53,13 @@ SPDX-License-Identifier: MIT
         <div class="lfx-table has-hover">
           <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2 !hidden sm:!flex">
             <div class="flex-[2]">Project</div>
-            <div class="flex-1 flex items-center gap-1">
-              Technical influence
-              <lfx-tooltip placement="top">
-                <lfx-icon
-                  name="circle-question"
-                  :size="11"
-                  class="cursor-help text-neutral-400"
-                />
-                <template #content>
-                  <div class="flex flex-col gap-2 max-w-xs text-xs leading-relaxed">
-                    <span
-                      >Technical influence examines code activities (commits, PRs) while ecosystem influence examines
-                      non-code collaboration activities (documentation, committees, meetings, events).</span
-                    >
-                    <span
-                      >Comparing a company's share of these activities to the project total indicates greater influence
-                      in the project.</span
-                    >
-                  </div>
-                </template>
-              </lfx-tooltip>
-            </div>
             <div class="flex-1">Code contributors</div>
             <div class="flex-1">Activities</div>
             <div class="w-5" />
           </div>
 
           <nuxt-link
-            v-for="project in sortedProjects"
+            v-for="project in projects"
             :key="project.projectSlug"
             :to="`/project/${project.projectSlug}`"
             class="lfx-table-row no-underline !text-neutral-900 border-b border-neutral-100 last:border-b-0"
@@ -122,19 +78,6 @@ SPDX-License-Identifier: MIT
 
             <!-- Data columns: inline group on mobile, transparent on sm+ -->
             <div class="flex flex-row gap-3 items-center flex-shrink-0 sm:contents">
-              <!-- Technical influence -->
-              <div class="sm:flex-1 flex items-center gap-1.5">
-                <div
-                  class="org-influence-bars"
-                  :class="influenceClass(project.technicalInfluence)"
-                >
-                  <span class="org-bar org-bar-1" />
-                  <span class="org-bar org-bar-2" />
-                  <span class="org-bar org-bar-3" />
-                </div>
-                <span class="text-xs sm:text-sm">{{ influenceLabel(project.technicalInfluence) }}</span>
-              </div>
-
               <!-- Code contributors -->
               <div class="sm:flex-1 text-xs sm:text-sm flex items-center gap-2">
                 <lfx-icon
@@ -198,58 +141,14 @@ import { useOrganizationPageStore } from '~/components/modules/organization/stor
 const route = useRoute();
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'This organization');
-const orgName = route.params.orgName as string;
+const orgId = route.params.orgId as string;
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_PROJECTS, orgName]);
+const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_PROJECTS, orgId]);
 
 const { data: projects, isLoading } = useQuery<OrganizationProject[]>({
   queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchProjects(orgName),
+  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchProjects(orgId),
 });
-
-const influenceRank = (influence: string) => {
-  switch (influence) {
-    case 'leading':
-      return 0;
-    case 'contributing':
-      return 1;
-    case 'participating':
-      return 2;
-    default:
-      return 3;
-  }
-};
-
-const sortedProjects = computed(() => {
-  if (!projects.value) return [];
-  return [...projects.value].sort((a, b) => influenceRank(a.technicalInfluence) - influenceRank(b.technicalInfluence));
-});
-
-const influenceLabel = (influence: string) => {
-  switch (influence) {
-    case 'leading':
-      return 'Leading';
-    case 'contributing':
-      return 'Contributing';
-    case 'participating':
-      return 'Participating';
-    default:
-      return influence;
-  }
-};
-
-const influenceClass = (influence: string) => {
-  switch (influence) {
-    case 'leading':
-      return 'org-influence-leading';
-    case 'contributing':
-      return 'org-influence-contributing';
-    case 'participating':
-      return 'org-influence-participating';
-    default:
-      return '';
-  }
-};
 </script>
 
 <script lang="ts">
@@ -296,51 +195,5 @@ export default {
 .has-hover .lfx-table-row {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;
-}
-
-.org-influence-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 14px;
-}
-
-.org-bar {
-  width: 3px;
-  border-radius: 1px;
-  background-color: #e2e8f0;
-}
-
-.org-bar-1 {
-  height: 5px;
-}
-
-.org-bar-2 {
-  height: 9px;
-}
-
-.org-bar-3 {
-  height: 14px;
-}
-
-.org-influence-leading {
-  .org-bar-1,
-  .org-bar-2,
-  .org-bar-3 {
-    background-color: #047857;
-  }
-}
-
-.org-influence-contributing {
-  .org-bar-1,
-  .org-bar-2 {
-    background-color: #0094ff;
-  }
-}
-
-.org-influence-participating {
-  .org-bar-1 {
-    background-color: #f59e0b;
-  }
 }
 </style>

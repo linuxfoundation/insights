@@ -4,7 +4,6 @@
 export const mockOrganizationProfile = {
   meta: [
     { name: 'id', type: 'String' },
-    { name: 'name', type: 'String' },
     { name: 'displayName', type: 'String' },
     { name: 'logo', type: 'String' },
     { name: 'description', type: 'String' },
@@ -16,7 +15,6 @@ export const mockOrganizationProfile = {
   data: [
     {
       id: 'google',
-      name: 'google',
       displayName: 'Google',
       logo: 'https://avatars.githubusercontent.com/u/1342004?s=200&v=4',
       description:
@@ -25,7 +23,6 @@ export const mockOrganizationProfile = {
       employeeCount: 182000,
       industry: ['Technology', 'Security'],
       website: 'https://about.google',
-      membershipTier: 'platinum',
     },
   ],
 };

@@ -13,10 +13,11 @@ SPDX-License-Identifier: MIT
       v-if="!isPending && tableData?.length"
       class="lfx-table explore-tables mt-0.5"
     >
-      <div
+      <nuxt-link
         v-for="(row, index) in tableData"
         :key="row.id"
-        class="lfx-table-row"
+        :to="{ name: LfxRoutes.ORGANIZATION, params: { orgId: row.id } }"
+        class="lfx-table-row no-underline text-inherit hover:bg-neutral-50 transition-colors"
       >
         <div class="name-col grow !gap-3">
           <div class="mr-1 text-neutral-400 text-xs">#{{ index + 1 }}</div>
@@ -32,7 +33,7 @@ SPDX-License-Identifier: MIT
             {{ row.displayName }}
           </div>
         </div>
-      </div>
+      </nuxt-link>
     </div>
   </lfx-project-load-state>
 </template>
@@ -43,6 +44,7 @@ import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explo
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
   isFullList?: boolean;

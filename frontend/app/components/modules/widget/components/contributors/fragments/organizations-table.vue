@@ -36,17 +36,23 @@ SPDX-License-Identifier: MIT
           >
             {{ index + 1 }}
           </div>
-          <lfx-avatar
-            :src="organization.logo"
-            type="organization"
-            :aria-label="organization.logo && organization.name"
-          />
-          <div
-            class="text-ellipsis overflow-hidden"
-            :title="organization.name"
+          <component
+            :is="organization.id ? nuxtLink : 'div'"
+            :to="organization.id ? { name: LfxRoutes.ORGANIZATION, params: { orgId: organization.id } } : undefined"
+            class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit hover:text-brand-500 transition-colors"
           >
-            {{ organization.name }}
-          </div>
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
+          </component>
         </div>
         <div class="value-col">
           {{ formatNumber(organization.contributions) }}
@@ -78,13 +84,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, resolveComponent } from 'vue';
 import type { Organization } from '~~/types/contributors/responses.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
+import { LfxRoutes } from '~/components/shared/types/routes';
+
+const nuxtLink = resolveComponent('NuxtLink');
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);

@@ -10,12 +10,12 @@ SPDX-License-Identifier: MIT
           class="size-12 bg-white border border-neutral-200 rounded-full flex items-center justify-center flex-shrink-0"
         >
           <lfx-icon
-            name="code-pull-request"
+            name="people-group"
             :size="20"
           />
         </div>
         <div>
-          <h2 class="text-heading-5 font-bold font-secondary">Opened PRs</h2>
+          <h2 class="text-heading-5 font-bold font-secondary">Active Contributors</h2>
           <p class="org-chart-description">by {{ orgDisplayName }} contributors over the years</p>
         </div>
       </div>
@@ -64,16 +64,16 @@ import { lfxColors } from '~/config/styles/colors';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 
 const route = useRoute();
-const orgName = route.params.orgName as string;
+const orgId = route.params.orgId as string;
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'this organization');
 const currentYear = new Date().getFullYear().toString();
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_CONTRIBUTORS_TIMESERIES, orgName]);
+const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_CONTRIBUTORS_TIMESERIES, orgId]);
 
 const { data, isLoading } = useQuery<OrgContributorTimeseries[]>({
   queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchContributorTimeseries(orgName),
+  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchContributorTimeseries(orgId),
 });
 
 const chartData = computed<ChartData[]>(() => {
@@ -87,7 +87,7 @@ const chartData = computed<ChartData[]>(() => {
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
-    name: 'PRs Opened',
+    name: 'Contributors',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,

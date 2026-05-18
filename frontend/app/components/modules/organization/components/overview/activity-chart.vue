@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
           />
         </div>
         <div>
-          <h2 class="text-heading-5 font-bold font-secondary">Commit activities</h2>
+          <h2 class="text-heading-5 font-bold font-secondary">Activities</h2>
           <p class="org-chart-description">by {{ orgDisplayName }} contributors over the years</p>
         </div>
       </div>
@@ -64,16 +64,16 @@ import { lfxColors } from '~/config/styles/colors';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 
 const route = useRoute();
-const orgName = route.params.orgName as string;
+const orgId = route.params.orgId as string;
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'this organization');
 const currentYear = new Date().getFullYear().toString();
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_ACTIVITY, orgName]);
+const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_ACTIVITY, orgId]);
 
 const { data, isLoading } = useQuery<OrgActivityTimeseries[]>({
   queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchActivityTimeseries(orgName),
+  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchActivityTimeseries(orgId),
 });
 
 const chartData = computed<ChartData[]>(() => {
@@ -87,7 +87,7 @@ const chartData = computed<ChartData[]>(() => {
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
-    name: 'Commits',
+    name: 'Activities',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,

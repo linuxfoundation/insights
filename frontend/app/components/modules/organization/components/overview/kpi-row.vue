@@ -63,15 +63,15 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const route = useRoute();
-const orgName = route.params.orgName as string;
+const orgId = route.params.orgId as string;
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'this organization');
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_KPIS, orgName]);
+const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_KPIS, orgId]);
 
 const { data, isLoading } = useQuery<OrganizationKpis>({
   queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchKpis(orgName),
+  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchKpis(orgId),
 });
 
 const kpis = computed(() => [

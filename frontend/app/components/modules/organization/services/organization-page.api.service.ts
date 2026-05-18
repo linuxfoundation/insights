@@ -11,28 +11,28 @@ import type {
 } from '~~/types/organization-page';
 
 class OrganizationPageApiService {
-  fetchProfile(orgName: string): QueryFunction<OrganizationProfile> {
-    return () => $fetch(`/api/organization-page/${orgName}`);
+  fetchProfile(orgId: string): QueryFunction<OrganizationProfile> {
+    return () => $fetch(`/api/organization-page/${orgId}`);
   }
 
-  fetchKpis(orgName: string): QueryFunction<OrganizationKpis> {
-    return () => $fetch(`/api/organization-page/${orgName}/kpis`);
+  fetchKpis(orgId: string): QueryFunction<OrganizationKpis> {
+    return () => $fetch(`/api/organization-page/${orgId}/kpis`);
   }
 
-  fetchProjects(orgName: string): QueryFunction<OrganizationProject[]> {
-    return () => $fetch(`/api/organization-page/${orgName}/projects`);
+  fetchProjects(orgId: string): QueryFunction<OrganizationProject[]> {
+    return () => $fetch(`/api/organization-page/${orgId}/projects`);
   }
 
-  fetchActivityTimeseries(orgName: string): QueryFunction<OrgActivityTimeseries[]> {
-    return () => $fetch(`/api/organization-page/${orgName}/activity-timeseries`);
+  fetchActivityTimeseries(orgId: string): QueryFunction<OrgActivityTimeseries[]> {
+    return () => $fetch(`/api/organization-page/${orgId}/activity-timeseries`);
   }
 
-  fetchContributorTimeseries(orgName: string): QueryFunction<OrgContributorTimeseries[]> {
-    return () => $fetch(`/api/organization-page/${orgName}/contributor-timeseries`);
+  fetchContributorTimeseries(orgId: string): QueryFunction<OrgContributorTimeseries[]> {
+    return () => $fetch(`/api/organization-page/${orgId}/contributor-timeseries`);
   }
 
-  fetchContributors(orgName: string): QueryFunction<OrgContributor[]> {
-    return () => $fetch(`/api/organization-page/${orgName}/contributors`);
+  fetchContributors(orgId: string): QueryFunction<OrgContributor[]> {
+    return () => $fetch(`/api/organization-page/${orgId}/contributors`);
   }
 }
 

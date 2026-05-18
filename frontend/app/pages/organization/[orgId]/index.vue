@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 import LfxOrganizationOverview from '~/components/modules/organization/views/overview.vue';
 
