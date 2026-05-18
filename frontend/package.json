@@ -64,7 +64,7 @@
     "luxon": "^3.7.2",
     "nuxt": "^4.2.2",
     "nuxt-gtag": "^4.1.0",
-    "nuxt-og-image": "^5.1.13",
+    "nuxt-og-image": "^6.2.5",
     "ofetch": "^1.5.1",
     "openid-client": "^6.8.1",
     "pg": "^8.17.1",
