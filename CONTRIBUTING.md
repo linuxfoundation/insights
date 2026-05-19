@@ -112,8 +112,14 @@ Make sure you have Git installed. If not, follow this [installation guide](https
 
 ```bash
 git --version        # Verify Git installation
-git clone https://github.com/linuxfoundation/insights.git
+git clone --recursive https://github.com/linuxfoundation/insights.git
 cd insights
+```
+
+If you already cloned the repo without the `--recursive` flag, you should manually update submodules.
+
+```bash
+git submodule update --init --recursive
 ```
 
 ##### 2. Install Node.js and pnpm
