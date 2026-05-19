@@ -21,14 +21,20 @@ export interface OrganizationKpis {
   criticalProjects: number;
 }
 
+export type TechnicalInfluence = 'limited' | 'emerging' | 'moderate' | 'strong';
+
+export interface OrganizationProjectsPage {
+  data: OrganizationProject[];
+  hasMore: boolean;
+}
+
 export interface OrganizationProject {
   projectSlug: string;
   projectName: string;
   projectLogo: string;
-  healthScore?: 'excellent' | 'healthy' | 'growing' | 'needs-attention';
-  technicalInfluence?: 'leading' | 'contributing' | 'participating';
   activityCount: number;
   contributorCount: number;
+  technicalScore?: number;
 }
 
 export interface OrgActivityTimeseries {

@@ -1,14 +1,18 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { useInfiniteQuery } from '@tanstack/vue-query';
 import type { QueryFunction } from '@tanstack/vue-query';
 import type {
   OrganizationProfile,
   OrganizationKpis,
-  OrganizationProject,
+  OrganizationProjectsPage,
   OrgActivityTimeseries,
   OrgContributorTimeseries,
   OrgContributor,
 } from '~~/types/organization-page';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+
+const PAGE_SIZE = 20;
 
 class OrganizationPageApiService {
   fetchProfile(orgId: string): QueryFunction<OrganizationProfile> {
@@ -19,8 +23,19 @@ class OrganizationPageApiService {
     return () => $fetch(`/api/organization-page/${orgId}/kpis`);
   }
 
-  fetchProjects(orgId: string): QueryFunction<OrganizationProject[]> {
-    return () => $fetch(`/api/organization-page/${orgId}/projects`);
+  fetchProjects(orgId: string) {
+    return useInfiniteQuery<OrganizationProjectsPage>({
+      queryKey: [TanstackKey.ORGANIZATION_PAGE_PROJECTS, orgId],
+      queryFn: ({ pageParam }) =>
+        $fetch(`/api/organization-page/${orgId}/projects`, {
+          params: { offset: (pageParam as number) ?? 0 },
+        }),
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasMore) return undefined;
+        return allPages.length * PAGE_SIZE;
+      },
+      initialPageParam: 0,
+    });
   }
 
   fetchActivityTimeseries(orgId: string): QueryFunction<OrgActivityTimeseries[]> {

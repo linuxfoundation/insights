@@ -11,10 +11,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex items-center w-full">
     <!-- Organization info -->
-    <nuxt-link
-      :to="{ name: LfxRoutes.ORGANIZATION, params: { orgId: item.id } }"
-      class="flex-1 min-w-0 flex gap-3 items-center no-underline text-inherit hover:text-brand-500 transition-colors"
-    >
+    <div class="flex-1 min-w-0 flex gap-3 items-center text-inherit">
       <lfx-avatar
         :src="item.logoUrl"
         type="organization"
@@ -26,7 +23,7 @@ SPDX-License-Identifier: MIT
       >
         {{ item.name }}
       </p>
-    </nuxt-link>
+    </div>
 
     <!-- Stats -->
     <div class="w-1/4 shrink-0">
@@ -42,7 +39,6 @@ import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
 
 defineProps<{
   item: Leaderboard;

@@ -19,6 +19,28 @@ SPDX-License-Identifier: MIT
           <h2 class="text-heading-5 font-bold font-secondary">Critical Projects</h2>
           <p class="text-xs text-neutral-500 mt-0.5">{{ orgDisplayName }} contributors are involved in</p>
         </div>
+        <span class="w-full sm:w-auto text-xs text-neutral-500 flex items-center gap-1.5 sm:flex-shrink-0">
+          <lfx-icon
+            name="arrow-down-wide-short"
+            :size="12"
+          />
+          Sorted by
+          <lfx-tooltip placement="top">
+            <span class="border-b border-dotted border-neutral-500 cursor-help">Technical influence</span>
+            <template #content>
+              <div class="flex flex-col gap-2 max-w-xs text-xs leading-relaxed">
+                <span
+                  >Technical influence examines code activities (commits, PRs) while ecosystem influence examines
+                  non-code collaboration activities (documentation, committees, meetings, events).</span
+                >
+                <span
+                  >Comparing a company's share of these activities to the project total indicates greater influence in
+                  the project.</span
+                >
+              </div>
+            </template>
+          </lfx-tooltip>
+        </span>
       </div>
 
       <!-- Loading -->
@@ -49,17 +71,39 @@ SPDX-License-Identifier: MIT
       </template>
 
       <!-- Table -->
-      <template v-else-if="projects?.length">
+      <template v-else-if="allProjects?.length">
         <div class="lfx-table has-hover">
           <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2 !hidden sm:!flex">
             <div class="flex-[2]">Project</div>
+            <div class="flex-1 flex items-center gap-1">
+              Technical influence
+              <lfx-tooltip placement="top">
+                <lfx-icon
+                  name="circle-question"
+                  :size="11"
+                  class="cursor-help text-neutral-400"
+                />
+                <template #content>
+                  <div class="flex flex-col gap-2 max-w-xs text-xs leading-relaxed">
+                    <span
+                      >Technical influence examines code activities (commits, PRs) while ecosystem influence examines
+                      non-code collaboration activities (documentation, committees, meetings, events).</span
+                    >
+                    <span
+                      >Comparing a company's share of these activities to the project total indicates greater influence
+                      in the project.</span
+                    >
+                  </div>
+                </template>
+              </lfx-tooltip>
+            </div>
             <div class="flex-1">Code contributors</div>
             <div class="flex-1">Activities</div>
             <div class="w-5" />
           </div>
 
           <nuxt-link
-            v-for="project in projects"
+            v-for="project in allProjects"
             :key="project.projectSlug"
             :to="`/project/${project.projectSlug}`"
             class="lfx-table-row no-underline !text-neutral-900 border-b border-neutral-100 last:border-b-0"
@@ -78,6 +122,42 @@ SPDX-License-Identifier: MIT
 
             <!-- Data columns: inline group on mobile, transparent on sm+ -->
             <div class="flex flex-row gap-3 items-center flex-shrink-0 sm:contents">
+              <!-- Technical influence -->
+              <div class="sm:flex-1 flex items-center gap-1.5">
+                <lfx-tooltip
+                  v-if="computeInfluence(project.technicalScore)"
+                  placement="top"
+                >
+                  <template #content>
+                    <div class="flex flex-col gap-1.5 text-xs">
+                      <p class="font-semibold text-white mb-0.5">Technical Influence Score</p>
+                      <div class="border-t border-neutral-600 mt-0.5 pt-1 flex items-center justify-between gap-4">
+                        <span class="text-neutral-300">Total</span>
+                        <span class="font-semibold text-white">{{ project.technicalScore }}/12</span>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="flex items-center gap-1.5 cursor-default">
+                    <div
+                      class="org-influence-bars"
+                      :class="influenceClass(computeInfluence(project.technicalScore))"
+                    >
+                      <span class="org-bar org-bar-1" />
+                      <span class="org-bar org-bar-2" />
+                      <span class="org-bar org-bar-3" />
+                    </div>
+                    <span class="text-xs sm:text-sm">{{
+                      influenceLabel(computeInfluence(project.technicalScore))
+                    }}</span>
+                  </div>
+                </lfx-tooltip>
+                <span
+                  v-else
+                  class="text-neutral-400 text-xs"
+                  >—</span
+                >
+              </div>
+
               <!-- Code contributors -->
               <div class="sm:flex-1 text-xs sm:text-sm flex items-center gap-2">
                 <lfx-icon
@@ -109,6 +189,17 @@ SPDX-License-Identifier: MIT
             </span>
           </nuxt-link>
         </div>
+
+        <lfx-button
+          v-if="hasNextPage"
+          type="transparent"
+          button-style="pill"
+          :loading="isFetchingNextPage"
+          class="mt-4 w-full justify-center"
+          @click="fetchNextPage()"
+        >
+          View more
+        </lfx-button>
       </template>
 
       <!-- Empty -->
@@ -125,14 +216,14 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
-import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
-import type { OrganizationProject } from '~~/types/organization-page';
+import type { TechnicalInfluence } from '~~/types/organization-page';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { TanstackKey } from '~/components/shared/types/tanstack';
+import LfxButton from '~/components/uikit/button/button.vue';
 import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
@@ -142,12 +233,47 @@ const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'This organization');
 const orgId = route.params.orgId as string;
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_PROJECTS, orgId]);
+const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
+  ORGANIZATION_PAGE_API_SERVICE.fetchProjects(orgId);
 
-const { data: projects, isLoading } = useQuery<OrganizationProject[]>({
-  queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchProjects(orgId),
-});
+const allProjects = computed(() => (data.value?.pages ?? []).flatMap((page) => page.data));
+
+function computeInfluence(score: number | undefined): TechnicalInfluence | null {
+  if (score === undefined) return null;
+  if (score >= 9) return 'strong';
+  if (score >= 6) return 'moderate';
+  if (score >= 3) return 'emerging';
+  if (score > 0) return 'limited';
+  return null;
+}
+
+const influenceLabel = (influence: TechnicalInfluence | null): string => {
+  switch (influence) {
+    case 'strong':
+      return 'Strong';
+    case 'moderate':
+      return 'Moderate';
+    case 'emerging':
+      return 'Emerging';
+    case 'limited':
+      return 'Limited';
+    default:
+      return '';
+  }
+};
+
+const influenceClass = (influence: TechnicalInfluence | null): string => {
+  switch (influence) {
+    case 'strong':
+      return 'org-influence-strong';
+    case 'moderate':
+      return 'org-influence-moderate';
+    case 'emerging':
+      return 'org-influence-emerging';
+    default:
+      return '';
+  }
+};
 </script>
 
 <script lang="ts">
@@ -194,5 +320,51 @@ export default {
 .has-hover .lfx-table-row {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;
+}
+
+.org-influence-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.org-bar {
+  width: 3px;
+  border-radius: 1px;
+  background-color: #e2e8f0;
+}
+
+.org-bar-1 {
+  height: 5px;
+}
+
+.org-bar-2 {
+  height: 9px;
+}
+
+.org-bar-3 {
+  height: 14px;
+}
+
+.org-influence-strong {
+  .org-bar-1,
+  .org-bar-2,
+  .org-bar-3 {
+    background-color: #047857;
+  }
+}
+
+.org-influence-moderate {
+  .org-bar-1,
+  .org-bar-2 {
+    background-color: #0094ff;
+  }
+}
+
+.org-influence-emerging {
+  .org-bar-1 {
+    background-color: #f59e0b;
+  }
 }
 </style>
