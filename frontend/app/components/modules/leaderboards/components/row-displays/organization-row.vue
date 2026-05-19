@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <!-- Organization info -->
-    <div class="flex-1 min-w-0 flex gap-3 items-center">
+    <div class="flex-1 min-w-0 flex gap-3 items-center text-inherit">
       <lfx-avatar
         :src="item.logoUrl"
         type="organization"
@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
       />
       <p
         :title="item.name"
-        class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+        class="text-base leading-5 font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
       >
         {{ item.name }}
       </p>

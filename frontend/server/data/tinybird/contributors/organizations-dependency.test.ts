@@ -72,6 +72,7 @@ describe('Organizations Dependency Data Source', () => {
         percentage: 100 - topOrganizationsPercentage,
       },
       list: mockLeaderboardTimeseries.data.map((item) => ({
+        id: item.id,
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,

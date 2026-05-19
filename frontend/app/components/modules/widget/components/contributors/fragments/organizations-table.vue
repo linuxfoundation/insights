@@ -36,16 +36,18 @@ SPDX-License-Identifier: MIT
           >
             {{ index + 1 }}
           </div>
-          <lfx-avatar
-            :src="organization.logo"
-            type="organization"
-            :aria-label="organization.logo && organization.name"
-          />
-          <div
-            class="text-ellipsis overflow-hidden"
-            :title="organization.name"
-          >
-            {{ organization.name }}
+          <div class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit transition-colors">
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
           </div>
         </div>
         <div class="value-col">

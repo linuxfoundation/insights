@@ -54,6 +54,7 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
       percentage: 100 - topOrganizationsPercentage,
     },
     list: tinybirdLeaderboardResponse.data.map((item) => ({
+      id: item.id,
       logo: item.logo,
       name: item.name,
       contributions: item.contributions,

@@ -32,4 +32,5 @@ export enum LfxRoutes {
   REPOSITORY_GROUP_DEVELOPMENT = 'project-slug-repository-group-groupSlug-development',
   REPOSITORY_GROUP_SECURITY = 'project-slug-repository-group-groupSlug-security',
   REPOSITORY_GROUP_COMMUNITY_VOICE = 'project-slug-repository-group-groupSlug-community-voice',
+  ORGANIZATION = 'organization-orgId',
 }
