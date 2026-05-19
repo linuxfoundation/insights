@@ -86,6 +86,14 @@ export async function fetchFromTinybird<T>(
     !query.bucketId &&
     path !== '/v0/pipes/project_buckets.json'
   ) {
+    // UUIDs are never valid project slugs — reject before touching Tinybird or the semaphore
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (UUID_RE.test(query.project)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: `Invalid project slug: ${query.project}`,
+      });
+    }
     try {
       const bucketId = await getBucketIdForProject(query.project, fetchFromTinybird);
       if (bucketId !== null) {
