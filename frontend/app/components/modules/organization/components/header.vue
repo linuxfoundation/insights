@@ -153,7 +153,10 @@ SPDX-License-Identifier: MIT
                   />
                   Share
                 </lfx-button>
-                <lfx-tooltip placement="top">
+                <lfx-tooltip
+                  placement="top"
+                  :allow-pass-through="true"
+                >
                   <a
                     href="https://myorg.lfx.dev"
                     target="_blank"
