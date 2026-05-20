@@ -83,11 +83,14 @@ RUN groupadd --gid 1001 nodejs && \
     useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nuxt && \
     chown -R nuxt:nodejs /app
 
+RUN mkdir -p /app/heapdumps && chown nuxt:nodejs /app/heapdumps
+
 USER nuxt
 
 EXPOSE 3000
 
 ENV NODE_OPTIONS=--max-old-space-size=3072
 
-# Use exec form for proper signal handling
-CMD ["node", ".output/server/index.mjs"]
+# --heapsnapshot-on-oom: auto-dumps heap to /app/heapdumps on OOM crash
+# --heapsnapshot-signal=SIGUSR2: manual snapshot via `kubectl exec -- kill -USR2 1`
+CMD ["node", "--heapsnapshot-on-oom", "--heapsnapshot-signal=SIGUSR2", "--heapsnapshot-dir=/app/heapdumps", ".output/server/index.mjs"]
