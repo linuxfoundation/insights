@@ -124,33 +124,20 @@ SPDX-License-Identifier: MIT
             <div class="flex flex-row gap-3 items-center flex-shrink-0 sm:contents">
               <!-- Technical influence -->
               <div class="sm:flex-1 flex items-center gap-1.5">
-                <lfx-tooltip
+                <div
                   v-if="computeInfluence(project.technicalScore)"
-                  placement="top"
+                  class="flex items-center gap-1.5 cursor-default"
                 >
-                  <template #content>
-                    <div class="flex flex-col gap-1.5 text-xs">
-                      <p class="font-semibold text-white mb-0.5">Technical Influence Score</p>
-                      <div class="border-t border-neutral-600 mt-0.5 pt-1 flex items-center justify-between gap-4">
-                        <span class="text-neutral-300">Total</span>
-                        <span class="font-semibold text-white">{{ project.technicalScore }}/12</span>
-                      </div>
-                    </div>
-                  </template>
-                  <div class="flex items-center gap-1.5 cursor-default">
-                    <div
-                      class="org-influence-bars"
-                      :class="influenceClass(computeInfluence(project.technicalScore))"
-                    >
-                      <span class="org-bar org-bar-1" />
-                      <span class="org-bar org-bar-2" />
-                      <span class="org-bar org-bar-3" />
-                    </div>
-                    <span class="text-xs sm:text-sm">{{
-                      influenceLabel(computeInfluence(project.technicalScore))
-                    }}</span>
+                  <div
+                    class="org-influence-bars"
+                    :class="influenceClass(computeInfluence(project.technicalScore))"
+                  >
+                    <span class="org-bar org-bar-1" />
+                    <span class="org-bar org-bar-2" />
+                    <span class="org-bar org-bar-3" />
                   </div>
-                </lfx-tooltip>
+                  <span class="text-xs sm:text-sm">{{ influenceLabel(computeInfluence(project.technicalScore)) }}</span>
+                </div>
                 <span
                   v-else
                   class="text-neutral-400 text-xs"
