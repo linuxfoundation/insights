@@ -91,6 +91,8 @@ EXPOSE 3000
 
 ENV NODE_OPTIONS=--max-old-space-size=3072
 
-# --heapsnapshot-on-oom: auto-dumps heap to /app/heapdumps on OOM crash
+# Change working directory to the PVC mount so heap snapshots are written there automatically.
+# --heapsnapshot-near-heap-limit=3: take up to 3 snapshots as heap approaches the limit
 # --heapsnapshot-signal=SIGUSR2: manual snapshot via `kubectl exec -- kill -USR2 1`
-CMD ["node", "--heapsnapshot-on-oom", "--heapsnapshot-signal=SIGUSR2", "--heapsnapshot-dir=/app/heapdumps", ".output/server/index.mjs"]
+WORKDIR /app/heapdumps
+CMD ["node", "--heapsnapshot-near-heap-limit=3", "--heapsnapshot-signal=SIGUSR2", "/app/.output/server/index.mjs"]
