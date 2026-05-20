@@ -225,38 +225,38 @@ const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
 
 const allProjects = computed(() => (data.value?.pages ?? []).flatMap((page) => page.data));
 
-function computeInfluence(score: number | undefined): TechnicalInfluence | null {
-  if (score === undefined) return null;
-  if (score >= 9) return 'strong';
-  if (score >= 6) return 'moderate';
-  if (score >= 3) return 'emerging';
-  if (score > 0) return 'limited';
-  return null;
+function computeInfluence(score: number | undefined): TechnicalInfluence {
+  if (score === undefined) return 'silent';
+  if (score >= 15) return 'leading';
+  if (score >= 5) return 'contributing';
+  if (score >= 1) return 'participating';
+  if (score > 0) return 'silent';
+  return 'silent';
 }
 
-const influenceLabel = (influence: TechnicalInfluence | null): string => {
+const influenceLabel = (influence: TechnicalInfluence): string => {
   switch (influence) {
-    case 'strong':
-      return 'Strong';
-    case 'moderate':
-      return 'Moderate';
-    case 'emerging':
-      return 'Emerging';
-    case 'limited':
-      return 'Limited';
+    case 'leading':
+      return 'Leading';
+    case 'contributing':
+      return 'Contributing';
+    case 'participating':
+      return 'Participating';
+    case 'silent':
+      return 'Silent';
     default:
       return '';
   }
 };
 
-const influenceClass = (influence: TechnicalInfluence | null): string => {
+const influenceClass = (influence: TechnicalInfluence): string => {
   switch (influence) {
-    case 'strong':
-      return 'org-influence-strong';
-    case 'moderate':
-      return 'org-influence-moderate';
-    case 'emerging':
-      return 'org-influence-emerging';
+    case 'leading':
+      return 'org-influence-leading';
+    case 'contributing':
+      return 'org-influence-contributing';
+    case 'participating':
+      return 'org-influence-participating';
     default:
       return '';
   }
@@ -334,7 +334,7 @@ export default {
   height: 14px;
 }
 
-.org-influence-strong {
+.org-influence-leading {
   .org-bar-1,
   .org-bar-2,
   .org-bar-3 {
@@ -342,14 +342,14 @@ export default {
   }
 }
 
-.org-influence-moderate {
+.org-influence-contributing {
   .org-bar-1,
   .org-bar-2 {
     background-color: #0094ff;
   }
 }
 
-.org-influence-emerging {
+.org-influence-participating {
   .org-bar-1 {
     background-color: #f59e0b;
   }

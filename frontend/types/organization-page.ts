@@ -21,7 +21,7 @@ export interface OrganizationKpis {
   criticalProjects: number;
 }
 
-export type TechnicalInfluence = 'limited' | 'emerging' | 'moderate' | 'strong';
+export type TechnicalInfluence = 'leading' | 'contributing' | 'participating' | 'silent';
 
 export interface OrganizationProjectsPage {
   data: OrganizationProject[];
