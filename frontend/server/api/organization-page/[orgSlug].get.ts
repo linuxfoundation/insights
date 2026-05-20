@@ -7,7 +7,7 @@ interface TinybirdOrgProfile {
   id: string;
   displayName: string;
   logo: string;
-  employeeCount: number;
+  employeeCount: string;
   industry: string;
   description: string;
   website: string;
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProfile> =>
       displayName: raw.displayName,
       logo: raw.logo,
       description: raw.description,
-      employeeCount: raw.employeeCount || undefined,
+      employeeCount: raw.employeeCount ?? undefined,
       industry: raw.industry
         ? raw.industry
             .split(',')

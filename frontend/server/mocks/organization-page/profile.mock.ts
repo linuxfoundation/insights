@@ -8,7 +8,7 @@ export const mockOrganizationProfile = {
     { name: 'logo', type: 'String' },
     { name: 'description', type: 'String' },
     { name: 'domain', type: 'Nullable(String)' },
-    { name: 'employeeCount', type: 'Nullable(UInt64)' },
+    { name: 'employeeCount', type: 'Nullable(String)' },
     { name: 'industry', type: 'Nullable(String)' },
     { name: 'website', type: 'Nullable(String)' },
   ],
@@ -20,7 +20,7 @@ export const mockOrganizationProfile = {
       description:
         'Google LLC is a global technology leader specializing in internet services, cloud computing, software, and hardware. A major contributor to open source, Google has created and maintains some of the most widely used projects in the world.',
       domain: 'google.com',
-      employeeCount: 182000,
+      employeeCount: '100-200',
       industry: ['Technology', 'Security'],
       website: 'https://about.google',
     },

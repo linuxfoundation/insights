@@ -110,7 +110,7 @@ SPDX-License-Identifier: MIT
                         :size="12"
                         class="mr-1"
                       />
-                      {{ formatNumber(props.organization!.employeeCount!) }} employees
+                      {{ props.organization!.employeeCount }} employees
                     </lfx-tag>
 
                     <!-- Separator before industry -->
@@ -132,7 +132,7 @@ SPDX-License-Identifier: MIT
                         :size="12"
                         class="mr-1"
                       />
-                      {{ props.organization.industry.join(', ') }}
+                      {{ props.organization.industry.map(toSentenceCase).join(', ') }}
                     </lfx-tag>
                   </div>
                 </div>
@@ -205,9 +205,9 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import useScroll from '~/components/shared/utils/scroll';
+import { toSentenceCase } from '~/components/shared/utils/formatter';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = defineProps<{
   organization: OrganizationProfile | undefined;

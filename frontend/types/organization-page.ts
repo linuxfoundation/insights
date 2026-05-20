@@ -7,7 +7,7 @@ export interface OrganizationProfile {
   logo: string;
   description: string;
   domain?: string;
-  employeeCount?: number;
+  employeeCount?: string;
   industry?: string[];
   website?: string;
 }
