@@ -136,7 +136,14 @@ SPDX-License-Identifier: MIT
                     <span class="org-bar org-bar-2" />
                     <span class="org-bar org-bar-3" />
                   </div>
-                  <span class="text-xs sm:text-sm">{{ influenceLabel(computeInfluence(project.technicalScore)) }}</span>
+                  <lfx-tooltip
+                    :content="influenceTooltip[influenceLabel(computeInfluence(project.technicalScore))]"
+                    placement="top"
+                  >
+                    <span class="text-xs sm:text-sm cursor-help">
+                      {{ influenceLabel(computeInfluence(project.technicalScore)) }}
+                    </span>
+                  </lfx-tooltip>
                 </div>
                 <span
                   v-else
@@ -247,6 +254,14 @@ const influenceLabel = (influence: TechnicalInfluence): string => {
     default:
       return '';
   }
+};
+
+const influenceTooltip: Record<string, string> = {
+  Silent: 'Silent: no participation of this type.',
+  Participating: 'Participating: a small but non-zero share of activities, showing intent to help improve the project.',
+  Contributing: 'Contributing: a small-to-medium share of activities, showing commitment and continued involvement.',
+  Leading:
+    'Leading: a medium-to-large share of activities, providing critical mass and showing serious dedication to building the project.',
 };
 
 const influenceClass = (influence: TechnicalInfluence): string => {
