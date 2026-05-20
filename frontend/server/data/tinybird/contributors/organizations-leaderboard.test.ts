@@ -79,6 +79,7 @@ describe('Organizations Leaderboard Data Source', () => {
       },
       data: mockTimeseries.data.map((item) => ({
         id: item.id,
+        slug: item.slug,
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,

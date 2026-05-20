@@ -38,6 +38,7 @@ export type TinybirdContributorDependencyData = {
 
 export type TinybirdOrganizationsLeaderboardData = {
   id: string;
+  slug: string;
   logo: string;
   displayName: string;
   contributionCount: number;

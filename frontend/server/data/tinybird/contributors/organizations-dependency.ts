@@ -55,6 +55,7 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
     },
     list: tinybirdLeaderboardResponse.data.map((item) => ({
       id: item.id,
+      slug: item.slug,
       logo: item.logo,
       name: item.name,
       contributions: item.contributions,
