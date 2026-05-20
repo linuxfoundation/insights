@@ -4,15 +4,15 @@ import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { OrganizationKpis } from '~~/types/organization-page';
 
 export default defineEventHandler(async (event): Promise<OrganizationKpis> => {
-  const orgId = getRouterParam(event, 'orgId');
+  const orgSlug = getRouterParam(event, 'orgSlug');
 
-  if (!orgId) {
-    throw createError({ statusCode: 422, statusMessage: 'orgId is required' });
+  if (!orgSlug) {
+    throw createError({ statusCode: 422, statusMessage: 'orgSlug is required' });
   }
 
   try {
     const res = await fetchFromTinybird<OrganizationKpis[]>('/v0/pipes/org_page_kpis.json', {
-      orgId,
+      orgSlug,
     });
 
     if (!res.data?.length) {

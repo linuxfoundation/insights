@@ -29,14 +29,14 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
 
 const route = useRoute();
-const { orgId } = route.params;
+const { orgSlug } = route.params;
 const { organization, isOrganizationLoading } = storeToRefs(useOrganizationPageStore());
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE, orgId]);
+const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE, orgSlug]);
 
 const { isLoading, data, suspense, isError, error } = useQuery<OrganizationProfile>({
   queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchProfile(orgId as string),
+  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchProfile(orgSlug as string),
   retry: false,
 });
 

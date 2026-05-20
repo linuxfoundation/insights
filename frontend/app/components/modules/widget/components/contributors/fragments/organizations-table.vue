@@ -36,7 +36,27 @@ SPDX-License-Identifier: MIT
           >
             {{ index + 1 }}
           </div>
-          <div class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit transition-colors">
+          <nuxt-link
+            v-if="organization.slug"
+            :to="`/organization/${organization.slug}`"
+            class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit"
+          >
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden hover:underline"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
+          </nuxt-link>
+          <div
+            v-else
+            class="flex items-center gap-2 min-w-0 overflow-hidden"
+          >
             <lfx-avatar
               :src="organization.logo"
               type="organization"

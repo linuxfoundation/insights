@@ -15,15 +15,15 @@ interface TinybirdOrgProfile {
 }
 
 export default defineEventHandler(async (event): Promise<OrganizationProfile> => {
-  const orgId = getRouterParam(event, 'orgId');
+  const orgSlug = getRouterParam(event, 'orgSlug');
 
-  if (!orgId) {
-    throw createError({ statusCode: 422, statusMessage: 'orgId is required' });
+  if (!orgSlug) {
+    throw createError({ statusCode: 422, statusMessage: 'orgSlug is required' });
   }
 
   try {
     const res = await fetchFromTinybird<TinybirdOrgProfile[]>('/v0/pipes/org_page_profile.json', {
-      orgId,
+      orgSlug,
     });
 
     if (!res.data?.length) {

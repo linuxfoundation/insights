@@ -218,10 +218,10 @@ import { useOrganizationPageStore } from '~/components/modules/organization/stor
 const route = useRoute();
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'This organization');
-const orgId = route.params.orgId as string;
+const orgSlug = route.params.orgSlug as string;
 
 const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
-  ORGANIZATION_PAGE_API_SERVICE.fetchProjects(orgId);
+  ORGANIZATION_PAGE_API_SERVICE.fetchProjects(orgSlug);
 
 const allProjects = computed(() => (data.value?.pages ?? []).flatMap((page) => page.data));
 

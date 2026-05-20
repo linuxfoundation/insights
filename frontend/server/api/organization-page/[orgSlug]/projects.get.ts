@@ -22,10 +22,10 @@ interface TinybirdOrgPageProject {
 const PAGE_SIZE = 20;
 
 export default defineEventHandler(async (event): Promise<OrganizationProjectsPage> => {
-  const orgId = getRouterParam(event, 'orgId');
+  const orgSlug = getRouterParam(event, 'orgSlug');
 
-  if (!orgId) {
-    throw createError({ statusCode: 422, statusMessage: 'orgId is required' });
+  if (!orgSlug) {
+    throw createError({ statusCode: 422, statusMessage: 'orgSlug is required' });
   }
 
   const query = getQuery(event);
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProjectsPag
   try {
     const projectsRes = await fetchFromTinybird<TinybirdOrgPageProject[]>(
       '/v0/pipes/org_page_projects.json',
-      { orgId, limit: PAGE_SIZE + 1, offset },
+      { orgSlug, limit: PAGE_SIZE + 1, offset },
     );
     const allProjects = projectsRes.data ?? [];
     const hasMore = allProjects.length > PAGE_SIZE;

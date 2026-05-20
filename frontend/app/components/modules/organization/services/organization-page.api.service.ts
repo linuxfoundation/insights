@@ -15,19 +15,19 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 const PAGE_SIZE = 20;
 
 class OrganizationPageApiService {
-  fetchProfile(orgId: string): QueryFunction<OrganizationProfile> {
-    return () => $fetch(`/api/organization-page/${orgId}`);
+  fetchProfile(orgSlug: string): QueryFunction<OrganizationProfile> {
+    return () => $fetch(`/api/organization-page/${orgSlug}`);
   }
 
-  fetchKpis(orgId: string): QueryFunction<OrganizationKpis> {
-    return () => $fetch(`/api/organization-page/${orgId}/kpis`);
+  fetchKpis(orgSlug: string): QueryFunction<OrganizationKpis> {
+    return () => $fetch(`/api/organization-page/${orgSlug}/kpis`);
   }
 
-  fetchProjects(orgId: string) {
+  fetchProjects(orgSlug: string) {
     return useInfiniteQuery<OrganizationProjectsPage>({
-      queryKey: [TanstackKey.ORGANIZATION_PAGE_PROJECTS, orgId],
+      queryKey: [TanstackKey.ORGANIZATION_PAGE_PROJECTS, orgSlug],
       queryFn: ({ pageParam }) =>
-        $fetch(`/api/organization-page/${orgId}/projects`, {
+        $fetch(`/api/organization-page/${orgSlug}/projects`, {
           params: { offset: (pageParam as number) ?? 0 },
         }),
       getNextPageParam: (lastPage, allPages) => {
@@ -38,16 +38,16 @@ class OrganizationPageApiService {
     });
   }
 
-  fetchActivityTimeseries(orgId: string): QueryFunction<OrgActivityTimeseries[]> {
-    return () => $fetch(`/api/organization-page/${orgId}/activity-timeseries`);
+  fetchActivityTimeseries(orgSlug: string): QueryFunction<OrgActivityTimeseries[]> {
+    return () => $fetch(`/api/organization-page/${orgSlug}/activity-timeseries`);
   }
 
-  fetchContributorTimeseries(orgId: string): QueryFunction<OrgContributorTimeseries[]> {
-    return () => $fetch(`/api/organization-page/${orgId}/contributor-timeseries`);
+  fetchContributorTimeseries(orgSlug: string): QueryFunction<OrgContributorTimeseries[]> {
+    return () => $fetch(`/api/organization-page/${orgSlug}/contributor-timeseries`);
   }
 
-  fetchContributors(orgId: string): QueryFunction<OrgContributor[]> {
-    return () => $fetch(`/api/organization-page/${orgId}/contributors`);
+  fetchContributors(orgSlug: string): QueryFunction<OrgContributor[]> {
+    return () => $fetch(`/api/organization-page/${orgSlug}/contributors`);
   }
 }
 

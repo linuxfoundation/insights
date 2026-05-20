@@ -64,16 +64,16 @@ import { lfxColors } from '~/config/styles/colors';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 
 const route = useRoute();
-const orgId = route.params.orgId as string;
+const orgSlug = route.params.orgSlug as string;
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'this organization');
 const currentYear = new Date().getFullYear().toString();
 
-const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_ACTIVITY, orgId]);
+const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_ACTIVITY, orgSlug]);
 
 const { data, isLoading } = useQuery<OrgActivityTimeseries[]>({
   queryKey,
-  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchActivityTimeseries(orgId),
+  queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchActivityTimeseries(orgSlug),
 });
 
 const chartData = computed<ChartData[]>(() => {

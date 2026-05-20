@@ -14,16 +14,16 @@ interface TinybirdContributor {
 }
 
 export default defineEventHandler(async (event): Promise<OrgContributor[]> => {
-  const orgId = getRouterParam(event, 'orgId');
+  const orgSlug = getRouterParam(event, 'orgSlug');
 
-  if (!orgId) {
-    throw createError({ statusCode: 422, statusMessage: 'orgId is required' });
+  if (!orgSlug) {
+    throw createError({ statusCode: 422, statusMessage: 'orgSlug is required' });
   }
 
   try {
     const res = await fetchFromTinybird<TinybirdContributor[]>(
       '/v0/pipes/org_page_contributors.json',
-      { orgId },
+      { orgSlug },
     );
 
     return (res.data ?? []).map((c) => ({
