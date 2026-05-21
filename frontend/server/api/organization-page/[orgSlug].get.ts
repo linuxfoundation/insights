@@ -36,7 +36,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProfile> =>
       displayName: raw.displayName,
       logo: raw.logo,
       description: raw.description,
-      employeeCount: raw.employeeCount ?? undefined,
+      employeeCount: raw.employeeCount && raw.employeeCount !== '0' ? raw.employeeCount : undefined,
       industry: raw.industry
         ? raw.industry
             .split(',')
