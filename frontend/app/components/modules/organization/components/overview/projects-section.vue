@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
           <div class="lfx-table-header px-1.5 border-b border-neutral-200 pb-3 mb-2 !hidden sm:!flex">
             <div class="flex-[2]">Project</div>
             <div class="flex-1">Technical influence</div>
-            <div class="flex-1">Code contributors</div>
+            <div class="flex-1">Contributors</div>
             <div class="flex-1">Activities</div>
             <div class="w-5" />
           </div>
@@ -97,7 +97,7 @@ SPDX-License-Identifier: MIT
                 </template>
               </lfx-tooltip>
             </div>
-            <div class="flex-1">Code contributors</div>
+            <div class="flex-1">Contributors</div>
             <div class="flex-1">Activities</div>
             <div class="w-5" />
           </div>
@@ -152,7 +152,7 @@ SPDX-License-Identifier: MIT
                 >
               </div>
 
-              <!-- Code contributors -->
+              <!-- Contributors -->
               <div class="sm:flex-1 text-xs sm:text-sm flex items-center gap-2">
                 <lfx-icon
                   name="people-group"

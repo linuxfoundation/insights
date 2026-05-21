@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
             {{ index + 1 }}
           </div>
           <nuxt-link
-            v-if="organization.slug"
+            v-if="isTeamMember && organization.slug"
             :to="`/organization/${organization.slug}`"
             class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit"
           >
@@ -107,6 +107,7 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
+import { useAuth } from '~~/composables/useAuth';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);
@@ -129,6 +130,9 @@ const props = withDefaults(
 );
 
 const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
+
+const { user } = useAuth();
+const isTeamMember = computed(() => !!user.value?.isLfInsightsTeamMember);
 
 const options = {
   root: null,
