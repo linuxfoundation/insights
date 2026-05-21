@@ -94,4 +94,4 @@ ENV NODE_OPTIONS=--max-old-space-size=3072
 # cd into the heapdumps mount before starting so snapshots land there; exec replaces sh with node for proper signal handling.
 # --heapsnapshot-near-heap-limit=3: take up to 3 snapshots as heap approaches the limit
 # --heapsnapshot-signal=SIGUSR2: manual snapshot via `kubectl exec -- kill -USR2 1`
-CMD ["/bin/sh", "-c", "cd /app/heapdumps && exec node --heapsnapshot-near-heap-limit=3 --heapsnapshot-signal=SIGUSR2 .output/server/index.mjs"]
+CMD ["/bin/sh", "-c", "cd /app/heapdumps && exec node --heapsnapshot-near-heap-limit=3 --heapsnapshot-signal=SIGUSR2 /app/.output/server/index.mjs"]
