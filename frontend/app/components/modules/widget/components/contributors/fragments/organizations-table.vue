@@ -36,16 +36,38 @@ SPDX-License-Identifier: MIT
           >
             {{ index + 1 }}
           </div>
-          <lfx-avatar
-            :src="organization.logo"
-            type="organization"
-            :aria-label="organization.logo && organization.name"
-          />
-          <div
-            class="text-ellipsis overflow-hidden"
-            :title="organization.name"
+          <nuxt-link
+            v-if="isTeamMember && organization.slug"
+            :to="`/organization/${organization.slug}`"
+            class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit"
           >
-            {{ organization.name }}
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden hover:underline"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
+          </nuxt-link>
+          <div
+            v-else
+            class="flex items-center gap-2 min-w-0 overflow-hidden"
+          >
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
           </div>
         </div>
         <div class="value-col">
@@ -85,6 +107,7 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
+import { useAuth } from '~~/composables/useAuth';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);
@@ -107,6 +130,9 @@ const props = withDefaults(
 );
 
 const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
+
+const { user } = useAuth();
+const isTeamMember = computed(() => !!user.value?.isLfInsightsTeamMember);
 
 const options = {
   root: null,
