@@ -39,6 +39,12 @@ const rateLimiterConfig: RateLimiterConfig = {
       maxRequests: 10,
       windowSeconds: 60, // 10 reports per minute
     },
+    {
+      route: '/api/project/*/security/*',
+      methods: ['GET'],
+      maxRequests: 10,
+      windowSeconds: 60, // 10 vulnerability requests per minute
+    },
   ],
 
   // /24 subnet rate limit — catches coordinated bot attacks from multiple IPs in the same subnet
