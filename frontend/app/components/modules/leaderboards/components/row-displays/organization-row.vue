@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
       class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
       :class="isTeamMember && item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
     >
+      aaa
       <lfx-avatar
         :src="item.logoUrl"
         type="organization"
