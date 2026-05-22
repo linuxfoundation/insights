@@ -94,4 +94,4 @@ ENV NODE_OPTIONS=--max-old-space-size=3072
 # Heap snapshots are opt-in: set HEAP_SNAPSHOT_ENABLED=1 to activate.
 # When enabled, cd into the heapdumps volume mount so snapshots land there.
 # exec replaces sh with node for proper signal handling.
-CMD ["/bin/sh", "-c", "if [ -n \"$HEAP_SNAPSHOT_ENABLED\" ]; then cd /app/heapdumps && exec node --heapsnapshot-near-heap-limit=3 --heapsnapshot-signal=SIGUSR2 /app/.output/server/index.mjs; else exec node /app/.output/server/index.mjs; fi"]
+CMD ["/bin/sh", "-c", "if [ \"$HEAP_SNAPSHOT_ENABLED\" = \"1\" ] || [ \"$HEAP_SNAPSHOT_ENABLED\" = \"true\" ]; then cd /app/heapdumps && exec node --heapsnapshot-near-heap-limit=3 --heapsnapshot-signal=SIGUSR2 /app/.output/server/index.mjs; else exec node /app/.output/server/index.mjs; fi"]
