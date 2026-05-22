@@ -74,7 +74,7 @@ import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { links } from '~/config/links';
 
-const { isAuthenticated, user, token, isLoading, login, logout } = useAuth();
+const { isAuthenticated, user, isLoading, login, logout } = useAuth();
 const authStore = useAuthStore();
 
 const isOpen = ref(false);
@@ -91,10 +91,9 @@ const logoutHandler = async () => {
 
 // Update auth store when authentication state changes
 watch(
-  [isAuthenticated, token],
-  ([newAuthVal, newToken]) => {
+  isAuthenticated,
+  (newAuthVal) => {
     authStore.isAuthenticated = newAuthVal;
-    authStore.token = newToken || '';
     authStore.user = user.value;
   },
   { immediate: true },

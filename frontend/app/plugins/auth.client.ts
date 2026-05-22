@@ -31,7 +31,6 @@ export default defineNuxtPlugin(() => {
       default: () => ({
         isAuthenticated: false,
         user: null,
-        token: null,
       }),
       server: false,
       lazy: true,
