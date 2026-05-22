@@ -7,10 +7,10 @@ SPDX-License-Identifier: MIT
   <div class="flex items-center w-full">
     <!-- Organization info -->
     <component
-      :is="isTeamMember ? nuxtLink : 'div'"
-      :to="isTeamMember ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
+      :is="isTeamMember && item.slug ? nuxtLink : 'div'"
+      :to="isTeamMember && item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
       class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
-      :class="isTeamMember ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
+      :class="isTeamMember && item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
     >
       <lfx-avatar
         :src="item.logoUrl"
