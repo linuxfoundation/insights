@@ -42,8 +42,8 @@ const rateLimiterConfig: RateLimiterConfig = {
     {
       route: '/api/project/*/security/*',
       methods: ['GET'],
-      maxRequests: 10,
-      windowSeconds: 60, // 10 vulnerability requests per minute
+      maxRequests: 50,
+      windowSeconds: 60, // 50 vulnerability requests per minute
     },
   ],
 
