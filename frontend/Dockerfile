@@ -46,8 +46,10 @@ COPY frontend ./frontend
 
 WORKDIR /app/frontend
 
-# Build docs and blog in parallel using shell background processes
-RUN pnpm docs:build & pnpm blog:build & wait && \
+# Build docs and blog in parallel; use ; not && so PID assignments run in main shell
+RUN pnpm docs:build & DOCS_PID=$! ; \
+    pnpm blog:build & BLOG_PID=$! ; \
+    wait $DOCS_PID && wait $BLOG_PID && \
     mkdir -p public/docs public/blog && \
     cp -r docs/.vitepress/dist/* public/docs/ && \
     cp -r blog/.vitepress/dist/* public/blog/
