@@ -136,15 +136,15 @@ export default defineEventHandler(async (event) => {
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
       iss: config.public.auth0Domain,
-      // aud: config.public.auth0ClientId,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
       claims,
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
-      // Include original tokens for reference if needed
-      // original_access_token: tokenResponse.access_token,
-      original_id_token: tokenResponse.id_token,
+      username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
+        | string
+        | undefined,
+      intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 
     // Sign the custom OpenID Connect token with client secret

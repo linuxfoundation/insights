@@ -65,7 +65,10 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       claims,
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
-      original_id_token: tokenResponse.id_token,
+      username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
+        | string
+        | undefined,
+      intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 
     const oidcToken = jwt.sign(oidcTokenPayload, config.auth0ClientSecret, {
