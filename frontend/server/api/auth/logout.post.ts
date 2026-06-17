@@ -26,8 +26,8 @@ const setOIDCCookie = (event: H3Event) => {
     maxAge: 0,
   };
 
-  // auth_oidc_token doesn't clear on prod, so forcing it to set as empty cookie
-  setCookie(event, 'auth_oidc_token', '', tokenCookieOptions);
+  // insights_oidc_token doesn't clear on prod, so forcing it to set as empty cookie
+  setCookie(event, 'insights_oidc_token', '', tokenCookieOptions);
 };
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Get the OIDC token for logout (don't delete yet - we need it for proper logout)
-    const oidcToken = getCookie(event, 'auth_oidc_token');
+    const oidcToken = getCookie(event, 'insights_oidc_token');
 
     // If we have an OIDC token, extract the original ID token for proper Auth0 logout
     if (oidcToken && config.auth0ClientSecret) {
@@ -131,9 +131,9 @@ export default defineEventHandler(async (event) => {
           if (isProduction) {
             setOIDCCookie(event);
           } else {
-            deleteCookie(event, 'auth_oidc_token');
+            deleteCookie(event, 'insights_oidc_token');
           }
-          deleteCookie(event, 'auth_refresh_token');
+          deleteCookie(event, 'insights_refresh_token');
           deleteCookie(event, 'auth_pkce');
           deleteCookie(event, 'auth_redirect_to');
 
@@ -152,9 +152,9 @@ export default defineEventHandler(async (event) => {
     if (isProduction) {
       setOIDCCookie(event);
     } else {
-      deleteCookie(event, 'auth_oidc_token');
+      deleteCookie(event, 'insights_oidc_token');
     }
-    deleteCookie(event, 'auth_refresh_token');
+    deleteCookie(event, 'insights_refresh_token');
     deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
 
@@ -166,8 +166,8 @@ export default defineEventHandler(async (event) => {
     console.error('Auth logout error:', error);
 
     // Still clear cookies even if logout URL generation fails
-    deleteCookie(event, 'auth_oidc_token');
-    deleteCookie(event, 'auth_refresh_token');
+    deleteCookie(event, 'insights_oidc_token');
+    deleteCookie(event, 'insights_refresh_token');
 
     return {
       success: true,

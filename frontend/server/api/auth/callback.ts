@@ -171,7 +171,7 @@ export default defineEventHandler(async (event) => {
     };
 
     // Store the single OpenID Connect token
-    setCookie(event, 'auth_oidc_token', oidcToken, tokenCookieOptions);
+    setCookie(event, 'insights_oidc_token', oidcToken, tokenCookieOptions);
 
     // Upsert SSO user on every login so the row exists before any collection action.
     // Fire-and-forget: a DB failure must not block the login redirect.
@@ -191,7 +191,7 @@ export default defineEventHandler(async (event) => {
 
     // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
-      setCookie(event, 'auth_refresh_token', tokenResponse.refresh_token, {
+      setCookie(event, 'insights_refresh_token', tokenResponse.refresh_token, {
         ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
       });
@@ -224,8 +224,8 @@ export default defineEventHandler(async (event) => {
     // Clean up all auth cookies on unrecoverable error
     deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
-    deleteCookie(event, 'auth_oidc_token');
-    deleteCookie(event, 'auth_refresh_token');
+    deleteCookie(event, 'insights_oidc_token');
+    deleteCookie(event, 'insights_refresh_token');
 
     let errorMessage = 'Authentication callback error';
     let errorCode = 500;

@@ -54,7 +54,7 @@ export async function auth(event: H3Event): Promise<void> {
  * their response when the caller is authenticated.
  */
 export function getOptionalUser(event: H3Event): DecodedOidcToken | null {
-  const oidcToken = getCookie(event, 'auth_oidc_token');
+  const oidcToken = getCookie(event, 'insights_oidc_token');
   if (!oidcToken) {
     return null;
   }
