@@ -40,14 +40,20 @@ export default defineEventHandler(async (event) => {
       const errorDescription = query.error_description as string;
 
       // For silent authentication failures, don't throw an error - just redirect
-      if (error === 'login_required' || error === 'interaction_required') {
-        // Silent authentication failed - user needs to log in
-        // Redirect to home page without error for silent auth failures
-        const finalRedirectError =
-          redirectTo === '/'
-            ? '/?auth=success'
-            : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
-        await sendRedirect(event, finalRedirectError);
+      if (
+        error === 'login_required' ||
+        error === 'interaction_required' ||
+        error === 'consent_required'
+      ) {
+        // Silent authentication failed — the user is not authenticated.
+        // Redirect back to the original page without appending ?auth=success (they
+        // aren't logged in) and without any stale ?auth param so the client-side
+        // guard (getSilentLoginAttempted) can terminate the retry cycle cleanly.
+        const silentFailUrl = new URL(redirectTo, 'https://placeholder.example');
+        silentFailUrl.searchParams.delete('auth');
+        const cleanSilentRedirect =
+          silentFailUrl.pathname + (silentFailUrl.search || '') + (silentFailUrl.hash || '');
+        await sendRedirect(event, cleanSilentRedirect || '/');
         return;
       }
 
@@ -191,11 +197,17 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Redirect to the original page or home with auth success flag
+    // Redirect to the original page or home with auth success flag.
+    // Strip any pre-existing ?auth param from redirectTo first to prevent
+    // accumulation (&auth=success&auth=success…) across redirect cycles.
+    const successUrl = new URL(redirectTo, 'https://placeholder.example');
+    successUrl.searchParams.delete('auth');
+    const cleanRedirectTo =
+      successUrl.pathname + (successUrl.search || '') + (successUrl.hash || '');
     const finalRedirect =
-      redirectTo === '/'
+      !cleanRedirectTo || cleanRedirectTo === '/'
         ? '/?auth=success'
-        : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
+        : `${cleanRedirectTo}${cleanRedirectTo.includes('?') ? '&' : '?'}auth=success`;
 
     await sendRedirect(event, finalRedirect);
   } catch (error) {

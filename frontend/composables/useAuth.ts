@@ -51,8 +51,12 @@ export const setWasUserLoggedIn = (value: boolean): void => {
 
 export const login = async (redirectTo?: string, silent?: boolean) => {
   isAuthLoading.value = true;
-  // Reset silent login flag for next time
-  setSilentLoginAttempted(false);
+  // Only reset the silent-login-attempted flag for explicit (non-silent) logins.
+  // For silent logins the flag must remain set so auth.client.ts can detect a failed
+  // silent-auth cycle and stop retrying on the next page load.
+  if (!silent) {
+    setSilentLoginAttempted(false);
+  }
   try {
     let currentPath = redirectTo || '/';
 
