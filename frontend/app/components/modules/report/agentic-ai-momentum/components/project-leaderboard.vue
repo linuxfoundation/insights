@@ -144,21 +144,6 @@ SPDX-License-Identifier: MIT
               </div>
             </th>
             <th
-              v-if="activeColumns.includes('downloads')"
-              key="col-downloads"
-              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('downloads')"
-            >
-              <div class="flex items-center justify-end gap-1">
-                Downloads
-                <lfx-icon
-                  v-if="sortColumn === 'downloads'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
               v-if="activeColumns.includes('dockerHubPulls')"
               key="col-dockerHubPulls"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
@@ -437,13 +422,6 @@ SPDX-License-Identifier: MIT
               </div>
             </td>
             <td
-              v-if="activeColumns.includes('downloads')"
-              key="col-downloads"
-              class="py-3 px-2 text-right"
-            >
-              {{ hasData(row.downloads) ? formatNumberShort(row.downloads) : '-' }}
-            </td>
-            <td
               v-if="activeColumns.includes('dockerHubPulls')"
               key="col-dockerHubPulls"
               class="py-3 px-2 text-right"
@@ -681,7 +659,6 @@ type ColumnGroup = (typeof COLUMN_GROUPS)[number];
 const COLUMN_CONFIG = [
   { key: 'stars', label: 'Stars', defaultOn: true, group: 'Growth' as ColumnGroup },
   { key: 'forks', label: 'Forks', defaultOn: false, group: 'Growth' as ColumnGroup },
-  { key: 'downloads', label: 'Downloads', defaultOn: true, group: 'Growth' as ColumnGroup },
   { key: 'dockerHubPulls', label: 'Docker Pulls', defaultOn: false, group: 'Growth' as ColumnGroup },
   { key: 'dependentRepositories', label: 'Dependent Repos', defaultOn: false, group: 'Growth' as ColumnGroup },
   { key: 'dependentPackages', label: 'Dependent Pkgs', defaultOn: false, group: 'Growth' as ColumnGroup },
@@ -762,7 +739,6 @@ type SortColumn =
   | 'timeToClose'
   | 'issueResponseTime'
   | 'noResponseIssues'
-  | 'downloads'
   | 'dockerHubPulls'
   | 'dependentRepositories'
   | 'dependentPackages'
@@ -815,8 +791,6 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     issueResponseTimeDelta: p.issueResponseTimeDays30d,
     noResponseIssues: p.noResponseIssues,
     noResponseIssuesDelta: p.noResponseIssues30d,
-    downloads: p.downloads,
-    downloadsDelta: p.downloads30d,
     cocomoValue: p.cocomoValue,
     prTimeToResolve: p.prResolveTimeDays,
     prTimeToResolveDelta: p.prResolveTimeDays30d,
@@ -897,8 +871,6 @@ const sortedData = computed(() => {
         return cmpNullLast(a.issueResponseTime, b.issueResponseTime, dir);
       case 'noResponseIssues':
         return cmpNullLast(a.noResponseIssues, b.noResponseIssues, dir);
-      case 'downloads':
-        return cmpNullLast(a.downloads, b.downloads, dir);
       case 'dockerHubPulls':
         return cmpNullLast(a.dockerHubPulls, b.dockerHubPulls, dir);
       case 'dependentRepositories':

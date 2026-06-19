@@ -250,7 +250,6 @@ const METRIC_CONFIG: MetricOption[] = [
   // Growth
   { key: 'stars', label: 'Stars', format: 'number', group: 'Growth' },
   { key: 'forks', label: 'Forks', format: 'number', group: 'Growth' },
-  { key: 'downloads', label: 'Downloads', format: 'number', group: 'Growth' },
   { key: 'dockerHubPulls', label: 'Docker Pulls', format: 'number', group: 'Growth' },
   { key: 'dependentRepositories', label: 'Dependent Repos', format: 'number', group: 'Growth' },
   { key: 'dependentPackages', label: 'Dependent Pkgs', format: 'number', group: 'Growth' },
@@ -316,8 +315,6 @@ function getMetricValue(project: AgenticEnrichedProject, metric: MetricKey): num
       return project.contributors;
     case 'newContributors':
       return project.newContributors30d;
-    case 'downloads':
-      return project.downloads;
     case 'dockerHubPulls':
       return project.dockerPulls;
     case 'dependentRepositories':
