@@ -64,7 +64,14 @@ export default defineNuxtPlugin(() => {
       !getSilentLoginAttempted() &&
       getWasUserLoggedIn() // Only attempt silent login if the user has logged in previously
     ) {
-      const currentPath = window.location.pathname + window.location.search + window.location.hash;
+      // Strip the ?auth param before passing the path as redirectTo so it cannot
+      // accumulate (&auth=success&auth=success…) across silent-login redirect cycles.
+      const rawUrl = new URL(
+        window.location.pathname + window.location.search + window.location.hash,
+        window.location.origin,
+      );
+      rawUrl.searchParams.delete('auth');
+      const currentPath = rawUrl.pathname + (rawUrl.search || '') + (rawUrl.hash || '');
       setSilentLoginAttempted(true);
       login(currentPath, true);
     }

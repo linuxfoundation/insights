@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
   const config = useRuntimeConfig();
 
-  // Verifies the OIDC cookie or transparently refreshes via auth_refresh_token if expired.
+  // Verifies the OIDC cookie or transparently refreshes via insights_refresh_token if expired.
   const decodedToken = await verifyOrRefreshOidcToken(event);
 
   if (!decodedToken) {
