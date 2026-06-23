@@ -7,9 +7,18 @@ import './cssOverrides';
 
 import { h } from 'vue';
 import CustomLfxFooter from './components/CustomLfxFooter.vue';
+import { theme, useOpenapi } from 'vitepress-openapi/client'
+import 'vitepress-openapi/dist/style.css'
+import spec from '../../public/openapi.json'
 
 export default {
   extends: DefaultTheme,
+  async enhanceApp(ctx) {
+    useOpenapi({
+      spec,
+    });
+    theme.enhanceApp(ctx);
+  },
   Layout() {
     return h(DefaultTheme.Layout, null, {
       'layout-bottom': () => h(CustomLfxFooter),
