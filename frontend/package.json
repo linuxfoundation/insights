@@ -125,6 +125,9 @@
     "storybook": "8.6.17",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.53.1",
+    "autoprefixer": "^10.4.21",
+    "tailwindcss": "^3.4.17",
+    "vitepress-openapi": "^0.2.0",
     "vitest": "^4.0.17",
     "vue-eslint-parser": "^10.2.0"
   },
