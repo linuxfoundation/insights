@@ -15,7 +15,7 @@
     "/api/project/{slug}/insights": {
       "get": {
         "summary": "Get project insights",
-        "description": "Returns a snapshot of key health and activity metrics for a given project.\n\nThis endpoint is public and requires no authentication.\n\nRate limiting applies: 200 requests per 60 seconds per IP address.\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
+        "description": "Returns a snapshot of key health and activity metrics for a given project.\n\nThis endpoint is public and requires no authentication.\n\nRate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
         "operationId": "getProjectInsight",
         "tags": [
           "Projects"
