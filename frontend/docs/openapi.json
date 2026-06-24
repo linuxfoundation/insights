@@ -128,7 +128,7 @@
                 },
                 "example": {
                   "statusCode": 404,
-                  "statusMessage": "Not Found"
+                  "statusMessage": "Project not Found"
                 }
               }
             }

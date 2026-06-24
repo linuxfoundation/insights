@@ -7,13 +7,14 @@ import './cssOverrides';
 
 import { h } from 'vue';
 import CustomLfxFooter from './components/CustomLfxFooter.vue';
-import { theme, useOpenapi } from 'vitepress-openapi/client'
-import 'vitepress-openapi/dist/style.css'
-import spec from '../../public/openapi.json'
+import { theme, useOpenapi } from 'vitepress-openapi/client';
+import 'vitepress-openapi/dist/style.css';
+import spec from '../../openapi.json';
 
 export default {
   extends: DefaultTheme,
-  async enhanceApp(ctx) {
+  enhanceApp(ctx) {
+    DefaultTheme.enhanceApp?.(ctx);
     useOpenapi({
       spec,
     });
