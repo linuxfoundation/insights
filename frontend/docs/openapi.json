@@ -126,7 +126,10 @@
                 "schema": {
                   "$ref": "#/components/schemas/Error"
                 },
+                "example": {
+                  "statusCode": 404,
                   "statusMessage": "Project not found"
+                }
               }
             }
           },
