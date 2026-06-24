@@ -17,6 +17,11 @@ export default {
     DefaultTheme.enhanceApp?.(ctx);
     useOpenapi({
       spec,
+      config: {
+        spec: {
+          disableDownload: true,
+        },
+      },
     });
     theme.enhanceApp(ctx);
   },
