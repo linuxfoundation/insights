@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 
     <!-- Archived empty state -->
     <lfx-empty-state
-      v-if="isArchived"
+      v-if="project && isArchived"
       icon="archive"
       :title="emptyStateTitle"
       :description="emptyStateDescription"
