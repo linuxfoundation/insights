@@ -99,10 +99,10 @@ const setRefreshedCookies = (event: H3Event, result: RawRefresh) => {
     maxAge: result.expiresIn,
   };
 
-  setCookie(event, 'auth_oidc_token', result.oidcToken, tokenCookieOptions);
+  setCookie(event, 'insights_oidc_token', result.oidcToken, tokenCookieOptions);
 
   if (result.newRefreshToken) {
-    setCookie(event, 'auth_refresh_token', result.newRefreshToken, {
+    setCookie(event, 'insights_refresh_token', result.newRefreshToken, {
       ...tokenCookieOptions,
       maxAge: 60 * 60 * 24 * 30,
     });
@@ -118,17 +118,17 @@ const clearAuthCookies = (event: H3Event) => {
     path: '/',
     ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
   };
-  deleteCookie(event, 'auth_oidc_token', cookieOptions);
-  deleteCookie(event, 'auth_refresh_token', cookieOptions);
+  deleteCookie(event, 'insights_oidc_token', cookieOptions);
+  deleteCookie(event, 'insights_refresh_token', cookieOptions);
 };
 
 /**
- * Attempts to refresh the OIDC token using the auth_refresh_token cookie.
- * On success: re-issues auth_oidc_token (and rotated refresh token) cookies on the event response.
+ * Attempts to refresh the OIDC token using the insights_refresh_token cookie.
+ * On success: re-issues insights_oidc_token (and rotated refresh token) cookies on the event response.
  * On failure: clears auth cookies and returns null.
  */
 export const refreshOidcToken = async (event: H3Event): Promise<RefreshResult | null> => {
-  const refreshToken = getCookie(event, 'auth_refresh_token');
+  const refreshToken = getCookie(event, 'insights_refresh_token');
   if (!refreshToken) {
     return null;
   }
@@ -165,7 +165,7 @@ export const verifyOrRefreshOidcToken = async (
   event: H3Event,
 ): Promise<DecodedOidcToken | null> => {
   const config = useRuntimeConfig();
-  const oidcToken = getCookie(event, 'auth_oidc_token');
+  const oidcToken = getCookie(event, 'insights_oidc_token');
 
   if (oidcToken && config.auth0ClientSecret) {
     try {

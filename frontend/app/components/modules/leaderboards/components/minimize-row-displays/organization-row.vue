@@ -3,15 +3,15 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 
-<!-- 
-  This component is used to display a organization row in a leaderboard table row.
-  It is used to display the organization name, rank, and value in a leaderboard table row.
- -->
-
 <template>
   <div class="flex items-center w-full">
     <!-- Organization info -->
-    <div class="flex-1 min-w-0 flex gap-3 items-center">
+    <component
+      :is="isTeamMember && item.slug ? nuxtLink : 'div'"
+      :to="isTeamMember && item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
+      class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
+      :class="isTeamMember && item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
+    >
       <lfx-avatar
         :src="item.logoUrl"
         type="organization"
@@ -19,11 +19,11 @@ SPDX-License-Identifier: MIT
       />
       <p
         :title="item.name"
-        class="font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full text-sm"
+        class="font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-full text-sm"
       >
         {{ item.name }}
       </p>
-    </div>
+    </component>
 
     <!-- Stats -->
     <div class="w-1/4 shrink-0">
@@ -35,15 +35,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed, resolveComponent } from 'vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { useAuth } from '~~/composables/useAuth';
 
 defineProps<{
   item: Leaderboard;
   leaderboardConfig: LeaderboardConfig;
 }>();
+
+const nuxtLink = resolveComponent('NuxtLink');
+const { user } = useAuth();
+const isTeamMember = computed(() => !!user.value?.isLfInsightsTeamMember);
 </script>
 
 <script lang="ts">

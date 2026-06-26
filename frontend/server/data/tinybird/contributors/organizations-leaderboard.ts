@@ -44,6 +44,8 @@ export async function fetchOrganizationsLeaderboard(
     },
     data: dataResponse.data.map(
       (item): Organization => ({
+        id: item.id,
+        slug: item.slug,
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,

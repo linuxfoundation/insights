@@ -29,6 +29,10 @@ Insights acts as your early warning system. It helps you avoid risky dependencie
 
 Because software development is not just about what works today. It’s about what lasts.
 
+## Requirements
+
+Insights only tracks **public repositories**. Private repositories are not supported.
+
 ## Outlook
 
 Insights was relaunched in May 2025 with a renewed focus on clarity, transparency, and usability for developers.
