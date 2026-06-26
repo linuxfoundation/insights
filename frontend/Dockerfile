@@ -46,8 +46,10 @@ COPY frontend ./frontend
 
 WORKDIR /app/frontend
 
-# Build docs and blog in parallel using shell background processes
-RUN pnpm docs:build & pnpm blog:build & wait && \
+# Build docs and blog in parallel; use ; not && so PID assignments run in main shell
+RUN pnpm docs:build & DOCS_PID=$! ; \
+    pnpm blog:build & BLOG_PID=$! ; \
+    wait $DOCS_PID && wait $BLOG_PID && \
     mkdir -p public/docs public/blog && \
     cp -r docs/.vitepress/dist/* public/docs/ && \
     cp -r blog/.vitepress/dist/* public/blog/
@@ -81,11 +83,15 @@ RUN groupadd --gid 1001 nodejs && \
     useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nuxt && \
     chown -R nuxt:nodejs /app
 
+RUN mkdir -p /app/heapdumps && chown nuxt:nodejs /app/heapdumps
+
 USER nuxt
 
 EXPOSE 3000
 
 ENV NODE_OPTIONS=--max-old-space-size=3072
 
-# Use exec form for proper signal handling
-CMD ["node", ".output/server/index.mjs"]
+# Heap snapshots are opt-in: set HEAP_SNAPSHOT_ENABLED=1 to activate.
+# When enabled, cd into the heapdumps volume mount so snapshots land there.
+# exec replaces sh with node for proper signal handling.
+CMD ["/bin/sh", "-c", "if [ \"$HEAP_SNAPSHOT_ENABLED\" = \"1\" ] || [ \"$HEAP_SNAPSHOT_ENABLED\" = \"true\" ]; then cd /app/heapdumps && exec node --heapsnapshot-near-heap-limit=3 --heapsnapshot-signal=SIGUSR2 /app/.output/server/index.mjs; else exec node /app/.output/server/index.mjs; fi"]

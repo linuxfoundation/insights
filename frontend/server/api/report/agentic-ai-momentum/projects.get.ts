@@ -1,16 +1,20 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchAgenticProjectsList } from '~~/server/data/tinybird/report/agentic-ai-momentum';
 import type {
   AgenticDataResponse,
+  AgenticEnrichedProject,
   AgenticProject,
   GitHubReleasesData,
-  AgenticEnrichedProject,
 } from '~~/types/report/agentic-ai-momentum.types';
+import { fetchAgenticProjectsList } from '~~/server/data/tinybird/report/agentic-ai-momentum';
 import projectsData from '~~/public/data/agentic-ai-momentum/projects.json';
 import releasesData from '~~/public/data/agentic-ai-momentum/github_releases_count.json';
 
 const SECONDS_PER_DAY = 86400;
+
+function normalizeUrl(url: string): string {
+  return url.toLowerCase().replace(/\/$/, '');
+}
 
 function secToDays(v: number | null): number | null {
   return v != null ? v / SECONDS_PER_DAY : null;
@@ -61,7 +65,6 @@ export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject
         // All-time values
         stars: p.stars,
         forks: p.forks,
-        downloads: p.downloads,
         dockerPulls: p.docker_pulls,
         dependentRepos: p.dependent_repos,
         dependentPackages: p.dependent_packages,
@@ -79,7 +82,6 @@ export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject
         // 30d delta values
         stars30d: p.stars_30d,
         forks30d: p.forks_30d,
-        downloads30d: p.downloads_30d,
         dockerPulls30d: p.docker_pulls_30d,
         commits30d: p.commits_30d,
         contributors30d: p.contributors_30d,
@@ -103,7 +105,3 @@ export default defineEventHandler(async (_event): Promise<AgenticEnrichedProject
     });
   }
 });
-
-function normalizeUrl(url: string): string {
-  return url.toLowerCase().replace(/\/$/, '');
-}
