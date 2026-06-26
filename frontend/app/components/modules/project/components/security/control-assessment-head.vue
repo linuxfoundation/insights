@@ -106,9 +106,19 @@ const handleUpdateResultsClick = async () => {
     );
   } catch (error) {
     console.error('Failed to trigger security update:', error);
-    showToast('An error occurred while triggering the update', ToastTypesEnum.negative, 'circle-exclamation', 5000, {
-      summary: 'Failed to update results',
-    });
+    const statusCode = (error as { statusCode?: number })?.statusCode;
+    const isAlreadyRunning = statusCode === 429;
+    showToast(
+      isAlreadyRunning
+        ? 'A security update is already running for this repository. Please wait for it to finish before triggering another one.'
+        : 'An error occurred while triggering the update',
+      ToastTypesEnum.negative,
+      'circle-exclamation',
+      5000,
+      {
+        summary: isAlreadyRunning ? 'Update already in progress' : 'Failed to update results',
+      },
+    );
   } finally {
     isUpdatingResults.value = false;
   }
