@@ -16,6 +16,9 @@ env:
   ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
   KUBECONFIG_PATH: /home/runner/.kube/config
 
+permissions:
+  contents: read
+
 jobs:
   flush-cache:
     runs-on: ubuntu-latest
