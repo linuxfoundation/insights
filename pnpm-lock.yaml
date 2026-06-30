@@ -8,6 +8,7 @@ overrides:
   eslint-plugin-vue: ^10.2.0
   h3: 1.15.5
   '@nuxtjs/robots': ^5.7.0
+  form-data: '>=2.5.4'
 
 patchedDependencies:
   nuxt-og-image@5.1.13:
