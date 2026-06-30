@@ -29,6 +29,15 @@ SPDX-License-Identifier: MIT
       />
     </div>
 
+    <div class="flex gap-1 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mb-5">
+      <lfx-icon
+        class="pt-0.5"
+        name="info-circle"
+        :size="14"
+      />
+      <span class="text-xs text-neutral-600">Package downloads are not available for Maven packages.</span>
+    </div>
+
     <div class="mb-5">
       <lfx-skeleton-state
         :status="status"
