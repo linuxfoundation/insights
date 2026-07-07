@@ -8,6 +8,7 @@ overrides:
   eslint-plugin-vue: ^10.2.0
   h3: 1.15.5
   '@nuxtjs/robots': ^5.7.0
+  form-data: '>=2.5.4'
 
 patchedDependencies:
   nuxt-og-image@5.1.13:
@@ -8292,10 +8293,6 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
-
-  form-data@2.5.3:
-    resolution: {integrity: sha512-XHIrMD0NpDrNM/Ckf7XJiBbLl57KEhT3+i3yY+eWm+cqYZJQTZrKo8Y8AWKnuV5GT4scfuUGt9LzNoIx3dU1nQ==}
-    engines: {node: '>= 0.12'}
 
   form-data@4.0.2:
     resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
@@ -19130,7 +19127,7 @@ snapshots:
       '@types/caseless': 0.12.5
       '@types/node': 22.16.0
       '@types/tough-cookie': 4.0.5
-      form-data: 2.5.3
+      form-data: 4.0.2
 
   '@types/resolve@1.20.2': {}
 
@@ -22549,14 +22546,6 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
-
-  form-data@2.5.3:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      es-set-tostringtag: 2.1.0
-      mime-types: 2.1.35
-      safe-buffer: 5.2.1
 
   form-data@4.0.2:
     dependencies:
