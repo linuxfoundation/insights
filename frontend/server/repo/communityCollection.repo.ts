@@ -327,7 +327,7 @@ export class CommunityCollectionRepository {
         `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
-         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
          WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
         [collectionIds],
       ),
@@ -442,7 +442,7 @@ export class CommunityCollectionRepository {
         `SELECT cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
-         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
          WHERE cip."collectionId" = $1 AND cip."deletedAt" IS NULL`,
         [collection.id],
       ),
@@ -523,7 +523,7 @@ export class CommunityCollectionRepository {
         `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
-         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
          WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
         [collectionIds],
       ),
@@ -604,8 +604,9 @@ export class CommunityCollectionRepository {
 
     const [projectsResult, reposResult] = await Promise.all([
       this.pool.query(
-        `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
-         WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+        `SELECT cip."insightsProjectId" FROM "collectionsInsightsProjects" cip
+         JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
+         WHERE cip."collectionId" = $1 AND cip."deletedAt" IS NULL`,
         [collectionId],
       ),
       this.pool.query(
