@@ -128,7 +128,7 @@
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^3.4.17",
     "vitepress-openapi": "^0.2.0",
-    "vitest": "^4.0.17",
+    "vitest": "^4.1.0",
     "vue-eslint-parser": "^10.2.0"
   },
   "eslintConfig": {
