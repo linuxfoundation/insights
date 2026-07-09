@@ -7,11 +7,13 @@ description: >
   dedupes them, classifies each by origin (submodule vs local, dev-only vs
   runtime), then fans out one break-risk agent per package that must PROVE the
   update is safe for this codebase before any fix is applied. Applies safe
-  fixes one at a time with incremental validation, opens a PR per severity
-  tier, and reports everything it did not fix. NEVER merges, never dismisses
-  alerts itself, never auto-applies major version bumps. Use when the user says
-  "fix vulns", "fix vulnerabilities", "dependabot alerts", "security audit
-  fix", or invokes /fix-vulns.
+  fixes one at a time with incremental validation and ends with a report of
+  what was fixed and what needs a human. Fixing only: NEVER runs git
+  operations (no branch, commit, push, or PR) and produces no commit/PR
+  drafts — reviewing and shipping the changes is entirely up to the user.
+  Never dismisses alerts or auto-applies major version bumps. Use when the
+  user says "fix vulns", "fix vulnerabilities", "dependabot alerts",
+  "security audit fix", or invokes /fix-vulns.
 allowed-tools: Bash, Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, WebFetch, mcp__playwright__*
 ---
 
@@ -68,7 +70,7 @@ Fallback if the token lacks `security_events` scope: `pnpm audit --json` from th
    Backup when the package has no advisory entry: `grep -n '<pkg>' pnpm-lock.yaml` and inspect the surrounding entries. Classification:
    - **`submodule-origin`** — every path starts with `submodules__crowd.dev__`. Do NOT fix. Emit a CM-ticket stub (package, CVEs, why it belongs in crowd.dev) and a suggested dismissal command for the user to run:
      `gh api -X PATCH repos/linuxfoundation/insights/dependabot/alerts/<N> -f state=dismissed -f dismissed_reason=not_used -f dismissed_comment="Fix belongs in crowd.dev (CM-XXX)"`
-   - **`dev-only`** — reachable only through devDependency chains (vitest, storybook, eslint, …). Fix, but note reduced urgency in the PR.
+   - **`dev-only`** — reachable only through devDependency chains (vitest, storybook, eslint, …). Fix, but note reduced urgency in the report.
    - **`runtime`** — reachable from production code. Fix with priority.
 3. Record for each package: current locked version(s) (`pnpm list <pkg> --depth Infinity` or lockfile grep), fix target (`patched` from the alert), and whether the target crosses a **semver major** boundary.
 
@@ -86,7 +88,7 @@ For every fixable package (not `submodule-origin`), spawn **one agent per packag
 > 5. **Verdict** — return exactly this structure as your final message:
 >    - `verdict`: `safe` | `risky` | `needs-human`
 >    - `evidence`: bullet list backing the verdict
->    - `reachability`: one sentence for the PR body
+>    - `reachability`: one sentence for the report
 >    - `question`: only if `needs-human` — the specific question a human must answer
 >
 > Rules: if you cannot obtain a changelog, cannot resolve consumer ranges, or the update crosses a semver major, the verdict is `risky` (or `needs-human` with a question) — NEVER `safe`. `safe` requires positive evidence that no used API changed AND all consumer ranges are satisfied.
@@ -95,7 +97,9 @@ Collect all verdicts. Only `safe` packages proceed to Phase 4. `risky` and `need
 
 ## Phase 4: Apply fixes sequentially
 
-Work on a branch named after what the run covers — no Jira ticket needed: `fix/vulns-<severity>` for a severity tier (e.g. `fix/vulns-critical`), or `fix/vulns-<advisory-id>` for a specific-advisory run (e.g. `fix/vulns-ghsa-fx2h-pf6j-xcff`). **One package at a time**, in this strategy order:
+**This skill runs no git commands** — no branch, no commit, no push. All fixes are edits to the working tree; the user reviews and ships them. Because of that, require a **clean working tree** before applying anything (`git status --porcelain` must be empty) — if it isn't, stop and ask the user to commit or stash first, so every change in the tree afterwards is attributable to this run and can be cleanly reverted with `git checkout -- <file>`.
+
+Apply fixes **one package at a time**, in this strategy order:
 
 1. **Direct dep bump** in the owning `package.json` — only if the package is a direct dependency and the fix is within the same major.
 2. **`pnpm-workspace.yaml` override** for transitive deps (existing convention — see `h3`, `form-data` already there). Use a range (`'>=x.y.z'`) rather than an exact pin where possible. Append new entries to the existing block with a trailing comment naming the GHSA id — do not reorder the existing overrides.
@@ -124,23 +128,13 @@ pnpm tsc-check && pnpm lint && pnpm test && pnpm build
 4. `browser_console_messages` — any new error-level messages are treated like a suite failure: bisect to find the offending package, revert it, downgrade to `needs-human`.
 5. Close the browser and stop the dev server.
 
-If the dev server cannot start for environment reasons (missing Tinybird/Auth0 env vars), do NOT silently skip — state prominently in the PR body and final report that the runtime smoke test could not run and why.
+If the dev server cannot start for environment reasons (missing Tinybird/Auth0 env vars), do NOT silently skip — state prominently in the final report that the runtime smoke test could not run and why.
 
-## Phase 5: Deliver
+## Phase 5: Report
 
-- Commit with sign-off and GPG: `git commit --signoff -S -m "fix: bump <pkgs> to resolve <n> security advisories"` — reference advisory ids or the severity tier in the body if useful; there is no Jira ticket for these runs.
-- One PR per severity tier. PR body must contain:
-  - A table: GHSA / CVE → package → current → target → fix strategy → classification (`runtime`/`dev-only`) → reachability note (from the break-risk agent).
-  - A "Not fixed in this PR" section: every `risky` / `needs-human` / `submodule-origin` package with the agent's evidence or the CM-ticket stub.
-  - The result of the runtime smoke test (pages verified, or why it could not run).
-- **Never merge the PR. Never enable auto-merge.** Critical-severity fixes always wait for human review — state this in the PR body.
-- Do not push or open the PR without showing the user the branch diff summary and PR body first.
+The fixes stay as uncommitted working-tree changes — reviewing and shipping them is the user's job, not this skill's. Do NOT run `git branch`, `git commit`, `git push`, or `gh pr create`, and do not generate commit messages or PR descriptions. End with a summary the user can act on without scrolling back:
 
-## Phase 6: Report
-
-End with a summary the user can act on without scrolling back:
-
-1. Fixed: packages, CVE count, PR link(s).
+1. Fixed: a table — GHSA / CVE → package → current → target → fix strategy → classification (`runtime`/`dev-only`) → reachability note (from the break-risk agent) — plus `git diff --stat` and the validation + smoke-test result.
 2. Needs human decision: each `risky`/`needs-human` package with its one-line reason and evidence pointer.
 3. Belongs in crowd.dev: CM-ticket stubs + suggested dismissal commands (never run dismissals yourself).
 4. Anything skipped and why. Nothing is silently dropped.
@@ -153,4 +147,5 @@ End with a summary the user can act on without scrolling back:
 - Uncertainty defaults to `risky` — a missing changelog is not permission, it's a blocker.
 - Major version bumps are never auto-applied.
 - Never touch `submodules/**`.
-- Never dismiss alerts, never merge PRs, never push without showing the user first.
+- Fixing only: no git operations (no branch, commit, push, or PR) and no commit/PR drafts — the skill's output is a fixed working tree plus the report. Requires a clean tree to start.
+- Never dismiss alerts.
