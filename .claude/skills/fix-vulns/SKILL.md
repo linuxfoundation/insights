@@ -12,7 +12,7 @@ description: >
   alerts itself, never auto-applies major version bumps. Use when the user says
   "fix vulns", "fix vulnerabilities", "dependabot alerts", "security audit
   fix", or invokes /fix-vulns.
-allowed-tools: Bash, Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, WebFetch
+allowed-tools: Bash, Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, WebFetch, mcp__playwright__*
 ---
 
 # Fix Dependabot Vulnerabilities
@@ -40,13 +40,15 @@ Primary source (exact parity with the Dependabot dashboard):
 
 ```bash
 gh api 'repos/linuxfoundation/insights/dependabot/alerts?state=open&per_page=100' --paginate \
-  --jq '[.[] | {number, severity: .security_advisory.severity, pkg: .dependency.package.name,
+  --jq '.[] | {number, severity: .security_advisory.severity, pkg: .dependency.package.name,
         scope: .dependency.scope, manifest: .dependency.manifest_path,
         cve: .security_advisory.cve_id, ghsa: .security_advisory.ghsa_id,
         range: .security_vulnerability.vulnerable_version_range,
         patched: .security_vulnerability.first_patched_version.identifier,
-        summary: .security_advisory.summary}]'
+        summary: .security_advisory.summary}'
 ```
+
+The jq filter deliberately emits a **stream of objects, not an array**: with `--paginate`, gh runs the filter once per page, so an array-wrapped filter would produce one array per page and any single-value JSON parse would silently drop every page after the first.
 
 Fallback if the token lacks `security_events` scope: `pnpm audit --json` from the repo root (note in the final report that alert numbers/dismissal parity is unavailable). Filter to the scope chosen in Phase 0.
 
@@ -93,13 +95,18 @@ Collect all verdicts. Only `safe` packages proceed to Phase 4. `risky` and `need
 
 ## Phase 4: Apply fixes sequentially
 
-Work on a branch: `fix/IN-<ticket>-vulns-<severity>` (ask the user for the IN ticket number if unknown; IN-1189 is the parent for this automation). **One package at a time**, in this strategy order:
+Work on a branch named after what the run covers — no Jira ticket needed: `fix/vulns-<severity>` for a severity tier (e.g. `fix/vulns-critical`), or `fix/vulns-<advisory-id>` for a specific-advisory run (e.g. `fix/vulns-ghsa-fx2h-pf6j-xcff`). **One package at a time**, in this strategy order:
 
 1. **Direct dep bump** in the owning `package.json` — only if the package is a direct dependency and the fix is within the same major.
-2. **`pnpm-workspace.yaml` override** for transitive deps (existing convention — see `h3`, `form-data` already there). Use a range (`'>=x.y.z'`) rather than an exact pin where possible, and keep overrides alphabetized with a trailing comment naming the GHSA id.
+2. **`pnpm-workspace.yaml` override** for transitive deps (existing convention — see `h3`, `form-data` already there). Use a range (`'>=x.y.z'`) rather than an exact pin where possible. Append new entries to the existing block with a trailing comment naming the GHSA id — do not reorder the existing overrides.
 3. **`pnpm.patchedDependencies`** only when no fixed release exists — this requires human confirmation first.
 
-After each package: `pnpm install` from the repo root and confirm the lockfile regenerates cleanly and the vulnerable version is gone (`pnpm why <pkg>`).
+After each package: `pnpm install` from the repo root, then confirm the vulnerable version is gone by grepping the regenerated lockfiles — do NOT use `pnpm why` for this (non-recursive from the root it misses `frontend/`-only deps and reports a false "not found"; recursive crashes in this workspace):
+
+```bash
+grep -n '<pkg>@' pnpm-lock.yaml frontend/pnpm-lock.yaml
+# every remaining occurrence must resolve to a version outside the vulnerable range
+```
 
 After the whole batch, run the full validation suite from `frontend/`:
 
@@ -109,13 +116,23 @@ pnpm tsc-check && pnpm lint && pnpm test && pnpm build
 
 **On failure, bisect**: revert all fixes, re-apply one at a time running the full suite each round until the offender is found. Revert the offender, downgrade its verdict to `needs-human` with the failure output attached, and re-validate the remaining set. Never ship a batch that isn't fully green.
 
+**Runtime smoke test (after the suite is green)** — the build passing doesn't prove the app boots; dependency swaps can fail only at runtime. Start the dev server and verify the app actually loads using the Playwright MCP browser tools:
+
+1. From `frontend/`: `pnpm dev` in the background; wait for the server to listen on `http://localhost:3000`.
+2. `browser_navigate` to `http://localhost:3000` — take a snapshot and confirm the page renders real content (not a blank page, error overlay, or Nuxt error screen).
+3. Navigate to at least one project page from the homepage (click through, don't hardcode a slug) and confirm it renders.
+4. `browser_console_messages` — any new error-level messages are treated like a suite failure: bisect to find the offending package, revert it, downgrade to `needs-human`.
+5. Close the browser and stop the dev server.
+
+If the dev server cannot start for environment reasons (missing Tinybird/Auth0 env vars), do NOT silently skip — state prominently in the PR body and final report that the runtime smoke test could not run and why.
+
 ## Phase 5: Deliver
 
-- Commit with sign-off and GPG: `git commit --signoff -S -m "fix: bump <pkgs> to resolve <n> security advisories IN-<ticket>"`.
+- Commit with sign-off and GPG: `git commit --signoff -S -m "fix: bump <pkgs> to resolve <n> security advisories"` — reference advisory ids or the severity tier in the body if useful; there is no Jira ticket for these runs.
 - One PR per severity tier. PR body must contain:
   - A table: GHSA / CVE → package → current → target → fix strategy → classification (`runtime`/`dev-only`) → reachability note (from the break-risk agent).
   - A "Not fixed in this PR" section: every `risky` / `needs-human` / `submodule-origin` package with the agent's evidence or the CM-ticket stub.
-  - Link to the IN ticket.
+  - The result of the runtime smoke test (pages verified, or why it could not run).
 - **Never merge the PR. Never enable auto-merge.** Critical-severity fixes always wait for human review — state this in the PR body.
 - Do not push or open the PR without showing the user the branch diff summary and PR body first.
 
@@ -132,7 +149,7 @@ End with a summary the user can act on without scrolling back:
 
 ## Guardrails (non-negotiable)
 
-- No fix without BOTH a `safe` verdict and a green suite.
+- No fix without BOTH a `safe` verdict and a green suite (including the runtime smoke test when the dev server can run).
 - Uncertainty defaults to `risky` — a missing changelog is not permission, it's a blocker.
 - Major version bumps are never auto-applied.
 - Never touch `submodules/**`.
