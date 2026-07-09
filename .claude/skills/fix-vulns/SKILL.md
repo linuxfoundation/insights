@@ -67,7 +67,7 @@ Fallback if the token lacks `security_events` scope: `pnpm audit --json` from th
    # e.g. submodules__crowd.dev__services__libs__integrations>axios>form-data
    ```
 
-   Backup when the package has no advisory entry: `grep -n '<pkg>' pnpm-lock.yaml` and inspect the surrounding entries. Classification:
+   Backup when the package has no advisory entry: `grep -n '<pkg>' pnpm-lock.yaml frontend/pnpm-lock.yaml` and inspect the surrounding entries — always search both lockfiles, a package can exist in only one of them. Classification:
    - **`submodule-origin`** — every path starts with `submodules__crowd.dev__`. Do NOT fix. Emit a CM-ticket stub (package, CVEs, why it belongs in crowd.dev) and a suggested dismissal command for the user to run:
      `gh api -X PATCH repos/linuxfoundation/insights/dependabot/alerts/<N> -f state=dismissed -f dismissed_reason=not_used -f dismissed_comment="Fix belongs in crowd.dev (CM-XXX)"`
    - **`dev-only`** — reachable only through devDependency chains (vitest, storybook, eslint, …). Fix, but note reduced urgency in the report.
@@ -123,9 +123,9 @@ pnpm tsc-check && pnpm lint && pnpm test && pnpm build
 **Runtime smoke test (after the suite is green)** — the build passing doesn't prove the app boots; dependency swaps can fail only at runtime. Start the dev server and verify the app actually loads using the Playwright MCP browser tools:
 
 1. From `frontend/`: `pnpm dev` in the background; wait for the server to listen on `http://localhost:3000`.
-2. `browser_navigate` to `http://localhost:3000` — take a snapshot and confirm the page renders real content (not a blank page, error overlay, or Nuxt error screen).
-3. Navigate to at least one project page from the homepage (click through, don't hardcode a slug) and confirm it renders.
-4. `browser_console_messages` — any new error-level messages are treated like a suite failure: bisect to find the offending package, revert it, downgrade to `needs-human`.
+2. `mcp__playwright__browser_navigate` to `http://localhost:3000`, then `mcp__playwright__browser_snapshot` — confirm the page renders real content (not a blank page, error overlay, or Nuxt error screen).
+3. Navigate to at least one project page from the homepage (click through via `mcp__playwright__browser_click`, don't hardcode a slug) and confirm it renders.
+4. `mcp__playwright__browser_console_messages` — any new error-level messages are treated like a suite failure: bisect to find the offending package, revert it, downgrade to `needs-human`.
 5. Close the browser and stop the dev server.
 
 If the dev server cannot start for environment reasons (missing Tinybird/Auth0 env vars), do NOT silently skip — state prominently in the final report that the runtime smoke test could not run and why.
