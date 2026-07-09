@@ -11,4 +11,8 @@ overrides:
   eslint-plugin-vue: ^10.2.0
   h3: 1.15.5
   '@nuxtjs/robots': ^5.7.0
-  form-data: '>=2.5.4'
+  form-data: '>=4.0.4' # GHSA-fjxv-7rqg-78g4
+  shell-quote: '>=1.8.4' # GHSA-w7jw-789q-3m8p
+  protobufjs: '>=7.5.5 <8' # GHSA-xq3m-2v4x-88gg
+  simple-git: '>=3.32.3' # GHSA-r275-fr43-pm7q
+  fast-xml-parser@5: '>=5.7.0' # GHSA-m7jm-9gc2-mpf2 (5.x line only; 4.x deferred, needs-human)
