@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-1">
     <template v-if="badges.length > 0">
       <lfx-popover
         v-for="(count, tier) in badgeCountByTier"
@@ -13,12 +13,13 @@ SPDX-License-Identifier: MIT
         :allow-pass-through="true"
       >
         <lfx-chip
+          size="xsmall"
           :style="{ background: getBadgeColor(tier as BadgeTier) }"
-          class="flex items-center gap-1"
+          class="flex items-center gap-0.5 !px-1.5"
         >
           <lfx-icon
             name="hexagon"
-            :size="12"
+            :size="10"
             class="text-white"
           />
           <span class="text-white text-xs font-semibold">

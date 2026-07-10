@@ -80,10 +80,9 @@ SPDX-License-Identifier: MIT
           </template>
         </lfx-popover>
       </td>
-      <td class="w-1/12 py-4 px-2 whitespace-nowrap">
+      <td class="w-2/12 py-4 px-2 whitespace-nowrap">
         {{ formatNumber(props.project.contributorCount) }}
       </td>
-      <td class="w-1/12 py-4 px-2 whitespace-nowrap">${{ formatNumberShort(props.project.softwareValue || 0) }}</td>
       <td class="w-3/12 py-4 px-2 whitespace-nowrap">
         <lfx-popover
           placement="top"
@@ -108,8 +107,7 @@ SPDX-License-Identifier: MIT
     </template>
     <template v-else>
       <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-1/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-1/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="w-3/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
     </template>
@@ -175,15 +173,6 @@ SPDX-License-Identifier: MIT
             class="text-neutral-500"
           />
           <span>{{ formatNumber(props.project.contributorCount) }}</span>
-          <template v-if="props.project.softwareValue">
-            <span class="text-neutral-400">・</span>
-            <lfx-icon
-              name="circle-dollar"
-              :size="12"
-              class="text-neutral-500"
-            />
-            <span>${{ formatNumberShort(props.project.softwareValue) }}</span>
-          </template>
         </template>
         <template v-else>
           <span class="text-neutral-400">No data available</span>
@@ -200,7 +189,7 @@ import type { ProjectInsights } from '~~/types/project';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
 import LfxHealthScoreDetails from '~/components/modules/collection/components/details/health-score-details.vue';

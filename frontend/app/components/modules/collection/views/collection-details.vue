@@ -53,7 +53,7 @@ SPDX-License-Identifier: MIT
               </th>
               <th class="w-2/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Health Score</th>
               <th
-                class="w-1/12 py-5 px-2 text-left whitespace-nowrap cursor-pointer group"
+                class="w-2/12 py-5 px-2 text-left whitespace-nowrap cursor-pointer group"
                 @click="handleSort('contributorCount')"
               >
                 <span class="inline-flex items-center gap-1">
@@ -65,7 +65,6 @@ SPDX-License-Identifier: MIT
                   />
                 </span>
               </th>
-              <th class="w-1/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Software value</th>
               <th class="w-3/12 py-5 px-2 text-left whitespace-nowrap font-semibold">
                 Contributor/Organization dependency
               </th>

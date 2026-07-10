@@ -56,22 +56,8 @@ export const collectionTabs = (_user?: User | null): CollectionTypesTabs[] => {
   return tabs;
 };
 
-// This only applies to the collection details page header
-export const headerBackground = (type?: CollectionType, curatedColor?: string | null) => {
-  switch (type) {
-    case CollectionTypeEnum.CURATED:
-      return {
-        background: curatedColor
-          ? `linear-gradient(0deg, ${curatedColor}00, ${curatedColor}0D), var(--White, #FFF)`
-          : 'linear-gradient(0deg, #0F172B00, #0F172B0D), var(--White, #FFF)',
-      };
-    case CollectionTypeEnum.COMMUNITY:
-      return {
-        background: 'linear-gradient(0deg, #009AFF00, #009AFF0D), var(--White, #FFF)',
-      };
-    default:
-      return {
-        background: 'linear-gradient(0deg, #8E51FF00, #8E51FF0D), var(--White, #FFF)',
-      };
-  }
-};
+// This only applies to the collection details page header.
+// Collections v2 (IN-1194): headers use a plain, consistent background — no gradient — on every collection type.
+export const headerBackground = () => ({
+  background: 'var(--White, #FFF)',
+});

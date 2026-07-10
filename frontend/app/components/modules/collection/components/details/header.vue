@@ -426,7 +426,7 @@ const { scrollTop } = useScroll();
 const allTabs = computed(() => collectionTabs(user.value));
 
 const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === props.type) || allTabs.value[0]);
-const headerBackgroundStyle = computed(() => headerBackground(props.type, props.collection?.color));
+const headerBackgroundStyle = computed(() => headerBackground());
 
 const projectCount = computed(() => (props.collection?.projectCount || 0) + (props.collection?.repositoryCount || 0));
 
