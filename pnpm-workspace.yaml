@@ -40,5 +40,10 @@ overrides:
   picomatch@4: '>=4.0.4 <5' # GHSA-c2c7-rcm5-vvqj (4.x line)
   minimatch@3: '>=3.1.4 <4' # GHSA-23c5-xmqv-rm74, GHSA-3ppc-4f35-3m26, GHSA-7r86-cg39-jmmj (3.x line)
   minimatch@5: '>=5.1.8 <6' # same GHSAs (5.x line)
-  minimatch@10: '>=10.2.3 <11' # same GHSAs (10.x line; 9.x deferred, needs-human — editorconfig@1.0.4 exact-pins 9.0.1)
+  minimatch@9: '>=9.0.7 <10' # same GHSAs (9.x line; editorconfig@1.0.4 exact-pinned 9.0.1 but API surface unchanged 9.0.1->9.0.7, verified via upstream diff)
+  minimatch@10: '>=10.2.3 <11' # same GHSAs (10.x line)
   rollup@2: '>=2.80.0 <3' # GHSA-mw96-cpmx-2vgc (2.x line; 4.x deferred, needs-human — shares resolution with production nuxt build)
+  lodash: '>=4.18.1 <5' # GHSA stacked (<=4.17.23); 4.18.0 is npm-deprecated "bad release", use 4.18.1
+  storybook: '>=8.6.17 <9' # GHSA (8.1.0-8.6.16); @nuxtjs/storybook@8.3.3 exact-pins 8.4.7, needs manual pnpm storybook / storybook:build check
+  terser-webpack-plugin: '>=5.6.1 <6' # dev-only (webpack's own minifier dep); 5.3.17+ dropped serialize-javascript entirely, removing the vulnerable pin
+  serialize-javascript: '>=7.0.5 <8' # GHSA (CVE-2026-34043); @rollup/plugin-terser@0.4.4 declares ^6.0.1 but only calls the stable default export, API unchanged across the major
