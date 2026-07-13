@@ -68,7 +68,7 @@ SPDX-License-Identifier: MIT
               <th class="w-3/12 py-5 px-2 text-left whitespace-nowrap font-semibold">
                 Contributor/Organization dependency
               </th>
-              <th class="w-2/12 py-5 px-2 text-left whitespace-nowrap font-semibold">Achievements</th>
+              <th class="w-2/12 py-5 px-2 text-right whitespace-nowrap font-semibold">Achievements</th>
             </tr>
           </thead>
           <tbody>

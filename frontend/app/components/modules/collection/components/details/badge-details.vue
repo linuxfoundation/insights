@@ -3,42 +3,37 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex items-center gap-1">
+  <div class="flex items-center justify-end">
     <template v-if="badges.length > 0">
       <lfx-popover
-        v-for="(count, tier) in badgeCountByTier"
+        v-for="({ tier, count }, index) in badgeCountByTier"
         :key="tier"
         placement="top"
         trigger-event="hover"
         :allow-pass-through="true"
+        class="relative"
+        :class="index > 0 ? '-ml-1.5' : ''"
+        :style="{ zIndex: badgeCountByTier.length - index }"
       >
-        <lfx-chip
-          size="xsmall"
-          :style="{ background: getBadgeColor(tier as BadgeTier) }"
-          class="flex items-center gap-0.5 !px-1.5"
+        <div
+          class="w-6 h-[21px] flex items-center justify-center"
+          :style="{ clipPath: HEXAGON_CLIP_PATH, background: getBadgeColor(tier) }"
         >
-          <lfx-icon
-            name="hexagon"
-            :size="10"
-            class="text-white"
-          />
-          <span class="text-white text-xs font-semibold">
-            {{ count }}
-          </span>
-        </lfx-chip>
+          <span class="text-white text-xs font-semibold">{{ count }}</span>
+        </div>
         <template #content>
           <div class="bg-white border border-neutral-100 rounded-xl shadow-xl overflow-hidden p-3 w-100">
             <div class="flex flex-col">
               <div
-                v-for="(badge, index) in getBadgesByTier(tier as BadgeTier)"
-                :key="badge.config.leaderboardKey"
+                v-for="(tierBadge, tierBadgeIndex) in getBadgesByTier(tier)"
+                :key="tierBadge.config.leaderboardKey"
               >
                 <div class="flex gap-3 items-start py-2">
                   <!-- Badge Image -->
                   <div class="shrink-0 size-13">
                     <img
-                      :src="badge.config.badgeImages[badge.tier]"
-                      :alt="badge.config.title"
+                      :src="tierBadge.config.badgeImages[tierBadge.tier]"
+                      :alt="tierBadge.config.title"
                       class="size-13"
                     />
                   </div>
@@ -46,10 +41,10 @@ SPDX-License-Identifier: MIT
                   <!-- Content -->
                   <div class="flex-1 min-w-0 flex flex-col justify-center">
                     <p class="text-sm font-semibold text-neutral-900 truncate">
-                      {{ badge.config.title }}
+                      {{ tierBadge.config.title }}
                     </p>
                     <p class="text-xs leading-4 text-neutral-500">
-                      {{ getBadgeDescription(badge) }}
+                      {{ getBadgeDescription(tierBadge) }}
                     </p>
                   </div>
 
@@ -59,7 +54,7 @@ SPDX-License-Identifier: MIT
                       <nuxt-link
                         :to="{
                           name: LfxRoutes.LEADERBOARD,
-                          params: { key: badge.config.leaderboardKey },
+                          params: { key: tierBadge.config.leaderboardKey },
                         }"
                         @click.stop
                       >
@@ -75,7 +70,7 @@ SPDX-License-Identifier: MIT
                         icon="share-nodes"
                         type="transparent"
                         size="small"
-                        @click.stop="openShareModal(badge)"
+                        @click.stop="openShareModal(tierBadge)"
                       />
                     </lfx-tooltip>
                   </div>
@@ -83,7 +78,7 @@ SPDX-License-Identifier: MIT
 
                 <!-- Divider -->
                 <div
-                  v-if="index < getBadgesByTier(tier as BadgeTier).length - 1"
+                  v-if="tierBadgeIndex < getBadgesByTier(tier).length - 1"
                   class="border-t border-neutral-100"
                 />
               </div>
@@ -111,10 +106,8 @@ import badgeConfigs, {
   type ProjectBadge,
   tierConfigs,
 } from '~/components/modules/badges/config/badge.config';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxBadgesShareModal from '~/components/modules/badges/components/share/badges-share-modal.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
@@ -152,15 +145,18 @@ const badges = computed<ProjectBadge[]>(() => {
     .filter((badge): badge is ProjectBadge => badge !== null);
 });
 
-const badgeCountByTier = computed(() => {
-  return badges.value.reduce(
-    (acc, badge) => {
-      acc[badge.tier] = (acc[badge.tier] || 0) + 1;
-      return acc;
-    },
-    {} as Record<BadgeTier, number>,
-  );
-});
+// Flat-top hexagon with rounded corners, matching the Collections v2 Achievements design (Figma node 3265-25479).
+const HEXAGON_CLIP_PATH =
+  "path('M5.02 2.61Q6.5 0 9.5 0L14.5 0Q17.5 0 18.98 2.61L22.52 8.89Q24 11.5 22.52 14.11L18.98 20.39Q17.5 23 14.5 23L9.5 23Q6.5 23 5.02 20.39L1.48 14.11Q0 11.5 1.48 8.89Z')";
+
+const tierOrder: BadgeTier[] = [BadgeTier.BLACK, BadgeTier.GOLD, BadgeTier.SILVER, BadgeTier.BRONZE];
+
+// One hexagon per tier the project has badges in, showing the count of achievements in that tier.
+const badgeCountByTier = computed(() =>
+  tierOrder
+    .map((tier) => ({ tier, count: badges.value.filter((badge) => badge.tier === tier).length }))
+    .filter(({ count }) => count > 0),
+);
 
 const getBadgeColor = (tier: BadgeTier) => {
   const radialGradient = `radial-gradient(107.08% 85.59% at 86.3% 87.5%, #0000003B 0%, #00000000 86.18%), 

@@ -95,7 +95,7 @@ SPDX-License-Identifier: MIT
           </template>
         </lfx-popover>
       </td>
-      <td class="w-2/12 py-4 px-2 whitespace-nowrap">
+      <td class="w-2/12 py-4 px-2 text-right whitespace-nowrap">
         <template v-if="props.project.type === 'repo'">
           <span class="text-neutral-400">-</span>
         </template>
@@ -109,7 +109,7 @@ SPDX-License-Identifier: MIT
       <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="w-3/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <td class="w-2/12 py-4 px-2 text-right text-neutral-400 whitespace-nowrap">-</td>
     </template>
   </tr>
 
