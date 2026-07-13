@@ -35,3 +35,15 @@ export interface Collection {
   ssoUserId?: string | null;
   likeCount?: number;
 }
+
+export interface CollectionMetrics {
+  projectCount: number;
+  uniqueContributorCount: number;
+  avgHealthScore: number;
+}
+
+export interface CollectionMetricsTinybird {
+  projectCount: number;
+  uniqueContributorCount: number;
+  avgHealthScore: number;
+}

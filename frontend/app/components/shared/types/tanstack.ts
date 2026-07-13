@@ -8,6 +8,7 @@ export enum TanstackKey {
   LIKED_COLLECTIONS = 'liked-collections',
   LIKE_COUNTS = 'like-counts',
   COLLECTION_PROJECTS = 'collection-projects',
+  COLLECTION_METRICS = 'collection-metrics',
   CATEGORY_GROUPS = 'category-groups',
   PROJECTS = 'projects',
   PROJECT = 'project',

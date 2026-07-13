@@ -338,6 +338,18 @@ SPDX-License-Identifier: MIT
             Only Linux Foundation projects
           </lfx-toggle>
         </div>
+
+        <!-- Aggregate metrics row: Community + My Collections only -->
+        <div
+          v-if="showMetricsRow"
+          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3'"
+          class="w-full transition-all ease-linear"
+        >
+          <lfx-collection-metrics-row
+            :metrics="props.metrics"
+            :loading="props.metricsLoading"
+          />
+        </div>
       </div>
     </section>
   </div>
@@ -364,7 +376,8 @@ import { useRouter } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
 import pluralize from 'pluralize';
 import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
-import type { Collection } from '~~/types/collection';
+import LfxCollectionMetricsRow from './collection-metrics-row.vue';
+import type { Collection, CollectionMetrics } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
@@ -407,6 +420,8 @@ const props = defineProps<{
   loading?: boolean;
   onlyLfProjects: boolean;
   type?: CollectionType;
+  metrics?: CollectionMetrics;
+  metricsLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -433,6 +448,8 @@ const projectCount = computed(() => (props.collection?.projectCount || 0) + (pro
 const hasCompactMetaMobile = computed(
   () => props.type === CollectionTypeEnum.COMMUNITY || props.type === CollectionTypeEnum.CURATED,
 );
+
+const showMetricsRow = computed(() => !props.loading && !!props.collection);
 
 const isDeleting = ref(false);
 
