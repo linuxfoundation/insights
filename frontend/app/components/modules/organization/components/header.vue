@@ -173,7 +173,7 @@ SPDX-License-Identifier: MIT
                         name="arrow-up-right-from-square"
                         :size="14"
                       />
-                      Open in LFX Self-Serve
+                      Open in LFX
                     </lfx-button>
                   </a>
                   <template #content>
