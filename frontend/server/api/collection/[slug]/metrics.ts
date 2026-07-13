@@ -25,7 +25,13 @@ import { getOptionalUser } from '~~/server/utils/jwt';
  * - 503: Database not available
  * - 500: Internal server error
  */
-export default defineEventHandler(async (event): Promise<CollectionMetrics | Error> => {
+const EMPTY_RESULT: CollectionMetrics = {
+  projectCount: 0,
+  uniqueContributorCount: 0,
+  avgHealthScore: 0,
+};
+
+export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
   const { slug } = event.context.params as Record<string, string>;
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
@@ -46,27 +52,30 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics | Err
     const { projectIds } = result;
 
     if (projectIds.length === 0) {
-      return {
-        projectCount: 0,
-        uniqueContributorCount: 0,
-        avgHealthScore: 0,
-      };
+      return EMPTY_RESULT;
     }
 
-    const response = await postToTinybird<CollectionMetricsTinybird[]>(
-      '/v0/pipes/collection_insights_aggregate.json',
-      {
-        ids: projectIds,
-      },
-    );
+    try {
+      const response = await postToTinybird<CollectionMetricsTinybird[]>(
+        '/v0/pipes/collection_insights_aggregate.json',
+        {
+          ids: projectIds,
+        },
+      );
 
-    const [metrics] = response.data;
+      const [metrics] = response.data;
 
-    return {
-      projectCount: metrics?.projectCount ?? 0,
-      uniqueContributorCount: metrics?.uniqueContributorCount ?? 0,
-      avgHealthScore: metrics?.avgHealthScore ?? 0,
-    };
+      return {
+        projectCount: metrics?.projectCount ?? 0,
+        uniqueContributorCount: metrics?.uniqueContributorCount ?? 0,
+        avgHealthScore: metrics?.avgHealthScore ?? 0,
+      };
+    } catch (tinybirdError: unknown) {
+      // Degrade gracefully: this is a supplementary aggregate widget, so an upstream
+      // Tinybird failure should render an empty state rather than break the page.
+      console.error('Error fetching collection metrics from Tinybird:', tinybirdError);
+      return EMPTY_RESULT;
+    }
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
