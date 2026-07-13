@@ -9,7 +9,14 @@ import {
 import { type ComputedRef, type Ref, computed } from 'vue';
 import { isArray } from 'lodash-es';
 import type { Pagination } from '~~/types/shared/pagination';
-import type { Collection, CollectionType } from '~~/types/collection';
+import type {
+  Collection,
+  CollectionMetrics,
+  CollectionType,
+  CollectionContributorLeaderboardItem,
+  CollectionPopularityAggregate,
+  CollectionDevelopmentAggregate,
+} from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
 import type { ProjectInsights } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
@@ -169,6 +176,13 @@ class CollectionsApiService {
 
   fetchCollection(slug: string, fetchFn: typeof $fetch = $fetch): QueryFunction<Collection> {
     return () => fetchFn(`/api/collection/${slug}`);
+  }
+
+  fetchCollectionMetrics(
+    slug: string,
+    fetchFn: typeof $fetch = $fetch,
+  ): QueryFunction<CollectionMetrics> {
+    return () => fetchFn(`/api/collection/${slug}/metrics`);
   }
 
   fetchCategoryGroups(params: ComputedRef<CategoryGroupsQueryParams>) {
@@ -568,6 +582,30 @@ class CollectionsApiService {
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },
+    });
+  }
+
+  fetchCollectionContributors(slug: string, fetchFn: typeof $fetch = $fetch) {
+    return useQuery<CollectionContributorLeaderboardItem[]>({
+      queryKey: [TanstackKey.COLLECTION_CONTRIBUTORS, slug],
+      queryFn: () => fetchFn(`/api/collection/${slug}/contributors`),
+      enabled: !!slug,
+    });
+  }
+
+  fetchCollectionPopularity(slug: string, fetchFn: typeof $fetch = $fetch) {
+    return useQuery<CollectionPopularityAggregate>({
+      queryKey: [TanstackKey.COLLECTION_POPULARITY, slug],
+      queryFn: () => fetchFn(`/api/collection/${slug}/popularity`),
+      enabled: !!slug,
+    });
+  }
+
+  fetchCollectionDevelopment(slug: string, fetchFn: typeof $fetch = $fetch) {
+    return useQuery<CollectionDevelopmentAggregate>({
+      queryKey: [TanstackKey.COLLECTION_DEVELOPMENT, slug],
+      queryFn: () => fetchFn(`/api/collection/${slug}/development`),
+      enabled: !!slug,
     });
   }
 

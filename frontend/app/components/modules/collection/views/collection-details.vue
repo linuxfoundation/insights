@@ -15,6 +15,8 @@ SPDX-License-Identifier: MIT
         :collection="currentCollection"
         :only-lf-projects="isLFOnly"
         :type="collectionType"
+        :metrics="metrics"
+        :metrics-loading="isMetricsLoading"
         @update:only-lf-projects="updateOnlyLFProjects"
         @updated="handleCollectionUpdated"
       />
@@ -201,7 +203,7 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
-import type { Collection, CollectionType } from '~~/types/collection';
+import type { Collection, CollectionMetrics, CollectionType } from '~~/types/collection';
 
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -248,6 +250,12 @@ const {
 });
 
 const currentCollection = computed<Collection | undefined>(() => collection.value);
+
+const { data: metrics, isLoading: isMetricsLoading } = useQuery<CollectionMetrics>({
+  queryKey: computed(() => [TanstackKey.COLLECTION_METRICS, props.slug]),
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollectionMetrics(props.slug, requestFetch),
+  retry: false,
+});
 
 const detailCollectionIds = computed(() => (currentCollection.value ? [currentCollection.value.id] : []));
 useLikeCounts(detailCollectionIds);

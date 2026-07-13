@@ -18,6 +18,7 @@ export interface CommunityCollection {
   repositoryCount: number;
   createdAt: string;
   updatedAt: string;
+  showAggregateTabs?: boolean;
 }
 
 export interface CreateCommunityCollectionInput {
