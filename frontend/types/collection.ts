@@ -34,4 +34,25 @@ export interface Collection {
   isPrivate?: boolean;
   ssoUserId?: string | null;
   likeCount?: number;
+  showAggregateTabs?: boolean;
+}
+
+export interface CollectionContributorLeaderboardItem {
+  id: string;
+  avatar: string;
+  displayName: string;
+  githubHandleArray: string[];
+  contributionCount: number;
+}
+
+export interface CollectionPopularityAggregate {
+  totalStars: number;
+  totalForks: number;
+  starsPrevious365Days: number;
+  forksPrevious365Days: number;
+}
+
+export interface CollectionDevelopmentAggregate {
+  activeContributorsLast365Days: number;
+  activeOrganizationsLast365Days: number;
 }

@@ -4,7 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white pb-30 -mb-30 flex-grow">
-    <lfx-collection-details-view :slug="slug as string" />
+    <lfx-collection-menu
+      v-if="showsAggregateTabs"
+      :slug="slug as string"
+    />
+    <nuxt-page />
   </div>
 </template>
 
@@ -12,16 +16,20 @@ SPDX-License-Identifier: MIT
 import { useRoute, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { Collection } from '~~/types/collection';
-import LfxCollectionDetailsView from '~/components/modules/collection/views/collection-details.vue';
+import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useRichSchema } from '~~/composables/useRichSchema';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const route = useRoute();
 const { slug } = route.params;
 const requestFetch = useRequestFetch();
 const { getCollectionSchema } = useRichSchema();
+const { user } = storeToRefs(useAuthStore());
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
@@ -30,6 +38,17 @@ const { data } = useQuery<Collection>({
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string, requestFetch),
   retry: false,
 });
+
+const collectionType = computed(() => {
+  if (user.value && user.value.sub === data.value?.ssoUserId) {
+    return CollectionTypeEnum.MY_COLLECTIONS;
+  }
+  return data.value?.ssoUserId ? CollectionTypeEnum.COMMUNITY : CollectionTypeEnum.CURATED;
+});
+
+const showsAggregateTabs = computed(
+  () => collectionType.value === CollectionTypeEnum.CURATED && data.value?.showAggregateTabs !== false,
+);
 
 const title = computed(() => `${data.value?.name || 'Collection'} Insights`);
 
