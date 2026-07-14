@@ -3,7 +3,7 @@
 import type { Pool } from 'pg';
 import type { CollectionMetrics, CollectionMetricsTinybird } from '~~/types/collection';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
-import { postToTinybird } from '~~/server/data/tinybird/tinybird';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { getOptionalUser } from '~~/server/utils/jwt';
 
 /**
@@ -16,7 +16,9 @@ import { getOptionalUser } from '~~/server/utils/jwt';
  * - slug (string): The unique slug identifier for the collection.
  *
  * Response:
- * - projectCount (number): Count of projects in the collection.
+ * - projectCount (number): Count of projects (+ standalone repos) in the collection, from Postgres -
+ *   the same source of truth as the collection's project table, so it can't drift from what the
+ *   page actually lists.
  * - uniqueContributorCount (number): Total unique contributors across all projects, deduplicated.
  * - avgHealthScore (number): Average Health Score across the collection's projects.
  *
@@ -27,10 +29,7 @@ import { getOptionalUser } from '~~/server/utils/jwt';
  */
 // avgHealthScore is omitted (not 0) when there's no real data - a genuine score of 0
 // is distinct from "unavailable," and the metrics-row UI treats undefined as "-".
-const EMPTY_RESULT: CollectionMetrics = {
-  projectCount: 0,
-  uniqueContributorCount: 0,
-};
+const EMPTY_TINYBIRD_METRICS = { uniqueContributorCount: 0, avgHealthScore: undefined };
 
 export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
   const { slug } = event.context.params as Record<string, string>;
@@ -41,47 +40,45 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
     throw createError({ statusCode: 503, statusMessage: 'Database not available' });
   }
 
-  try {
-    const repo = new CommunityCollectionRepository(cmDbPool);
-    const user = getOptionalUser(event);
-    const result = await repo.findProjectIdsBySlug(slug, user?.sub ?? null);
+  const repo = new CommunityCollectionRepository(cmDbPool);
+  const user = getOptionalUser(event);
+  const result = await repo.findProjectIdsBySlug(slug, user?.sub ?? null);
 
-    if (!result) {
-      throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
-    }
+  if (!result) {
+    throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
+  }
 
-    const { projectIds } = result;
+  const projectCount = result.projectIds.length + result.repositoryUrls.length;
 
-    if (projectIds.length === 0) {
-      return EMPTY_RESULT;
-    }
-
+  const { uniqueContributorCount, avgHealthScore } = await (async () => {
     try {
-      const response = await postToTinybird<CollectionMetricsTinybird[]>(
+      const response = await fetchFromTinybird<CollectionMetricsTinybird[]>(
         '/v0/pipes/collection_insights_aggregate.json',
         {
-          ids: projectIds,
+          collectionSlug: slug,
         },
       );
 
       const [metrics] = response.data;
 
       return {
-        projectCount: metrics?.projectCount ?? 0,
         uniqueContributorCount: metrics?.uniqueContributorCount ?? 0,
-        avgHealthScore: metrics?.avgHealthScore,
+        // Normalize Tinybird's null ("no rows to average") to undefined, matching
+        // CollectionMetrics' "no data" contract used by the metrics-row UI.
+        avgHealthScore: metrics?.avgHealthScore ?? undefined,
       };
     } catch (tinybirdError: unknown) {
       // Degrade gracefully: this is a supplementary aggregate widget, so an upstream
-      // Tinybird failure should render an empty state rather than break the page.
+      // Tinybird failure should render partial data (project count still works) rather
+      // than break the page.
       console.error('Error fetching collection metrics from Tinybird:', tinybirdError);
-      return EMPTY_RESULT;
+      return EMPTY_TINYBIRD_METRICS;
     }
-  } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'statusCode' in error) {
-      throw error;
-    }
-    console.error('Error fetching collection metrics:', error);
-    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
-  }
+  })();
+
+  return {
+    projectCount,
+    uniqueContributorCount,
+    avgHealthScore,
+  };
 });

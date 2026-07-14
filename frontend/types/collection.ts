@@ -66,5 +66,7 @@ export interface CollectionMetrics {
 export interface CollectionMetricsTinybird {
   projectCount: number;
   uniqueContributorCount: number;
-  avgHealthScore: number;
+  // Tinybird's round(avg(...)) returns SQL NULL (JSON null) when no matching rows have a health
+  // score to average - a genuine "no data" case, not a score of 0.
+  avgHealthScore: number | null;
 }

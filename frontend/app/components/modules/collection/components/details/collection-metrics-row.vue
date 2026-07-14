@@ -58,7 +58,7 @@ SPDX-License-Identifier: MIT
             class="text-[#45556c]"
           />
           <span class="text-xs text-neutral-500">Avg. Health:</span>
-          <template v-if="avgHealthScore !== undefined">
+          <template v-if="avgHealthScore !== undefined && avgHealthScore !== null">
             <span
               class="size-1.5 rounded-full shrink-0"
               :class="healthScoreDotClass"
