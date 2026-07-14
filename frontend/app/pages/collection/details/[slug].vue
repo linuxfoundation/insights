@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
         @updated="handleCollectionUpdated"
       />
       <lfx-collection-menu
-        v-if="showsAggregateTabs"
+        v-if="!isPending && showsAggregateTabs"
         :slug="slug as string"
       />
     </lfx-maintain-height>
@@ -30,9 +30,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRequestFetch } from 'nuxt/app';
+import { useRoute, useRequestFetch, createError, showError } from 'nuxt/app';
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
-import { computed, ref } from 'vue';
+import { computed, ref, watch, onServerPrefetch } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { Collection, CollectionMetrics } from '~~/types/collection';
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
@@ -45,6 +45,11 @@ import { CollectionTypeEnum } from '~/components/modules/collection/config/colle
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import useScroll from '~/components/shared/utils/scroll';
+import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
+import {
+  collectionDetailsParamsGetter,
+  collectionListParamsSetter,
+} from '~/components/modules/collection/services/collections.query.service';
 
 const route = useRoute();
 const { slug } = route.params;
@@ -57,10 +62,27 @@ const { headerTopClass } = storeToRefs(useBannerStore());
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
-const { data, isPending } = useQuery<Collection>({
+const { data, isPending, suspense, isError, error } = useQuery<Collection>({
   queryKey,
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string, requestFetch),
   retry: false,
+});
+
+// This is the parent layout for all 4 collection detail routes (Projects, Contributors,
+// Popularity, Development), so the collection 404 must be handled here rather than only in
+// the Projects child view - otherwise the other 3 routes would render a blank header/empty
+// widgets for an invalid or inaccessible slug instead of the collection 404 page.
+onServerPrefetch(async () => {
+  await suspense();
+  if (isError.value) {
+    const statusMessage = error.value?.message || 'Collection Not Found';
+
+    if (import.meta.server) {
+      throw createError({ statusCode: 404, statusMessage });
+    } else {
+      showError({ statusCode: 404, statusMessage });
+    }
+  }
 });
 
 const { data: metrics, isLoading: isMetricsLoading } = useQuery<CollectionMetrics>({
@@ -81,14 +103,32 @@ const collectionType = computed(() => {
 const showsAggregateTabs = computed(() => collectionType.value === CollectionTypeEnum.CURATED);
 
 // Only Linux Foundation projects toggle: per Figma this is visually part of the shared header,
-// which now lives here above all 4 tabs. It is only functionally wired into the Projects tab's
-// project list (via collection-details.vue's own querystring-synced state) — no ticket requires
-// the other 3 tabs to actually filter by it, so this header instance is display-only on those tabs.
-const isLFOnly = ref(false);
+// which now lives here above all 4 tabs. Reads/writes the same `onlyLFProjects` route query
+// param that collection-details.vue (Projects tab) uses, so both share one source of truth -
+// toggling here updates the Projects request, and navigating with `?onlyLFProjects=true` is
+// reflected back in this toggle.
+const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
+const isLFOnly = ref(queryParams.value.onlyLFProjects === 'true');
 
 const updateOnlyLFProjects = (value: boolean) => {
+  queryParams.value = {
+    collectionSort: queryParams.value.collectionSort,
+    onlyLFProjects: value ? 'true' : undefined,
+  };
   isLFOnly.value = value;
 };
+
+// Keeps isLFOnly in sync when the query param changes externally (e.g. browser back/forward
+// removing `?onlyLFProjects`). A missing param means "false", not "leave unchanged".
+watch(
+  () => queryParams.value,
+  (value: URLParams) => {
+    const onlyLFParam = value.onlyLFProjects === 'true';
+    if (onlyLFParam !== isLFOnly.value) {
+      isLFOnly.value = onlyLFParam;
+    }
+  },
+);
 
 const handleCollectionUpdated = (collection: Collection) => {
   queryClient.setQueryData(queryKey.value, collection);

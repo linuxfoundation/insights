@@ -16,7 +16,14 @@ SPDX-License-Identifier: MIT
       </div>
 
       <div class="w-full hidden md:block overflow-x-auto lg:overflow-visible">
-        <div class="border-b border-t border-neutral-200">
+        <!-- position: sticky lives on this wrapper (not the <thead> inside the header-only
+             table below) so its containing block spans the full scrollable height shared with
+             the sibling body-table wrapper - otherwise the <thead> would only have its own
+             one-row-tall table to stick within and would scroll away immediately. -->
+        <div
+          class="border-b border-t border-neutral-200 sticky bg-white z-10"
+          :style="{ top: `${theadStickyOffset}px` }"
+        >
           <table class="w-full min-w-[60rem] [table-layout:fixed] container">
             <colgroup>
               <col class="w-3/12" />
@@ -25,10 +32,7 @@ SPDX-License-Identifier: MIT
               <col class="w-3/12" />
               <col class="w-2/12" />
             </colgroup>
-            <thead
-              class="text-neutral-500 text-xs font-semibold sticky bg-white z-10 container"
-              :style="{ top: `${theadStickyOffset}px` }"
-            >
+            <thead class="text-neutral-500 text-xs font-semibold container">
               <tr>
                 <th
                   class="py-5 pl-5 md:pl-10 pr-2 text-left whitespace-nowrap cursor-pointer group font-semibold"
@@ -366,11 +370,9 @@ watch(
       sort.value = value.collectionSort;
     }
 
-    if (value.onlyLFProjects) {
-      const onlyLFParam = value.onlyLFProjects === 'true';
-      if (onlyLFParam !== isLFOnly.value) {
-        isLFOnly.value = onlyLFParam;
-      }
+    const onlyLFParam = value.onlyLFProjects === 'true';
+    if (onlyLFParam !== isLFOnly.value) {
+      isLFOnly.value = onlyLFParam;
     }
   },
 );

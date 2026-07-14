@@ -200,7 +200,10 @@ SPDX-License-Identifier: MIT
               Only Linux Foundation projects
             </lfx-toggle>
             <div class="flex items-center gap-3">
-              <lfx-tooltip content="Duplicate collection">
+              <lfx-tooltip
+                v-if="!!user"
+                content="Duplicate collection"
+              >
                 <lfx-icon-button
                   icon="clone"
                   type="outline"
