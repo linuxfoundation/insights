@@ -4,13 +4,16 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
-  <div class="flex items-center w-full">
+  <div
+    class="flex items-center w-full"
+    :class="item.slug ? 'cursor-pointer' : ''"
+  >
     <!-- Organization info -->
     <component
-      :is="isTeamMember && item.slug ? nuxtLink : 'div'"
-      :to="isTeamMember && item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
+      :is="item.slug ? nuxtLink : 'div'"
+      :to="item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
       class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
-      :class="isTeamMember && item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
+      :class="item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
     >
       <lfx-avatar
         :src="item.logoUrl"
@@ -35,13 +38,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, resolveComponent } from 'vue';
+import { resolveComponent } from 'vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { useAuth } from '~~/composables/useAuth';
 
 defineProps<{
   item: Leaderboard;
@@ -49,8 +51,6 @@ defineProps<{
 }>();
 
 const nuxtLink = resolveComponent('NuxtLink');
-const { user } = useAuth();
-const isTeamMember = computed(() => !!user.value?.isLfInsightsTeamMember);
 </script>
 
 <script lang="ts">
