@@ -34,7 +34,6 @@ export interface Collection {
   isPrivate?: boolean;
   ssoUserId?: string | null;
   likeCount?: number;
-  showAggregateTabs?: boolean;
 }
 
 export interface CollectionContributorLeaderboardItem {
