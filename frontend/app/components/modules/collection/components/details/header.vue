@@ -5,8 +5,8 @@ SPDX-License-Identifier: MIT
 <template>
   <div :style="headerBackgroundStyle">
     <section
-      class="container"
-      :class="scrollTop > 50 ? 'py-3 md:py-5' : 'py-3 md:py-5'"
+      class="container pt-3 md:pt-5 pb-3"
+      :class="scrollTop > 50 ? 'md:pb-5' : 'md:pb-12'"
     >
       <!-- Mobile top row: back link + action icons -->
       <div
@@ -88,10 +88,10 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
 
-      <!-- Desktop back link -->
+      <!-- Desktop back link (expanded state: its own row above the title) -->
       <div
-        class="transition-all hidden md:block"
-        :class="scrollTop > 50 ? 'mb-0' : 'mb-6'"
+        v-if="scrollTop <= 50"
+        class="transition-all hidden md:block mb-6"
       >
         <nuxt-link
           :to="{ name: collectionTab?.route }"
@@ -102,19 +102,13 @@ SPDX-License-Identifier: MIT
             class="text-neutral-500"
             :size="16"
           />
-          <span
-            class="text-sm text-neutral-500 font-medium transition-all"
-            :class="scrollTop > 50 ? 'hidden' : 'block'"
-          >
+          <span class="text-sm text-neutral-500 font-medium">
             {{ collectionTab?.detailsLabel }}
           </span>
         </nuxt-link>
       </div>
 
-      <div
-        class="transition-all ease-linear flex"
-        :class="scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col'"
-      >
+      <div class="transition-all ease-linear flex flex-col">
         <!-- Title row: logo + title (left) + action buttons (right, desktop only) -->
         <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start w-full">
           <div
@@ -123,6 +117,18 @@ SPDX-License-Identifier: MIT
               scrollTop > 50 ? 'flex-row gap-3 items-center' : 'flex-col md:flex-row md:items-stretch gap-3 md:gap-8'
             "
           >
+            <!-- Compact-only: back arrow inline with title, vertically centered -->
+            <nuxt-link
+              v-if="scrollTop > 50"
+              :to="{ name: collectionTab?.route }"
+              class="hidden md:flex items-center shrink-0"
+            >
+              <lfx-icon
+                name="angle-left"
+                class="text-neutral-500"
+                :size="16"
+              />
+            </nuxt-link>
             <div
               v-if="loading || props.collection?.logoUrl"
               class="shrink-0 flex items-center justify-start"
@@ -170,57 +176,42 @@ SPDX-License-Identifier: MIT
               />
               <h1
                 v-else-if="props.collection"
-                class="font-secondary font-light transition-all"
-                :class="scrollTop > 50 ? 'text-lg md:text-3xl truncate' : 'text-3xl md:text-5xl'"
+                class="font-secondary font-light transition-all text-neutral-900"
+                :class="
+                  scrollTop > 50
+                    ? 'text-lg md:text-2xl md:leading-9 truncate'
+                    : 'text-3xl md:text-4xl md:leading-[56px]'
+                "
               >
                 {{ props.collection.name }}
               </h1>
-              <div
-                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-1 md:mt-0'"
-                class="w-full transition-all ease-linear"
-              >
-                <div
-                  v-if="loading"
-                  class="flex flex-col gap-1.5"
-                >
-                  <lfx-skeleton
-                    height="1rem"
-                    width="100%"
-                    class="rounded-sm"
-                  />
-                  <lfx-skeleton
-                    height="1rem"
-                    width="60%"
-                    class="rounded-sm"
-                  />
-                </div>
-                <p
-                  v-else-if="props.collection"
-                  class="text-sm md:text-body-1 text-neutral-500 line-clamp-2 md:line-clamp-none"
-                >
-                  {{ props.collection.description }}
-                </p>
-              </div>
             </div>
           </div>
 
           <!-- Desktop action buttons (next to title) -->
           <div
             v-if="props.collection && !loading"
-            class="hidden md:flex transition-all ease-linear gap-4 lg:w-auto shrink-0 mt-4 lg:mt-0"
+            class="hidden md:flex transition-all ease-linear items-center gap-4 lg:w-auto shrink-0 mt-4 lg:mt-0"
           >
-            <template v-if="!!user">
+            <lfx-toggle
+              v-if="scrollTop > 50"
+              v-model="isOnlyLFProjects"
+            >
+              Only Linux Foundation projects
+            </lfx-toggle>
+            <div class="flex items-center gap-3">
               <lfx-tooltip content="Duplicate collection">
                 <lfx-icon-button
                   icon="clone"
                   type="outline"
+                  class="shadow-sm"
                   @click="handleClone"
                 />
               </lfx-tooltip>
               <lfx-button
-                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
+                v-if="!!user && props.type === CollectionTypeEnum.MY_COLLECTIONS"
                 type="outline"
-                class="!rounded-full"
+                class="!rounded-full shadow-sm"
                 @click="handleEdit"
               >
                 <lfx-icon name="pencil" />
@@ -230,40 +221,48 @@ SPDX-License-Identifier: MIT
                 v-if="props.type !== CollectionTypeEnum.MY_COLLECTIONS"
                 :collection="props.collection"
                 button-type="outline"
-                class="!rounded-full"
+                class="!rounded-full shadow-sm"
               />
-            </template>
-            <lfx-button
-              type="outline"
-              class="!rounded-full"
-              @click="handleShare"
-            >
-              <lfx-icon name="share-nodes" />
-              Share
-            </lfx-button>
+              <lfx-button
+                v-if="scrollTop <= 50"
+                type="outline"
+                class="!rounded-full shadow-sm"
+                @click="handleShare"
+              >
+                <lfx-icon name="share-nodes" />
+                Share
+              </lfx-button>
+              <lfx-icon-button
+                v-else
+                icon="share-nodes"
+                type="outline"
+                class="shadow-sm"
+                @click="handleShare"
+              />
 
-            <lfx-dropdown
-              v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
-              placement="bottom-end"
-              :class="isDeleting ? 'opacity-50 cursor-not-allowed' : ''"
-              :disabled="isDeleting"
-            >
-              <template #trigger>
-                <lfx-icon-button
-                  icon="ellipsis"
-                  type="transparent"
-                  class="!text-neutral-900"
-                />
-              </template>
-              <lfx-dropdown-item @click.stop.prevent="handleDelete">
-                <lfx-icon
-                  name="trash"
-                  :size="16"
-                  class="!text-negative-500"
-                />
-                <span class="text-negative-500">Delete</span>
-              </lfx-dropdown-item>
-            </lfx-dropdown>
+              <lfx-dropdown
+                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
+                placement="bottom-end"
+                :class="isDeleting ? 'opacity-50 cursor-not-allowed' : ''"
+                :disabled="isDeleting"
+              >
+                <template #trigger>
+                  <lfx-icon-button
+                    icon="ellipsis"
+                    type="transparent"
+                    class="!text-neutral-900"
+                  />
+                </template>
+                <lfx-dropdown-item @click.stop.prevent="handleDelete">
+                  <lfx-icon
+                    name="trash"
+                    :size="16"
+                    class="!text-negative-500"
+                  />
+                  <span class="text-negative-500">Delete</span>
+                </lfx-dropdown-item>
+              </lfx-dropdown>
+            </div>
           </div>
         </div>
 
@@ -282,37 +281,19 @@ SPDX-License-Identifier: MIT
         <!-- Owner + project count + LF toggle (desktop only for toggle) -->
         <div
           v-if="!loading && props.collection"
-          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3 md:mt-10'"
+          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-2'"
           class="flex items-center gap-2 justify-between w-full flex-wrap transition-all ease-linear"
         >
           <div class="flex items-center gap-1 md:gap-2 flex-wrap">
             <collection-owner :collection="props.collection" />
-            <span class="text-neutral-600">・</span>
-            <div class="flex items-center gap-1.5">
-              <lfx-icon
-                name="laptop-code"
-                :size="16"
-                class="text-neutral-500"
-              />
-              <p class="text-xs md:text-sm leading-4 md:leading-5 text-neutral-600">
-                <!-- Mobile community/curated: just the number -->
-                <span
-                  v-if="hasCompactMetaMobile"
-                  class="md:hidden"
-                >
-                  {{ projectCount }}
-                </span>
-                <!-- Desktop + my-collections: "X projects" -->
-                <span :class="hasCompactMetaMobile ? 'hidden md:inline' : ''">
-                  {{ pluralize('project', projectCount, true) }}
-                </span>
-                <span v-if="props.collection.updatedAt">
-                  ・ Updated
-                  <span class="md:hidden">{{ formatDate(props.collection.updatedAt, 'dd MMM') }}</span>
-                  <span class="hidden md:inline">{{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}</span>
-                </span>
-              </p>
-            </div>
+            <span
+              v-if="props.collection.updatedAt"
+              class="text-xs md:text-sm leading-4 md:leading-5 text-[#62748e]"
+            >
+              ・ Updated
+              <span class="md:hidden">{{ formatDate(props.collection.updatedAt, 'dd MMM') }}</span>
+              <span class="hidden md:inline">{{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}</span>
+            </span>
             <!-- Mobile only: like count for my-collections, preceded by dot -->
             <div
               v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
@@ -331,24 +312,53 @@ SPDX-License-Identifier: MIT
               </div>
             </div>
           </div>
-          <lfx-toggle
-            v-model="isOnlyLFProjects"
-            class="!hidden md:!flex"
-          >
-            Only Linux Foundation projects
-          </lfx-toggle>
         </div>
 
-        <!-- Aggregate metrics row: Community + My Collections only -->
+        <!-- Description paragraph -->
+        <div
+          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-1 md:mt-3'"
+          class="w-full transition-all ease-linear"
+        >
+          <div
+            v-if="loading"
+            class="flex flex-col gap-1.5"
+          >
+            <lfx-skeleton
+              height="1rem"
+              width="100%"
+              class="rounded-sm"
+            />
+            <lfx-skeleton
+              height="1rem"
+              width="60%"
+              class="rounded-sm"
+            />
+          </div>
+          <p
+            v-else-if="props.collection"
+            class="text-sm md:text-body-1 text-[#45556c] line-clamp-2 md:line-clamp-none"
+          >
+            {{ props.collection.description }}
+          </p>
+        </div>
+
+        <!-- Aggregate metrics row + LF toggle (desktop only for toggle) -->
         <div
           v-if="showMetricsRow"
-          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3'"
-          class="w-full transition-all ease-linear"
+          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-10'"
+          class="w-full flex items-center justify-between gap-2 flex-wrap transition-all ease-linear"
         >
           <lfx-collection-metrics-row
             :metrics="props.metrics"
             :loading="props.metricsLoading"
           />
+          <lfx-toggle
+            v-if="scrollTop <= 50"
+            v-model="isOnlyLFProjects"
+            class="!hidden md:!flex"
+          >
+            Only Linux Foundation projects
+          </lfx-toggle>
         </div>
       </div>
     </section>
@@ -374,7 +384,6 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
-import pluralize from 'pluralize';
 import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
 import LfxCollectionMetricsRow from './collection-metrics-row.vue';
 import type { Collection, CollectionMetrics } from '~~/types/collection';
@@ -442,12 +451,6 @@ const allTabs = computed(() => collectionTabs(user.value));
 
 const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === props.type) || allTabs.value[0]);
 const headerBackgroundStyle = computed(() => headerBackground());
-
-const projectCount = computed(() => (props.collection?.projectCount || 0) + (props.collection?.repositoryCount || 0));
-
-const hasCompactMetaMobile = computed(
-  () => props.type === CollectionTypeEnum.COMMUNITY || props.type === CollectionTypeEnum.CURATED,
-);
 
 const showMetricsRow = computed(() => !props.loading && !!props.collection);
 

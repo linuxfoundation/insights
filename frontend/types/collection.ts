@@ -60,7 +60,7 @@ export interface CollectionDevelopmentAggregate {
 export interface CollectionMetrics {
   projectCount: number;
   uniqueContributorCount: number;
-  avgHealthScore: number;
+  avgHealthScore?: number;
 }
 
 export interface CollectionMetricsTinybird {

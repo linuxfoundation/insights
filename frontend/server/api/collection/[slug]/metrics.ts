@@ -25,10 +25,11 @@ import { getOptionalUser } from '~~/server/utils/jwt';
  * - 503: Database not available
  * - 500: Internal server error
  */
+// avgHealthScore is omitted (not 0) when there's no real data - a genuine score of 0
+// is distinct from "unavailable," and the metrics-row UI treats undefined as "-".
 const EMPTY_RESULT: CollectionMetrics = {
   projectCount: 0,
   uniqueContributorCount: 0,
-  avgHealthScore: 0,
 };
 
 export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
@@ -68,7 +69,7 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
       return {
         projectCount: metrics?.projectCount ?? 0,
         uniqueContributorCount: metrics?.uniqueContributorCount ?? 0,
-        avgHealthScore: metrics?.avgHealthScore ?? 0,
+        avgHealthScore: metrics?.avgHealthScore,
       };
     } catch (tinybirdError: unknown) {
       // Degrade gracefully: this is a supplementary aggregate widget, so an upstream

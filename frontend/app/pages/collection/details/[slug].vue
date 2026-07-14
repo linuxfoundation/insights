@@ -4,38 +4,68 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white pb-30 -mb-30 flex-grow">
-    <lfx-collection-menu
-      v-if="showsAggregateTabs"
-      :slug="slug as string"
-    />
+    <lfx-maintain-height
+      :scroll-top="scrollTop"
+      :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
+      class="z-10 w-full"
+      :loaded="!isPending"
+    >
+      <lfx-collection-header
+        :loading="isPending"
+        :collection="data"
+        :only-lf-projects="isLFOnly"
+        :type="collectionType"
+        :metrics="metrics"
+        :metrics-loading="isMetricsLoading"
+        @update:only-lf-projects="updateOnlyLFProjects"
+        @updated="handleCollectionUpdated"
+      />
+      <lfx-collection-menu
+        v-if="showsAggregateTabs"
+        :slug="slug as string"
+      />
+    </lfx-maintain-height>
     <nuxt-page />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute, useRequestFetch } from 'nuxt/app';
-import { useQuery } from '@tanstack/vue-query';
-import { computed } from 'vue';
+import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { Collection } from '~~/types/collection';
+import type { Collection, CollectionMetrics } from '~~/types/collection';
+import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
 import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useRichSchema } from '~~/composables/useRichSchema';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+import useScroll from '~/components/shared/utils/scroll';
 
 const route = useRoute();
 const { slug } = route.params;
 const requestFetch = useRequestFetch();
 const { getCollectionSchema } = useRichSchema();
 const { user } = storeToRefs(useAuthStore());
+const queryClient = useQueryClient();
+const { scrollTop } = useScroll();
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
-const { data } = useQuery<Collection>({
+const { data, isPending } = useQuery<Collection>({
   queryKey,
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string, requestFetch),
+  retry: false,
+});
+
+const { data: metrics, isLoading: isMetricsLoading } = useQuery<CollectionMetrics>({
+  queryKey: computed(() => [TanstackKey.COLLECTION_METRICS, slug]),
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollectionMetrics(slug as string, requestFetch),
   retry: false,
 });
 
@@ -49,6 +79,20 @@ const collectionType = computed(() => {
 const showsAggregateTabs = computed(
   () => collectionType.value === CollectionTypeEnum.CURATED && data.value?.showAggregateTabs !== false,
 );
+
+// Only Linux Foundation projects toggle: per Figma this is visually part of the shared header,
+// which now lives here above all 4 tabs. It is only functionally wired into the Projects tab's
+// project list (via collection-details.vue's own querystring-synced state) — no ticket requires
+// the other 3 tabs to actually filter by it, so this header instance is display-only on those tabs.
+const isLFOnly = ref(false);
+
+const updateOnlyLFProjects = (value: boolean) => {
+  isLFOnly.value = value;
+};
+
+const handleCollectionUpdated = (collection: Collection) => {
+  queryClient.setQueryData(queryKey.value, collection);
+};
 
 const title = computed(() => `${data.value?.name || 'Collection'} Insights`);
 

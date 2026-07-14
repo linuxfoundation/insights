@@ -12,11 +12,11 @@ SPDX-License-Identifier: MIT
         trigger-event="hover"
         :allow-pass-through="true"
         class="relative"
-        :class="index > 0 ? '-ml-1.5' : ''"
+        :class="index > 0 ? '-ml-1' : ''"
         :style="{ zIndex: badgeCountByTier.length - index }"
       >
         <div
-          class="w-6 h-[21px] flex items-center justify-center"
+          class="w-6 h-[23px] flex items-center justify-center"
           :style="{ clipPath: HEXAGON_CLIP_PATH, background: getBadgeColor(tier) }"
         >
           <span class="text-white text-xs font-semibold">{{ count }}</span>

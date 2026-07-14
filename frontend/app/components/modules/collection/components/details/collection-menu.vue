@@ -3,17 +3,24 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container">
-    <div class="flex items-center gap-3 overflow-x-auto py-3">
-      <lfx-menu-button
-        v-for="link of lfCollectionAggregateLinks"
-        :key="link.key"
-        :to="{ name: link.routeName, params: { slug: props.slug } }"
-        :exact="true"
-      >
-        <lfx-icon :name="link.icon" />
-        {{ link.label }}
-      </lfx-menu-button>
+  <div class="bg-white">
+    <div class="container">
+      <div class="flex items-center gap-3 overflow-x-auto py-5">
+        <lfx-menu-button
+          v-for="link of lfCollectionAggregateLinks"
+          :key="link.key"
+          :to="{ name: link.routeName, params: { slug: props.slug } }"
+          :exact="true"
+        >
+          <template #default="{ isActive }">
+            <lfx-icon
+              :name="link.icon"
+              :type="isActive ? 'solid' : 'light'"
+            />
+            {{ link.label }}
+          </template>
+        </lfx-menu-button>
+      </div>
     </div>
   </div>
 </template>

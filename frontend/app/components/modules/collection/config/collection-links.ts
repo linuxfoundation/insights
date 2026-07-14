@@ -10,7 +10,7 @@ export interface CollectionLinkConfig {
 }
 
 export const lfCollectionAggregateLinks: CollectionLinkConfig[] = [
-  { key: 'projects', icon: 'laptop-code', label: 'Projects', routeName: LfxRoutes.COLLECTION },
+  { key: 'projects', icon: 'layer-group', label: 'Projects', routeName: LfxRoutes.COLLECTION },
   {
     key: 'contributors',
     icon: 'people-group',
