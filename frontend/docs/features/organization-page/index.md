@@ -6,7 +6,7 @@ Use the Organization Page to understand how your company contributes to critical
 
 Three numbers at the top of the page give you an at-a-glance health check of your organization's open source activity over the **last 365 days**:
 
-- **Active contributors** — how many of your employees made at least one code contribution (commit, pull request, or issue). Shows a year-over-year trend so you can see if engagement is growing or declining.
+- **Active contributors** — how many of your employees made at least one code contribution (commit, pull request, or code review). Shows a year-over-year trend so you can see if engagement is growing or declining.
 - **Maintainer roles** — how many maintainer or owner roles your contributors hold across all projects. A higher number signals deeper trust and influence in those communities.
 - **Critical projects** — how many distinct projects your team contributed to. Useful for gauging breadth of involvement.
 
