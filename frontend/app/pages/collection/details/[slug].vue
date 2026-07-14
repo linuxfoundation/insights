@@ -20,10 +20,10 @@ SPDX-License-Identifier: MIT
         @update:only-lf-projects="updateOnlyLFProjects"
         @updated="handleCollectionUpdated"
       />
-      <lfx-collection-menu
-        v-if="showsAggregateTabs"
-        :slug="slug as string"
-      />
+      <!--      <lfx-collection-menu-->
+      <!--        v-if="showsAggregateTabs"-->
+      <!--        :slug="slug as string"-->
+      <!--      />-->
     </lfx-maintain-height>
     <nuxt-page />
   </div>
@@ -36,7 +36,7 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { Collection, CollectionMetrics } from '~~/types/collection';
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
-import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
+// import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
@@ -76,9 +76,12 @@ const collectionType = computed(() => {
   return data.value?.ssoUserId ? CollectionTypeEnum.COMMUNITY : CollectionTypeEnum.CURATED;
 });
 
-const showsAggregateTabs = computed(
-  () => collectionType.value === CollectionTypeEnum.CURATED && data.value?.showAggregateTabs !== false,
-);
+// showAggregateTabs is backfilled true only for curated (LF Foundation) collections and false
+// otherwise (see crowd.dev migration V1784026542) - CDP is the single source of truth for which
+// collections show the aggregate tabs, so no collectionType check is needed here.
+// Currently unused: the <lfx-collection-menu> tab bar above is commented out while the
+// Contributors/Popularity/Development tabs (IN-1195) are reworked - uncomment both together.
+// const showsAggregateTabs = computed(() => data.value?.showAggregateTabs === true);
 
 // Only Linux Foundation projects toggle: per Figma this is visually part of the shared header,
 // which now lives here above all 4 tabs. It is only functionally wired into the Projects tab's

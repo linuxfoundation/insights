@@ -15,12 +15,6 @@ SPDX-License-Identifier: MIT
         />
       </div>
 
-      <!-- thead and tbody are split into two separate <table>s per design (the body gets its
-           own full-bleed background div below). Each table would otherwise size its columns
-           independently based on its own content, letting them drift out of sync — an identical
-           <colgroup> in both (same fractions the column classes used before) plus
-           table-layout: fixed makes these widths authoritative rather than advisory, so both
-           tables' columns always line up regardless of cell content. -->
       <div class="w-full hidden md:block overflow-x-auto lg:overflow-visible">
         <div class="border-b border-t border-neutral-200">
           <table class="w-full min-w-[60rem] [table-layout:fixed] container">
@@ -206,7 +200,6 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch, watch, ref } from 'vue';
 import { createError, showError, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
-import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
 import type { Collection } from '~~/types/collection';
@@ -225,8 +218,6 @@ import {
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
   slug: string;
@@ -259,19 +250,10 @@ const { pageWidth } = useResponsive();
 const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);
 const collectionSlug = props.slug;
 
-// Same derivation as [slug].vue (which owns the actual header/tabs rendering) — re-derived
-// here from this view's own useQuery above because that's the existing pattern in this file
-// (currentCollection is already independently derived the same way).
-const { user } = storeToRefs(useAuthStore());
-const collectionType = computed(() => {
-  if (user.value && user.value.sub === currentCollection.value?.ssoUserId) {
-    return CollectionTypeEnum.MY_COLLECTIONS;
-  }
-  return currentCollection.value?.ssoUserId ? CollectionTypeEnum.COMMUNITY : CollectionTypeEnum.CURATED;
-});
-const showsAggregateTabs = computed(
-  () => collectionType.value === CollectionTypeEnum.CURATED && currentCollection.value?.showAggregateTabs !== false,
-);
+// showAggregateTabs is backfilled true only for curated (LF Foundation) collections and false
+// otherwise (see crowd.dev migration V1784026542) - CDP is the single source of truth for which
+// collections show the aggregate tabs, so no collectionType check is needed here.
+const showsAggregateTabs = computed(() => currentCollection.value?.showAggregateTabs === true);
 
 // Sticky offset for the table's thead: must clear the fixed site header plus the collection's
 // own compact/scrolled header, which is taller for LF Foundation collections (header + aggregate
