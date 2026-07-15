@@ -56,8 +56,15 @@ export const collectionTabs = (_user?: User | null): CollectionTypesTabs[] => {
   return tabs;
 };
 
-// This only applies to the collection details page header
-export const headerBackground = (type?: CollectionType, curatedColor?: string | null) => {
+// This only applies to the collection details page header.
+// Collections v2 (IN-1194): headers use a plain, consistent background — no gradient — on every collection type.
+export const headerBackground = () => ({
+  background: 'var(--White, #FFF)',
+});
+
+// Collection list page headers keep the original type-aware gradient — IN-1194's gradient
+// removal is scoped to detail pages only (see headerBackground above).
+export const listHeaderBackground = (type?: CollectionType, curatedColor?: string | null) => {
   switch (type) {
     case CollectionTypeEnum.CURATED:
       return {

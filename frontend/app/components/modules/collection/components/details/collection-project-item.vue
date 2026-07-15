@@ -6,10 +6,10 @@ SPDX-License-Identifier: MIT
   <!-- Desktop: table row (rendered when as='row') -->
   <tr
     v-if="props.as === 'row'"
-    class="text-neutral-900 text-sm cursor-pointer hover:bg-neutral-50 transition-all duration-300 align-middle"
+    class="text-neutral-900 text-sm cursor-pointer bg-neutral-50 hover:bg-neutral-100 border-b border-neutral-200 transition-all duration-300 align-middle"
     @click="navigateToItem"
   >
-    <td class="w-3/12 py-4 px-2 font-semibold">
+    <td class="py-4 pl-5 md:pl-10 pr-2 font-semibold">
       <div class="flex items-center gap-3">
         <lfx-organization-logo
           :src="props.project.logoUrl || ''"
@@ -62,8 +62,8 @@ SPDX-License-Identifier: MIT
       </div>
     </td>
     <template v-if="isOnboarded">
-      <td class="w-2/12 py-4 px-2 whitespace-nowrap">
-        <lfx-health-score
+      <td class="py-4 px-2 whitespace-nowrap">
+        <lfx-collection-health-score-pill
           v-if="isHealthScoreUnavailable"
           :unavailable="true"
           :score="0"
@@ -74,17 +74,16 @@ SPDX-License-Identifier: MIT
           trigger-event="hover"
           :allow-pass-through="true"
         >
-          <lfx-health-score :score="project.healthScore" />
+          <lfx-collection-health-score-pill :score="project.healthScore" />
           <template #content>
             <lfx-health-score-details :project="props.project" />
           </template>
         </lfx-popover>
       </td>
-      <td class="w-1/12 py-4 px-2 whitespace-nowrap">
+      <td class="py-4 px-2 whitespace-nowrap">
         {{ formatNumber(props.project.contributorCount) }}
       </td>
-      <td class="w-1/12 py-4 px-2 whitespace-nowrap">${{ formatNumberShort(props.project.softwareValue || 0) }}</td>
-      <td class="w-3/12 py-4 px-2 whitespace-nowrap">
+      <td class="py-4 px-2 whitespace-nowrap">
         <lfx-popover
           placement="top"
           trigger-event="hover"
@@ -96,7 +95,7 @@ SPDX-License-Identifier: MIT
           </template>
         </lfx-popover>
       </td>
-      <td class="w-2/12 py-4 px-2 whitespace-nowrap">
+      <td class="py-4 pl-2 pr-5 md:pr-10 text-right whitespace-nowrap">
         <template v-if="props.project.type === 'repo'">
           <span class="text-neutral-400">-</span>
         </template>
@@ -107,11 +106,10 @@ SPDX-License-Identifier: MIT
       </td>
     </template>
     <template v-else>
-      <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-1/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-1/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-3/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
-      <td class="w-2/12 py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <td class="py-4 pl-2 pr-5 md:pr-10 text-right text-neutral-400 whitespace-nowrap">-</td>
     </template>
   </tr>
 
@@ -160,11 +158,9 @@ SPDX-License-Identifier: MIT
         />
         <span class="truncate">{{ repoShortUrl }}</span>
       </div>
-      <div
-        class="flex items-center gap-1.5 mt-1 text-xs text-neutral-500 flex-wrap [&_.c-tag]:!h-5 [&_.c-tag]:!text-xs [&_.c-tag]:!px-2"
-      >
+      <div class="flex items-center gap-1.5 mt-1 text-xs text-neutral-500 flex-wrap">
         <template v-if="isOnboarded">
-          <lfx-health-score
+          <lfx-collection-health-score-pill
             :score="project.healthScore"
             :unavailable="isHealthScoreUnavailable"
           />
@@ -175,15 +171,6 @@ SPDX-License-Identifier: MIT
             class="text-neutral-500"
           />
           <span>{{ formatNumber(props.project.contributorCount) }}</span>
-          <template v-if="props.project.softwareValue">
-            <span class="text-neutral-400">・</span>
-            <lfx-icon
-              name="circle-dollar"
-              :size="12"
-              class="text-neutral-500"
-            />
-            <span>${{ formatNumberShort(props.project.softwareValue) }}</span>
-          </template>
         </template>
         <template v-else>
           <span class="text-neutral-400">No data available</span>
@@ -200,9 +187,9 @@ import type { ProjectInsights } from '~~/types/project';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxHealthScore from '~/components/shared/components/health-score.vue';
+import LfxCollectionHealthScorePill from '~/components/modules/collection/components/details/collection-health-score-pill.vue';
 import LfxHealthScoreDetails from '~/components/modules/collection/components/details/health-score-details.vue';
 import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
 import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';

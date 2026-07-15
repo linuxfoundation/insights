@@ -35,3 +35,39 @@ export interface Collection {
   ssoUserId?: string | null;
   likeCount?: number;
 }
+
+export interface CollectionContributorLeaderboardItem {
+  id: string;
+  avatar: string;
+  displayName: string;
+  githubHandleArray: string[];
+  contributionCount: number;
+}
+
+export interface CollectionPopularityAggregate {
+  totalStars: number;
+  totalForks: number;
+  starsPrevious365Days: number;
+  forksPrevious365Days: number;
+}
+
+export interface CollectionDevelopmentAggregate {
+  activeContributorsLast365Days: number;
+  activeOrganizationsLast365Days: number;
+}
+
+export interface CollectionMetrics {
+  projectAndRepositoryCount: number;
+  // Omitted (not 0) when Tinybird is unavailable - a genuine count of 0 is distinct from
+  // "unavailable," and the metrics-row UI treats undefined as "-".
+  uniqueContributorCount?: number;
+  avgHealthScore?: number;
+}
+
+export interface CollectionMetricsTinybird {
+  projectCount: number;
+  uniqueContributorCount: number;
+  // Tinybird's round(avg(...)) returns SQL NULL (JSON null) when no matching rows have a health
+  // score to average - a genuine "no data" case, not a score of 0.
+  avgHealthScore: number | null;
+}
