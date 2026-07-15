@@ -75,6 +75,7 @@ async function getParticipantsData(
 
   const currentSummaryQuery: ActiveContributorsTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: prParticipantsActivityTypes,
     startDate: filter.startDate,
@@ -134,6 +135,7 @@ async function getCommentsData(filter: CodeReviewEngagementFilter): Promise<Code
 
   const currentSummaryQuery: ActivitiesCountTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: reviewCommentsActivityTypes,
     startDate: filter.startDate,
@@ -192,6 +194,7 @@ async function getReviewsData(filter: CodeReviewEngagementFilter): Promise<CodeR
 
   const currentSummaryQuery: ActivitiesCountTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: codeReviewsActivityTypes,
     startDate: filter.startDate,

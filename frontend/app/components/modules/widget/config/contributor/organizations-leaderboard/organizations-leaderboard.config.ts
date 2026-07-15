@@ -6,6 +6,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const organizationsLeaderboard: WidgetConfig = {
   key: 'organizationsLeaderboard',
+  availableInCollection: true,
   name: 'Organizations leaderboard',
   description: () =>
     'Organizations ranked by the number of contribution activities' +

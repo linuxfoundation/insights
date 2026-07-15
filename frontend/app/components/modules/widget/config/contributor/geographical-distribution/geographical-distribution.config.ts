@@ -6,6 +6,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const geographicalDistribution: WidgetConfig = {
   key: 'geographicalDistribution',
+  availableInCollection: true,
   name: 'Geographical distribution',
   description: () =>
     'Distribution of the geographical location of contributors ' +

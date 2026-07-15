@@ -6,6 +6,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const organizationDependency: WidgetConfig = {
   key: 'organizationDependency',
+  availableInCollection: true,
   name: 'Organization dependency',
   description: () =>
     'Distribution of contributions across organizations, highlighting the group of ' +

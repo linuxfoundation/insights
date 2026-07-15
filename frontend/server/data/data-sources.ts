@@ -7,6 +7,7 @@ import type {
   ActiveContributorsFilter,
   ActiveOrganizationsFilter,
   ContributorsLeaderboardFilter,
+  CollectionContributorsLeaderboardFilter,
   OrganizationsLeaderboardFilter,
   ContributorDependencyFilter,
   OrganizationDependencyFilter,
@@ -31,6 +32,7 @@ import type { RetentionResponse } from '~~/server/data/tinybird/contributors/ret
 import { fetchActiveContributors } from '~~/server/data/tinybird/contributors/active-contributors';
 import { fetchActiveOrganizations } from '~~/server/data/tinybird/contributors/active-organizations';
 import { fetchContributorsLeaderboard } from '~~/server/data/tinybird/contributors/contributors-leaderboard';
+import { fetchCollectionContributorsLeaderboard } from '~~/server/data/tinybird/contributors/collection-contributors-leaderboard';
 import { fetchOrganizationsLeaderboard } from '~~/server/data/tinybird/contributors/organizations-leaderboard';
 import { fetchContributorDependency } from '~~/server/data/tinybird/contributors/contributors-dependency';
 import { fetchOrganizationDependency } from '~~/server/data/tinybird/contributors/organizations-dependency';
@@ -97,6 +99,9 @@ export interface DataSource {
   fetchContributorsLeaderboard: (
     filter: ContributorsLeaderboardFilter,
   ) => Promise<ContributorLeaderboard>;
+  fetchCollectionContributorsLeaderboard: (
+    filter: CollectionContributorsLeaderboardFilter,
+  ) => Promise<ContributorLeaderboard>;
   fetchOrganizationsLeaderboard: (
     filter: OrganizationsLeaderboardFilter,
   ) => Promise<OrganizationLeaderboard>;
@@ -138,6 +143,7 @@ export function createDataSource(): DataSource {
   return {
     fetchActiveContributors,
     fetchContributorsLeaderboard,
+    fetchCollectionContributorsLeaderboard,
     fetchActiveOrganizations,
     fetchOrganizationsLeaderboard,
     fetchContributorDependency,

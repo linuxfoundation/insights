@@ -33,3 +33,26 @@ export function getBooleanQueryParam(
 
   return Boolean(value);
 }
+
+export type WidgetScope =
+  | { project: string; collectionSlug?: undefined }
+  | { project?: undefined; collectionSlug: string };
+
+/**
+ * Every /api/widget/... route is scoped to either a single project or a whole collection,
+ * never both - this mirrors the project/collectionSlug branch already present on the
+ * Tinybird pipes themselves (segments_filtered vs segments_filtered_by_collection).
+ */
+export function getWidgetScope(query: Record<string, unknown>): WidgetScope {
+  const project = query.project as string | undefined;
+  const collectionSlug = query.collectionSlug as string | undefined;
+
+  if (!!project === !!collectionSlug) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Exactly one of project or collectionSlug is required',
+    });
+  }
+
+  return project ? { project } : { collectionSlug: collectionSlug! };
+}

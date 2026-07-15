@@ -81,8 +81,16 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues, allArchived, hasSelectedArchivedRepos } =
-  storeToRefs(useProjectStore());
+const {
+  isCollectionScope,
+  project,
+  selectedRepoSlugs,
+  startDate,
+  endDate,
+  selectedReposValues,
+  allArchived,
+  hasSelectedArchivedRepos,
+} = storeToRefs(useProjectStore());
 const isFirstLoad = ref(true);
 
 /**
@@ -122,14 +130,25 @@ const params = computed(() => ({
   endDate: endDate.value,
 }));
 
-const { data, error, suspense } = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
+// Benchmarks are a per-project health-score concept (backed by /api/project/[slug]/overview/
+// health-score) with no collection equivalent, so this query is skipped entirely on Collection
+// pages rather than firing with a collection slug the endpoint doesn't understand.
+const { data, error, suspense } = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(
+  params,
+  computed(() => !isCollectionScope.value),
+);
 
 const widgets = computed(() =>
   (config.value.widgets || []).filter((widget) => {
     const key = lfxWidgets[widget as Widget]?.key;
     const widgetConfig = lfxWidgets[widget as Widget];
+    // Collections have no per-project `widgets` array to check against - availableInCollection
+    // is an explicit opt-in per widget instead (see widget.config.ts).
+    const isWidgetShown = isCollectionScope.value
+      ? !!widgetConfig?.availableInCollection
+      : !!project.value?.widgets.includes(key);
     return (
-      project.value?.widgets.includes(key) &&
+      isWidgetShown &&
       (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length) &&
       !excludedWidgets.value.includes(widget as Widget)
     );
@@ -206,7 +225,12 @@ const navigateToWidget = () => {
 };
 
 onServerPrefetch(async () => {
-  await suspense();
+  // TanStack Query's suspense() hangs forever on a disabled query (status stays 'pending'),
+  // which would deadlock SSR here since benchmarks are disabled entirely in collection mode
+  // (see the enabled: !isCollectionScope passed to fetchWidgetBenchmarks above).
+  if (!isCollectionScope.value) {
+    await suspense();
+  }
 
   await downloadsSuspense();
   await searchQueriesSuspense();

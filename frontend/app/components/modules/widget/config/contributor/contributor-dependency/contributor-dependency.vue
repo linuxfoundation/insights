@@ -90,14 +90,15 @@ const model = computed<ContributorDependencyModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
 
 const params = computed<LeaderboardQueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,

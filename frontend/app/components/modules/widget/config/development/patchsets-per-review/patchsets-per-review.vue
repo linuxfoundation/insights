@@ -93,7 +93,7 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -112,7 +112,8 @@ const granularity = computed(() =>
 );
 
 const params = computed<PatchsetsPerReviewQueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

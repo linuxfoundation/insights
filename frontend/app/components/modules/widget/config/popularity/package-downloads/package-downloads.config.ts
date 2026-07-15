@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const packageDownloads: WidgetConfig = {
   key: 'packageDownloads',
+  availableInCollection: true,
   name: 'Package downloads',
   description: () => `Tracking of package downloads over time, providing insights into how widely 
     the project is adopted and integrated within other software.

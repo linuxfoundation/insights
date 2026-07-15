@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const mailingListMessages: WidgetConfig = {
   key: 'mailingListMessages',
+  availableInCollection: true,
   name: 'Mailing lists messages',
   description: () =>
     "Messages sent on the project's public mailing lists during the selected time period.",

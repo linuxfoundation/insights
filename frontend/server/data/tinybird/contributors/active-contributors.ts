@@ -42,6 +42,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
 
   const currentSummaryQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
@@ -51,6 +52,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
 
   const previousSummaryQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
@@ -60,6 +62,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
 
   const dataQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     granularity: filter.granularity,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,

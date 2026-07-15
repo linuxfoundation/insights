@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const socialMentions: WidgetConfig = {
   key: 'socialMentions',
+  availableInCollection: true,
   name: 'Social mentions',
   description: (project) =>
     `Number of times that ${project.name} was mentioned on social platforms during` +

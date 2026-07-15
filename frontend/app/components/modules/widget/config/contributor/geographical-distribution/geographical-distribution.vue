@@ -137,10 +137,11 @@ const model = computed<GeographicalDistributionModel>({
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const params = computed<GeographicalDistributionQueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   type: model.value.activeTab,
   platform: platform.value,
   activityType: activityType.value,

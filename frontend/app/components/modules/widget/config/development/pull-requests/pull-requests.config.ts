@@ -6,6 +6,7 @@ import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/conf
 
 const pullRequests: WidgetConfig = {
   key: 'pullRequests',
+  availableInCollection: true,
   name: 'Pull requests',
   description: () =>
     'Comparison between opened and merged (or closed) pull requests during the selected period.',
