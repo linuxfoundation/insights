@@ -50,9 +50,9 @@ const healthScoreLabel = computed(() => {
 
 const healthScoreDotClass = computed(() => {
   const score = props.score;
-  if (score >= 60) return 'bg-[#00bc7d]';
-  if (score >= 20) return 'bg-[#fe9a00]';
-  return 'bg-[#fb2c36]';
+  if (score >= 60) return 'bg-health-healthy';
+  if (score >= 20) return 'bg-health-concerning';
+  return 'bg-health-critical';
 });
 </script>
 

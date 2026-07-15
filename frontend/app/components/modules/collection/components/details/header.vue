@@ -339,7 +339,7 @@ SPDX-License-Identifier: MIT
           </div>
           <p
             v-else-if="props.collection"
-            class="text-sm md:text-body-1 text-[#45556c] line-clamp-2 md:line-clamp-none"
+            class="text-sm md:text-body-1 text-neutral-600 line-clamp-2 md:line-clamp-none"
           >
             {{ props.collection.description }}
           </p>

@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
           <lfx-icon
             name="layer-group"
             :size="14"
-            class="text-[#45556c]"
+            class="text-neutral-600"
           />
           <span class="text-xs text-neutral-500">Projects / Repositories:</span>
           <span class="text-xs font-medium text-neutral-900">
@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
           <lfx-icon
             name="people-group"
             :size="14"
-            class="text-[#45556c]"
+            class="text-neutral-600"
           />
           <span class="text-xs text-neutral-500">Contributors:</span>
           <span class="text-xs font-medium text-neutral-900">
@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
           <lfx-icon
             name="heart"
             :size="14"
-            class="text-[#45556c]"
+            class="text-neutral-600"
           />
           <span class="text-xs text-neutral-500">Avg. Health:</span>
           <template v-if="avgHealthScore !== undefined && avgHealthScore !== null">
@@ -95,9 +95,9 @@ const projectAndRepositoryCount = computed(() => props.metrics?.projectAndReposi
 const contributorCount = computed(() => props.metrics?.uniqueContributorCount);
 const avgHealthScore = computed(() => props.metrics?.avgHealthScore);
 
-// Labels/colors are a deliberate, scoped divergence from health-score.vue's palette for the
-// Collections v2 metrics-row dot only — matched to Figma's exact hexes (see IN-1191 design
-// fidelity report). health-score.vue itself is intentionally left untouched.
+// Labels are a deliberate, scoped divergence from health-score.vue's tiers for the Collections v2
+// metrics-row dot only (see IN-1191 design fidelity report). health-score.vue itself is
+// intentionally left untouched. Colors use the shared health-* tokens from colors.ts.
 const healthScoreLabel = computed(() => {
   const score = avgHealthScore.value ?? 0;
   if (score >= 80) return 'Excellent';
@@ -109,9 +109,9 @@ const healthScoreLabel = computed(() => {
 
 const healthScoreDotClass = computed(() => {
   const score = avgHealthScore.value ?? 0;
-  if (score >= 60) return 'bg-[#00bc7d]';
-  if (score >= 20) return 'bg-[#fe9a00]';
-  return 'bg-[#fb2c36]';
+  if (score >= 60) return 'bg-health-healthy';
+  if (score >= 20) return 'bg-health-concerning';
+  return 'bg-health-critical';
 });
 </script>
 
