@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-// https://api.us-west-2.aws.tinybird.co/v0/pipes/collection_insights_aggregate.json?ids=id1,id2,id3
+// https://api.us-west-2.aws.tinybird.co/v0/pipes/collection_insights_aggregate.json?collectionSlug=my-collection-slug
 export const mockCollectionInsightsAggregateResponse = {
   meta: [
     {

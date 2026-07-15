@@ -160,7 +160,7 @@ import { watch, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useQueryClient } from '@tanstack/vue-query';
 import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
-import { headerBackground } from '../config/collection-type-config';
+import { listHeaderBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
 
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -257,7 +257,7 @@ const updateView = (value: string) => {
   view.value = value as CollectionViewType;
 };
 
-const headerBackgroundStyle = computed(() => headerBackground(props.type));
+const headerBackgroundStyle = computed(() => listHeaderBackground(props.type));
 
 watch(error, (err: Error | null) => {
   if (err) {

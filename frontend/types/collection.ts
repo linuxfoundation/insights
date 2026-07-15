@@ -58,7 +58,9 @@ export interface CollectionDevelopmentAggregate {
 
 export interface CollectionMetrics {
   projectAndRepositoryCount: number;
-  uniqueContributorCount: number;
+  // Omitted (not 0) when Tinybird is unavailable - a genuine count of 0 is distinct from
+  // "unavailable," and the metrics-row UI treats undefined as "-".
+  uniqueContributorCount?: number;
   avgHealthScore?: number;
 }
 

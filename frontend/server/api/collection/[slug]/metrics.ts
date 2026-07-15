@@ -27,9 +27,10 @@ import { getOptionalUser } from '~~/server/utils/jwt';
  * - 503: Database not available
  * - 500: Internal server error
  */
-// avgHealthScore is omitted (not 0) when there's no real data - a genuine score of 0
-// is distinct from "unavailable," and the metrics-row UI treats undefined as "-".
-const EMPTY_TINYBIRD_METRICS = { uniqueContributorCount: 0, avgHealthScore: undefined };
+// uniqueContributorCount and avgHealthScore are omitted (not 0) when there's no real data - a
+// genuine count/score of 0 is distinct from "unavailable," and the metrics-row UI treats
+// undefined as "-".
+const EMPTY_TINYBIRD_METRICS = { uniqueContributorCount: undefined, avgHealthScore: undefined };
 
 export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
   const { slug } = event.context.params as Record<string, string>;
@@ -62,7 +63,7 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
       const [metrics] = response.data;
 
       return {
-        uniqueContributorCount: metrics?.uniqueContributorCount ?? 0,
+        uniqueContributorCount: metrics?.uniqueContributorCount,
         // Normalize Tinybird's null ("no rows to average") to undefined, matching
         // CollectionMetrics' "no data" contract used by the metrics-row UI.
         avgHealthScore: metrics?.avgHealthScore ?? undefined,

@@ -41,8 +41,8 @@ const props = defineProps<{
 // health-score.vue itself is intentionally left untouched (used elsewhere in the app).
 const healthScoreLabel = computed(() => {
   const score = props.score;
-  if (score > 80) return 'Excellent';
-  if (score > 60) return 'Healthy';
+  if (score >= 80) return 'Excellent';
+  if (score >= 60) return 'Healthy';
   if (score >= 40) return 'Fair';
   if (score >= 20) return 'Concerning';
   return 'Critical';
@@ -50,7 +50,7 @@ const healthScoreLabel = computed(() => {
 
 const healthScoreDotClass = computed(() => {
   const score = props.score;
-  if (score > 60) return 'bg-[#00bc7d]';
+  if (score >= 60) return 'bg-[#00bc7d]';
   if (score >= 20) return 'bg-[#fe9a00]';
   return 'bg-[#fb2c36]';
 });

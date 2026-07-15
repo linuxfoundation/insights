@@ -61,3 +61,24 @@ export const collectionTabs = (_user?: User | null): CollectionTypesTabs[] => {
 export const headerBackground = () => ({
   background: 'var(--White, #FFF)',
 });
+
+// Collection list page headers keep the original type-aware gradient — IN-1194's gradient
+// removal is scoped to detail pages only (see headerBackground above).
+export const listHeaderBackground = (type?: CollectionType, curatedColor?: string | null) => {
+  switch (type) {
+    case CollectionTypeEnum.CURATED:
+      return {
+        background: curatedColor
+          ? `linear-gradient(0deg, ${curatedColor}00, ${curatedColor}0D), var(--White, #FFF)`
+          : 'linear-gradient(0deg, #0F172B00, #0F172B0D), var(--White, #FFF)',
+      };
+    case CollectionTypeEnum.COMMUNITY:
+      return {
+        background: 'linear-gradient(0deg, #009AFF00, #009AFF0D), var(--White, #FFF)',
+      };
+    default:
+      return {
+        background: 'linear-gradient(0deg, #8E51FF00, #8E51FF0D), var(--White, #FFF)',
+      };
+  }
+};
