@@ -25,9 +25,9 @@ SPDX-License-Identifier: MIT
             :size="14"
             class="text-[#45556c]"
           />
-          <span class="text-xs text-neutral-500">Projects:</span>
+          <span class="text-xs text-neutral-500">Projects / Repositories:</span>
           <span class="text-xs font-medium text-neutral-900">
-            {{ projectCount !== undefined ? formatNumber(projectCount) : '—' }}
+            {{ projectAndRepositoryCount !== undefined ? formatNumber(projectAndRepositoryCount) : '—' }}
           </span>
         </lfx-chip>
 
@@ -91,7 +91,7 @@ const props = defineProps<{
   loading?: boolean;
 }>();
 
-const projectCount = computed(() => props.metrics?.projectCount);
+const projectAndRepositoryCount = computed(() => props.metrics?.projectAndRepositoryCount);
 const contributorCount = computed(() => props.metrics?.uniqueContributorCount);
 const avgHealthScore = computed(() => props.metrics?.avgHealthScore);
 

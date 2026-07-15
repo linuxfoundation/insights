@@ -57,7 +57,7 @@ export interface CollectionDevelopmentAggregate {
 }
 
 export interface CollectionMetrics {
-  projectCount: number;
+  projectAndRepositoryCount: number;
   uniqueContributorCount: number;
   avgHealthScore?: number;
 }

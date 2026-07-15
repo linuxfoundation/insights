@@ -16,7 +16,7 @@ import { getOptionalUser } from '~~/server/utils/jwt';
  * - slug (string): The unique slug identifier for the collection.
  *
  * Response:
- * - projectCount (number): Count of projects (+ standalone repos) in the collection, from Postgres -
+ * - projectAndRepositoryCount (number): Count of projects (+ standalone repos) in the collection, from Postgres -
  *   the same source of truth as the collection's project table, so it can't drift from what the
  *   page actually lists.
  * - uniqueContributorCount (number): Total unique contributors across all projects, deduplicated.
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
     throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
   }
 
-  const projectCount = result.projectIds.length + result.repositoryUrls.length;
+  const projectAndRepositoryCount = result.projectIds.length + result.repositoryUrls.length;
 
   const { uniqueContributorCount, avgHealthScore } = await (async () => {
     try {
@@ -77,7 +77,7 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
   })();
 
   return {
-    projectCount,
+    projectAndRepositoryCount,
     uniqueContributorCount,
     avgHealthScore,
   };
