@@ -81,7 +81,7 @@ const kpis = computed(() => [
     trend: data.value?.activeContributorsTrend,
     trendAbsolute: data.value?.activeContributorsTrendAbsolute,
     trendPrevious: data.value?.activeContributorsTrendPrevious,
-    label: `Active ${orgDisplayName.value} contributors (last 365d)`,
+    label: `Active ${orgDisplayName.value} contributors (last 2 years)`,
   },
   {
     icon: 'user-shield',
@@ -89,7 +89,7 @@ const kpis = computed(() => [
     trend: undefined,
     trendAbsolute: undefined,
     trendPrevious: undefined,
-    label: `Maintainer roles held by ${orgDisplayName.value} contributors`,
+    label: `Maintainer roles held by ${orgDisplayName.value} contributors (last 2 years)`,
   },
   {
     icon: 'laptop-code',
@@ -97,7 +97,7 @@ const kpis = computed(() => [
     trend: undefined,
     trendAbsolute: undefined,
     trendPrevious: undefined,
-    label: `Critical projects ${orgDisplayName.value} employees contributed to`,
+    label: `Critical projects ${orgDisplayName.value} employees contributed to (last 2 years)`,
   },
 ]);
 </script>
