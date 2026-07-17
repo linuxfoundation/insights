@@ -138,11 +138,16 @@ const showsAggregateTabs = computed(() => collectionType.value === CollectionTyp
 // re-establishes Nuxt's context for the closure regardless of what scheduled the callback -
 // the same pattern Nuxt core itself uses for its own router navigateTo() calls.
 watch(
-  () => data.value,
-  (value) => {
+  [() => data.value, isAggregateWidgetTab],
+  ([value]) => {
     // Guard against a stale/cross-collection cache hit: only redirect using data that's
     // actually for the collection this page instance was created for, in case a background
     // refetch resolves for a different query key than the one this closure captured `slug` from.
+    //
+    // isAggregateWidgetTab is also watched (not just data) because the parent layout stays
+    // mounted across child-tab navigation - once data has already loaded, switching tabs
+    // client-side changes isAggregateWidgetTab without data changing, and a watcher keyed on
+    // data alone would never re-run the guard for that navigation.
     if (value && value.slug === slug && !showsAggregateTabs.value && isAggregateWidgetTab.value) {
       nuxtApp.runWithContext(() =>
         navigateTo({ name: LfxRoutes.COLLECTION, params: { slug: slug as string } }, { replace: true }),

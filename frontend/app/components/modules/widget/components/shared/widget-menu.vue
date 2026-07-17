@@ -154,7 +154,7 @@ const isEmbedModalOpen = ref(false);
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 
-const { project, selectedRepositories } = storeToRefs(useProjectStore());
+const { project, selectedRepositories, isCollectionScope } = storeToRefs(useProjectStore());
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 const isCopilotEnabled = computed(() => !!config.value.copilot && hasLfxInsightsPermission.value);
 
@@ -200,7 +200,9 @@ const menu = computed<MenuItem[]>(() => [
     action: () => {
       isEmbedModalOpen.value = true;
     },
-    enabled: config.value.embed,
+    // The repository has no collection embed route yet - the embed URL is always built from
+    // project.value?.slug, which is undefined in collection scope.
+    enabled: config.value.embed && !isCollectionScope.value,
     isSeparator: false,
   },
   {

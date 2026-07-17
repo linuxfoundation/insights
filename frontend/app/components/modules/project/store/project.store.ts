@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { DateTime } from 'luxon';
 import pluralize from 'pluralize';
@@ -67,6 +67,23 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const collaborationSet = ref<string[]>([]); // stores the widget names that have includeCollaborations set to true
+
+  // pages/project/[slug].vue never clears `project`/`collaborationSet` on unmount, so a
+  // client-side SPA navigation from a project page straight into collection scope would
+  // otherwise leave the previous project's data in the store. Every collection-derived
+  // computed below already short-circuits via isCollectionScope, but consumers that read
+  // `project`/`collaborationSet` directly (widget descriptions, defaultValue, embed/share)
+  // don't go through those guards - reset the raw refs at the scope boundary instead.
+  watch(
+    isCollectionScope,
+    (value) => {
+      if (value) {
+        project.value = null;
+        collaborationSet.value = [];
+      }
+    },
+    { immediate: true },
+  );
 
   // List of all project repositories
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);

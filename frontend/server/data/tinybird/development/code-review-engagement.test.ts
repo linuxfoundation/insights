@@ -278,4 +278,89 @@ describe('Code Review Engagement Data Source', () => {
       mockQuarterlyActivitiesCountData,
     ],
   ])('should fetch code review engagement data with correct parameters', testCodeReviewEngagement);
+
+  test('should fetch collection-scoped PR participants data via collection_contributors_leaderboard', async () => {
+    const { fetchCodeReviewEngagement } =
+      await import('~~/server/data/tinybird/development/code-review-engagement');
+
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockPRParticipantsCurrentSummary)
+      .mockResolvedValueOnce(mockPRParticipantsPreviousSummary)
+      .mockResolvedValueOnce(mockPRParticipantsData);
+
+    const startDate = DateTime.utc(2024, 3, 20);
+    const endDate = DateTime.utc(2025, 3, 20);
+
+    const filter: CodeReviewEngagementFilter = {
+      collectionSlug: 'cncf',
+      repos: ['some-repo'],
+      granularity: Granularity.QUARTERLY,
+      metric: CodeReviewEngagementMetric.PR_PARTICIPANTS,
+      startDate,
+      endDate,
+    };
+
+    const result = await fetchCodeReviewEngagement(filter);
+
+    const expectedCurrentSummaryQuery: ActiveContributorsTinybirdQuery = {
+      project: undefined,
+      collectionSlug: filter.collectionSlug,
+      repos: filter.repos,
+      activity_types: expectedPRParticipantsActivityTypes,
+      startDate: filter.startDate,
+      endDate: filter.endDate,
+    };
+    const expectedPreviousSummaryQuery: ActiveContributorsTinybirdQuery = {
+      ...expectedCurrentSummaryQuery,
+      startDate: DateTime.utc(2023, 3, 19),
+      endDate: DateTime.utc(2024, 3, 19),
+    };
+    const expectedDataQuery = {
+      collectionSlug: filter.collectionSlug,
+      repos: filter.repos,
+      activity_types: expectedPRParticipantsActivityTypes,
+      startDate: filter.startDate,
+      endDate: filter.endDate,
+      limit: 5,
+    };
+
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      1,
+      '/v0/pipes/active_contributors.json',
+      expectedCurrentSummaryQuery,
+    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      2,
+      '/v0/pipes/active_contributors.json',
+      expectedPreviousSummaryQuery,
+    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      3,
+      '/v0/pipes/collection_contributors_leaderboard.json',
+      expectedDataQuery,
+    );
+
+    const currentCount = mockPRParticipantsCurrentSummary.data[0].contributorCount;
+    const previousCount = mockPRParticipantsPreviousSummary.data[0].contributorCount;
+
+    const expectedResult: CodeReviewEngagement = {
+      summary: {
+        current: currentCount,
+        previous: previousCount,
+        percentageChange: 100,
+        changeValue: currentCount - previousCount,
+        periodFrom: filter.startDate?.toISO() || '',
+        periodTo: filter.endDate?.toISO() || '',
+      },
+      data: mockPRParticipantsData.data.map((item) => ({
+        avatar: item.avatar,
+        name: item.displayName,
+        activityCount: item.contributionCount,
+        percentage: item.contributionPercentage,
+        roles: item.roles || [],
+      })),
+    };
+
+    expect(result).toEqual(expectedResult);
+  });
 });
