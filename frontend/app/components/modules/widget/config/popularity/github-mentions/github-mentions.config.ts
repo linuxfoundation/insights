@@ -5,7 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const githubMentions: WidgetConfig = {
   key: 'githubMentions',
-  availableInCollection: true,
+  availableInCollection: false,
   name: 'GitHub Mentions',
   description: (project) =>
     `Number of times that ${project.name} was mentioned on code, files,` +

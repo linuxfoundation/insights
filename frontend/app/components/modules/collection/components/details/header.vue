@@ -194,7 +194,7 @@ SPDX-License-Identifier: MIT
             class="hidden md:flex transition-all ease-linear items-center gap-4 lg:w-auto shrink-0 mt-4 lg:mt-0"
           >
             <lfx-toggle
-              v-if="scrollTop > 50"
+              v-if="scrollTop > 50 && isProjectsTab"
               v-model="isOnlyLFProjects"
             >
               Only Linux Foundation projects
@@ -356,7 +356,7 @@ SPDX-License-Identifier: MIT
             :loading="props.metricsLoading"
           />
           <lfx-toggle
-            v-if="scrollTop <= 50"
+            v-if="scrollTop <= 50 && isProjectsTab"
             v-model="isOnlyLFProjects"
             class="!hidden md:!flex"
           >
@@ -385,7 +385,7 @@ SPDX-License-Identifier: MIT
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'nuxt/app';
+import { useRoute, useRouter } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
 import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
 import LfxCollectionMetricsRow from './collection-metrics-row.vue';
@@ -425,7 +425,13 @@ const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
 const router = useRouter();
+const route = useRoute();
 const { openShareModal } = useShareStore();
+
+// The LF-projects toggle filters the Projects tab's table - it has no effect on the
+// Contributors/Popularity/Development tabs, which show collection-wide aggregate widgets
+// instead of a filterable project list, so it's hidden there.
+const isProjectsTab = computed(() => route.name === LfxRoutes.COLLECTION);
 
 const props = defineProps<{
   collection?: Collection;

@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     :benchmark-config="config.benchmark"
     :point="benchmarkScore?.benchmark || 0"
     :widget-model="model"
-    :show-benchmark="widgetHasData"
+    :show-benchmark="widgetHasData && !isCollectionScope"
   >
     <lfx-card class="p-4 sm:p-6 relative group">
       <div class="flex justify-between items-center pb-3">
@@ -109,7 +109,7 @@ const props = defineProps<{
 const { sanitize } = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
-const { project, collaborationSet } = storeToRefs(useProjectStore());
+const { project, collaborationSet, isCollectionScope } = storeToRefs(useProjectStore());
 
 const getDefaultValue = () => {
   const defaultValue = config.value.defaultValue;

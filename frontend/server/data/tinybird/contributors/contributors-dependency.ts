@@ -1,8 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ContributorDependencyFilter, ContributorsLeaderboardFilter } from '../../types';
+import type {
+  CollectionContributorsLeaderboardFilter,
+  ContributorDependencyFilter,
+  ContributorsLeaderboardFilter,
+} from '../../types';
 import { fetchFromTinybird } from '../tinybird';
 import { fetchContributorsLeaderboard } from '~~/server/data/tinybird/contributors/contributors-leaderboard';
+import { fetchCollectionContributorsLeaderboard } from '~~/server/data/tinybird/contributors/collection-contributors-leaderboard';
 import type { TinybirdContributorDependencyData } from '~~/server/data/tinybird/responses.types';
 import type { ContributorDependency } from '~~/types/contributors/responses.types';
 
@@ -17,18 +22,37 @@ export async function fetchContributorDependency(
     // By bumping up that limit to 100, it's almost guaranteed we will get to 51%.
     limit: 100,
   };
-  const leaderboardQuery: ContributorsLeaderboardFilter = {
-    ...filter,
-    limit: 5,
-  };
 
-  const [tinybirdTopContributorsResponse, tinybirdLeaderboardResponse] = await Promise.all([
-    fetchFromTinybird<TinybirdContributorDependencyData[]>(
-      '/v0/pipes/contributor_dependency.json',
-      dependencyQuery,
-    ),
-    fetchContributorsLeaderboard(leaderboardQuery),
-  ]);
+  // collectionSlug-scoped requests use the separate collection_contributor_dependency pipe and
+  // collection_contributors_leaderboard, instead of the project-only contributor_dependency /
+  // contributors_leaderboard pipes - see collection_contributor_dependency.pipe's DESCRIPTION for why.
+  const [tinybirdTopContributorsResponse, tinybirdLeaderboardResponse] = filter.collectionSlug
+    ? await Promise.all([
+        fetchFromTinybird<TinybirdContributorDependencyData[]>(
+          '/v0/pipes/collection_contributor_dependency.json',
+          dependencyQuery,
+        ),
+        fetchCollectionContributorsLeaderboard({
+          collectionSlug: filter.collectionSlug,
+          repos: filter.repos,
+          startDate: filter.startDate,
+          endDate: filter.endDate,
+          platform: filter.platform,
+          activity_type: filter.activity_type,
+          includeCollaborations: filter.includeCollaborations,
+          limit: 5,
+        } satisfies CollectionContributorsLeaderboardFilter),
+      ])
+    : await Promise.all([
+        fetchFromTinybird<TinybirdContributorDependencyData[]>(
+          '/v0/pipes/contributor_dependency.json',
+          dependencyQuery,
+        ),
+        fetchContributorsLeaderboard({
+          ...filter,
+          limit: 5,
+        } satisfies ContributorsLeaderboardFilter),
+      ]);
 
   // Sort the top contributors by contributionPercentageRunningTotal in ascending order.
   // We do this here because TinyBird is failing to sort the data correctly for some reason.

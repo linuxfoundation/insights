@@ -100,7 +100,8 @@ const isFirstLoad = ref(true);
  * This is a workaround to show/hide widgets in the popularity for projects that have no data.
  * ===============================
  */
-const projectSlug = computed(() => route.params.slug as string);
+const projectSlug = computed(() => (isCollectionScope.value ? undefined : (route.params.slug as string)));
+const collectionSlug = computed(() => (isCollectionScope.value ? (route.params.slug as string) : undefined));
 
 const projectWidgets = computed(() => project.value?.widgets || []);
 
@@ -111,6 +112,7 @@ const {
   mailingListMessagesSuspense,
 } = usePopularityExcludedWidgets({
   projectSlug,
+  collectionSlug,
   repos: selectedReposValues,
   startDate,
   endDate,

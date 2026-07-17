@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: MIT
 import { createDataSource } from '~~/server/data/data-sources';
 import type { ActivityTypesFilter } from '~~/types/development/requests.types';
-import { getBooleanQueryParam } from '~~/server/utils/common';
+import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const project = (event.context.params as { slug: string }).slug;
+  const scope = getWidgetScope(query);
 
   const filter: ActivityTypesFilter = {
-    project,
+    ...scope,
     repos: query?.repos
       ? Array.isArray(query.repos)
         ? (query.repos as string[])

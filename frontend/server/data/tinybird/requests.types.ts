@@ -100,8 +100,7 @@ export type ActivitiesCountTinybirdQuery = TinybirdScope & {
   endDate?: DateTime;
 };
 
-export type ActivityTypesTinybirdQuery = {
-  project: string;
+export type ActivityTypesTinybirdQuery = TinybirdScope & {
   repos?: string[];
   includeCodeContributions?: boolean;
   includeCollaborations?: boolean;
