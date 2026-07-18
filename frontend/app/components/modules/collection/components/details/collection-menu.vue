@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
           <lfx-menu-button
             v-for="link of lfCollectionAggregateLinks"
             :key="link.key"
-            :to="{ name: link.routeName, params: { slug: props.slug } }"
+            :to="linkTo(link)"
             :exact="true"
           >
             <template #default="{ isActive }">
@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
             <router-link
               v-for="link of lfCollectionAggregateLinks"
               :key="link.key"
-              :to="{ name: link.routeName, params: { slug: props.slug } }"
+              :to="linkTo(link)"
             >
               <lfx-dropdown-item
                 :value="link.key"
@@ -82,6 +82,19 @@ const route = useRoute();
 const activeLink = computed(
   () => lfCollectionAggregateLinks.find((link) => link.routeName === route.name) || lfCollectionAggregateLinks[0],
 );
+
+// Preserve the current query (date range: timeRange/start/end, plus onlyLFProjects) when
+// switching tabs, so the selected date range doesn't reset to the default on every tab change.
+// `widget` is dropped because it's a per-tab scroll target, not shared across tabs - mirrors
+// project-menu.vue's linkUrl().
+const linkTo = (link: (typeof lfCollectionAggregateLinks)[number]) => ({
+  name: link.routeName,
+  params: { slug: props.slug },
+  query: {
+    ...route.query,
+    widget: undefined,
+  },
+});
 </script>
 
 <script lang="ts">

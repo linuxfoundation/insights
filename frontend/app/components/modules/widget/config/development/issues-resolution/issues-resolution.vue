@@ -189,7 +189,12 @@ const isLastDataItemIncomplete = computed(() => {
   return false;
 });
 
-const avgVelocity = computed<string>(() => formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'));
+// A missing/zero velocity (e.g. collection-scoped requests where the pipe returns null)
+// should render as "—", not a literal "0 seconds", which reads as a real value.
+const avgVelocity = computed<string>(() => {
+  const value = summary.value?.avgVelocityInDays;
+  return value ? formatSecondsToDuration(value, 'long') : '—';
+});
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {

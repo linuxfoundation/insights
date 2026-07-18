@@ -153,7 +153,12 @@ const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchPullRequests(params
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 
 const summary = computed<Summary>(() => pullRequests.value?.summary);
-const avgVelocity = computed<string>(() => formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'));
+// A missing/zero velocity (e.g. collection-scoped requests where the pipe returns null)
+// should render as "—", not a literal "0 seconds", which reads as a real value.
+const avgVelocity = computed<string>(() => {
+  const value = pullRequests.value?.avgVelocityInDays;
+  return value ? formatSecondsToDuration(value, 'long') : '—';
+});
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {

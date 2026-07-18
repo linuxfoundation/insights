@@ -157,6 +157,16 @@ watch(
   { immediate: true },
 );
 
+const {
+  data: metrics,
+  isLoading: isMetricsLoading,
+  suspense: metricsSuspense,
+} = useQuery<CollectionMetrics>({
+  queryKey: computed(() => [TanstackKey.COLLECTION_METRICS, slug]),
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollectionMetrics(slug as string, requestFetch),
+  retry: false,
+});
+
 // This is the parent layout for all 4 collection detail routes (Projects, Contributors,
 // Popularity, Development), so the collection 404 must be handled here rather than only in
 // the Projects child view - otherwise the other 3 routes would render a blank header/empty
@@ -172,12 +182,13 @@ onServerPrefetch(async () => {
       showError({ statusCode: 404, statusMessage });
     }
   }
-});
 
-const { data: metrics, isLoading: isMetricsLoading } = useQuery<CollectionMetrics>({
-  queryKey: computed(() => [TanstackKey.COLLECTION_METRICS, slug]),
-  queryFn: COLLECTIONS_API_SERVICE.fetchCollectionMetrics(slug as string, requestFetch),
-  retry: false,
+  // Resolve the header metrics query during SSR too, otherwise on a sub-tab refresh
+  // (Contributors/Popularity/Development) the server ships isMetricsLoading=true and the
+  // client never re-runs the query, leaving the header metric chips stuck on skeletons.
+  // Awaited after the 404 check so a metrics failure never blocks the collection 404 path;
+  // metrics.ts already degrades gracefully on upstream error, so this can't hang the page.
+  await metricsSuspense();
 });
 
 // Only Linux Foundation projects toggle: per Figma this is visually part of the shared header,
