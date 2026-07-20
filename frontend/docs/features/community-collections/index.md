@@ -53,6 +53,25 @@ Click the **Share** button on the Collection Detail page to open the share flow.
 
 Click the duplicate icon on a collection card or on the Collection Detail page to create a copy under your My Collections.
 
+## Collection Detail Page
+
+Every collection detail page shows a header with three aggregate metrics that summarise the collection's combined projects:
+
+- **Projects / Repositories** — the total number of projects and repositories included in the collection.
+- **Contributors** — the total number of unique contributors across all projects in the collection.
+- **Avg. Health** — the average Health Score across all projects, labelled as **Excellent** (80+), **Healthy** (60–79), **Fair** (40–59), **Concerning** (20–39), or **Critical** (below 20).
+
+### Tabs (Curated Collections only)
+
+Linux Foundation–curated collections offer four tabs for deeper analysis across the collection as a whole:
+
+- **Projects** — the default view: a sortable table of all projects in the collection, with their Health Score, contributor count, contributor/organization dependency, and achievements.
+- **Contributors** — contributor-focused widgets aggregated across every project: active contributors, active organizations, contributor and organization leaderboards, geographical distribution, and dependency metrics.
+- **Popularity** — popularity widgets aggregated across every project, including stars and forks over time.
+- **Development** — development-focused widgets aggregated across every project, including active contributors and active organizations over time.
+
+A date range picker is available on the Contributors, Popularity, and Development tabs to scope all widgets to a specific time window. Community collections and personal collections show only the Projects view.
+
 ## Collection Visibility
 
 User-created collections support two visibility states, private and public.
