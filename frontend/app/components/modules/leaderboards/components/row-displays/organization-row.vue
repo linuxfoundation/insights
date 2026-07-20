@@ -17,8 +17,8 @@ SPDX-License-Identifier: MIT
     <component
       :is="item.slug ? nuxtLink : 'div'"
       :to="item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
-      class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
-      :class="item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
+      class="flex-1 min-w-0 flex gap-3 items-center"
+      :class="item.slug ? 'cursor-pointer' : ''"
     >
       <lfx-avatar
         :src="item.logoUrl"
@@ -27,7 +27,8 @@ SPDX-License-Identifier: MIT
       />
       <p
         :title="item.name"
-        class="text-base leading-5 font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+        class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+        :class="item.slug ? 'hover:underline cursor-pointer' : ''"
       >
         {{ item.name }}
       </p>

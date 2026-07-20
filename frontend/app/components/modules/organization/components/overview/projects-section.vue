@@ -17,29 +17,16 @@ SPDX-License-Identifier: MIT
         </div>
         <div class="flex-1 min-w-0">
           <h2 class="text-heading-5 font-bold font-secondary">Critical Projects</h2>
-          <p class="text-xs text-neutral-500 mt-0.5">{{ orgDisplayName }} contributors are involved in</p>
+          <p class="text-xs text-neutral-500 mt-0.5">
+            {{ orgDisplayName }} contributors are involved in (last 2 years)
+          </p>
         </div>
         <span class="w-full sm:w-auto text-xs text-neutral-500 flex items-center gap-1.5 sm:flex-shrink-0">
           <lfx-icon
             name="arrow-down-wide-short"
             :size="12"
           />
-          Sorted by
-          <lfx-tooltip placement="top">
-            <span class="border-b border-dotted border-neutral-500 cursor-help">Technical influence</span>
-            <template #content>
-              <div class="flex flex-col gap-2 max-w-xs text-xs leading-relaxed">
-                <span
-                  >Technical influence examines code activities (commits, PRs) while ecosystem influence examines
-                  non-code collaboration activities (documentation, committees, meetings, events).</span
-                >
-                <span
-                  >Comparing a company's share of these activities to the project total indicates greater influence in
-                  the project.</span
-                >
-              </div>
-            </template>
-          </lfx-tooltip>
+          Sorted by Contributors
         </span>
       </div>
 
@@ -50,7 +37,7 @@ SPDX-License-Identifier: MIT
             <div class="flex-[2]">Project</div>
             <div class="flex-1">Technical influence</div>
             <div class="flex-1">Contributors</div>
-            <div class="flex-1">Activities</div>
+            <div class="flex-1">Contributions</div>
             <div class="w-5" />
           </div>
           <div
@@ -98,7 +85,7 @@ SPDX-License-Identifier: MIT
               </lfx-tooltip>
             </div>
             <div class="flex-1">Contributors</div>
-            <div class="flex-1">Activities</div>
+            <div class="flex-1">Contributions</div>
             <div class="w-5" />
           </div>
 

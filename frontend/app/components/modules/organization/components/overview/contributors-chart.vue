@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
         </div>
         <div>
           <h2 class="text-heading-5 font-bold font-secondary">Active Contributors</h2>
-          <p class="org-chart-description">by {{ orgDisplayName }} contributors over the years</p>
+          <p class="org-chart-description">by {{ orgDisplayName }} (last 10 years)</p>
         </div>
       </div>
       <div
