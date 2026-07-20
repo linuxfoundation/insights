@@ -3,16 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-collection-development-view :slug="slug as string" />
+  <lfx-collection-development-view />
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
 import { computed } from 'vue';
 import LfxCollectionDevelopmentView from '~/components/modules/collection/views/collection-development.vue';
-
-const route = useRoute();
-const { slug } = route.params;
 
 const title = computed(() => 'Collection Development Insights');
 const description = computed(

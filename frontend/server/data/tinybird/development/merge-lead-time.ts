@@ -30,23 +30,38 @@ export async function fetchMergeLeadTime(filter: MergeLeadTimeFilter): Promise<M
     fetchFromTinybird<TinybirdMergeLeadTimeData[]>(path, previousSummaryQuery),
   ]);
 
-  const currentValue = currentData.data[0].openedToMergedSeconds;
-  const previousValue = previousData.data[0].openedToMergedSeconds;
-  const currentToReviewAssigned = currentData.data[0].openedToReviewAssignedSeconds;
-  const previousToReviewAssigned = previousData.data[0].openedToReviewAssignedSeconds;
-  const currentToFirstReview = currentData.data[0].reviewAssignedToFirstReviewSeconds;
-  const previousToFirstReview = previousData.data[0].reviewAssignedToFirstReviewSeconds;
-  const currentToApproved = currentData.data[0].firstReviewToApprovedSeconds;
-  const previousToApproved = previousData.data[0].firstReviewToApprovedSeconds;
-  const currentToMerged = currentData.data[0].approvedToMergedSeconds;
-  const previousToMerged = previousData.data[0].approvedToMergedSeconds;
+  // Tinybird returns an empty data array when there are no merged PRs in scope (common for
+  // collection-scoped or low-activity requests). Guard the [0] access so each stage degrades to
+  // null instead of throwing on undefined[0] and dropping the whole widget response.
+  const current = currentData.data[0];
+  const previous = previousData.data[0];
+
+  const currentValue = current?.openedToMergedSeconds ?? null;
+  const previousValue = previous?.openedToMergedSeconds ?? null;
+  const currentToReviewAssigned = current?.openedToReviewAssignedSeconds ?? null;
+  const previousToReviewAssigned = previous?.openedToReviewAssignedSeconds ?? null;
+  const currentToFirstReview = current?.reviewAssignedToFirstReviewSeconds ?? null;
+  const previousToFirstReview = previous?.reviewAssignedToFirstReviewSeconds ?? null;
+  const currentToApproved = current?.firstReviewToApprovedSeconds ?? null;
+  const previousToApproved = previous?.firstReviewToApprovedSeconds ?? null;
+  const currentToMerged = current?.approvedToMergedSeconds ?? null;
+  const previousToMerged = previous?.approvedToMergedSeconds ?? null;
+
+  // Only meaningful when both periods have data; comparing against a null (no-data) period would
+  // be misleading, so treat those as neutral.
+  const changeType = (curr: number | null, prev: number | null): 'positive' | 'negative' =>
+    curr !== null && prev !== null && curr > prev ? 'positive' : 'negative';
 
   return {
     summary: {
       current: currentValue,
       previous: previousValue,
-      percentageChange: calculatePercentageChange(currentValue, previousValue),
-      changeValue: currentValue - previousValue,
+      percentageChange:
+        currentValue !== null && previousValue !== null
+          ? calculatePercentageChange(currentValue, previousValue)
+          : 0,
+      changeValue:
+        currentValue !== null && previousValue !== null ? currentValue - previousValue : 0,
       periodFrom: filter.startDate?.toISO() || '',
       periodTo: filter.endDate?.toISO() || '',
     },
@@ -54,22 +69,22 @@ export async function fetchMergeLeadTime(filter: MergeLeadTimeFilter): Promise<M
       pickup: {
         value: currentToReviewAssigned,
         unit: 'seconds',
-        changeType: currentToReviewAssigned > previousToReviewAssigned ? 'positive' : 'negative',
+        changeType: changeType(currentToReviewAssigned, previousToReviewAssigned),
       },
       review: {
         value: currentToFirstReview,
         unit: 'seconds',
-        changeType: currentToFirstReview > previousToFirstReview ? 'positive' : 'negative',
+        changeType: changeType(currentToFirstReview, previousToFirstReview),
       },
       accepted: {
-        value: currentData.data[0].firstReviewToApprovedSeconds,
+        value: currentToApproved,
         unit: 'seconds',
-        changeType: currentToApproved > previousToApproved ? 'positive' : 'negative',
+        changeType: changeType(currentToApproved, previousToApproved),
       },
       prMerged: {
-        value: currentData.data[0].approvedToMergedSeconds,
+        value: currentToMerged,
         unit: 'seconds',
-        changeType: currentToMerged > previousToMerged ? 'positive' : 'negative',
+        changeType: changeType(currentToMerged, previousToMerged),
       },
     },
   };

@@ -15,7 +15,13 @@ export interface BenchmarksQueryParams {
 
 // TODO: Refactor other services to follow this pattern
 class BenchmarksApiService {
-  fetchWidgetBenchmarks(params: ComputedRef<BenchmarksQueryParams>) {
+  // enabled defaults to true - benchmarks are a per-project health-score concept with no
+  // collection equivalent (health-score/overview routes are out of scope for collections),
+  // so collection pages pass enabled: false to skip this query entirely.
+  fetchWidgetBenchmarks(
+    params: ComputedRef<BenchmarksQueryParams>,
+    enabled: ComputedRef<boolean> | boolean = true,
+  ) {
     const queryKey = computed(() => [
       TanstackKey.HEALTH_SCORE,
       params.value.projectSlug,
@@ -35,6 +41,7 @@ class BenchmarksApiService {
     return useQuery<HealthScoreResults>({
       queryKey,
       queryFn,
+      enabled,
     });
   }
 

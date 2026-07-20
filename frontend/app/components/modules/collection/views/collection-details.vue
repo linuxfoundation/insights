@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
              the sibling body-table wrapper - otherwise the <thead> would only have its own
              one-row-tall table to stick within and would scroll away immediately. -->
         <div
+          ref="stickyHeaderEl"
           class="border-b border-t border-neutral-200 sticky bg-white z-10"
           :style="{ top: `${theadStickyOffset}px` }"
         >
@@ -201,7 +202,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch, watch, ref } from 'vue';
+import { computed, onServerPrefetch, nextTick, watch, ref } from 'vue';
 import { createError, showError, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
@@ -225,6 +226,7 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import useScroll from '~/components/shared/utils/scroll';
 
 const props = defineProps<{
   slug: string;
@@ -247,6 +249,8 @@ const {
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(props.slug, requestFetch),
   retry: false,
 });
+
+const { scrollTop } = useScroll();
 
 const currentCollection = computed<Collection | undefined>(() => collection.value);
 
@@ -278,7 +282,37 @@ const showsAggregateTabs = computed(() => collectionType.value === CollectionTyp
 // 152px w/ tabs, 76px without) — see IN-1191. Below lg, overflow-x-auto on the table's scroll
 // wrapper is still needed (table can exceed viewport width) and keeps position:sticky from
 // tracking page scroll regardless of this offset, so the original static value is kept there.
+const stickyHeaderEl = ref<HTMLElement | null>(null);
+// Live replacement for the hardcoded 220/144 sticky-offset constants: the value fed
+// to the thead's position:sticky `top` must be viewport-relative — the height of the
+// header stack (site header + collection header, +aggregate tabs for LF collections)
+// the thead needs to clear once that header goes fixed on scroll.
+//
+// Measured only while the header is in its EXPANDED state (scrollTop < 250, i.e. at
+// the top): there, getBoundingClientRect().top is exactly how far the element sits
+// below the viewport top = that header-stack height. We can't snapshot once at mount
+// because returning from a scrolled-down sibling tab mounts this view while the header
+// is still compact, capturing the shorter height. So re-measure whenever we're back at
+// the top AND the element exists. No + scrollY — we want the viewport-relative offset,
+// not the element's absolute document position.
+const stickyHeaderOffsetTop = ref(0);
+
+watch(
+  [stickyHeaderEl, scrollTop],
+  async ([el, top]) => {
+    if (!el || top >= 250) {
+      return;
+    }
+    await nextTick();
+    stickyHeaderOffsetTop.value = el.getBoundingClientRect().top;
+  },
+  { immediate: true },
+);
+
 const theadStickyOffset = computed(() => {
+  if (scrollTop.value < 250) {
+    return stickyHeaderOffsetTop.value;
+  }
   if (pageWidth.value > 0 && pageWidth.value < 1024) {
     return 56;
   }

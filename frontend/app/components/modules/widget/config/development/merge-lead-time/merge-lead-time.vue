@@ -107,12 +107,14 @@ const model = computed<WidgetModel>({
   set: (value: WidgetModel) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
 const params = computed<QueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: '', // Not needed for merge lead time
   repos: selectedReposValues.value,
   startDate: startDate.value,

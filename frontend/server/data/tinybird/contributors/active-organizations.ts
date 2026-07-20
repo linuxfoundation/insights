@@ -47,6 +47,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
 
   const currentSummaryQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
@@ -56,6 +57,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
 
   const previousSummaryQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
@@ -65,6 +67,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
 
   const dataQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     granularity: filter.granularity,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,

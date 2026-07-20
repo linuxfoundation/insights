@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const pressMentions: WidgetConfig = {
   key: 'pressMentions',
+  availableInCollection: false,
   name: 'Press mentions',
   description: (project) =>
     `Number of times that ${project.name} was mentioned in news and articles during` +

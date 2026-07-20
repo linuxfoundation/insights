@@ -89,6 +89,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { useQuery, type QueryFunction } from '@tanstack/vue-query';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
@@ -119,13 +120,16 @@ const props = withDefaults(
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 const defaultAllValue = 'all:all';
 
-const { project } = storeToRefs(useProjectStore());
+const { project, isCollectionScope } = storeToRefs(useProjectStore());
 
-const projectSlug = computed(() => project.value?.slug || '');
+const route = useRoute();
+const projectSlug = computed(() => (isCollectionScope.value ? '' : project.value?.slug || ''));
+const collectionSlug = computed(() => (isCollectionScope.value ? (route.params.slug as string) : ''));
 
 const queryKey = computed(() => [
   TanstackKey.ACTIVITY_TYPES,
   projectSlug.value,
+  collectionSlug.value,
   props.includeCollaborations,
   props.includeOtherContributions,
 ]);
@@ -133,28 +137,34 @@ const queryKey = computed(() => [
 const queryFn = computed<QueryFunction<ActivityTypesByPlatformResponse>>(() => {
   // Capture values at the time the function is created
   const slug = projectSlug.value;
+  const collection = collectionSlug.value;
   const includeCollabs = props.includeCollaborations ?? false;
   const includeOther = props.includeOtherContributions ?? false;
 
   return async () => {
-    if (!slug) {
+    if (!slug && !collection) {
       return {};
     }
 
     const params = new URLSearchParams();
+    if (slug) {
+      params.set('project', slug);
+    } else {
+      params.set('collectionSlug', collection);
+    }
     params.set('includeCodeContributions', String(true));
     params.set('includeCollaborations', String(includeCollabs));
     params.set('includeOtherContributions', String(includeOther));
 
     const result = await $fetch<ActivityTypesByPlatformResponse>(
-      `/api/project/${slug}/activity-types?${params.toString()}`,
+      `/api/widget/contributors/activity-types?${params.toString()}`,
     );
     return result;
   };
 });
 
 const enabledState = computed(() => {
-  const enabled = !!projectSlug.value;
+  const enabled = !!projectSlug.value || !!collectionSlug.value;
   return enabled;
 });
 
@@ -167,7 +177,14 @@ const queryResult = useQuery<ActivityTypesByPlatformResponse>({
 
 const { data: activityTypesData } = queryResult;
 
+// Collections have no single project's connectedPlatforms to filter against - a collection spans
+// many projects, each with their own connections. activityTypesData already only contains platforms
+// with actual activity data (see activityTypes_by_project.pipe's DESCRIPTION), so every platform key
+// it returns is trustworthy on its own in collection scope.
 const connected = computed(() => {
+  if (isCollectionScope.value) {
+    return Object.keys(activityTypesData.value || {});
+  }
   const platformList = (project.value?.connectedPlatforms || []).map(
     (platform) => platform.split('-').at(0) || platform,
   );

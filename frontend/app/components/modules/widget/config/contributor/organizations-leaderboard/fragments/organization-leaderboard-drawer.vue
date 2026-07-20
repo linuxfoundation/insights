@@ -67,7 +67,7 @@ import organizationsLeaderboard from '~/components/modules/widget/config/contrib
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const props = withDefaults(
   defineProps<{
@@ -97,7 +97,8 @@ const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
 
 const params = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,

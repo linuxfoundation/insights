@@ -7,6 +7,7 @@ import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/conf
 
 const retention: WidgetConfig = {
   key: 'retention',
+  availableInCollection: true,
   name: 'Quarterly contributor retention',
   description: () =>
     'Share of contributors and organizations that contributed continuously ' +

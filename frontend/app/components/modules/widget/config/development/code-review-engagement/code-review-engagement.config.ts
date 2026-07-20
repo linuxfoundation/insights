@@ -6,6 +6,7 @@ import { CodeReviewEngagementMetric } from '~~/types/development/requests.types'
 
 const codeReviewEngagement: WidgetConfig = {
   key: 'codeReviewEngagement',
+  availableInCollection: true,
   name: 'Code review engagement',
   description: () =>
     'Level of contributors involvement and participation in code review activities during the' +

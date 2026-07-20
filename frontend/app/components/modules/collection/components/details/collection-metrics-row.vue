@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       <template v-if="loading">
         <lfx-skeleton
           v-for="i in 3"
-          :key="i"
+          :key="`skeleton-${i}`"
           height="2rem"
           width="9rem"
           class="rounded-full"
@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
       </template>
       <template v-else>
         <lfx-chip
+          key="projects-repositories"
           type="bordered"
           size="small"
           class="flex items-center gap-1"
@@ -32,6 +33,7 @@ SPDX-License-Identifier: MIT
         </lfx-chip>
 
         <lfx-chip
+          key="contributors"
           type="bordered"
           size="small"
           class="flex items-center gap-1"
@@ -48,6 +50,7 @@ SPDX-License-Identifier: MIT
         </lfx-chip>
 
         <lfx-chip
+          key="avg-health"
           type="bordered"
           size="small"
           class="flex items-center gap-1"

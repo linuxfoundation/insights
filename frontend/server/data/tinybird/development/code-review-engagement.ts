@@ -16,6 +16,7 @@ import {
   ActiveContributorsTinybirdQuery,
   ActivitiesCountTinybirdQuery,
   ContributorsLeaderboardTinybirdQuery,
+  CollectionContributorsLeaderboardTinybirdQuery,
 } from '~~/server/data/tinybird/requests.types';
 
 const prParticipantsActivityTypes = [
@@ -75,6 +76,7 @@ async function getParticipantsData(
 
   const currentSummaryQuery: ActiveContributorsTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: prParticipantsActivityTypes,
     startDate: filter.startDate,
@@ -87,11 +89,10 @@ async function getParticipantsData(
     endDate: dates.previous.to,
   };
 
-  const dataQuery: ContributorsLeaderboardTinybirdQuery = {
-    ...currentSummaryQuery,
-    limit: 5,
-  };
-
+  // contributors_leaderboard.pipe is project-only - collectionSlug-scoped requests use the
+  // separate, performance-optimized collection_contributors_leaderboard pipe instead. See that
+  // pipe's DESCRIPTION for why a naive collectionSlug branch on the single-project pipe isn't
+  // used here (same reasoning as contributors-dependency.ts).
   const [currentSummary, previousSummary, codeReviewEngagementData] = await Promise.all([
     fetchFromTinybird<TinybirdActiveContributorsSummary>(
       '/v0/pipes/active_contributors.json',
@@ -101,10 +102,26 @@ async function getParticipantsData(
       '/v0/pipes/active_contributors.json',
       previousSummaryQuery,
     ),
-    fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
-      '/v0/pipes/contributors_leaderboard.json',
-      dataQuery,
-    ),
+    filter.collectionSlug
+      ? fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
+          '/v0/pipes/collection_contributors_leaderboard.json',
+          {
+            collectionSlug: filter.collectionSlug,
+            repos: filter.repos,
+            activity_types: prParticipantsActivityTypes,
+            startDate: filter.startDate,
+            endDate: filter.endDate,
+            limit: 5,
+          } satisfies CollectionContributorsLeaderboardTinybirdQuery,
+        )
+      : fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
+          '/v0/pipes/contributors_leaderboard.json',
+          {
+            ...currentSummaryQuery,
+            project: filter.project as string,
+            limit: 5,
+          } satisfies ContributorsLeaderboardTinybirdQuery,
+        ),
   ]);
 
   const currentCount = currentSummary.data[0]?.contributorCount || 0;
@@ -134,6 +151,7 @@ async function getCommentsData(filter: CodeReviewEngagementFilter): Promise<Code
 
   const currentSummaryQuery: ActivitiesCountTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: reviewCommentsActivityTypes,
     startDate: filter.startDate,
@@ -192,6 +210,7 @@ async function getReviewsData(filter: CodeReviewEngagementFilter): Promise<CodeR
 
   const currentSummaryQuery: ActivitiesCountTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: codeReviewsActivityTypes,
     startDate: filter.startDate,

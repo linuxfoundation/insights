@@ -11,22 +11,22 @@ export interface CollectionLinkConfig {
 
 export const lfCollectionAggregateLinks: CollectionLinkConfig[] = [
   { key: 'projects', icon: 'layer-group', label: 'Projects', routeName: LfxRoutes.COLLECTION },
-  // {
-  //   key: 'contributors',
-  //   icon: 'people-group',
-  //   label: 'Contributors',
-  //   routeName: LfxRoutes.COLLECTION_CONTRIBUTORS,
-  // },
-  // {
-  //   key: 'popularity',
-  //   icon: 'fire',
-  //   label: 'Popularity',
-  //   routeName: LfxRoutes.COLLECTION_POPULARITY,
-  // },
-  // {
-  //   key: 'development',
-  //   icon: 'code',
-  //   label: 'Development',
-  //   routeName: LfxRoutes.COLLECTION_DEVELOPMENT,
-  // },
+  {
+    key: 'contributors',
+    icon: 'people-group',
+    label: 'Contributors',
+    routeName: LfxRoutes.COLLECTION_CONTRIBUTORS,
+  },
+  {
+    key: 'popularity',
+    icon: 'fire',
+    label: 'Popularity',
+    routeName: LfxRoutes.COLLECTION_POPULARITY,
+  },
+  {
+    key: 'development',
+    icon: 'code',
+    label: 'Development',
+    routeName: LfxRoutes.COLLECTION_DEVELOPMENT,
+  },
 ];

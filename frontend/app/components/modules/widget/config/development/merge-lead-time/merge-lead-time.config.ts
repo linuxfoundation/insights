@@ -6,6 +6,7 @@ import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/conf
 
 const mergeLeadTime: WidgetConfig = {
   key: 'mergeLeadTime',
+  availableInCollection: true,
   name: 'Merge lead time',
   description: () =>
     'Average time taken for pull requests to be raised, reviewed, ' +

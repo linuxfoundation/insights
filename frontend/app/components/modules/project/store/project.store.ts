@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { DateTime } from 'luxon';
 import pluralize from 'pluralize';
@@ -50,6 +50,14 @@ export const defaultDateOption = lfxProjectDateOptions.find(
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
+  // Collection detail pages (/collection/details/[slug]/...) reuse this store for the
+  // date-range/granularity state widgets share, but have no single project's repos,
+  // repo groups, or widgets array to filter by - there's no per-project concept at all
+  // when scope is a whole collection. Every repo/archived-repo-dependent computed below
+  // short-circuits to a safe empty/false value in that case instead of trying to derive
+  // "the collection's repos" from a null project.
+  const isCollectionScope = computed(() => route.path.startsWith('/collection/details/'));
+
   const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
   const { timeRange, start, end } = queryParams.value;
 
@@ -59,6 +67,23 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const collaborationSet = ref<string[]>([]); // stores the widget names that have includeCollaborations set to true
+
+  // pages/project/[slug].vue never clears `project`/`collaborationSet` on unmount, so a
+  // client-side SPA navigation from a project page straight into collection scope would
+  // otherwise leave the previous project's data in the store. Every collection-derived
+  // computed below already short-circuits via isCollectionScope, but consumers that read
+  // `project`/`collaborationSet` directly (widget descriptions, defaultValue, embed/share)
+  // don't go through those guards - reset the raw refs at the scope boundary instead.
+  watch(
+    isCollectionScope,
+    (value) => {
+      if (value) {
+        project.value = null;
+        collaborationSet.value = [];
+      }
+    },
+    { immediate: true },
+  );
 
   // List of all project repositories
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
@@ -73,14 +98,20 @@ export const useProjectStore = defineStore('project', () => {
   const excludedRepos = computed<string[]>(() => project.value?.excludedRepositories || []);
 
   // Selected repositories from URL param 'repos' or single repo from route param 'name'
-  const selectedRepoSlugs = computed(() =>
-    route.params.name
+  const selectedRepoSlugs = computed(() => {
+    if (isCollectionScope.value) {
+      return [];
+    }
+    return route.params.name
       ? [route.params.name as string]
-      : (route.query.repos as string)?.split(',') || [],
-  );
+      : (route.query.repos as string)?.split(',') || [];
+  });
 
   // Selected repository Group
   const selectedRepositoryGroup = computed<ProjectRepositoryGroup | null>(() => {
+    if (isCollectionScope.value) {
+      return null;
+    }
     const groupSlug = (route.params.groupSlug as string | undefined) || route.query.repositoryGroup;
     if (!groupSlug || !projectRepositoryGroups.value.length) {
       return null;
@@ -90,6 +121,9 @@ export const useProjectStore = defineStore('project', () => {
 
   // If a repository group is selected, filter repos by that group, otherwise use selectedRepoSlugs
   const selectedRepositories = computed<ProjectRepository[]>(() => {
+    if (isCollectionScope.value) {
+      return [];
+    }
     if (selectedRepositoryGroup.value) {
       return projectRepos.value.filter((repo) =>
         selectedRepositoryGroup.value?.repositories.includes(repo.url),
@@ -113,12 +147,15 @@ export const useProjectStore = defineStore('project', () => {
       : calculateGranularity(startDate.value, endDate.value),
   );
 
-  // If all repos are archived or all selected repos are archived
+  // If all repos are archived or all selected repos are archived. Collections have no
+  // archived-repo concept, so this is always false there (guards the empty/empty edge
+  // case that would otherwise read as "all archived" when project is null).
   const allArchived = computed(
     () =>
-      archivedRepos.value.length === projectRepos.value.length ||
-      (!!selectedReposValues.value.length &&
-        selectedReposValues.value.every((repo) => archivedRepos.value.includes(repo))),
+      !isCollectionScope.value &&
+      (archivedRepos.value.length === projectRepos.value.length ||
+        (!!selectedReposValues.value.length &&
+          selectedReposValues.value.every((repo) => archivedRepos.value.includes(repo)))),
   );
 
   const isProjectArchived = computed(() => project.value?.status === 'archived');
@@ -146,6 +183,7 @@ export const useProjectStore = defineStore('project', () => {
   );
 
   return {
+    isCollectionScope,
     selectedTimeRangeKey,
     startDate,
     endDate,
