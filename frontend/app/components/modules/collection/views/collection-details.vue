@@ -283,23 +283,31 @@ const showsAggregateTabs = computed(() => collectionType.value === CollectionTyp
 // wrapper is still needed (table can exceed viewport width) and keeps position:sticky from
 // tracking page scroll regardless of this offset, so the original static value is kept there.
 const stickyHeaderEl = ref<HTMLElement | null>(null);
-// The header's absolute position in the document. The sticky wrapper only renders
-// once BOTH the collection header and the projects list have loaded (it's gated
-// behind `v-if="!isPending && flatData.length"`), so we measure the moment the
-// element itself mounts — keying off the collection query alone fired too early,
-// before the element existed, and read 0. Uses getBoundingClientRect + scrollY
-// rather than offsetTop so a positioned ancestor (the header's maintain-height
-// wrapper toggles position on scroll) can't skew the value. Used below the scroll
-// threshold instead of the fixed header-clearing offset.
+// Live replacement for the hardcoded 220/144 sticky-offset constants: the value fed
+// to the thead's position:sticky `top` must be viewport-relative — the height of the
+// header stack (site header + collection header, +aggregate tabs for LF collections)
+// the thead needs to clear once that header goes fixed on scroll.
+//
+// Measured only while the header is in its EXPANDED state (scrollTop < 250, i.e. at
+// the top): there, getBoundingClientRect().top is exactly how far the element sits
+// below the viewport top = that header-stack height. We can't snapshot once at mount
+// because returning from a scrolled-down sibling tab mounts this view while the header
+// is still compact, capturing the shorter height. So re-measure whenever we're back at
+// the top AND the element exists. No + scrollY — we want the viewport-relative offset,
+// not the element's absolute document position.
 const stickyHeaderOffsetTop = ref(0);
 
-watch(stickyHeaderEl, async (el) => {
-  if (!el) {
-    return;
-  }
-  await nextTick();
-  stickyHeaderOffsetTop.value = el.getBoundingClientRect().top + window.scrollY;
-});
+watch(
+  [stickyHeaderEl, scrollTop],
+  async ([el, top]) => {
+    if (!el || top >= 250) {
+      return;
+    }
+    await nextTick();
+    stickyHeaderOffsetTop.value = el.getBoundingClientRect().top;
+  },
+  { immediate: true },
+);
 
 const theadStickyOffset = computed(() => {
   if (scrollTop.value < 250) {
