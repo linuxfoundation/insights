@@ -27,6 +27,29 @@ My Collections is your personal hub for the collections you've created and the o
 - **My Created Collections** — a grid of your own collections. You will be able to make changes to the collection at any time.
 - **Liked Collections** — collections you've liked, separated by a labelled divider. Can include Curated, Community, or other users' collections.
 
+## Collection Detail
+
+Each collection has a detail page showing analytics data across all of its projects in one place.
+
+### Summary metrics
+
+The header shows three at-a-glance figures for the collection:
+
+- **Projects / Repositories** — total number of tracked items in the collection.
+- **Contributors** — total number of unique contributors across all projects.
+- **Avg. Health** — average [Health Score](/metrics/health-score/index.md) across onboarded projects, shown as a labelled category (Excellent, Healthy, Fair, Concerning, or Critical) alongside the numeric value.
+
+### Tabs
+
+The detail page is split into four tabs:
+
+- **Projects** — the full list of projects in the collection. Each row shows the project's Health Score category, contributor count, and badge achievements. Use the **Only Linux Foundation projects** toggle to narrow the list to LF-hosted projects only.
+- **Contributors** — contributor analytics aggregated across all projects in the collection, including active contributors, geographical distribution, and contributor leaderboard.
+- **Popularity** — popularity signals such as stars, forks, and downloads, aggregated across the collection.
+- **Development** — development activity such as commits, pull requests, and issues, aggregated across the collection.
+
+A date range selector is available on the Contributors, Popularity, and Development tabs and applies to all metrics shown on that tab.
+
 ## How to manage your own Collections
 
 You must be signed in to be able to manage Collections.
