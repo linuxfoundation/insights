@@ -4,17 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
-  <div
-    class="flex items-center w-full"
-    :class="item.slug ? 'cursor-pointer' : ''"
-  >
+  <div class="flex items-center w-full">
     <!-- Organization info -->
-    <component
-      :is="item.slug ? nuxtLink : 'div'"
-      :to="item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
-      class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
-      :class="item.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
-    >
+    <div class="flex-1 min-w-0 flex gap-3 items-center">
       <lfx-avatar
         :src="item.logoUrl"
         type="organization"
@@ -22,11 +14,13 @@ SPDX-License-Identifier: MIT
       />
       <p
         :title="item.name"
-        class="font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-full text-sm"
+        class="font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full text-sm"
+        :class="item.slug ? 'hover:underline cursor-pointer' : ''"
+        @click.prevent.stop="navigateToOrganization(item.slug)"
       >
         {{ item.name }}
       </p>
-    </component>
+    </div>
 
     <!-- Stats -->
     <div class="w-1/4 shrink-0">
@@ -38,19 +32,26 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { resolveComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
+const router = useRouter();
+
 defineProps<{
   item: Leaderboard;
   leaderboardConfig: LeaderboardConfig;
 }>();
 
-const nuxtLink = resolveComponent('NuxtLink');
+const navigateToOrganization = (slug: string) => {
+  if (!slug) {
+    return;
+  }
+  router.push({ name: LfxRoutes.ORGANIZATION, params: { orgSlug: slug } });
+};
 </script>
 
 <script lang="ts">
