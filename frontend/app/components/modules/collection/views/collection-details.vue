@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
              the sibling body-table wrapper - otherwise the <thead> would only have its own
              one-row-tall table to stick within and would scroll away immediately. -->
         <div
+          ref="stickyHeaderEl"
           class="border-b border-t border-neutral-200 sticky bg-white z-10"
           :style="{ top: `${theadStickyOffset}px` }"
         >
@@ -201,7 +202,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch, watch, ref } from 'vue';
+import { computed, onServerPrefetch, nextTick, watch, ref } from 'vue';
 import { createError, showError, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
@@ -225,6 +226,7 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import useScroll from '~/components/shared/utils/scroll';
 
 const props = defineProps<{
   slug: string;
@@ -247,6 +249,8 @@ const {
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(props.slug, requestFetch),
   retry: false,
 });
+
+const { scrollTop } = useScroll();
 
 const currentCollection = computed<Collection | undefined>(() => collection.value);
 
@@ -278,7 +282,29 @@ const showsAggregateTabs = computed(() => collectionType.value === CollectionTyp
 // 152px w/ tabs, 76px without) — see IN-1191. Below lg, overflow-x-auto on the table's scroll
 // wrapper is still needed (table can exceed viewport width) and keeps position:sticky from
 // tracking page scroll regardless of this offset, so the original static value is kept there.
+const stickyHeaderEl = ref<HTMLElement | null>(null);
+// The header's absolute position in the document. The sticky wrapper only renders
+// once BOTH the collection header and the projects list have loaded (it's gated
+// behind `v-if="!isPending && flatData.length"`), so we measure the moment the
+// element itself mounts — keying off the collection query alone fired too early,
+// before the element existed, and read 0. Uses getBoundingClientRect + scrollY
+// rather than offsetTop so a positioned ancestor (the header's maintain-height
+// wrapper toggles position on scroll) can't skew the value. Used below the scroll
+// threshold instead of the fixed header-clearing offset.
+const stickyHeaderOffsetTop = ref(0);
+
+watch(stickyHeaderEl, async (el) => {
+  if (!el) {
+    return;
+  }
+  await nextTick();
+  stickyHeaderOffsetTop.value = el.getBoundingClientRect().top + window.scrollY;
+});
+
 const theadStickyOffset = computed(() => {
+  if (scrollTop.value < 250) {
+    return stickyHeaderOffsetTop.value;
+  }
   if (pageWidth.value > 0 && pageWidth.value < 1024) {
     return 56;
   }

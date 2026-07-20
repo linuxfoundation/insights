@@ -3,15 +3,18 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div :style="headerBackgroundStyle">
+  <div
+    :style="headerBackgroundStyle"
+    class="z-50"
+  >
     <section
       class="container pt-3 md:pt-5 pb-3"
-      :class="scrollTop > 50 ? 'md:pb-5' : 'md:pb-12'"
+      :class="scrollTop > 250 ? 'md:pb-5' : 'md:pb-12'"
     >
       <!-- Mobile top row: back link + action icons -->
       <div
         class="flex md:hidden items-center justify-between transition-all"
-        :class="scrollTop > 50 ? 'mb-0' : 'mb-4'"
+        :class="scrollTop > 250 ? 'mb-0' : 'mb-4'"
       >
         <nuxt-link
           :to="{ name: collectionTab?.route }"
@@ -23,7 +26,7 @@ SPDX-License-Identifier: MIT
           />
           <span
             class="text-sm font-medium transition-all"
-            :class="scrollTop > 50 ? 'hidden' : 'block'"
+            :class="scrollTop > 250 ? 'hidden' : 'block'"
           >
             {{ collectionTab?.detailsLabel }}
           </span>
@@ -90,7 +93,7 @@ SPDX-License-Identifier: MIT
 
       <!-- Desktop back link (expanded state: its own row above the title) -->
       <div
-        v-if="scrollTop <= 50"
+        v-if="scrollTop <= 250"
         class="transition-all hidden md:block mb-6"
       >
         <nuxt-link
@@ -114,12 +117,12 @@ SPDX-License-Identifier: MIT
           <div
             class="flex-grow flex w-full"
             :class="
-              scrollTop > 50 ? 'flex-row gap-3 items-center' : 'flex-col md:flex-row md:items-stretch gap-3 md:gap-8'
+              scrollTop > 250 ? 'flex-row gap-3 items-center' : 'flex-col md:flex-row md:items-stretch gap-3 md:gap-8'
             "
           >
             <!-- Compact-only: back arrow inline with title, vertically centered -->
             <nuxt-link
-              v-if="scrollTop > 50"
+              v-if="scrollTop > 250"
               :to="{ name: collectionTab?.route }"
               class="hidden md:flex items-center shrink-0"
             >
@@ -132,7 +135,7 @@ SPDX-License-Identifier: MIT
             <div
               v-if="loading || props.collection?.logoUrl"
               class="shrink-0 flex items-center justify-start"
-              :class="scrollTop > 50 ? 'h-8 md:h-10' : 'h-12 md:h-30'"
+              :class="scrollTop > 250 ? 'h-8 md:h-10' : 'h-12 md:h-30'"
             >
               <img
                 v-if="props.collection?.logoUrl"
@@ -142,18 +145,18 @@ SPDX-License-Identifier: MIT
                 height="120"
                 fetchpriority="high"
                 decoding="async"
-                :class="scrollTop > 50 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 md:h-30 w-auto'"
+                :class="scrollTop > 250 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 md:h-30 w-auto'"
               />
               <lfx-skeleton
                 v-else
-                :class="scrollTop > 50 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 w-12 md:h-30 md:w-30'"
+                :class="scrollTop > 250 ? 'h-8 w-8 md:h-10 md:w-10' : 'h-12 w-12 md:h-30 md:w-30'"
                 class="rounded-md"
               />
             </div>
             <div class="w-full flex flex-col justify-center min-w-0">
               <!-- Mobile only: visibility badge above title for my-collections -->
               <div
-                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS && props.collection && scrollTop <= 50"
+                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS && props.collection && scrollTop <= 250"
                 class="flex md:hidden items-center gap-1.5 mb-2"
               >
                 <lfx-icon
@@ -172,13 +175,13 @@ SPDX-License-Identifier: MIT
                 v-if="loading"
                 width="80%"
                 class="rounded-sm"
-                :class="scrollTop > 50 ? 'h-6 md:h-9' : 'h-9 md:h-13'"
+                :class="scrollTop > 250 ? 'h-6 md:h-9' : 'h-9 md:h-13'"
               />
               <h1
                 v-else-if="props.collection"
                 class="font-secondary font-light transition-all text-neutral-900"
                 :class="
-                  scrollTop > 50
+                  scrollTop > 250
                     ? 'text-lg md:text-2xl md:leading-9 truncate'
                     : 'text-3xl md:text-4xl md:leading-[56px]'
                 "
@@ -194,7 +197,7 @@ SPDX-License-Identifier: MIT
             class="hidden md:flex transition-all ease-linear items-center gap-4 lg:w-auto shrink-0 mt-4 lg:mt-0"
           >
             <lfx-toggle
-              v-if="scrollTop > 50 && isProjectsTab"
+              v-if="scrollTop > 250 && isProjectsTab"
               v-model="isOnlyLFProjects"
             >
               Only Linux Foundation projects
@@ -227,7 +230,7 @@ SPDX-License-Identifier: MIT
                 class="!rounded-full shadow-sm"
               />
               <lfx-button
-                v-if="scrollTop <= 50"
+                v-if="scrollTop <= 250"
                 type="outline"
                 class="!rounded-full shadow-sm"
                 @click="handleShare"
@@ -272,7 +275,7 @@ SPDX-License-Identifier: MIT
         <!-- Loading placeholder keeps meta-row height reserved so data resolution doesn't reflow the page -->
         <div
           v-if="loading"
-          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3 md:mt-10'"
+          :class="scrollTop > 250 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-3 md:mt-10'"
           class="flex items-center gap-2 w-full transition-all ease-linear"
         >
           <lfx-skeleton
@@ -284,7 +287,7 @@ SPDX-License-Identifier: MIT
         <!-- Owner + project count + LF toggle (desktop only for toggle) -->
         <div
           v-if="!loading && props.collection"
-          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-2'"
+          :class="scrollTop > 250 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-2'"
           class="flex items-center gap-2 justify-between w-full flex-wrap transition-all ease-linear"
         >
           <div class="flex items-center gap-1 md:gap-2 flex-wrap">
@@ -319,7 +322,7 @@ SPDX-License-Identifier: MIT
 
         <!-- Description paragraph -->
         <div
-          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-1 md:mt-3'"
+          :class="scrollTop > 250 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-1 md:mt-3'"
           class="w-full transition-all ease-linear"
         >
           <div
@@ -348,7 +351,7 @@ SPDX-License-Identifier: MIT
         <!-- Aggregate metrics row + LF toggle (desktop only for toggle) -->
         <div
           v-if="showMetricsRow"
-          :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-10'"
+          :class="scrollTop > 250 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-10'"
           class="w-full flex items-center justify-between gap-2 flex-wrap transition-all ease-linear"
         >
           <lfx-collection-metrics-row
@@ -356,7 +359,7 @@ SPDX-License-Identifier: MIT
             :loading="props.metricsLoading"
           />
           <lfx-toggle
-            v-if="scrollTop <= 50 && isProjectsTab"
+            v-if="scrollTop <= 250 && isProjectsTab"
             v-model="isOnlyLFProjects"
             class="!hidden md:!flex"
           >
