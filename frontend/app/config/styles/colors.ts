@@ -114,8 +114,17 @@ export const lfxColors = {
   // Health-score tier colors — Figma-exact hexes, distinct from the generic positive/warning/negative
   // scale. TODO: Verify with Nuno whether these should be folded into an existing scale.
   health: {
+    excellent: '#00a76f',
     healthy: '#00bc7d',
+    fair: '#f79009',
     concerning: '#fe9a00',
     critical: '#fb2c36',
+  },
+  // Impact-score tier colors (Akrites methodology: foundational/major/moderate/minor).
+  impact: {
+    foundational: '#6938ef',
+    major: '#444ce7',
+    moderate: '#0ba5ec',
+    minor: '#98a2b3',
   },
 };
