@@ -154,6 +154,47 @@ SPDX-License-Identifier: MIT
         </p>
       </section>
 
+      <!-- Organizations -->
+      <div
+        v-if="tab === 'all' && props.organizations.length > 0"
+        class="pt-3 px-3 text-xs font-semibold leading-5 text-neutral-400"
+      >
+        Organizations
+      </div>
+      <section
+        v-if="tab === 'all' || (tab === 'organizations' && props.organizations.length > 0)"
+        class="flex flex-col gap-1"
+      >
+        <nuxt-link
+          v-for="organization of props.organizations"
+          :key="organization.slug"
+          :to="{ name: LfxRoutes.ORGANIZATION, params: { orgSlug: organization.slug } }"
+          class="px-3 py-2 rounded-md transition-all hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
+        >
+          <lfx-avatar
+            :src="organization.logo || ''"
+            size="xsmall"
+            type="organization"
+            class="!rounded-sm !outline-1"
+            :aria-label="organization.logo && organization.name"
+          />
+          {{ organization.name }}
+        </nuxt-link>
+      </section>
+      <section
+        v-if="tab === 'organizations' && props.organizations.length === 0"
+        class="px-3 py-12 flex flex-col items-center"
+      >
+        <lfx-icon
+          name="building"
+          :size="40"
+          class="text-neutral-300"
+        />
+        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">
+          We couldn’t find any organizations with that term
+        </p>
+      </section>
+
       <!-- No results -->
       <section
         v-if="tab === 'all' && noResult"
@@ -174,7 +215,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import type { SearchCollection, SearchProject, SearchRepository } from '~~/types/search';
+import type { SearchCollection, SearchOrganization, SearchProject, SearchRepository } from '~~/types/search';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -186,13 +227,17 @@ const props = defineProps<{
   projects: SearchProject[];
   repositories: SearchRepository[];
   collections: SearchCollection[];
+  organizations: SearchOrganization[];
 }>();
 
 const route = useRoute();
 
 const tab = ref('all');
 
-const noResult = computed(() => !props.projects.length && !props.repositories.length && !props.collections.length);
+const noResult = computed(
+  () =>
+    !props.projects.length && !props.repositories.length && !props.collections.length && !props.organizations.length,
+);
 
 const repositories = computed(() =>
   props.repositories.map((repository) => ({
@@ -222,6 +267,10 @@ const tabs = [
   {
     value: 'collections',
     label: 'Collections',
+  },
+  {
+    value: 'organizations',
+    label: 'Organizations',
   },
 ];
 </script>

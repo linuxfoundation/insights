@@ -209,7 +209,7 @@ class CollectionsApiService {
   async searchProjectsAndRepositories(query: string): Promise<SearchResults> {
     const sanitizedQuery = sanitizeSearchQuery(query);
     if (!sanitizedQuery) {
-      return { projects: [], repositories: [], collections: [] };
+      return { projects: [], repositories: [], collections: [], organizations: [] };
     }
 
     const res = await $fetch<SearchResults>('/api/search', {
