@@ -158,7 +158,7 @@ SPDX-License-Identifier: MIT
                   :allow-pass-through="true"
                 >
                   <a
-                    href="https://myorg.lfx.dev"
+                    href="https://app.lfx.dev/org/projects"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="no-underline"
