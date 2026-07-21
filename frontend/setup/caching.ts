@@ -3,6 +3,10 @@
 const longCache = 86400; // 1 day in seconds
 const shortCache = 3600; // 1 hour in seconds
 
+const redisUrl = process.env.NUXT_REDIS_URL || '';
+
+const cacheMountTtl = 60 * 60 * 24 * 3;
+
 // Production runs on node:24-slim (Debian, glibc) — only the linux-x64-gnu native
 // binary is ever loaded at runtime. Nitro's dependency tracer (nitropack >=2.13)
 // full-traces every @resvg/resvg-js-* platform package it finds (Windows/macOS/
@@ -75,8 +79,21 @@ export default {
     storage: {
       redis: {
         driver: 'redis',
-        url: process.env.NUXT_REDIS_URL || '',
+        url: redisUrl,
       },
+      // Nitro's default cache base (`/cache/**`) is unmounted, so it falls back to an
+      // in-memory driver that nuxt-og-image fills with rendered images and never evicts.
+      // Mounting it on Redis moves that store off the heap, with a ttl to bound it there.
+      ...(redisUrl
+        ? {
+            cache: {
+              driver: 'redis',
+              url: redisUrl,
+              base: 'nitro-cache',
+              ttl: cacheMountTtl,
+            },
+          }
+        : {}),
     },
     routeRules: {
       '/api/**': {
