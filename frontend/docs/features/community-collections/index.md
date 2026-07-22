@@ -27,6 +27,67 @@ My Collections is your personal hub for the collections you've created and the o
 - **My Created Collections** — a grid of your own collections. You will be able to make changes to the collection at any time.
 - **Liked Collections** — collections you've liked, separated by a labelled divider. Can include Curated, Community, or other users' collections.
 
+## Collection Detail Page
+
+Every collection detail page opens on the **Projects** tab. The header displays three summary metrics for the collection at a glance:
+
+- **Projects / Repositories** — the total number of projects and individual repositories included in the collection.
+- **Contributors** — the total number of unique contributors across all projects in the collection.
+- **Avg. Health** — the average LFX Health Score across all projects, labelled Excellent (80+), Healthy (60–79), Fair (40–59), Concerning (20–39), or Critical (below 20).
+
+### Projects tab
+
+The Projects tab lists all projects in the collection as a sortable table. Each row shows:
+
+- **Project** name (sortable alphabetically)
+- **Health Score** — the project's LFX Health Score
+- **Contributors** — contributor count (sortable)
+- **Contributor / Organization dependency** — concentration risk indicators
+- **Achievements** — earned badges
+
+An **Only LF projects** toggle lets you filter the list to Linux Foundation–hosted projects only.
+
+### Contributors, Popularity, and Development tabs
+
+**Curated Collections** (maintained by The Linux Foundation) offer three additional tabs that surface aggregated analytics across every project in the collection. These tabs are not available on Community Collections or My Collections.
+
+A **date range picker** in the tab bar scopes all widgets on that tab to a specific time window. A side navigation panel lets you jump directly to any individual widget.
+
+**Contributors** — contributor-focused metrics aggregated across the collection:
+
+- Contributors leaderboard
+- Organizations leaderboard
+- Active contributors
+- Active organizations
+- Contributor dependency
+- Organization dependency
+- Quarterly contributor retention
+- Geographical distribution
+
+**Popularity** — reach and adoption signals aggregated across the collection:
+
+- Stars
+- Forks
+- Search queries volume
+- Package downloads
+- Package dependency
+- Mailing lists messages
+
+**Development** — engineering health indicators aggregated across the collection:
+
+- Issues resolution
+- Commit activities
+- Pull requests
+- Active days
+- Contributions outside work hours
+- Merge lead time
+- Review time by pull request size
+- Code review engagement
+- Patchsets per review
+- Median time to close
+- Median time to review
+- Review efficiency
+
 ## How to manage your own Collections
 
 You must be signed in to be able to manage Collections.
