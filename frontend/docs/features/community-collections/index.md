@@ -27,6 +27,34 @@ My Collections is your personal hub for the collections you've created and the o
 - **My Created Collections** — a grid of your own collections. You will be able to make changes to the collection at any time.
 - **Liked Collections** — collections you've liked, separated by a labelled divider. Can include Curated, Community, or other users' collections.
 
+## Collection detail page
+
+Opening any collection takes you to its detail page. The header shows the collection name, logo, owner, last-updated date, and description, followed by a row of summary chips:
+
+- **Projects / Repositories** — total count of projects and repositories in the collection.
+- **Contributors** — unique contributor count across the collection.
+- **Avg. Health** — the collection's average health score, shown with a status label (Excellent, Healthy, Fair, Concerning, or Critical) alongside the numeric score.
+
+### Tabs on Curated Collections
+
+Curated Collections show a tab bar below the header with four views:
+
+- **Projects** — the list of every project in the collection. A **Only Linux Foundation projects** toggle limits the list to LF-hosted projects.
+- **Contributors** — aggregate contributor widgets across every project in the collection.
+- **Popularity** — aggregate popularity widgets across every project in the collection.
+- **Development** — aggregate development-activity widgets across every project in the collection.
+
+The Contributors, Popularity, and Development tabs include a date range picker that scopes every widget on the tab to the selected range. The picker and the aggregate tabs are exclusive to Curated Collections — Community Collections and My Collections detail pages show only the Projects list.
+
+### Actions on the detail page
+
+The action buttons shown in the header depend on the collection type:
+
+- **Curated** and **Community** collections show **Duplicate**, **Like**, and **Share**.
+- **My Collections** show **Edit**, **Delete**, and **Share**.
+
+Duplicate and Like require you to be signed in.
+
 ## How to manage your own Collections
 
 You must be signed in to be able to manage Collections.
