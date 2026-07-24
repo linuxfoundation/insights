@@ -35,6 +35,7 @@ git sparse-checkout set \
   /services/libs/audit-logs \
   /services/libs/data-access-layer \
   /services/libs/integrations \
+  /services/libs/nango \
   /services/libs/slack \
   /services/libs/questdb \
   /services/libs/queue \
