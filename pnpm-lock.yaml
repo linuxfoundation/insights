@@ -820,6 +820,37 @@ importers:
         specifier: ^5.6.3
         version: 5.8.3
 
+  submodules/crowd.dev/services/libs/nango:
+    dependencies:
+      '@crowd/common':
+        specifier: workspace:*
+        version: link:../common
+      '@crowd/logging':
+        specifier: workspace:*
+        version: link:../logging
+      '@crowd/types':
+        specifier: workspace:*
+        version: link:../types
+      '@nangohq/frontend':
+        specifier: ^0.52.4
+        version: 0.52.5
+      '@nangohq/node':
+        specifier: ^0.69.22
+        version: 0.69.50
+      '@nangohq/types':
+        specifier: ^0.69.22
+        version: 0.69.50
+      axios:
+        specifier: ^1.8.4
+        version: 1.15.0
+    devDependencies:
+      '@types/node':
+        specifier: ^18.16.3
+        version: 18.19.110
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   submodules/crowd.dev/services/libs/opensearch:
     dependencies:
       '@crowd/common':
@@ -3128,6 +3159,16 @@ packages:
     peerDependenciesMeta:
       '@cfworker/json-schema':
         optional: true
+
+  '@nangohq/frontend@0.52.5':
+    resolution: {integrity: sha512-KQ5Rc91AShd8pYHmHs+Egsroqei5qaX5z+/qAuBku7uQIr96bfkwtTaJkhYf8my7XyxcPExDq0HKXavrhoKOHA==}
+
+  '@nangohq/node@0.69.50':
+    resolution: {integrity: sha512-GoS/v5n7QijV5gHUG21BNp4I9Z4lBoLpgxTnXs3V6mRzgyQcPiY5PSa9DvPfuVbFyw9dey6mzsI2LxOqJd+1gA==}
+    engines: {node: '>=20.0'}
+
+  '@nangohq/types@0.69.50':
+    resolution: {integrity: sha512-V4cswmGnienq/oydwdUMSgdAb4RDAt6WOy6G+DtFywtN3GI5IzneIrgBew04m1fcN/cut+pimD7bTB6WdbJiNg==}
 
   '@napi-rs/wasm-runtime@0.2.10':
     resolution: {integrity: sha512-bCsCyeZEwVErsGmyPNSzwfwFn4OdxBj0mmv6hOFucB/k81Ojdu68RbZdxYsRQUPc9l6SU5F/cG+bXgWs3oUgsQ==}
@@ -11953,6 +11994,10 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
+  type-fest@4.41.0:
+    resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
+    engines: {node: '>=16'}
+
   type-fest@5.2.0:
     resolution: {integrity: sha512-xxCJm+Bckc6kQBknN7i9fnP/xobQRsRQxR01CztFkp/h++yfVxUUcmMgfR2HttJx/dpWjS9ubVuyspJv24Q9DA==}
     engines: {node: '>=20'}
@@ -15848,6 +15893,23 @@ snapshots:
       zod-to-json-schema: 3.25.1(zod@3.25.76)
     transitivePeerDependencies:
       - supports-color
+
+  '@nangohq/frontend@0.52.5': {}
+
+  '@nangohq/node@0.69.50':
+    dependencies:
+      '@nangohq/types': 0.69.50
+      axios: 1.15.0
+    transitivePeerDependencies:
+      - debug
+
+  '@nangohq/types@0.69.50':
+    dependencies:
+      axios: 1.15.0
+      json-schema: 0.4.0
+      type-fest: 4.41.0
+    transitivePeerDependencies:
+      - debug
 
   '@napi-rs/wasm-runtime@0.2.10':
     dependencies:
@@ -20244,7 +20306,7 @@ snapshots:
 
   axios@0.21.4:
     dependencies:
-      follow-redirects: 1.15.9
+      follow-redirects: 1.16.0
     transitivePeerDependencies:
       - debug
 
@@ -20263,7 +20325,6 @@ snapshots:
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
-    optional: true
 
   axios@1.9.0:
     dependencies:
@@ -22299,8 +22360,7 @@ snapshots:
 
   follow-redirects@1.15.9: {}
 
-  follow-redirects@1.16.0:
-    optional: true
+  follow-redirects@1.16.0: {}
 
   for-each@0.3.5:
     dependencies:
@@ -25281,8 +25341,7 @@ snapshots:
 
   proxy-from-env@1.1.0: {}
 
-  proxy-from-env@2.1.0:
-    optional: true
+  proxy-from-env@2.1.0: {}
 
   pstree.remy@1.1.8: {}
 
@@ -26126,7 +26185,7 @@ snapshots:
       asn1.js: 5.4.1
       asn1.js-rfc2560: 5.0.1(asn1.js@5.4.1)
       asn1.js-rfc5280: 3.0.0
-      axios: 1.13.4
+      axios: 1.15.0
       big-integer: 1.6.52
       bignumber.js: 9.3.0
       bn.js: 5.2.2
@@ -26737,6 +26796,8 @@ snapshots:
   type-fest@0.8.1: {}
 
   type-fest@2.19.0: {}
+
+  type-fest@4.41.0: {}
 
   type-fest@5.2.0:
     dependencies:
