@@ -139,6 +139,11 @@ export interface ProjectInsightsTinybird {
   forksPrevious365Days: number;
   activeContributorsPrevious365Days: number;
   activeOrganizationsPrevious365Days: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
 }
 
 export interface ProjectInsights {
@@ -173,4 +178,9 @@ export interface ProjectInsights {
   forksPrevious365Days: number;
   activeContributorsPrevious365Days: number;
   activeOrganizationsPrevious365Days: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
 }

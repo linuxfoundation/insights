@@ -25,13 +25,15 @@ SPDX-License-Identifier: MIT
           class="border-b border-t border-neutral-200 sticky bg-white z-10"
           :style="{ top: `${theadStickyOffset}px` }"
         >
-          <table class="w-full min-w-[60rem] [table-layout:fixed] container">
+          <table class="w-full min-w-[69rem] [table-layout:fixed] container">
             <colgroup>
-              <col class="w-3/12" />
-              <col class="w-2/12" />
-              <col class="w-2/12" />
-              <col class="w-3/12" />
-              <col class="w-2/12" />
+              <col class="w-[16rem]" />
+              <col class="w-[8rem]" />
+              <col class="w-[9rem]" />
+              <col class="w-[9rem]" />
+              <col class="w-[7rem]" />
+              <col class="w-[12rem]" />
+              <col class="w-[8rem]" />
             </colgroup>
             <thead class="text-neutral-500 text-xs font-semibold container">
               <tr>
@@ -48,7 +50,9 @@ SPDX-License-Identifier: MIT
                     />
                   </span>
                 </th>
+                <th class="py-5 px-2 text-left whitespace-nowrap font-semibold">Lifecycle</th>
                 <th class="py-5 px-2 text-left whitespace-nowrap font-semibold">Health Score</th>
+                <th class="py-5 px-2 text-left whitespace-nowrap font-semibold">Impact</th>
                 <th
                   class="py-5 px-2 text-left whitespace-nowrap cursor-pointer group font-semibold"
                   @click="handleSort('contributorCount')"
@@ -69,13 +73,15 @@ SPDX-License-Identifier: MIT
           </table>
         </div>
         <div class="!bg-neutral-50">
-          <table class="w-full min-w-[60rem] border-collapse [table-layout:fixed] container">
+          <table class="w-full min-w-[69rem] border-collapse [table-layout:fixed] container">
             <colgroup>
-              <col class="w-3/12" />
-              <col class="w-2/12" />
-              <col class="w-2/12" />
-              <col class="w-3/12" />
-              <col class="w-2/12" />
+              <col class="w-[16rem]" />
+              <col class="w-[8rem]" />
+              <col class="w-[9rem]" />
+              <col class="w-[9rem]" />
+              <col class="w-[7rem]" />
+              <col class="w-[12rem]" />
+              <col class="w-[8rem]" />
             </colgroup>
             <tbody>
               <lfx-collection-project-item
