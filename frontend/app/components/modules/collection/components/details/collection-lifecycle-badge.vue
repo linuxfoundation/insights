@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-chip
-    v-if="!props.lifecycleLabel || props.lifecycleLabel.toLowerCase() === 'unavailable'"
+    v-if="!props.lifecycleLabel"
     type="bordered"
     size="small"
   >
