@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
     height="900px"
     class="!justify-center"
     content-class="!h-full !overflow-hidden"
+    :close-function="confirmClose"
   >
     <div class="flex h-full">
       <lf-security-generate-yaml-sidebar />
@@ -21,7 +22,7 @@ SPDX-License-Identifier: MIT
             <h1 class="text-2xl font-secondary font-bold text-neutral-900 leading-8">Generate YAML security file</h1>
             <lfx-icon-button
               icon="close"
-              @click="isModalOpen = false"
+              @click="handleClose"
             />
           </div>
           <div
@@ -130,7 +131,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, onBeforeUnmount, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -173,6 +174,37 @@ const { showToast } = useToastService();
 const type = ref('');
 const step = ref(-1);
 const form = ref({});
+
+const hasUnsavedChanges = computed(() => !!type.value);
+
+const confirmClose = (): boolean => {
+  if (!hasUnsavedChanges.value) return true;
+  return window.confirm('You have unsaved changes. Are you sure you want to close? All progress will be lost.');
+};
+
+const handleClose = () => {
+  if (confirmClose()) {
+    isModalOpen.value = false;
+  }
+};
+
+const onBeforeUnload = (event: BeforeUnloadEvent) => {
+  if (hasUnsavedChanges.value) {
+    event.preventDefault();
+  }
+};
+
+watch(hasUnsavedChanges, (dirty) => {
+  if (dirty) {
+    window.addEventListener('beforeunload', onBeforeUnload);
+  } else {
+    window.removeEventListener('beforeunload', onBeforeUnload);
+  }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', onBeforeUnload);
+});
 
 const copyToClipboard = async () => {
   if (navigator.clipboard) {
