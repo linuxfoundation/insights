@@ -4,7 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section :class="props.snapshot ? 'mt-2' : 'mt-5'">
-    <div :class="props.snapshot ? 'mb-5' : 'mb-6'">
+    <div
+      v-if="!isCollectionScope"
+      :class="props.snapshot ? 'mb-5' : 'mb-6'"
+    >
       <lfx-activities-dropdown
         v-model="model.metric"
         full-width
@@ -58,6 +61,7 @@ import type { ContributorDependency } from '~~/types/contributors/responses.type
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
@@ -90,11 +94,27 @@ const model = computed<ContributorDependencyModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, selectedTimeRangeKey, startDate, endDate, selectedReposValues } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
+
+// Maps the picker's dateOptKeys to the presetKey values materialized by
+// collection_contributor_dependency_copy_<presetKey>.pipe (crowd.dev/services/libs/tinybird) -
+// most keys already match; only these three differ in casing/pluralization.
+const presetKeyByDateOptKey: Partial<Record<string, string>> = {
+  [dateOptKeys.previous5Year]: 'previous5years',
+  [dateOptKeys.previous10Year]: 'previous10years',
+  [dateOptKeys.alltime]: 'allTime',
+};
+
+// Only collectionSlug-scoped requests have a precomputed path (collection_contributor_dependency
+// .pipe) - "Custom" is unreachable here since date-range-picker.vue hides it for collection pages.
+const presetKey = computed(() =>
+  isCollectionScope.value ? presetKeyByDateOptKey[selectedTimeRangeKey.value] || selectedTimeRangeKey.value : undefined,
+);
 
 const params = computed<LeaderboardQueryParams>(() => ({
   projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
@@ -105,6 +125,7 @@ const params = computed<LeaderboardQueryParams>(() => ({
   startDate: startDate.value,
   endDate: endDate.value,
   includeCollaborations: model.value.includeCollaborations,
+  presetKey: presetKey.value,
 }));
 
 const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchContributorDependency(params);
