@@ -116,14 +116,18 @@ const presetKey = computed(() =>
   isCollectionScope.value ? presetKeyByDateOptKey[selectedTimeRangeKey.value] || selectedTimeRangeKey.value : undefined,
 );
 
+// startDate/endDate are omitted whenever presetKey is set - the pipe's precomputed path keys
+// on presetKey alone, and its routing guard requires startDate/endDate to be absent (see
+// collection_contributor_dependency.pipe's DESCRIPTION); sending both would always defeat the
+// guard and force the live path.
 const params = computed<LeaderboardQueryParams>(() => ({
   projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
   collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,
-  startDate: startDate.value,
-  endDate: endDate.value,
+  startDate: presetKey.value ? undefined : startDate.value,
+  endDate: presetKey.value ? undefined : endDate.value,
   includeCollaborations: model.value.includeCollaborations,
   presetKey: presetKey.value,
 }));

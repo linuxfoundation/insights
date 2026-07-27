@@ -35,12 +35,13 @@ export async function fetchContributorDependency(
         fetchCollectionContributorsLeaderboard({
           collectionSlug: filter.collectionSlug,
           repos: filter.repos,
-          startDate: filter.startDate,
-          endDate: filter.endDate,
+          startDate: filter.presetKey ? undefined : filter.startDate,
+          endDate: filter.presetKey ? undefined : filter.endDate,
           platform: filter.platform,
           activity_type: filter.activity_type,
           includeCollaborations: filter.includeCollaborations,
           limit: 5,
+          presetKey: filter.platform || filter.activity_type ? undefined : filter.presetKey,
         } satisfies CollectionContributorsLeaderboardFilter),
       ])
     : await Promise.all([

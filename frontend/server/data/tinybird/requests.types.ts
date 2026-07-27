@@ -49,6 +49,7 @@ export type CollectionContributorsLeaderboardTinybirdQuery = {
   count?: boolean;
   startDate?: DateTime;
   endDate?: DateTime;
+  presetKey?: string;
 };
 
 export type OrganizationsLeaderboardTinybirdQuery = TinybirdScope & {

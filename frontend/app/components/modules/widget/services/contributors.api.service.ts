@@ -52,6 +52,7 @@ class ContributorsApiService {
       params.value.startDate,
       params.value.endDate,
       params.value.includeCollaborations,
+      params.value.presetKey,
     ]);
     const queryFn = computed<QueryFunction<ContributorLeaderboard>>(() =>
       this.contributorLeaderboardQueryFn(() => ({
@@ -63,6 +64,7 @@ class ContributorsApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
         includeCollaborations: params.value.includeCollaborations,
+        presetKey: params.value.presetKey,
       })),
     );
 
@@ -90,6 +92,7 @@ class ContributorsApiService {
       startDate,
       endDate,
       includeCollaborations,
+      presetKey,
     } = query();
     return async (context) => {
       const pageParam = (context.pageParam || 0) as number;
@@ -106,6 +109,7 @@ class ContributorsApiService {
           offset: pageParam,
           limit: 10,
           includeCollaborations,
+          presetKey,
         },
       });
     };
