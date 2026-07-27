@@ -56,6 +56,10 @@ export type CollectionContributorsLeaderboardFilter = {
   endDate?: DateTime;
   limit?: number;
   offset?: number;
+  // One of the 8 presetKey values collection_contributors_leaderboard_copy_<presetKey>.pipe
+  // materializes (crowd.dev/services/libs/tinybird) - routes to the precomputed path instead of
+  // the live GROUP BY.
+  presetKey?: string;
 };
 
 export type OrganizationsLeaderboardFilter = DefaultFilter & {
