@@ -23,7 +23,6 @@ export interface ContributorQueryParams {
   endDate?: string | null;
   granularity?: string;
   includeCollaborations?: boolean;
-  presetKey?: string;
 }
 
 export interface LeaderboardQueryParams extends ContributorQueryParams {
@@ -304,7 +303,6 @@ class ContributorsApiService {
       params.value.startDate,
       params.value.endDate,
       params.value.includeCollaborations,
-      params.value.presetKey,
     ]);
     const queryFn = computed<QueryFunction<ContributorDependency>>(() =>
       this.contributorDependencyQueryFn(() => ({
@@ -316,7 +314,6 @@ class ContributorsApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
         includeCollaborations: params.value.includeCollaborations,
-        presetKey: params.value.presetKey,
       })),
     );
 
@@ -338,7 +335,6 @@ class ContributorsApiService {
       startDate,
       endDate,
       includeCollaborations,
-      presetKey,
     } = query();
     return async () => {
       return await $fetch(`/api/widget/contributors/contributor-dependency`, {
@@ -351,7 +347,6 @@ class ContributorsApiService {
           startDate,
           endDate,
           includeCollaborations,
-          presetKey,
         },
       });
     };

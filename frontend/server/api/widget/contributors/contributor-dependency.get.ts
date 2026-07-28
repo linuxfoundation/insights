@@ -56,7 +56,6 @@ export default defineEventHandler(async (event) => {
     repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
-    presetKey: query.presetKey ? (query.presetKey as string) : undefined,
   };
 
   const dataSource = createDataSource();

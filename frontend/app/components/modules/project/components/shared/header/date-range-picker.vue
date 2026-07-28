@@ -100,7 +100,6 @@ SPDX-License-Identifier: MIT
       </lfx-dropdown-item>
 
       <lfx-dropdown-item
-        v-if="!isCollectionScope"
         value="custom"
         label="Custom"
         :checkmark-before="true"
@@ -141,7 +140,7 @@ import { useQueryParam } from '~/components/shared/utils/query-param';
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import useResponsive from '~/components/shared/utils/responsive';
 
-const { isCollectionScope, selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore());
+const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore());
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
