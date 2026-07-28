@@ -4,9 +4,13 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="flex gap-1 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mb-5">
+    <div
+      v-if="hasGitHub"
+      class="flex gap-1 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mb-5"
+    >
       <lfx-icon
         class="pt-0.5"
+        aria-hidden="true"
         name="info-circle"
         :size="14"
       />
@@ -108,8 +112,19 @@ const model = computed<StarsModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
-  storeToRefs(useProjectStore());
+const {
+  isCollectionScope,
+  startDate,
+  endDate,
+  selectedReposValues,
+  selectedTimeRangeKey,
+  customRangeGranularity,
+  project,
+} = storeToRefs(useProjectStore());
+
+const hasGitHub = computed(
+  () => project.value?.connectedPlatforms?.some((p) => p.toLowerCase().includes('github')) ?? false,
+);
 
 const route = useRoute();
 
