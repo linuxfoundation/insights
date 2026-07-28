@@ -109,19 +109,22 @@ describe('Contributors Dependency Data Source', () => {
 
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
-      '/v0/pipes/collection_contributor_dependency.json',
+      '/v0/pipes/contributor_dependency.json',
       filter,
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
-      '/v0/pipes/collection_contributors_leaderboard.json',
+      '/v0/pipes/contributors_leaderboard.json',
       {
+        project: undefined,
         collectionSlug: filter.collectionSlug,
         repos: undefined,
         startDate: filter.startDate,
         endDate: filter.endDate,
         platform: undefined,
         activity_type: undefined,
+        activity_types: undefined,
+        includeCodeContributions: undefined,
         includeCollaborations: filter.includeCollaborations,
         limit: 5,
       },
