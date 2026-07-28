@@ -56,10 +56,6 @@ export type CollectionContributorsLeaderboardFilter = {
   endDate?: DateTime;
   limit?: number;
   offset?: number;
-  // One of the 8 presetKey values collection_contributors_leaderboard_copy_<presetKey>.pipe
-  // materializes (crowd.dev/services/libs/tinybird) - routes to the precomputed path instead of
-  // the live GROUP BY.
-  presetKey?: string;
 };
 
 export type OrganizationsLeaderboardFilter = DefaultFilter & {
@@ -78,11 +74,6 @@ export type ContributorDependencyFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   limit?: number;
-  // One of the 8 presetKey values collection_contributor_dependency_copy_<presetKey>.pipe
-  // materializes (crowd.dev/services/libs/tinybird) - routes collectionSlug-scoped requests to
-  // the precomputed path instead of the live GROUP BY. Project-scoped requests ignore this field
-  // (contributor_dependency.pipe has no precomputed path).
-  presetKey?: string;
 };
 
 export type OrganizationDependencyFilter = DefaultFilter & {
