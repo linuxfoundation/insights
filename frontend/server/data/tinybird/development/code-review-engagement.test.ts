@@ -279,7 +279,7 @@ describe('Code Review Engagement Data Source', () => {
     ],
   ])('should fetch code review engagement data with correct parameters', testCodeReviewEngagement);
 
-  test('should fetch collection-scoped PR participants data via collection_contributors_leaderboard', async () => {
+  test('should fetch collection-scoped PR participants data via contributors_leaderboard', async () => {
     const { fetchCodeReviewEngagement } =
       await import('~~/server/data/tinybird/development/code-review-engagement');
 
@@ -316,11 +316,7 @@ describe('Code Review Engagement Data Source', () => {
       endDate: DateTime.utc(2024, 3, 19),
     };
     const expectedDataQuery = {
-      collectionSlug: filter.collectionSlug,
-      repos: filter.repos,
-      activity_types: expectedPRParticipantsActivityTypes,
-      startDate: filter.startDate,
-      endDate: filter.endDate,
+      ...expectedCurrentSummaryQuery,
       limit: 5,
     };
 
@@ -336,7 +332,7 @@ describe('Code Review Engagement Data Source', () => {
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       3,
-      '/v0/pipes/collection_contributors_leaderboard.json',
+      '/v0/pipes/contributors_leaderboard.json',
       expectedDataQuery,
     );
 
