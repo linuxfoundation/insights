@@ -62,7 +62,6 @@ import LfxContributorsTable from '~/components/modules/widget/components/contrib
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
 import { Widget } from '~/components/modules/widget/types/widget';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
 interface ContributorLeaderboardModel extends WidgetModel {
   metric: string;
@@ -83,42 +82,22 @@ const model = computed<ContributorLeaderboardModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { isCollectionScope, selectedTimeRangeKey, startDate, endDate, selectedReposValues } =
-  storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 const platform = computed(() => model.value.metric?.split(':')[0]);
 const activityType = computed(() => model.value.metric?.split(':')[1]);
 const isDrawerOpened = ref(false);
 
-// Maps the picker's dateOptKeys to the presetKey values materialized by
-// collection_contributors_leaderboard_copy_<presetKey>.pipe (crowd.dev/services/libs/tinybird) -
-// most keys already match; only these three differ in casing/pluralization.
-const presetKeyByDateOptKey: Partial<Record<string, string>> = {
-  [dateOptKeys.previous5Year]: 'previous5years',
-  [dateOptKeys.previous10Year]: 'previous10years',
-  [dateOptKeys.alltime]: 'allTime',
-};
-
-// Only collectionSlug-scoped requests have a precomputed path (collection_contributors_leaderboard
-// .pipe) - "Custom" is unreachable here since date-range-picker.vue hides it for collection pages.
-const presetKey = computed(() =>
-  isCollectionScope.value ? presetKeyByDateOptKey[selectedTimeRangeKey.value] || selectedTimeRangeKey.value : undefined,
-);
-
-// startDate/endDate are omitted whenever presetKey is set - the pipe's precomputed path keys
-// on presetKey alone and ignores startDate/endDate, so there's no need to send them (and doing
-// so would be redundant with what presetKey already encodes).
 const params = computed(() => ({
   projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
   collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,
-  startDate: presetKey.value ? undefined : startDate.value,
-  endDate: presetKey.value ? undefined : endDate.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
   includeCollaborations: model.value.includeCollaborations,
-  presetKey: presetKey.value,
 }));
 
 const { data, isSuccess, isError, status } = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);

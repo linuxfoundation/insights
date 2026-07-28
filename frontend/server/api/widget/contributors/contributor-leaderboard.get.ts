@@ -63,18 +63,16 @@ export default defineEventHandler(async (event) => {
   const dataSource = createDataSource();
 
   if (scope.collectionSlug) {
-    const presetKey = query.presetKey ? (query.presetKey as string) : undefined;
     const filter: CollectionContributorsLeaderboardFilter = {
       collectionSlug: scope.collectionSlug,
       platform,
       activity_type,
       includeCollaborations,
       repos,
-      startDate: presetKey ? undefined : startDate,
-      endDate: presetKey ? undefined : endDate,
+      startDate,
+      endDate,
       limit,
       offset,
-      presetKey,
     };
     return await dataSource.fetchCollectionContributorsLeaderboard(filter);
   }

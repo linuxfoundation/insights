@@ -28,7 +28,6 @@ export async function fetchCollectionContributorsLeaderboard(
     offset: filter.offset,
     startDate: filter.startDate,
     endDate: filter.endDate,
-    presetKey: filter.presetKey,
   };
 
   const countQuery: CollectionContributorsLeaderboardTinybirdQuery = {
@@ -40,7 +39,6 @@ export async function fetchCollectionContributorsLeaderboard(
     repos: filter.repos,
     startDate: filter.startDate,
     endDate: filter.endDate,
-    presetKey: filter.presetKey,
     count: true,
   };
 
