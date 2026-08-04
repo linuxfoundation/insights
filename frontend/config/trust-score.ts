@@ -85,6 +85,17 @@ export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Confi
   return healthScoreV2Config.unavailable;
 };
 
+// Percentage-of-max thresholds mirroring the excellent/healthy vs fair/concerning vs critical
+// bands used for healthLabel elsewhere (see collection-health-score-pill.vue), applied here to a
+// per-category percentage since categories have no backend-provided label of their own.
+export const getHealthScorePercentColor = (
+  percent: number,
+): 'positive' | 'warning' | 'negative' => {
+  if (percent >= 60) return 'positive';
+  if (percent >= 20) return 'warning';
+  return 'negative';
+};
+
 // Impact labels come from project_insights_copy.pipe's impactLabel multiIf: foundational (>=85),
 // major (>=60), moderate (>=30), minor (below).
 export const impactLabelConfig: Record<string, string> = {

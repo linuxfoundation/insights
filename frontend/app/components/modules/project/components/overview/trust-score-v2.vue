@@ -68,19 +68,6 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
 
-        <div
-          v-if="isRepoSelected"
-          class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 mt-4 bg-brand-50 rounded-full px-1.5"
-        >
-          <lfx-icon
-            name="info-circle"
-            :size="12"
-            type="solid"
-            class="text-brand-600"
-          />
-          Select "All repositories" in order to get the aggregated Health Score
-        </div>
-
         <hr class="border-neutral-100 my-6" />
 
         <div class="flex flex-row items-center justify-between flex-wrap gap-3">
@@ -136,7 +123,6 @@ import { links } from '~/config/links';
 import { getHealthScoreV2Config, getImpactLabelDisplay, getLifecycleLabelConfig } from '~~/config/trust-score';
 import { lfxColors } from '~/config/styles/colors';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';

@@ -5,9 +5,11 @@ SPDX-License-Identifier: MIT
 <template>
   <div v-if="!isEmpty">
     <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
-      <h2 class="text-heading-3 font-secondary font-bold">Health breakdown</h2>
-      <div
+      <h2 class="text-xl leading-8 font-primary font-semibold text-neutral-900">Health breakdown</h2>
+      <lfx-chip
         v-if="props.healthScoreV2 !== null"
+        type="bordered"
+        size="xsmall"
         class="flex items-center gap-1.5"
       >
         <span
@@ -15,7 +17,7 @@ SPDX-License-Identifier: MIT
           :class="scoreDotColorClass"
         />
         <span class="text-sm font-semibold text-neutral-900">{{ scoreLabel }} ({{ props.healthScoreV2 }}/100)</span>
-      </div>
+      </lfx-chip>
     </div>
     <p class="text-xs text-neutral-500 mb-4">
       Maintainer availability, known risks and supply chain posture, and whether the project is actively developed or
@@ -69,6 +71,7 @@ import { computed } from 'vue';
 import LfxHealthBreakdownCategoryCard from './health-breakdown/category-card.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { getHealthScoreV2Config } from '~~/config/trust-score';
 

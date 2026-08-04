@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
     >
     <lfx-progress-bar
       :values="[progressPercent]"
-      color="normal"
+      :color="progressColor"
       size="small"
     />
   </lfx-card>
@@ -36,6 +36,7 @@ import { computed } from 'vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+import { getHealthScorePercentColor } from '~~/config/trust-score';
 
 const props = defineProps<{
   name: string;
@@ -48,6 +49,8 @@ const progressPercent = computed(() => {
   if (props.score === null || props.maxScore === 0) return 0;
   return (props.score / props.maxScore) * 100;
 });
+
+const progressColor = computed(() => getHealthScorePercentColor(progressPercent.value));
 </script>
 
 <script lang="ts">

@@ -48,6 +48,7 @@ SPDX-License-Identifier: MIT
             :impact-score="healthScoreV2Data?.impactScore ?? null"
             :impact-label="healthScoreV2Data?.impactLabel ?? null"
             :data="impactBreakdownData ?? null"
+            :status="impactBreakdownStatus"
           />
         </lfx-card>
       </div>
@@ -84,8 +85,11 @@ const {
   suspense,
 } = OVERVIEW_API_SERVICE.fetchHealthScoreV2(params);
 
-const { data: impactBreakdownData, suspense: impactBreakdownSuspense } =
-  OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
+const {
+  data: impactBreakdownData,
+  status: impactBreakdownStatus,
+  suspense: impactBreakdownSuspense,
+} = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
 
 onServerPrefetch(async () => {
   await Promise.all([suspense(), impactBreakdownSuspense()]);

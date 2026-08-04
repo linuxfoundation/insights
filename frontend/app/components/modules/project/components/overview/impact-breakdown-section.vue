@@ -5,15 +5,17 @@ SPDX-License-Identifier: MIT
 <template>
   <div v-if="!isEmpty">
     <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
-      <h2 class="text-heading-3 font-secondary font-bold">Impact breakdown</h2>
-      <div
+      <h2 class="text-xl leading-8 font-primary font-semibold text-neutral-900">Impact breakdown</h2>
+      <lfx-chip
         v-if="props.impactScore !== null"
+        type="bordered"
+        size="xsmall"
         class="flex items-center gap-1.5"
       >
         <span class="text-sm font-semibold text-neutral-900"
           >{{ impactLabelDisplay }} ({{ props.impactScore }}/100)</span
         >
-      </div>
+      </lfx-chip>
     </div>
     <p class="text-xs text-neutral-500 mb-2">
       How central this project is to the open source dependency graph, measured against every other tracked project.
@@ -49,12 +51,21 @@ SPDX-License-Identifier: MIT
         :band="data.directDependentsBand"
       />
     </div>
+
+    <div
+      v-else-if="status === 'error'"
+      class="text-xs text-neutral-500 mt-4"
+    >
+      Something went wrong while loading the Impact breakdown for this project. Please try again later.
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxImpactBreakdownMetricRow from './impact-breakdown/metric-row.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
 import { getImpactLabelDisplay } from '~~/config/trust-score';
 import type { ImpactBreakdownResults } from '~~/types/overview/responses.types';
 
@@ -62,6 +73,7 @@ const props = defineProps<{
   impactScore: number | null;
   impactLabel: string | null;
   data: ImpactBreakdownResults | null;
+  status: AsyncDataRequestStatus;
 }>();
 
 const isEmpty = computed(() => props.impactScore === null);
