@@ -61,9 +61,9 @@ export const getHealthScoreConfig = (score: number) => {
   );
 };
 
-// v2 health score labels/colors (IN-1212). Distinct from lfxTrustScore's v1 tiers: v2 uses
-// excellent/healthy/fair/concerning/critical (see collection-health-score-pill.vue, IN-1191)
-// instead of v1's Excellent/Healthy/Stable/Unsteady/Critical.
+// v2 health score labels/colors. Distinct from lfxTrustScore's v1 tiers: v2 uses
+// excellent/healthy/fair/concerning/critical (see collection-health-score-pill.vue) instead
+// of v1's Excellent/Healthy/Stable/Unsteady/Critical.
 export interface HealthScoreV2Config {
   label: string;
   ghBadgeColor: string;

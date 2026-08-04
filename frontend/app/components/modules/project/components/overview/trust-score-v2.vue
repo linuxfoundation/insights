@@ -21,9 +21,9 @@ SPDX-License-Identifier: MIT
             />
             {{ scoreLabel }}
             <span
-              v-if="score !== null"
+              v-if="healthScoreV2 !== null"
               class="text-neutral-500 text-lg font-semibold"
-              >{{ score }}/100</span
+              >{{ healthScoreV2 }}/100</span
             >
           </div>
         </lfx-skeleton-state>
@@ -71,8 +71,6 @@ const props = defineProps<{
   healthLabel: string | null;
   status: AsyncDataRequestStatus;
 }>();
-
-const score = computed(() => props.healthScoreV2);
 
 const isEmpty = computed(() => props.healthScoreV2 === null);
 

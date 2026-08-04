@@ -41,8 +41,8 @@ const props = defineProps<{
 // logic is ~10 lines, so a composable would be more ceremony than the duplication it avoids.
 // health-score.vue itself is intentionally left untouched (used elsewhere in the app).
 //
-// Prefers the API's real healthLabel (IN-1212, v2) when present; falls back to deriving the
-// label from the score for sparse rows where the pipe didn't return a label.
+// Prefers the API's real healthLabel (v2) when present; falls back to deriving the label from
+// the score for sparse rows where the pipe didn't return a label.
 const healthScoreLabel = computed(() => {
   if (props.healthLabel) {
     return props.healthLabel.charAt(0).toUpperCase() + props.healthLabel.slice(1);

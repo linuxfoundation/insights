@@ -3,11 +3,11 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <!--
-  IN-1212: labels below use the v2 health score convention (excellent/healthy/fair/concerning/
-  critical, see collection-health-score-pill.vue) for consistency with the rest of the app.
-  The score itself is still v1 here — osi-list-projects.vue and osi-list-collections.vue (this
-  component's only callers) read healthScore from projects_list/collections_oss_index, neither
-  of which carries v2 fields. Wiring these lists to v2 needs a data-layer follow-up.
+  Labels below use the v2 health score convention (excellent/healthy/fair/concerning/critical,
+  see collection-health-score-pill.vue) for consistency with the rest of the app. The score
+  itself is still v1 here — osi-list-projects.vue and osi-list-collections.vue (this component's
+  only callers) read healthScore from projects_list/collections_oss_index, neither of which
+  carries v2 fields. Wiring these lists to v2 needs a data-layer follow-up.
 -->
 <template>
   <lfx-tag
