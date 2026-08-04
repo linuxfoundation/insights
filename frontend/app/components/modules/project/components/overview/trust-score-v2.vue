@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
         <h2 class="text-heading-3 font-bold font-secondary mb-2">Health score</h2>
 
         <lfx-skeleton-state
-          v-if="status !== 'pending' && !isEmpty"
+          v-if="status === 'pending' || !isEmpty"
           :status="status"
           height="1.75rem"
           width="11.5rem"
