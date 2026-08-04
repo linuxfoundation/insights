@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
             :health-label="healthScoreV2Data?.healthLabel ?? null"
             :status="healthScoreV2Status"
+            :is-repo-selected="selectedRepositories.length > 0"
           />
           <lfx-repos-exclusion-footer
             v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
@@ -42,7 +43,7 @@ import LfxReposExclusionFooter from '~/components/shared/components/repos-exclus
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
-const { hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
+const { hasSelectedArchivedRepos, selectedRepositories } = storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,

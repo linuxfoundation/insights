@@ -72,7 +72,7 @@ export interface HealthScoreV2Config {
 export const healthScoreV2Config: Record<string, HealthScoreV2Config> = {
   excellent: { label: 'Excellent', ghBadgeColor: '#10B981' },
   healthy: { label: 'Healthy', ghBadgeColor: '#A7F3D0' },
-  fair: { label: 'Fair', ghBadgeColor: '#0094FF' },
+  fair: { label: 'Fair', ghBadgeColor: '#F59E0B' },
   concerning: { label: 'Concerning', ghBadgeColor: '#F59E0B' },
   critical: { label: 'Critical', ghBadgeColor: '#EF4444' },
   unavailable: { label: 'Unavailable', ghBadgeColor: '#9CA3AF' },

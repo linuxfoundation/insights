@@ -40,19 +40,30 @@ SPDX-License-Identifier: MIT
         >
           LFX Insights does not have enough meaningful data to generate an overall Health score for this project.
         </div>
-        <p
-          v-else
-          class="text-xs text-neutral-500 mt-4"
-        >
-          The Insights Health Score measures an open source project's overall trustworthiness.
-          <a
-            :href="links.trustScore"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-brand-500"
-            >Learn more</a
+        <template v-else>
+          <div
+            v-if="isRepoSelected"
+            class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
           >
-        </p>
+            <lfx-icon
+              name="info-circle"
+              :size="12"
+              type="solid"
+              class="text-brand-600"
+            />
+            Select "All repositories" in order to get the aggregated Health Score
+          </div>
+          <p class="text-xs text-neutral-500 mt-4">
+            The Insights Health Score measures an open source project's overall trustworthiness.
+            <a
+              :href="links.trustScore"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-brand-500"
+              >Learn more</a
+            >
+          </p>
+        </template>
       </div>
       <div
         v-if="!isEmpty && status === 'success'"
@@ -61,22 +72,36 @@ SPDX-License-Identifier: MIT
         <lfx-project-trust-score-share-badge />
       </div>
     </div>
+
+    <lfx-empty-state
+      v-if="isArchived && status !== 'pending'"
+      icon="archive"
+      :title="emptyStateTitle"
+      :description="emptyStateDescription"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import { links } from '~/config/links';
 import { getHealthScoreV2Config } from '~~/config/trust-score';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const props = defineProps<{
   healthScoreV2: number | null;
   healthLabel: string | null;
   status: AsyncDataRequestStatus;
+  isRepoSelected: boolean;
 }>();
+
+const { isArchived, emptyStateTitle, emptyStateDescription } = storeToRefs(useProjectStore());
 
 const isEmpty = computed(() => props.healthScoreV2 === null);
 
@@ -85,8 +110,7 @@ const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).labe
 const scoreColorClass = computed(() => {
   const label = props.healthLabel;
   if (label === 'excellent' || label === 'healthy') return 'bg-positive-500';
-  if (label === 'fair') return 'bg-brand-500';
-  if (label === 'concerning') return 'bg-warning-500';
+  if (label === 'fair' || label === 'concerning') return 'bg-health-concerning';
   return 'bg-negative-500';
 });
 </script>
