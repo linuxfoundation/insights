@@ -75,11 +75,12 @@ export const healthScoreV2Config: Record<string, HealthScoreV2Config> = {
   fair: { label: 'Fair', ghBadgeColor: '#0094FF' },
   concerning: { label: 'Concerning', ghBadgeColor: '#F59E0B' },
   critical: { label: 'Critical', ghBadgeColor: '#EF4444' },
+  unavailable: { label: 'Unavailable', ghBadgeColor: '#9CA3AF' },
 };
 
 export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Config => {
   if (label && healthScoreV2Config[label]) {
     return healthScoreV2Config[label];
   }
-  return healthScoreV2Config.critical;
+  return healthScoreV2Config.unavailable;
 };

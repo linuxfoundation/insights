@@ -56,6 +56,11 @@ const healthScoreLabel = computed(() => {
 });
 
 const healthScoreDotClass = computed(() => {
+  if (props.healthLabel) {
+    if (props.healthLabel === 'excellent' || props.healthLabel === 'healthy') return 'bg-health-healthy';
+    if (props.healthLabel === 'fair' || props.healthLabel === 'concerning') return 'bg-health-concerning';
+    return 'bg-health-critical';
+  }
   const score = props.score;
   if (score >= 60) return 'bg-health-healthy';
   if (score >= 20) return 'bg-health-concerning';
