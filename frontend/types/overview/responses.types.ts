@@ -61,9 +61,6 @@ export interface BenchmarkScoreData {
 export interface HealthScoreV2Results {
   healthScoreV2: number | null;
   healthLabel: string | null;
-  lifecycleLabel: string | null;
-  impactScore: number | null;
-  impactLabel: string | null;
 }
 
 export interface HealthScoreResults {
