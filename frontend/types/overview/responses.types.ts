@@ -58,6 +58,14 @@ export interface BenchmarkScoreData {
   percentage?: number;
 }
 
+export interface HealthScoreV2Results {
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
+}
+
 export interface HealthScoreResults {
   activeContributors: BenchmarkScoreData;
   contributorDependency: BenchmarkScoreData;

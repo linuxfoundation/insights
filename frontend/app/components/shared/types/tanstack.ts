@@ -58,6 +58,7 @@ export enum TanstackKey {
   // Overview
   HEALTH_SCORE = 'health-score',
   HEALTH_SCORE_OVERVIEW = 'health-score-overview',
+  HEALTH_SCORE_V2 = 'health-score-v2',
   TRUST_SCORE_SUMMARY = 'trust-score-summary',
   SCORE_DATA = 'score-data',
   ASSOCIATED_ORGANIZATION = 'associated-organization',

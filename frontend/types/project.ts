@@ -130,6 +130,11 @@ export interface ProjectInsightsTinybird {
   popularityHealthScore: number;
   developmentHealthScore: number;
   securityHealthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;
@@ -164,6 +169,11 @@ export interface ProjectInsights {
   popularityHealthScore: number;
   developmentHealthScore: number;
   securityHealthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;

@@ -60,3 +60,26 @@ export const getHealthScoreConfig = (score: number) => {
     lfxTrustScore.find((s) => score <= s.maxScore && score >= s.minScore) || lfxTrustScore.at(-1)!
   );
 };
+
+// v2 health score labels/colors (IN-1212). Distinct from lfxTrustScore's v1 tiers: v2 uses
+// excellent/healthy/fair/concerning/critical (see collection-health-score-pill.vue, IN-1191)
+// instead of v1's Excellent/Healthy/Stable/Unsteady/Critical.
+export interface HealthScoreV2Config {
+  label: string;
+  ghBadgeColor: string;
+}
+
+export const healthScoreV2Config: Record<string, HealthScoreV2Config> = {
+  excellent: { label: 'Excellent', ghBadgeColor: '#10B981' },
+  healthy: { label: 'Healthy', ghBadgeColor: '#A7F3D0' },
+  fair: { label: 'Fair', ghBadgeColor: '#0094FF' },
+  concerning: { label: 'Concerning', ghBadgeColor: '#F59E0B' },
+  critical: { label: 'Critical', ghBadgeColor: '#EF4444' },
+};
+
+export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Config => {
+  if (label && healthScoreV2Config[label]) {
+    return healthScoreV2Config[label];
+  }
+  return healthScoreV2Config.critical;
+};

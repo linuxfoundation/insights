@@ -8,7 +8,7 @@ import type { WidgetArea } from '../../widget/types/widget-area';
 import type { Widget } from '../../widget/types/widget';
 import type { WidgetConfig } from '../../widget/config/widget.config';
 import { lfxWidgets } from '../../widget/config/widget.config';
-import type { HealthScoreResults } from '~~/types/overview/responses.types';
+import type { HealthScoreResults, HealthScoreV2Results } from '~~/types/overview/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Organization } from '~~/types/contributors/responses.types';
 
@@ -52,6 +52,17 @@ class OverviewApiService {
           repos,
         },
       });
+  }
+
+  fetchHealthScoreV2(params: ComputedRef<{ projectSlug: string }>) {
+    const queryKey = computed(() => [TanstackKey.HEALTH_SCORE_V2, params.value.projectSlug]);
+    const queryFn: QueryFunction<HealthScoreV2Results> = async () =>
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-v2`);
+
+    return useQuery<HealthScoreV2Results>({
+      queryKey,
+      queryFn,
+    });
   }
 
   fetchAssociatedOrganization(params: ComputedRef<OverviewQueryParams>) {
