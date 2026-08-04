@@ -29,7 +29,13 @@ SPDX-License-Identifier: MIT
         </lfx-skeleton-state>
 
         <div
-          v-if="isEmpty && status !== 'pending'"
+          v-if="status === 'error'"
+          class="text-xs text-neutral-500 mt-4"
+        >
+          Something went wrong while loading the Health score for this project. Please try again later.
+        </div>
+        <div
+          v-else-if="isEmpty && status !== 'pending'"
           class="text-xs text-neutral-500 mt-4"
         >
           LFX Insights does not have enough meaningful data to generate an overall Health score for this project.
