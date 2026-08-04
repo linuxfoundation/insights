@@ -4,77 +4,79 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="px-6">
-    <div class="flex flex-row justify-between">
-      <div class="pr-6 w-full">
-        <h2 class="text-heading-3 font-bold font-secondary mb-2">Health score</h2>
+    <template v-if="!isArchived">
+      <div class="flex flex-row justify-between">
+        <div class="pr-6 w-full">
+          <h2 class="text-heading-3 font-bold font-secondary mb-2">Health score</h2>
 
-        <lfx-skeleton-state
-          v-if="status === 'pending' || !isEmpty"
-          :status="status"
-          height="1.75rem"
-          width="11.5rem"
-        >
-          <div class="flex items-center gap-3 text-3xl font-bold cursor-default">
-            <div
-              class="h-3 w-3 rounded-full shrink-0"
-              :class="scoreColorClass"
-            />
-            {{ scoreLabel }}
-            <span
-              v-if="healthScoreV2 !== null"
-              class="text-neutral-500 text-lg font-semibold"
-              >{{ healthScoreV2 }}/100</span
-            >
-          </div>
-        </lfx-skeleton-state>
-
-        <div
-          v-if="status === 'error'"
-          class="text-xs text-neutral-500 mt-4"
-        >
-          Something went wrong while loading the Health score for this project. Please try again later.
-        </div>
-        <div
-          v-else-if="isEmpty && status !== 'pending'"
-          class="text-xs text-neutral-500 mt-4"
-        >
-          LFX Insights does not have enough meaningful data to generate an overall Health score for this project.
-        </div>
-        <template v-else>
-          <div
-            v-if="isRepoSelected"
-            class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
+          <lfx-skeleton-state
+            v-if="status === 'pending' || !isEmpty"
+            :status="status"
+            height="1.75rem"
+            width="11.5rem"
           >
-            <lfx-icon
-              name="info-circle"
-              :size="12"
-              type="solid"
-              class="text-brand-600"
-            />
-            Select "All repositories" in order to get the aggregated Health Score
+            <div class="flex items-center gap-3 text-3xl font-bold cursor-default">
+              <div
+                class="h-3 w-3 rounded-full shrink-0"
+                :class="scoreColorClass"
+              />
+              {{ scoreLabel }}
+              <span
+                v-if="healthScoreV2 !== null"
+                class="text-neutral-500 text-lg font-semibold"
+                >{{ healthScoreV2 }}/100</span
+              >
+            </div>
+          </lfx-skeleton-state>
+
+          <div
+            v-if="status === 'error'"
+            class="text-xs text-neutral-500 mt-4"
+          >
+            Something went wrong while loading the Health score for this project. Please try again later.
           </div>
-          <p class="text-xs text-neutral-500 mt-4">
-            The Insights Health Score measures an open source project's overall trustworthiness.
-            <a
-              :href="links.trustScore"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-brand-500"
-              >Learn more</a
+          <div
+            v-else-if="isEmpty && status !== 'pending'"
+            class="text-xs text-neutral-500 mt-4"
+          >
+            LFX Insights does not have enough meaningful data to generate an overall Health score for this project.
+          </div>
+          <template v-else>
+            <div
+              v-if="isRepoSelected"
+              class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
             >
-          </p>
-        </template>
+              <lfx-icon
+                name="info-circle"
+                :size="12"
+                type="solid"
+                class="text-brand-600"
+              />
+              Select "All repositories" in order to get the aggregated Health Score
+            </div>
+            <p class="text-xs text-neutral-500 mt-4">
+              The Insights Health Score measures an open source project's overall trustworthiness.
+              <a
+                :href="links.trustScore"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-brand-500"
+                >Learn more</a
+              >
+            </p>
+          </template>
+        </div>
+        <div
+          v-if="showShareBadge"
+          class="w-[200px] hidden sm:block"
+        >
+          <lfx-project-trust-score-share-badge :is-repo-selected="isRepoSelected" />
+        </div>
       </div>
-      <div
-        v-if="!isEmpty && status === 'success'"
-        class="w-[200px] hidden sm:block"
-      >
-        <lfx-project-trust-score-share-badge />
-      </div>
-    </div>
+    </template>
 
     <lfx-empty-state
-      v-if="isArchived && status !== 'pending'"
+      v-else-if="status !== 'pending'"
       icon="archive"
       :title="emptyStateTitle"
       :description="emptyStateDescription"
@@ -101,9 +103,13 @@ const props = defineProps<{
   isRepoSelected: boolean;
 }>();
 
-const { isArchived, emptyStateTitle, emptyStateDescription } = storeToRefs(useProjectStore());
+const { isArchived, emptyStateTitle, emptyStateDescription, selectedRepositories } = storeToRefs(useProjectStore());
 
 const isEmpty = computed(() => props.healthScoreV2 === null);
+
+const showShareBadge = computed(
+  () => !isEmpty.value && props.status === 'success' && selectedRepositories.value.length <= 1,
+);
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
 
