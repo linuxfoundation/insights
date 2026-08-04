@@ -8,7 +8,10 @@ import type { WidgetArea } from '../../widget/types/widget-area';
 import type { Widget } from '../../widget/types/widget';
 import type { WidgetConfig } from '../../widget/config/widget.config';
 import { lfxWidgets } from '../../widget/config/widget.config';
-import type { HealthScoreV2Results } from '~~/types/overview/responses.types';
+import type {
+  HealthScoreV2Results,
+  ImpactBreakdownResults,
+} from '~~/types/overview/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Organization } from '~~/types/contributors/responses.types';
 
@@ -29,6 +32,20 @@ class OverviewApiService {
       await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-v2`);
 
     return useQuery<HealthScoreV2Results>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchHealthScoreImpactBreakdown(params: ComputedRef<{ projectSlug: string }>) {
+    const queryKey = computed(() => [
+      TanstackKey.HEALTH_SCORE_IMPACT_BREAKDOWN,
+      params.value.projectSlug,
+    ]);
+    const queryFn: QueryFunction<ImpactBreakdownResults> = async () =>
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-impact`);
+
+    return useQuery<ImpactBreakdownResults>({
       queryKey,
       queryFn,
     });

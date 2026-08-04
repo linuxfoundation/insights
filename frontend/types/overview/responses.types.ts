@@ -61,6 +61,29 @@ export interface BenchmarkScoreData {
 export interface HealthScoreV2Results {
   healthScoreV2: number | null;
   healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
+  maintainerHealthScoreV2: number | null;
+  securitySupplyChainScoreV2: number | null;
+  developmentActivityScoreV2: number | null;
+}
+
+export type ImpactBreakdownBand = 'Top 1%' | 'Top 10%' | 'Top 25%' | 'Top 50%' | 'Bottom 50%';
+
+export interface ImpactBreakdownResults {
+  directDependents: number | null;
+  directDependentsTopPct: number | null;
+  directDependentsBand: ImpactBreakdownBand | null;
+  transitiveDependents: number | null;
+  transitiveDependentsTopPct: number | null;
+  transitiveDependentsBand: ImpactBreakdownBand | null;
+  downloads: number | null;
+  downloadsTopPct: number | null;
+  downloadsBand: ImpactBreakdownBand | null;
+  centrality: number | null;
+  centralityTopPct: number | null;
+  centralityBand: ImpactBreakdownBand | null;
 }
 
 export interface HealthScoreResults {

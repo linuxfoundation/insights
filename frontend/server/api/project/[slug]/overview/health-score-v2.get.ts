@@ -17,8 +17,26 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Not found' });
     }
-    const { healthScoreV2, healthLabel } = res.data[0];
-    return { healthScoreV2, healthLabel };
+    const {
+      healthScoreV2,
+      healthLabel,
+      lifecycleLabel,
+      impactScore,
+      impactLabel,
+      maintainerHealthScoreV2,
+      securitySupplyChainScoreV2,
+      developmentActivityScoreV2,
+    } = res.data[0];
+    return {
+      healthScoreV2,
+      healthLabel,
+      lifecycleLabel,
+      impactScore,
+      impactLabel,
+      maintainerHealthScoreV2,
+      securitySupplyChainScoreV2,
+      developmentActivityScoreV2,
+    };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
       throw error;

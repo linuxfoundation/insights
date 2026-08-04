@@ -84,3 +84,36 @@ export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Confi
   }
   return healthScoreV2Config.unavailable;
 };
+
+// Impact labels come from project_insights_copy.pipe's impactLabel multiIf: foundational (>=85),
+// major (>=60), moderate (>=30), minor (below).
+export const impactLabelConfig: Record<string, string> = {
+  foundational: 'Foundational',
+  major: 'Major',
+  moderate: 'Moderate',
+  minor: 'Minor',
+};
+
+export const getImpactLabelDisplay = (label: string | null): string => {
+  if (label && impactLabelConfig[label]) {
+    return impactLabelConfig[label];
+  }
+  return 'Unavailable';
+};
+
+// Lifecycle labels come from health_score_v2's lifecycleLabelV2: active, stable, declining,
+// abandoned, archived (best-state-wins across a project's repos).
+export const lifecycleLabelConfig: Record<string, { label: string; color: string }> = {
+  active: { label: 'Active', color: 'bg-positive-500' },
+  stable: { label: 'Stable', color: 'bg-positive-500' },
+  declining: { label: 'Declining', color: 'bg-warning-500' },
+  abandoned: { label: 'Abandoned', color: 'bg-negative-500' },
+  archived: { label: 'Archived', color: 'bg-neutral-400' },
+};
+
+export const getLifecycleLabelConfig = (label: string | null): { label: string; color: string } => {
+  if (label && lifecycleLabelConfig[label]) {
+    return lifecycleLabelConfig[label];
+  }
+  return { label: 'Unavailable', color: 'bg-neutral-400' };
+};
