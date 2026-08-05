@@ -15,7 +15,7 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
 
 ### Goals
 - Standalone API app, independently deployable.
-- API key auth via LFX Self-Serve (`app.lfx.dev/settings`) — customers receive refresh tokens; their code mints short-lived access tokens via Insights' proxied `/v1/auth/token` endpoint. Access tokens carry membership tier claims that drive **rate limits** in v1; endpoint-level tier gating is a future capability.
+- API key auth via LFX Self-Serve — customers receive Personal Access Tokens and send them directly as `Authorization: Bearer lfi_...`; a Cloudflare Worker exchanges each PAT for a short-lived Auth0-signed JWT via Auth0 Custom Token Exchange and attaches org/tier headers. Tier drives **rate limits** in v1; endpoint-level tier gating is a future capability. See [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 - URL-versioned (`/v1`, `/v2`); breaking changes only across versions.
 - Heavy observability (OTel → Datadog) so we can offer SLAs and bill by tier confidently.
 - Phased rollout: **Development → Contributors → Popularity → Security & Best Practices → Collections** (more later).
@@ -26,29 +26,35 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
 ## 2. Architecture Overview
 
 ```
-┌─────────────────────┐  1. create token  ┌──────────────────────────────────┐
+┌─────────────────────┐  1. create PAT    ┌──────────────────────────────────┐
 │  User (browser)     │ ────────────────▶ │  LFX Self-Serve App              │
-│                     │                   │  app.lfx.dev/settings            │
-│                     │ ◀──────────────── │  Issues + revokes refresh tokens │
-│                     │  2. refresh token  │  Publishes JWKS endpoint         │
-└─────────────────────┘                   └──────────────────┬───────────────┘
-          │                                                   ▲
-          │ 3. paste refresh token                            │ 4. forward
-          │    into server env                                │    /token request
-          ▼                                                   │
-┌─────────────────────┐  POST /v1/auth/token  ┌──────────────┴──────────────────────────┐
-│  Customer server    │ ────────────────────▶ │  api.insights.linuxfoundation.org        │
-│                     │ ◀──────────────────── │  (Fastify, TypeScript)                   │
-│                     │  5. access token       │                                          │
-│                     │     (~15 min)          │  /v1/auth/token  (proxy)                 │
-│                     │                        │  /v1/development/...                     │
-│                     │  6. Bearer             │  /v1/contributors/...                    │
-│                     │     <access_token>     │  /v1/popularity/...                      │
-│                     │ ────────────────────▶  │  /v1/security/...                        │
-└─────────────────────┘                        │  /v1/collections/...                     │
+│                     │                   │  Developer Settings              │
+│                     │ ◀──────────────── │  PAT service: issue / revoke,    │
+│                     │  2. lfi_... (once) │  salted-hash storage             │
+└─────────────────────┘                   └──────────────────────────────────┘
+          │
+          │ 3. paste PAT into server env
+          ▼
+┌─────────────────────┐  4. Bearer lfi_...    ┌─────────────────────────────────────────┐
+│  Customer server    │ ────────────────────▶ │  Cloudflare Worker (Insights zone)      │
+│                     │ ◀──────────────────── │  5. Auth0 CTE exchange → JWT            │
+└─────────────────────┘   8. response         │  6. LFX Tier endpoint → org + tier      │
+                                              │     both cached ~10 min                 │
+                                              └───────────────────┬─────────────────────┘
+                                     7. Bearer <JWT> + org / x-tier headers
+                                                                  ▼
+                                               ┌──────────────────────────────────────────┐
+                                               │  api.insights.linuxfoundation.org        │
+                                               │  (Fastify, TypeScript)                   │
+                                               │                                          │
+                                               │  /v1/development/...                     │
+                                               │  /v1/contributors/...                    │
+                                               │  /v1/popularity/...                      │
+                                               │  /v1/security/...                        │
+                                               │  /v1/collections/...                     │
                                                └───────────┬──────────────┬──────────────┘
-                            7. JWKS verify                 │              │
-              (LFX Self-Serve JWKS — cached) ◀─────────────┘              │
+                                    JWKS verify            │              │
+                        (Auth0 JWKS — cached) ◀────────────┘              │
                                                                           ▼
                                                            ┌────────────────────────────────────────┐
                                                            │  Redis                                 │
@@ -180,17 +186,17 @@ Prepare upstream so the API does not contend with the frontend for TB capacity.
 
 ### Epic E3 — Auth & Rate Limiting (API Keys via LFX Self-Serve)
 
-Per-key auth with tier-aware authorization and rate limiting. Reuse existing LFX membership tiers — we consume them from JWT claims, we don't invent a new tier model.
+Per-key auth with tier-aware authorization and rate limiting. Reuse existing LFX membership tiers — we consume them, we don't invent a new tier model. Credential mechanics per [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 
-- **T-015** Coordinate with the LFX Self-Serve team: confirm the JWKS endpoint URL, the JWT claim names for `org` and `tier`, the `iss` value, the access-token lifetime (target: ~15 min), the `/token` endpoint shape on Self-Serve (RFC 6749 §6 `grant_type=refresh_token`), and **resolve the open question of whether the Insights API reuses the existing `app.lfx.dev/settings` personal access token as the refresh token or mints a new Insights-scoped refresh token** (see §9 Open Questions and ADR-0015).
-- **T-015b** Implement `POST /v1/auth/token` proxy in Insights — forwards request body and headers to Self-Serve's `/token` verbatim, returns the response verbatim. Maps Self-Serve unreachable to `503 upstream_unavailable`. This is the sole endpoint customers use to exchange refresh tokens for access tokens.
-- **T-016** ADR: API key claims schema + tier → capability matrix (which existing LFX tiers map to which endpoints and rate limits). Reference LFX Self-Serve as the claims issuer.
-- **T-017** Access token verification middleware: verify JWT signature of the **access token** against the LFX Self-Serve JWKS endpoint, cache JWKS, accept `Authorization: Bearer <access_token>`. Insights never receives refresh tokens on `/v1/...` endpoints. Reject tokens whose `iss` does not match the configured LFX Self-Serve issuer (and `aud`, if the open question lands on a scoped token).
+- **T-015** Coordinate with the LFX Self-Serve / Platform and DevOps teams: confirm the Auth0 JWKS endpoint URL and `iss` value, the Insights `aud` and PAT prefix (`lfi_`), the exchanged-token lifetime and Worker cache TTLs, the header names carrying org and tier (`x-tier` plus the organization header, unnamed in the option-4b diagram), the shape of the LFX Tier endpoint, and **the final 4a-vs-4b call on where tier resolution lives** (see §9 Open Questions and ADR-0006).
+- **T-015b** Build the PAT exchange path: PAT service work in Self-Serve (generation, salted-hash storage, rename/revoke, audience prefixing, Auth0 validation callback) and the Cloudflare Worker that detects the `lfi_` prefix, calls Auth0 `POST /oauth/token` with `grant_type=token-exchange`, resolves org and tier, and forwards to the origin. No Insights-hosted token endpoint.
+- **T-016** ADR: tier → capability matrix (which existing LFX tiers map to which endpoints and rate limits).
+- **T-017** Request verification middleware: verify the Worker-supplied JWT signature against the Auth0 JWKS endpoint, cache JWKS, accept `Authorization: Bearer <jwt>`, and read org and tier from the Worker-set headers. Reject tokens whose `iss` or `aud` does not match the configured Auth0 issuer and Insights audience. Insights never receives PATs.
 - **T-018** Tier-based authorization: route-level decorator/config that checks the key's tier against the route's required tier, lives next to the route definition.
 - **T-019** Per-org rate limiting (Redis sliding window) — extract only the Redis sorted-set sliding-window primitive from `frontend/server/utils/rate-limiter.ts` into `libs/rate-limiter`. The public API writes its own org-aware wrapper keyed by `org_id` on top of this primitive. The IP-based identity resolution and H3-specific code stays in the frontend.
 - **T-020** Standard rate-limit response headers (`X-RateLimit-*`, `Retry-After`) and 429 envelope.
-- **T-021** Document and test the revocation flow: revoking a refresh token in `app.lfx.dev/settings` causes the next `POST /v1/auth/token` (forwarded to Self-Serve) to return `400 invalid_grant`; in-flight access tokens expire naturally (~15 min). Insights has nothing to delete or maintain. Cover in an integration test.
-- **T-022** Customer-facing docs: explain the refresh-token / access-token split; provide a ~30-line `getAccessToken()` snippet pointing at `api.insights.linuxfoundation.org/v1/auth/token`. Link to `app.lfx.dev/settings` for token creation — Insights docs do not duplicate that flow.
+- **T-021** Document and test the revocation flow: revoking a PAT in Developer Settings makes the next token exchange fail, so no new JWTs can be minted for it; the effective window is bounded by the Worker's token and tier cache TTL (~10 min). Insights has nothing to delete or maintain. Cover in an integration test.
+- **T-022** Customer-facing docs: the PAT is the only credential customers handle — one `curl` with `Authorization: Bearer lfi_...`, no token-swap helper. Document the ~10 min revocation window and link to Self-Serve Developer Settings for token creation; Insights docs do not duplicate that flow.
 
 ### Epic E4 — Observability (OpenTelemetry + Datadog)
 
@@ -326,7 +332,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 - `frontend/server/data/tinybird/tinybird.ts` — TB client with `AdaptiveSemaphore`, bucket routing, response typing. Extract to shared lib ([T-004](#epic-e1--foundation--framework)).
 - `frontend/server/data/types.ts` — shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). These are **not** extracted to a shared lib — `/api` defines its own TypeBox equivalents per endpoint (filter shapes are TypeBox schemas, not shared runtime types). Use this file as a reference when porting handlers.
 - `frontend/server/utils/rate-limiter.ts` — Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
-- `frontend/server/utils/jwt.ts` — existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with the LFX Self-Serve JWKS endpoint (per ADR-0015), not Auth0 JWKS ([T-017](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
+- `frontend/server/utils/jwt.ts` — existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with Auth0 JWKS verification of the Worker-supplied JWT (per ADR-0006) ([T-017](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
 - `frontend/setup/rate-limiter.ts` — current rate-limiter rules. Inspiration for tier-based rules.
 - `frontend/server/api/development/**` — all endpoints to inventory in [T-040](#epic-e7--endpoint-migration-phase-1-development).
 - `pnpm-workspace.yaml` — currently lists `frontend`, `workers/*`. Add `api` and `libs/*` entries when bootstrapping ([T-001](#epic-e1--foundation--framework)).
@@ -357,21 +363,21 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 7. **Conversion tooling:** Claude skill `nuxt-to-api` (§3 D4). Produces a complete, ready-to-review Fastify handler (TypeBox schema, Tinybird/Postgres calls, response mapping, integration test) — not a skeleton. Developer's job is review, not writing.
 8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §6).
 9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
-10. **Customer model:** the API principal is a **user** (`sub` = user ID, used as the `customer_id` span attribute in APM traces). The user's **organization** (`org` claim, exact name confirmed at T-015) drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. Both claims come from the LFX Self-Serve JWT (per ADR-0015). The exact claim names, behavior when a user has no org, and behavior when a user belongs to multiple orgs are follow-ups for T-015 with the LFX Self-Serve team. Whether the token is an existing platform PAT or a new Insights-scoped token is the open question at §9 #4.
+10. **Customer model:** the API principal is a **user** (`sub` = user ID, used as the `customer_id` span attribute in APM traces). The user's **organization** drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. `sub` comes from the Auth0-signed JWT; org and tier arrive as Worker-set headers resolved from the LFX Tier endpoint (per ADR-0006). The exact header names, behavior when a user has no org, and behavior when a user is Key Contact for multiple orgs (highest tier wins) are follow-ups for T-015.
 11. **Data scope (v1):**
     - **Phases 1–4 (Development, Contributors, Popularity, Security & Best Practices):** public OSS data, **no per-project permission check**. Tier check only.
     - **Phase 5 (Overviews) + Phase 6 (Collections):** Collections add a tier check + permission check (private collections gated by ownership/membership; public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL). Decision deferred to Phase 6 — does not block earlier phases.
     - No general project-membership authorization graph in v1.
 12. **Authentication floor:** every request requires a valid API key. No anonymous access path. 401 on missing/invalid key, full stop.
 13. **Caller scope (v1):** server-to-server only. CORS responds with no `Access-Control-Allow-Origin` for the API, which blocks browser callers. **Revisit before GA** — we may extend to browser support (per-key origin allowlist or a publishable+secret key model) if customer demand emerges. Track as a follow-up.
-14. **Billing model:** bundled with existing LFX membership. No standalone billing infra in v1. Tier comes from the existing LFX tier on the user's org. Usage is metered only for rate-limit enforcement and Datadog dashboards — not for invoicing. Enforcement is split: (a) **token-mint time** — Self-Serve validates Key Contact status via OpenFGA `v2_organization` entities before issuing an Insights access token; the precise moment depends on the PAT model (new Insights-scoped refresh token → check at issuance; existing PAT reused → check at `/v1/auth/token` exchange time — open question ADR-0015 Q1); either way, non-Key-Contacts never receive a valid Insights access token; (b) **request time** — the Insights API reads `tier` and `org` from the JWKS-verified claims on every request to enforce rate limits and future per-endpoint tier gating, but never re-queries OpenFGA or any membership system. See ADR-0010.
+14. **Billing model:** bundled with existing LFX membership. No standalone billing infra in v1. Tier comes from the existing LFX tier on the user's org. Usage is metered only for rate-limit enforcement and Datadog dashboards — not for invoicing. Enforcement is split: (a) **PAT-issuance time** — Self-Serve validates Key Contact status via OpenFGA `v2_organization` entities before issuing an Insights-audience PAT, so non-Key-Contacts never obtain a credential; (b) **request time** — the Insights API verifies the Worker-supplied JWT and reads `tier` and `org` from the Worker-set headers on every request to enforce rate limits and future per-endpoint tier gating, but never re-queries OpenFGA or any membership system. See ADR-0010.
 15. **Pagination:** cursor-based. Request: `cursor` (opaque base64url, omit on first page) + `pageSize` (default 50, max 200). Response: `{ data, pageSize, nextCursor }`; `nextCursor: null` indicates end of list. No `total` field (counting on every request doubles Tinybird load). Cursor-based chosen over the Nuxt `page`/`pageSize` convention for stability under mutations, O(log N) cost vs offset scan, and fit with server-to-server iteration. See ADR-0011.
 16. **URL port strategy:** **hybrid**. Default to port-as-is from Nuxt to `/v1/...`, applying only light normalization (kebab-case path segments, plural collection nouns). Rename only when the existing URL is **genuinely misleading** to an external developer. The `nuxt-to-api` skill ([T-080](#epic-e14--endpoint-conversion-tooling)) defaults to port-as-is and surfaces the URL for explicit reviewer approval; renames are a per-endpoint judgement call recorded in the PR.
 17. **Versioning semantics ("breaking change" definition):** **tolerant-reader / additive-only**. Within a version, allowed: adding response fields, adding optional query params, adding endpoints, expanding accepted enum INPUT values, adding new error codes, adding new success status codes. Requires a major version bump: removing/renaming a response field, changing a field's type, making an optional input required, narrowing accepted input values, removing an endpoint, changing the error envelope shape, changing default or max pageSize, or changing the cursor encoding semantics. **Customers commit to ignoring unknown response fields** (documented prominently). Matches Stripe/GitHub/Google.
 18. **Caching contract (v1):** origin-side Redis cache only (~5–60s TTL depending on endpoint). All responses set `Cache-Control: private, max-age=0` — customers do not cache, intermediaries do not cache. Lets us tune TTL without breaking customers. Public/CDN cache headers can be introduced later as a non-breaking improvement once we have real traffic data.
 19. **JSON key casing:** **camelCase** for all request and response JSON keys (`startDate`, `activityTypes`, `includeCodeContributions`). The existing Nuxt code is mixed (some snake_case fields like `activity_types`); the `nuxt-to-api` skill normalizes these to camelCase at port time. Date values are ISO-8601 strings in UTC (`2025-12-31T23:59:59Z`) — committed as a convention, not a question.
 20. **Tier gating (v1):** all tiers see all endpoints; **tiers control rate limits only** in v1. The per-route "required tier" mechanism IS built into the framework (so individual endpoints can be gated later without an architectural change), but every v1 endpoint declares the lowest tier. When a future endpoint is gated above a user's tier, the response is **403 with `code: tier_forbidden`** and the error envelope's `docsUrl` deep-links to the tier-capability matrix.
-21. **API key lifecycle:** refresh tokens are long-lived with **no auto-expiry**. Access tokens are short-lived (~15 min, confirmed at T-015). Customers rotate refresh tokens manually via `app.lfx.dev/settings`. **Multiple active refresh tokens per user supported** so rotation is zero-downtime (mint new → switch → revoke old). Revocation enforced by LFX Self-Serve — once a refresh token is revoked, the next `POST /v1/auth/token` call returns `400 invalid_grant`; in-flight access tokens expire naturally. No Insights-side deny-list. Best practice rotation guidance documented but never forced.
+21. **API key lifecycle:** PATs are long-lived with **no auto-expiry** (optional expiry is possible since they live in the LFX PAT store, not Auth0). The exchanged JWTs are short-lived and cached by the Worker (~10 min, confirmed at T-015). Customers rotate PATs manually in Self-Serve Developer Settings. **Multiple active PATs per user supported** so rotation is zero-downtime (mint new → switch → revoke old). Revocation enforced by LFX Self-Serve — once a PAT is revoked the next exchange fails, with the effective window bounded by the Worker's cache TTL. No Insights-side deny-list. Best practice rotation guidance documented but never forced.
 22. **SDKs (v1):** none. Customers integrate against the OpenAPI spec directly, plus `curl`/`fetch`/`requests` examples in docs. SDK strategy revisited post-v1 once we see what languages customers actually use.
 23. **Launch model:** Endpoints roll out per-endpoint through two stability stages:
     1. **`/v1-alpha`:** endpoint is served under `/v1-alpha/...` with no contract guarantees. Access is restricted to an allow-listed cohort (LFX-internal devs + external design partners). Breaking changes are allowed freely. Used to validate contract and performance before broad exposure.
@@ -380,9 +386,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 **Still open:**
 
 1. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.) — TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
-2. **Reuse `app.lfx.dev/settings` personal access token as the refresh token, or mint a new Insights-scoped refresh token?** Drives the JWT claim shape, whether `aud` is required, and the LFX Self-Serve UI work. Trade-offs:
-   - **Reuse:** one platform-wide refresh token across every LFX service — best UX. Compromise blast radius is wider than Insights alone, so a service-scope claim (e.g. `aud` or `scopes`) would be needed for Insights to safely refuse out-of-scope use. Requires LFX Self-Serve to ensure the existing token carries (or can be made to carry) `org` and `tier`.
-   - **Mint new:** Insights-scoped refresh token isolated from the user's other LFX integrations; per-service revocation. Cost: extra "Create Insights API token" affordance in `app.lfx.dev/settings` and a new token type for LFX Self-Serve to support.
+2. **Variant 4a vs 4b — where does tier resolution live?** 4b (planned) has the Cloudflare Worker resolve org and tier from an LFX Tier endpoint and pass them as headers; 4a has the PAT service enrich them into the JWT. The PAT, exchange, and verification path are identical either way, so this can be settled without reworking the rest. Final call sits with DevOps. See [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 
 **Resolved:**
 - Deployed on the same Kubernetes cluster as frontend. ([T-002](#epic-e1--foundation--framework))
