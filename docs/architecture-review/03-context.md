@@ -9,24 +9,27 @@ The full machine-readable version lives at [`docs/CONTEXT.md`](../CONTEXT.md).
 ## Auth & Identity
 
 **API Key**
-The long-lived credential a User receives from the LFX Self-Serve App at `app.lfx.dev/settings` — technically a Refresh Token. Customers see and handle this as their "API key." Only Key Contacts in member organizations are permitted to create them. The actual Bearer value sent to the Insights API is a short-lived Access Token derived from it.
-_Avoid:_ token, secret, access key
+The long-lived credential a User receives from the LFX Self-Serve App in Developer Settings — technically a Personal Access Token, prefixed `lfi_` for the Insights audience. Customers see and handle this as their "API key" and send it directly as `Authorization: Bearer lfi_...` on every request. Only Key Contacts in member organizations are permitted to create them.
+_Avoid:_ token, secret, access key, refresh token
 
-**Refresh Token**
-The long-lived credential held by the customer (what they receive as their "API key"). Used at `POST api.insights.linuxfoundation.org/v1/auth/token` (proxied to LFX Self-Serve) to mint Access Tokens. Never sent to the Insights API as a Bearer credential. Revoking it stops future Access Token mints; in-flight Access Tokens continue to work until their `exp`. Multiple active Refresh Tokens per User are supported for zero-downtime rotation.
-_Avoid:_ long-lived JWT, API key (when referring to the credential type specifically)
+**Personal Access Token (PAT)**
+The credential type behind "API Key". Issued and revoked by the LFX PAT service via Self-Serve, stored there as a salted hash, shown to the user once. It does not expire automatically; multiple active PATs per User are supported for zero-downtime rotation. Never verified by the Insights API directly — the Cloudflare Worker exchanges it first.
+_Avoid:_ long-lived JWT, refresh token
 
-**Access Token**
-A short-lived JWT (~15 min) minted from the Refresh Token. Sent to the Insights API as `Authorization: Bearer <access_token>`. Carries the verified `sub`, `org`, `tier`, `iss`, `kid`, and possibly `aud` claims. JWKS-verified on every request.
-_Note:_ the presence of `org` and `tier` in the LFX Self-Serve access token is an assumption pending confirmation with the Self-Serve team (T-015). If the existing PAT is reused, these claims may need to be added.
-_Avoid:_ calling it just "a JWT" or "the bearer token" — always use "access token" so it's clear which credential is meant
+**Token Exchange**
+The per-request Auth0 Custom Token Exchange call the Cloudflare Worker makes to swap a PAT for a short-lived Auth0-signed JWT (`grant_type=token-exchange`). Transparent to the customer — no client-side token-swap call and no Insights-hosted token endpoint. The Worker caches the JWT and the caller's tier (~10 min), which also bounds the revocation window.
+_Avoid:_ refresh flow, `/v1/auth/token`
+
+**Exchanged JWT**
+The short-lived Auth0-signed JWT the Worker forwards to the Insights API as `Authorization: Bearer <jwt>`. Carries `iss`, `sub`, `kid`, and `aud`; org and tier arrive as separate Worker-set headers rather than claims. JWKS-verified on every request. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md).
+_Avoid:_ calling it just "a JWT" or "the bearer token" — always say which credential is meant
 
 **User**
-The human account that owns one or more API Keys (Refresh Tokens) and is the billing principal. Identified by the JWT `sub` claim issued by the LFX Self-Serve App.
+The human account that owns one or more API Keys (PATs) and is the billing principal. Identified by the JWT `sub` claim.
 _Avoid:_ account, customer, client
 
 **Organization** (`org_id`)
-The LFX organization tied to a User's API access, encoded in the `org` claim of the LFX Self-Serve access token. "Belongs to" is narrow here: only authorized **Key Contacts** of an organization with an active LFX membership can hold API keys — not every employee or self-attested affiliate of the organization. Used as the shared bucket for rate-limit quotas — all API keys belonging to Key Contacts in the same org draw from one pool.
+The LFX organization tied to a User's API access, resolved by the Worker from the LFX Tier endpoint and passed to the Insights API as a header. "Belongs to" is narrow here: only authorized **Key Contacts** of an organization with an active LFX membership can hold API keys — not every employee or self-attested affiliate of the organization. Used as the shared bucket for rate-limit quotas — all API keys belonging to Key Contacts in the same org draw from one pool.
 _Avoid:_ tenant, workspace, team
 
 **Tier**
