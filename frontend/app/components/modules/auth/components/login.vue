@@ -91,10 +91,10 @@ const logoutHandler = async () => {
 
 // Update auth store when authentication state changes
 watch(
-  isAuthenticated,
-  (newAuthVal) => {
+  [isAuthenticated, user],
+  ([newAuthVal, newUser]) => {
     authStore.isAuthenticated = newAuthVal;
-    authStore.user = user.value;
+    authStore.user = newUser;
   },
   { immediate: true },
 );
