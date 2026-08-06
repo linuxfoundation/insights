@@ -17,7 +17,7 @@ The credential type behind "API Key". Issued and revoked by the LFX PAT service 
 _Avoid:_ long-lived JWT, refresh token
 
 **Token Exchange**
-The per-request Auth0 Custom Token Exchange call the Cloudflare Worker makes to swap a PAT for a short-lived Auth0-signed JWT (`grant_type=token-exchange`). Transparent to the customer — no client-side token-swap call and no Insights-hosted token endpoint. The Worker caches the JWT and the caller's tier (~10 min), which also bounds the revocation window.
+The Auth0 Custom Token Exchange call the Cloudflare Worker makes, on a cache miss, to swap a PAT for a short-lived Auth0-signed JWT (`grant_type=urn:ietf:params:oauth:grant-type:token-exchange`, plus the registered `subject_token_type` and target `audience`). Transparent to the customer — no client-side token-swap call and no Insights-hosted token endpoint. The Worker caches the JWT and the caller's tier (~10 min), which also bounds the revocation window.
 _Avoid:_ refresh flow, `/v1/auth/token`
 
 **Exchanged JWT**
