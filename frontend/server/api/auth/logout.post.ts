@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 // Auth0 logout endpoint - no longer using OIDC discovery since Auth0 uses proprietary /v2/logout
-import { deleteCookie } from 'h3';
+import { setCookie, deleteCookie } from 'h3';
 import type { H3Event } from 'h3';
 import { Pool } from 'pg';
 import { isValidRedirectUrl } from '../../utils/redirect';
@@ -10,23 +10,33 @@ import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 
-const setOIDCCookie = (event: H3Event) => {
+/**
+ * Clears all insights auth cookies with the correct domain/secure options for the current
+ * environment. In production, plain deleteCookie() is insufficient because the browser
+ * requires the Set-Cookie attributes (domain, secure, path) to match the original cookie
+ * exactly before it will honour a deletion. We therefore force-set each cookie to an empty
+ * value with maxAge=0 so the browser always removes it.
+ */
+const clearAllAuthCookies = (event: H3Event) => {
   const config = useRuntimeConfig();
 
-  const tokenCookieOptions = {
+  const cookieOptions = {
     httpOnly: true,
     secure: isProduction,
-    // Use 'none' for production to ensure cross-site compatibility with Auth0 redirects
     sameSite: 'lax' as const,
     path: '/',
-    // Force domain for production to ensure cookies work across proxy inconsistencies
     ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
     maxAge: 0,
   };
 
-  // auth_oidc_token doesn't clear on prod, so forcing it to set as empty cookie
-  setCookie(event, 'auth_oidc_token', '', tokenCookieOptions);
+  setCookie(event, 'insights_oidc_token', '', cookieOptions);
+  setCookie(event, 'insights_refresh_token', '', cookieOptions);
+  // auth_pkce and auth_redirect_to are short-lived flow cookies — no explicit domain set,
+  // so plain deleteCookie is fine here.
+  deleteCookie(event, 'auth_pkce');
+  deleteCookie(event, 'auth_redirect_to');
 };
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
@@ -89,14 +99,7 @@ export default defineEventHandler(async (event) => {
     const logoutUrl = `${auth0Base}/v2/logout?${logoutParams.toString()}`;
 
     // Clear all auth cookies
-    if (isProduction) {
-      setOIDCCookie(event);
-    } else {
-      deleteCookie(event, 'auth_oidc_token');
-    }
-    deleteCookie(event, 'auth_refresh_token');
-    deleteCookie(event, 'auth_pkce');
-    deleteCookie(event, 'auth_redirect_to');
+    clearAllAuthCookies(event);
 
     return {
       success: true,
@@ -106,8 +109,7 @@ export default defineEventHandler(async (event) => {
     console.error('Auth logout error:', error);
 
     // Still clear cookies even if logout URL generation fails
-    deleteCookie(event, 'auth_oidc_token');
-    deleteCookie(event, 'auth_refresh_token');
+    clearAllAuthCookies(event);
 
     return {
       success: true,

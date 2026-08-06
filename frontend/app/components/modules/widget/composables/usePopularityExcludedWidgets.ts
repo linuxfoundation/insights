@@ -8,7 +8,8 @@ import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import { Granularity } from '~~/types/shared/granularity';
 
 interface PopularityExcludedWidgetsParams {
-  projectSlug: Ref<string>;
+  projectSlug: Ref<string | undefined>;
+  collectionSlug?: Ref<string | undefined>;
   repos: Ref<string[] | undefined>;
   startDate: Ref<string | null>;
   endDate: Ref<string | null>;
@@ -20,23 +21,39 @@ const DOWNLOADS_WIDGETS = [Widget.PACKAGE_DOWNLOADS, Widget.PACKAGE_DEPENDENCY];
 const SEARCH_QUERIES_WIDGETS = [Widget.SEARCH_QUERIES];
 const MAILING_LIST_WIDGETS = [Widget.MAILING_LISTS_MESSAGES];
 
-function isWidgetEnabled(widget: Widget, projectWidgets: string[]): boolean {
-  return projectWidgets.includes(lfxWidgets[widget]?.key);
+function isWidgetEnabled(
+  widget: Widget,
+  projectWidgets: string[],
+  isCollectionScope: boolean,
+): boolean {
+  // Collections have no per-project `widgets` array to check against (see widget-area.vue's
+  // identical isWidgetShown branch) - availableInCollection already gated these widgets into
+  // the sidebar, so the only remaining check here is the emptiness one below.
+  return isCollectionScope || projectWidgets.includes(lfxWidgets[widget]?.key);
 }
 
 export function usePopularityExcludedWidgets(params: PopularityExcludedWidgetsParams) {
+  const isCollectionScope = computed(() => !!params.collectionSlug?.value);
+
   const hasDownloadsWidget = computed(() =>
-    DOWNLOADS_WIDGETS.some((w) => isWidgetEnabled(w, params.projectWidgets.value)),
+    DOWNLOADS_WIDGETS.some((w) =>
+      isWidgetEnabled(w, params.projectWidgets.value, isCollectionScope.value),
+    ),
   );
   const hasSearchQueriesWidget = computed(() =>
-    SEARCH_QUERIES_WIDGETS.some((w) => isWidgetEnabled(w, params.projectWidgets.value)),
+    SEARCH_QUERIES_WIDGETS.some((w) =>
+      isWidgetEnabled(w, params.projectWidgets.value, isCollectionScope.value),
+    ),
   );
   const hasMailingListWidget = computed(() =>
-    MAILING_LIST_WIDGETS.some((w) => isWidgetEnabled(w, params.projectWidgets.value)),
+    MAILING_LIST_WIDGETS.some((w) =>
+      isWidgetEnabled(w, params.projectWidgets.value, isCollectionScope.value),
+    ),
   );
 
   const popularityParams = computed(() => ({
     projectSlug: params.projectSlug.value,
+    collectionSlug: params.collectionSlug?.value,
     repos: params.repos.value,
     granularity: Granularity.MONTHLY,
     startDate: params.startDate.value,

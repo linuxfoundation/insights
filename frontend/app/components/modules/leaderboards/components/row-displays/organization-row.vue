@@ -4,7 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
-  <div class="flex items-center w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 sm:px-3 px-0 h-15">
+  <div
+    class="flex items-center w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 sm:px-3 px-0 h-15"
+    :class="item.slug ? 'cursor-pointer' : ''"
+  >
     <!-- Rank -->
     <div class="w-10 shrink-0 text-neutral-900 font-secondary overflow-hidden overflow-ellipsis">
       {{ item.rank }}
@@ -12,10 +15,10 @@ SPDX-License-Identifier: MIT
 
     <!-- Organization info -->
     <component
-      :is="isTeamMember ? nuxtLink : 'div'"
-      :to="isTeamMember ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
-      class="flex-1 min-w-0 flex gap-3 items-center text-inherit no-underline"
-      :class="isTeamMember ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
+      :is="item.slug ? nuxtLink : 'div'"
+      :to="item.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: item.slug } } : undefined"
+      class="flex-1 min-w-0 flex gap-3 items-center"
+      :class="item.slug ? 'cursor-pointer' : ''"
     >
       <lfx-avatar
         :src="item.logoUrl"
@@ -24,7 +27,8 @@ SPDX-License-Identifier: MIT
       />
       <p
         :title="item.name"
-        class="text-base leading-5 font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+        class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+        :class="item.slug ? 'hover:underline cursor-pointer' : ''"
       >
         {{ item.name }}
       </p>
@@ -44,14 +48,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, resolveComponent } from 'vue';
+import { resolveComponent } from 'vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import NumericTrends from '../trends/numeric-trends.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { useAuth } from '~~/composables/useAuth';
 
 defineProps<{
   item: Leaderboard;
@@ -59,8 +62,6 @@ defineProps<{
 }>();
 
 const nuxtLink = resolveComponent('NuxtLink');
-const { user } = useAuth();
-const isTeamMember = computed(() => !!user.value?.isLfInsightsTeamMember);
 </script>
 
 <script lang="ts">

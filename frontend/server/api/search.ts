@@ -1,12 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { SearchCollection, SearchProject, SearchRepository } from '~~/types/search';
+import type {
+  SearchCollection,
+  SearchOrganization,
+  SearchProject,
+  SearchRepository,
+} from '~~/types/search';
 import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 
 export interface SearchResponse {
   id: string;
-  type: 'project' | 'repository' | 'collection';
+  type: 'project' | 'repository' | 'collection' | 'organization';
   slug: string;
   logo: string | null;
   projectSlug: string | null;
@@ -20,19 +25,20 @@ export interface SearchResponse {
 /**
  * API Endpoint: /api/search
  * Method: GET
- * Description: Searches for collections, projects, and repositories based on the provided query.
+ * Description: Searches for collections, projects, repositories, and organizations based on the provided query.
  *
  * Query Parameters:
- * - query (string, optional): The search term to query collections, projects, and repositories.
+ * - query (string, optional): The search term to query collections, projects, repositories, and organizations.
  * - limit (number, optional): The maximum number of results to return (default: 10).
  *
  * Response:
  * - projects (Array<SearchResponse>): A list of search results of type "project".
  * - repositories (Array<SearchResponse>): A list of search results of type "repository".
  * - collections (Array<SearchResponse>): A list of search results of type "collection".
+ * - organizations (Array<SearchResponse>): A list of search results of type "organization".
  *
  * Search Response Object (SearchResponse):
- * - type (string): The type identifier for the search result (e.g., "project", "repository", "collection").
+ * - type (string): The type identifier for the search result (e.g., "project", "repository", "collection", "organization").
  * - slug (string): A unique slug identifier for the search result.
  * - logo (string | null): The logo URL associated with the search result, or null if unavailable.
  * - projectSlug (string | null): The project slug associated with the result, or null if absent.
@@ -48,6 +54,7 @@ export default defineEventHandler(async (event) => {
   const projects: SearchProject[] = [];
   const repositories: SearchRepository[] = [];
   const collections: SearchCollection[] = [];
+  const organizations: SearchOrganization[] = [];
 
   const limit: number = 10;
 
@@ -86,6 +93,12 @@ export default defineEventHandler(async (event) => {
             slug: item.slug,
             name: item.name || '',
           });
+        } else if (item.type === 'organization') {
+          organizations.push({
+            slug: item.slug,
+            name: item.name || '',
+            logo: item.logo,
+          });
         }
       });
     }
@@ -94,6 +107,7 @@ export default defineEventHandler(async (event) => {
       projects,
       repositories,
       collections,
+      organizations,
     };
   } catch (error) {
     console.error('Error fetching search results:', error);
@@ -101,6 +115,7 @@ export default defineEventHandler(async (event) => {
       projects,
       repositories,
       collections,
+      organizations,
     };
   }
 });

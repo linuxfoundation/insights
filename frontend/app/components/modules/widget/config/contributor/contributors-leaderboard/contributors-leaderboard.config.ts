@@ -6,6 +6,7 @@ import LfxWidgetFilterCollaboration from '~/components/modules/widget/components
 
 const contributorsLeaderboard: WidgetConfig = {
   key: 'contributorsLeaderboard',
+  availableInCollection: true,
   name: 'Contributors leaderboard',
   description: () =>
     'Contributors ranked by the number of contribution ' +

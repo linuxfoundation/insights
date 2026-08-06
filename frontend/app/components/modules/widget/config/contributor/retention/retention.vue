@@ -88,7 +88,7 @@ const model = computed<RetentionModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 /**
@@ -105,7 +105,8 @@ const isBelowThreshold = computed(() => {
 const granularity = Granularity.QUARTERLY;
 
 const params = computed<RetentionQueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity,
   type: model.value.activeTab,
   repos: selectedReposValues.value,

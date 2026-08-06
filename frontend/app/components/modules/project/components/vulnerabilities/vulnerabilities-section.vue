@@ -14,45 +14,55 @@ SPDX-License-Identifier: MIT
       </p>
     </div>
 
-    <!-- Aggregated view disclaimer - hidden when repos are selected -->
-    <div
-      v-if="showAggregatedDisclaimer"
-      class="p-3 bg-neutral-50 border border-neutral-100 flex items-center gap-1.5 rounded-md"
-    >
-      <lfx-icon
-        name="info-circle"
-        :size="14"
-        class="text-neutral-500"
-      />
-      <p class="text-xs leading-4 font-semibold text-neutral-500">
-        You're viewing an aggregated snapshot of security vulnerabilities detected across all project dependencies over
-        the last 365 days. For a detailed analysis,
-        <span
-          class="underline cursor-pointer"
-          @click="emit('chooseRepository')"
-          >choose a specific repository</span
-        >.
-      </p>
-    </div>
-
-    <!-- Data display -->
-    <div class="flex flex-col gap-4 md:gap-6">
-      <!-- Summary stats row -->
-      <lfx-project-vulnerability-summary :params="params" />
-
-      <!-- Charts row -->
-      <div class="flex flex-col md:flex-row gap-4 md:gap-6">
-        <lfx-project-vulnerability-severity :params="params" />
-        <lfx-project-vulnerability-ecosystem :params="params" />
-      </div>
-    </div>
-
-    <!-- Recent vulnerabilities table -->
-    <lfx-project-recent-vulnerabilities
-      :params="params"
-      :show-view-more="true"
-      @view-more="handleViewMore"
+    <!-- Archived empty state -->
+    <lfx-empty-state
+      v-if="project && isArchived"
+      icon="archive"
+      :title="emptyStateTitle"
+      :description="emptyStateDescription"
     />
+
+    <template v-else>
+      <!-- Aggregated view disclaimer - hidden when repos are selected -->
+      <div
+        v-if="showAggregatedDisclaimer"
+        class="p-3 bg-neutral-50 border border-neutral-100 flex items-center gap-1.5 rounded-md"
+      >
+        <lfx-icon
+          name="info-circle"
+          :size="14"
+          class="text-neutral-500"
+        />
+        <p class="text-xs leading-4 font-semibold text-neutral-500">
+          You're viewing an aggregated snapshot of security vulnerabilities detected across all project dependencies
+          over the last 365 days. For a detailed analysis,
+          <span
+            class="underline cursor-pointer"
+            @click="emit('chooseRepository')"
+            >choose a specific repository</span
+          >.
+        </p>
+      </div>
+
+      <!-- Data display -->
+      <div class="flex flex-col gap-4 md:gap-6">
+        <!-- Summary stats row -->
+        <lfx-project-vulnerability-summary :params="params" />
+
+        <!-- Charts row -->
+        <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+          <lfx-project-vulnerability-severity :params="params" />
+          <lfx-project-vulnerability-ecosystem :params="params" />
+        </div>
+      </div>
+
+      <!-- Recent vulnerabilities table -->
+      <lfx-project-recent-vulnerabilities
+        :params="params"
+        :show-view-more="true"
+        @view-more="handleViewMore"
+      />
+    </template>
 
     <!-- Vulnerability Drawer -->
     <lfx-project-vulnerability-drawer
@@ -74,11 +84,13 @@ import LfxProjectRecentVulnerabilities from './recent-vulnerabilities.vue';
 import LfxProjectVulnerabilityDrawer from './vulnerability-drawer.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
 
-const { selectedReposValues, project } = storeToRefs(useProjectStore());
+const { selectedReposValues, project, isArchived, emptyStateTitle, emptyStateDescription } =
+  storeToRefs(useProjectStore());
 
 const isRepository = computed(() => !!route.params.name || (project.value?.repositories?.length ?? 0) <= 1);
 const hasSelectedRepos = computed(() => selectedReposValues.value && selectedReposValues.value.length > 0);

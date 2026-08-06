@@ -102,7 +102,11 @@ export async function fetchIssuesResolution(
       changeValue: currentCumulativeCount - previousCumulativeCount,
       periodFrom: filter.startDate?.toISO() || '',
       periodTo: filter.endDate?.toISO() || '',
-      avgVelocityInDays: issueResolutionVelocity.data[0].averageIssueResolveVelocitySeconds,
+      // Tinybird can return an empty data array (or a null avg) when there are no resolved
+      // issues in scope - guard the [0] access so it degrades to null (rendered as "-") instead
+      // of throwing and dropping the whole widget response.
+      avgVelocityInDays:
+        issueResolutionVelocity.data[0]?.averageIssueResolveVelocitySeconds ?? null,
     },
     data: mergeRanges(issuesOpened.data, issuesClosed.data),
   };

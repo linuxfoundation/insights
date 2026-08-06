@@ -28,6 +28,7 @@ SPDX-License-Identifier: MIT
         v-for="(organization, index) in props.organizations"
         :key="`${organization.name}-${index}`"
         class="lfx-table-row"
+        :class="organization.slug ? 'cursor-pointer' : ''"
       >
         <div class="name-col">
           <div
@@ -37,9 +38,9 @@ SPDX-License-Identifier: MIT
             {{ index + 1 }}
           </div>
           <nuxt-link
-            v-if="isTeamMember && organization.slug"
+            v-if="organization.slug"
             :to="`/organization/${organization.slug}`"
-            class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit"
+            class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit cursor-pointer"
           >
             <lfx-avatar
               :src="organization.logo"
@@ -107,7 +108,6 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
-import { useAuth } from '~~/composables/useAuth';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);
@@ -130,9 +130,6 @@ const props = withDefaults(
 );
 
 const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
-
-const { user } = useAuth();
-const isTeamMember = computed(() => !!user.value?.isLfInsightsTeamMember);
 
 const options = {
   root: null,

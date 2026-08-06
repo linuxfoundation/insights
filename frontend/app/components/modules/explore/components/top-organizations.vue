@@ -17,8 +17,14 @@ SPDX-License-Identifier: MIT
         v-for="(row, index) in tableData"
         :key="row.id"
         class="lfx-table-row text-inherit"
+        :class="row.slug ? 'cursor-pointer' : ''"
       >
-        <div class="name-col grow !gap-3">
+        <component
+          :is="row.slug ? nuxtLink : 'div'"
+          :to="row.slug ? { name: LfxRoutes.ORGANIZATION, params: { orgSlug: row.slug } } : undefined"
+          class="name-col grow !gap-3 text-inherit no-underline"
+          :class="row.slug ? 'hover:text-brand-500 transition-colors cursor-pointer' : ''"
+        >
           <div class="mr-1 text-neutral-400 text-xs">#{{ index + 1 }}</div>
           <lfx-avatar
             :src="row.logo"
@@ -31,18 +37,19 @@ SPDX-License-Identifier: MIT
           >
             {{ row.displayName }}
           </div>
-        </div>
+        </component>
       </div>
     </div>
   </lfx-project-load-state>
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
+import { computed, resolveComponent, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
   isFullList?: boolean;
@@ -52,6 +59,7 @@ const { data, isPending, status, error, suspense } = EXPLORE_API_SERVICE.fetchTo
   props.isFullList ? 100 : 10,
 );
 
+const nuxtLink = resolveComponent('NuxtLink');
 const tableData = computed(() => data.value);
 
 const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));

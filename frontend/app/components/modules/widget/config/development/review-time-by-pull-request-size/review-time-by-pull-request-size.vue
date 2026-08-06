@@ -70,10 +70,11 @@ const model = computed<WidgetModel>({
 });
 
 const route = useRoute();
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const params = computed<QueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: '', // Not needed for review time by PR size
   repos: selectedReposValues.value,
   startDate: startDate.value,

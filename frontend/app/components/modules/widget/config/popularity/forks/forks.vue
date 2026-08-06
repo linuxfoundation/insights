@@ -97,7 +97,7 @@ const model = computed<ForksModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -114,7 +114,8 @@ const lineGranularity = computed(() =>
 );
 
 const queryParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

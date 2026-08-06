@@ -15,8 +15,8 @@ SPDX-License-Identifier: MIT
           />
         </div>
         <div>
-          <h2 class="text-heading-5 font-bold font-secondary">Activities</h2>
-          <p class="org-chart-description">by {{ orgDisplayName }} contributors over the years</p>
+          <h2 class="text-heading-5 font-bold font-secondary">Contributions</h2>
+          <p class="org-chart-description">by {{ orgDisplayName }} contributors (last 10 years)</p>
         </div>
       </div>
       <div
@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
         v-else
         class="org-chart-area org-chart-empty"
       >
-        No activity data available.
+        No contribution data available.
       </div>
     </div>
   </lfx-card>
@@ -87,7 +87,7 @@ const chartData = computed<ChartData[]>(() => {
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
-    name: 'Activities',
+    name: 'Contributions',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,

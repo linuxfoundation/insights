@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
       <p class="font-semibold text-neutral-900">Working at {{ orgDisplayName }}?</p>
       <p class="text-sm text-neutral-500">Get person-level insights about your open source contributions.</p>
       <a
-        href="https://myorg.lfx.dev"
+        href="https://app.lfx.dev/org/projects"
         target="_blank"
         rel="noopener noreferrer"
         class="no-underline mt-1"
@@ -20,8 +20,8 @@ SPDX-License-Identifier: MIT
           button-style="pill"
           size="medium"
         >
-          <span class="sm:hidden">Open in LFX Self-Serve</span>
-          <span class="hidden sm:inline">Check your organization data in LFX Self-Serve</span>
+          <span class="sm:hidden">Open in LFX</span>
+          <span class="hidden sm:inline">Check your organization data in LFX</span>
           <lfx-icon
             name="arrow-up-right-from-square"
             :size="12"

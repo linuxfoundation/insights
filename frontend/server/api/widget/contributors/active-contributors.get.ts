@@ -1,0 +1,80 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+/**
+ * Frontend expects the data to be in the following format:
+ * {
+ *   summary: {
+ *     current: number; // current value
+ *     previous: number; // previous value
+ *     percentageChange: number; // percentage change (return as actual percentage ex: 2.3 percent)
+ *     changeValue: number; // change value
+ *     periodFrom: string; // period from
+ *     periodTo: string; // period to
+ *   },
+ *   data: {
+ *     startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
+ *     endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *     contributors: number; // count of active contributors
+ *   }[];
+ * }
+ */
+/**
+ * Query params:
+ * - granularity: 'weekly' | 'monthly' | 'quarterly' | 'yearly'
+ * - project OR collectionSlug: string (exactly one required)
+ * - repository: string
+ * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
+ */
+import { DateTime } from 'luxon';
+
+import { createDataSource } from '~~/server/data/data-sources';
+import type { ActiveContributorsFilter } from '~~/server/data/types';
+import { Granularity } from '~~/types/shared/granularity';
+import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
+
+export default defineEventHandler(async (event) => {
+  // TODO: Check the project configuration to determine whether to show the data.
+  const query = getQuery(event);
+
+  const scope = getWidgetScope(query);
+
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false);
+
+  // TODO: Validate the query params
+  const filter: ActiveContributorsFilter = {
+    granularity: (query.granularity as Granularity) || Granularity.QUARTERLY,
+    ...scope,
+    repos,
+    includeCodeContributions,
+    includeCollaborations,
+    startDate: undefined,
+    endDate: undefined,
+  };
+
+  if (query.startDate && (query.startDate as string).trim() !== '') {
+    filter.startDate = DateTime.fromISO(query.startDate as string);
+  }
+
+  if (query.endDate && (query.endDate as string).trim() !== '') {
+    filter.endDate = DateTime.fromISO(query.endDate as string);
+  }
+
+  const dataSource = createDataSource();
+
+  try {
+    return await dataSource.fetchActiveContributors(filter);
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
+      throw error;
+    }
+    console.error('Error fetching active contributors:', error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Failed to fetch active contributors data',
+      data: { message: (error as Error).message },
+    });
+  }
+});

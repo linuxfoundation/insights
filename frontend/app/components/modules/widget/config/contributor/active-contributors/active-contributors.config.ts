@@ -9,6 +9,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
 const activeContributors: WidgetConfig = {
   key: 'activeContributors',
+  availableInCollection: true,
   name: 'Active contributors',
   description: () =>
     'Active contributor is an individual who performed activities such as commits, issues,' +

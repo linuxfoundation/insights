@@ -34,7 +34,10 @@ export default defineEventHandler(async (event) => {
 
     const project = response.data?.[0];
     if (!project) {
-      return project;
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Project not found',
+      });
     }
 
     return {

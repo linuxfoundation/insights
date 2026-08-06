@@ -83,11 +83,19 @@ RUN groupadd --gid 1001 nodejs && \
     useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nuxt && \
     chown -R nuxt:nodejs /app
 
+RUN mkdir -p /app/heapdumps && chown nuxt:nodejs /app/heapdumps
+
 USER nuxt
 
 EXPOSE 3000
 
 ENV NODE_OPTIONS=--max-old-space-size=3072
 
-# Use exec form for proper signal handling
-CMD ["node", ".output/server/index.mjs"]
+# Heap profiling is opt-in: set HEAP_SNAPSHOT_ENABLED=1 to activate.
+# When enabled, cd into the heapdumps volume mount so snapshots land there,
+# take snapshots on demand via SIGUSR2, and log GC activity (--trace-gc is
+# not permitted in NODE_OPTIONS, so it must live here). No
+# --heapsnapshot-near-heap-limit: serializing a full heap at the limit
+# needs more memory than is left, so it only hastens the OOM kill.
+# exec replaces sh with node for proper signal handling.
+CMD ["/bin/sh", "-c", "if [ \"$HEAP_SNAPSHOT_ENABLED\" = \"1\" ] || [ \"$HEAP_SNAPSHOT_ENABLED\" = \"true\" ]; then cd /app/heapdumps && exec node --trace-gc --heapsnapshot-signal=SIGUSR2 /app/.output/server/index.mjs; else exec node /app/.output/server/index.mjs; fi"]

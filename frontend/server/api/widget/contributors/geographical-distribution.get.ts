@@ -1,0 +1,57 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { DateTime } from 'luxon';
+import type { GeographicDistributionFilter } from '~~/server/data/types';
+import { DemographicType } from '~~/server/data/types';
+import { createDataSource } from '~~/server/data/data-sources';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
+import { getWidgetScope } from '~~/server/utils/common';
+
+/**
+ * Frontend expects the data to be in the following format:
+ * {
+ *   summary: {
+ *     totalContributions: number;
+ *     periodFrom: string;
+ *     periodTo: string;
+ *   },
+ *   data: [{
+ *     name: string; // Country Name
+ *     code: string; // country code
+ *     flag: string; // flag url
+ *     count: number; // count of contributors or organizations in that country
+ *     percentage: number; // percentage of the contribution based on the total
+ *   }]
+ * }
+ */
+/**
+ * Query params:
+ * - type: 'contributors' | 'organizations'
+ * - project OR collectionSlug: string (exactly one required)
+ * - repository: string
+ * - time-period: string
+ */
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const scope = getWidgetScope(query);
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
+
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
+  const filter: GeographicDistributionFilter = {
+    ...scope,
+    platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
+    activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
+    includeCodeContributions: true,
+    includeCollaborations: false,
+    repos,
+    type: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  };
+  const dataSource = createDataSource();
+  return await dataSource.fetchGeographicDistribution(filter);
+});

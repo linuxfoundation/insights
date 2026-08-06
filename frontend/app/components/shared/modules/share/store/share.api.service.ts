@@ -8,7 +8,8 @@ import type { ActiveContributors } from '~~/types/contributors/responses.types';
 import { Granularity } from '~~/types/shared/granularity';
 
 export interface ActiveContributorsQueryParams {
-  projectSlug: string;
+  projectSlug?: string;
+  collectionSlug?: string;
   repos?: string[];
   startDate: string;
   endDate: string;
@@ -19,6 +20,7 @@ class ShareApiService {
     const queryKey = computed(() => [
       TanstackKey.ACTIVE_CONTRIBUTORS,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
@@ -26,6 +28,7 @@ class ShareApiService {
     const queryFn = computed<QueryFunction<ActiveContributors>>(() =>
       this.activeContributorsQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         repos: params.value.repos,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
@@ -41,10 +44,12 @@ class ShareApiService {
   activeContributorsQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ActiveContributors> {
-    const { projectSlug, repos, startDate, endDate } = query();
+    const { projectSlug, collectionSlug, repos, startDate, endDate } = query();
     return async () =>
-      await $fetch(`/api/project/${projectSlug}/contributors/active-contributors`, {
+      await $fetch(`/api/widget/contributors/active-contributors`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           granularity: Granularity.WEEKLY,
           repos,
           startDate,

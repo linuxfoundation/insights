@@ -137,13 +137,14 @@ const model = computed<CodeReviewEngagementModel>({
   set: (value: CodeReviewEngagementModel) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
 
 const params = computed<QueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: '', // Not needed for code review engagement
   repos: selectedReposValues.value,
   startDate: startDate.value,

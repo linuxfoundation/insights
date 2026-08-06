@@ -8,6 +8,7 @@ import { Granularity } from '~~/types/shared/granularity';
 
 const activeDays: WidgetConfig = {
   key: 'activeDays',
+  availableInCollection: true,
   name: 'Active days',
   description: () =>
     'Number of days contributors were actively involved in the project' +

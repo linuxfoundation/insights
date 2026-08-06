@@ -5,4 +5,5 @@ export interface ExploreOrganizations {
   logo?: string;
   displayName: string;
   activityCount: number;
+  slug?: string;
 }

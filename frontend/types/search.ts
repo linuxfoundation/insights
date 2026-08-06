@@ -22,8 +22,15 @@ export interface SearchRepository {
   url: string;
 }
 
+export interface SearchOrganization {
+  name: string;
+  slug: string;
+  logo: string | null;
+}
+
 export interface SearchResults {
   projects: SearchProject[];
   repositories: SearchRepository[];
   collections: SearchCollection[];
+  organizations: SearchOrganization[];
 }
