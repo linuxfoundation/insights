@@ -28,9 +28,9 @@ Nothing else in the auth model changes: every request still requires a credentia
 
 ## Variants under consideration
 
-Both variants of option 4 remain on the table. 4b is what we plan to build; 4a stays viable if the membership lookup turns out to be better placed inside the PAT service.
+Both variants of option 4 remain on the table. 4b is the suggested direction; 4a stays viable if the membership lookup turns out to be better placed inside the PAT service.
 
-| | 4b — tier resolved by the Worker (planned) | 4a — tier enriched by the PAT service |
+| | 4b — tier resolved by the Worker (suggested) | 4a — tier enriched by the PAT service |
 |---|---|---|
 | Where tier comes from | LFX Tier endpoint, called by both the Self-Serve UI and the Worker | PAT service calls LFX Services, at issuance and at exchange |
 | How Insights receives tier | Trusted headers alongside the JWT | Claims inside the JWT |
@@ -39,7 +39,7 @@ Both variants of option 4 remain on the table. 4b is what we plan to build; 4a s
 | Cache control | Token TTL and tier TTL tunable independently | Single TTL, tied to the token |
 | Main drawback | One more service for us to build and operate (the Tier endpoint) | Couples the PAT service to membership data; enrichment work sits closer to the Auth0 extensibility environment, which has limited observability and a 10s total budget for all login-time rules |
 
-Picking 4a would require accepting that the PAT service becomes membership-aware, and confirming the enrichment call chain stays inside Auth0's extensibility limits. Final call sits with DevOps.
+Picking 4a would require accepting that the PAT service becomes membership-aware, and confirming the enrichment call chain stays inside Auth0's extensibility limits. The Insights team owns building the PAT exchange service and stewards this call, coordinating with DevOps where components land outside the Insights stack.
 
 ## Forward compatibility: LFX MCP
 
@@ -76,13 +76,14 @@ This means phase 2 (MCP server) and phase 3 (CLI) of [IN-1084](https://linuxfoun
 
 ## Ownership
 
-The architecture is approved by the LFX architecture and DevOps teams; engineering delivery is owned by the Insights team. Insights takes responsibility for building the PAT exchange service — work previously scoped and then deprioritized by Akrites — and, in variant 4b, for building the LFX Tier endpoint that both the Self-Serve UI and the Worker call. Insights also stewards the effort end to end, including coordination with DevOps where components land outside the Insights stack (Auth0 tenant configuration, Cloudflare Worker deployment). Per the 2026-05-19 review call, Insights contributes the required Self-Serve changes upstream rather than forking, with Platform support.
+The architecture is approved by the LFX architecture team (Eric Searcy, architecture lead) and DevOps; engineering delivery is owned by the Insights team. Insights takes responsibility for building the PAT exchange service — work previously scoped and then deprioritized by Akrites — and, in variant 4b, for building the LFX Tier endpoint that both the Self-Serve UI and the Worker call. Insights also stewards the effort end to end, including coordination with DevOps where components land outside the Insights stack (Auth0 tenant configuration, Cloudflare Worker deployment). Per the 2026-05-19 review call, Insights contributes the required Self-Serve changes upstream rather than forking, with Platform support.
 
 ## Coordination required
 
 | Team / owner | What we need |
 |---|---|
-| LFX DevOps / Cloud Ops (Eric Searcy, Robert Detjens) | Cloudflare Worker on the Insights zone; Auth0 CTE grant and client configuration; token and tier cache TTLs; the final 4a-vs-4b call |
+| LFX architecture (Eric Searcy, architecture lead) | Architectural sign-off on the option-4 direction and on the 4a/4b shape |
+| LFX DevOps / Cloud Ops (Robert Detjens) | Cloudflare Worker on the Insights zone; Auth0 CTE grant and client configuration; token and tier cache TTLs |
 | SSO / Auth0 administration (Alan Sherman) | Auth0 tenant changes, CTE enablement, registration of the PAT service as the token validator |
 | LFX Platform / Self-Serve engineering (Jordan Evans) | PAT service: generation, salted-hash storage, rename and revoke, audience prefixing, and the Auth0 validation callback — reusing the CTE path already live for Self-Serve impersonation tokens |
 | LFX v2 platform / member data | The membership source of truth behind the LFX Tier endpoint: how to resolve an Auth0 `sub` to an organization ID and member tier, plus where the endpoint is deployed and who operates it long-term |

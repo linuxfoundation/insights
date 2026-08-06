@@ -6,7 +6,7 @@ API access is included in the user's existing LFX membership tier. There is no s
 
 Enforcement is split across two boundaries:
 
-**PAT-issuance time (LFX Self-Serve):** Self-Serve checks Key Contact status via OpenFGA against `v2_organization` entities before issuing an Insights-audience **Personal Access Token**, and refuses non-Key-Contacts. Non-Key-Contacts cannot obtain the credential at all. The check lives in Self-Serve, not in Insights.
+**PAT-issuance time (LFX Self-Serve):** Public API access is for Key Contacts, so Self-Serve gates issuance of an Insights-audience **Personal Access Token** on Key Contact status and refuses users who do not hold it. The check lives in Self-Serve, not in Insights. **Assumption:** the underlying membership-of-record mechanism is expected to be OpenFGA relationships against `v2_organization` entities — this has not been confirmed with Platform and needs verifying at T-015.
 
 **Request time (Insights API):** the Insights API verifies the JWT signature on every request and reads the caller's org and membership tier from the headers set by the Cloudflare Worker, using them to enforce rate limits and (in future versions) per-endpoint tier gating. It never re-queries OpenFGA, Postgres member tables, or any other membership system — it trusts what the Worker resolved from the LFX Tier endpoint (see [ADR-0006](./0006-pat-token-exchange-for-api-credentials.md)). **Assumption:** the LFX Tier endpoint that resolves an Auth0 `sub` to an organization ID and member tier does not exist yet and is a delivery item, not a given.
 
