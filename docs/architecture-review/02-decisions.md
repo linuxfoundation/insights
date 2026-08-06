@@ -108,7 +108,7 @@ API access is included in the user's existing LFX membership tier. No separate b
 
 Enforcement is split across two boundaries:
 
-- **PAT-issuance time (LFX Self-Serve):** Self-Serve checks Key Contact status via OpenFGA `v2_organization` entities before issuing an Insights-audience PAT, and refuses non-Key-Contacts. The check lives in Self-Serve, not in Insights.
+- **PAT-issuance time (LFX Self-Serve):** Self-Serve gates issuance of an Insights-audience PAT on Key Contact status and refuses users who do not hold it. The check lives in Self-Serve, not in Insights. The mechanism is expected to be OpenFGA relationships against `v2_organization` entities — unconfirmed, verify at T-015.
 - **Request time (Insights API):** Insights verifies the Worker-supplied JWT signature and reads `tier` and `org` from the Worker-supplied headers, using them for rate limits and future per-endpoint tier gating. It never re-queries OpenFGA or any membership system.
 
 Revoking a membership does not immediately invalidate an already-issued PAT — full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
