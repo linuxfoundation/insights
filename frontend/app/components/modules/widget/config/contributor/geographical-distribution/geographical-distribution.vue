@@ -67,21 +67,6 @@ SPDX-License-Identifier: MIT
             </span>
           </div>
         </div>
-        <div
-          v-if="status !== 'pending'"
-          class="flex flex-col gap-5"
-        >
-          <div
-            v-for="item in unknownGeoMapData"
-            :key="item.name"
-            class="flex flex-row justify-between items-center text-sm border-neutral-100 border-t pt-5 mt-5"
-          >
-            <span class="text-neutral-500 font-medium"> Unknown location </span>
-            <span class="text-neutral-500 font-medium">
-              {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
-            </span>
-          </div>
-        </div>
       </div>
     </lfx-project-load-state>
   </section>
@@ -156,9 +141,6 @@ const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistri
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const geoMapDataCountries = computed<GeoMapData[] | undefined>(() =>
   geoMapData.value ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined,
-);
-const unknownGeoMapData = computed<GeoMapData[] | undefined>(() =>
-  geoMapData.value ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined,
 );
 
 const chartData = computed<ChartData[]>(
