@@ -34,7 +34,7 @@ The shared LFX PAT service issues the credential, with a distinct Insights audie
 - **Scope enforcement:** natural — `aud` already identifies Insights, and the Worker rejects tokens carrying another audience prefix.
 - **Revocation granularity:** per-audience, so rotating the Insights credential leaves other LFX integrations intact.
 
-We commit to the issuer (LFX Self-Serve) and to JWKS verification on the Insights side.
+Two issuers are involved and must not be conflated: **LFX Self-Serve (the PAT service) issues the PAT**, an opaque credential Insights never verifies; **Auth0 issues the exchanged JWT**, and its `iss` and JWKS endpoint are what the Insights API configures for verification. We commit to LFX Self-Serve as the PAT issuer and to Auth0 JWKS verification on the Insights side.
 
 ## Why this replaces the previous Auth0-based design
 
