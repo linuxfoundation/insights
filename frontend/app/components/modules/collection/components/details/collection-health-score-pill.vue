@@ -48,22 +48,24 @@ const healthScoreLabel = computed(() => {
     return props.healthLabel.charAt(0).toUpperCase() + props.healthLabel.slice(1);
   }
   const score = props.score;
-  if (score >= 80) return 'Excellent';
-  if (score >= 60) return 'Healthy';
-  if (score >= 40) return 'Fair';
-  if (score >= 20) return 'Concerning';
+  if (score >= 85) return 'Excellent';
+  if (score >= 70) return 'Healthy';
+  if (score >= 50) return 'Fair';
+  if (score >= 30) return 'Concerning';
   return 'Critical';
 });
 
 const healthScoreDotClass = computed(() => {
   if (props.healthLabel) {
     if (props.healthLabel === 'excellent' || props.healthLabel === 'healthy') return 'bg-health-healthy';
-    if (props.healthLabel === 'fair' || props.healthLabel === 'concerning') return 'bg-health-concerning';
+    if (props.healthLabel === 'fair') return 'bg-health-fair';
+    if (props.healthLabel === 'concerning') return 'bg-health-concerning';
     return 'bg-health-critical';
   }
   const score = props.score;
-  if (score >= 60) return 'bg-health-healthy';
-  if (score >= 20) return 'bg-health-concerning';
+  if (score >= 70) return 'bg-health-healthy';
+  if (score >= 50) return 'bg-health-fair';
+  if (score >= 30) return 'bg-health-concerning';
   return 'bg-health-critical';
 });
 </script>

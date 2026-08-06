@@ -40,6 +40,7 @@ export interface GaugeData {
   noData?: boolean;
   graphOnly?: boolean;
   gaugeType: 'half' | 'full';
+  lineWidth?: number;
 }
 
 export interface CategoryDataItem {

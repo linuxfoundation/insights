@@ -11,6 +11,7 @@ import { lfxWidgets } from '../../widget/config/widget.config';
 import type {
   HealthScoreV2Results,
   ImpactBreakdownResults,
+  HealthBreakdownResults,
 } from '~~/types/overview/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Organization } from '~~/types/contributors/responses.types';
@@ -46,6 +47,17 @@ class OverviewApiService {
       await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-impact`);
 
     return useQuery<ImpactBreakdownResults>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchHealthScoreBreakdown(params: ComputedRef<{ projectSlug: string }>) {
+    const queryKey = computed(() => [TanstackKey.HEALTH_SCORE_BREAKDOWN, params.value.projectSlug]);
+    const queryFn: QueryFunction<HealthBreakdownResults> = async () =>
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-breakdown`);
+
+    return useQuery<HealthBreakdownResults>({
       queryKey,
       queryFn,
     });

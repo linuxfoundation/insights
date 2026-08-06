@@ -103,17 +103,18 @@ const avgHealthScore = computed(() => props.metrics?.avgHealthScore);
 // intentionally left untouched. Colors use the shared health-* tokens from colors.ts.
 const healthScoreLabel = computed(() => {
   const score = avgHealthScore.value ?? 0;
-  if (score >= 80) return 'Excellent';
-  if (score >= 60) return 'Healthy';
-  if (score >= 40) return 'Fair';
-  if (score >= 20) return 'Concerning';
+  if (score >= 85) return 'Excellent';
+  if (score >= 70) return 'Healthy';
+  if (score >= 50) return 'Fair';
+  if (score >= 30) return 'Concerning';
   return 'Critical';
 });
 
 const healthScoreDotClass = computed(() => {
   const score = avgHealthScore.value ?? 0;
-  if (score >= 60) return 'bg-health-healthy';
-  if (score >= 20) return 'bg-health-concerning';
+  if (score >= 70) return 'bg-health-healthy';
+  if (score >= 50) return 'bg-health-fair';
+  if (score >= 30) return 'bg-health-concerning';
   return 'bg-health-critical';
 });
 </script>

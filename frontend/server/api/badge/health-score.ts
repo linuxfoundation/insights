@@ -16,7 +16,8 @@ export default defineEventHandler(async (event): Promise<void> => {
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const config = getHealthScoreV2Config(res.data[0].healthLabel);
+    const healthLabel = res.data[0].healthLabel;
+    const config = getHealthScoreV2Config(healthLabel);
     const message = encodeURIComponent(config.label);
     const label = encodeURIComponent('Health Score');
     const color = config.ghBadgeColor.replace('#', '');

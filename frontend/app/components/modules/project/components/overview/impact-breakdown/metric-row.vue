@@ -10,8 +10,15 @@ SPDX-License-Identifier: MIT
       <div class="flex items-center gap-2 flex-wrap">
         <span class="text-sm font-semibold text-neutral-900">{{ props.name }}</span>
         <lfx-tag
-          v-if="props.band"
-          variation="positive"
+          v-if="props.isPending"
+          variation="default"
+          size="small"
+          type="dashed"
+          >Pending</lfx-tag
+        >
+        <lfx-tag
+          v-else-if="props.band"
+          variation="info"
           size="small"
           >{{ props.band }}</lfx-tag
         >
@@ -24,7 +31,7 @@ SPDX-License-Identifier: MIT
       </div>
       <span
         v-if="props.signalType"
-        class="text-xs text-neutral-400"
+        class="text-xs text-accent-600 underline decoration-dotted underline-offset-2"
         >{{ props.signalType }} signal</span
       >
       <p class="text-xs text-neutral-500 mt-1">
@@ -41,13 +48,20 @@ SPDX-License-Identifier: MIT
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 
-const props = defineProps<{
-  name: string;
-  description: string;
-  value: number | null;
-  band: string | null;
-  signalType?: 'Primary' | 'Secondary' | null;
-}>();
+const props = withDefaults(
+  defineProps<{
+    name: string;
+    description: string;
+    value: number | null;
+    band: string | null;
+    signalType?: 'Primary' | 'Secondary' | null;
+    isPending?: boolean;
+  }>(),
+  {
+    signalType: null,
+    isPending: false,
+  },
+);
 </script>
 
 <script lang="ts">

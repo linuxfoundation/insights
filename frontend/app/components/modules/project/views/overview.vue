@@ -6,24 +6,23 @@ SPDX-License-Identifier: MIT
   <div class="container">
     <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
       <div class="w-full md:w-3/4 flex flex-col gap-6">
-        <lfx-card
-          class="pt-6 flex flex-col md:gap-10 gap-5"
-          :class="{
-            'pb-6': !(hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'),
-          }"
-        >
+        <lfx-repos-exclusion-footer
+          v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
+          page-content="health-score"
+        />
+        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
           <lfx-project-trust-score-v2
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
             :health-label="healthScoreV2Data?.healthLabel ?? null"
             :impact-score="healthScoreV2Data?.impactScore ?? null"
             :impact-label="healthScoreV2Data?.impactLabel ?? null"
             :lifecycle-label="healthScoreV2Data?.lifecycleLabel ?? null"
+            :maintainer-health-score-v2="healthScoreV2Data?.maintainerHealthScoreV2 ?? null"
+            :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
+            :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :status="healthScoreV2Status"
             :is-repo-selected="selectedRepositories.length > 0"
-          />
-          <lfx-repos-exclusion-footer
-            v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
-            page-content="health-score"
+            :signals="healthBreakdownData ?? null"
           />
         </lfx-card>
 
@@ -37,6 +36,7 @@ SPDX-License-Identifier: MIT
             :maintainer-health-score-v2="healthScoreV2Data?.maintainerHealthScoreV2 ?? null"
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
+            :signals="healthBreakdownData ?? null"
           />
         </lfx-card>
 
@@ -91,8 +91,11 @@ const {
   suspense: impactBreakdownSuspense,
 } = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
 
+const { data: healthBreakdownData, suspense: healthBreakdownSuspense } =
+  OVERVIEW_API_SERVICE.fetchHealthScoreBreakdown(params);
+
 onServerPrefetch(async () => {
-  await Promise.all([suspense(), impactBreakdownSuspense()]);
+  await Promise.all([suspense(), impactBreakdownSuspense(), healthBreakdownSuspense()]);
 });
 </script>
 

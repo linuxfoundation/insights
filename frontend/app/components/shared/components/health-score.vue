@@ -17,25 +17,25 @@ SPDX-License-Identifier: MIT
     Unavailable
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 80"
+    v-else-if="props.score >= 85"
     variation="positive-solid"
   >
     Excellent
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 60"
+    v-else-if="props.score >= 70"
     variation="positive"
   >
     Healthy
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 40"
+    v-else-if="props.score >= 50"
     variation="info"
   >
     Fair
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 20"
+    v-else-if="props.score >= 30"
     variation="warning"
   >
     Concerning

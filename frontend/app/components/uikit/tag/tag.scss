@@ -90,4 +90,13 @@
       @apply px-2.5 h-6;
     }
   }
+
+  /* Dashed (pending state, e.g. a signal still computing) */
+  &--dashed {
+    @apply italic border border-dashed;
+
+    &.c-tag--default {
+      @apply border-neutral-300 bg-neutral-100 text-neutral-400;
+    }
+  }
 }

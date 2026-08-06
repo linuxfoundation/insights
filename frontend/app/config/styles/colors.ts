@@ -115,6 +115,7 @@ export const lfxColors = {
   // scale. TODO: Verify with Nuno whether these should be folded into an existing scale.
   health: {
     healthy: '#00bc7d',
+    fair: '#009aff',
     concerning: '#fe9a00',
     critical: '#fb2c36',
   },
