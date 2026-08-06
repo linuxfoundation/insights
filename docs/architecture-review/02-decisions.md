@@ -36,21 +36,21 @@ API docs live in `api/docs/` as a standalone VitePress site, served by Fastify u
 
 All endpoints, including those serving public project data, require a valid API key. There is no unauthenticated path. A missing or invalid key returns 401 immediately. This is intentional: rate limiting requires a stable identity, and attribution data is essential for roadmap prioritization. 
 
+### API credentials are PATs exchanged for short-lived JWTs — [docs/adr/0006](../adr/0006-pat-token-exchange-for-api-credentials.md)
+
+The customer-facing credential is a Personal Access Token issued by the LFX Self-Serve App. A Cloudflare Worker in front of the Insights API exchanges it, on a cache miss (~10 min TTL), for a short-lived Auth0-signed JWT via Auth0 Custom Token Exchange, resolves the caller's org and membership tier from an LFX Tier endpoint, and forwards both to the Insights API as trusted headers — stripping any client-supplied copies, with the origin reachable only through the Worker. The Insights API verifies the JWT and never sees the PAT. No client-side token-swap call, no Insights-hosted token endpoint, and the same Worker handles plain OAuth2 access tokens — so the MCP and CLI phases reuse this path unchanged.
+
+Delivery is owned by the Insights team (approved architecture; engineering owns delivery): we build the PAT exchange service and the LFX Tier endpoint, and steward coordination with DevOps, Platform/Self-Serve, SSO, and the LFX v2 platform team. Variant 4b (tier resolved by the Worker) is the suggested direction; 4a (tier enriched by the PAT service) stays viable. Full details, including the coordination table, in [docs/adr/0006](../adr/0006-pat-token-exchange-for-api-credentials.md).
+
 ### API keys are issued by the LFX Self-Serve App — [docs/adr/0015](../adr/0015-api-keys-issued-by-lfx-self-serve.md)
 
-API keys are refresh tokens issued by the LFX Self-Serve App at `app.lfx.dev/settings`. Customer code exchanges refresh tokens for short-lived access tokens via `POST api.insights.linuxfoundation.org/v1/auth/token` — a thin proxy to Self-Serve's `/token` endpoint so customers configure only one host. The Insights API JWKS-verifies the access token on every request and reads `sub`, `org`, and `tier` from the verified claims — Insights stores no keys and runs no key-management UI of its own.
-
-Whether the existing `app.lfx.dev/settings` personal access token is reused as the refresh token or a new Insights-scoped refresh token is minted is an open product question — see ADR-0015 and §9 of the plan.
+LFX Self-Serve is the issuance and management surface for API credentials — Insights stores no keys and runs no key-management UI of its own. The credential form and exchange path are defined by ADR-0006.
 
 Storing keys in Auth0 (and building an Insights-side management UI) was rejected because it duplicates a UI the LFX Self-Serve App already runs. Storing keys in our own Postgres was rejected — we'd own the signing key, the revocation surface, and the token lifecycle.
 
 ### Tiers control rate limits only in v1 — [docs/adr/0005](../adr/0005-tiers-control-rate-limits-only.md)
 
 All tiers see all endpoints in v1 (which are existing endpoints that power the widgets in Insights). The Tier attached to an Organization only determines the size of its Rate-limit Pool. The per-route "required tier" mechanism is built into the framework (future gating is a config change, not an architecture change), but every v1 endpoint declares the minimum tier. Engineers must not add per-endpoint tier checks without a product decision — doing so breaks callers who integrated assuming open access.
-
-### Refresh tokens are long-lived; access tokens are short-lived — [docs/adr/0006](../adr/0006-refresh-and-short-lived-access-tokens.md)
-
-Refresh tokens do not expire automatically. Multiple active refresh tokens per user are supported for zero-downtime rotation (mint new → switch → revoke old). Access tokens are short-lived (~15 min, confirmed at T-015). Revocation is owned by LFX Self-Serve — revoking a refresh token prevents future access token mints; in-flight access tokens expire naturally. No Insights-side deny-list or introspection endpoint needed.
 
 ### Collections-only permission check — [docs/adr/0007](../adr/0007-collections-only-permission-check.md)
 
@@ -108,10 +108,10 @@ API access is included in the user's existing LFX membership tier. No separate b
 
 Enforcement is split across two boundaries:
 
-- **Token-mint time (LFX Self-Serve):** Self-Serve checks Key Contact status via OpenFGA `v2_organization` entities before issuing an Insights access token. The precise moment depends on the PAT model (open — ADR-0015 Q1): with a new Insights-scoped refresh token the check happens at token issuance; with the existing PAT reused, the check happens at `POST /v1/auth/token` exchange time. Either way the check is in Self-Serve; non-Key-Contacts never receive a valid Insights access token.
-- **Request time (Insights API):** Insights verifies the JWT signature, reads `tier` and `org` from the verified claims, and uses them for rate limits and future per-endpoint tier gating. It never re-queries OpenFGA or any membership system.
+- **PAT-issuance time (LFX Self-Serve):** Self-Serve gates issuance of an Insights-audience PAT on Key Contact status and refuses users who do not hold it. The check lives in Self-Serve, not in Insights. The mechanism is expected to be OpenFGA relationships against `v2_organization` entities — unconfirmed, verify at T-015.
+- **Request time (Insights API):** Insights verifies the Worker-supplied JWT signature and reads `tier` and `org` from the Worker-supplied headers, using them for rate limits and future per-endpoint tier gating. It never re-queries OpenFGA or any membership system.
 
-Revoking a membership does not immediately invalidate existing refresh tokens — full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
+Revoking a membership does not immediately invalidate an already-issued PAT — full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
 
 ### Datadog: hybrid custom metrics + APM trace metrics — [PUBLIC_API_PLAN.md §3 D5 + §6](../PUBLIC_API_PLAN.md#d5-datadog-metrics-strategy--custom-metrics-vs-apm-trace-metrics)
 
