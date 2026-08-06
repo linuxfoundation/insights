@@ -3,11 +3,6 @@
 import { isLocal } from '../utils/common';
 import { verifyOrRefreshOidcToken } from '../utils/auth-refresh';
 
-const isJWT = (token: string) => {
-  const parts = token.split('.');
-  return parts.length === 3;
-};
-
 export default defineEventHandler(async (event) => {
   const url = getRouterParam(event, '_') || event.node.req.url || '';
 
@@ -54,13 +49,6 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 401,
       statusMessage: 'Authorization header required',
-    });
-  }
-
-  if (!decodedToken.original_id_token || !isJWT(decodedToken.original_id_token)) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Invalid token format',
     });
   }
 
