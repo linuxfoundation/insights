@@ -5,38 +5,50 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="container">
     <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
-      <div class="w-full md:w-3/4">
-        <lfx-card
-          class="pt-6 flex flex-col md:gap-10 gap-5"
-          :class="{
-            'pb-6': !(hasSelectedArchivedRepos && status !== 'pending'),
-          }"
-        >
-          <lfx-project-trust-score
-            :trust-score-summary="trustSummary"
-            :status="status"
-            :error="error"
-            :is-empty="isEmpty"
-            :score-display="scoreDisplay"
-            :is-repo-selected="isRepoSelected"
+      <div class="w-full md:w-3/4 flex flex-col gap-6">
+        <lfx-repos-exclusion-footer
+          v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
+          page-content="health-score"
+        />
+        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
+          <lfx-project-trust-score-v2
+            :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
+            :health-label="healthScoreV2Data?.healthLabel ?? null"
+            :impact-score="healthScoreV2Data?.impactScore ?? null"
+            :impact-label="healthScoreV2Data?.impactLabel ?? null"
+            :lifecycle-label="healthScoreV2Data?.lifecycleLabel ?? null"
+            :maintainer-health-score-v2="healthScoreV2Data?.maintainerHealthScoreV2 ?? null"
+            :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
+            :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
+            :status="healthScoreV2Status"
+            :is-repo-selected="selectedRepositories.length > 0"
+            :signals="healthBreakdownData ?? null"
           />
-          <div
-            v-if="!isArchived && !isEmpty"
-            class="px-6"
-          >
-            <lfx-project-score-tabs
-              :trust-score-summary="trustSummary"
-              :data="data"
-              :status="status"
-              :error="error"
-              :score-display="scoreDisplay"
-              :security-score="securityScore"
-              :is-repo-selected="isRepoSelected"
-            />
-          </div>
-          <lfx-repos-exclusion-footer
-            v-if="hasSelectedArchivedRepos && status !== 'pending'"
-            page-content="health-score"
+        </lfx-card>
+
+        <lfx-card
+          v-if="healthScoreV2Status !== 'pending' && !isArchived"
+          class="p-6"
+        >
+          <lfx-health-breakdown-section
+            :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
+            :health-label="healthScoreV2Data?.healthLabel ?? null"
+            :maintainer-health-score-v2="healthScoreV2Data?.maintainerHealthScoreV2 ?? null"
+            :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
+            :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
+            :signals="healthBreakdownData ?? null"
+          />
+        </lfx-card>
+
+        <lfx-card
+          v-if="healthScoreV2Status !== 'pending' && !isArchived"
+          class="p-6"
+        >
+          <lfx-impact-breakdown-section
+            :impact-score="healthScoreV2Data?.impactScore ?? null"
+            :impact-label="healthScoreV2Data?.impactLabel ?? null"
+            :data="impactBreakdownData ?? null"
+            :status="impactBreakdownStatus"
           />
         </lfx-card>
       </div>
@@ -51,104 +63,39 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { WidgetArea } from '../../widget/types/widget-area';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
-import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
-import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import LfxProjectTrustScoreV2 from '~/components/modules/project/components/overview/trust-score-v2.vue';
+import LfxHealthBreakdownSection from '~/components/modules/project/components/overview/health-breakdown-section.vue';
+import LfxImpactBreakdownSection from '~/components/modules/project/components/overview/impact-breakdown-section.vue';
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
-import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
-import type { HealthScoreResults } from '~~/types/overview/responses.types';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
-const { selectedReposValues, project, allArchived, hasSelectedArchivedRepos, isProjectArchived } =
-  storeToRefs(useProjectStore());
+const { hasSelectedArchivedRepos, selectedRepositories, isArchived } = storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
-  repos: selectedReposValues.value,
 }));
 
-// Contributors score is only displayed if some contributors widgets are enabled
-const displayContributorsScore = computed(() => isScoreVisible(WidgetArea.CONTRIBUTORS));
+const {
+  data: healthScoreV2Data,
+  status: healthScoreV2Status,
+  suspense,
+} = OVERVIEW_API_SERVICE.fetchHealthScoreV2(params);
 
-// Development score is only displayed if some development widgets are enabled
-const displayDevelopmentScore = computed(() => isScoreVisible(WidgetArea.DEVELOPMENT));
+const {
+  data: impactBreakdownData,
+  status: impactBreakdownStatus,
+  suspense: impactBreakdownSuspense,
+} = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
 
-// Popularity score is only displayed if some popularity widgets are enabled
-const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARITY));
-
-// Security score is only displayed if security data is available
-const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
-
-const isArchived = computed(() => allArchived.value || isProjectArchived.value);
-
-const scoreDisplay = computed(() => ({
-  overall:
-    displayContributorsScore.value &&
-    displayDevelopmentScore.value &&
-    displayPopularityScore.value &&
-    displaySecurityScore.value,
-  contributors: displayContributorsScore.value,
-  development: displayDevelopmentScore.value,
-  popularity: displayPopularityScore.value,
-  security: displaySecurityScore.value,
-}));
-
-const { data: overviewData, status, error, suspense } = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
-
-/**
- * TODO: remove this after https://linear.app/lfx/issue/INS-822/periodicly-check-for-widgets-data-and-enabledisable-them
- * is implemented
- *
- * This is a workaround to show/hide the Search Queries from the score.
- * ===============================
- */
-
-// delete the search queries from the overview data
-const data = computed(() => {
-  const data = { ...overviewData.value };
-  if (overviewData.value?.searchQueries?.value === 0) {
-    delete data.searchQueries;
-  }
-  return data as HealthScoreResults;
-});
-
-/**
- * ===============================
- */
-
-const securityScore = computed(() => data.value?.securityCategoryPercentage || []);
-
-const trustSummary = computed<TrustScoreSummary>(() => ({
-  overall: data.value?.overallScore || 0,
-  popularity: data.value?.popularityPercentage || 0,
-  contributors: data.value?.contributorPercentage || 0,
-  security: data.value?.securityPercentage || 0,
-  development: data.value?.developmentPercentage || 0,
-}));
-
-const isScoreVisible = (widgetArea: WidgetArea) => {
-  const widgetKeys = OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea);
-  return widgetKeys.some((widget) => project.value?.widgets?.includes(widget.key));
-};
-
-const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
-
-const isEmpty = computed(() =>
-  [
-    trustSummary.value?.overall,
-    trustSummary.value?.contributors,
-    trustSummary.value?.popularity,
-    trustSummary.value?.development,
-    trustSummary.value?.security,
-  ].every((score) => score === 0),
-);
+const { data: healthBreakdownData, suspense: healthBreakdownSuspense } =
+  OVERVIEW_API_SERVICE.fetchHealthScoreBreakdown(params);
 
 onServerPrefetch(async () => {
-  await suspense();
+  await Promise.all([suspense(), impactBreakdownSuspense(), healthBreakdownSuspense()]);
 });
 </script>
 

@@ -31,6 +31,7 @@ import LfxChip from '~/components/uikit/chip/chip.vue';
 
 const props = defineProps<{
   score: number;
+  healthLabel?: string | null;
   unavailable?: boolean;
 }>();
 
@@ -39,19 +40,32 @@ const props = defineProps<{
 // labeled metrics chip). Duplicated rather than shared: only two call sites (row/card) and the
 // logic is ~10 lines, so a composable would be more ceremony than the duplication it avoids.
 // health-score.vue itself is intentionally left untouched (used elsewhere in the app).
+//
+// Prefers the API's real healthLabel (v2) when present; falls back to deriving the label from
+// the score for sparse rows where the pipe didn't return a label.
 const healthScoreLabel = computed(() => {
+  if (props.healthLabel) {
+    return props.healthLabel.charAt(0).toUpperCase() + props.healthLabel.slice(1);
+  }
   const score = props.score;
-  if (score >= 80) return 'Excellent';
-  if (score >= 60) return 'Healthy';
-  if (score >= 40) return 'Fair';
-  if (score >= 20) return 'Concerning';
+  if (score >= 85) return 'Excellent';
+  if (score >= 70) return 'Healthy';
+  if (score >= 50) return 'Fair';
+  if (score >= 30) return 'Concerning';
   return 'Critical';
 });
 
 const healthScoreDotClass = computed(() => {
+  if (props.healthLabel) {
+    if (props.healthLabel === 'excellent' || props.healthLabel === 'healthy') return 'bg-health-healthy';
+    if (props.healthLabel === 'fair') return 'bg-health-fair';
+    if (props.healthLabel === 'concerning') return 'bg-health-concerning';
+    return 'bg-health-critical';
+  }
   const score = props.score;
-  if (score >= 60) return 'bg-health-healthy';
-  if (score >= 20) return 'bg-health-concerning';
+  if (score >= 70) return 'bg-health-healthy';
+  if (score >= 50) return 'bg-health-fair';
+  if (score >= 30) return 'bg-health-concerning';
   return 'bg-health-critical';
 });
 </script>
