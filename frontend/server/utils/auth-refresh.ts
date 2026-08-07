@@ -65,7 +65,10 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       claims,
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
-      original_id_token: tokenResponse.id_token,
+      username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
+        | string
+        | undefined,
+      intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 
     const oidcToken = jwt.sign(oidcTokenPayload, config.auth0ClientSecret, {
@@ -169,9 +172,17 @@ export const verifyOrRefreshOidcToken = async (
 
   if (oidcToken && config.auth0ClientSecret) {
     try {
-      return jwt.verify(oidcToken, config.auth0ClientSecret, {
+      const decoded = jwt.verify(oidcToken, config.auth0ClientSecret, {
         algorithms: ['HS256'],
       }) as DecodedOidcToken;
+
+      // Cookies minted before username/intercomJwt were embedded carry the raw
+      // original_id_token instead (never present in new tokens). Treat those as stale
+      // and fall through to refresh so the cookie is re-minted with the new claims.
+      // Removable once all pre-deploy tokens have expired.
+      if (!('original_id_token' in decoded)) {
+        return decoded;
+      }
     } catch (error) {
       // Token expired or otherwise invalid — fall through to refresh.
       if (!(error instanceof jwt.TokenExpiredError)) {
