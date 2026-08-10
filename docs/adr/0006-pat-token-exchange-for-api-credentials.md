@@ -19,8 +19,8 @@ Request flow:
 1. User creates a PAT, named and scoped to an audience, in LFX Self-Serve Developer Settings. For the Insights audience, Self-Serve validates the user's org and tier against the LFX Tier endpoint before issuance. The PAT is shown once; the PAT service stores username, PAT ID, and a salted hash. Insights-audience PATs carry the `lfi_` prefix.
 2. User calls `api.insights.linuxfoundation.org` with `Authorization: Bearer lfi_...`.
 3. On a cache miss, the Worker validates the `lfi_` prefix and calls Auth0 `POST /oauth/token` with `grant_type=urn:ietf:params:oauth:grant-type:token-exchange`, `subject_token=lfi_...`, the `subject_token_type` URN registered for the PAT profile in the Auth0 tenant, the target `audience`, and the Worker's client credentials (confidential client). Auth0 invokes the Custom Token Exchange action, which calls the PAT service to validate the opaque token and return the identity; Auth0 returns an Auth0-signed access token to the Worker. The exact `subject_token_type` value and client-auth method are fixed with SSO at T-015.
-4. The Worker fetches the user's org and member tier from the LFX Tier endpoint, caches the access token and the tier together (~10 min), and forwards the request to the Insights API as `Bearer <JWT>` plus an `x-tier` header and a companion header carrying the B2B Organization ID. The Worker **strips or overwrites** any client-supplied copy of those headers before forwarding.
-5. The Insights API verifies the JWT and reads org and tier from the Worker-set headers, using them as the rate-limit key. Rate limiting itself lives in the API (T-019), not in the Worker. Where a user is Key Contact for several organizations, the highest tier applies; which organization ID accompanies that tier, including ties, is open at T-015.
+4. The Worker fetches the user's org and member tier from the LFX Tier endpoint, caches the access token and the tier together (~10 min) keyed by a **salted hash of the PAT**, never by the raw token, so the Worker does not become a credential store, and forwards the request to the Insights API as `Bearer <JWT>` plus an `x-tier` header and a companion header carrying the B2B Organization ID. The Worker **strips or overwrites** any client-supplied copy of those headers before forwarding.
+5. The Insights API verifies the JWT and reads org and tier from the Worker-set headers, using them as the rate-limit key. Rate limiting itself lives in the API (T-019), not in the Worker. Where a user is Key Contact for several organizations, the highest tier applies and the organization ID connected to that tier is used as the rate-limit pool key; on a tie between orgs at the same tier, the first one returned by the Tier endpoint is used.
 
 Because the org and tier headers are trusted but not cryptographically bound to the JWT, the origin must be reachable only through the Worker (Cloudflare Access / mTLS / shared secret at the origin — mechanism fixed with DevOps at T-015) and the API must reject requests arriving without that proof. Without both, a caller could set its own tier or select another org.
 
@@ -37,7 +37,7 @@ Both variants of option 4 remain on the table. 4b is the suggested direction; 4a
 | Where tier comes from | LFX Tier endpoint, called by both the Self-Serve UI and the Worker | PAT service calls LFX Services, at issuance and at exchange |
 | How Insights receives tier | Trusted headers alongside the JWT | Claims inside the JWT |
 | PAT service scope | PATs only | PATs + membership lookup |
-| Rate limiting | Limiter keys straight off headers (`limit_req_zone` on a header is simpler than parsing a JWT) | Requires JWT parsing before the limiter can key on anything |
+| Rate limiting | Limiter keys straight off headers, no JWT parsing needed | Requires JWT parsing before the limiter can key on anything |
 | Cache control | Token TTL and tier TTL tunable independently | Single TTL, tied to the token |
 | Main drawback | One more service for us to build and operate (the Tier endpoint) | Couples the PAT service to membership data; enrichment work sits closer to the Auth0 extensibility environment, which has limited observability and a 10s total budget for all login-time rules |
 
@@ -88,8 +88,8 @@ The architecture is approved by the LFX architecture team (Eric Searcy, architec
 | LFX DevOps / Cloud Ops (Robert Detjens) | Cloudflare Worker on the Insights zone; Auth0 CTE grant and client configuration; token and tier cache TTLs |
 | SSO / Auth0 administration (Alan Sherman) | Auth0 tenant changes, CTE enablement, registration of the PAT service as the token validator |
 | LFX Platform / Self-Serve engineering (Jordan Evans) | PAT service: generation, salted-hash storage, rename and revoke, audience prefixing, and the Auth0 validation callback — reusing the CTE path already live for Self-Serve impersonation tokens |
-| LFX v2 platform / member data | The membership source of truth behind the LFX Tier endpoint: how to resolve an Auth0 `sub` to an organization ID and member tier, plus where the endpoint is deployed and who operates it long-term |
-| Product / Design (Jonathan Reimer, Nuno, Kieran) | Self-Serve Developer Settings UX; Key Contact gating rules; tier → rate-limit mapping, including the highest-tier-wins rule across multiple orgs |
+| LFX v2 platform / member data | The membership source of truth behind the LFX Tier endpoint: how to resolve an Auth0 `sub` to an organization ID and member tier, plus where the endpoint is deployed and who operates it long-term. Multi-org responses must be returned in a **stable, deterministic order** (not set/map iteration), since the first org at the highest tier becomes the rate-limit pool key on ties. |
+| Product / Design (Jonathan Reimer, Nuno, Kieran) | Self-Serve Developer Settings UX; Key Contact gating rules; tier → rate-limit mapping, including the highest-tier-wins rule across multiple orgs and the first-returned-org tie-break on equal tiers |
 | Insights engineering | PAT exchange service build-out, the LFX Tier endpoint, Worker logic, API-side JWT and header verification, rate limiting, customer documentation |
 
 ## Consequences
@@ -110,6 +110,6 @@ The architecture is approved by the LFX architecture team (Eric Searcy, architec
 
 ### Risks
 - **4a vs 4b not finally settled.** Mitigation: the difference is confined to where tier resolution lives; the PAT, exchange, and verification path are identical, so the decision can be made without reworking the rest.
-- **Revocation is not immediate** — bounded by the Worker's token and tier cache TTL (~10 min), not by the access token's `exp`. Mitigation: keep the cache TTL short and document the window for customers.
+- **Revocation is not immediate** — bounded by the Worker's token and tier cache TTL (~10 min). Mitigation: align the JWT `exp` requested from Auth0 with the Worker cache TTL so both expire together, keeping JWT semantics and cache lifetime in sync; keep the TTL short and document the window for customers.
 - **Header spoofing if the origin is directly reachable.** The org and tier headers are trusted, not signed. Mitigation: lock the origin to Worker-only access and strip client-supplied copies of those headers at the Worker; both are named requirements on T-015b and T-017, not assumptions.
 - **Cross-team delivery risk** — four teams on one critical path. Mitigation: Insights stewards coordination (see Ownership) and the dependencies above are tracked as named deliverables rather than assumptions.

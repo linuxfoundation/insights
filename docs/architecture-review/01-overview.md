@@ -172,7 +172,7 @@ The following items are unresolved and need input before or during implementatio
 | # | Question | Drives |
 |---|---|---|
 | 1 | The CTE / JWT / header contract: the `subject_token_type` URN and Worker client-auth method for the Auth0 exchange, the Auth0 `iss` and JWKS URL, the Insights `aud`, and the organization header name (unnamed in the 4b diagram). Self-Serve owner is named in ADR-0006; PATs are opaque, so there is no key-claims schema to agree. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
-| 2 | Highest tier wins when a user is Key Contact for several orgs (decided, 2026-05-19 review call). Still open: which organization ID accompanies the selected tier, including ties — this is the rate-limit pool key, so it cannot stay ambiguous. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 2 | Multi-org Key Contact resolution (decided, 2026-05-19 review call + 2026-08-10): highest tier wins and the organization ID connected to that tier is returned; on a tie between orgs at the same tier, the first one returned by the Tier endpoint is used as the rate-limit pool key. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
 | 3 | Variant 4a vs 4b — is tier resolved by the Cloudflare Worker from the LFX Tier endpoint (4b, suggested) or enriched inside the PAT service (4a)? Insights stewards the call, with DevOps input. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md). | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
 **Notes:**
 
