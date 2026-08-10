@@ -3,7 +3,8 @@
 import type { ReportRequest } from '~~/types/report/requests.types';
 
 export function buildIssueTitle(body: ReportRequest): string {
-  return `[Report issue] ${body.projectName ? `${body.projectName} ${body.widget}` : body.pageTitle}`;
+  const label = [body.projectName, body.widget].filter(Boolean).join(' ') || body.pageTitle;
+  return `[Report issue] ${label}`;
 }
 
 export function buildIssueBody(body: ReportRequest): string {

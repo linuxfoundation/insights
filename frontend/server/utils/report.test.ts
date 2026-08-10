@@ -23,6 +23,11 @@ describe('buildIssueTitle', () => {
     const title = buildIssueTitle(baseRequest);
     expect(title).toEqual('[Report issue] Foo Project');
   });
+
+  test('omits widget when not present', () => {
+    const title = buildIssueTitle({ ...baseRequest, projectName: 'Foo' });
+    expect(title).toEqual('[Report issue] Foo');
+  });
 });
 
 describe('buildJiraDescription', () => {

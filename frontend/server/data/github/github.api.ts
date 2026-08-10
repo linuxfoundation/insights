@@ -4,6 +4,17 @@ import { createPrivateKey } from 'node:crypto';
 import { SignJWT, importPKCS8 } from 'jose';
 import { useRuntimeConfig } from '#imports';
 
+// Accept either a base64-encoded key or the raw PEM text pasted directly (with real or
+// escaped "\n" newlines) - env vars commonly end up holding either form.
+// GitHub issues PKCS#1 keys ("BEGIN RSA PRIVATE KEY"); jose's importPKCS8 only accepts PKCS#8.
+// node:crypto auto-detects the input format, so re-exporting as pkcs8 normalizes either one.
+export function normalizePrivateKey(rawKey: string): string {
+  const pem = rawKey.includes('BEGIN')
+    ? rawKey.replace(/\\n/g, '\n')
+    : Buffer.from(rawKey, 'base64').toString('utf8');
+  return createPrivateKey(pem).export({ type: 'pkcs8', format: 'pem' }).toString();
+}
+
 // ponytail: no installation-token caching - minted per request. Installation tokens
 // are valid ~1h; add an in-memory cache keyed by expiry if report volume hits rate limits.
 async function getInstallationToken(): Promise<string> {
@@ -13,14 +24,7 @@ async function getInstallationToken(): Promise<string> {
     throw new Error('GitHub App credentials are not configured');
   }
 
-  // Accept either a base64-encoded key or the raw PEM text pasted directly (with real or
-  // escaped "\n" newlines) - env vars commonly end up holding either form.
-  const pem = githubAppPrivateKey.includes('BEGIN')
-    ? githubAppPrivateKey.replace(/\\n/g, '\n')
-    : Buffer.from(githubAppPrivateKey, 'base64').toString('utf8');
-  // GitHub issues PKCS#1 keys ("BEGIN RSA PRIVATE KEY"); jose's importPKCS8 only accepts PKCS#8.
-  // node:crypto auto-detects the input format, so re-exporting as pkcs8 normalizes either one.
-  const pkcs8Pem = createPrivateKey(pem).export({ type: 'pkcs8', format: 'pem' }).toString();
+  const pkcs8Pem = normalizePrivateKey(githubAppPrivateKey);
   const key = await importPKCS8(pkcs8Pem, 'RS256');
   const now = Math.floor(Date.now() / 1000);
 

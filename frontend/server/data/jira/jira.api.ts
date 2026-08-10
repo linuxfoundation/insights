@@ -14,7 +14,9 @@ let cachedCloudId: string | undefined;
 
 async function getCloudId(jiraBaseUrl: string): Promise<string> {
   if (!cachedCloudId) {
-    const { cloudId } = await $fetch<{ cloudId: string }>(`${jiraBaseUrl}/_edge/tenant_info`);
+    const { cloudId } = await $fetch<{ cloudId: string }>(`${jiraBaseUrl}/_edge/tenant_info`, {
+      timeout: 5000,
+    });
     cachedCloudId = cloudId;
   }
   return cachedCloudId;
@@ -26,6 +28,7 @@ async function getAccessToken(clientId: string, clientSecret: string): Promise<s
     'https://auth.atlassian.com/oauth/token',
     {
       method: 'POST',
+      timeout: 5000,
       body: {
         grant_type: 'client_credentials',
         client_id: clientId,
@@ -55,6 +58,7 @@ export async function createJiraIssue({
 
   return await $fetch(`https://api.atlassian.com/ex/jira/${cloudId}/rest/api/2/issue`, {
     method: 'POST',
+    timeout: 5000,
     headers: {
       Authorization: `Bearer ${accessToken}`,
       Accept: 'application/json',
