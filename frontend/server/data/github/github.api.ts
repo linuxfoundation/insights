@@ -62,7 +62,7 @@ export async function createGitHubIssue(
   return await $fetch(url, {
     method: 'POST',
     headers: {
-      Authorization: `token ${token}`,
+      Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github+json',
     },
     body: {
