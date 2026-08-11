@@ -1,46 +1,40 @@
 # API keys are issued by the LFX Self-Serve App
 
-API keys are refresh tokens issued by the LFX Self-Serve App at `app.lfx.dev/settings`. The Insights API exposes a proxied `/v1/auth/token` endpoint (forwarding to Self-Serve's `/token`) so customers configure only one host. Customer code exchanges refresh tokens for short-lived access tokens via that proxy (per ADR-0006); the Insights API receives only access tokens on actual API requests. The Insights API is a verifier only: it fetches the LFX Self-Serve JWKS endpoint, verifies the access token's signature, and reads identity + authorization claims from the verified payload. Insights stores no keys, runs no key-management UI, and has no dependency on the Auth0 Management API.
+LFX Self-Serve is the issuance and management surface for API credentials. Insights stores no keys, runs no key-management UI, and has no dependency on the Auth0 Management API.
 
-> **Note:** this decision assumes LFX Self-Serve can support the required token model (Key Contact gating, `org`/`tier` claims, JWKS exposure, and the `/token` proxy endpoint). Coordination with the Self-Serve team is required at T-015 before implementation — the exact shape of the solution may change based on what Self-Serve can provide.
+API keys are Personal Access Tokens issued by the LFX Self-Serve App in Developer Settings. A Cloudflare Worker in front of the Insights API exchanges the PAT for a short-lived Auth0-signed JWT (Auth0 Custom Token Exchange) and forwards the request with that JWT plus org/tier headers; the Insights API receives only the JWT and never sees the PAT. The Insights API is a verifier only — it verifies the JWT signature and reads identity from the verified payload. The exchange mechanism is specified in [ADR-0006](./0006-pat-token-exchange-for-api-credentials.md).
 
-## JWT claims used by the Insights API
+> **Note:** this decision assumes LFX Self-Serve can support the required model (Key Contact gating at issuance, PAT storage and revocation, audience prefixing). Coordination with the Self-Serve, Platform, and DevOps teams is required before implementation — see the coordination table in ADR-0006.
 
-These claims live on the **access token**, not the refresh token.
+## What the Insights API reads from each request
 
-| Claim | Purpose |
-|---|---|
-| `iss` | LFX Self-Serve issuer URL — used to select the right JWKS and reject foreign tokens. |
-| `sub` | User ID — used for revocation reference and as the `customer_id` span attribute in APM traces. |
-| `org` | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). **Assumption:** Self-Serve includes this in the access token. Exact claim name and feasibility confirmed at T-015. |
-| `tier` | LFX membership tier (`silver` / `gold` / `platinum`) — drives rate-limit pool size and any future per-route tier gating. **Assumption:** Self-Serve includes this in the access token. Confirmed at T-015. |
-| `kid` | Key ID — selects the right key in the JWKS response for signature verification. |
-| `aud` | Service audience — required if the open question below resolves to using the existing platform PAT with scope enforcement. |
+The Insights API reads these values from the Worker-supplied JWT and headers. The final claim-vs-header split follows ADR-0006 variant 4b and is confirmed with DevOps before implementation.
 
-## Token endpoint proxy
+| Value | Source | Purpose |
+|---|---|---|
+| `iss` | JWT claim | Auth0 issuer URL — used to select the right JWKS and reject foreign tokens. |
+| `sub` | JWT claim | User ID — used as the revocation reference and the `customer_id` span attribute in APM traces. |
+| `kid` | JWT header | Key ID — selects the right key in the JWKS response for signature verification. |
+| `aud` | JWT claim | Service audience — PATs are minted per audience, so the Insights audience is what lets the same mechanism later serve MCP and other LFX surfaces. |
+| Organization ID | Worker header | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). |
+| Tier | Worker header (`x-tier`) | LFX membership tier (`silver` / `gold` / `platinum`) — drives rate-limit pool size and any future per-route tier gating. |
 
-The Insights API exposes `POST /v1/auth/token` as a thin passthrough to LFX Self-Serve's `/token` endpoint. Insights forwards the request body and headers verbatim and returns the response verbatim. It does not mint, validate, or persist refresh tokens. The proxy exists purely so customers configure a single host (`api.insights.linuxfoundation.org`) for both API calls and access-token minting.
-
-Failure modes: if Self-Serve returns a 4xx or 5xx, Insights forwards the response as-is. If Self-Serve is unreachable, Insights returns `503` with `code: upstream_unavailable` matching its standard error envelope.
+There is no Insights-hosted token endpoint. The exchange happens in the Worker, transparently to the customer, so customers configure a single host (`api.insights.linuxfoundation.org`) and send their PAT directly as `Authorization: Bearer`.
 
 ## Revocation
 
-Revocation is owned by LFX Self-Serve. When a user revokes a refresh token in `app.lfx.dev/settings`, the next `POST /v1/auth/token` call (forwarded to Self-Serve) fails with `400 invalid_grant` — the customer's code can no longer mint new access tokens. Already-issued access tokens continue to work until their `exp` (~15 min). Insights maintains no deny-list and runs no introspection endpoint — revocation lag is bounded by the access token's natural lifetime.
+Revocation is owned by LFX Self-Serve: revoking a PAT in Developer Settings makes the next token exchange fail, so no new JWTs can be minted for it. Insights maintains no deny-list and runs no introspection endpoint. The revocation window is bounded by the Worker's token and tier cache TTL (~10 min).
 
-## Open question: reuse existing platform PAT vs mint a new Insights-scoped refresh token
+## Credential scoping: audience, not a second token type
 
-**Undecided.** This is a product question to resolve with the LFX Self-Serve team at T-015. Both options are valid:
+The shared LFX PAT service issues the credential, with a distinct Insights audience (and audience-specific prefix, `lfi_`) providing the scoping. That keeps a single token type across LFX while letting Insights reject tokens issued for other services and letting users revoke per audience:
 
-| Aspect | Reuse existing `app.lfx.dev/settings` PAT as refresh token | Mint new Insights-scoped refresh token |
-|---|---|---|
-| User experience | One token across every LFX service — best UX. | Extra "Create Insights API token" step in `app.lfx.dev/settings`. |
-| Compromise blast radius | A leaked refresh token grants access to whatever the platform PAT covers — wider than Insights alone. | A leaked Insights refresh token is scoped to Insights only; revoking it doesn't break the user's other LFX integrations. |
-| Scope enforcement | Requires a service-scope claim (`aud: insights.linuxfoundation.org` or a `scopes` array) so Insights can refuse tokens issued for unrelated services. | Natural: `aud`/`iss` already implies Insights. |
-| Claim requirements | The existing PAT may need additional claims (`org`, `tier`) if they're not already present. | LFX Self-Serve mints with the exact claim shape Insights needs. |
-| Revocation granularity | Revoking the platform PAT loses every LFX integration at once. | Per-service revocation — rotating the Insights refresh token leaves other LFX integrations intact. |
-| LFX Self-Serve team work | Extend/add claims on an existing token type. | New token type + UI affordance in `app.lfx.dev/settings`. |
+- **User experience:** one token type across every LFX service, created per audience in Developer Settings.
+- **Compromise blast radius:** an Insights-audience PAT is scoped to Insights only; revoking it doesn't break the user's other LFX integrations.
+- **Scope enforcement:** natural — `aud` already identifies Insights, and the Worker rejects tokens carrying another audience prefix.
+- **Revocation granularity:** per-audience, so rotating the Insights credential leaves other LFX integrations intact.
 
-We commit to the issuer (LFX Self-Serve) and the verification path (JWKS from LFX Self-Serve). The token form is decided at T-015.
+Two issuers are involved and must not be conflated: **LFX Self-Serve (the PAT service) issues the PAT**, an opaque credential Insights never verifies; **Auth0 issues the exchanged JWT**, and its `iss` and JWKS endpoint are what the Insights API configures for verification. We commit to LFX Self-Serve as the PAT issuer and to Auth0 JWKS verification on the Insights side.
 
 ## Why this replaces the previous Auth0-based design
 

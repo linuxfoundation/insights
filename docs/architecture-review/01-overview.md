@@ -32,7 +32,7 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 | Base URL | `https://api.insights.linuxfoundation.org/v1/...` |
 | Location | `/api` at monorepo root, added to `pnpm-workspace.yaml` |
 | Framework | Fastify + TypeScript + TypeBox |
-| Auth | Refresh tokens issued by LFX Self-Serve (`app.lfx.dev/settings`); customer code mints short-lived access tokens via Insights `/v1/auth/token` (proxied to Self-Serve); Insights JWKS-verifies access tokens on every request |
+| Auth | Personal Access Tokens issued by LFX Self-Serve; a Cloudflare Worker exchanges the PAT for a short-lived Auth0-signed JWT via Auth0 Custom Token Exchange on a cache miss (~10 min) and adds org/tier headers; Insights JWKS-verifies the JWT on every request |
 | Rate limiting | Redis sliding window, per-org pool, tier-driven |
 | Versioning | URL prefix (`/v1`, `/v2`); additive-only within a version |
 | Contract | Tolerant-reader; no breaking changes within a major version |
@@ -47,33 +47,46 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 ## Architecture
 
 ```
-┌─────────────────────┐  1. create token  ┌──────────────────────────────────┐
+┌─────────────────────┐  1. create PAT    ┌──────────────────────────────────┐
 │  User (browser)     │ ────────────────▶ │  LFX Self-Serve App              │
-│                     │                   │  app.lfx.dev/settings            │
-│                     │ ◀──────────────── │  Issues + revokes refresh tokens │
-│                     │  2. refresh token  │  Publishes JWKS endpoint         │
-└─────────────────────┘                   └──────────────────┬───────────────┘
-          │                                                   ▲
-          │ 3. paste refresh token                            │ 4. forward /token
-          │    into server env                                │    request
-          ▼                                                   │
-┌─────────────────────┐  POST /v1/auth/token  ┌──────────────┴──────────────────┐
-│  Customer server    │ ────────────────────▶ │  api.insights.linuxfoundation   │
-│                     │ ◀──────────────────── │  .org  (Fastify, TypeScript)    │
-│                     │  5. access token       │                                 │
-│                     │     (~15 min)          │  /v1/auth/token  (proxy)        │
-│                     │                        │  /v1/development/...            │
-│                     │  6. Bearer <access_token>  /v1/contributors/...          │
-│                     │ ────────────────────▶  │  /v1/popularity/...             │
-└─────────────────────┘                        │  /v1/security/...               │
-                                               │  /v1/collections/...            │
-                               7. JWKS verify  └───────────┬─────────────────────┘
-                     ┌─────────────────────────────────────┘
-                     ▼
-          (LFX Self-Serve JWKS endpoint — cached)
-                                               └───────────┬─────────────────────┐
-                                                           │                     │
-                                                           ▼                     ▼
+│                     │                   │  Developer Settings              │
+│                     │ ◀──────────────── │  PAT service: issue / revoke,    │
+│                     │  2. lfi_... (once) │  salted-hash storage             │
+└─────────────────────┘                   └──────────────────────────────────┘
+          │
+          │ 3. paste PAT into server env
+          ▼
+┌─────────────────────┐  4. Bearer lfi_...   ┌─────────────────────────────────┐
+│  Customer server    │ ───────────────────▶ │  Cloudflare Worker              │
+│                     │                      │  (Insights zone)                │
+└─────────────────────┘ ◀─────────────────── │  - detects lfi_ prefix          │
+                          9. response        │  - Auth0 CTE exchange (5)       │
+                                             │  - LFX Tier lookup (6)          │
+                                             │  - caches both (~10 min)        │
+                                             └──┬────────────┬─────────────────┘
+              5. RFC 8693 token exchange (miss)│            │ 6. sub → org + tier
+                       (Auth0 → PAT service     │            ▼
+                        validates, returns JWT) │   ┌──────────────────────┐
+                                                ▼   │  LFX Tier endpoint   │
+                                       ┌──────────┐ └──────────────────────┘
+                                       │  Auth0   │
+                                       └──────────┘
+                                             │
+             7. Bearer <JWT> + org / x-tier headers
+                                             ▼
+                                     ┌─────────────────────────────────┐
+                                     │  api.insights.linuxfoundation   │
+                                     │  .org  (Fastify, TypeScript)    │
+                                     │                                 │
+                                     │  /v1/development/...            │
+                                     │  /v1/contributors/...           │
+                                     │  /v1/popularity/...             │
+                                     │  /v1/security/...               │
+                                     │  /v1/collections/...            │
+                       8. JWKS verify └───────────┬─────────────────────┘
+                     ┌────────────────────────────┴─────────┐
+                     ▼                                      ▼
+              (Auth0 JWKS endpoint — cached)
                                               ┌────────────────────────────────────────┐
                                               │  Redis                                 │
                                               │  Rate-limit counters                   │
@@ -111,9 +124,9 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 
 ### Key management
 
-Refresh tokens (what customers call their "API key") are created and managed entirely in the LFX Self-Serve App at `app.lfx.dev/settings`. The LFX Insights frontend deep-links to that page from a `/settings/api-keys` placeholder ([E15](../PUBLIC_API_PLAN.md#epic-e15--key-management-entry-point-lfx-insights-frontend)); it does not implement create / list / revoke. Membership gating (only Key Contacts in member organizations can create keys) is enforced by LFX Self-Serve, not by Insights. What the customer pastes into their environment is a refresh token; their code mints short-lived access tokens from it via Insights' proxied `/v1/auth/token` endpoint (per ADR-0006 and ADR-0015).
+Personal Access Tokens (what customers call their "API key") are created and managed entirely in the LFX Self-Serve App's Developer Settings. The LFX Insights frontend deep-links to that page from a `/settings/api-keys` placeholder ([E15](../PUBLIC_API_PLAN.md#epic-e15--key-management-entry-point-lfx-insights-frontend)); it does not implement create / list / revoke. Membership gating (only Key Contacts in member organizations can create keys) is enforced by LFX Self-Serve, not by Insights. What the customer pastes into their environment is the PAT itself, sent directly as `Authorization: Bearer lfi_...` — the Cloudflare Worker exchanges it for a short-lived Auth0-signed JWT on a cache miss (~10 min TTL), so there is no client-side token-swap call and no Insights-hosted token endpoint (per ADR-0006 and ADR-0015).
 
-Whether the existing `app.lfx.dev/settings` personal access token is reused as the refresh token or a new Insights-scoped refresh token is minted is an open product question; see ADR-0015.
+Credentials come from the shared LFX PAT service, scoped to Insights by audience and by the `lfi_` prefix rather than by being a separate token type; see ADR-0006.
 
 ### Shared library strategy
 
@@ -158,9 +171,9 @@ The following items are unresolved and need input before or during implementatio
 
 | # | Question | Drives |
 |---|---|---|
-| 1 | Who is the named LFX Self-Serve contact for API key claims schema coordination? | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
-| 2 | Can a user belong to more than one org, or hold more than one membership tier? Affects how the rate-limit pool and tier are resolved per request. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
-| 3 | Reuse existing `app.lfx.dev/settings` personal access token, or mint a new Insights-scoped token? See ADR-0015 for trade-off table. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 1 | The CTE / JWT / header contract: the `subject_token_type` URN and Worker client-auth method for the Auth0 exchange, the Auth0 `iss` and JWKS URL, the Insights `aud`, and the organization header name (unnamed in the 4b diagram). Self-Serve owner is named in ADR-0006; PATs are opaque, so there is no key-claims schema to agree. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 2 | Multi-org Key Contact resolution (decided, 2026-05-19 review call + 2026-08-10): highest tier wins and the organization ID connected to that tier is returned; on a tie between orgs at the same tier, the first one returned by the Tier endpoint is used as the rate-limit pool key. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 3 | Variant 4a vs 4b — is tier resolved by the Cloudflare Worker from the LFX Tier endpoint (4b, suggested) or enriched inside the PAT service (4a)? Insights stewards the call, with DevOps input. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md). | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
 **Notes:**
 
 - Deployed on the same Kubernetes cluster as `frontend/`. ([T-002](../PUBLIC_API_PLAN.md#epic-e1--foundation--framework))
