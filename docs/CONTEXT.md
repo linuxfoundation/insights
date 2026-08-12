@@ -31,7 +31,7 @@ The LFX organization tied to a User's API access, resolved by the Worker from th
 _Avoid_: tenant, workspace, team
 
 **Tier**:
-A named LFX membership level attached to an Organization that controls the rate-limit pool size. Known tiers in ascending order: Silver, Gold, Platinum (exact hierarchy and rate-limit numbers confirmed at T-093). In v1, tiers affect only rate limits; endpoint-level gating is reserved for future versions.
+A named LFX membership level attached to an Organization that controls the rate-limit pool size. Known tiers in ascending order: Silver, Gold, Platinum (exact hierarchy and rate-limit numbers confirmed at T-091). In v1, tiers affect only rate limits; endpoint-level gating is reserved for future versions.
 _Avoid_: plan, subscription
 
 ### API Shape

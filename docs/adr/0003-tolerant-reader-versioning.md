@@ -17,7 +17,7 @@ Within `/v1`, we commit to additive-only changes: new response fields, new optio
 
 An endpoint can be promoted when all of the following are true:
 
-1. **Load test passes**: baseline req/s established, rate limiter validated under load ([T-090](../PUBLIC_API_PLAN.md#epic-e16--pre-launch)).
+1. **Load test passes**: baseline req/s established, rate limiter validated under load ([T-090](../PUBLIC_API_PLAN.md#epic-e16-pre-launch)).
 2. **No contract regressions**: the closed-alpha cohort has been using it without shape changes for at least one week.
 3. **Error and latency budgets healthy**: 5xx rate and p99 latency within acceptable thresholds in Datadog.
 4. **Security sign-off**: no open auth, tenant isolation, or key-leakage issues for this endpoint.

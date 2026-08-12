@@ -283,14 +283,16 @@ Implements §3 D4 (Claude skill).
 Key creation, listing, and revocation live entirely in the LFX Self-Serve App (per ADR-0015). The LFX Insights frontend only needs a small placeholder that deep-links to `app.lfx.dev/settings`.
 
 - **T-095** Add a `/settings/api-keys` page in the LFX Insights frontend with a single "Manage API keys" CTA that opens `app.lfx.dev/settings` in a new tab. No list, no create, no revoke UI.
-- **T-096** Closed-alpha gating signal: surface a "request access" state for users whose org is not on the closed-alpha allowlist ([T-089](#epic-e16--pre-launch)), so they understand why their key (if any) returns 403 against `/v1-alpha`.
+- **T-096** Closed-alpha gating signal: surface a "request access" state for users whose org is not on the closed-alpha allowlist ([T-089](#epic-e16-pre-launch)), so they understand why their key (if any) returns 403 against `/v1-alpha`.
 
 ### Epic E16: Pre-Launch
 
 These are the gates for the **launch** (per §9 #23), not for individual endpoints, which roll out per-endpoint through closed alpha to silent public.
 
+- **T-089** Closed-alpha org allowlist: define, store, and maintain the allowlist of organizations admitted to `/v1-alpha`; keys from orgs not on the list receive 403.
 - **T-090** Load testing (k6 or artillery): establish baseline req/s per pod, validate rate limiter under load. Required gate for promoting an endpoint from closed alpha to silent public.
 - **T-091** Tier-to-API-access mapping finalized with product (per §9 #2 reuses existing LFX tiers, but rate-limit numbers per tier need product sign-off).
+- **T-092** Security review of the auth chain (Worker, token exchange, JWKS verification, trusted headers) and the API surface. Required launch gate.
 
 ---
 
@@ -335,13 +337,13 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 ## 7. Critical Files / Areas to Reference During Implementation
 
-- `frontend/server/data/tinybird/tinybird.ts`: TB client with `AdaptiveSemaphore`, bucket routing, response typing. Extract to shared lib ([T-004](#epic-e1--foundation--framework)).
+- `frontend/server/data/tinybird/tinybird.ts`: TB client with `AdaptiveSemaphore`, bucket routing, response typing. Extract to shared lib ([T-004](#epic-e1-foundation--framework)).
 - `frontend/server/data/types.ts`: shared filter shapes (`DefaultFilter`, `ActiveContributorsFilter`, etc.). These are **not** extracted to a shared lib; `/api` defines its own TypeBox equivalents per endpoint (filter shapes are TypeBox schemas, not shared runtime types). Use this file as a reference when porting handlers.
-- `frontend/server/utils/rate-limiter.ts`: Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
-- `frontend/server/utils/jwt.ts`: existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with Auth0 JWKS verification of the Worker-supplied JWT (per ADR-0006) ([T-017](#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve)).
+- `frontend/server/utils/rate-limiter.ts`: Redis sliding-window implementation; extract the core primitive into `libs/rate-limiter`, write a new org-aware wrapper in `/api` keyed by `org_id` ([T-019](#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve)).
+- `frontend/server/utils/jwt.ts`: existing Bearer/JWT helper (`auth(event)`). Conceptually closest to the public-API auth but uses one shared secret; we'll replace the verify step with Auth0 JWKS verification of the Worker-supplied JWT (per ADR-0006) ([T-017](#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve)).
 - `frontend/setup/rate-limiter.ts`: current rate-limiter rules. Inspiration for tier-based rules.
-- `frontend/server/api/development/**`: all endpoints to inventory in [T-040](#epic-e7--endpoint-migration-phase-1-development).
-- `pnpm-workspace.yaml`: currently lists `frontend`, `workers/*`. Add `api` and `libs/*` entries when bootstrapping ([T-001](#epic-e1--foundation--framework)).
+- `frontend/server/api/development/**`: all endpoints to inventory in [T-040](#epic-e7-endpoint-migration-phase-1-development).
+- `pnpm-workspace.yaml`: currently lists `frontend`, `workers/*`. Add `api` and `libs/*` entries when bootstrapping ([T-001](#epic-e1-foundation--framework)).
 
 ---
 
@@ -349,8 +351,8 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 - Unit + integration tests per endpoint (mocked TB).
 - Contract tests against staging TB for each endpoint family.
-- Load test ([T-090](#epic-e16--pre-launch)) against staging cluster.
-- Security review ([T-091](#epic-e16--pre-launch)).
+- Load test ([T-090](#epic-e16-pre-launch)) against staging cluster.
+- Security review ([T-092](#epic-e16-pre-launch)).
 - Datadog dashboards green for 72h on stage with synthetic traffic before GA per phase.
 - One real partner integration completed end-to-end before declaring a phase GA.
 
@@ -378,7 +380,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 13. **Caller scope (v1):** server-to-server only. CORS responds with no `Access-Control-Allow-Origin` for the API, which blocks browser callers. **Revisit before GA**: we may extend to browser support (per-key origin allowlist or a publishable+secret key model) if customer demand emerges. Track as a follow-up.
 14. **Billing model:** bundled with existing LFX membership. No standalone billing infra in v1. Tier comes from the existing LFX tier on the user's org. Usage is metered only for rate-limit enforcement and Datadog dashboards. Not for invoicing. Enforcement is split: (a) **PAT-issuance time**: Self-Serve gates issuance of an Insights-audience PAT on Key Contact status (mechanism expected to be OpenFGA `v2_organization` relationships. Unconfirmed, verify at T-015); (b) **request time**: the Insights API verifies the Worker-supplied JWT and reads `tier` and `org` from the Worker-set headers on every request to enforce rate limits and future per-endpoint tier gating, but never re-queries OpenFGA or any membership system. See ADR-0010.
 15. **Pagination:** cursor-based. Request: `cursor` (opaque base64url, omit on first page) + `pageSize` (default 50, max 200). Response: `{ data, pageSize, nextCursor }`; `nextCursor: null` indicates end of list. No `total` field (counting on every request doubles Tinybird load). Cursor-based chosen over the Nuxt `page`/`pageSize` convention for stability under mutations, O(log N) cost vs offset scan, and fit with server-to-server iteration. See ADR-0011.
-16. **URL port strategy:** **hybrid**. Default to port-as-is from Nuxt to `/v1/...`, applying only light normalization (kebab-case path segments, plural collection nouns). Rename only when the existing URL is **genuinely misleading** to an external developer. The `nuxt-to-api` skill ([T-080](#epic-e14--endpoint-conversion-tooling)) defaults to port-as-is and surfaces the URL for explicit reviewer approval; renames are a per-endpoint judgement call recorded in the PR.
+16. **URL port strategy:** **hybrid**. Default to port-as-is from Nuxt to `/v1/...`, applying only light normalization (kebab-case path segments, plural collection nouns). Rename only when the existing URL is **genuinely misleading** to an external developer. The `nuxt-to-api` skill ([T-080](#epic-e14-endpoint-conversion-tooling)) defaults to port-as-is and surfaces the URL for explicit reviewer approval; renames are a per-endpoint judgement call recorded in the PR.
 17. **Versioning semantics ("breaking change" definition):** **tolerant-reader / additive-only**. Within a version, allowed: adding response fields, adding optional query params, adding endpoints, expanding accepted enum INPUT values, adding new error codes, adding new success status codes. Requires a major version bump: removing/renaming a response field, changing a field's type, making an optional input required, narrowing accepted input values, removing an endpoint, changing the error envelope shape, changing default or max pageSize, or changing the cursor encoding semantics. **Customers commit to ignoring unknown response fields** (documented prominently). Matches Stripe/GitHub/Google.
 18. **Caching contract (v1):** origin-side Redis cache only (~5–60s TTL depending on endpoint). All responses set `Cache-Control: private, max-age=0`. Customers do not cache, intermediaries do not cache. Lets us tune TTL without breaking customers. Public/CDN cache headers can be introduced later as a non-breaking improvement once we have real traffic data.
 19. **JSON key casing:** **camelCase** for all request and response JSON keys (`startDate`, `activityTypes`, `includeCodeContributions`). The existing Nuxt code is mixed (some snake_case fields like `activity_types`); the `nuxt-to-api` skill normalizes these to camelCase at port time. Date values are ISO-8601 strings in UTC (`2025-12-31T23:59:59Z`): committed as a convention, not a question.
@@ -391,12 +393,12 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 **Still open:**
 
-1. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.): TBD, pending product sign-off. Drives [T-093](#epic-e16--pre-launch).
+1. Rate-limit numbers per LFX membership tier (Gold, Platinum, etc.): TBD, pending product sign-off. Drives [T-091](#epic-e16-pre-launch).
 2. **Variant 4a vs 4b: where does tier resolution live?** 4b (planned) has the Cloudflare Worker resolve org and tier from an LFX Tier endpoint and pass them as headers; 4a has the PAT service enrich them into the JWT. The PAT, exchange, and verification path are identical either way, so this can be settled without reworking the rest. Final call sits with DevOps. See [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 
 **Resolved:**
-- Deployed on the same Kubernetes cluster as frontend. ([T-002](#epic-e1--foundation--framework))
-- Using existing Datadog org and APM agent. ([T-025](#epic-e4--observability-opentelemetry--datadog))
+- Deployed on the same Kubernetes cluster as frontend. ([T-002](#epic-e1-foundation--framework))
+- Using existing Datadog org and APM agent. ([T-025](#epic-e4-observability-opentelemetry--datadog))
 - `granularity` most granular option will be `daily`. No `hourly`. (E7–E11)
 - API docs gated until launch. (E5)
 - Base URL: `https://api.insights.linuxfoundation.org/v1/...`

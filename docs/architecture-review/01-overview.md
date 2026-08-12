@@ -129,7 +129,7 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 
 ### Key management
 
-Personal Access Tokens (what customers call their "API key") are created and managed entirely in the LFX Self-Serve App's Developer Settings. The LFX Insights frontend deep-links to that page from a `/settings/api-keys` placeholder ([E15](../PUBLIC_API_PLAN.md#epic-e15--key-management-entry-point-lfx-insights-frontend)); it does not implement create / list / revoke. Membership gating (only Key Contacts in member organizations can create keys) is enforced by LFX Self-Serve, not by Insights. What the customer pastes into their environment is the PAT itself, sent directly as `Authorization: Bearer lfi_...`. The Cloudflare Worker exchanges it for a short-lived Auth0-signed JWT on a cache miss (~10 min TTL), so there is no client-side token-swap call and no Insights-hosted token endpoint (per ADR-0006 and ADR-0015).
+Personal Access Tokens (what customers call their "API key") are created and managed entirely in the LFX Self-Serve App's Developer Settings. The LFX Insights frontend deep-links to that page from a `/settings/api-keys` placeholder ([E15](../PUBLIC_API_PLAN.md#epic-e15-key-management-entry-point-lfx-insights-frontend)); it does not implement create / list / revoke. Membership gating (only Key Contacts in member organizations can create keys) is enforced by LFX Self-Serve, not by Insights. What the customer pastes into their environment is the PAT itself, sent directly as `Authorization: Bearer lfi_...`. The Cloudflare Worker exchanges it for a short-lived Auth0-signed JWT on a cache miss (~10 min TTL), so there is no client-side token-swap call and no Insights-hosted token endpoint (per ADR-0006 and ADR-0015).
 
 Credentials come from the shared LFX PAT service, scoped to Insights by audience and by the `lfi_` prefix rather than by being a separate token type; see ADR-0006.
 
@@ -149,13 +149,13 @@ Endpoints are ported in seven groups, each mapped to a Jira epic. Each endpoint 
 
 | Group | Content | Status |
 |---|---|---|
-| 1. Development | Commit activity, PR metrics, review turnaround | [E7](../PUBLIC_API_PLAN.md#epic-e7--endpoint-migration-phase-1-development) |
-| 2. Contributors | Contributor leaderboards, org breakdowns | [E8](../PUBLIC_API_PLAN.md#epic-e8--endpoint-migration-phase-2-contributors) |
-| 3. Popularity | Stars, forks, downloads, dependency counts | [E9](../PUBLIC_API_PLAN.md#epic-e9--endpoint-migration-phase-3-popularity) |
-| 4. Security & Best Practices | CVE counts, vulnerability summaries, scorecard | [E10](../PUBLIC_API_PLAN.md#epic-e10--endpoint-migration-phase-4-security--best-practices) |
-| 5. Overviews | Project health summaries and overview metrics | [E11](../PUBLIC_API_PLAN.md#epic-e11--endpoint-migration-phase-5-overviews) |
-| 6. Collections | User-curated project groups (requires permission check) | [E12](../PUBLIC_API_PLAN.md#epic-e12--endpoint-migration-phase-6-collections) |
-| 7. Leaderboard | Cross-project contributor and activity leaderboards | [E13](../PUBLIC_API_PLAN.md#epic-e13--endpoint-migration-phase-7-leaderboard) |
+| 1. Development | Commit activity, PR metrics, review turnaround | [E7](../PUBLIC_API_PLAN.md#epic-e7-endpoint-migration-phase-1-development) |
+| 2. Contributors | Contributor leaderboards, org breakdowns | [E8](../PUBLIC_API_PLAN.md#epic-e8-endpoint-migration-phase-2-contributors) |
+| 3. Popularity | Stars, forks, downloads, dependency counts | [E9](../PUBLIC_API_PLAN.md#epic-e9-endpoint-migration-phase-3-popularity) |
+| 4. Security & Best Practices | CVE counts, vulnerability summaries, scorecard | [E10](../PUBLIC_API_PLAN.md#epic-e10-endpoint-migration-phase-4-security--best-practices) |
+| 5. Overviews | Project health summaries and overview metrics | [E11](../PUBLIC_API_PLAN.md#epic-e11-endpoint-migration-phase-5-overviews) |
+| 6. Collections | User-curated project groups (requires permission check) | [E12](../PUBLIC_API_PLAN.md#epic-e12-endpoint-migration-phase-6-collections) |
+| 7. Leaderboard | Cross-project contributor and activity leaderboards | [E13](../PUBLIC_API_PLAN.md#epic-e13-endpoint-migration-phase-7-leaderboard) |
 
 ---
 
@@ -176,13 +176,13 @@ The following items are unresolved and need input before or during implementatio
 
 | # | Question | Drives |
 |---|---|---|
-| 1 | The CTE / JWT / header contract: the `subject_token_type` URN and Worker client-auth method for the Auth0 exchange, the Auth0 `iss` and JWKS URL, the Insights `aud`, and the organization header name (unnamed in the 4b diagram). Self-Serve owner is named in ADR-0006; PATs are opaque, so there is no key-claims schema to agree. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
-| 2 | Multi-org Key Contact resolution (decided, 2026-05-19 review call + 2026-08-10): highest tier wins and the organization ID connected to that tier is returned; on a tie between orgs at the same tier, the first one returned by the Tier endpoint is used as the rate-limit pool key. | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
-| 3 | Variant 4a vs 4b: is tier resolved by the Cloudflare Worker from the LFX Tier endpoint (4b, suggested) or enriched inside the PAT service (4a)? Insights stewards the call, with DevOps input. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md). | [T-015](../PUBLIC_API_PLAN.md#epic-e3--auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 1 | The CTE / JWT / header contract: the `subject_token_type` URN and Worker client-auth method for the Auth0 exchange, the Auth0 `iss` and JWKS URL, the Insights `aud`, and the organization header name (unnamed in the 4b diagram). Self-Serve owner is named in ADR-0006; PATs are opaque, so there is no key-claims schema to agree. | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 2 | Multi-org Key Contact resolution (decided, 2026-05-19 review call + 2026-08-10): highest tier wins and the organization ID connected to that tier is returned; on a tie between orgs at the same tier, the first one returned by the Tier endpoint is used as the rate-limit pool key. | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 3 | Variant 4a vs 4b: is tier resolved by the Cloudflare Worker from the LFX Tier endpoint (4b, suggested) or enriched inside the PAT service (4a)? Insights stewards the call, with DevOps input. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md). | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
 **Notes:**
 
-- Deployed on the same Kubernetes cluster as `frontend/`. ([T-002](../PUBLIC_API_PLAN.md#epic-e1--foundation--framework))
-- Using the existing Datadog org and APM agent in the cluster. ([T-025](../PUBLIC_API_PLAN.md#epic-e4--observability-opentelemetry--datadog))
+- Deployed on the same Kubernetes cluster as `frontend/`. ([T-002](../PUBLIC_API_PLAN.md#epic-e1-foundation--framework))
+- Using the existing Datadog org and APM agent in the cluster. ([T-025](../PUBLIC_API_PLAN.md#epic-e4-observability-opentelemetry--datadog))
 - Hour-granularity datetime filters (`2024-01-01T14:00:00Z`) are supported and will be accepted.
-- The most granular `granularity` option will be `daily`; no `hourly` option. ([E7](../PUBLIC_API_PLAN.md#epic-e7--endpoint-migration-phase-1-development)–[E11](../PUBLIC_API_PLAN.md#epic-e11--endpoint-migration-phase-5-overviews))
-- API docs will be gated (not publicly indexable) until launch. ([E5](../PUBLIC_API_PLAN.md#epic-e5--api-documentation))
+- The most granular `granularity` option will be `daily`; no `hourly` option. ([E7](../PUBLIC_API_PLAN.md#epic-e7-endpoint-migration-phase-1-development)–[E11](../PUBLIC_API_PLAN.md#epic-e11-endpoint-migration-phase-5-overviews))
+- API docs will be gated (not publicly indexable) until launch. ([E5](../PUBLIC_API_PLAN.md#epic-e5-api-documentation))

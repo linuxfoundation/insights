@@ -113,7 +113,7 @@ Enforcement is split across two boundaries:
 
 Revoking a membership does not immediately invalidate an already-issued PAT; full details in [docs/adr/0010](../adr/0010-billing-bundled-with-lfx-membership.md).
 
-### Datadog: hybrid custom metrics + APM trace metrics: [PUBLIC_API_PLAN.md §3 D5 + §6](../PUBLIC_API_PLAN.md#d5-datadog-metrics-strategy--custom-metrics-vs-apm-trace-metrics)
+### Datadog: hybrid custom metrics + APM trace metrics: [PUBLIC_API_PLAN.md §3 D5 + §6](../PUBLIC_API_PLAN.md#d5-datadog-metrics-strategy-custom-metrics-vs-apm-trace-metrics)
 
 Low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class(2xx,4xx,5xx)`) power SRE dashboards and alerting. High-cardinality dimensions (`enduser.id`, `api_key_id`) live in APM span attributes; they are not billed as custom metrics. Estimated budget: ~5,400 timeseries at ~$270/mo above DD quota. Pure custom metrics were rejected because per-customer cardinality would blow the cost budget.
 
