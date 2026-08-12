@@ -56,14 +56,13 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-project-load-state>
   </section>
-  <client-only>
-    <lfx-geographical-distribution-drawer
-      v-model="isDrawerOpened"
-      :selected-tab="model.activeTab"
-      :selected-metric="model.metric"
-      :model="model"
-    />
-  </client-only>
+  <lfx-geographical-distribution-drawer
+    v-if="isDrawerOpened"
+    v-model="isDrawerOpened"
+    :selected-tab="model.activeTab"
+    :selected-metric="model.metric"
+    :model="model"
+  />
 </template>
 
 <script setup lang="ts">
@@ -72,6 +71,7 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import LfxGeoDistributionView from './fragments/geo-distribution-view.vue';
 import LfxGeographicalDistributionDrawer from './fragments/geographical-distribution-drawer.vue';
+import { filterKnownCountries } from './geo-map.helper';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
@@ -131,7 +131,7 @@ const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistri
 const isDrawerOpened = ref(false);
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
-const knownGeoMapData = computed(() => geoMapData.value?.filter((item) => item.name !== 'Unknown') ?? []);
+const knownGeoMapData = computed(() => filterKnownCountries(geoMapData.value));
 const showAllCountriesButton = computed(() => knownGeoMapData.value.length > 5);
 
 const isEmpty = computed(() => isEmptyData(knownGeoMapData.value as unknown as Record<string, unknown>[]));

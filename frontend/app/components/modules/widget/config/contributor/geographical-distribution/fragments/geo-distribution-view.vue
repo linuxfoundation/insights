@@ -26,7 +26,8 @@ SPDX-License-Identifier: MIT
         </span>
       </div>
       <span>
-        {{ formatNumber(item.count) }} {{ pluralize(props.label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
+        {{ formatNumber(item.count) }} {{ pluralize(props.label.toLowerCase(), item.count) }} ・
+        {{ formatNumber(item.percentage, item.percentage < 1 ? 2 : 0) }}%
       </span>
     </div>
   </div>
@@ -35,6 +36,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import pluralize from 'pluralize';
+import { filterKnownCountries } from '../geo-map.helper';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
@@ -56,8 +58,7 @@ const props = withDefaults(
   },
 );
 
-// "Unknown" location is intentionally hidden from the list and chart (see IN-1225 / #2062).
-const knownGeoMapData = computed(() => props.geoMapData.filter((item) => item.name !== 'Unknown'));
+const knownGeoMapData = computed(() => filterKnownCountries(props.geoMapData));
 
 const listData = computed(() => (props.limit ? knownGeoMapData.value.slice(0, props.limit) : knownGeoMapData.value));
 

@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
 
         <hr />
       </div>
-      <section class="mt-5 flex flex-col flex-grow overflow-auto">
+      <section class="mt-5 flex flex-col flex-grow overflow-auto pb-5">
         <div class="flex flex-wrap gap-4 items-center justify-between mb-6 px-4 sm:px-6 pt-[1px]">
           <lfx-tabs
             :tabs="tabs"
@@ -66,6 +66,7 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { filterKnownCountries } from '../geo-map.helper';
 import LfxGeoDistributionView from './geo-distribution-view.vue';
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -129,7 +130,9 @@ const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistri
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 
-const isEmpty = computed(() => isEmptyData(geoMapData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() =>
+  isEmptyData(filterKnownCountries(geoMapData.value) as unknown as Record<string, unknown>[]),
+);
 
 const tabs = [
   {
