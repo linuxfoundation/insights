@@ -12,7 +12,7 @@ The Insights API reads these values from the Worker-supplied JWT and headers. Th
 
 | Value | Source | Purpose |
 |---|---|---|
-| `iss` | JWT claim | Auth0 issuer URL — used to select the right JWKS and reject foreign tokens. |
+| `iss` | JWT claim | Auth0 issuer URL — checked for an exact match against the **configured** expected issuer; the token is rejected on mismatch. The JWKS URL is likewise configured, and isn't derived from the token's `iss`. |
 | `sub` | JWT claim | User ID — identifies the calling user; the Worker resolves it to org and tier via the LFX Tier endpoint, and the API compares it against `collections.ssoUserId` for the private-Collections permission check ([ADR-0007](./0007-collections-only-permission-check.md)). Treated as an opaque unique ID; the LFID is never derived by stripping the `auth0|` prefix. |
 | `http://lfx.dev/claims/username` | JWT claim | LF username (LFID) — the value of the `enduser.id` span attribute in APM traces ([OTel semantic convention](https://opentelemetry.io/docs/specs/semconv/registry/attributes/enduser/), an indexed facet in Datadog).|
 | `kid` | JWT header | Key ID — selects the right key in the JWKS response for signature verification. |

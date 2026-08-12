@@ -8,7 +8,7 @@ The previous design ported the Nuxt convention (`page` + `pageSize` zero-indexed
 
 1. **Stability under mutations — no duplicates or missed entries.** Offset pagination produces corrupt iteration when the underlying set changes between page fetches. Concretely: if an item is inserted between fetching page N and page N+1, every subsequent row shifts one position forward. The item that was the first entry of page N+1 slides back into the last position of page N — which we already fetched — so it is silently skipped. The reverse happens on deletion: the item that was the last entry of page N drops into the first position of page N+1, so it appears in both pages. A cursor anchors to a row's sort-key value rather than its offset, so insertions and deletions between calls never affect which rows the caller sees next. This API serves analytics over data that grows continuously — commits, contributors, vulnerabilities — making offset instability a practical concern, not a theoretical one.
 
-2. **Cost at scale.** `LIMIT N OFFSET M` is O(N+M): Tinybird and Postgres scan the skipped rows. A cursor query (`WHERE (sort_key, id) < (:cursor_k, :cursor_id) ORDER BY sort_key DESC, id ASC LIMIT N`) is O(log N) on an indexed key. The first and the hundredth page cost the same.
+2. **Cost at scale.** `LIMIT N OFFSET M` is O(N+M): Tinybird and Postgres scan the skipped rows. A cursor query (e.g. `WHERE sort_key < :cursor_k OR (sort_key = :cursor_k AND id > :cursor_id) ORDER BY sort_key DESC, id ASC LIMIT N`) is O(log N) on an indexed key. The first and the hundredth page cost the same. The keyset predicate must be generated per sort component's direction — the tuple shorthand `(sort_key, id) < (:cursor_k, :cursor_id)` is only correct when every component sorts in the same direction; with mixed directions (`sort_key DESC, id ASC`) it compares the tiebreaker the wrong way and skips or repeats rows tied on `sort_key`.
 
 3. **Fit for the caller.** v1 is server-to-server only: pipelines, dashboards, batch jobs. They iterate end-to-end. They do not render a "page 5 of 23" UI. Cursor-based fits that shape; offset is a UI affordance we do not need.
 
@@ -24,7 +24,7 @@ The cursor is `base64url(JSON.stringify({ k: <last sort-key value>, id: <tiebrea
 
 ## Lookahead trick — no second count query
 
-Tinybird queries fetch `pageSize + 1` rows. If the result set has `pageSize + 1` rows, there is a next page: drop the last row from the response, encode its `(sort_key, id)` as the `nextCursor`. If the result set has `≤ pageSize` rows, set `nextCursor: null`. No second query needed.
+Tinybird queries fetch `pageSize + 1` rows. If the result set has `pageSize + 1` rows, there is a next page: drop the extra row from the response and encode the `(sort_key, id)` of the **last returned row** (the `pageSize`-th) as the `nextCursor` — the extra row is only evidence that another page exists, and is returned as the first row of the next page. Encoding the dropped row instead would skip it entirely, since the next query starts strictly after the cursor. If the result set has `≤ pageSize` rows, set `nextCursor: null`. No second query needed.
 
 ## Default and max pageSize
 

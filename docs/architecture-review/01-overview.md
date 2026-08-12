@@ -90,7 +90,7 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
                                               ┌────────────────────────────────────────┐
                                               │  Redis                                 │
                                               │  Rate-limit counters                   │
-                                              │  Response cache (cache hit → return)   │
+                                              │  Response cache (cache hit → return) **│
                                               └──────────────┬─────────────────────────┘
                                                             │ cache miss
                                                 ┌───────────┴───────────┐
@@ -105,6 +105,11 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
   * dedicated Tinybird read replica is the goal; pending
     confirmation from the Tinybird team on whether per-app
     replica isolation is supported.
+
+  ** Collections routes run the ADR-0007 permission check
+     before the response cache is read; private-Collection
+     responses are not stored in the response cache
+     (see ADR-0013).
 
        ┌────────────────────────────────────────────────────────────────────────┐
        │  App OTel SDK ──OTLP──▶ otel-collector sidecar ──▶ Datadog              │

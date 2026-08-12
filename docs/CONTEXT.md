@@ -79,7 +79,7 @@ _Avoid_: stable, released, GA
 ## Relationships
 
 - A **User** holds one or more **API Keys**
-- A **User** is an authorized **Key Contact** of one **Organization** (v1); the **Organization** owns the **Rate-limit Pool**
+- A **User** may be an authorized **Key Contact** of several **Organizations**; the Worker resolves them to one for the **Rate-limit Pool** (highest tier wins; tie → first org returned by the Tier endpoint, per ADR-0006). The **Organization** owns the **Rate-limit Pool**
 - A **Tier** is attached to an **Organization** and governs the size of its **Rate-limit Pool**
 - A **Collection** is owned by a single **User** (the creator, identified by `ssoUserId`); curated/system Collections have `ssoUserId = null`. There is no collaborator or org-ownership model in v1. A **Permission Check** gates access per request for private Collections (see ADR-0007)
 - An **Endpoint Group** contains many endpoints; endpoints are promoted through launch stages independently

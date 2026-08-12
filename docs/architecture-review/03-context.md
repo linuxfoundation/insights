@@ -114,7 +114,10 @@ These are committed in v1. Changing any of them within v1 is a Breaking Change.
 
 ```
 User  ──owns──▶  API Key  (many keys per user)
-User  ──is Key Contact of──▶  Organization  (one org per user, v1)
+User  ──is Key Contact of──▶  Organization  (may be several; resolved to one
+                                             for rate limiting. Highest tier
+                                             wins, tie → first from Tier
+                                             endpoint, per ADR-0006)
 Organization  ──has──▶  Tier
 Organization  ──has──▶  Rate-limit Pool
 Endpoint Group  ──contains──▶  many Endpoints

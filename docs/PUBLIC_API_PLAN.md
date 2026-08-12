@@ -59,7 +59,7 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
                                                            ┌────────────────────────────────────────┐
                                                            │  Redis                                 │
                                                            │  Rate-limit counters                   │
-                                                           │  Response cache (cache hit → return)   │
+                                                           │  Response cache (cache hit → return) **│
                                                            └──────────────┬─────────────────────────┘
                                                                          │ cache miss
                                                              ┌───────────┴───────────┐
@@ -74,6 +74,11 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
   * dedicated Tinybird read replica is the goal; pending
     confirmation from the Tinybird team on whether per-app
     replica isolation is supported.
+
+  ** Collections routes run the ADR-0007 permission check
+     before the response cache is read; private-Collection
+     responses are not stored in the response cache
+     (see ADR-0013).
 
        ┌────────────────────────────────────────────────────────────────────────┐
        │  App OTel SDK ──OTLP──▶ otel-collector sidecar ──▶ Datadog              │
@@ -367,7 +372,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 10. **Customer model:** the API principal is a **user**, carried on traces as the `enduser.id` span attribute (OTel semantic convention, indexed in Datadog), populated from the `http://lfx.dev/claims/username` claim (LFID). The LFID is never derived by stripping the `auth0|` prefix from `sub`. The user's **organization** drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. `sub` comes from the Auth0-signed JWT; org and tier arrive as Worker-set headers resolved from the LFX Tier endpoint (per ADR-0006). Multi-org Key Contact resolution: highest tier wins and the organization ID connected to that tier is the rate-limit pool key; on a tie between orgs at the same tier the first one returned by the Tier endpoint is used (decided on the 2026-05-19 review call, tie-break confirmed 2026-08-10). Still follow-ups for T-015: the exact organization header name (`x-tier` is already fixed) and behavior when a user has no org.
 11. **Data scope (v1):**
     - **Phases 1–4 (Development, Contributors, Popularity, Security & Best Practices):** public OSS data, **no per-project permission check**. Tier check only.
-    - **Phase 5 (Overviews) + Phase 6 (Collections):** Collections add a tier check + permission check (private collections gated by ownership/membership; public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL). Decision deferred to Phase 6 — does not block earlier phases.
+    - **Phase 5 (Overviews) + Phase 6 (Collections):** Collections add a tier check + permission check (private collections gated by the owner-only `collections.ssoUserId == sub` check per [ADR-0007](adr/0007-collections-only-permission-check.md); public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL).
     - No general project-membership authorization graph in v1.
 12. **Authentication floor:** every request requires a valid API key. No anonymous access path. 401 on missing/invalid key, full stop.
 13. **Caller scope (v1):** server-to-server only. CORS responds with no `Access-Control-Allow-Origin` for the API, which blocks browser callers. **Revisit before GA** — we may extend to browser support (per-key origin allowlist or a publishable+secret key model) if customer demand emerges. Track as a follow-up.
