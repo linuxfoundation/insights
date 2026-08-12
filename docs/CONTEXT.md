@@ -7,27 +7,27 @@ A server-to-server HTTP API that exposes LFX Insights analytics data (contributo
 ### Auth & Identity
 
 **API Key**:
-The long-lived credential a User receives from the LFX Self-Serve App in Developer Settings — technically a Personal Access Token, prefixed `lfi_` for the Insights audience. Customers see and handle this as their "API key" and send it directly as `Authorization: Bearer lfi_...` on every request. Only Key Contacts in member organizations are permitted to create them.
+The long-lived credential a User receives from the LFX Self-Serve App in Developer Settings. Technically a Personal Access Token, prefixed `lfi_` for the Insights audience. Customers see and handle this as their "API key" and send it directly as `Authorization: Bearer lfi_...` on every request. Only Key Contacts in member organizations are permitted to create them.
 _Avoid_: token, secret, access key, refresh token
 
 **Personal Access Token (PAT)**:
-The credential type behind "API Key". Issued and revoked by the LFX PAT service via Self-Serve, stored there as a salted hash, and shown to the user once. It does not expire automatically; multiple active PATs per User are supported for zero-downtime rotation. Never verified by the Insights API directly — the Cloudflare Worker exchanges it (see Token Exchange).
+The credential type behind "API Key". Issued and revoked by the LFX PAT service via Self-Serve, stored there as a salted hash, and shown to the user once. It does not expire automatically; multiple active PATs per User are supported for zero-downtime rotation. Never verified by the Insights API directly. The Cloudflare Worker exchanges it (see Token Exchange).
 _Avoid_: long-lived JWT, refresh token
 
 **Token Exchange**:
-The Auth0 Custom Token Exchange call the Cloudflare Worker makes, on a cache miss, to swap a PAT for a short-lived Auth0-signed JWT (`grant_type=urn:ietf:params:oauth:grant-type:token-exchange`, plus the registered `subject_token_type` and target `audience`). Transparent to the customer — there is no client-side token-swap call and no Insights-hosted token endpoint. The Worker caches the resulting JWT and the caller's tier (~10 min), which also bounds the revocation window.
+The Auth0 Custom Token Exchange call the Cloudflare Worker makes, on a cache miss, to swap a PAT for a short-lived Auth0-signed JWT (`grant_type=urn:ietf:params:oauth:grant-type:token-exchange`, plus the registered `subject_token_type` and target `audience`). Transparent to the customer. There is no client-side token-swap call and no Insights-hosted token endpoint. The Worker caches the resulting JWT and the caller's tier (~10 min), which also bounds the revocation window.
 _Avoid_: refresh flow, `/v1/auth/token`
 
 **Exchanged JWT**:
 The short-lived Auth0-signed JWT the Worker forwards to the Insights API as `Authorization: Bearer <jwt>`. Carries `iss`, `sub`, `kid`, and `aud`; org and tier arrive as separate Worker-set headers rather than claims. JWKS-verified on every request. See [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
-_Avoid_: calling it just "a JWT" or "the bearer token" — always say which credential is meant
+_Avoid_: calling it just "a JWT" or "the bearer token". Always say which credential is meant
 
 **User**:
 The human account that owns one or more API Keys (PATs) and is the billing principal. Identified by the JWT `sub` claim.
 _Avoid_: account, customer, client
 
 **Organization (org_id)**:
-The LFX organization tied to a User's API access, resolved by the Worker from the LFX Tier endpoint and passed to the Insights API as a header. "Belongs to" is narrow here: only authorized **Key Contacts** of an organization with an active LFX membership can hold API keys — not every employee or self-attested affiliate of the organization. Used as the shared bucket for rate-limit quotas — all keys belonging to Key Contacts in the same org share a pool.
+The LFX organization tied to a User's API access, resolved by the Worker from the LFX Tier endpoint and passed to the Insights API as a header. "Belongs to" is narrow here: only authorized **Key Contacts** of an organization with an active LFX membership can hold API keys. Not every employee or self-attested affiliate of the organization. Used as the shared bucket for rate-limit quotas. All keys belonging to Key Contacts in the same org share a pool.
 _Avoid_: tenant, workspace, team
 
 **Tier**:
@@ -41,15 +41,15 @@ A logical cluster of related endpoints released together as a unit (Development,
 _Avoid_: phase, module, domain
 
 **Breaking Change**:
-Any modification that forces existing callers to update their integration: removing or renaming a response field, changing a field's type, making an optional input required, removing an endpoint, or changing the error envelope shape. Governed by the tolerant-reader contract (see ADR-0003). Changing default or max pageSize, changing the cursor encoding semantics, removing a value from an endpoint's `sort` allow-list, or changing an endpoint's default `sort` value also counts.
+Any modification that forces existing callers to update their integration: removing or renaming a response field, changing a field's type, making an optional input required, removing an endpoint, or changing the error envelope shape. Governed by the tolerant-reader contract (see ADR-0003). Changing default or max pageSize, changing the cursor encoding semantics, removing a value from an endpoint's `sort` allow-list, or changing an endpoint's default `sort` value also counts. Removing an allowed `sort` value or changing an endpoint's default sort is a breaking change.
 _Avoid_: non-backwards-compatible change
 
 **Error Envelope**:
-The standard JSON wrapper for all error responses: `{ error: { code, message, requestId, docsUrl } }`. `code` is a machine-readable snake_case string; `docsUrl` is always present — it deep-links to a specific docs page when one exists, otherwise to the general errors reference page.
+The standard JSON wrapper for all error responses: `{ error: { code, message, requestId, docsUrl } }`. `code` is a machine-readable snake_case string; `docsUrl` is always present. It deep-links to a specific docs page when one exists, otherwise to the general errors reference page.
 _Avoid_: error body, error payload
 
 **Request ID**:
-The OpenTelemetry trace ID for the request — a 32-char lowercase hex string (128-bit). Exposed in the error envelope's `requestId` field; this is the value a customer quotes in a support ticket. The same value appears in pino log lines as `trace_id` and on the active OTel span, so logs ↔ APM traces join in Datadog without translation. W3C `traceparent` is the sole HTTP propagation channel — honoured inbound, injected outbound; no `X-Request-Id` response header is set. There is no separate ULID/UUID request ID — see ADR-0019.
+The OpenTelemetry trace ID for the request. A 32-char lowercase hex string (128-bit). Exposed in the error envelope's `requestId` field; this is the value a customer quotes in a support ticket. The same value appears in pino log lines as `trace_id` and on the active OTel span, so logs ↔ APM traces join in Datadog without translation. W3C `traceparent` is the sole HTTP propagation channel. Honoured inbound, injected outbound; no `X-Request-Id` response header is set. There is no separate ULID/UUID request ID. See ADR-0019.
 _Avoid_: ULID, UUID, separate correlation ID, X-Request-Id
 
 ### Data & Infrastructure
@@ -59,7 +59,7 @@ The columnar analytics database backing all time-series metrics (contributor act
 _Avoid_: analytics DB, ClickHouse (Tinybird is the canonical name in this repo)
 
 **Collection**:
-A named group of projects and repositories stored in Postgres (`collections` table, keyed by `slug`). Two types: **Community Collections** (created by a User, owned via `ssoUserId`) and **Curated Collections** (system-created, `ssoUserId` is null). Privacy is a boolean `isPrivate` flag — public collections are visible to any valid API key; private collections are visible only to their owner. There is no collaborator or member model — ownership is exclusively the creator.
+A named group of projects and repositories stored in Postgres (`collections` table, keyed by `slug`). Two types: **Community Collections** (created by a User, owned via `ssoUserId`) and **Curated Collections** (system-created, `ssoUserId` is null). Privacy is a boolean `isPrivate` flag. Public collections are visible to any valid API key; private collections are visible only to their owner. There is no collaborator or member model. Ownership is exclusively the creator.
 _Avoid_: project group, saved filter, list
 
 **Rate-limit Pool**:
@@ -69,7 +69,7 @@ _Avoid_: quota, bucket
 ### API Stability
 
 **`/v1-alpha`**:
-The unstable stage. Endpoints are served under `/v1-alpha/...` — no contract guarantees. Breaking changes (field renames, shape changes, endpoint removal) are allowed freely. Used during early validation with a small allow-listed cohort.
+The unstable stage. Endpoints are served under `/v1-alpha/...`. No contract guarantees. Breaking changes (field renames, shape changes, endpoint removal) are allowed freely. Used during early validation with a small allow-listed cohort.
 _Avoid_: beta, preview
 
 **`/v1`**:
@@ -87,20 +87,20 @@ _Avoid_: stable, released, GA
 ## Example dialogue
 
 > **Dev:** "Should I check the User's tier before returning a response?"
-> **Domain expert:** "In v1, no — all tiers see all endpoints. Tier only affects the Rate-limit Pool size. If the org's pool is exhausted you return 429; if a future endpoint requires a higher tier you return 403 `tier_forbidden`. Don't conflate the two."
+> **Domain expert:** "In v1, no. All tiers see all endpoints. Tier only affects the Rate-limit Pool size. If the org's pool is exhausted you return 429; if a future endpoint requires a higher tier you return 403 `tier_forbidden`. Don't conflate the two."
 
 ## Conventions
 
-These are committed wire-format decisions — changing them within v1 would be a breaking change (see ADR-0003).
+These are committed wire-format decisions. Changing them within v1 would be a breaking change (see ADR-0003).
 
 - **JSON key casing:** camelCase for all request and response fields (`startDate`, `activityTypes`). The Nuxt layer uses mixed casing; the `nuxt-to-api` skill normalizes to camelCase at port time.
 - **Date format:** ISO-8601 UTC strings only (`2025-12-31T23:59:59Z`). Never Unix timestamps or locale-formatted strings.
-- **Pagination:** cursor-based. Request: `cursor` (opaque, omit on first page) + `pageSize` (default 50, max 200) + `sort` from a per-endpoint allow-list (e.g. `name_asc`, `commits_desc`). Response: `{ data, pageSize, nextCursor }` — `nextCursor: null` means end of list. No `total` field. Removing an allowed `sort` value or changing an endpoint's default sort is a breaking change. See [ADR-0011](adr/0011-pagination-cursor-based.md).
+- **Pagination:** cursor-based. Request: `cursor` (opaque, omit on first page) + `pageSize` (default 50, max 200) + `sort` from a per-endpoint allow-list (e.g. `name_asc`, `commits_desc`). Response: `{ data, pageSize, nextCursor }` (where `nextCursor: null` means end of list). No `total` field. Removing an allowed `sort` value or changing an endpoint's default sort is a breaking change. See [ADR-0011](adr/0011-pagination-cursor-based.md).
 - **Error codes:** machine-readable snake_case strings in the Error Envelope `code` field (e.g. `tier_forbidden`, `rate_limit_exceeded`, `unauthorized`, `upstream_unavailable`).
-- **Cache TTLs:** two tiers — long cache (24h) for stable data (project lists, leaderboards, categories); short cache (1h) for time-series analytics. Mirrors the existing Nuxt API caching model.
+- **Cache TTLs:** two tiers: long cache (24h) for stable data (project lists, leaderboards, categories); short cache (1h) for time-series analytics. Mirrors the existing Nuxt API caching model.
 - **Tinybird error handling:** when Tinybird is unavailable, the cached Redis response is served if one exists within its normal TTL. If the cache is empty or expired, 503 with `code: upstream_unavailable` is returned.
 
 ## Flagged ambiguities
 
-- "account" was used for both User and Organization during design — resolved: **User** is the human principal (identified by `sub`), **Organization** is the entity that holds an LFX membership (Silver/Gold/Platinum) and owns the Rate-limit Pool (identified by `org_id`).
-- "phase" was used interchangeably with Endpoint Group — resolved: use **Endpoint Group** for the technical rollout cluster; "phase" is informal and should be avoided in task descriptions.
+- "account" was used for both User and Organization during design. Resolved: **User** is the human principal (identified by `sub`), **Organization** is the entity that holds an LFX membership (Silver/Gold/Platinum) and owns the Rate-limit Pool (identified by `org_id`).
+- "phase" was used interchangeably with Endpoint Group. Resolved: use **Endpoint Group** for the technical rollout cluster; "phase" is informal and should be avoided in task descriptions.

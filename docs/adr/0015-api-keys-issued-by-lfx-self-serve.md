@@ -2,9 +2,9 @@
 
 LFX Self-Serve is the issuance and management surface for API credentials. Insights stores no keys, runs no key-management UI, and has no dependency on the Auth0 Management API.
 
-API keys are Personal Access Tokens issued by the LFX Self-Serve App in Developer Settings. A Cloudflare Worker in front of the Insights API exchanges the PAT for a short-lived Auth0-signed JWT (Auth0 Custom Token Exchange) and forwards the request with that JWT plus org/tier headers; the Insights API receives only the JWT and never sees the PAT. The Insights API is a verifier only — it verifies the JWT signature and reads identity from the verified payload. The exchange mechanism is specified in [ADR-0006](./0006-pat-token-exchange-for-api-credentials.md).
+API keys are Personal Access Tokens issued by the LFX Self-Serve App in Developer Settings. A Cloudflare Worker in front of the Insights API exchanges the PAT for a short-lived Auth0-signed JWT (Auth0 Custom Token Exchange) and forwards the request with that JWT plus org/tier headers; the Insights API receives only the JWT and never sees the PAT. The Insights API is a verifier only. It verifies the JWT signature and reads identity from the verified payload. The exchange mechanism is specified in [ADR-0006](./0006-pat-token-exchange-for-api-credentials.md).
 
-> **Note:** this decision assumes LFX Self-Serve can support the required model (Key Contact gating at issuance, PAT storage and revocation, audience prefixing). Coordination with the Self-Serve, Platform, and DevOps teams is required before implementation — see the coordination table in ADR-0006.
+> **Note:** this decision assumes LFX Self-Serve can support the required model (Key Contact gating at issuance, PAT storage and revocation, audience prefixing). Coordination with the Self-Serve, Platform, and DevOps teams is required before implementation. See the coordination table in ADR-0006.
 
 ## What the Insights API reads from each request
 
@@ -12,13 +12,13 @@ The Insights API reads these values from the Worker-supplied JWT and headers. Th
 
 | Value | Source | Purpose |
 |---|---|---|
-| `iss` | JWT claim | Auth0 issuer URL — checked for an exact match against the **configured** expected issuer; the token is rejected on mismatch. The JWKS URL is likewise configured, and isn't derived from the token's `iss`. |
-| `sub` | JWT claim | User ID — identifies the calling user; the Worker resolves it to org and tier via the LFX Tier endpoint, and the API compares it against `collections.ssoUserId` for the private-Collections permission check ([ADR-0007](./0007-collections-only-permission-check.md)). Treated as an opaque unique ID; the LFID is never derived by stripping the `auth0|` prefix. |
-| `http://lfx.dev/claims/username` | JWT claim | LF username (LFID) — the value of the `enduser.id` span attribute in APM traces ([OTel semantic convention](https://opentelemetry.io/docs/specs/semconv/registry/attributes/enduser/), an indexed facet in Datadog).|
-| `kid` | JWT header | Key ID — selects the right key in the JWKS response for signature verification. |
-| `aud` | JWT claim | Service audience — PATs are minted per audience, so the Insights audience is what lets the same mechanism later serve MCP and other LFX surfaces. |
-| Organization ID | Worker header | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). |
-| Tier | Worker header (`x-tier`) | LFX membership tier (`silver` / `gold` / `platinum`) — drives rate-limit pool size and any future per-route tier gating. |
+| `iss` | JWT claim | Auth0 issuer URL. Checked for an exact match against the **configured** expected issuer. The token is rejected on mismatch. The JWKS URL is likewise configured, and isn't derived from the token's `iss`. |
+| `sub` | JWT claim | User ID. Identifies the calling user. The Worker resolves it to org and tier via the LFX Tier endpoint, and the API compares it against `collections.ssoUserId` for the private-Collections permission check ([ADR-0007](./0007-collections-only-permission-check.md)). Treated as an opaque unique ID; the LFID is never derived by stripping the `auth0|` prefix. |
+| `http://lfx.dev/claims/username` | JWT claim | LF username (LFID). The value of the `enduser.id` span attribute in APM traces ([OTel semantic convention](https://opentelemetry.io/docs/specs/semconv/registry/attributes/enduser/), an indexed facet in Datadog).|
+| `kid` | JWT header | Key ID. Selects the right key in the JWKS response for signature verification. |
+| `aud` | JWT claim | Service audience. PATs are minted per audience, so the Insights audience is what lets the same mechanism later serve MCP and other LFX surfaces. |
+| Organization ID | Worker header | LFX Organization ID. Drives the rate-limit pool key (all Key Contacts in the same org share a pool). |
+| Tier | Worker header (`x-tier`) | LFX membership tier (`silver` / `gold` / `platinum`). Drives rate-limit pool size and any future per-route tier gating. |
 
 There is no Insights-hosted token endpoint. The exchange happens in the Worker, transparently to the customer, so customers configure a single host (`api.insights.linuxfoundation.org`) and send their PAT directly as `Authorization: Bearer`.
 
@@ -32,7 +32,7 @@ The shared LFX PAT service issues the credential, with a distinct Insights audie
 
 - **User experience:** one token type across every LFX service, created per audience in Developer Settings.
 - **Compromise blast radius:** an Insights-audience PAT is scoped to Insights only; revoking it doesn't break the user's other LFX integrations.
-- **Scope enforcement:** natural — `aud` already identifies Insights, and the Worker rejects tokens carrying another audience prefix.
+- **Scope enforcement:** natural. `aud` already identifies Insights, and the Worker rejects tokens carrying another audience prefix.
 - **Revocation granularity:** per-audience, so rotating the Insights credential leaves other LFX integrations intact.
 
 Two issuers are involved and must not be conflated: **LFX Self-Serve (the PAT service) issues the PAT**, an opaque credential Insights never verifies; **Auth0 issues the exchanged JWT**, and its `iss` and JWKS endpoint are what the Insights API configures for verification. We commit to LFX Self-Serve as the PAT issuer and to Auth0 JWKS verification on the Insights side.
