@@ -83,7 +83,7 @@ We want to expose a **public API** to LFX customers. Rather than retrofit the Nu
        │                    Used for: SRE dashboards, alerts, SLO tracking.     │
        │                                                                        │
        │  APM trace metrics — high-cardinality dims live on spans as attributes │
-       │                    (customer_id, api_key_id). Not billed as metrics.   │
+       │                    (enduser.id, api_key_id). Not billed as metrics.    │
        │                    Used for: per-customer drilldowns, debugging.       │
        │                                                                        │
        │  Structured logs via pino, correlated to traces via trace_id           │
@@ -148,11 +148,11 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 
 | Option | Pros | Cons |
 |---|---|---|
-| **Custom metrics** (DogStatsD / OTel metrics → DD custom metrics) | Explicit metric names; dashboards/monitors trivial to build; predictable aggregation semantics; fast queries. | Billed per unique tag-combination per metric (≈$0.05/series/month above quota); cardinality explosion is easy and expensive; high-cardinality dimensions (`customer_id`, `api_key_id`) blow the budget fast. |
-| **APM trace metrics** (derived from span attributes) | Slicing by span attributes is not billed as custom metrics; can slice by `customer_id` / `api_key_id` without cost spike; flame-graph + latency-breakdown per request; ingestion cost is per-span, not per-tag. | APM has its own ingestion cost; span sampling can drop rare events at scale; alerting ergonomics are slightly different; counters for rate-limit rejections still want every event. |
+| **Custom metrics** (DogStatsD / OTel metrics → DD custom metrics) | Explicit metric names; dashboards/monitors trivial to build; predictable aggregation semantics; fast queries. | Billed per unique tag-combination per metric (≈$0.05/series/month above quota); cardinality explosion is easy and expensive; high-cardinality dimensions (`enduser.id`, `api_key_id`) blow the budget fast. |
+| **APM trace metrics** (derived from span attributes) | Slicing by span attributes is not billed as custom metrics; can slice by `enduser.id` / `api_key_id` without cost spike; flame-graph + latency-breakdown per request; ingestion cost is per-span, not per-tag. | APM has its own ingestion cost; span sampling can drop rare events at scale; alerting ergonomics are slightly different; counters for rate-limit rejections still want every event. |
 | **Hybrid (both)** ⭐ | Low-cardinality custom metrics for SRE dashboards/alerting; high-cardinality slicing happens in APM; cost-controlled and complete. | Two systems to learn; need a clear rule for "what goes where" (covered in §6). |
 
-**Recommendation: Hybrid.** A small set of low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class`) for dashboards and alerts, and APM trace metrics (span attributes: `customer_id`, `api_key_id`, `bucket_id`, `pipe_id`, numeric `status_code`) for per-customer drilldowns. Catalog in §6.
+**Recommendation: Hybrid.** A small set of low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class`) for dashboards and alerts, and APM trace metrics (span attributes: `enduser.id`, `api_key_id`, `bucket_id`, `pipe_id`, numeric `status_code`) for per-customer drilldowns. Catalog in §6.
 
 ---
 
@@ -188,7 +188,7 @@ Prepare upstream so the API does not contend with the frontend for TB capacity.
 
 Per-key auth with tier-aware authorization and rate limiting. Reuse existing LFX membership tiers — we consume them, we don't invent a new tier model. Credential mechanics per [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 
-- **T-015** Coordinate with the LFX Self-Serve / Platform and DevOps teams: confirm the Auth0 JWKS endpoint URL and `iss` value, the Insights `aud` and PAT prefix (`lfi_`), the `subject_token_type` URN registered for the PAT profile and the Worker's client-authentication method for the exchange, the exchanged-token lifetime and Worker cache TTLs, the header names carrying org and tier (`x-tier` plus the organization header, unnamed in the option-4b diagram), how the origin is locked to Worker-only access (Cloudflare Access / mTLS / shared secret), the multi-org Key Contact tie-break confirmation (highest tier wins and its org ID becomes the pool key; on a same-tier tie the first org returned by the Tier endpoint is used — decided 2026-08-10), whether Key Contact eligibility really resolves via OpenFGA `v2_organization` relationships, the shape of the LFX Tier endpoint (including that multi-org responses come back in a stable, deterministic order so the first-returned tie-break is meaningful), and **the 4a-vs-4b call on where tier resolution lives** — Insights stewards this, with DevOps input (see §9 Open Questions and ADR-0006).
+- **T-015** Coordinate with the LFX Self-Serve / Platform and DevOps teams: confirm the Auth0 JWKS endpoint URL and `iss` value, the Insights `aud` and PAT prefix (`lfi_`), the `subject_token_type` URN registered for the PAT profile and the Worker's client-authentication method for the exchange, the exchanged-token lifetime and Worker cache TTLs, the header names carrying org and tier (`x-tier` plus the organization header, unnamed in the option-4b diagram), how the origin is locked to Worker-only access (Cloudflare Access / mTLS / shared secret), the multi-org Key Contact tie-break confirmation (highest tier wins and its org ID becomes the pool key; on a same-tier tie the first org returned by the Tier endpoint is used — decided 2026-08-10), whether Key Contact eligibility really resolves via OpenFGA `v2_organization` relationships, the shape of the LFX Tier endpoint (including that multi-org responses come back in a stable, deterministic order so the first-returned tie-break is meaningful), whether the tenant's `http://lfx.dev/claims/username` claim is present on Insights-audience exchanged tokens (it feeds the `enduser.id` span attribute), and **the 4a-vs-4b call on where tier resolution lives** — Insights stewards this, with DevOps input (see §9 Open Questions and ADR-0006).
 - **T-015b** Build the PAT exchange path: PAT service work in Self-Serve (generation, salted-hash storage, rename/revoke, audience prefixing, Key Contact / entitlement validation at issuance, Auth0 validation callback) and the Cloudflare Worker that detects the `lfi_` prefix, calls Auth0 `POST /oauth/token` with `grant_type=urn:ietf:params:oauth:grant-type:token-exchange` plus the registered `subject_token_type`, the target `audience`, and the Worker's client credentials, resolves org and tier, **strips or overwrites any client-supplied `x-tier` / organization header**, and forwards to the origin. Exchange runs on a cache miss (~10 min), not per request. No Insights-hosted token endpoint.
 - **T-015c** Lock the Insights API origin to Worker-only access (Cloudflare Access / mTLS / shared secret, mechanism per T-015) so the trusted org and tier headers cannot be set by a direct caller. Without this the header-based tier model is spoofable.
 - **T-016** ADR: tier → capability matrix (which existing LFX tiers map to which endpoints and rate limits).
@@ -203,7 +203,7 @@ Per-key auth with tier-aware authorization and rate limiting. Reuse existing LFX
 
 No hard SLAs in v1 — everything is **observational** for now. Implements the hybrid strategy from §3 D5.
 
-- **T-023** Integrate OpenTelemetry SDK (`@opentelemetry/sdk-node`): HTTP auto-instrumentation, Postgres auto-instrumentation, custom spans around Tinybird calls. W3C TraceContext propagator (default). Span attributes carry high-cardinality dimensions (`customer_id`, `api_key_id`, `bucket_id`, `pipe`, numeric `status_code`). Per ADR-0019.
+- **T-023** Integrate OpenTelemetry SDK (`@opentelemetry/sdk-node`): HTTP auto-instrumentation, Postgres auto-instrumentation, custom spans around Tinybird calls. W3C TraceContext propagator (default). Span attributes carry high-cardinality dimensions (`enduser.id`, `api_key_id`, `bucket_id`, `pipe`, numeric `status_code`). Per ADR-0019.
 - **T-024** Implement low-cardinality custom metrics per §6 catalog. Helper module so handlers emit consistently.
 - **T-025** Add `opentelemetry-collector` sidecar to the API pod spec. Configure the SDK to export OTLP to `localhost:4317`. Collector forwards to Datadog in prod/staging; stdout exporter in local dev (per ADR-0019).
 - **T-026** Datadog dashboards: per-endpoint, per-tier, per-customer top-N (via APM trace metrics), upstream TB health.
@@ -312,19 +312,19 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 
 | Metric | Type | Tags (low-card) | Span attribute (high-card) | Why |
 |---|---|---|---|---|
-| `api.request.count` | Counter | `endpoint`, `version`, `status_class` (2xx/4xx/5xx), `tier` | `customer_id`, `api_key_id`, `status_code` | Throughput by route/tier |
+| `api.request.count` | Counter | `endpoint`, `version`, `status_class` (2xx/4xx/5xx), `tier` | `enduser.id`, `api_key_id`, `status_code` | Throughput by route/tier |
 | `api.request.duration` | Histogram | same as above | same | Latency p50/p95/p99 |
 | `api.tinybird.duration` | Histogram | `pipe`, `status_class` | `query_id`, `bucket_id` | Upstream latency |
-| `api.tinybird.errors` | Counter | `pipe`, `error_type` | `query_id`, `customer_id` | Upstream reliability |
-| `api.postgres.duration` | Histogram | `query_name`, `status_class` | `customer_id` | DB latency |
-| `api.ratelimit.rejections` | Counter | `tier`, `endpoint` | `customer_id`, `api_key_id` | Customers hitting limits |
+| `api.tinybird.errors` | Counter | `pipe`, `error_type` | `query_id`, `enduser.id` | Upstream reliability |
+| `api.postgres.duration` | Histogram | `query_name`, `status_class` | `enduser.id` | DB latency |
+| `api.ratelimit.rejections` | Counter | `tier`, `endpoint` | `enduser.id`, `api_key_id` | Customers hitting limits |
 | `api.auth.failures` | Counter | `reason` (invalid_jwt / expired / revoked / missing) | `api_key_id` (when known) | Auth bypass attempts |
 | `api.cache.hit_ratio` | Gauge | `cache_layer` | — | If we add response caching |
 | `api.concurrency` | Gauge | — | — | Adaptive semaphore depth |
 
 **Cardinality budget (initial):** roughly `~25 endpoints × 4 tiers × 3 status_class × 2 versions ≈ 600 timeseries per metric` × 9 metrics ≈ 5.4k custom timeseries. Well within reasonable cost.
 
-**Things we will NOT tag:** `customer_id`, `api_key_id`, numeric `status_code`, `bucket_id`, `pipe_id`. These ride on spans (APM trace metrics, not billed as custom metrics) so we can still slice by them in Datadog APM and Logs.
+**Things we will NOT tag:** `enduser.id`, `api_key_id`, numeric `status_code`, `bucket_id`, `pipe_id`. These ride on spans (APM trace metrics, not billed as custom metrics) so we can still slice by them in Datadog APM and Logs.
 
 ---
 
@@ -364,7 +364,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 7. **Conversion tooling:** Claude skill `nuxt-to-api` (§3 D4). Produces a complete, ready-to-review Fastify handler (TypeBox schema, Tinybird/Postgres calls, response mapping, integration test) — not a skeleton. Developer's job is review, not writing.
 8. **Datadog strategy:** hybrid — low-card custom metrics + APM trace metrics for high-card slicing (§3 D5, §6).
 9. **Docs tool:** VitePress + Scalar (§3 D2). Standalone site under `api/docs/`, co-located with the service, deployed independently. Scalar embedded on the reference page, reads generated OpenAPI spec.
-10. **Customer model:** the API principal is a **user** (`sub` = user ID, used as the `customer_id` span attribute in APM traces). The user's **organization** drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. `sub` comes from the Auth0-signed JWT; org and tier arrive as Worker-set headers resolved from the LFX Tier endpoint (per ADR-0006). Multi-org Key Contact resolution: highest tier wins and the organization ID connected to that tier is the rate-limit pool key; on a tie between orgs at the same tier the first one returned by the Tier endpoint is used (decided on the 2026-05-19 review call, tie-break confirmed 2026-08-10). Still follow-ups for T-015: the exact header names and behavior when a user has no org.
+10. **Customer model:** the API principal is a **user**, carried on traces as the `enduser.id` span attribute (OTel semantic convention, indexed in Datadog), populated from the `http://lfx.dev/claims/username` claim (LFID). The LFID is never derived by stripping the `auth0|` prefix from `sub`. The user's **organization** drives **tier and rate-limit pool** — multiple users in the same org share one rate-limit pool. `sub` comes from the Auth0-signed JWT; org and tier arrive as Worker-set headers resolved from the LFX Tier endpoint (per ADR-0006). Multi-org Key Contact resolution: highest tier wins and the organization ID connected to that tier is the rate-limit pool key; on a tie between orgs at the same tier the first one returned by the Tier endpoint is used (decided on the 2026-05-19 review call, tie-break confirmed 2026-08-10). Still follow-ups for T-015: the exact organization header name (`x-tier` is already fixed) and behavior when a user has no org.
 11. **Data scope (v1):**
     - **Phases 1–4 (Development, Contributors, Popularity, Security & Best Practices):** public OSS data, **no per-project permission check**. Tier check only.
     - **Phase 5 (Overviews) + Phase 6 (Collections):** Collections add a tier check + permission check (private collections gated by ownership/membership; public collections open to all valid keys). Permission source: **Postgres lookup with Redis cache** (~60s TTL). Decision deferred to Phase 6 — does not block earlier phases.

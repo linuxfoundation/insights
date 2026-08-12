@@ -13,7 +13,8 @@ The Insights API reads these values from the Worker-supplied JWT and headers. Th
 | Value | Source | Purpose |
 |---|---|---|
 | `iss` | JWT claim | Auth0 issuer URL — used to select the right JWKS and reject foreign tokens. |
-| `sub` | JWT claim | User ID — used as the revocation reference and the `customer_id` span attribute in APM traces. |
+| `sub` | JWT claim | User ID — identifies the calling user; the Worker resolves it to org and tier via the LFX Tier endpoint, and the API compares it against `collections.ssoUserId` for the private-Collections permission check ([ADR-0007](./0007-collections-only-permission-check.md)). Treated as an opaque unique ID; the LFID is never derived by stripping the `auth0|` prefix. |
+| `http://lfx.dev/claims/username` | JWT claim | LF username (LFID) — the value of the `enduser.id` span attribute in APM traces ([OTel semantic convention](https://opentelemetry.io/docs/specs/semconv/registry/attributes/enduser/), an indexed facet in Datadog).|
 | `kid` | JWT header | Key ID — selects the right key in the JWKS response for signature verification. |
 | `aud` | JWT claim | Service audience — PATs are minted per audience, so the Insights audience is what lets the same mechanism later serve MCP and other LFX surfaces. |
 | Organization ID | Worker header | LFX Organization ID — drives the rate-limit pool key (all Key Contacts in the same org share a pool). |

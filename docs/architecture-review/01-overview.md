@@ -114,7 +114,7 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
        │                    Used for: SRE dashboards, alerts, SLO tracking.     │
        │                                                                        │
        │  APM trace metrics — high-cardinality dims live on spans as attributes │
-       │                    (customer_id, api_key_id). Not billed as metrics.   │
+       │                    (enduser.id, api_key_id). Not billed as metrics.    │
        │                    Used for: per-customer drilldowns, debugging.       │
        │                                                                        │
        │  Structured logs via pino, correlated to traces via trace_id / span_id  │
