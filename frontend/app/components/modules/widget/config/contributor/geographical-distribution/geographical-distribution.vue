@@ -36,53 +36,44 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching geographical distribution"
       :is-empty="isEmpty"
     >
-      <div class="w-full h-[330px]">
-        <client-only>
-          <lfx-chart
-            :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
-            :animation="!props.snapshot"
-          />
-        </client-only>
-      </div>
-      <div>
-        <div
-          v-if="status !== 'pending'"
-          class="flex flex-col gap-5"
+      <lfx-geo-distribution-view
+        v-if="status !== 'pending'"
+        :geo-map-data="geoMapData"
+        :label="label"
+        :limit="5"
+        :animation="!props.snapshot"
+      />
+      <div
+        v-if="!props.snapshot && showAllCountriesButton"
+        class="mt-5 flex flex-row justify-center"
+      >
+        <lfx-button
+          type="transparent"
+          @click="isDrawerOpened = true"
         >
-          <div
-            v-for="item in geoMapDataCountries"
-            :key="item.name"
-            class="flex flex-row justify-between items-center text-sm"
-          >
-            <div class="flex flex-row gap-4 items-center">
-              <span class="text-base">
-                {{ item.flag }}
-              </span>
-              <span class="font-medium">
-                {{ item.name }}
-              </span>
-            </div>
-            <span>
-              {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
-            </span>
-          </div>
-        </div>
+          All countries
+        </lfx-button>
       </div>
     </lfx-project-load-state>
   </section>
+  <lfx-geographical-distribution-drawer
+    v-if="isDrawerOpened"
+    v-model="isDrawerOpened"
+    :selected-tab="model.activeTab"
+    :selected-metric="model.metric"
+    :model="model"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import pluralize from 'pluralize';
+import LfxGeoDistributionView from './fragments/geo-distribution-view.vue';
+import LfxGeographicalDistributionDrawer from './fragments/geographical-distribution-drawer.vue';
+import { filterKnownCountries } from './geo-map.helper';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxButton from '~/components/uikit/button/button.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type {
@@ -137,22 +128,13 @@ const params = computed<GeographicalDistributionQueryParams>(() => ({
 }));
 
 const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistribution(params);
+const isDrawerOpened = ref(false);
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
-const geoMapDataCountries = computed<GeoMapData[] | undefined>(() =>
-  geoMapData.value ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined,
-);
+const knownGeoMapData = computed(() => filterKnownCountries(geoMapData.value));
+const showAllCountriesButton = computed(() => knownGeoMapData.value.length > 5);
 
-const chartData = computed<ChartData[]>(
-  // convert the data to chart data
-  () =>
-    convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count', 'percentage']).map((item) => ({
-      ...item,
-      key: item.key === 'United States' ? 'United States of America' : item.key,
-    })),
-);
-
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(knownGeoMapData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   {
@@ -166,15 +148,6 @@ const tabs = [
 ];
 
 const label = computed(() => (model.value.activeTab === 'contributors' ? 'Contributor' : 'Organization'));
-
-const chartSeries = computed<ChartSeries[]>(() => [
-  {
-    name: label.value,
-    type: 'map',
-    yAxisIndex: 0,
-    dataIndex: 0,
-  },
-]);
 
 watch(
   status,
