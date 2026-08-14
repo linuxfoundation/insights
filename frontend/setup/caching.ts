@@ -97,7 +97,7 @@ export default {
     },
     routeRules: {
       '/api/**': {
-        headers: { 'cache-control': 's-maxage=0' },
+        headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },
     },
