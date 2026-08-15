@@ -99,7 +99,7 @@ const handleUpdateResultsClick = async () => {
       repoUrl: currentRepoUrl.value || '',
     });
     queryClient.invalidateQueries({
-      queryKey: [TanstackKey.SECURITY_ASSESSMENT, route.params.slug, selectedReposValues.value],
+      queryKey: [TanstackKey.SECURITY_ASSESSMENT, route.params.slug, selectedReposValues.value || undefined],
     });
     showToast(
       '<span class="text-neutral-300">Repository updates can’t be processed immediately.<br>Assessment results will be updated within an hour.</span>',

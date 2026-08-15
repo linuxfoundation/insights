@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { mount, flushPromises } from '@vue/test-utils';
 import { useQueryClient } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import ControlAssessmentHead from './control-assessment-head.vue';
 
 // Mock dependencies
 vi.mock('@tanstack/vue-query', () => ({
@@ -20,11 +22,13 @@ vi.mock('pinia', () => ({
 }));
 
 vi.mock('~/components/modules/auth/store/auth.store', () => ({
-  useAuthStore: vi.fn(() => ({ isAuthenticated: true })),
+  useAuthStore: vi.fn(() => ({ isAuthenticated: { value: true } })),
 }));
 
 vi.mock('~/components/modules/project/store/project.store', () => ({
-  useProjectStore: vi.fn(() => ({ selectedReposValues: ['https://github.com/test/repo'] })),
+  useProjectStore: vi.fn(() => ({
+    selectedReposValues: { value: ['https://github.com/test/repo'] },
+  })),
 }));
 
 vi.mock('~/components/modules/project/services/security.api.service', () => ({
@@ -33,9 +37,44 @@ vi.mock('~/components/modules/project/services/security.api.service', () => ({
   },
 }));
 
+vi.mock('~/components/uikit/button/button.vue', () => ({
+  default: {
+    name: 'LfxButton',
+    template: '<button @click="$emit(\'click\')"><slot /></button>',
+  },
+}));
+
+vi.mock('~/components/uikit/tooltip/tooltip.vue', () => ({
+  default: {
+    name: 'LfxTooltip',
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('~/components/uikit/spinner/spinner.vue', () => ({
+  default: {
+    name: 'LfxSpinner',
+    template: '<div></div>',
+  },
+}));
+
+vi.mock('~/components/uikit/icon/icon.vue', () => ({
+  default: {
+    name: 'LfxIcon',
+    template: '<i></i>',
+  },
+}));
+
+vi.mock('~/components/uikit/toast/toast.service', () => ({
+  default: () => ({
+    showToast: vi.fn(),
+  }),
+}));
+
 describe('control-assessment-head.vue', () => {
   let mockQueryClient: any;
   let mockInvalidateQueries: any;
+  let mockTriggerSecurityUpdate: any;
 
   beforeEach(() => {
     mockInvalidateQueries = vi.fn();
@@ -43,20 +82,75 @@ describe('control-assessment-head.vue', () => {
       invalidateQueries: mockInvalidateQueries,
     };
     (useQueryClient as any).mockReturnValue(mockQueryClient);
+
+    // Reset all mocks
+    vi.clearAllMocks();
   });
 
   test('invalidateQueries is called with correct key after successful security update', async () => {
-    const { SECURITY_API_SERVICE } = await import('~/components/modules/project/services/security.api.service');
+    const { SECURITY_API_SERVICE } =
+      await import('~/components/modules/project/services/security.api.service');
+    mockTriggerSecurityUpdate = SECURITY_API_SERVICE.triggerSecurityUpdate as any;
+    mockTriggerSecurityUpdate.mockResolvedValue({ success: true });
 
-    // Simulate successful update
-    (SECURITY_API_SERVICE.triggerSecurityUpdate as any).mockResolvedValue({ success: true });
+    // Mount the component
+    const wrapper = mount(ControlAssessmentHead, {
+      global: {
+        stubs: {
+          LfxButton: { template: '<button @click="$emit(\'click\')"><slot /></button>' },
+          LfxTooltip: { template: '<div><slot /></div>' },
+          LfxSpinner: { template: '<div></div>' },
+          LfxIcon: { template: '<i></i>' },
+        },
+      },
+    });
 
-    // Verify that invalidateQueries would be called with the security assessment key
-    expect(mockInvalidateQueries).toBeDefined();
+    // Find and click the update button
+    const button = wrapper.find('button');
+    await button.trigger('click');
+
+    // Wait for async operations to complete
+    await flushPromises();
+
+    // Assert that invalidateQueries was called exactly once
+    expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);
+
+    // Assert that it was called with the correct query key
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({
+      queryKey: [
+        TanstackKey.SECURITY_ASSESSMENT,
+        'test-project',
+        ['https://github.com/test/repo'],
+      ],
+    });
   });
 
-  test('invalidateQueries uses SECURITY_ASSESSMENT key', () => {
-    // Verify the key constant exists and is used correctly
-    expect(TanstackKey.SECURITY_ASSESSMENT).toBeDefined();
+  test('invalidateQueries is not called when security update fails', async () => {
+    const { SECURITY_API_SERVICE } =
+      await import('~/components/modules/project/services/security.api.service');
+    mockTriggerSecurityUpdate = SECURITY_API_SERVICE.triggerSecurityUpdate as any;
+    mockTriggerSecurityUpdate.mockRejectedValue(new Error('Update failed'));
+
+    // Mount the component
+    const wrapper = mount(ControlAssessmentHead, {
+      global: {
+        stubs: {
+          LfxButton: { template: '<button @click="$emit(\'click\')"><slot /></button>' },
+          LfxTooltip: { template: '<div><slot /></div>' },
+          LfxSpinner: { template: '<div></div>' },
+          LfxIcon: { template: '<i></i>' },
+        },
+      },
+    });
+
+    // Find and click the update button
+    const button = wrapper.find('button');
+    await button.trigger('click');
+
+    // Wait for async operations to complete
+    await flushPromises();
+
+    // Assert that invalidateQueries was NOT called
+    expect(mockInvalidateQueries).not.toHaveBeenCalled();
   });
 });
