@@ -29,4 +29,11 @@ describe('caching configuration', () => {
     expect(nitroRules['/api/community/list']).toBeUndefined();
     expect(nitroRules['/api/explore/**']).toBeUndefined();
   });
+
+  test('disables prerender for all /api/** routes', () => {
+    const nitroRules = cachingConfig.nitro.routeRules;
+
+    expect(nitroRules['/api/**']?.prerender).toBe(false);
+    expect(nitroRules['/api/**']?.headers).toBeUndefined();
+  });
 });
