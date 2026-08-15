@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
       {
         slug,
         details: true,
-      }
+      },
     );
 
     if (!res.data || res.data.length === 0) {
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
     // This prevents rendering failures from cascading
     console.warn(
       `[OG Image Collection] Could not validate collection "${slug}":`,
-      error instanceof Error ? error.message : String(error)
+      error instanceof Error ? error.message : String(error),
     );
     return sendRedirect(event, '/og-image.png', 302);
   }

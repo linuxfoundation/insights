@@ -2,41 +2,40 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Middleware that adds cache control headers to OG image responses.
- * This enables browser and CDN caching to reduce rendering load from
- * repeated bot crawler requests and user shares.
+ * Middleware that adds cache control headers to OG image responses, differentiated
+ * by the final response status so a fallback/error response isn't cached as long as
+ * a real render. The status code is only known once the response is actually sent,
+ * so this hooks res.writeHead (also invoked implicitly by Node on res.end()) rather
+ * than setting a header unconditionally up front.
  */
 
-// Cache duration: 24 hours (production), shorter for development
-const CACHE_MAX_AGE_SECONDS = 60 * 60 * 24; // 24 hours
+const CACHE_MAX_AGE_SECONDS = 60 * 60 * 24; // 24 hours — successful render
+const FALLBACK_CACHE_MAX_AGE_SECONDS = 60 * 5; // 5 minutes — static fallback redirect
 const STALE_WHILE_REVALIDATE = 60 * 60 * 24 * 7; // 7 days
+
+function cacheControlFor(statusCode: number): string {
+  if (statusCode >= 200 && statusCode < 300) {
+    return `public, max-age=${CACHE_MAX_AGE_SECONDS}, stale-while-revalidate=${STALE_WHILE_REVALIDATE}`;
+  }
+  if (statusCode >= 300 && statusCode < 400) {
+    return `public, max-age=${FALLBACK_CACHE_MAX_AGE_SECONDS}`;
+  }
+  return 'no-cache, no-store, must-revalidate';
+}
 
 export default defineEventHandler((event) => {
   const path = event.path;
   if (!path?.startsWith('/__og-image__/')) return;
 
-  // Set cache headers before response is sent
-  // This allows CDN and browsers to cache the generated images
-  setHeader(
-    event,
-    'Cache-Control',
-    `public, max-age=${CACHE_MAX_AGE_SECONDS}, stale-while-revalidate=${STALE_WHILE_REVALIDATE}`
-  );
+  const res = event.node.res;
+  const originalWriteHead = res.writeHead.bind(res);
 
-  // Add immutable hint for versioned resources
-  setHeader(event, 'X-Cache-Strategy', 'og-image-cache-v1');
-
-  // Vary by User-Agent is important because we might serve different images
-  // based on device/bot characteristics (though currently we don't)
-  // Still good practice to declare for cache correctness
-  setHeader(event, 'Vary', 'User-Agent');
-
-  // Log cache headers being applied
-  onBeforeSendResponse(async (context) => {
-    if (context.event.path?.startsWith('/__og-image__/')) {
-      console.debug(
-        `[OG Image Cache] Applied cache headers to ${context.event.path} (max-age: ${CACHE_MAX_AGE_SECONDS}s)`
-      );
+  res.writeHead = ((statusCode: number, ...args: unknown[]) => {
+    if (!res.getHeader('Cache-Control')) {
+      res.setHeader('Cache-Control', cacheControlFor(statusCode));
+      res.setHeader('Vary', 'User-Agent');
     }
-  });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (originalWriteHead as any)(statusCode, ...args);
+  }) as typeof res.writeHead;
 });

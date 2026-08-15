@@ -16,13 +16,15 @@ export default defineNitroPlugin((nitroApp) => {
         error.message.includes('AbortError'));
 
     const errorType = isTimeout ? 'TIMEOUT' : 'ERROR';
-    const severity = isTimeout ? 'WARN' : 'ERROR';
+    const message = `[OG Image ${errorType}] ${event.path}: ${
+      error instanceof Error ? error.message : String(error)
+    }`;
 
-    console[severity as 'warn' | 'error'](
-      `[OG Image ${errorType}] ${event.path}: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
+    if (isTimeout) {
+      console.warn(message);
+    } else {
+      console.error(message);
+    }
 
     // Also log to help with monitoring
     if (isTimeout) {
@@ -37,7 +39,7 @@ export default defineNitroPlugin((nitroApp) => {
       // Response may already be committed; log and continue
       console.warn(
         `[OG Image] Could not redirect to fallback for ${event.path}:`,
-        redirectError instanceof Error ? redirectError.message : String(redirectError)
+        redirectError instanceof Error ? redirectError.message : String(redirectError),
       );
     }
   });

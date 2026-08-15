@@ -29,6 +29,18 @@ const RATE_LIMIT_CONFIG = {
 // In-memory store for tracking requests per bot
 const requestTracking = new Map<string, { count: number; resetTime: number }>();
 
+// Periodically sweep expired windows so stale entries don't linger between bursts
+const CLEANUP_INTERVAL_MS = 10_000;
+const cleanupInterval = setInterval(() => {
+  const now = Date.now();
+  for (const [botId, tracked] of requestTracking) {
+    if (now >= tracked.resetTime) {
+      requestTracking.delete(botId);
+    }
+  }
+}, CLEANUP_INTERVAL_MS);
+cleanupInterval.unref?.();
+
 function getBotIdentifier(userAgent: string): string | null {
   const ua = userAgent.toLowerCase();
   for (const pattern of BOT_PATTERNS) {
@@ -87,7 +99,7 @@ export default defineEventHandler(async (event) => {
           message: 'Rate limit exceeded for bot requests',
           retryAfter: RATE_LIMIT_CONFIG.windowSizeMs / 1000,
         },
-      })
+      }),
     );
   }
 });

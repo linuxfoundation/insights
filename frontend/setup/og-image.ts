@@ -33,8 +33,7 @@ export default {
   },
   // Cache strategy: cache OG images for 24 hours
   // This reduces rendering load from repeated bot crawler requests
-  // Cache is invalidated when content changes (manual or via hooks)
-  cache: {
-    maxAge: 60 * 60 * 24, // 24 hours in seconds
+  defaults: {
+    cacheMaxAgeSeconds: 60 * 60 * 24, // 24 hours in seconds
   },
 };
