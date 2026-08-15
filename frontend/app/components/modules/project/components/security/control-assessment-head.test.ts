@@ -3,8 +3,8 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { useQueryClient } from '@tanstack/vue-query';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 import ControlAssessmentHead from './control-assessment-head.vue';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 // Mock dependencies
 vi.mock('@tanstack/vue-query', () => ({
@@ -117,11 +117,7 @@ describe('control-assessment-head.vue', () => {
 
     // Assert that it was called with the correct query key
     expect(mockInvalidateQueries).toHaveBeenCalledWith({
-      queryKey: [
-        TanstackKey.SECURITY_ASSESSMENT,
-        'test-project',
-        ['https://github.com/test/repo'],
-      ],
+      queryKey: [TanstackKey.SECURITY_ASSESSMENT, 'test-project', ['https://github.com/test/repo']],
     });
   });
 

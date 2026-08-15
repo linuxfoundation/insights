@@ -100,7 +100,9 @@ export default {
         headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },
-      '/api/*/security/**': {
+      // `*` matches exactly one path segment — the real endpoint is
+      // /api/project/{slug}/security/assessment, two segments before `security`.
+      '/api/project/*/security/**': {
         headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },

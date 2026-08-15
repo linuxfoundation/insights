@@ -11,11 +11,13 @@ describe('caching configuration', () => {
     expect(nitroRules['/api/security/**']?.headers?.['cache-control']).toBe(noCacheHeader);
   });
 
-  test('applies no-cache headers to /api/*/security/** endpoints', () => {
+  test('applies no-cache headers to /api/project/*/security/** endpoints', () => {
     const noCacheHeader = 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0';
     const nitroRules = cachingConfig.nitro.routeRules;
 
-    expect(nitroRules['/api/*/security/**']?.headers?.['cache-control']).toBe(noCacheHeader);
+    expect(nitroRules['/api/project/*/security/**']?.headers?.['cache-control']).toBe(
+      noCacheHeader,
+    );
   });
 
   test('does not apply no-cache headers to other /api/** routes', () => {
