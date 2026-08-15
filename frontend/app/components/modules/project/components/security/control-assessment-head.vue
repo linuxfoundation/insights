@@ -59,6 +59,7 @@ SPDX-License-Identifier: MIT
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'nuxt/app';
+import { useQueryClient } from '@tanstack/vue-query';
 import { links } from '~/config/links';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
@@ -66,6 +67,7 @@ import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
@@ -73,6 +75,7 @@ import { SECURITY_API_SERVICE } from '~/components/modules/project/services/secu
 const { selectedReposValues } = storeToRefs(useProjectStore());
 const { isAuthenticated } = storeToRefs(useAuthStore());
 const { showToast } = useToastService();
+const queryClient = useQueryClient();
 const route = useRoute();
 const { name } = route.params;
 
@@ -94,6 +97,9 @@ const handleUpdateResultsClick = async () => {
     await SECURITY_API_SERVICE.triggerSecurityUpdate({
       slug: route.params.slug as string,
       repoUrl: currentRepoUrl.value || '',
+    });
+    queryClient.invalidateQueries({
+      queryKey: [TanstackKey.SECURITY_ASSESSMENT, route.params.slug, selectedReposValues.value],
     });
     showToast(
       '<span class="text-neutral-300">Repository updates can’t be processed immediately.<br>Assessment results will be updated within an hour.</span>',

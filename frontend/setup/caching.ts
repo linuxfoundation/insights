@@ -96,7 +96,11 @@ export default {
         : {}),
     },
     routeRules: {
-      '/api/**': {
+      '/api/security/**': {
+        headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
+        prerender: false,
+      },
+      '/api/*/security/**': {
         headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },
