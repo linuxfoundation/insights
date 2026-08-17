@@ -23,7 +23,7 @@ The short-lived Auth0-signed JWT the Worker forwards to the Insights API as `Aut
 _Avoid_: calling it just "a JWT" or "the bearer token". Always say which credential is meant
 
 **User**:
-The human account that owns one or more API Keys (PATs) and is the billing principal. Identified by the JWT `sub` claim.
+The human account that owns one or more API Keys (PATs). Identified by the JWT `sub` claim.
 _Avoid_: account, customer, client
 
 **Organization (org_id)**:
@@ -37,7 +37,7 @@ _Avoid_: plan, subscription
 ### API Shape
 
 **Endpoint Group**:
-A logical cluster of related endpoints released together as a unit (Development, Contributors, Popularity, Security, Collections). Each group maps to a Jira epic.
+A logical cluster of related endpoints released together as a unit (Development, Contributors, Popularity, Security & Best Practices, Overviews, Collections, Leaderboard). Each group maps to a Jira epic.
 _Avoid_: phase, module, domain
 
 **Breaking Change**:

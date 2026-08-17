@@ -12,7 +12,7 @@ The LFX architecture team compared six options for long-lived credentials in [`l
 
 ## Decision
 
-We will issue long-lived Personal Access Tokens from the LFX Self-Serve App and exchange them for short-lived Auth0-signed JWTs using Auth0 Custom Token Exchange, performed by a Cloudflare Worker in front of the Insights API. The exchange runs on a cache miss, not on every request. The Worker caches the exchanged JWT and the caller's entitlements for ~10 min. Membership org and tier are resolved by the Worker from a purpose-built LFX Tier endpoint and passed to the Insights API as trusted headers (variant 4b); the Insights API verifies the JWT and never sees the PAT.
+We will issue long-lived Personal Access Tokens from the LFX Self-Serve App and exchange them for short-lived Auth0-signed JWTs using Auth0 Custom Token Exchange, performed by a Cloudflare Worker in front of the Insights API. The exchange runs on a cache miss, not on every request. The Worker caches the exchanged JWT and the caller's entitlements for ~10 min. Membership org and tier are resolved by the Worker from a purpose-built LFX Tier endpoint and passed to the Insights API as trusted headers (variant 4b, the suggested direction; 4a remains viable and the choice is confirmed at T-015, see Variants below); the Insights API verifies the JWT and never sees the PAT.
 
 Request flow:
 
