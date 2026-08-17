@@ -9,12 +9,6 @@ import type { TinybirdResponse } from './tinybird';
  * Only used when Redis is available.
  */
 const inFlightRequests = new Map<string, Promise<number | null>>();
-
-/**
- * In-memory cache to prevent cache stampede (multiple concurrent requests for same collection).
- * Maps collection slug to a Promise that resolves to bucketId.
- * Only used when Redis is available.
- */
 const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 
 /**
@@ -31,9 +25,6 @@ interface CollectionBucketResponse {
   bucketId: number;
 }
 
-/**
- * Check if Redis caching is enabled
- */
 function isRedisEnabled(): boolean {
   return !!process.env.NUXT_REDIS_URL && process.env.NUXT_REDIS_URL.length > 0;
 }
@@ -185,17 +176,6 @@ async function fetchBucketIdFromTinybird(
   return bucketId;
 }
 
-/**
- * Fetches the bucketId for a given collection from Tinybird.
- *
- * Caching strategy depends on environment:
- * - Local (no NUXT_REDIS_URL): Always fetches fresh from Tinybird (no caching)
- * - Production (with NUXT_REDIS_URL): Uses Redis cache (24hr TTL)
- *
- * @param {string} collectionSlug - The collection slug to fetch bucketId for
- * @param {Function} fetcher - The fetchFromTinybird function (injected to avoid circular dependency)
- * @return {Promise<number | null>} The bucketId for the collection, or null if not found/error occurred
- */
 export async function getBucketIdForCollection(
   collectionSlug: string,
   fetcher: <T>(
@@ -276,9 +256,6 @@ export async function getBucketIdForCollection(
   return fetchPromise;
 }
 
-/**
- * Internal function to fetch bucketId from Tinybird API for a collection
- */
 async function fetchBucketIdForCollectionFromTinybird(
   slugValue: string,
   fetcher: <T>(
@@ -366,12 +343,14 @@ export async function clearAllBucketCaches(): Promise<void> {
   try {
     const storage = useStorage('redis');
     const keys = await storage.getKeys('project_bucket:');
+    const collectionKeys = await storage.getKeys('collection_bucket:');
 
-    await Promise.all(keys.map((key) => storage.removeItem(key)));
+    await Promise.all([...keys, ...collectionKeys].map((key) => storage.removeItem(key)));
   } catch (error) {
     console.error('Failed to clear all bucket caches:', error);
   }
 
   // Clear in-flight requests
   inFlightRequests.clear();
+  collectionInFlightRequests.clear();
 }
