@@ -11,9 +11,23 @@ import type { TinybirdResponse } from './tinybird';
 const inFlightRequests = new Map<string, Promise<number | null>>();
 
 /**
+ * In-memory cache to prevent cache stampede (multiple concurrent requests for same collection).
+ * Maps collection slug to a Promise that resolves to bucketId.
+ * Only used when Redis is available.
+ */
+const collectionInFlightRequests = new Map<string, Promise<number | null>>();
+
+/**
  * Response type from the project_buckets Tinybird pipe
  */
 interface ProjectBucketResponse {
+  bucketId: number;
+}
+
+/**
+ * Response type from the collection_buckets Tinybird pipe
+ */
+interface CollectionBucketResponse {
   bucketId: number;
 }
 
@@ -161,6 +175,139 @@ async function fetchBucketIdFromTinybird(
       JSON.stringify({
         message: 'tinybird_bucket_invalid_type',
         project: projectValue,
+        bucketIdType: typeof bucketId,
+        timestamp: new Date().toISOString(),
+      }),
+    );
+    return null;
+  }
+
+  return bucketId;
+}
+
+/**
+ * Fetches the bucketId for a given collection from Tinybird.
+ *
+ * Caching strategy depends on environment:
+ * - Local (no NUXT_REDIS_URL): Always fetches fresh from Tinybird (no caching)
+ * - Production (with NUXT_REDIS_URL): Uses Redis cache (24hr TTL)
+ *
+ * @param {string} collectionSlug - The collection slug to fetch bucketId for
+ * @param {Function} fetcher - The fetchFromTinybird function (injected to avoid circular dependency)
+ * @return {Promise<number | null>} The bucketId for the collection, or null if not found/error occurred
+ */
+export async function getBucketIdForCollection(
+  collectionSlug: string,
+  fetcher: <T>(
+    path: string,
+    query: Record<string, string | number | boolean | string[] | undefined | null>,
+  ) => Promise<TinybirdResponse<T>>,
+): Promise<number | null> {
+  const slugValue = collectionSlug?.toString().trim();
+  if (!slugValue || slugValue.length === 0) {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_collection',
+        timestamp: new Date().toISOString(),
+      }),
+    );
+    return null;
+  }
+
+  const redisEnabled = isRedisEnabled();
+
+  if (!redisEnabled) {
+    return await fetchBucketIdForCollectionFromTinybird(slugValue, fetcher);
+  }
+
+  if (collectionInFlightRequests.has(slugValue)) {
+    try {
+      return await collectionInFlightRequests.get(slugValue)!;
+    } catch {
+      collectionInFlightRequests.delete(slugValue);
+    }
+  }
+
+  const cacheKey = `collection_bucket:${slugValue}`;
+
+  const fetchPromise = (async () => {
+    try {
+      const storage = useStorage('redis');
+      const cachedBucketId = await storage.getItem<number>(cacheKey);
+
+      if (cachedBucketId !== null && cachedBucketId !== undefined) {
+        return cachedBucketId;
+      }
+    } catch (cacheError) {
+      console.error(`Failed to read from Redis cache for collection ${slugValue}:`, cacheError);
+    }
+
+    try {
+      const bucketId = await fetchBucketIdForCollectionFromTinybird(slugValue, fetcher);
+
+      if (bucketId === null) {
+        return null;
+      }
+
+      try {
+        const storage = useStorage('redis');
+        await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+      } catch (cacheError) {
+        console.error(`Failed to cache bucketId for collection ${slugValue}:`, cacheError);
+      }
+
+      return bucketId;
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      console.warn(`Failed to fetch bucketId for collection ${slugValue}:`, error);
+      return null;
+    } finally {
+      collectionInFlightRequests.delete(slugValue);
+    }
+  })();
+
+  collectionInFlightRequests.set(slugValue, fetchPromise);
+
+  return fetchPromise;
+}
+
+/**
+ * Internal function to fetch bucketId from Tinybird API for a collection
+ */
+async function fetchBucketIdForCollectionFromTinybird(
+  slugValue: string,
+  fetcher: <T>(
+    path: string,
+    query: Record<string, string | number | boolean | string[] | undefined | null>,
+  ) => Promise<TinybirdResponse<T>>,
+): Promise<number | null> {
+  const response = await fetcher<CollectionBucketResponse[]>('/v0/pipes/collection_buckets.json', {
+    collectionSlug: slugValue,
+  });
+
+  if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_not_found',
+        collectionSlug: slugValue,
+        timestamp: new Date().toISOString(),
+      }),
+    );
+    return null;
+  }
+
+  const bucketId = response.data[0]?.bucketId;
+
+  if (typeof bucketId !== 'number') {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_type',
+        collectionSlug: slugValue,
         bucketIdType: typeof bucketId,
         timestamp: new Date().toISOString(),
       }),
