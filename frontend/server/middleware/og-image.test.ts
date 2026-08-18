@@ -181,7 +181,7 @@ describe('og-image collection existence check', () => {
 
   it('should allow valid collections', async () => {
     mockFetchFromTinybird.mockResolvedValue({ data: [{ slug: 'valid' }] });
-    const { event } = createEvent('/__og-image__/image/collection/valid-slug/');
+    const { event } = createEvent('/__og-image__/image/collection/details/valid-slug/');
 
     await handler(event);
 
@@ -194,7 +194,7 @@ describe('og-image collection existence check', () => {
 
   it('should redirect on missing collection', async () => {
     mockFetchFromTinybird.mockResolvedValue({ data: [] });
-    const { event } = createEvent('/__og-image__/image/collection/missing/');
+    const { event } = createEvent('/__og-image__/image/collection/details/missing/');
 
     await handler(event);
 
@@ -203,7 +203,7 @@ describe('og-image collection existence check', () => {
 
   it('should redirect on Tinybird errors', async () => {
     mockFetchFromTinybird.mockRejectedValue(new Error('Network error'));
-    const { event } = createEvent('/__og-image__/image/collection/test/');
+    const { event } = createEvent('/__og-image__/image/collection/details/test/');
 
     await handler(event);
 
@@ -211,7 +211,9 @@ describe('og-image collection existence check', () => {
   });
 
   it('should extract slug from URL path correctly', async () => {
-    const { event } = createEvent('/__og-image__/image/collection/my-collection/extra/path');
+    const { event } = createEvent(
+      '/__og-image__/image/collection/details/my-collection/extra/path',
+    );
 
     await handler(event);
 
@@ -222,7 +224,7 @@ describe('og-image collection existence check', () => {
   });
 
   it('should handle missing slug in path', async () => {
-    const { event } = createEvent('/__og-image__/image/collection/');
+    const { event } = createEvent('/__og-image__/image/collection/details/');
 
     await handler(event);
 

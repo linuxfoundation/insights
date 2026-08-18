@@ -6,7 +6,7 @@ import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectTinybird } from '~~/types/project';
 
 const OG_IMAGE_PREFIX = '/__og-image__/';
-const OG_IMAGE_COLLECTION_PREFIX = '/__og-image__/image/collection/';
+const OG_IMAGE_COLLECTION_PREFIX = '/__og-image__/image/collection/details/';
 const OG_IMAGE_PROJECT_PREFIX = '/__og-image__/image/project/';
 
 // ---- bot rate limiting ----
