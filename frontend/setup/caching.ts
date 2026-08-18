@@ -103,9 +103,11 @@ export default {
         headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },
-      // `*` matches exactly one path segment — the real endpoint is
-      // /api/project/{slug}/security/assessment, two segments before `security`.
-      '/api/project/*/security/**': {
+      // A single-segment `*` here collides with the `:slug` param node that the real
+      // `/api/project/[slug]/**` API routes register in Nitro's radix3 router, corrupting
+      // route resolution for every route under `/api/project/:slug/**`.
+      // `**` matches one-or-more segments without introducing a conflicting node type.
+      '/api/project/**/security/**': {
         headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },
