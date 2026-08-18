@@ -2,52 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { useRuntimeConfig } from '#imports';
-
-export interface TrustScoreConfig {
-  maxScore: number;
-  minScore: number;
-  label: string;
-  color: string;
-  ghBadgeColor: string;
-}
-
-export const lfxTrustScore: TrustScoreConfig[] = [
-  {
-    maxScore: 100,
-    minScore: 80,
-    label: 'Excellent',
-    color: 'bg-positive-500',
-    ghBadgeColor: '#10B981',
-  },
-  {
-    maxScore: 79,
-    minScore: 60,
-    label: 'Healthy',
-    color: 'bg-positive-500',
-    ghBadgeColor: '#A7F3D0',
-  },
-  {
-    maxScore: 59,
-    minScore: 40,
-    label: 'Stable',
-    color: 'bg-brand-500',
-    ghBadgeColor: '#0094FF',
-  },
-  {
-    maxScore: 39,
-    minScore: 20,
-    label: 'Unsteady',
-    color: 'bg-warning-500',
-    ghBadgeColor: '#F59E0B',
-  },
-  {
-    maxScore: 19,
-    minScore: 0,
-    label: 'Critical',
-    color: 'bg-negative-500',
-    ghBadgeColor: '#EF4444',
-  },
-];
+import { lfxColors } from '~/config/styles/colors';
 
 export const getBadgeUrl = (type: string, projectSlug: string, selectedRepos: string[] = []) => {
   const config = useRuntimeConfig();
@@ -55,8 +10,60 @@ export const getBadgeUrl = (type: string, projectSlug: string, selectedRepos: st
     selectedRepos.length ? `&repos=${selectedRepos.join(',')}` : ''
   }`;
 };
-export const getHealthScoreConfig = (score: number) => {
-  return (
-    lfxTrustScore.find((s) => score <= s.maxScore && score >= s.minScore) || lfxTrustScore.at(-1)!
-  );
+
+// v2 health score labels/colors, thresholds 85/70/50/30 (see project_insights_copy.pipe's
+// healthLabel multiIf). Keyed lowercase to match the backend-provided healthLabel string
+// (see collection-health-score-pill.vue).
+export interface HealthScoreV2Config {
+  label: string;
+  ghBadgeColor: string;
+}
+
+export const healthScoreV2Config: Record<string, HealthScoreV2Config> = {
+  excellent: { label: 'Excellent', ghBadgeColor: lfxColors.health.healthy },
+  healthy: { label: 'Healthy', ghBadgeColor: lfxColors.health.healthy },
+  fair: { label: 'Fair', ghBadgeColor: lfxColors.health.fair },
+  concerning: { label: 'Concerning', ghBadgeColor: lfxColors.health.concerning },
+  critical: { label: 'Critical', ghBadgeColor: lfxColors.health.critical },
+  unavailable: { label: 'Unavailable', ghBadgeColor: lfxColors.neutral[400] },
+};
+
+export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Config => {
+  if (label && healthScoreV2Config[label]) {
+    return healthScoreV2Config[label];
+  }
+  return healthScoreV2Config.unavailable;
+};
+
+// Impact labels come from project_insights_copy.pipe's impactLabel multiIf: foundational (>=85),
+// major (>=60), moderate (>=30), minor (below).
+export const impactLabelConfig: Record<string, string> = {
+  foundational: 'Foundational',
+  major: 'Major',
+  moderate: 'Moderate',
+  minor: 'Minor',
+};
+
+export const getImpactLabelDisplay = (label: string | null): string => {
+  if (label && impactLabelConfig[label]) {
+    return impactLabelConfig[label];
+  }
+  return 'Unavailable';
+};
+
+// Lifecycle labels come from health_score_v2's lifecycleLabelV2: active, stable, declining,
+// abandoned, archived (best-state-wins across a project's repos).
+export const lifecycleLabelConfig: Record<string, { label: string; color: string }> = {
+  active: { label: 'Active', color: 'bg-positive-500' },
+  stable: { label: 'Stable', color: 'bg-accent-500' },
+  declining: { label: 'Declining', color: 'bg-warning-500' },
+  abandoned: { label: 'Abandoned', color: 'bg-negative-500' },
+  archived: { label: 'Archived', color: 'bg-neutral-400' },
+};
+
+export const getLifecycleLabelConfig = (label: string | null): { label: string; color: string } => {
+  if (label && lifecycleLabelConfig[label]) {
+    return lifecycleLabelConfig[label];
+  }
+  return { label: 'Unknown', color: 'bg-neutral-400' };
 };
