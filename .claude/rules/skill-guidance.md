@@ -19,6 +19,7 @@ This project has guided skills for common workflows. **Proactively suggest the r
 | `/db-migrate`  | Apply pending migrations, create a new migration, check migration status                            |
 | `/tech-writer` | Write or improve documentation, update READMEs, draft technical content                             |
 | `/adr`         | Record an architecture decision, choose between frameworks/libraries/patterns, query past decisions  |
+| `/tinybird`    | Update/push a Tinybird pipe or datasource, staging vs prod Tinybird workspace, `tb push`/`tb pull`  |
 
 ## Trigger Phrases
 
@@ -62,3 +63,8 @@ This project has guided skills for common workflows. **Proactively suggest the r
 - "Should we use X or Y?" when the choice is architectural (framework, database, pattern, API style)
 - "Document this trade-off", "Capture this as an ADR"
 - Any moment where a significant technical alternative was considered and rejected
+
+**`/tinybird`** — match any of these intents:
+- "Update a pipe", "push to Tinybird", "tb push", "tb pull"
+- "Change a datasource", "add a field to a Tinybird pipe"
+- "Staging vs prod Tinybird workspace", "deploy a Tinybird endpoint"
