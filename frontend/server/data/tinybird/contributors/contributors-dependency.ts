@@ -17,17 +17,16 @@ export async function fetchContributorDependency(
     // By bumping up that limit to 100, it's almost guaranteed we will get to 51%.
     limit: 100,
   };
-  const leaderboardQuery: ContributorsLeaderboardFilter = {
-    ...filter,
-    limit: 5,
-  };
 
   const [tinybirdTopContributorsResponse, tinybirdLeaderboardResponse] = await Promise.all([
     fetchFromTinybird<TinybirdContributorDependencyData[]>(
       '/v0/pipes/contributor_dependency.json',
       dependencyQuery,
     ),
-    fetchContributorsLeaderboard(leaderboardQuery),
+    fetchContributorsLeaderboard({
+      ...filter,
+      limit: 5,
+    } satisfies ContributorsLeaderboardFilter),
   ]);
 
   // Sort the top contributors by contributionPercentageRunningTotal in ascending order.

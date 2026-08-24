@@ -118,7 +118,7 @@ const model = computed<SocialMentionsModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -138,7 +138,8 @@ const granularity = computed(() =>
 );
 
 const queryParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

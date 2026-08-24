@@ -8,8 +8,17 @@ import type { ActivityPlatforms, ActivityTypes, Granularity } from '@lfx-insight
  * They don't necessarily match the types that the frontend uses because they are only meant to be used with TinyBird.
  */
 
-export type ContributorsLeaderboardTinybirdQuery = {
-  project: string;
+// Exactly one of project/collectionSlug is sent per request - see segments_filtered /
+// segments_filtered_by_collection on the Tinybird side.
+export type TinybirdScope = {
+  project?: string;
+  collectionSlug?: string;
+};
+
+// contributors_leaderboard.pipe supports both project and collectionSlug scope (scalar-total
+// pattern, same performance characteristics at collection scale as the leaderboard's own
+// window-function-free design).
+export type ContributorsLeaderboardTinybirdQuery = TinybirdScope & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
@@ -23,8 +32,7 @@ export type ContributorsLeaderboardTinybirdQuery = {
   endDate?: DateTime;
 };
 
-export type OrganizationsLeaderboardTinybirdQuery = {
-  project: string;
+export type OrganizationsLeaderboardTinybirdQuery = TinybirdScope & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
@@ -38,8 +46,7 @@ export type OrganizationsLeaderboardTinybirdQuery = {
   endDate?: DateTime;
 };
 
-export type ActivityHeatmapByWeekdayTBQuery = {
-  project: string;
+export type ActivityHeatmapByWeekdayTBQuery = TinybirdScope & {
   repos?: string[];
   includeCodeContributions?: boolean;
   includeCollaborations?: boolean;
@@ -47,14 +54,12 @@ export type ActivityHeatmapByWeekdayTBQuery = {
   endDate?: DateTime;
 };
 
-export type SearchVolumeTinybirdQuery = {
-  project: string;
+export type SearchVolumeTinybirdQuery = TinybirdScope & {
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
-export type ActiveContributorsTinybirdQuery = {
-  project: string;
+export type ActiveContributorsTinybirdQuery = TinybirdScope & {
   repos?: string[];
   granularity?: Granularity;
   activity_type?: ActivityTypes;
@@ -64,8 +69,7 @@ export type ActiveContributorsTinybirdQuery = {
   endDate?: DateTime;
 };
 
-export type ActivitiesCountTinybirdQuery = {
-  project: string;
+export type ActivitiesCountTinybirdQuery = TinybirdScope & {
   repos?: string[];
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
@@ -77,8 +81,7 @@ export type ActivitiesCountTinybirdQuery = {
   endDate?: DateTime;
 };
 
-export type ActivityTypesTinybirdQuery = {
-  project: string;
+export type ActivityTypesTinybirdQuery = TinybirdScope & {
   repos?: string[];
   includeCodeContributions?: boolean;
   includeCollaborations?: boolean;

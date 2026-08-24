@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const forks: WidgetConfig = {
   key: 'forks',
+  availableInCollection: true,
   name: 'Forks',
   description: () =>
     'New forks (copies) of the project repositories during the selected time period.',

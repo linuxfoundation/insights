@@ -12,8 +12,11 @@ export enum CodeReviewEngagementMetric {
   REVIEW_COMMENTS = 'review-comments',
   CODE_REVIEWS = 'code-reviews',
 }
+// Exactly one of project/collectionSlug is set by the caller - see DefaultFilter in
+// server/data/types.ts for the same convention.
 export type CodeReviewEngagementFilter = {
-  project: string;
+  project?: string;
+  collectionSlug?: string;
   repos?: string[];
   granularity?: Granularity;
   metric: CodeReviewEngagementMetric;
@@ -22,7 +25,8 @@ export type CodeReviewEngagementFilter = {
 };
 
 export type ContributionsOutsideWorkHoursFilter = {
-  project: string;
+  project?: string;
+  collectionSlug?: string;
   repos?: string[];
   includeCodeContributions?: boolean;
   includeCollaborations?: boolean;
@@ -31,7 +35,8 @@ export type ContributionsOutsideWorkHoursFilter = {
 };
 
 export type ActivityTypesFilter = {
-  project: string;
+  project?: string;
+  collectionSlug?: string;
   repos?: string[];
   includeCodeContributions?: boolean;
   includeCollaborations?: boolean;

@@ -7,6 +7,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const activeOrganizations: WidgetConfig = {
   key: 'activeOrganization',
+  availableInCollection: true,
   name: 'Active organizations',
   description: () =>
     'Organizations that had at least one active contributor during the selected period.',

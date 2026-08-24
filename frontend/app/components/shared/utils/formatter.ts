@@ -195,6 +195,9 @@ export const formatValueToLargestUnitDuration = (
  * @param format - The format to use (default: 'short')
  * @returns The formatted date
  */
+export const toSentenceCase = (str: string): string =>
+  str.length === 0 ? '' : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 export const formatDate = (date: string, format: string = 'short'): string => {
   const dateTime = DateTime.fromISO(date);
   if (!dateTime.isValid) {

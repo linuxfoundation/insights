@@ -9,11 +9,16 @@ import { VueQueryPlugin, QueryClient, hydrate, dehydrate } from '@tanstack/vue-q
 export default defineNuxtPlugin((nuxt: NuxtApp) => {
   const vueQueryState = useState<DehydratedState | null>('vue-query');
 
-  // Modify your Vue Query global settings here
+  // 30s staleTime keeps refetchOnWindowFocus/refetchOnMount active in practice —
+  // a 5-min window made those no-ops and forced users to hard-refresh to see fresh data.
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
+        refetchOnReconnect: true,
+        retry: 1,
         // Disable gc timers on the server to prevent orphaned QueryClient instances
         // from being held in memory after SSR completes
         ...(import.meta.server ? { gcTime: 0 } : {}),

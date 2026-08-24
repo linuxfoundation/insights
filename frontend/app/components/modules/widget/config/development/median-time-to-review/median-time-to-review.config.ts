@@ -7,6 +7,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const medianTimeToReview: WidgetConfig = {
   key: 'medianTimeToReview',
+  availableInCollection: true,
   name: 'Median time to review',
   description: () =>
     'Median time taken between change submission and its first review during the selected period.',

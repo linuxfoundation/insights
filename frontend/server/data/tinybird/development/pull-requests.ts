@@ -195,7 +195,10 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
       periodFrom: filter.startDate?.toISO() || '',
       periodTo: filter.endDate?.toISO() || '',
     },
-    avgVelocityInDays: prResolutionVelocity.data[0].averagePullRequestResolveVelocitySeconds,
+    // Guard the [0] access (see issues-resolution): empty data / null avg degrades to null,
+    // rendered as "-", instead of throwing and dropping the whole widget response.
+    avgVelocityInDays:
+      prResolutionVelocity.data[0]?.averagePullRequestResolveVelocitySeconds ?? null,
     data: openedPRs.data.map((item, index) => ({
       startDate: item.startDate,
       endDate: item.endDate,

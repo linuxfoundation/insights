@@ -8,6 +8,7 @@ import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/conf
 
 const activeDays: WidgetConfig = {
   key: 'activeDays',
+  availableInCollection: true,
   name: 'Active days',
   description: () =>
     'Number of days contributors were actively involved in the project' +

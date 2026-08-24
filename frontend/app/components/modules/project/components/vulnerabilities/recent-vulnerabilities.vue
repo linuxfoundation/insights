@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-6 items-center pt-6 w-full">
-    <div class="flex flex-col gap-2 items-start w-full">
+    <div class="flex flex-col gap-0 md:gap-2 items-start w-full">
       <p class="text-base font-bold leading-6 text-neutral-900">Recent vulnerabilities</p>
 
       <!-- Error state or empty state -->

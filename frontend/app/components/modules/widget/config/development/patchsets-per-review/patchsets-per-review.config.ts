@@ -7,6 +7,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const patchsetsPerReview: WidgetConfig = {
   key: 'patchsetPerReview',
+  availableInCollection: true,
   name: 'Patchsets per review',
   description: () => 'Patchsets required to complete a review during the selected period.',
   learnMoreLink: `/docs/metrics/development#patchsets-per-review`,

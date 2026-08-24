@@ -1,0 +1,72 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { DateTime } from 'luxon';
+import { ActivityTypes, ActivityPlatforms } from '@lfx-insights/types';
+import { createDataSource } from '~~/server/data/data-sources';
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
+import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
+
+/**
+ * Frontend expects the data to be in the following format:
+ * {
+ *   meta: {
+ *     offset: number;
+ *     limit: number;
+ *     total: number;
+ *   },
+ *   data: [
+ *     {
+ *       avatar: string | undefined; // URL of the user's profile pic or avatar.
+ *       name: string; // Full name of the contributor
+ *       contributions: number; // Total number of contributions
+ *       contributionValue: number; // Value of the contribution
+ *       email: string; // Email of the contributor
+ *     }
+ *   ]
+ * }
+ */
+/**
+ * Query params:
+ * - metric: 'all' | 'commits' | (see metrics options)
+ * - project OR collectionSlug: string (exactly one required)
+ * - repository: string
+ * - time-period: string
+ * - offset: number
+ * - limit: number
+ *
+ * Both scopes are served by contributors_leaderboard.pipe, which branches internally.
+ */
+
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+  const scope = getWidgetScope(query);
+
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false);
+  const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
+  const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+  const startDate = query.startDate ? DateTime.fromISO(query.startDate as string) : undefined;
+  const endDate = query.endDate ? DateTime.fromISO(query.endDate as string) : undefined;
+  const platform = activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined;
+  const activity_type = activityType !== ActivityTypes.ALL ? activityType : undefined;
+
+  const dataSource = createDataSource();
+
+  const filter: ContributorsLeaderboardFilter = {
+    project: scope.project,
+    collectionSlug: scope.collectionSlug,
+    platform,
+    activity_type,
+    includeCodeContributions,
+    includeCollaborations,
+    repos,
+    startDate,
+    endDate,
+    limit,
+    offset,
+  };
+  return await dataSource.fetchContributorsLeaderboard(filter);
+});

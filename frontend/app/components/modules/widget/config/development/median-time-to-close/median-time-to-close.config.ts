@@ -7,6 +7,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const medianTimeToClose: WidgetConfig = {
   key: 'medianTimeToClose',
+  availableInCollection: true,
   name: 'Median time to close',
   description: () => 'Median time taken for pull requests to be closed during the selected period.',
   learnMoreLink: `/docs/metrics/development#median-time-to-close`,

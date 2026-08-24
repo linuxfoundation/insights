@@ -63,14 +63,15 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const { startDate, endDate, selectedReposValues, project } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues, project } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 
 const granularity = computed(() => Granularity.MONTHLY);
 
 const queryParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

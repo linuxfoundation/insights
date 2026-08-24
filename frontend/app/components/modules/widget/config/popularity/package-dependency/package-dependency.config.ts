@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const packageDependency: WidgetConfig = {
   key: 'packageDependency',
+  availableInCollection: true,
   name: 'Package dependency',
   description: () => `Amount of packages, repositories, and Docker packages that rely on the 
     selected package(s) during the selected period. 

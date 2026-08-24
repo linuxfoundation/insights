@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
           v-model="search"
           type="text"
           class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
-          placeholder="Search projects, repositories, or collections..."
+          placeholder="Search projects, repositories, collections, or organizations..."
           @input="triggerSearch"
         />
         <lfx-icon
@@ -49,6 +49,7 @@ SPDX-License-Identifier: MIT
           :projects="projects"
           :repositories="repositories"
           :collections="collections"
+          :organizations="organizations"
         />
       </div>
     </div>
@@ -58,7 +59,13 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { debounce } from 'lodash-es';
-import type { SearchCollection, SearchProject, SearchRepository, SearchResults } from '~~/types/search';
+import type {
+  SearchCollection,
+  SearchOrganization,
+  SearchProject,
+  SearchRepository,
+  SearchResults,
+} from '~~/types/search';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSearchResult from '~/components/shared/layout/search/search-result.vue';
@@ -79,6 +86,7 @@ const loading = ref<boolean>(false);
 const projects = ref<SearchProject[]>([]);
 const repositories = ref<SearchRepository[]>([]);
 const collections = ref<SearchCollection[]>([]);
+const organizations = ref<SearchOrganization[]>([]);
 
 const fetchSearchResults = () => {
   searchQuery.value = search.value;
@@ -95,11 +103,13 @@ const fetchSearchResults = () => {
       projects.value = res.projects;
       repositories.value = res.repositories;
       collections.value = res.collections;
+      organizations.value = res.organizations;
     })
     .catch(() => {
       projects.value = [];
       repositories.value = [];
       collections.value = [];
+      organizations.value = [];
     })
     .finally(() => {
       loading.value = false;

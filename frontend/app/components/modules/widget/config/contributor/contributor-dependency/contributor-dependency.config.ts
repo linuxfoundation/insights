@@ -6,6 +6,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const contributorDependency: WidgetConfig = {
   key: 'contributorDependency',
+  availableInCollection: true,
   name: 'Contributor dependency',
   description: () =>
     'Distribution of contributions across individuals, highlighting the group of ' +

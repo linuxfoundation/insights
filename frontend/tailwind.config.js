@@ -134,5 +134,8 @@ export default {
     '!bg-neutral-300',
     '!bg-negative-900',
     'bg-neutral-50',
+    'bg-health-healthy',
+    'bg-health-concerning',
+    'bg-health-critical',
   ],
 };

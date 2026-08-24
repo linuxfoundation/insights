@@ -22,10 +22,7 @@ export interface AgenticDataResponse<T> {
 
 // Project metadata
 export interface AgenticProject {
-  rank: number;
-  name: string;
   layer: string;
-  license: string;
   github_url: string | null;
   github_url_display: string | null;
 }
@@ -81,11 +78,9 @@ export type ResearchTopic =
 
 // Aggregated project data for the leaderboard
 export interface ProjectLeaderboardRow {
-  rank: number;
   slug: string;
   name: string;
   layer: EcosystemLayer | string;
-  license: string;
   githubUrl: string | null;
   stars: number | null;
   starsDelta: number | null;
@@ -99,8 +94,6 @@ export interface ProjectLeaderboardRow {
   mergeRateDelta: number | null;
   timeToClose: number | null;
   timeToCloseDelta: number | null;
-  downloads: number | null;
-  downloadsDelta: number | null;
   cocomoValue: number | null;
   prTimeToResolve: number | null;
   prTimeToResolveDelta: number | null;
@@ -127,7 +120,6 @@ export type MetricKey =
   | 'stars'
   | 'forks'
   | 'contributors'
-  | 'downloads'
   | 'mergeRate'
   | 'timeToClose'
   | 'commits'
@@ -203,8 +195,6 @@ export interface AgenticTbProjectRow {
   stars_30d: number | null;
   forks: number | null;
   forks_30d: number | null;
-  downloads: number | null;
-  downloads_30d: number | null;
   docker_pulls: number | null;
   docker_pulls_30d: number | null;
   dependent_repos: number | null;
@@ -236,12 +226,9 @@ export interface AgenticEnrichedProject {
   slug: string;
   githubRepoLink: string;
   layer: EcosystemLayer | string;
-  rank: number;
-  license: string;
   // All-time values
   stars: number | null;
   forks: number | null;
-  downloads: number | null;
   dockerPulls: number | null;
   dependentRepos: number | null;
   dependentPackages: number | null;
@@ -259,7 +246,6 @@ export interface AgenticEnrichedProject {
   // 30d delta values
   stars30d: number | null;
   forks30d: number | null;
-  downloads30d: number | null;
   dockerPulls30d: number | null;
   commits30d: number | null;
   contributors30d: number | null;

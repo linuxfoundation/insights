@@ -12,7 +12,6 @@ declare const window: Window & typeof globalThis;
 export const authState = ref<AuthData>({
   isAuthenticated: false,
   user: null,
-  token: null,
 });
 
 export const isAuthLoading = ref(false);
@@ -51,8 +50,12 @@ export const setWasUserLoggedIn = (value: boolean): void => {
 
 export const login = async (redirectTo?: string, silent?: boolean) => {
   isAuthLoading.value = true;
-  // Reset silent login flag for next time
-  setSilentLoginAttempted(false);
+  // Only reset the silent-login-attempted flag for explicit (non-silent) logins.
+  // For silent logins the flag must remain set so auth.client.ts can detect a failed
+  // silent-auth cycle and stop retrying on the next page load.
+  if (!silent) {
+    setSilentLoginAttempted(false);
+  }
   try {
     let currentPath = redirectTo || '/';
 
@@ -105,7 +108,6 @@ export const logout = async () => {
       authState.value = {
         isAuthenticated: false,
         user: null,
-        token: null,
       };
 
       // Clear liked collections
@@ -131,12 +133,10 @@ export const logout = async () => {
 export const useAuth = () => {
   const isAuthenticated = computed(() => authState.value.isAuthenticated);
   const user = computed(() => authState.value.user);
-  const token = computed(() => authState.value.token);
 
   return {
     isAuthenticated,
     user,
-    token,
     isLoading: isAuthLoading,
     isReady: isAuthReady,
     login,

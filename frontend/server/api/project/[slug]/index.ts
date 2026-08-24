@@ -65,6 +65,12 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       {} as Record<string, Partial<ProjectRepository>>,
     );
 
+    const licensesByUrl: Record<string, string[]> = {};
+    for (const [url, license] of project.repoLicenses || []) {
+      if (!licensesByUrl[url]) licensesByUrl[url] = [];
+      licensesByUrl[url].push(license);
+    }
+
     const repositories = project.repositories.map((repoUrl) => {
       const name = getRepoNameFromUrl(repoUrl);
       const slug = getRepoSlugFromName(name);
@@ -75,6 +81,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
         slug,
         score: details.score || 0,
         rank: details.rank || 0,
+        licenses: licensesByUrl[repoUrl] || [],
       };
     });
     const projectLinks = [
@@ -93,6 +100,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       projectLinks,
       repoData: undefined,
       tags: project?.keywords || [],
+      maturityStatus: project?.maturity || undefined,
     };
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'statusCode' in err) {

@@ -3,13 +3,15 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200 flex gap-10 items-center">
+  <div
+    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200 flex flex-col md:flex-row gap-4 md:gap-10 md:items-center"
+  >
     <lfx-project-security-evaluation-section
       :checks="checks"
       :tooltip="tooltip"
     />
 
-    <div>
+    <div class="pl-16 md:pl-0">
       <lfx-button
         type="tertiary"
         button-style="pill"

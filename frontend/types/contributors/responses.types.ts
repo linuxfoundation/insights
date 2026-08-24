@@ -32,6 +32,8 @@ export interface Contributor {
 }
 
 export interface Organization {
+  id?: string;
+  slug?: string;
   logo: string;
   name: string;
   contributions: number;

@@ -95,8 +95,9 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       token,
     };
 
-    // Use static workflowId per repo to prevent duplicate workflows for the same repo
-    // WorkflowIdReusePolicy.REJECT_DUPLICATE will reject if workflow is already running
+    // Use static workflowId per repo so concurrent triggers for the same repo collide.
+    // workflowIdConflictPolicy: 'FAIL' rejects only when a workflow with this ID is currently
+    // running; once the previous run has closed, the ID can be reused for a fresh update.
     // Sanitize repoUrl for use in workflowId (replace non-alphanumeric chars with dashes)
     const sanitizedRepo = body.repoUrl.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
     const workflowId = `security-update-${slug}-${sanitizedRepo}`;
@@ -104,7 +105,8 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
     await client.workflow.start(UPSERT_OSPS_BASELINE_WORKFLOW, {
       taskQueue: SECURITY_BEST_PRACTICES_TASK_QUEUE,
       workflowId,
-      workflowIdReusePolicy: 'REJECT_DUPLICATE',
+      workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+      workflowIdConflictPolicy: 'FAIL',
       args: [workflowParams],
     });
 

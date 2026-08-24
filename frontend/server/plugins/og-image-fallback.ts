@@ -8,6 +8,10 @@ export default defineNitroPlugin((nitroApp) => {
   nitroApp.hooks.hook('error', async (error, { event }) => {
     if (!event?.path?.startsWith('/__og-image__/')) return;
     console.warn(`OG image generation failed for ${event.path}:`, error);
-    await sendRedirect(event, '/og-image.png', 302);
+    try {
+      await sendRedirect(event, '/og-image.png', 302);
+    } catch {
+      // Response may already be committed; nothing we can do
+    }
   });
 });

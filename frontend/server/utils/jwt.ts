@@ -5,8 +5,6 @@ import type { H3Event } from 'h3';
 import { getCookie } from 'h3';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
-const isJWT = (token: string) => token.split('.').length === 3;
-
 /**
  * Auth middleware for static jwt - supports both Authorization header and auth query parameter
  * @param event - H3 event object
@@ -54,21 +52,16 @@ export async function auth(event: H3Event): Promise<void> {
  * their response when the caller is authenticated.
  */
 export function getOptionalUser(event: H3Event): DecodedOidcToken | null {
-  const oidcToken = getCookie(event, 'auth_oidc_token');
+  const oidcToken = getCookie(event, 'insights_oidc_token');
   if (!oidcToken) {
     return null;
   }
 
   try {
     const config = useRuntimeConfig();
-    const decoded = jwt.verify(oidcToken, config.auth0ClientSecret, {
+    return jwt.verify(oidcToken, config.auth0ClientSecret, {
       algorithms: ['HS256'],
     }) as DecodedOidcToken;
-
-    if (decoded.original_id_token && isJWT(decoded.original_id_token)) {
-      return decoded;
-    }
-    return null;
   } catch {
     return null;
   }

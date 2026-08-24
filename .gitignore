@@ -15,6 +15,5 @@ libs/*/dist
 database/Dockerfile.flyway
 database/flyway_migrate.sh
 
-**/AGENTS.md
-
 CLAUDE.local.md
+.playwright-mcp

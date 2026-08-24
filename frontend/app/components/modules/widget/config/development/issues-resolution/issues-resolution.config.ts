@@ -7,6 +7,7 @@ import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/conf
 
 const issuesResolution: WidgetConfig = {
   key: 'issuesResolution',
+  availableInCollection: true,
   name: 'Issues resolution',
   description: () =>
     'Comparison between total number of issues vs. closed issues during the selected time period.',

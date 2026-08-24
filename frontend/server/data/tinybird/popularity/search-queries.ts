@@ -10,6 +10,7 @@ import type { SearchVolumeTinybirdQuery } from '~~/server/data/tinybird/requests
 export async function fetchSearchVolume(filter: SearchVolumeFilter): Promise<SearchQueries> {
   const query: SearchVolumeTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     startDate: filter.startDate,
     endDate: filter.endDate,
   };

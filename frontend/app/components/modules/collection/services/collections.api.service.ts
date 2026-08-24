@@ -9,7 +9,7 @@ import {
 import { type ComputedRef, type Ref, computed } from 'vue';
 import { isArray } from 'lodash-es';
 import type { Pagination } from '~~/types/shared/pagination';
-import type { Collection, CollectionType } from '~~/types/collection';
+import type { Collection, CollectionMetrics, CollectionType } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
 import type { ProjectInsights } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
@@ -171,6 +171,13 @@ class CollectionsApiService {
     return () => fetchFn(`/api/collection/${slug}`);
   }
 
+  fetchCollectionMetrics(
+    slug: string,
+    fetchFn: typeof $fetch = $fetch,
+  ): QueryFunction<CollectionMetrics> {
+    return () => fetchFn(`/api/collection/${slug}/metrics`);
+  }
+
   fetchCategoryGroups(params: ComputedRef<CategoryGroupsQueryParams>) {
     const queryKey = computed(() => [
       TanstackKey.CATEGORY_GROUPS,
@@ -202,7 +209,7 @@ class CollectionsApiService {
   async searchProjectsAndRepositories(query: string): Promise<SearchResults> {
     const sanitizedQuery = sanitizeSearchQuery(query);
     if (!sanitizedQuery) {
-      return { projects: [], repositories: [], collections: [] };
+      return { projects: [], repositories: [], collections: [], organizations: [] };
     }
 
     const res = await $fetch<SearchResults>('/api/search', {

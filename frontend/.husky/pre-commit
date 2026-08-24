@@ -20,4 +20,12 @@ fi
 
 cd "$ROOT"
 #run lint-staged to add copyright license on top of all new files
-npx lint-staged
+#
+# --no-stash: the hook already force-stages every touched file via `git add -u`
+# above, so there's nothing partially-staged left for lint-staged's stash-based
+# backup/restore to protect. That stash mechanism has been observed to race with
+# git's own index handling during a real `git commit -S` (GPG-signed) transaction,
+# silently turning the commit into a pure deletion of every touched file while
+# leaving disk content correct (reproduced twice; not reproducible when running
+# this script standalone outside of `git commit`).
+npx lint-staged --no-stash

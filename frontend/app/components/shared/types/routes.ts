@@ -13,6 +13,9 @@ export enum LfxRoutes {
   COLLECTIONS_COMMUNITY = 'collection-community',
   COLLECTIONS_MY_COLLECTIONS = 'collection-my-collections',
   COLLECTION = 'collection-details-slug',
+  COLLECTION_CONTRIBUTORS = 'collection-details-slug-contributors',
+  COLLECTION_POPULARITY = 'collection-details-slug-popularity',
+  COLLECTION_DEVELOPMENT = 'collection-details-slug-development',
   PROJECTS = 'project',
   PROJECT = 'project-slug',
   PROJECT_CONTRIBUTORS = 'project-slug-contributors',
@@ -32,4 +35,5 @@ export enum LfxRoutes {
   REPOSITORY_GROUP_DEVELOPMENT = 'project-slug-repository-group-groupSlug-development',
   REPOSITORY_GROUP_SECURITY = 'project-slug-repository-group-groupSlug-security',
   REPOSITORY_GROUP_COMMUNITY_VOICE = 'project-slug-repository-group-groupSlug-community-voice',
+  ORGANIZATION = 'organization-orgSlug',
 }

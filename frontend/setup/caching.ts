@@ -3,6 +3,32 @@
 const longCache = 86400; // 1 day in seconds
 const shortCache = 3600; // 1 hour in seconds
 
+const redisUrl = process.env.NUXT_REDIS_URL || '';
+
+const cacheMountTtl = 60 * 60 * 24 * 3;
+
+// Production runs on node:24-slim (Debian, glibc) — only the linux-x64-gnu native
+// binary is ever loaded at runtime. Nitro's dependency tracer (nitropack >=2.13)
+// full-traces every @resvg/resvg-js-* platform package it finds (Windows/macOS/
+// Android/musl included), ballooning the server bundle from ~80MB to ~440MB.
+// Known upstream issue: https://github.com/nuxt-modules/og-image/issues/412
+const externals = {
+  traceOptions: {
+    ignore: [
+      '**/node_modules/@resvg/resvg-js-android-arm-eabi/**',
+      '**/node_modules/@resvg/resvg-js-android-arm64/**',
+      '**/node_modules/@resvg/resvg-js-darwin-arm64/**',
+      '**/node_modules/@resvg/resvg-js-darwin-x64/**',
+      '**/node_modules/@resvg/resvg-js-linux-arm-gnueabihf/**',
+      '**/node_modules/@resvg/resvg-js-linux-arm64-musl/**',
+      '**/node_modules/@resvg/resvg-js-linux-x64-musl/**',
+      '**/node_modules/@resvg/resvg-js-win32-arm64-msvc/**',
+      '**/node_modules/@resvg/resvg-js-win32-ia32-msvc/**',
+      '**/node_modules/@resvg/resvg-js-win32-x64-msvc/**',
+    ],
+  },
+};
+
 export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
@@ -49,15 +75,38 @@ export default {
       : {}),
   },
   nitro: {
+    externals,
     storage: {
       redis: {
         driver: 'redis',
-        url: process.env.NUXT_REDIS_URL || '',
+        url: redisUrl,
       },
+      // Nitro's default cache base (`/cache/**`) is unmounted, so it falls back to an
+      // in-memory driver that nuxt-og-image fills with rendered images and never evicts.
+      // Mounting it on Redis moves that store off the heap, with a ttl to bound it there.
+      ...(redisUrl
+        ? {
+            cache: {
+              driver: 'redis',
+              url: redisUrl,
+              base: 'nitro-cache',
+              ttl: cacheMountTtl,
+            },
+          }
+        : {}),
     },
     routeRules: {
       '/api/**': {
-        headers: { 'cache-control': 's-maxage=0' },
+        prerender: false,
+      },
+      '/api/security/**': {
+        headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
+        prerender: false,
+      },
+      // `*` matches exactly one path segment — the real endpoint is
+      // /api/project/{slug}/security/assessment, two segments before `security`.
+      '/api/project/*/security/**': {
+        headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
         prerender: false,
       },
     },

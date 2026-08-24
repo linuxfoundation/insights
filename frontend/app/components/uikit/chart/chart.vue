@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="w-full h-full flex flex-col justify-between">
     <VChart
       id="chart"
+      style="width: 100%; height: 100%"
       :option="{
         ...props.config,
         animation: props.animation,

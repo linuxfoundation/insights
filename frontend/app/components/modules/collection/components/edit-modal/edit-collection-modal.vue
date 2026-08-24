@@ -83,6 +83,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import LfEditModalSettings from './edit-modal-settings.vue';
 import LfEditModalProjects from './edit-modal-projects.vue';
 import LfxModal from '~/components/uikit/modal/modal.vue';
@@ -93,6 +94,7 @@ import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Collection } from '~~/types/collection';
 import type { ProjectInsights } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -142,6 +144,7 @@ const collectionProjects = computed<ProjectInsights[]>(
 );
 
 const { showToast } = useToastService();
+const queryClient = useQueryClient();
 
 const activeTab = ref<'settings' | 'projects'>('settings');
 const isUpdating = ref(false);
@@ -239,6 +242,9 @@ const updateCollection = async () => {
 
   try {
     const updated = await COLLECTIONS_API_SERVICE.updateCollection(props.collection.id, payload);
+    queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTIONS] });
+    queryClient.invalidateQueries({ queryKey: [TanstackKey.MY_COLLECTIONS] });
+    queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTION_PROJECTS] });
     showToast('Collection updated successfully', ToastTypesEnum.positive);
     emit('updated', updated);
     isModalOpen.value = false;

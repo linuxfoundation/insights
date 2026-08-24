@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const stars: WidgetConfig = {
   key: 'stars',
+  availableInCollection: true,
   name: 'Stars',
   description: () => 'New stars added to the project repositories during the selected time period.',
   learnMoreLink: `/docs/metrics/popularity#stars`,

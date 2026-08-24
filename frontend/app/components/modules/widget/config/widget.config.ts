@@ -80,6 +80,11 @@ export interface WidgetConfig {
   showCollabToggle?: boolean;
   headerFilters?: Component;
   snapshotHeaderComponent?: Component;
+  // Whether this widget can appear on a Collection detail page's Contributors/Popularity/
+  // Development tabs (aggregated across every project in the collection), in addition to
+  // individual Project pages. Collections have no per-project `widgets` array to check
+  // against, so this is an explicit opt-in rather than inherited from project data.
+  availableInCollection?: boolean;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {

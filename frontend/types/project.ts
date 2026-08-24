@@ -6,6 +6,7 @@ export interface ProjectRepository {
   slug: string;
   score: number;
   rank: number;
+  licenses: string[];
 }
 
 export interface ProjectRepositoryGroup {
@@ -94,8 +95,10 @@ export interface ProjectTinybird {
   firstCommitUrl?: string;
   connectedPlatforms: string[];
   repoData: ProjectRepoData[];
+  repoLicenses: [string, string][];
   status: string;
   lastVulnerabilityScanStatus: string;
+  maturity?: string;
 }
 
 export interface ProjectInsightsAchievement {
@@ -113,6 +116,7 @@ export interface ProjectInsightsTinybird {
   logoUrl: string;
   isLF: number;
   status: string;
+  maturity?: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -146,6 +150,7 @@ export interface ProjectInsights {
   logoUrl: string;
   isLF: boolean;
   status: string;
+  maturity?: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;

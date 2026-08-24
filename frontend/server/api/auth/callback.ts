@@ -9,6 +9,8 @@ import { Pool } from 'pg';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
+import { getAuthUsername } from '../../utils/common';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -38,14 +40,20 @@ export default defineEventHandler(async (event) => {
       const errorDescription = query.error_description as string;
 
       // For silent authentication failures, don't throw an error - just redirect
-      if (error === 'login_required' || error === 'interaction_required') {
-        // Silent authentication failed - user needs to log in
-        // Redirect to home page without error for silent auth failures
-        const finalRedirectError =
-          redirectTo === '/'
-            ? '/?auth=success'
-            : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
-        await sendRedirect(event, finalRedirectError);
+      if (
+        error === 'login_required' ||
+        error === 'interaction_required' ||
+        error === 'consent_required'
+      ) {
+        // Silent authentication failed — the user is not authenticated.
+        // Redirect back to the original page without appending ?auth=success (they
+        // aren't logged in) and without any stale ?auth param so the client-side
+        // guard (getSilentLoginAttempted) can terminate the retry cycle cleanly.
+        const silentFailUrl = new URL(redirectTo, 'https://placeholder.example');
+        silentFailUrl.searchParams.delete('auth');
+        const cleanSilentRedirect =
+          silentFailUrl.pathname + (silentFailUrl.search || '') + (silentFailUrl.hash || '');
+        await sendRedirect(event, cleanSilentRedirect || '/');
         return;
       }
 
@@ -71,18 +79,17 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!query.code || !codeVerifier) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Missing authorization code or code verifier',
-      });
+      // Stale or missing PKCE cookie (direct navigation to callback, bot crawl, etc.)
+      // Restart the login flow rather than showing an error page.
+      deleteCookie(event, 'auth_pkce');
+      return sendRedirect(event, '/api/auth/login');
     }
 
     // Validate state from cookie against URL to prevent CSRF and detect concurrent login races
     if (!storedState || storedState !== query.state) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Invalid state parameter — please try logging in again',
-      });
+      // State mismatch: multi-tab login or cookie race — restart cleanly.
+      deleteCookie(event, 'auth_pkce');
+      return sendRedirect(event, '/api/auth/login');
     }
 
     // Discover Auth0 configuration
@@ -135,15 +142,15 @@ export default defineEventHandler(async (event) => {
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
       iss: config.public.auth0Domain,
-      // aud: config.public.auth0ClientId,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
       claims,
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
-      // Include original tokens for reference if needed
-      // original_access_token: tokenResponse.access_token,
-      original_id_token: tokenResponse.id_token,
+      username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
+        | string
+        | undefined,
+      intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 
     // Sign the custom OpenID Connect token with client secret
@@ -164,31 +171,61 @@ export default defineEventHandler(async (event) => {
     };
 
     // Store the single OpenID Connect token
-    setCookie(event, 'auth_oidc_token', oidcToken, tokenCookieOptions);
+    setCookie(event, 'insights_oidc_token', oidcToken, tokenCookieOptions);
+
+    // Upsert SSO user on every login so the row exists before any collection action.
+    // Fire-and-forget: a DB failure must not block the login redirect.
+    const cmDbPool = event.context.cmDbPool as Pool | undefined;
+    if (cmDbPool && decodedIdToken.sub) {
+      const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);
+      ssoUserRepo
+        .upsert({
+          id: decodedIdToken.sub,
+          username: getAuthUsername(decodedIdToken.sub),
+          displayName: decodedIdToken.name,
+          avatarUrl: decodedIdToken.picture,
+          email: decodedIdToken.email,
+        })
+        .catch((err) => console.error('[auth/callback] sso user upsert failed:', err));
+    }
 
     // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
-      setCookie(event, 'auth_refresh_token', tokenResponse.refresh_token, {
+      setCookie(event, 'insights_refresh_token', tokenResponse.refresh_token, {
         ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
 
-    // Redirect to the original page or home with auth success flag
+    // Redirect to the original page or home with auth success flag.
+    // Strip any pre-existing ?auth param from redirectTo first to prevent
+    // accumulation (&auth=success&auth=success…) across redirect cycles.
+    const successUrl = new URL(redirectTo, 'https://placeholder.example');
+    successUrl.searchParams.delete('auth');
+    const cleanRedirectTo =
+      successUrl.pathname + (successUrl.search || '') + (successUrl.hash || '');
     const finalRedirect =
-      redirectTo === '/'
+      !cleanRedirectTo || cleanRedirectTo === '/'
         ? '/?auth=success'
-        : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
+        : `${cleanRedirectTo}${cleanRedirectTo.includes('?') ? '&' : '?'}auth=success`;
 
     await sendRedirect(event, finalRedirect);
   } catch (error) {
+    // OAuth recoverable errors (invalid_grant = code reused/replayed, back button, page refresh).
+    // Restart the login flow rather than surfacing a 500.
+    const oauthError = error as { code?: string; error?: string };
+    if (oauthError?.code === 'OAUTH_RESPONSE_BODY_ERROR' && oauthError?.error === 'invalid_grant') {
+      deleteCookie(event, 'auth_pkce');
+      return sendRedirect(event, '/api/auth/login');
+    }
+
     console.error('Auth callback error:', error);
 
-    // Clean up cookies on error
+    // Clean up all auth cookies on unrecoverable error
     deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
-    deleteCookie(event, 'auth_oidc_token');
-    deleteCookie(event, 'auth_refresh_token');
+    deleteCookie(event, 'insights_oidc_token');
+    deleteCookie(event, 'insights_refresh_token');
 
     let errorMessage = 'Authentication callback error';
     let errorCode = 500;

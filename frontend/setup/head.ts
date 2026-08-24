@@ -65,6 +65,9 @@ export default {
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
     { rel: 'preconnect', href: 'https://cdn.platform.linuxfoundation.org' },
+    // Project and collection hero logos are usually served from these origins.
+    { rel: 'preconnect', href: 'https://avatars.githubusercontent.com', crossorigin: 'anonymous' },
+    { rel: 'preconnect', href: 'https://raw.githubusercontent.com', crossorigin: 'anonymous' },
     { rel: 'dns-prefetch', href: 'https://kit.fontawesome.com' },
     // Async load fonts (non-blocking)
     {

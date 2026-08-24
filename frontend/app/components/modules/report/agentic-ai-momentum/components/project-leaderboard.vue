@@ -100,19 +100,6 @@ SPDX-License-Identifier: MIT
         <thead>
           <tr class="border-b border-neutral-200">
             <th
-              class="text-left py-3 px-2 font-semibold text-neutral-700 w-12 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('rank')"
-            >
-              <div class="flex items-center gap-1">
-                #
-                <lfx-icon
-                  v-if="sortColumn === 'rank'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
               class="text-left py-3 px-2 font-semibold text-neutral-700 min-w-[180px] cursor-pointer hover:bg-neutral-50"
               @click="sortBy('name')"
             >
@@ -151,21 +138,6 @@ SPDX-License-Identifier: MIT
                 Forks
                 <lfx-icon
                   v-if="sortColumn === 'forks'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
-              v-if="activeColumns.includes('downloads')"
-              key="col-downloads"
-              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('downloads')"
-            >
-              <div class="flex items-center justify-end gap-1">
-                Downloads
-                <lfx-icon
-                  v-if="sortColumn === 'downloads'"
                   :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
                   :size="14"
                 />
@@ -385,13 +357,10 @@ SPDX-License-Identifier: MIT
         </thead>
         <tbody>
           <tr
-            v-for="(row, i) in sortedData"
+            v-for="row in sortedData"
             :key="row.slug"
             class="border-b border-neutral-100 hover:bg-neutral-50"
           >
-            <td class="py-3 px-2 text-neutral-500">
-              {{ i + 1 }}
-            </td>
             <td class="py-3 px-2">
               <div class="flex items-center gap-2">
                 <span class="font-medium text-neutral-900">{{ row.name }}</span>
@@ -451,13 +420,6 @@ SPDX-License-Identifier: MIT
                   <delta-indicator :value="row.forksDelta" />
                 </lfx-tooltip>
               </div>
-            </td>
-            <td
-              v-if="activeColumns.includes('downloads')"
-              key="col-downloads"
-              class="py-3 px-2 text-right"
-            >
-              {{ hasData(row.downloads) ? formatNumberShort(row.downloads) : '-' }}
             </td>
             <td
               v-if="activeColumns.includes('dockerHubPulls')"
@@ -697,7 +659,6 @@ type ColumnGroup = (typeof COLUMN_GROUPS)[number];
 const COLUMN_CONFIG = [
   { key: 'stars', label: 'Stars', defaultOn: true, group: 'Growth' as ColumnGroup },
   { key: 'forks', label: 'Forks', defaultOn: false, group: 'Growth' as ColumnGroup },
-  { key: 'downloads', label: 'Downloads', defaultOn: true, group: 'Growth' as ColumnGroup },
   { key: 'dockerHubPulls', label: 'Docker Pulls', defaultOn: false, group: 'Growth' as ColumnGroup },
   { key: 'dependentRepositories', label: 'Dependent Repos', defaultOn: false, group: 'Growth' as ColumnGroup },
   { key: 'dependentPackages', label: 'Dependent Pkgs', defaultOn: false, group: 'Growth' as ColumnGroup },
@@ -767,7 +728,6 @@ const VulnDeltaIndicator: FunctionalComponent<{ value: number }> = (componentPro
 VulnDeltaIndicator.props = ['value'];
 
 type SortColumn =
-  | 'rank'
   | 'name'
   | 'stars'
   | 'forks'
@@ -779,7 +739,6 @@ type SortColumn =
   | 'timeToClose'
   | 'issueResponseTime'
   | 'noResponseIssues'
-  | 'downloads'
   | 'dockerHubPulls'
   | 'dependentRepositories'
   | 'dependentPackages'
@@ -795,18 +754,16 @@ function sortBy(column: SortColumn) {
     sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
   } else {
     sortColumn.value = column;
-    sortDirection.value = column === 'rank' || column === 'name' ? 'asc' : 'desc';
+    sortDirection.value = column === 'name' ? 'asc' : 'desc';
   }
 }
 
 // Build leaderboard rows directly from flat TB data
 const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
   return props.tbProjects.map((p) => ({
-    rank: p.rank,
     slug: p.slug,
     name: p.name,
     layer: p.layer,
-    license: p.license,
     githubUrl: p.githubRepoLink,
     stars: p.stars,
     starsDelta: p.stars30d,
@@ -834,8 +791,6 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     issueResponseTimeDelta: p.issueResponseTimeDays30d,
     noResponseIssues: p.noResponseIssues,
     noResponseIssuesDelta: p.noResponseIssues30d,
-    downloads: p.downloads,
-    downloadsDelta: p.downloads30d,
     cocomoValue: p.cocomoValue,
     prTimeToResolve: p.prResolveTimeDays,
     prTimeToResolveDelta: p.prResolveTimeDays30d,
@@ -894,8 +849,6 @@ const sortedData = computed(() => {
     }
 
     switch (col) {
-      case 'rank':
-        return dir === 'asc' ? a.rank - b.rank : b.rank - a.rank;
       case 'name':
         return dir === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
       case 'stars':
@@ -918,8 +871,6 @@ const sortedData = computed(() => {
         return cmpNullLast(a.issueResponseTime, b.issueResponseTime, dir);
       case 'noResponseIssues':
         return cmpNullLast(a.noResponseIssues, b.noResponseIssues, dir);
-      case 'downloads':
-        return cmpNullLast(a.downloads, b.downloads, dir);
       case 'dockerHubPulls':
         return cmpNullLast(a.dockerHubPulls, b.dockerHubPulls, dir);
       case 'dependentRepositories':

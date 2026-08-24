@@ -6,6 +6,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const contributionsOutsideWorkHours: WidgetConfig = {
   key: 'contributionsOutsideWorkHours',
+  availableInCollection: true,
   name: 'Contributions outside work hours',
   description: () =>
     'Contributors’ activity patterns focused on contributions performed during non-business hours ' +

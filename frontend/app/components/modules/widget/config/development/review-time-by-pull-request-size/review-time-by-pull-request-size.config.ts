@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const reviewTimeByPullRequestSize: WidgetConfig = {
   key: 'reviewTimeByPullRequestSize',
+  availableInCollection: true,
   name: 'Review time by pull request size',
   description: () =>
     'Average time taken to review pull requests, sorted by number of code line changes' +

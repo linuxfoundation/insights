@@ -8,6 +8,10 @@ export enum TanstackKey {
   LIKED_COLLECTIONS = 'liked-collections',
   LIKE_COUNTS = 'like-counts',
   COLLECTION_PROJECTS = 'collection-projects',
+  COLLECTION_METRICS = 'collection-metrics',
+  COLLECTION_CONTRIBUTORS = 'collection-contributors',
+  COLLECTION_POPULARITY = 'collection-popularity',
+  COLLECTION_DEVELOPMENT = 'collection-development',
   CATEGORY_GROUPS = 'category-groups',
   PROJECTS = 'projects',
   PROJECT = 'project',
@@ -97,4 +101,12 @@ export enum TanstackKey {
   AGENTIC_AI_GITHUB_BREADTH = 'agentic-ai-github-breadth',
   AGENTIC_AI_GLANCE = 'agentic-ai-glance',
   AGENTIC_AI_TB_PROJECTS = 'agentic-ai-tb-projects',
+
+  // Organization Page
+  ORGANIZATION_PAGE = 'organization-page',
+  ORGANIZATION_PAGE_KPIS = 'organization-page-kpis',
+  ORGANIZATION_PAGE_PROJECTS = 'organization-page-projects',
+  ORGANIZATION_PAGE_ACTIVITY = 'organization-page-activity',
+  ORGANIZATION_PAGE_CONTRIBUTORS_TIMESERIES = 'organization-page-contributors-timeseries',
+  ORGANIZATION_PAGE_CONTRIBUTORS = 'organization-page-contributors',
 }

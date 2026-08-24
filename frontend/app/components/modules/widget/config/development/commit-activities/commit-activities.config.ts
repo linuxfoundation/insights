@@ -5,6 +5,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const commitActivities: WidgetConfig = {
   key: 'commitActivities',
+  availableInCollection: true,
   name: 'Commit Activities',
   description: () => 'Number of commits performed during the selected period.',
   learnMoreLink: `/docs/metrics/development#commit-activities`,

@@ -7,6 +7,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const reviewEfficiency: WidgetConfig = {
   key: 'reviewEfficiency',
+  availableInCollection: true,
   name: 'Review efficiency',
   description: () =>
     'Closed-to-opened pull requests ratio and activity trend during the selected period.',

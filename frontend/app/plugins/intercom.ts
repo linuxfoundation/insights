@@ -207,8 +207,27 @@ export default defineNuxtPlugin(() => {
     }
   };
 
-  // Boot anonymously on startup so banners/popups are visible to all visitors
-  bootAnonymous();
+  // Defer the anonymous boot until after load + idle so the Intercom iframe's
+  // entrance animation doesn't fall inside the CLS measurement window. Banners
+  // and popups still appear for all visitors, just a second or two later.
+  const scheduleAnonymousBoot = () => {
+    const run = () => {
+      if ('requestIdleCallback' in window) {
+        (window as Window & typeof globalThis).requestIdleCallback(() => bootAnonymous(), {
+          timeout: 4000,
+        });
+      } else {
+        setTimeout(() => bootAnonymous(), 2000);
+      }
+    };
+    if (document.readyState === 'complete') {
+      run();
+    } else {
+      window.addEventListener('load', run, { once: true });
+    }
+  };
+
+  scheduleAnonymousBoot();
 
   watch(
     [isAuthenticated, user],

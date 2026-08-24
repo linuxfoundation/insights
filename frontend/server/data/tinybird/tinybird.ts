@@ -5,8 +5,9 @@ import {
   createTinybirdClient,
   TinybirdClientError,
   type TinybirdResponse,
+  BucketCacheStorage,
 } from '@lfx-insights/tinybird-client';
-import type { BucketCacheStorage } from '@lfx-insights/tinybird-client';
+import { getBucketIdForCollection, getBucketIdForProject } from './bucket-cache';
 
 export type { TinybirdResponse };
 
@@ -73,6 +74,114 @@ export async function fetchFromTinybird<T>(
   path: string,
   query: Record<string, DateTimeOrPrimitive>,
 ): Promise<TinybirdResponse<T>> {
+  const tinybirdBaseUrl =
+    process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
+  const tinybirdToken = process.env.NUXT_TINYBIRD_TOKEN;
+
+  if (!tinybirdBaseUrl) {
+    throw new Error('Tinybird base URL is not defined');
+  }
+  if (!tinybirdToken) {
+    throw new Error('Tinybird token is not defined');
+  }
+
+  // Fetch and add bucketId if query contains a project parameter
+  // Tinybird will route the request to the correct bucket that contains the data for that project
+  if (
+    query.project &&
+    typeof query.project === 'string' &&
+    !query.bucketId &&
+    path !== '/v0/pipes/project_buckets.json'
+  ) {
+    try {
+      const bucketId = await getBucketIdForProject(query.project, fetchFromTinybird);
+      if (bucketId !== null) {
+        query.bucketId = bucketId;
+      } else {
+        throw createError({
+          statusCode: 404,
+          statusMessage: `Project not found: ${query.project}`,
+        });
+      }
+    } catch (error: unknown) {
+      // Re-throw 404 and 429 errors
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 404 || status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      console.warn(`Failed to fetch bucketId for project ${query.project}:`, error);
+      // Continue without bucketId for other errors
+    }
+  }
+
+  // Fetch and add bucketId if query contains a collectionSlug parameter
+  // Tinybird will route the request to the single bucket that contains the collection's data
+  // instead of scanning the 10-way union
+  if (
+    query.collectionSlug &&
+    typeof query.collectionSlug === 'string' &&
+    !query.bucketId &&
+    path !== '/v0/pipes/collection_buckets.json'
+  ) {
+    try {
+      const bucketId = await getBucketIdForCollection(query.collectionSlug, fetchFromTinybird);
+      if (bucketId !== null) {
+        query.bucketId = bucketId;
+      }
+      // No bucketId found is not fatal for collections (unlike projects) - fall back to the union pipe
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      console.warn(`Failed to fetch bucketId for collection ${query.collectionSlug}:`, error);
+      // Continue without bucketId - falls back to the union pipe
+    }
+  }
+
+  // We don't want to send undefined, null, or empty values to TinyBird, so we remove those from the query.
+  // We also format DateTime objects so that TinyBird understands them.
+  const processedQuery = Object.fromEntries(
+    Object.entries(query)
+      .filter(
+        ([_, value]) =>
+          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
+      )
+      .map(([key, value]) => [
+        key,
+        value instanceof DateTime ? formatDateForTinyBird(value) : value,
+      ]),
+  );
+
+  const paramParts: string[] = [];
+  for (const [key, value] of Object.entries(processedQuery)) {
+    // Arrays need raw commas (not URL-encoded) for Tinybird Array() parameters
+    if (Array.isArray(value)) {
+      paramParts.push(
+        `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`,
+      );
+    } else {
+      paramParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+    }
+  }
+  const params = paramParts.join('&');
+  const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
+
+  // Health-check pings and bucket lookups bypass the semaphore so they don't
+  // compete for slots with real data queries (each query already needs a bucket
+  // lookup first, which would double the slot pressure).
+  const skipThrottle =
+    path === '/v0/pipes/ping.json' ||
+    path === '/v0/pipes/project_buckets.json' ||
+    path === '/v0/pipes/collection_buckets.json';
+
+  const acquired = false;
+  const wasQueued = false;
+  const fetchStart = Date.now();
   try {
     return await client.fetch<T>(path, serializeQuery(query));
   } catch (e) {

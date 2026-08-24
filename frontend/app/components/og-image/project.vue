@@ -202,12 +202,25 @@ const props = withDefaults(
   },
 );
 
-// Fetch badge data directly in the OG component
-const { data: leaderboardData } = await useFetch<Pagination<Leaderboard>>('/api/leaderboard', {
-  params: { slug: props.projectSlug },
-  key: `og-badge-${props.projectSlug}-${props.badge}`,
-  default: () => ({ data: [], pagination: { page: 1, perPage: 10, total: 0 } }),
-});
+const emptyLeaderboard: Pagination<Leaderboard> = { data: [], page: 0, pageSize: 20, total: 0 };
+
+// Only fetch leaderboard data when a badge is actually requested.
+// Unconditionally calling useFetch here causes 500s in the nuxt-og-image
+// isolated rendering context when no badge is needed (~99% of OG image requests).
+const { data: leaderboardData } = await useAsyncData(
+  `og-badge-${props.projectSlug}-${props.badge}`,
+  async () => {
+    if (!props.badge || !props.projectSlug) return emptyLeaderboard;
+    try {
+      return await $fetch<Pagination<Leaderboard>>('/api/leaderboard', {
+        params: { slug: props.projectSlug },
+      });
+    } catch {
+      return emptyLeaderboard;
+    }
+  },
+  { default: () => emptyLeaderboard },
+);
 
 // Find the specific leaderboard entry for this badge
 const leaderboardEntry = computed(() => {

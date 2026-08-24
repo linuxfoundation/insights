@@ -1,0 +1,392 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LFX Insights Public API",
+    "description": "Public read-only endpoints that LF web properties can use to embed LFX Insights\nproject stats without requiring authentication.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://insights.linuxfoundation.org",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/api/project/{slug}/insights": {
+      "get": {
+        "summary": "Get project insights",
+        "description": "Returns a snapshot of key health and activity metrics for a given project.\n\nThis endpoint is public and requires no authentication.\n\nRate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
+        "operationId": "getProjectInsight",
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The project slug. Matches the slug used in the LFX Insights URL —\ne.g. `k8s` in `https://insights.linuxfoundation.org/projects/k8s`.\n",
+            "schema": {
+              "type": "string",
+              "example": "k8s"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project insights snapshot",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "Maximum number of requests allowed per window",
+                "schema": {
+                  "type": "integer",
+                  "example": 200
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Number of requests remaining in the current window",
+                "schema": {
+                  "type": "integer",
+                  "example": 199
+                }
+              },
+              "X-RateLimit-Reset": {
+                "description": "Seconds until the rate limit window resets",
+                "schema": {
+                  "type": "integer",
+                  "example": 42
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectInsight"
+                },
+                "example": {
+                  "id": "abc123",
+                  "type": "project",
+                  "name": "Kubernetes",
+                  "slug": "k8s",
+                  "logoUrl": "https://cdn.cncf.io/logos/kubernetes.svg",
+                  "repoUrl": "https://github.com/kubernetes/kubernetes",
+                  "isLF": true,
+                  "status": "active",
+                  "maturity": "graduated",
+                  "healthScore": 87,
+                  "contributorHealthScore": 90,
+                  "popularityHealthScore": 95,
+                  "developmentHealthScore": 80,
+                  "securityHealthScore": 85,
+                  "contributorCount": 12345,
+                  "organizationCount": 456,
+                  "softwareValue": 987654321,
+                  "contributorDependencyCount": 3,
+                  "contributorDependencyPercentage": 12.5,
+                  "organizationDependencyCount": 2,
+                  "organizationDependencyPercentage": 8.3,
+                  "firstCommit": "2014-06-06T00:00:00.000Z",
+                  "starsLast365Days": 5200,
+                  "forksLast365Days": 1800,
+                  "activeContributorsLast365Days": 340,
+                  "activeOrganizationsLast365Days": 78,
+                  "starsPrevious365Days": 4900,
+                  "forksPrevious365Days": 1600,
+                  "activeContributorsPrevious365Days": 310,
+                  "activeOrganizationsPrevious365Days": 71,
+                  "achievements": [
+                    {
+                      "leaderboardType": "contributors",
+                      "rank": 1,
+                      "totalCount": 500
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid slug",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "statusMessage": "Project slug is required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No project found for the given slug",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "statusMessage": "Project not found"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 429,
+                  "statusMessage": "Too Many Requests",
+                  "message": "Rate limit exceeded. Please wait 42 seconds before trying again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 500,
+                  "statusMessage": "Failed to fetch project insights"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProjectInsight": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "name",
+          "slug",
+          "logoUrl",
+          "repoUrl",
+          "isLF",
+          "status",
+          "healthScore",
+          "contributorHealthScore",
+          "popularityHealthScore",
+          "developmentHealthScore",
+          "securityHealthScore",
+          "contributorCount",
+          "organizationCount",
+          "softwareValue",
+          "contributorDependencyCount",
+          "contributorDependencyPercentage",
+          "organizationDependencyCount",
+          "organizationDependencyPercentage",
+          "firstCommit",
+          "starsLast365Days",
+          "forksLast365Days",
+          "activeContributorsLast365Days",
+          "activeOrganizationsLast365Days",
+          "starsPrevious365Days",
+          "forksPrevious365Days",
+          "activeContributorsPrevious365Days",
+          "activeOrganizationsPrevious365Days",
+          "achievements"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal project identifier"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "project",
+              "repo"
+            ],
+            "description": "Whether this entry represents a full project or a single repository"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the project"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL slug used to identify the project"
+          },
+          "logoUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the project logo"
+          },
+          "repoUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the primary repository"
+          },
+          "isLF": {
+            "type": "boolean",
+            "description": "Whether the project is hosted by The Linux Foundation"
+          },
+          "status": {
+            "type": "string",
+            "description": "Project status (e.g. active, archived)",
+            "example": "active"
+          },
+          "maturity": {
+            "type": "string",
+            "description": "Maturity level (e.g. sandbox, incubating, graduated). May be absent for non-foundation projects.",
+            "example": "graduated"
+          },
+          "healthScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Overall health score"
+          },
+          "contributorHealthScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Health score sub-dimension — contributor activity"
+          },
+          "popularityHealthScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Health score sub-dimension — popularity signals"
+          },
+          "developmentHealthScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Health score sub-dimension — development activity"
+          },
+          "securityHealthScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Health score sub-dimension — security posture"
+          },
+          "contributorCount": {
+            "type": "integer",
+            "description": "Total number of contributors, all time"
+          },
+          "organizationCount": {
+            "type": "integer",
+            "description": "Total number of contributing organizations, all time"
+          },
+          "softwareValue": {
+            "type": "integer",
+            "description": "Estimated value of the project's software in USD (COCOMO model)"
+          },
+          "contributorDependencyCount": {
+            "type": "integer",
+            "description": "Number of contributors that account for a disproportionate share of commits"
+          },
+          "contributorDependencyPercentage": {
+            "type": "number",
+            "description": "Percentage of commits attributed to those contributors"
+          },
+          "organizationDependencyCount": {
+            "type": "integer",
+            "description": "Number of organizations that account for a disproportionate share of commits"
+          },
+          "organizationDependencyPercentage": {
+            "type": "number",
+            "description": "Percentage of commits attributed to those organizations"
+          },
+          "firstCommit": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 date of the earliest recorded commit"
+          },
+          "starsLast365Days": {
+            "type": "integer",
+            "description": "GitHub stars gained in the last 365 days"
+          },
+          "forksLast365Days": {
+            "type": "integer",
+            "description": "GitHub forks gained in the last 365 days"
+          },
+          "activeContributorsLast365Days": {
+            "type": "integer",
+            "description": "Unique contributors active in the last 365 days"
+          },
+          "activeOrganizationsLast365Days": {
+            "type": "integer",
+            "description": "Unique contributing organizations active in the last 365 days"
+          },
+          "starsPrevious365Days": {
+            "type": "integer",
+            "description": "GitHub stars gained in the 365-day period prior to the last 365 days"
+          },
+          "forksPrevious365Days": {
+            "type": "integer",
+            "description": "GitHub forks gained in the 365-day period prior to the last 365 days"
+          },
+          "activeContributorsPrevious365Days": {
+            "type": "integer",
+            "description": "Unique contributors active in the prior 365-day period"
+          },
+          "activeOrganizationsPrevious365Days": {
+            "type": "integer",
+            "description": "Unique contributing organizations active in the prior 365-day period"
+          },
+          "achievements": {
+            "type": "array",
+            "description": "List of leaderboard rankings earned by the project (may be empty)",
+            "items": {
+              "$ref": "#/components/schemas/Achievement"
+            }
+          }
+        }
+      },
+      "Achievement": {
+        "type": "object",
+        "required": [
+          "leaderboardType",
+          "rank",
+          "totalCount"
+        ],
+        "properties": {
+          "leaderboardType": {
+            "type": "string",
+            "description": "The leaderboard category (e.g. contributors, stars)"
+          },
+          "rank": {
+            "type": "integer",
+            "description": "The project's rank in that leaderboard"
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total number of projects in that leaderboard"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "statusMessage": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

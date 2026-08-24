@@ -11,6 +11,7 @@ export async function fetchActivityTypes(
 ): Promise<ActivityTypesByPlatformResponse> {
   const query: ActivityTypesTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,

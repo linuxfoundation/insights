@@ -58,6 +58,10 @@ export default defineConfig({
           { text: 'Data Sources', link: '/introduction/data-sources/index.md' },
           { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
           {
+            text: 'Contributor Affiliations',
+            link: '/introduction/contributor-affiliations/index.md',
+          },
+          {
             text: 'Code contributions & Collaborations',
             link: '/introduction/contributions/index.md',
           },
@@ -80,6 +84,7 @@ export default defineConfig({
           { text: 'LFX Data Copilot', link: '/features/lfx-data-copilot/index.md' },
           { text: 'Repository Groups', link: '/features/repository-groups/index.md' },
           { text: 'Community Collections', link: '/features/community-collections/index.md' },
+          { text: 'Organization Page', link: '/features/organization-page/index.md' },
         ],
       },
       {

@@ -14,6 +14,7 @@ export async function fetchOrganizationsLeaderboard(
 ): Promise<OrganizationLeaderboard> {
   const dataQuery: OrganizationsLeaderboardTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     platform: filter.platform,
     activity_type: filter.activity_type,
     includeCodeContributions: filter.includeCodeContributions,
@@ -44,6 +45,8 @@ export async function fetchOrganizationsLeaderboard(
     },
     data: dataResponse.data.map(
       (item): Organization => ({
+        id: item.id,
+        slug: item.slug,
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,

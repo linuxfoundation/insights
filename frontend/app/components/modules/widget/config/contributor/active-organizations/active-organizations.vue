@@ -95,7 +95,7 @@ const model = computed<ActiveOrganizationsModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedReposValues } =
+const { isCollectionScope, startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedReposValues } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -103,7 +103,8 @@ const route = useRoute();
 const summaryLoading = ref(true);
 
 const params = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: model.value.activeTab,
   startDate: startDate.value,
   endDate: endDate.value,

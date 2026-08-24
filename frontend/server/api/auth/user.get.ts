@@ -2,26 +2,21 @@
 // SPDX-License-Identifier: MIT
 
 import { getCookie } from 'h3';
-import jwt from 'jsonwebtoken';
-import { jwtDecode } from 'jwt-decode';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import { verifyOrRefreshOidcToken } from '~~/server/utils/auth-refresh';
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig();
-    const oidcToken = getCookie(event, 'auth_oidc_token');
+    const decodedToken = await verifyOrRefreshOidcToken(event);
 
-    if (!oidcToken) {
-      // Check if this is a request that should attempt silent login
+    if (!decodedToken) {
+      // No valid session and refresh either wasn't possible or failed.
+      // Suggest silent login only for browser requests that haven't already tried it.
       const userAgent = getHeader(event, 'user-agent') || '';
       const referer = getHeader(event, 'referer') || '';
 
-      // Only attempt silent login for browser requests (not API calls from other sources)
-      // and avoid infinite loops by checking if we're already in a callback
       const isBrowserRequest = userAgent.includes('Mozilla');
       const isNotCallback = !referer.includes('/api/auth/callback');
 
-      // Check if silent login was already attempted by looking for the PKCE cookie
       const silentLoginPkce = getCookie(event, 'auth_pkce');
       const hasAttemptedSilentLogin = !!silentLoginPkce;
 
@@ -31,37 +26,8 @@ export default defineEventHandler(async (event) => {
       return {
         isAuthenticated: false,
         user: null,
-        token: null,
         shouldAttemptSilentLogin,
       };
-    }
-
-    // Validate client secret
-    if (!config.auth0ClientSecret) {
-      console.error('Auth0 client secret not configured');
-      return {
-        isAuthenticated: false,
-        user: null,
-        token: null,
-      };
-    }
-
-    // Verify and decode the OIDC token using the client secret
-    const decodedToken = jwt.verify(oidcToken, config.auth0ClientSecret, {
-      algorithms: ['HS256'],
-    }) as DecodedOidcToken;
-
-    // Extract Intercom claims from the original Auth0 ID token
-    let intercomJwt: string | undefined;
-    let username: string | undefined;
-    if (decodedToken.original_id_token) {
-      try {
-        const idTokenClaims = jwtDecode<Record<string, string>>(decodedToken.original_id_token);
-        intercomJwt = idTokenClaims['http://lfx.dev/claims/intercom'];
-        username = idTokenClaims['https://sso.linuxfoundation.org/claims/username'];
-      } catch (error) {
-        console.error('Intercom: Boot failed', error);
-      }
     }
 
     return {
@@ -75,17 +41,15 @@ export default defineEventHandler(async (event) => {
         updated_at: decodedToken.updated_at,
         hasLfxInsightsPermission: decodedToken.hasLfxInsightsPermission,
         isLfInsightsTeamMember: decodedToken.isLfInsightsTeamMember,
-        username,
-        intercomJwt,
+        username: decodedToken.username,
+        intercomJwt: decodedToken.intercomJwt,
       },
-      token: decodedToken.original_id_token,
     };
   } catch (error) {
     console.error('Auth user error:', error);
     return {
       isAuthenticated: false,
       user: null,
-      token: null,
     };
   }
 });
