@@ -31,4 +31,9 @@ export default {
       satori: 'node',
     },
   },
+  // Cache strategy: cache OG images for 24 hours
+  // This reduces rendering load from repeated bot crawler requests
+  defaults: {
+    cacheMaxAgeSeconds: 60 * 60 * 24, // 24 hours in seconds
+  },
 };

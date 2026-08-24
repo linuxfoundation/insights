@@ -39,6 +39,12 @@ const rateLimiterConfig: RateLimiterConfig = {
       maxRequests: 10,
       windowSeconds: 60, // 10 reports per minute
     },
+    {
+      route: '/__og-image__/*',
+      methods: ['GET'],
+      maxRequests: 10,
+      windowSeconds: 60, // stricter than the default limit to blunt bot-driven OG image render load
+    },
   ],
 
   // /24 subnet rate limit — catches coordinated bot attacks from multiple IPs in the same subnet
