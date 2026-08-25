@@ -8,7 +8,11 @@ import type { WidgetArea } from '../../widget/types/widget-area';
 import type { Widget } from '../../widget/types/widget';
 import type { WidgetConfig } from '../../widget/config/widget.config';
 import { lfxWidgets } from '../../widget/config/widget.config';
-import type { HealthScoreResults } from '~~/types/overview/responses.types';
+import type {
+  HealthScoreV2Results,
+  ImpactBreakdownResults,
+  HealthBreakdownResults,
+} from '~~/types/overview/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Organization } from '~~/types/contributors/responses.types';
 
@@ -23,35 +27,40 @@ export interface ScoreDataQueryParams extends OverviewQueryParams {
 
 // TODO: Refactor other services to follow this pattern
 class OverviewApiService {
-  fetchHealthScoreOverview(params: ComputedRef<OverviewQueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.HEALTH_SCORE_OVERVIEW,
-      params.value.projectSlug,
-      params.value.repos,
-    ]);
-    const queryFn = computed<QueryFunction<HealthScoreResults>>(() =>
-      this.healthScoreOverviewQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        repos: params.value.repos,
-      })),
-    );
+  fetchHealthScoreV2(params: ComputedRef<{ projectSlug: string }>) {
+    const queryKey = computed(() => [TanstackKey.HEALTH_SCORE_V2, params.value.projectSlug]);
+    const queryFn: QueryFunction<HealthScoreV2Results> = async () =>
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-v2`);
 
-    return useQuery<HealthScoreResults>({
+    return useQuery<HealthScoreV2Results>({
       queryKey,
       queryFn,
     });
   }
 
-  healthScoreOverviewQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<HealthScoreResults> {
-    const { projectSlug, repos } = query();
-    return async () =>
-      await $fetch(`/api/project/${projectSlug}/overview/health-score-overview`, {
-        params: {
-          repos,
-        },
-      });
+  fetchHealthScoreImpactBreakdown(params: ComputedRef<{ projectSlug: string }>) {
+    const queryKey = computed(() => [
+      TanstackKey.HEALTH_SCORE_IMPACT_BREAKDOWN,
+      params.value.projectSlug,
+    ]);
+    const queryFn: QueryFunction<ImpactBreakdownResults> = async () =>
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-impact`);
+
+    return useQuery<ImpactBreakdownResults>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchHealthScoreBreakdown(params: ComputedRef<{ projectSlug: string }>) {
+    const queryKey = computed(() => [TanstackKey.HEALTH_SCORE_BREAKDOWN, params.value.projectSlug]);
+    const queryFn: QueryFunction<HealthBreakdownResults> = async () =>
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-breakdown`);
+
+    return useQuery<HealthBreakdownResults>({
+      queryKey,
+      queryFn,
+    });
   }
 
   fetchAssociatedOrganization(params: ComputedRef<OverviewQueryParams>) {
