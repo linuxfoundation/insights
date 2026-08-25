@@ -1,6 +1,6 @@
 # Health Score Explained
 
-LFX Insights surfaces **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:
+LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:
 
 - **Lifecycle:** what state is this project in?
 - **Health Score:** how well-maintained is it?
@@ -32,7 +32,7 @@ Look at the Lifecycle state before the numeric scores. It is derived from mainta
 
 | State | What it means |
 |---|---|
-| **Active** | Does not meet criteria for any other state. Typically has recent commits and responsive maintainers, but no specific thresholds are required. |
+| **Active** | Does not meet criteria for any other state. Any project not classified as Archived, Abandoned, Inert, Declining, or Stable falls here. No specific activity thresholds are required. |
 | **Stable** | Low activity by design. The project is mature and does not need frequent changes. Maintainers are still reachable. |
 | **Declining** | Activity dropped more than 50% in the last 6 months while issue volume increased; a sign the project is under pressure |
 | **Inert** | No commits in 18+ months, but no open issues or pull requests either. Nothing to judge responsiveness by. A quiet project, not a neglected one. |
@@ -48,7 +48,7 @@ Look at the Lifecycle state before the numeric scores. It is derived from mainta
 The lifecycle state is assigned by evaluating the following conditions in order. The first match wins:
 
 1. **Archived:** the repository's archived flag is set, or the package registry marks the package as deprecated or yanked.
-2. **Abandoned:** open issues or pull requests have received no non-author response for an extended period (90 to 180 days), and maintainers have had no activity in the last 12 months.
+2. **Abandoned:** open issues or pull requests have received no non-author response for an extended period (90 to 180 days), and maintainers have had no activity in the last 18 months.
 3. **Inert:** no commits in the last 18 months, and no open issues or pull requests in that window (nothing to judge responsiveness by).
 4. **Declining:** commits in the last 6 months are less than 50% of the prior 6 months, and the volume of newly opened issues is higher than the prior period.
 5. **Stable:** the latest release is within the last 12 months, fewer than 50 issues are open, no critical vulnerabilities are open, and commits have dropped more than 50% vs. the prior period.
@@ -78,14 +78,16 @@ A project with responsive maintainers will fix CVEs, clear backlogs, and ship fi
 
 #### 1.1 Maintainer Responsiveness (max 15 pts)
 
-Measures the median time for a non-author to respond to newly opened issues and pull requests. Bot and automation activity is excluded so only genuine human responses count.
+Measures the median time for a non-author to respond to newly opened issues and pull requests. The score uses the average of the issue and PR response medians. Bot and automation activity is excluded so only genuine human responses count.
 
-- **15 pts:** Median response time under 7 days
-- **10 pts:** Median response time under 30 days
-- **5 pts:** Median response time under 90 days
-- **0 pts:** Median response time 90 days or more, or no response data available
+- **15 pts:** Median response time under 24 hours
+- **12 pts:** Median response time under 3 days
+- **9 pts:** Median response time under 1 week
+- **5 pts:** Median response time under 1 month
+- **2 pts:** Median response time under 3 months
+- **0 pts:** Median response time 3 months or more, or no response data available
 
-Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal is scored as 0 pts (not redistributed), because the signal is available — there is simply no activity to measure.
+Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal scores 0 pts (not redistributed) because the signal is `available` — there is simply no activity to measure. Only `blocked` sub-signals redistribute their weight.
 
 #### 1.2 Bus Factor (max 18 pts)
 
@@ -102,7 +104,7 @@ Counts the number of people who are actively maintaining the project, taking the
 Measures how many distinct organizations the active maintainers are affiliated with, using contributor affiliation data. Projects maintained by contributors from multiple independent organizations are more resilient to any single organization withdrawing support.
 
 - **7 pts:** Maintainers from 3 or more organizations
-- **4 pts:** Maintainers from 2 organizations
+- **5 pts:** Maintainers from 2 organizations
 - **2 pts:** All maintainers from 1 organization
 - **0 pts:** Affiliation unknown
 
@@ -117,7 +119,11 @@ Counts unresolved security advisories scoped to the repository, sourced from OSV
 - **10 pts:** No open vulnerabilities
 - Points deducted per open advisory: 6 per Critical, 3 per High, 1 per Moderate (minimum 0)
 
-If no vulnerability scan has been completed for the repository, this sub-signal is unavailable and its weight redistributes to other Security sub-signals.
+If no vulnerability scan has been completed for the repository, this sub-signal is `blocked` and its weight redistributes to other available Security sub-signals.
+
+::: info
+The UI currently shows "No open vulnerabilities" when scan data is absent rather than marking the sub-signal as unavailable. This is a known display issue (IN-1241) and does not affect the underlying score calculation.
+:::
 
 #### 2.2 Security Practices (max 8 pts)
 
@@ -153,7 +159,7 @@ Assesses build provenance attestation, artifact-to-repository consistency, and p
 
 ### 3. Development Activity (0–25 pts)
 
-A finished library with no open issues, no CVEs, and a recent release can score well here without recent commits. Intentionally low-activity projects are not penalized.
+Development Activity rewards recent releases, commits, resolved issues, and merged pull requests. Projects with no activity across these signals score low here. The Lifecycle state provides additional context — a `Stable` classification signals to users that low activity is intentional — but it does not change the underlying point formula.
 
 #### 3.1 Release Cadence (max 8 pts)
 
@@ -202,7 +208,7 @@ Combines two independent measures over the last 12 months: what fraction of pull
 **Merge ratio** (max 3 pts) — merged pull requests relative to all closed pull requests:
 
 - **3 pts:** 70% or more of closed pull requests were merged
-- **1 pt:** 40% or more of closed pull requests were merged
+- **1 pt:** 40–69% of closed pull requests were merged
 - **0 pts:** Fewer than 40% merged, or no closed pull requests in the period
 
 **Median time to merge** (max 2 pts):
@@ -283,7 +289,7 @@ Release Cadence, Dependency Health, and Supply Chain Integrity are all package-m
 
 **Projects with partial data across repos:**
 
-For multi-repo projects, sub-signals in a `partial` coverage state are computed over the subset of repositories where data is available. The score reflects what can be observed, and the coverage detail is available in the UI for transparency.
+For multi-repo projects, sub-signals in a `partial` coverage state are computed over the subset of repositories where data is available. The score reflects what can be observed.
 
 ::: info
 Health Score comparisons across projects with different platform or data coverage are not directly comparable. A project with full GitHub and package data is scored on more signals than one on Gerrit with no published packages. Coverage details are always shown alongside the score.
