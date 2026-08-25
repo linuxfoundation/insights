@@ -581,14 +581,18 @@ export const getTransitiveDependentsDescription = (value: number | null): string
   return `${value.toLocaleString('en-US')} packages depend on this project directly or indirectly, the primary measure of its blast radius.`;
 };
 
-export const getGraphCentralityDescription = (value: number | null, isPending: boolean): string => {
-  if (isPending) {
-    return 'PageRank-weighted centrality has not yet been computed for this project. The score will update when the weekly batch job completes.';
-  }
+export const getPopularityDescription = (value: number | null): string => {
   if (value === null) {
-    return 'No graph centrality data is available for this project.';
+    return 'No Sonatype popularity data is available for this project.';
   }
-  return `PageRank-weighted centrality score of ${value.toLocaleString('en-US')} across the dependency graph.`;
+  const rounded = Math.round(value);
+  if (rounded >= 75) {
+    return `Sonatype popularity score of ${rounded} / 100. High Maven Central popularity — widely fetched and depended on across the Java ecosystem.`;
+  }
+  if (rounded >= 25) {
+    return `Sonatype popularity score of ${rounded} / 100. Moderate Maven Central footprint — consistent presence in Java dependency trees.`;
+  }
+  return `Sonatype popularity score of ${rounded} / 100. Limited Maven Central footprint — fetches concentrated in a narrow set of consumers.`;
 };
 
 export const getDownloadsDescription = (value: number | null): string => {

@@ -3,11 +3,24 @@
 import { describe, it, expect } from 'vitest';
 import {
   getTransitiveDependentsDescription,
-  getGraphCentralityDescription,
+  getPopularityDescription,
   getDownloadsDescription,
   getDirectDependentsDescription,
   getImpactSummaryDescription,
 } from '~~/config/health-breakdown-templates';
+
+// Test data factory for Maven Popularity / Downloads visibility logic
+const createImpactBreakdownData = (overrides = {}) => ({
+  directDependents: 1000,
+  directDependentsBand: 'Top 10%',
+  transitiveDependents: 50000,
+  transitiveDependentsBand: 'Top 1%',
+  downloads: 5000000,
+  downloadsBand: 'Top 10%',
+  sonatypePopularityScore: null,
+  sonatypePopularityScoreBand: null,
+  ...overrides,
+});
 
 describe('Impact Breakdown signal descriptions', () => {
   describe('getTransitiveDependentsDescription', () => {
@@ -49,21 +62,60 @@ describe('Impact Breakdown signal descriptions', () => {
     });
   });
 
-  describe('getGraphCentralityDescription', () => {
-    it('returns pending message when isPending is true', () => {
-      const result = getGraphCentralityDescription(null, true);
-      expect(result).toContain('not yet been computed');
+  describe('getPopularityDescription', () => {
+    it('returns base message when value is null', () => {
+      const result = getPopularityDescription(null);
+      expect(result).toBe('No Sonatype popularity data is available for this project.');
     });
 
-    it('returns base message when value is null and not pending', () => {
-      const result = getGraphCentralityDescription(null, false);
-      expect(result).toBe('No graph centrality data is available for this project.');
+    it('returns high-popularity description for score >= 75, rounded', () => {
+      const result = getPopularityDescription(74.6);
+      expect(result).toContain('75 / 100');
+      expect(result).toContain('High Maven Central popularity');
     });
 
-    it('returns formatted message with value when not null', () => {
-      const result = getGraphCentralityDescription(42.5, false);
-      expect(result).toContain('42.5');
-      expect(result).toContain('PageRank');
+    it('returns moderate-popularity description for score 25-74, rounded', () => {
+      const result = getPopularityDescription(50);
+      expect(result).toContain('50 / 100');
+      expect(result).toContain('Moderate Maven Central footprint');
+    });
+
+    it('returns limited-popularity description for score < 25, rounded', () => {
+      const result = getPopularityDescription(24.4);
+      expect(result).toContain('24 / 100');
+      expect(result).toContain('Limited Maven Central footprint');
+    });
+  });
+
+  describe('Maven Popularity row visibility', () => {
+    it('shows Popularity row when sonatypePopularityScore is non-NULL', () => {
+      const data = createImpactBreakdownData({ sonatypePopularityScore: 78 });
+      expect(data.sonatypePopularityScore).not.toBeNull();
+    });
+
+    it('hides Popularity row when sonatypePopularityScore is NULL', () => {
+      const data = createImpactBreakdownData({ sonatypePopularityScore: null });
+      expect(data.sonatypePopularityScore).toBeNull();
+    });
+  });
+
+  describe('Downloads row visibility for Maven', () => {
+    const shouldHideDownloads = (data: ReturnType<typeof createImpactBreakdownData>) =>
+      data.sonatypePopularityScore !== null && data.downloads === null;
+
+    it('hides Downloads row when Maven has popularity but no downloads', () => {
+      const data = createImpactBreakdownData({ sonatypePopularityScore: 78, downloads: null });
+      expect(shouldHideDownloads(data)).toBe(true);
+    });
+
+    it('shows Downloads row when Maven has both popularity and downloads', () => {
+      const data = createImpactBreakdownData({ sonatypePopularityScore: 78, downloads: 1000000 });
+      expect(shouldHideDownloads(data)).toBe(false);
+    });
+
+    it('shows Downloads row when no Maven popularity (non-Maven ecosystem)', () => {
+      const data = createImpactBreakdownData({ sonatypePopularityScore: null, downloads: 1000000 });
+      expect(shouldHideDownloads(data)).toBe(false);
     });
   });
 
