@@ -46,7 +46,6 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.COMMIT_ACTIVITIES,
       Widget.PULL_REQUESTS,
       Widget.ACTIVE_DAYS,
-      Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
       Widget.MERGE_LEAD_TIME,
       Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE,
       Widget.CODE_REVIEW_ENGAGEMENT,

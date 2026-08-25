@@ -20,7 +20,6 @@ import packageDependency from './popularity/package-dependency/package-dependenc
 import issuesResolution from './development/issues-resolution/issues-resolution.config';
 import pullRequests from './development/pull-requests/pull-requests.config';
 import activeDays from './development/active-days/active-days.config';
-import contributionsOutsideWorkHours from './development/contributions-outside-work-hours/contributions-outside-work-hours.config';
 import mergeLeadTime from './development/merge-lead-time/merge-lead-time.config';
 import patchsetsPerReview from './development/patchsets-per-review/patchsets-per-review.config';
 import medianTimeToClose from './development/median-time-to-close/median-time-to-close.config';
@@ -114,7 +113,6 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   [Widget.COMMIT_ACTIVITIES]: commitActivities,
   [Widget.PULL_REQUESTS]: pullRequests,
   [Widget.ACTIVE_DAYS]: activeDays,
-  [Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS]: contributionsOutsideWorkHours,
   [Widget.MERGE_LEAD_TIME]: mergeLeadTime,
   [Widget.PATCHSETS_PER_REVIEW]: patchsetsPerReview,
   [Widget.MEDIAN_TIME_TO_CLOSE]: medianTimeToClose,

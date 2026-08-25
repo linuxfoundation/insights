@@ -32,7 +32,6 @@ export enum TanstackKey {
   ACTIVE_DAYS = 'active-days',
   ACTIVITY_TYPES = 'activity-types',
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
-  CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
   ISSUES_RESOLUTION = 'issues-resolution',
   MEDIAN_TIME_TO_CLOSE = 'median-time-to-close',
   MEDIAN_TIME_TO_REVIEW = 'median-time-to-review',
