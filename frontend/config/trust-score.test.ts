@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect } from 'vitest';
-import { getLifecycleLabelConfig, lifecycleLabelConfig } from './trust-score';
+import { getLifecycleLabelConfig } from './trust-score';
 
 describe('getLifecycleLabelConfig', () => {
   test('should return the inert label and color when lifecycle state is "inert"', () => {
@@ -10,12 +10,6 @@ describe('getLifecycleLabelConfig', () => {
       label: 'Inert',
       color: 'bg-warning-600',
     });
-  });
-
-  test('should have inert defined in lifecycleLabelConfig', () => {
-    expect(lifecycleLabelConfig.inert).toBeDefined();
-    expect(lifecycleLabelConfig.inert.label).toBe('Inert');
-    expect(lifecycleLabelConfig.inert.color).toBe('bg-warning-600');
   });
 
   test('should return Unknown for null or undefined lifecycle state', () => {
