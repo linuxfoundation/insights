@@ -1,11 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-/**
- * Formats a number with commas and configurable decimal places
- * @param value - The number to format
- * @param decimals - Number of decimal places (default: 0)
- * @returns Formatted string representation of the number
- */
 
 import { DateTime, Duration } from 'luxon';
 import pluralize from 'pluralize';
@@ -55,9 +49,10 @@ export const formatNumberApprox = (value: number): string => {
 };
 
 /**
- * Formats a number with short notation (e.g. 1.5M)
+ * Formats a number as currency with compact notation
  * @param value - The number to format
- * @returns Formatted string representation of the number
+ * @param currency - The ISO 4217 currency code (e.g. 'USD', 'EUR')
+ * @returns Formatted currency string
  */
 export const formatNumberCurrency = (value: number, currency: string): string =>
   new Intl.NumberFormat('en', {
