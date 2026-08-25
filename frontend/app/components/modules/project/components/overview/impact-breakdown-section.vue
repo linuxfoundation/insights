@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
         />
         <lfx-impact-breakdown-metric-row
           v-if="!(data.sonatypePopularityScore !== null && data.downloads === null)"
-          name="Downloads"
+          name="Downloads (last 30 days)"
           :description="getDownloadsDescription(data.downloads, data.downloadsBand)"
           :value="data.downloads"
           :band="data.downloadsBand"
