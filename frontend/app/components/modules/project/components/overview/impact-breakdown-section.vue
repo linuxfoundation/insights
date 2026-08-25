@@ -30,46 +30,39 @@ SPDX-License-Identifier: MIT
       >
         {{ impactDescription }}
       </p>
-      <p class="text-xs text-neutral-500 mb-4">
-        Each signal reflects how much of the ecosystem would be affected if this project became unavailable. Signals
-        available for this project's ecosystem are aggregated with equal weight.
-      </p>
 
       <div v-if="data">
         <lfx-impact-breakdown-metric-row
           name="Transitive dependents"
-          :description="getTransitiveDependentsDescription(data.transitiveDependents, data.transitiveDependentsBand)"
+          signal-type="Primary"
+          :description="getTransitiveDependentsDescription(data.transitiveDependents)"
           :value="data.transitiveDependents"
           :band="data.transitiveDependentsBand"
-          :value-formatter="formatNumberApprox"
         />
         <lfx-impact-breakdown-metric-row
-          v-if="!(data.sonatypePopularityScore !== null && data.downloads === null)"
-          name="Downloads (last 30 days)"
-          :description="getDownloadsDescription(data.downloads, data.downloadsBand)"
+          name="Graph centrality"
+          signal-type="Primary"
+          :description="getGraphCentralityDescription(data.centrality, data.centrality === null)"
+          :value="data.centrality"
+          :band="data.centralityBand"
+          :is-pending="data.centrality === null"
+        />
+        <lfx-impact-breakdown-metric-row
+          name="Downloads"
+          signal-type="Secondary"
+          :description="getDownloadsDescription(data.downloads)"
           :value="data.downloads"
           :band="data.downloadsBand"
-          :value-formatter="downloadsFormatter"
-        />
-        <lfx-impact-breakdown-metric-row
-          v-if="data.sonatypePopularityScore !== null"
-          name="Popularity (Maven Central)"
-          :description="getPopularityDescription(data.sonatypePopularityScore)"
-          :value="data.sonatypePopularityScore"
-          :band="data.sonatypePopularityScoreBand"
-          :value-formatter="popularityFormatter"
         />
         <lfx-impact-breakdown-metric-row
           name="Direct dependents"
-          :description="getDirectDependentsDescription(data.directDependents, data.directDependentsBand)"
+          signal-type="Secondary"
+          :description="getDirectDependentsDescription(data.directDependents)"
           :value="data.directDependents"
           :band="data.directDependentsBand"
-          :value-formatter="formatNumberApprox"
         />
-        <p class="text-xs text-neutral-500 mt-4">
-          Impact score aggregates all signals available for this ecosystem with equal weight.
-        </p>
       </div>
+
       <div
         v-else-if="status === 'error'"
         class="text-xs text-neutral-500 mt-4"
@@ -89,12 +82,11 @@ import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { getImpactLabelDisplay } from '~~/config/trust-score';
 import {
   getTransitiveDependentsDescription,
+  getGraphCentralityDescription,
   getDownloadsDescription,
   getDirectDependentsDescription,
-  getPopularityDescription,
   getImpactSummaryDescription,
 } from '~~/config/health-breakdown-templates';
-import { formatNumberApprox } from '~/components/shared/utils/formatter';
 import type { ImpactBreakdownResults } from '~~/types/overview/responses.types';
 
 const props = defineProps<{
@@ -108,13 +100,9 @@ const isEmpty = computed(() => props.impactScore === null);
 
 const impactLabelDisplay = computed(() => getImpactLabelDisplay(props.impactLabel));
 
-const impactDescription = computed(() => getImpactSummaryDescription(props.impactLabel));
-
-// Formatter for Popularity signal (0-100 scale with " / 100" suffix)
-const popularityFormatter = (value: number): string => `${Math.round(value)} / 100`;
-
-// Formatter for Downloads signal (approx count with "/ month" suffix)
-const downloadsFormatter = (value: number): string => `${formatNumberApprox(value)} / month`;
+const impactDescription = computed(() =>
+  getImpactSummaryDescription(props.impactLabel, props.data?.transitiveDependents),
+);
 </script>
 
 <script lang="ts">
