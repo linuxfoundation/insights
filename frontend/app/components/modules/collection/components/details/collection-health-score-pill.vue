@@ -10,24 +10,30 @@ SPDX-License-Identifier: MIT
   >
     <span class="text-xs font-medium text-neutral-500">Unavailable</span>
   </lfx-chip>
-  <lfx-chip
+  <lfx-tooltip
     v-else
-    type="bordered"
-    size="small"
-    class="flex items-center gap-1"
+    placement="top"
+    content="Tooltip copy pending"
   >
-    <span
-      class="size-1.5 rounded-full shrink-0"
-      :class="healthScoreDotClass"
-    />
-    <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
-    <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
-  </lfx-chip>
+    <lfx-chip
+      type="bordered"
+      size="small"
+      class="flex items-center gap-1"
+    >
+      <span
+        class="size-1.5 rounded-full shrink-0"
+        :class="healthScoreDotClass"
+      />
+      <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
+      <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
+    </lfx-chip>
+  </lfx-tooltip>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   score: number;
@@ -35,38 +41,39 @@ const props = defineProps<{
   unavailable?: boolean;
 }>();
 
-// Mirrors the dot+label+score thresholds/colors in collection-metrics-row.vue, scoped to the
-// collection project table's Health Score column (a bordered table-cell pill instead of a
-// labeled metrics chip). Duplicated rather than shared: only two call sites (row/card) and the
-// logic is ~10 lines, so a composable would be more ceremony than the duplication it avoids.
-// health-score.vue itself is intentionally left untouched (used elsewhere in the app).
-//
-// Prefers the API's real healthLabel (v2) when present; falls back to deriving the label from
-// the score for sparse rows where the pipe didn't return a label.
+// Akrites v2 bands (PRD): excellent 85-100, healthy 70-84, fair 50-69, concerning 30-49, critical 0-29.
+// Prefers the server-computed healthLabel (Akrites package rollup); falls back to client banding
+// only when the server label is absent, per the ticket's "derivable frontend-side" allowance.
+const bandFromScore = (score: number) => {
+  if (score >= 85) return 'excellent';
+  if (score >= 70) return 'healthy';
+  if (score >= 50) return 'fair';
+  if (score >= 30) return 'concerning';
+  return 'critical';
+};
+
+const band = computed(() => (props.healthLabel ?? bandFromScore(props.score)).toLowerCase());
+
 const healthScoreLabel = computed(() => {
-  if (props.healthLabel) {
-    return props.healthLabel.charAt(0).toUpperCase() + props.healthLabel.slice(1);
-  }
-  const score = props.score;
-  if (score >= 85) return 'Excellent';
-  if (score >= 70) return 'Healthy';
-  if (score >= 50) return 'Fair';
-  if (score >= 30) return 'Concerning';
-  return 'Critical';
+  const labels: Record<string, string> = {
+    excellent: 'Excellent',
+    healthy: 'Healthy',
+    fair: 'Fair',
+    concerning: 'Concerning',
+    critical: 'Critical',
+  };
+  return labels[band.value] ?? band.value;
 });
 
 const healthScoreDotClass = computed(() => {
-  if (props.healthLabel) {
-    if (props.healthLabel === 'excellent' || props.healthLabel === 'healthy') return 'bg-health-healthy';
-    if (props.healthLabel === 'fair') return 'bg-health-fair';
-    if (props.healthLabel === 'concerning') return 'bg-health-concerning';
-    return 'bg-health-critical';
-  }
-  const score = props.score;
-  if (score >= 70) return 'bg-health-healthy';
-  if (score >= 50) return 'bg-health-fair';
-  if (score >= 30) return 'bg-health-concerning';
-  return 'bg-health-critical';
+  const classes: Record<string, string> = {
+    excellent: 'bg-health-excellent',
+    healthy: 'bg-health-healthy',
+    fair: 'bg-health-fair',
+    concerning: 'bg-health-concerning',
+    critical: 'bg-health-critical',
+  };
+  return classes[band.value] ?? 'bg-health-critical';
 });
 </script>
 
