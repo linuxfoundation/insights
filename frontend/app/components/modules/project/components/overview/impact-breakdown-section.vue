@@ -60,6 +60,9 @@ SPDX-License-Identifier: MIT
           :value="data.directDependents"
           :band="data.directDependentsBand"
         />
+        <p class="text-xs text-neutral-500 mt-2">
+          Impact score aggregates all signals available for this ecosystem with equal weight.
+        </p>
       </div>
 
       <div
