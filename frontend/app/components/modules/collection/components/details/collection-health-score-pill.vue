@@ -31,28 +31,43 @@ import LfxChip from '~/components/uikit/chip/chip.vue';
 
 const props = defineProps<{
   score: number;
+  healthLabel?: string | null;
   unavailable?: boolean;
 }>();
 
-// Mirrors the dot+label+score thresholds/colors in collection-metrics-row.vue, scoped to the
-// collection project table's Health Score column (a bordered table-cell pill instead of a
-// labeled metrics chip). Duplicated rather than shared: only two call sites (row/card) and the
-// logic is ~10 lines, so a composable would be more ceremony than the duplication it avoids.
-// health-score.vue itself is intentionally left untouched (used elsewhere in the app).
+// Akrites v2 bands (PRD): excellent 85-100, healthy 70-84, fair 50-69, concerning 30-49, critical 0-29.
+// Prefers the server-computed healthLabel (Akrites package rollup); falls back to client banding
+// only when the server label is absent, per the ticket's "derivable frontend-side" allowance.
+const bandFromScore = (score: number) => {
+  if (score >= 85) return 'excellent';
+  if (score >= 70) return 'healthy';
+  if (score >= 50) return 'fair';
+  if (score >= 30) return 'concerning';
+  return 'critical';
+};
+
+const band = computed(() => (props.healthLabel ?? bandFromScore(props.score)).toLowerCase());
+
 const healthScoreLabel = computed(() => {
-  const score = props.score;
-  if (score >= 80) return 'Excellent';
-  if (score >= 60) return 'Healthy';
-  if (score >= 40) return 'Fair';
-  if (score >= 20) return 'Concerning';
-  return 'Critical';
+  const labels: Record<string, string> = {
+    excellent: 'Excellent',
+    healthy: 'Healthy',
+    fair: 'Fair',
+    concerning: 'Concerning',
+    critical: 'Critical',
+  };
+  return labels[band.value] ?? band.value;
 });
 
 const healthScoreDotClass = computed(() => {
-  const score = props.score;
-  if (score >= 60) return 'bg-health-healthy';
-  if (score >= 20) return 'bg-health-concerning';
-  return 'bg-health-critical';
+  const classes: Record<string, string> = {
+    excellent: 'bg-health-excellent',
+    healthy: 'bg-health-healthy',
+    fair: 'bg-health-fair',
+    concerning: 'bg-health-concerning',
+    critical: 'bg-health-critical',
+  };
+  return classes[band.value] ?? 'bg-health-critical';
 });
 </script>
 
