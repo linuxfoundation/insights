@@ -45,12 +45,6 @@ export type TinybirdOrganizationsLeaderboardData = {
   contributionPercentage: number;
 };
 
-export type TinybirdActivityHeatmapData = {
-  weekday: number;
-  twoHoursBlock: number;
-  activityCount: number;
-};
-
 export type TinybirdSearchVolumeData = {
   projectId: string;
   keyword: string;

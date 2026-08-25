@@ -45,17 +45,6 @@ export interface CodeReviewEngagement {
     | CodeReviewEngagementReviewsItem[];
 }
 
-export interface ContributionOutsideHours {
-  summary: Summary;
-  weekdayOutsideHoursPercentage: number;
-  weekendOutsideHoursPercentage: number;
-  data: {
-    day: number; // day of the week, 0 is monday
-    hour: number;
-    contributions: number;
-  }[];
-}
-
 export interface IssuesResolutionSummary extends Summary {
   // Nullable: Tinybird returns no velocity row when there are no resolved issues in scope.
   avgVelocityInDays: number | null;

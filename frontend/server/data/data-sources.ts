@@ -48,8 +48,6 @@ import { fetchReviewEfficiency } from '~~/server/data/tinybird/development/revie
 import { fetchMergeLeadTime } from '~~/server/data/tinybird/development/merge-lead-time';
 import { fetchActiveDays } from '~~/server/data/tinybird/development/active-days';
 import { fetchCodeReviewEngagement } from '~~/server/data/tinybird/development/code-review-engagement';
-import { fetchContributionsOutsideWorkHours } from '~~/server/data/tinybird/development/contributions-outside-work-hours';
-import type { ActivityHeatmapByWeekdayTBQuery } from '~~/server/data/tinybird/requests.types';
 import type {
   ContributorDependency,
   ContributorLeaderboard,
@@ -73,7 +71,6 @@ import type {
   ReviewTimeByPrItem,
   MergeLeadTime,
   CodeReviewEngagement,
-  ContributionOutsideHours,
   ActivityTypesByPlatformResponse,
 } from '~~/types/development/responses.types';
 import type {
@@ -126,9 +123,6 @@ export interface DataSource {
   fetchMergeLeadTime: (filter: MergeLeadTimeFilter) => Promise<MergeLeadTime>;
   fetchActiveDays: (filter: ActiveDaysFilter) => Promise<ActiveDays>;
   fetchCodeReviewEngagement: (filter: CodeReviewEngagementFilter) => Promise<CodeReviewEngagement>;
-  fetchContributionsOutsideWorkHours: (
-    filter: ActivityHeatmapByWeekdayTBQuery,
-  ) => Promise<ContributionOutsideHours>;
   fetchPackages(filter: PackageFilter): Promise<Package[]>;
   fetchPackageMetrics(filter: PackageMetricsFilter): Promise<PackageDownloadsResponse>;
   fetchActivityTypes(filter: ActivityTypesFilter): Promise<ActivityTypesByPlatformResponse>;
@@ -158,7 +152,6 @@ export function createDataSource(): DataSource {
     fetchActiveDays,
     fetchReviewTimeByPRSize,
     fetchCodeReviewEngagement,
-    fetchContributionsOutsideWorkHours,
     fetchPackages,
     fetchPackageMetrics,
     fetchActivityTypes,
