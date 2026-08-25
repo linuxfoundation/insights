@@ -240,20 +240,18 @@ Projects that do not publish any tracked packages do not receive an Impact Score
 
 ### Signals
 
-| Signal | Role | What it captures |
-|---|---|---|
-| **Transitive dependents** | Primary | All packages that depend on this project directly or indirectly. The core blast-radius measure. |
-| **Graph centrality** | Primary | PageRank-style score over the dependency graph, weighting a package by the importance of what depends on it. A package depended on by major runtimes or frameworks scores higher than one with the same count of less-important dependents. |
-| **Downloads** | Secondary | Per-registry download counts. A proxy for real-world usage, complementary to graph signals. |
-| **Direct dependents** | Secondary | First-degree dependent count. Weighted lower than transitive reach because it under-ranks load-bearing packages with few direct dependents but large indirect reach. |
+| Signal | What it captures |
+|---|---|
+| **Transitive dependents** | All packages that depend on this project directly or indirectly. The core blast-radius measure. |
+| **Direct dependents** | First-degree dependent count. Included alongside transitive reach to capture direct adoption. |
+| **Downloads** | Per-registry download counts. A proxy for real-world usage. Where raw counts are unavailable (for example, Maven), an ecosystem-provided popularity score is used instead. |
 
 ### Methodology
 
-Impact is computed in three steps:
+Impact is computed in two steps:
 
-1. **Log-transform raw inputs:** downloads, direct dependents, and transitive dependents are log-transformed to compress the power-law distributions typical of open source package ecosystems.
-2. **Normalize within each ecosystem**, so packages are comparable across ecosystems despite different raw magnitudes (npm and Maven packages live in very different distribution ranges).
-3. **Weighted blend** of the four signals, biased toward blast-radius signals (transitive dependents and graph centrality), then scaled to 0–100.
+1. **Score each signal relative to the ecosystem:** for each signal, a package's contribution is measured as its cumulative share of the total ecosystem signal. Packages at the top of each distribution score near 1; the long tail scores near 0. Signals with no data for a given ecosystem are excluded.
+2. **Average across available signals**, then scaled to 0–100. Packages are not penalized when a specific signal is unavailable for their ecosystem.
 
 ## Multi-Repo Projects
 
