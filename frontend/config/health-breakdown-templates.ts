@@ -379,6 +379,12 @@ export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow =
 // --- Security signals ---
 
 export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
+  if (signals.openVulnScore === null) {
+    return {
+      status: 'no-data',
+      description: blockedSignalDescription('Open vulnerabilities', signals),
+    };
+  }
   const criticals = signals.openCriticals ?? 0;
   const highs = signals.openHighs ?? 0;
   const moderates = signals.openModerates ?? 0;
