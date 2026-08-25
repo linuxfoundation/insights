@@ -81,9 +81,9 @@ export interface ImpactBreakdownResults {
   downloads: number | null;
   downloadsTopPct: number | null;
   downloadsBand: ImpactBreakdownBand | null;
-  centrality: number | null;
-  centralityTopPct: number | null;
-  centralityBand: ImpactBreakdownBand | null;
+  sonatypePopularityScore: number | null;
+  sonatypePopularityScoreTopPct: number | null;
+  sonatypePopularityScoreBand: ImpactBreakdownBand | null;
 }
 
 // Flat shape matching the project_insights_health_breakdown.pipe response (mirrors

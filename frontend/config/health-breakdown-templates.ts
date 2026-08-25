@@ -571,53 +571,73 @@ export const getPrMergeRow = (signals: HealthBreakdownResults): SignalRow => {
 // Section 9: Impact Breakdown signal row descriptions
 // ---------------------------------------------------------------------------
 
-export const getTransitiveDependentsDescription = (value: number | null): string => {
+export const getTransitiveDependentsDescription = (
+  value: number | null,
+  band?: string | null,
+): string => {
+  const baseDescription =
+    'Packages that reach this project through any depth of the dependency graph.';
   if (value === null) {
-    return 'No transitive dependent data is available for this project.';
+    return baseDescription;
   }
-  return `${value.toLocaleString('en-US')} packages depend on this project directly or indirectly, the primary measure of its blast radius.`;
+  if (band === 'Top 1%') {
+    return `${baseDescription} Deep reach into the ecosystem — most projects in this registry pull it in at some depth.`;
+  }
+  if (band === 'Top 10%' || band === 'Top 25%' || band === 'Top 50%') {
+    return `${baseDescription} Meaningful transitive footprint — reached by a substantial share of ecosystem consumers.`;
+  }
+  return `${baseDescription} Narrow transitive reach — few downstream packages pull it in indirectly.`;
 };
 
-export const getGraphCentralityDescription = (value: number | null, isPending: boolean): string => {
-  if (isPending) {
-    return 'PageRank-weighted centrality has not yet been computed for this project. The score will update when the weekly batch job completes.';
-  }
+export const getDownloadsDescription = (value: number | null, band?: string | null): string => {
+  const baseDescription = 'Package registry fetches over the trailing 30-day window.';
   if (value === null) {
-    return 'No graph centrality data is available for this project.';
+    return baseDescription;
   }
-  return `PageRank-weighted centrality score of ${value.toLocaleString('en-US')} across the dependency graph.`;
+  if (band === 'Top 1%') {
+    return `${baseDescription} Sustained high fetch volume across the ecosystem.`;
+  }
+  if (band === 'Top 10%' || band === 'Top 25%' || band === 'Top 50%') {
+    return `${baseDescription} Steady fetch volume — regularly pulled by CI and build pipelines.`;
+  }
+  return `${baseDescription} Low fetch volume — limited active adoption or narrow consumer base.`;
 };
 
-export const getDownloadsDescription = (value: number | null): string => {
+export const getDirectDependentsDescription = (
+  value: number | null,
+  band?: string | null,
+): string => {
+  const baseDescription = 'Packages that list this project as an immediate dependency.';
   if (value === null) {
-    return 'No package download data is available for this project.';
+    return baseDescription;
   }
-  return `${value.toLocaleString('en-US')} downloads per month across all linked registries.`;
+  if (band === 'Top 1%') {
+    return `${baseDescription} Large first-degree dependent base across the ecosystem.`;
+  }
+  if (band === 'Top 10%' || band === 'Top 25%' || band === 'Top 50%') {
+    return `${baseDescription} Moderate first-degree dependent base.`;
+  }
+  return `${baseDescription} Small direct-dependent count — most consumers reach it transitively, if at all.`;
 };
 
-export const getDirectDependentsDescription = (value: number | null): string => {
+export const getPopularityDescription = (value: number | null): string => {
+  const baseDescription =
+    "Sonatype's popularity score for artifacts published to Maven Central. Reflects fetch volume and dependent breadth within the Java ecosystem.";
   if (value === null) {
-    return 'No direct dependent data is available for this project.';
+    return baseDescription;
   }
-  return `${value.toLocaleString('en-US')} packages depend directly on this project.`;
+  if (value >= 75) {
+    return `${baseDescription} High Maven Central popularity. Widely fetched and depended on across the Java ecosystem.`;
+  }
+  if (value >= 25) {
+    return `${baseDescription} Moderate Maven Central footprint. Consistent presence in Java dependency trees.`;
+  }
+  return `${baseDescription} Limited Maven Central footprint. Fetches concentrated in a narrow set of consumers.`;
 };
 
-export const getImpactSummaryDescription = (
-  impactLabel: string | null,
-  transitiveDependents?: number | null,
-): string | null => {
+export const getImpactSummaryDescription = (impactLabel: string | null): string | null => {
   if (impactLabel === null) {
     return 'This project publishes no tracked packages. Impact cannot be computed without a package registry presence.';
   }
-  const dependentsDetail =
-    transitiveDependents !== null && transitiveDependents !== undefined
-      ? ` ${transitiveDependents.toLocaleString('en-US')} packages depend on it directly or indirectly.`
-      : '';
-  if (impactLabel === 'foundational')
-    return `Near-total blast radius across the dependency graph.${dependentsDetail}`;
-  if (impactLabel === 'major')
-    return `Large blast radius, depended on by many high-importance projects.${dependentsDetail}`;
-  if (impactLabel === 'moderate')
-    return `Moderate blast radius within its dependency graph.${dependentsDetail}`;
-  return `Narrow blast radius, depended on by a small set of projects with limited transitive reach.${dependentsDetail}`;
+  return 'How widely this project is depended on across the software ecosystem, measured by direct and transitive dependents and package fetch volume.';
 };
