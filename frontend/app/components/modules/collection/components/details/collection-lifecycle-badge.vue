@@ -10,27 +10,21 @@ SPDX-License-Identifier: MIT
   >
     <span class="text-xs font-medium text-neutral-500">Unavailable</span>
   </lfx-chip>
-  <lfx-tooltip
+  <lfx-tag
     v-else
-    placement="top"
-    content="Tooltip copy pending"
+    :variation="variation"
+    type="transparent"
+    size="small"
+    class="capitalize"
   >
-    <lfx-tag
-      :variation="variation"
-      type="transparent"
-      size="small"
-      class="capitalize"
-    >
-      {{ props.lifecycleLabel }}
-    </lfx-tag>
-  </lfx-tooltip>
+    {{ props.lifecycleLabel }}
+  </lfx-tag>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import type { TagStyle } from '~/components/uikit/tag/types/tag.types';
 
 const props = defineProps<{

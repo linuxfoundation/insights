@@ -10,30 +10,24 @@ SPDX-License-Identifier: MIT
   >
     <span class="text-xs font-medium text-neutral-500">Unavailable</span>
   </lfx-chip>
-  <lfx-tooltip
+  <lfx-chip
     v-else
-    placement="top"
-    content="Tooltip copy pending"
+    type="bordered"
+    size="small"
+    class="flex items-center gap-1"
   >
-    <lfx-chip
-      type="bordered"
-      size="small"
-      class="flex items-center gap-1"
-    >
-      <span
-        class="size-1.5 rounded-full shrink-0"
-        :class="healthScoreDotClass"
-      />
-      <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
-      <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
-    </lfx-chip>
-  </lfx-tooltip>
+    <span
+      class="size-1.5 rounded-full shrink-0"
+      :class="healthScoreDotClass"
+    />
+    <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
+    <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
+  </lfx-chip>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   score: number;
