@@ -1,6 +1,6 @@
 # Health Score Explained
 
-LFX Insights now surfaces **three independent assessments** for every project: a **Lifecycle state**, a **Health Score**, and an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:
+LFX Insights surfaces **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:
 
 - **Lifecycle:** what state is this project in?
 - **Health Score:** how well-maintained is it?
@@ -32,7 +32,7 @@ Look at the Lifecycle state before the numeric scores. It is derived from mainta
 
 | State | What it means |
 |---|---|
-| **Active** | Regular commits in the last 6 months, responsive maintainers, healthy release cadence |
+| **Active** | Does not meet criteria for any other state. Typically has recent commits and responsive maintainers, but no specific thresholds are required. |
 | **Stable** | Low activity by design. The project is mature and does not need frequent changes. Maintainers are still reachable. |
 | **Declining** | Activity dropped more than 50% in the last 6 months while issue volume increased; a sign the project is under pressure |
 | **Inert** | No commits in 18+ months, but no open issues or pull requests either. Nothing to judge responsiveness by. A quiet project, not a neglected one. |
@@ -83,7 +83,7 @@ Measures the median time for a non-author to respond to newly opened issues and 
 - **15 pts:** Median response time under 7 days
 - **10 pts:** Median response time under 30 days
 - **5 pts:** Median response time under 90 days
-- **0 pts:** Median response time over 90 days, or no response data available
+- **0 pts:** Median response time 90 days or more, or no response data available
 
 #### 1.2 Bus Factor (max 18 pts)
 
@@ -177,24 +177,37 @@ Counts commits authored in the last 6 months on the cleaned activity stream (bot
 
 #### 3.3 Issue Resolution (max 7 pts)
 
-Measures the median time from issue opened to issue closed over the last 12 months. Only non-bot activity is included. Lower median time means a higher score.
+Combines two independent measures over the last 12 months: how many issues were resolved, and how quickly. Only non-bot activity is included. Points from each component are added together.
 
-- **7 pts:** Median resolution time under 7 days
-- **5 pts:** Median resolution time under 14 days
-- **3 pts:** Median resolution time under 30 days
-- **1 pt:** Median resolution time under 90 days
-- **0 pts:** Median resolution time over 90 days, or no closed issues in the period
+**Close ratio** (max 4 pts) — issues closed relative to issues opened:
+
+- **4 pts:** 80% or more of opened issues were closed
+- **2 pts:** 50% or more of opened issues were closed
+- **0 pts:** Fewer than 50% closed, or no issues in the period
+
+**Median time to close** (max 3 pts):
+
+- **3 pts:** Median close time under 7 days
+- **2 pts:** Median close time under 30 days
+- **0 pts:** 30 days or more, or no closed issues in the period
 
 Gerrit repositories do not ingest issue data. This sub-signal is blocked for Gerrit-only projects and its weight redistributes within Development Activity.
 
 #### 3.4 PR Merge Health (max 5 pts)
 
-Evaluates the ratio of merged pull requests to closed-unmerged pull requests over the last 12 months, combined with median time to merge. A high abandonment rate or slow merge cadence signals a backlog problem.
+Combines two independent measures over the last 12 months: what fraction of pull requests were merged rather than abandoned, and how quickly. Points from each component are added together.
 
-- **5 pts:** High merge rate (80% or more of closed PRs merged) and median merge time under 7 days
-- **3 pts:** Good merge rate (60% or more) or fast merge time under 14 days
-- **1 pt:** Moderate merge rate (40% or more) or merge time under 30 days
-- **0 pts:** Low merge rate or median merge time over 30 days
+**Merge ratio** (max 3 pts) — merged pull requests relative to all closed pull requests:
+
+- **3 pts:** 70% or more of closed pull requests were merged
+- **1 pt:** 40% or more of closed pull requests were merged
+- **0 pts:** Fewer than 40% merged, or no closed pull requests in the period
+
+**Median time to merge** (max 2 pts):
+
+- **2 pts:** Median merge time under 7 days
+- **1 pt:** Median merge time under 30 days
+- **0 pts:** 30 days or more, or no merged pull requests in the period
 
 Gerrit repositories do not ingest pull request data. This sub-signal is blocked for Gerrit-only projects and its weight redistributes within Development Activity.
 
@@ -239,7 +252,7 @@ Projects that do not publish any tracked packages do not receive an Impact Score
 Impact is computed in three steps:
 
 1. **Log-transform raw inputs:** downloads, direct dependents, and transitive dependents are log-transformed to compress the power-law distributions typical of open source package ecosystems.
-2. **Normalize within each ecosystem** using percentile rank, so packages are comparable across ecosystems despite different raw magnitudes (npm and Maven packages live in very different distribution ranges).
+2. **Normalize within each ecosystem**, so packages are comparable across ecosystems despite different raw magnitudes (npm and Maven packages live in very different distribution ranges).
 3. **Weighted blend** of the four signals, biased toward blast-radius signals (transitive dependents and graph centrality), then scaled to 0–100.
 
 ## Multi-Repo Projects
@@ -292,7 +305,7 @@ The original Insights Health Score was a single 0–100 value, computed as an eq
 | **Health categories** | 4 equal categories at 25 pts each | 3 weighted categories: Maintainer (40), Security and Supply Chain (35), Development Activity (25) |
 | **Popularity** | Baked into Health Score as 25% of the total | Separate Impact Score; does not affect Health |
 | **Lifecycle** | Not modeled | Six states: Active, Stable, Declining, Inert, Abandoned, Archived |
-| **Stable "done" libraries** | Penalized: low commits meant a low score | Not penalized: the Stable state and development floor recognize intentionally low-activity projects |
+| **Stable "done" libraries** | Penalized: low commits meant a low score | Not penalized: the Stable state recognizes intentionally low-activity projects |
 | **Maintainer signal** | Contributor count only | Responsiveness, bus factor (curated plus observed), organizational diversity |
 | **Security** | OpenSSF Baseline pass/fail ratio | Open CVEs with severity weighting, security practices, OpenSSF Scorecard, dependency health, supply chain integrity |
 | **Missing data** | Returned unavailable if any sub-score was absent | Two-layer redistribution: blocked sub-signals rescale within their category; scores are only marked unavailable when signal floor is too low to be defensible |
