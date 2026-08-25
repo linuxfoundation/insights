@@ -12,7 +12,6 @@ declare const window: Window & typeof globalThis;
 export const authState = ref<AuthData>({
   isAuthenticated: false,
   user: null,
-  token: null,
 });
 
 export const isAuthLoading = ref(false);
@@ -109,7 +108,6 @@ export const logout = async () => {
       authState.value = {
         isAuthenticated: false,
         user: null,
-        token: null,
       };
 
       // Clear liked collections
@@ -135,12 +133,10 @@ export const logout = async () => {
 export const useAuth = () => {
   const isAuthenticated = computed(() => authState.value.isAuthenticated);
   const user = computed(() => authState.value.user);
-  const token = computed(() => authState.value.token);
 
   return {
     isAuthenticated,
     user,
-    token,
     isLoading: isAuthLoading,
     isReady: isAuthReady,
     login,

@@ -41,23 +41,6 @@ export type ContributorsLeaderboardFilter = DefaultFilter & {
   offset?: number;
 };
 
-// Collection-scoped counterpart to ContributorsLeaderboardFilter - backed by the separate,
-// performance-optimized collection_contributors_leaderboard pipe (see that pipe's file for why).
-// No project field, no includeCodeContributions (the pipe only supports the contributions-only
-// default there is no per-project non-LF display-name substitution to make either).
-export type CollectionContributorsLeaderboardFilter = {
-  collectionSlug: string;
-  platform?: ActivityPlatforms;
-  activity_type?: ActivityTypes;
-  activity_types?: ActivityTypes[];
-  includeCollaborations?: boolean;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
-  limit?: number;
-  offset?: number;
-};
-
 export type OrganizationsLeaderboardFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;

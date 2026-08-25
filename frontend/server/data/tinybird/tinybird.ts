@@ -3,7 +3,7 @@
 import { DateTime } from 'luxon';
 import { ofetch } from 'ofetch';
 import { AdaptiveSemaphore } from './adaptive-semaphore';
-import { getBucketIdForProject } from './bucket-cache';
+import { getBucketIdForCollection, getBucketIdForProject } from './bucket-cache';
 
 const MAX_CONCURRENT = parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT || '35', 10);
 const MAX_QUEUE_SIZE = parseInt(process.env.NUXT_TINYBIRD_MAX_QUEUE_SIZE || '500', 10);
@@ -109,6 +109,33 @@ export async function fetchFromTinybird<T>(
     }
   }
 
+  // Fetch and add bucketId if query contains a collectionSlug parameter
+  // Tinybird will route the request to the single bucket that contains the collection's data
+  // instead of scanning the 10-way union
+  if (
+    query.collectionSlug &&
+    typeof query.collectionSlug === 'string' &&
+    !query.bucketId &&
+    path !== '/v0/pipes/collection_buckets.json'
+  ) {
+    try {
+      const bucketId = await getBucketIdForCollection(query.collectionSlug, fetchFromTinybird);
+      if (bucketId !== null) {
+        query.bucketId = bucketId;
+      }
+      // No bucketId found is not fatal for collections (unlike projects) - fall back to the union pipe
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      console.warn(`Failed to fetch bucketId for collection ${query.collectionSlug}:`, error);
+      // Continue without bucketId - falls back to the union pipe
+    }
+  }
+
   // We don't want to send undefined, null, or empty values to TinyBird, so we remove those from the query.
   // We also format DateTime objects so that TinyBird understands them.
   const processedQuery = Object.fromEntries(
@@ -140,7 +167,10 @@ export async function fetchFromTinybird<T>(
   // Health-check pings and bucket lookups bypass the semaphore so they don't
   // compete for slots with real data queries (each query already needs a bucket
   // lookup first, which would double the slot pressure).
-  const skipThrottle = path === '/v0/pipes/ping.json' || path === '/v0/pipes/project_buckets.json';
+  const skipThrottle =
+    path === '/v0/pipes/ping.json' ||
+    path === '/v0/pipes/project_buckets.json' ||
+    path === '/v0/pipes/collection_buckets.json';
 
   let acquired = false;
   let wasQueued = false;

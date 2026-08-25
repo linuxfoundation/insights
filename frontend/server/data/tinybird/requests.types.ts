@@ -17,31 +17,14 @@ export type TinybirdScope = {
   collectionSlug?: string;
 };
 
-// contributors_leaderboard.pipe is project-only (its collection equivalent is a separate,
-// performance-optimized pipe - see CollectionContributorsLeaderboardTinybirdQuery below), so
-// this intentionally does NOT extend TinybirdScope.
-export type ContributorsLeaderboardTinybirdQuery = {
-  project: string;
+// contributors_leaderboard.pipe supports both project and collectionSlug scope (scalar-total
+// pattern, same performance characteristics at collection scale as the leaderboard's own
+// window-function-free design).
+export type ContributorsLeaderboardTinybirdQuery = TinybirdScope & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
   includeCodeContributions?: boolean;
-  includeCollaborations?: boolean;
-  repos?: string[];
-  limit?: number;
-  offset?: number;
-  count?: boolean;
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
-
-// collection_contributors_leaderboard.pipe - the collection-scoped, performance-optimized
-// counterpart to contributors_leaderboard.pipe (see that pipe's file for why it's separate).
-export type CollectionContributorsLeaderboardTinybirdQuery = {
-  collectionSlug: string;
-  platform?: ActivityPlatforms;
-  activity_type?: ActivityTypes;
-  activity_types?: ActivityTypes[];
   includeCollaborations?: boolean;
   repos?: string[];
   limit?: number;

@@ -130,6 +130,14 @@ export interface ProjectInsightsTinybird {
   popularityHealthScore: number;
   developmentHealthScore: number;
   securityHealthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
+  maintainerHealthScoreV2: number | null;
+  securitySupplyChainScoreV2: number | null;
+  developmentActivityScoreV2: number | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;
@@ -139,11 +147,6 @@ export interface ProjectInsightsTinybird {
   forksPrevious365Days: number;
   activeContributorsPrevious365Days: number;
   activeOrganizationsPrevious365Days: number;
-  healthScoreV2: number | null;
-  healthLabel: string | null;
-  lifecycleLabel: string | null;
-  impactScore: number | null;
-  impactLabel: string | null;
 }
 
 export interface ProjectInsights {
@@ -169,6 +172,11 @@ export interface ProjectInsights {
   popularityHealthScore: number;
   developmentHealthScore: number;
   securityHealthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;
@@ -178,9 +186,4 @@ export interface ProjectInsights {
   forksPrevious365Days: number;
   activeContributorsPrevious365Days: number;
   activeOrganizationsPrevious365Days: number;
-  healthScoreV2: number | null;
-  healthLabel: string | null;
-  lifecycleLabel: string | null;
-  impactScore: number | null;
-  impactLabel: string | null;
 }

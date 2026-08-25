@@ -71,20 +71,11 @@ SPDX-License-Identifier: MIT
           :unavailable="true"
           :score="0"
         />
-        <lfx-popover
+        <lfx-collection-health-score-pill
           v-else
-          placement="top"
-          trigger-event="hover"
-          :allow-pass-through="true"
-        >
-          <lfx-collection-health-score-pill
-            :score="project.healthScoreV2 ?? 0"
-            :health-label="props.project.healthLabel"
-          />
-          <template #content>
-            <lfx-health-score-details :project="props.project" />
-          </template>
-        </lfx-popover>
+          :score="project.healthScoreV2 ?? 0"
+          :health-label="project.healthLabel"
+        />
       </td>
       <td class="py-4 px-2 whitespace-nowrap">
         <lfx-collection-impact-score-pill
@@ -177,7 +168,7 @@ SPDX-License-Identifier: MIT
           <lfx-collection-lifecycle-badge :lifecycle-label="props.project.lifecycleLabel" />
           <lfx-collection-health-score-pill
             :score="project.healthScoreV2 ?? 0"
-            :health-label="props.project.healthLabel"
+            :health-label="project.healthLabel"
             :unavailable="isHealthScoreUnavailable"
           />
           <lfx-collection-impact-score-pill
@@ -212,7 +203,6 @@ import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxCollectionHealthScorePill from '~/components/modules/collection/components/details/collection-health-score-pill.vue';
 import LfxCollectionLifecycleBadge from '~/components/modules/collection/components/details/collection-lifecycle-badge.vue';
 import LfxCollectionImpactScorePill from '~/components/modules/collection/components/details/collection-impact-score-pill.vue';
-import LfxHealthScoreDetails from '~/components/modules/collection/components/details/health-score-details.vue';
 import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
 import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';
 import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
@@ -264,9 +254,7 @@ const isOnboarded = computed(() => {
   return props.project.contributorCount > 0 || props.project.organizationCount > 0;
 });
 
-const isHealthScoreUnavailable = computed(
-  () => props.project.healthScoreV2 === null || props.project.healthScoreV2 === undefined,
-);
+const isHealthScoreUnavailable = computed(() => props.project.healthScoreV2 == null);
 
 const navigateToItem = () => {
   if (props.project.type === 'repo') {

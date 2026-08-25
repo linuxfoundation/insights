@@ -116,7 +116,7 @@ export const lfxColors = {
   health: {
     excellent: '#00a76f',
     healthy: '#00bc7d',
-    fair: '#f79009',
+    fair: '#009aff',
     concerning: '#fe9a00',
     critical: '#fb2c36',
   },

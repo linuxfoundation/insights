@@ -2,10 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import { createDataSource } from '~~/server/data/data-sources';
-import type {
-  CollectionContributorsLeaderboardFilter,
-  ContributorsLeaderboardFilter,
-} from '~~/server/data/types';
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
 import { ActivityTypes } from '~~/types/shared/activity-types';
 import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
@@ -38,11 +35,7 @@ import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
  * - offset: number
  * - limit: number
  *
- * project-scoped requests are served by contributors_leaderboard.pipe (unchanged).
- * collectionSlug-scoped requests are served by the separate, performance-optimized
- * collection_contributors_leaderboard pipe instead - see that pipe's DESCRIPTION and
- * collection-contributors-leaderboard.ts for why a naive collectionSlug branch on the
- * single-project pipe isn't used here.
+ * Both scopes are served by contributors_leaderboard.pipe, which branches internally.
  */
 
 export default defineEventHandler(async (event) => {
@@ -51,6 +44,7 @@ export default defineEventHandler(async (event) => {
 
   const activityPlatform = query.platform as ActivityPlatforms;
   const activityType = query.activityType as ActivityTypes;
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
   const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false);
   const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
   const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
@@ -62,24 +56,9 @@ export default defineEventHandler(async (event) => {
 
   const dataSource = createDataSource();
 
-  if (scope.collectionSlug) {
-    const filter: CollectionContributorsLeaderboardFilter = {
-      collectionSlug: scope.collectionSlug,
-      platform,
-      activity_type,
-      includeCollaborations,
-      repos,
-      startDate,
-      endDate,
-      limit,
-      offset,
-    };
-    return await dataSource.fetchCollectionContributorsLeaderboard(filter);
-  }
-
-  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
   const filter: ContributorsLeaderboardFilter = {
     project: scope.project,
+    collectionSlug: scope.collectionSlug,
     platform,
     activity_type,
     includeCodeContributions,

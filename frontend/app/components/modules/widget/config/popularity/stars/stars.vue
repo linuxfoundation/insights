@@ -4,6 +4,20 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
+    <div
+      v-if="hasGitHub"
+      class="flex gap-1 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mb-5"
+    >
+      <lfx-icon
+        class="pt-0.5"
+        aria-hidden="true"
+        name="info-circle"
+        :size="14"
+      />
+      <span class="text-xs text-neutral-600">
+        Star data may be incomplete due to a recent change in GitHub's API. We're working to restore full accuracy.
+      </span>
+    </div>
     <div class="mb-6">
       <lfx-skeleton-state
         :status="status"
@@ -59,6 +73,7 @@ import { storeToRefs } from 'pinia';
 import type { StarsData } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~~/types/shared/summary.types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -97,8 +112,19 @@ const model = computed<StarsModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
-  storeToRefs(useProjectStore());
+const {
+  isCollectionScope,
+  startDate,
+  endDate,
+  selectedReposValues,
+  selectedTimeRangeKey,
+  customRangeGranularity,
+  project,
+} = storeToRefs(useProjectStore());
+
+const hasGitHub = computed(
+  () => project.value?.connectedPlatforms?.some((p) => p.toLowerCase().includes('github')) ?? false,
+);
 
 const route = useRoute();
 

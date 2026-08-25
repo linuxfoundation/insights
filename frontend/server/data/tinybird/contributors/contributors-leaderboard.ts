@@ -14,8 +14,10 @@ export async function fetchContributorsLeaderboard(
 ): Promise<ContributorLeaderboard> {
   const dataQuery: ContributorsLeaderboardTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     platform: filter.platform,
     activity_type: filter.activity_type,
+    activity_types: filter.activity_types,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     repos: filter.repos,
@@ -27,8 +29,10 @@ export async function fetchContributorsLeaderboard(
 
   const countQuery: ContributorsLeaderboardTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     platform: filter.platform,
     activity_type: filter.activity_type,
+    activity_types: filter.activity_types,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     repos: filter.repos,
