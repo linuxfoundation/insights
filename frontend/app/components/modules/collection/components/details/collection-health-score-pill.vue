@@ -3,31 +3,45 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-chip
-    v-if="props.unavailable"
-    type="bordered"
-    size="small"
-  >
-    <span class="text-xs font-medium text-neutral-500">Unavailable</span>
-  </lfx-chip>
-  <lfx-chip
-    v-else
-    type="bordered"
-    size="small"
-    class="flex items-center gap-1"
-  >
-    <span
-      class="size-1.5 rounded-full shrink-0"
-      :class="healthScoreDotClass"
-    />
-    <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
-    <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
-  </lfx-chip>
+  <lfx-tooltip placement="top">
+    <lfx-chip
+      v-if="props.unavailable"
+      type="bordered"
+      size="small"
+    >
+      <span class="text-xs font-medium text-neutral-500">Unavailable</span>
+    </lfx-chip>
+    <lfx-chip
+      v-else
+      type="bordered"
+      size="small"
+      class="flex items-center gap-1"
+    >
+      <span
+        class="size-1.5 rounded-full shrink-0"
+        :class="healthScoreDotClass"
+      />
+      <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
+      <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
+    </lfx-chip>
+
+    <template #content>
+      <div class="space-y-0.5 text-xs">
+        <div class="font-semibold mb-1">Health Score (0–100)</div>
+        <div><span class="font-semibold">Excellent</span> — 85–100</div>
+        <div><span class="font-semibold">Healthy</span> — 70–84</div>
+        <div><span class="font-semibold">Fair</span> — 50–69</div>
+        <div><span class="font-semibold">Concerning</span> — 30–49</div>
+        <div><span class="font-semibold">Critical</span> — 0–29</div>
+      </div>
+    </template>
+  </lfx-tooltip>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   score: number;
