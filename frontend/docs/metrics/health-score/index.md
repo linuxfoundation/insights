@@ -35,8 +35,8 @@ Look at the Lifecycle state before the numeric scores. It is derived from mainta
 | **Active** | Regular commits in the last 6 months, responsive maintainers, healthy release cadence |
 | **Stable** | Low activity by design. The project is mature and does not need frequent changes. Maintainers are still reachable. |
 | **Declining** | Activity dropped more than 50% in the last 6 months while issue volume increased; a sign the project is under pressure |
-| **Inert** | No commits in 18+ months, but no open issues or PRs either. Nothing to judge responsiveness by. A quiet project, not a neglected one. |
-| **Abandoned** | No maintainer activity in 12+ months, with open issues or PRs that have gone unanswered for an extended period |
+| **Inert** | No commits in 18+ months, but no open issues or pull requests either. Nothing to judge responsiveness by. A quiet project, not a neglected one. |
+| **Abandoned** | No maintainer activity in 12+ months, with open issues or pull requests that have gone unanswered for an extended period |
 | **Archived** | Explicitly archived in the repository host or marked deprecated in the package registry |
 
 ::: tip
@@ -48,8 +48,8 @@ Look at the Lifecycle state before the numeric scores. It is derived from mainta
 The lifecycle state is assigned by evaluating the following conditions in order. The first match wins:
 
 1. **Archived:** the repository's archived flag is set, or the package registry marks the package as deprecated or yanked.
-2. **Abandoned:** open issues or PRs have received no non-author response for an extended period (90 to 180 days), and maintainers have had no activity in the trailing 12 months.
-3. **Inert:** no commits in the last 18 months, and no open issues or PRs in that window (nothing to judge responsiveness by).
+2. **Abandoned:** open issues or pull requests have received no non-author response for an extended period (90 to 180 days), and maintainers have had no activity in the last 12 months.
+3. **Inert:** no commits in the last 18 months, and no open issues or pull requests in that window (nothing to judge responsiveness by).
 4. **Declining:** commits in the last 6 months are less than 50% of the prior 6 months, and the volume of newly opened issues is higher than the prior period.
 5. **Stable:** the latest release is within the last 12 months, fewer than 50 issues are open, no critical vulnerabilities are open, and commits have dropped more than 50% vs. the prior period.
 6. **Active:** all other projects.
@@ -87,7 +87,7 @@ Measures the median time for a non-author to respond to newly opened issues and 
 
 #### 1.2 Bus Factor (max 18 pts)
 
-Counts the number of people who are actively maintaining the project, taking the higher of two sources: the official maintainer roster and the set of people observably performing review and merge actions in the last 12 months. This fallback corrects for curated rosters that undercount large, community-maintained projects.
+Counts the number of people who are actively maintaining the project, taking the higher of two sources: the official maintainer roster and the set of people observably performing review and merge actions in the last 12 months. This corrects for curated rosters that undercount large, community-maintained projects.
 
 - **18 pts:** 5 or more active maintainers
 - **15 pts:** 3 or 4 active maintainers
@@ -105,6 +105,8 @@ Measures how many distinct organizations the active maintainers are affiliated w
 - **0 pts:** Affiliation unknown
 
 ### 2. Security and Supply Chain (0–35 pts)
+
+A project's security posture depends on both what it ships and how it is built. This category measures known vulnerabilities, documented security practices, supply chain integrity, and the health of the project's own dependencies.
 
 #### 2.1 Open Vulnerabilities (max 10 pts)
 
@@ -175,7 +177,7 @@ Counts commits authored in the last 6 months on the cleaned activity stream (bot
 
 #### 3.3 Issue Resolution (max 7 pts)
 
-Measures the median time from issue opened to issue closed over the trailing 12 months. Only non-bot activity is included. Lower median time means a higher score.
+Measures the median time from issue opened to issue closed over the last 12 months. Only non-bot activity is included. Lower median time means a higher score.
 
 - **7 pts:** Median resolution time under 7 days
 - **5 pts:** Median resolution time under 14 days
@@ -187,12 +189,14 @@ Gerrit repositories do not ingest issue data. This sub-signal is blocked for Ger
 
 #### 3.4 PR Merge Health (max 5 pts)
 
-Evaluates the ratio of merged pull requests to closed-unmerged pull requests over the trailing 12 months, combined with median time to merge. A high abandonment rate or slow merge cadence signals a backlog problem.
+Evaluates the ratio of merged pull requests to closed-unmerged pull requests over the last 12 months, combined with median time to merge. A high abandonment rate or slow merge cadence signals a backlog problem.
 
 - **5 pts:** High merge rate (80% or more of closed PRs merged) and median merge time under 7 days
 - **3 pts:** Good merge rate (60% or more) or fast merge time under 14 days
 - **1 pt:** Moderate merge rate (40% or more) or merge time under 30 days
 - **0 pts:** Low merge rate or median merge time over 30 days
+
+Gerrit repositories do not ingest pull request data. This sub-signal is blocked for Gerrit-only projects and its weight redistributes within Development Activity.
 
 ### Handling Missing Data
 
