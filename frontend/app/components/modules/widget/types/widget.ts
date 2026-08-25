@@ -14,6 +14,7 @@ export enum Widget {
   // Development
   ACTIVE_DAYS = 'active-days',
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
+  CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
   ISSUES_RESOLUTION = 'issues-resolution',
   MERGE_LEAD_TIME = 'merge-lead-time',
   MEDIAN_TIME_TO_CLOSE = 'median-time-to-close',

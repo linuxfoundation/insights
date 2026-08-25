@@ -48,6 +48,14 @@ export type OrganizationsLeaderboardTinybirdQuery = TinybirdScope & {
   endDate?: DateTime;
 };
 
+export type ActivityHeatmapByWeekdayTBQuery = TinybirdScope & {
+  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
+  startDate?: DateTime;
+  endDate?: DateTime;
+};
+
 export type SearchVolumeTinybirdQuery = TinybirdScope & {
   startDate?: DateTime;
   endDate?: DateTime;

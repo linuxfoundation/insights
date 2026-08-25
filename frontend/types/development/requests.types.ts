@@ -24,6 +24,16 @@ export type CodeReviewEngagementFilter = {
   endDate?: DateTime;
 };
 
+export type ContributionsOutsideWorkHoursFilter = {
+  project?: string;
+  collectionSlug?: string;
+  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
+  startDate?: DateTime;
+  endDate?: DateTime;
+};
+
 export type ActivityTypesFilter = {
   project?: string;
   collectionSlug?: string;

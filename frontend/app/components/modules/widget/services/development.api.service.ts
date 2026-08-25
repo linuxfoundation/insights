@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { ActiveDays } from '~~/types/development/responses.types';
 import type {
+  ContributionOutsideHours,
   CodeReviewEngagement,
   IssuesResolution,
   MedianTimeToClose,
@@ -69,6 +70,33 @@ class DevelopmentApiService {
     );
 
     return useQuery<ActiveDays>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchContributionsOutsideWorkHours(params: ComputedRef<QueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
+      params.value.projectSlug,
+      params.value.collectionSlug,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.includeCollaborations,
+    ]);
+    const queryFn = computed<QueryFunction<ContributionOutsideHours>>(() =>
+      this.contributionsOutsideWorkHoursQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
+        repos: params.value.repos,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        includeCollaborations: params.value.includeCollaborations,
+      })),
+    );
+
+    return useQuery<ContributionOutsideHours>({
       queryKey,
       queryFn,
     });
@@ -373,6 +401,24 @@ class DevelopmentApiService {
           collectionSlug,
           repos,
           granularity,
+          startDate,
+          endDate,
+          includeCollaborations,
+        },
+      });
+  }
+
+  contributionsOutsideWorkHoursQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+  ): QueryFunction<ContributionOutsideHours> {
+    const { projectSlug, collectionSlug, repos, startDate, endDate, includeCollaborations } =
+      query();
+    return async () =>
+      await $fetch(`/api/widget/development/contribution-outside`, {
+        params: {
+          project: projectSlug,
+          collectionSlug,
+          repos,
           startDate,
           endDate,
           includeCollaborations,
