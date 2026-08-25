@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
           :description="getDownloadsDescription(data.downloads, data.downloadsBand)"
           :value="data.downloads"
           :band="data.downloadsBand"
-          :value-formatter="formatNumberApprox"
+          :value-formatter="downloadsFormatter"
         />
         <lfx-impact-breakdown-metric-row
           v-if="data.sonatypePopularityScore !== null"
@@ -112,6 +112,9 @@ const impactDescription = computed(() => getImpactSummaryDescription(props.impac
 
 // Formatter for Popularity signal (0-100 scale with " / 100" suffix)
 const popularityFormatter = (value: number): string => `${Math.round(value)} / 100`;
+
+// Formatter for Downloads signal (approx count with "/ month" suffix)
+const downloadsFormatter = (value: number): string => `${formatNumberApprox(value)} / month`;
 </script>
 
 <script lang="ts">
