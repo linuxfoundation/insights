@@ -1,6 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { TinybirdLogger, TinybirdQuery, TinybirdResponse, BucketCacheStorage } from './types.js';
+import type {
+  TinybirdLogger,
+  TinybirdQuery,
+  TinybirdResponse,
+  BucketCacheStorage,
+} from './types.js';
 
 interface ProjectBucketResponse {
   bucketId: number;
@@ -8,12 +13,16 @@ interface ProjectBucketResponse {
 
 type Fetcher = <T>(path: string, query: TinybirdQuery) => Promise<TinybirdResponse<T>>;
 
-export function createBucketCache(
-  storage: BucketCacheStorage | undefined,
-  logger: TinybirdLogger,
-) {
+export function createBucketCache(storage: BucketCacheStorage | undefined, logger: TinybirdLogger) {
   /** In-memory map preventing cache stampede for concurrent requests on the same project. */
   const inFlightRequests = new Map<string, Promise<number | null>>();
+  /** Per-key invalidation counters so a stale in-flight write can't repopulate a just-cleared cache entry. */
+  const invalidationGenerations = new Map<string, number>();
+  let globalInvalidationGeneration = 0;
+
+  function currentGeneration(cacheKey: string): number {
+    return (invalidationGenerations.get(cacheKey) ?? 0) + globalInvalidationGeneration;
+  }
 
   async function fetchFromTinybird(project: string, fetcher: Fetcher): Promise<number | null> {
     const response = await fetcher<ProjectBucketResponse[]>('/v0/pipes/project_buckets.json', {
@@ -75,6 +84,7 @@ export function createBucketCache(
     }
 
     const cacheKey = `project_bucket:${projectValue}`;
+    const generation = currentGeneration(cacheKey);
 
     const fetchPromise = (async () => {
       try {
@@ -90,18 +100,20 @@ export function createBucketCache(
         const bucketId = await fetchFromTinybird(projectValue, fetcher);
         if (bucketId === null) return null;
 
-        try {
-          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-        } catch (err) {
-          logger.error(`Failed to cache bucketId for project ${projectValue}: ${err}`);
+        if (currentGeneration(cacheKey) === generation) {
+          try {
+            await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+          } catch (err) {
+            logger.error(`Failed to cache bucketId for project ${projectValue}: ${err}`);
+          }
         }
 
         return bucketId;
       } catch (error: unknown) {
-        // Propagate rate-limit and server errors instead of masking them as null
+        // Propagate all classified Tinybird errors (401/403/404/429/5xx) instead of
+        // masking auth/permission failures as a false "project not found".
         if (error && typeof error === 'object' && 'statusCode' in error) {
-          const status = (error as { statusCode: number }).statusCode;
-          if (status === 429 || status >= 500) throw error;
+          throw error;
         }
         logger.warn(`Failed to fetch bucketId for project ${projectValue}: ${error}`);
         return null;
@@ -120,9 +132,11 @@ export function createBucketCache(
 
     inFlightRequests.delete(projectValue);
 
+    const cacheKey = `project_bucket:${projectValue}`;
+    invalidationGenerations.set(cacheKey, (invalidationGenerations.get(cacheKey) ?? 0) + 1);
+
     if (!storage) return;
 
-    const cacheKey = `project_bucket:${projectValue}`;
     try {
       await storage.removeItem(cacheKey);
     } catch (err) {
@@ -132,6 +146,7 @@ export function createBucketCache(
 
   async function clearAllBucketCaches(): Promise<void> {
     inFlightRequests.clear();
+    globalInvalidationGeneration += 1;
 
     if (!storage) return;
 

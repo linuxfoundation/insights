@@ -23,7 +23,7 @@ export async function buildApp(): Promise<FastifyInstance> {
     },
   });
 
-  app.get('/openapi.json', async () => app.swagger());
+  app.get('/v1/openapi.json', async () => app.swagger());
 
   return app;
 }

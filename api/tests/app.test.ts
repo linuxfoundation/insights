@@ -16,8 +16,8 @@ describe('app', () => {
     await app.close();
   });
 
-  it('serves a valid OpenAPI 3 spec at /openapi.json', async () => {
-    const res = await app.inject({ method: 'GET', url: '/openapi.json' });
+  it('serves a valid OpenAPI 3 spec at /v1/openapi.json', async () => {
+    const res = await app.inject({ method: 'GET', url: '/v1/openapi.json' });
     expect(res.statusCode).toBe(200);
     const body = res.json<{ openapi: string }>();
     expect(body.openapi).toMatch(/^3\./);

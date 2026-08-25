@@ -104,12 +104,10 @@ export async function fetchFromTinybird<T>(
         });
       }
     } catch (error: unknown) {
-      // Re-throw 404 and 429 errors
+      // Re-throw all classified Tinybird errors (401/403/404/429/5xx) instead of
+      // masking auth/permission failures as a missing project.
       if (error && typeof error === 'object' && 'statusCode' in error) {
-        const status = (error as { statusCode: number }).statusCode;
-        if (status === 404 || status === 429 || status >= 500) {
-          throw error;
-        }
+        throw error;
       }
       console.warn(`Failed to fetch bucketId for project ${query.project}:`, error);
       // Continue without bucketId for other errors
@@ -132,11 +130,10 @@ export async function fetchFromTinybird<T>(
       }
       // No bucketId found is not fatal for collections (unlike projects) - fall back to the union pipe
     } catch (error: unknown) {
+      // Re-throw all classified Tinybird errors (401/403/404/429/5xx) instead of
+      // masking auth/permission failures as a fallback-to-union-pipe case.
       if (error && typeof error === 'object' && 'statusCode' in error) {
-        const status = (error as { statusCode: number }).statusCode;
-        if (status === 429 || status >= 500) {
-          throw error;
-        }
+        throw error;
       }
       console.warn(`Failed to fetch bucketId for collection ${query.collectionSlug}:`, error);
       // Continue without bucketId - falls back to the union pipe

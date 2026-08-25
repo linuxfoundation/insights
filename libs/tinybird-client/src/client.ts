@@ -23,7 +23,11 @@ const DEFAULT_QUEUE_TIMEOUT_MS = 10_000;
 const DEFAULT_SLOW_REQUEST_THRESHOLD_MS = 5_000;
 
 /** Paths that bypass the semaphore so they don't compete with real data queries. */
-const SKIP_THROTTLE_PATHS = new Set(['/v0/pipes/ping.json', '/v0/pipes/project_buckets.json']);
+const SKIP_THROTTLE_PATHS = new Set([
+  '/v0/pipes/ping.json',
+  '/v0/pipes/project_buckets.json',
+  '/v0/pipes/collection_buckets.json',
+]);
 
 function buildQueryString(query: TinybirdQuery): string {
   const parts: string[] = [];
@@ -82,7 +86,10 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
   const authHeaders = { Authorization: `Bearer ${token}` };
 
-  async function fetchFromTinybird<T>(path: string, query: TinybirdQuery): Promise<TinybirdResponse<T>> {
+  async function fetchFromTinybird<T>(
+    path: string,
+    query: TinybirdQuery,
+  ): Promise<TinybirdResponse<T>> {
     // Resolve bucket routing for project queries
     if (
       query.project &&
@@ -101,9 +108,10 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
           throw new TinybirdProjectNotFoundError(query.project as string);
         }
       } catch (error: unknown) {
+        // Re-throw all classified Tinybird errors (401/403/404/429/5xx) instead of
+        // masking auth/permission failures as a missing project.
         if (error && typeof error === 'object' && 'statusCode' in error) {
-          const status = (error as { statusCode: number }).statusCode;
-          if (status === 404 || status === 429 || status >= 500) throw error;
+          throw error;
         }
         logger.warn(`Failed to fetch bucketId for project ${query.project as string}: ${error}`);
       }
@@ -176,7 +184,10 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     }
   }
 
-  async function postToTinybird<T>(path: string, params: TinybirdQuery): Promise<TinybirdResponse<T>> {
+  async function postToTinybird<T>(
+    path: string,
+    params: TinybirdQuery,
+  ): Promise<TinybirdResponse<T>> {
     const url = `${baseUrl}${path}`;
     const body = buildBodyString(params);
     const response = await fetch(url, {
@@ -191,11 +202,14 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = `${baseUrl}/v0/events?name=${encodeURIComponent(datasource)}`;
     const response = await fetch(url, {
       method: 'POST',
-      headers: authHeaders,
+      headers: { ...authHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new TinybirdClientError(response.status, `Tinybird ingest failed: ${response.statusText}`);
+      throw new TinybirdClientError(
+        response.status,
+        `Tinybird ingest failed: ${response.statusText}`,
+      );
     }
     return true;
   }

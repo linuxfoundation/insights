@@ -73,7 +73,6 @@ describe('createTinybirdClient — fetch()', () => {
 
   it('uses default base URL when none provided', async () => {
     const client = createTinybirdClient({
-      baseUrl: 'https://api.us-west-2.aws.tinybird.co',
       token: TOKEN,
     });
 
