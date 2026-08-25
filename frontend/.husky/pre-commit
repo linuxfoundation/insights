@@ -20,5 +20,5 @@ fi
 # inside the eslint guard above, so it also only runs when lintable files
 # are present — removing the other vector for the same GPG index race.
 if git diff --name-only --cached | grep -qE '\.(js|ts|vue)$'; then
-  npx lint-staged --no-stash
+  pnpm exec lint-staged --no-stash
 fi

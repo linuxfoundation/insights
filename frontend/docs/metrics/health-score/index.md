@@ -85,6 +85,8 @@ Measures the median time for a non-author to respond to newly opened issues and 
 - **5 pts:** Median response time under 90 days
 - **0 pts:** Median response time 90 days or more, or no response data available
 
+Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal is scored as 0 pts (not redistributed), because the signal is available — there is simply no activity to measure.
+
 #### 1.2 Bus Factor (max 18 pts)
 
 Counts the number of people who are actively maintaining the project, taking the higher of two sources: the official maintainer roster and the set of people observably performing review and merge actions in the last 12 months. This corrects for curated rosters that undercount large, community-maintained projects.
@@ -122,12 +124,12 @@ If no vulnerability scan has been completed for the repository, this sub-signal 
 Checks whether the repository has adopted documented security practices:
 
 - **2 pts:** `SECURITY.md` file present
-- **2 pts:** Vulnerability disclosure process documented
 - **2 pts:** Branch protection enabled on the default branch
-- **2 pts:** Releases are cryptographically signed
+- **2 pts:** Required code reviews on pull requests
+- **2 pts:** Required status checks before merging
 
 ::: info
-`SECURITY.md` presence and branch protection are currently evaluated for GitHub repositories. Vulnerability disclosure process detection and signed release verification are in development. GitLab and Gerrit repositories have this sub-signal blocked; its weight redistributes to other available Security sub-signals.
+Security practices are currently evaluated for GitHub repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its weight redistributes to other available Security sub-signals.
 :::
 
 #### 2.3 OpenSSF Scorecard (max 7 pts)
