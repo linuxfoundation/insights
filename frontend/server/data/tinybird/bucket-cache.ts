@@ -1,10 +1,55 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { client } from './tinybird';
 
+import type { TinybirdResponse } from './tinybird';
+
+/**
+ * In-memory cache to prevent cache stampede (multiple concurrent requests for same project).
+ * Maps project name to a Promise that resolves to bucketId.
+ * Only used when Redis is available.
+ */
+const inFlightRequests = new Map<string, Promise<number | null>>();
+const collectionInFlightRequests = new Map<string, Promise<number | null>>();
+
+/**
+ * Response type from the project_buckets Tinybird pipe
+ */
+interface ProjectBucketResponse {
+  bucketId: number;
+}
+
+/**
+ * Response type from the collection_buckets Tinybird pipe
+ */
+interface CollectionBucketResponse {
+  bucketId: number;
+}
+
+function isRedisEnabled(): boolean {
+  return !!process.env.NUXT_REDIS_URL && process.env.NUXT_REDIS_URL.length > 0;
+}
+
+/**
+ * Fetches the bucketId for a given project from Tinybird.
+ *
+ * Caching strategy depends on environment:
+ * - Local (no NUXT_REDIS_URL): Always fetches fresh from Tinybird (no caching)
+ * - Production (with NUXT_REDIS_URL): Uses Redis cache (24hr TTL)
+ *
+ * @param {string} project - The project name/slug to fetch bucketId for
+ * @param {Function} fetcher - The fetchFromTinybird function (injected to avoid circular dependency)
+ * @return {Promise<number | null>} The bucketId for the project, or null if not found/error occurred
+ *
+ * @example
+ * const bucketId = await getBucketIdForProject('k8s', fetchFromTinybird);
+ * // Returns: 9
+ */
 export async function getBucketIdForProject(
   project: string,
-  _fetcher?: unknown,
+  fetcher: <T>(
+    path: string,
+    query: Record<string, string | number | boolean | string[] | undefined | null>,
+  ) => Promise<TinybirdResponse<T>>,
 ): Promise<number | null> {
   // Validate input
   const projectValue = project?.toString().trim();
