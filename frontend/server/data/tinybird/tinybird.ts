@@ -143,45 +143,6 @@ export async function fetchFromTinybird<T>(
     }
   }
 
-  // We don't want to send undefined, null, or empty values to TinyBird, so we remove those from the query.
-  // We also format DateTime objects so that TinyBird understands them.
-  const processedQuery = Object.fromEntries(
-    Object.entries(query)
-      .filter(
-        ([_, value]) =>
-          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
-      )
-      .map(([key, value]) => [
-        key,
-        value instanceof DateTime ? formatDateForTinyBird(value) : value,
-      ]),
-  );
-
-  const paramParts: string[] = [];
-  for (const [key, value] of Object.entries(processedQuery)) {
-    // Arrays need raw commas (not URL-encoded) for Tinybird Array() parameters
-    if (Array.isArray(value)) {
-      paramParts.push(
-        `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`,
-      );
-    } else {
-      paramParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-    }
-  }
-  const params = paramParts.join('&');
-  const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-
-  // Health-check pings and bucket lookups bypass the semaphore so they don't
-  // compete for slots with real data queries (each query already needs a bucket
-  // lookup first, which would double the slot pressure).
-  const skipThrottle =
-    path === '/v0/pipes/ping.json' ||
-    path === '/v0/pipes/project_buckets.json' ||
-    path === '/v0/pipes/collection_buckets.json';
-
-  const acquired = false;
-  const wasQueued = false;
-  const fetchStart = Date.now();
   try {
     return await client.fetch<T>(path, serializeQuery(query));
   } catch (e) {
