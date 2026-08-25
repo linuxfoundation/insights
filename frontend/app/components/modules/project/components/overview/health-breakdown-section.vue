@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
       <span>Health Score unavailable. All three categories have less than 40% signal coverage for this project.</span>
     </div>
 
-    <div class="flex items-stretch gap-1 p-1 bg-neutral-50 rounded-lg mb-4">
+    <div class="flex flex-col sm:flex-row sm:items-stretch gap-1 p-1 bg-neutral-50 rounded-lg mb-4">
       <lfx-health-breakdown-category-card
         v-for="category in categories"
         :key="category.key"
