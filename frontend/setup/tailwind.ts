@@ -8,6 +8,7 @@ export default {
       'bg-negative-900',
       'bg-negative-500',
       'bg-warning-500',
+      'bg-warning-600',
       'bg-accent-500',
       'bg-positive-500',
       'text-accent-500',
