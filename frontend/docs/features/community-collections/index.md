@@ -33,7 +33,7 @@ Every collection detail page opens on the **Projects** tab. The header displays 
 
 - **Projects / Repositories** — the total number of projects and individual repositories included in the collection.
 - **Contributors** — the total number of unique contributors across all projects in the collection.
-- **Avg. Health** — the average LFX Health Score across all projects, labelled Excellent (80+), Healthy (60–79), Fair (40–59), Concerning (20–39), or Critical (below 20).
+- **Avg. Health** — the average LFX Health Score across all projects, labelled Excellent (85–100), Healthy (70–84), Fair (50–69), Concerning (30–49), or Critical (below 30).
 
 ### Projects tab
 
