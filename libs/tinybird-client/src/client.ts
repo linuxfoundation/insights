@@ -71,7 +71,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
   }
 
   const {
-    baseUrl = DEFAULT_BASE_URL,
+    baseUrl: rawBaseUrl = DEFAULT_BASE_URL,
     token,
     maxConcurrent = DEFAULT_MAX_CONCURRENT,
     maxQueueSize = DEFAULT_MAX_QUEUE_SIZE,
@@ -80,6 +80,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     bucketCache: bucketCacheStorage,
   } = config;
 
+  const baseUrl = rawBaseUrl.replace(/\/+$/, '');
   const logger: TinybirdLogger = config.logger ?? console;
   const semaphore = new AdaptiveSemaphore(maxConcurrent, maxQueueSize, logger);
   const bucketCache = createBucketCache(bucketCacheStorage, logger);

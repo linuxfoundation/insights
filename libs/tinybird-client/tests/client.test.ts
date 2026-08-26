@@ -47,6 +47,15 @@ describe('createTinybirdClient — fetch()', () => {
     expect(result).toEqual(mockResult);
   });
 
+  it('strips trailing slashes from baseUrl to avoid double slashes in the request URL', async () => {
+    const client = createTinybirdClient({ baseUrl: `${BASE_URL}/`, token: TOKEN });
+
+    await client.fetch('/mock-path', { key: 'value' });
+
+    const [url] = mockFetch.mock.calls[0] as [string];
+    expect(url).toBe(`${BASE_URL}/mock-path?key=value`);
+  });
+
   it('omits undefined, null, and empty-string query values', async () => {
     const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
 
