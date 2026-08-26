@@ -6,7 +6,7 @@ LFX Insights surfaces up to **three independent assessments** for open source pr
 - **Health Score:** how well-maintained is it?
 - **Impact Score:** how much does it matter if something goes wrong?
 
-Separating health from impact means a popular but poorly maintained project can't score well, and a mature "done" library won't score poorly just for having few recent commits.
+Separating health from impact means a popular but poorly maintained project can't score well on the Health Score, while its high reach is still captured in the Impact Score.
 
 ::: warning ⚠️ Please note
 No score captures all the nuance of an open source project. Different projects serve different goals: some are mature and stable by design, others are experimental or niche. These assessments are meant to highlight signals and risks, not to make final judgments. Always consider context alongside the numbers.
@@ -119,11 +119,7 @@ Counts unresolved security advisories scoped to the repository, sourced from OSV
 - **10 pts:** No open vulnerabilities
 - Points deducted per open advisory: 6 per Critical, 3 per High, 1 per Moderate (minimum 0)
 
-If no vulnerability scan has been completed for the repository, this sub-signal is `blocked` and its weight redistributes to other available Security sub-signals.
-
-::: info
-The UI currently shows "No open vulnerabilities" when scan data is absent rather than marking the sub-signal as unavailable. This is a known display issue (IN-1241) and does not affect the underlying score calculation.
-:::
+If no vulnerability scan data is available for the repository, missing advisory counts are treated as zero. The project is scored as having no open vulnerabilities and receives the full 10 points. Absent scan data cannot currently be distinguished from a clean scan in the score calculation.
 
 #### 2.2 Security Practices (max 8 pts)
 
@@ -311,7 +307,7 @@ The original Insights Health Score was a single 0–100 value, computed as an eq
 | **Health categories** | 4 equal categories at 25 pts each | 3 weighted categories: Maintainer (40), Security and Supply Chain (35), Development Activity (25) |
 | **Popularity** | Baked into Health Score as 25% of the total | Separate Impact Score; does not affect Health |
 | **Lifecycle** | Not modeled | Six states: Active, Stable, Declining, Inert, Abandoned, Archived |
-| **Stable "done" libraries** | Penalized: low commits meant a low score | Not penalized: the Stable state recognizes intentionally low-activity projects |
+| **Stable "done" libraries** | Penalized: low commits meant a low score | Lifecycle context added: a `Stable` classification signals low activity is intentional, but the Health Score formula still scores low-activity signals as low |
 | **Maintainer signal** | Contributor count only | Responsiveness, bus factor (curated plus observed), organizational diversity |
 | **Security** | OpenSSF Baseline pass/fail ratio | Open CVEs with severity weighting, security practices, OpenSSF Scorecard, dependency health, supply chain integrity |
 | **Missing data** | Returned unavailable if any sub-score was absent | Two-layer redistribution: blocked sub-signals rescale within their category; scores are only marked unavailable when signal floor is too low to be defensible |
