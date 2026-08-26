@@ -42,6 +42,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       ...project,
+      healthScore: project.healthScoreV2 ?? project.healthScore,
       isLF: !!project.isLF,
       achievements:
         project.achievements?.map(
