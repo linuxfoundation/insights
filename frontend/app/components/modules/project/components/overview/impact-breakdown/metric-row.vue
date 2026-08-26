@@ -29,17 +29,18 @@ SPDX-License-Identifier: MIT
           >No data</lfx-tag
         >
       </div>
-      <span
-        v-if="props.signalType"
-        class="text-xs text-accent-600 underline decoration-dotted underline-offset-2"
-        >{{ props.signalType }} signal</span
-      >
       <p class="text-xs text-neutral-500 mt-1">
         {{ props.description }}
       </p>
     </div>
     <span class="text-sm font-semibold text-neutral-900 shrink-0">
-      {{ props.value !== null ? formatNumberShort(props.value) : '—' }}
+      {{
+        props.value !== null
+          ? props.valueFormatter
+            ? props.valueFormatter(props.value)
+            : formatNumberShort(props.value)
+          : '—'
+      }}
     </span>
   </div>
 </template>
@@ -54,12 +55,12 @@ const props = withDefaults(
     description: string;
     value: number | null;
     band: string | null;
-    signalType?: 'Primary' | 'Secondary' | null;
     isPending?: boolean;
+    valueFormatter?: ((value: number) => string) | null;
   }>(),
   {
-    signalType: null,
     isPending: false,
+    valueFormatter: null,
   },
 );
 </script>

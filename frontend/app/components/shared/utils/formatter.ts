@@ -1,11 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-/**
- * Formats a number with commas and configurable decimal places
- * @param value - The number to format
- * @param decimals - Number of decimal places (default: 0)
- * @returns Formatted string representation of the number
- */
 
 import { DateTime, Duration } from 'luxon';
 import pluralize from 'pluralize';
@@ -30,9 +24,35 @@ export const formatNumberShort = (value: number): string =>
   }).format(value);
 
 /**
- * Formats a number with short notation (e.g. 1.5M)
+ * Formats a number with approximate notation and unit suffix
+ * Rules: <1k → exact integer; 1k-999k → 1 decimal + "k"; ≥1M → 1 decimal + "M"
+ * Adds "≈" prefix for rounded values
  * @param value - The number to format
  * @returns Formatted string representation of the number
+ */
+export const formatNumberApprox = (value: number): string => {
+  if (value < 1000) {
+    return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+  if (value < 1000000) {
+    const rounded = (value / 1000).toLocaleString('en-US', {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 1,
+    });
+    return `≈${rounded}k`;
+  }
+  const rounded = (value / 1000000).toLocaleString('en-US', {
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 1,
+  });
+  return `≈${rounded}M`;
+};
+
+/**
+ * Formats a number as currency with compact notation
+ * @param value - The number to format
+ * @param currency - The ISO 4217 currency code (e.g. 'USD', 'EUR')
+ * @returns Formatted currency string
  */
 export const formatNumberCurrency = (value: number, currency: string): string =>
   new Intl.NumberFormat('en', {

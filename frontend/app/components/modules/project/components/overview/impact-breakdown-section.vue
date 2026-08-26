@@ -34,29 +34,28 @@ SPDX-License-Identifier: MIT
       <div v-if="data">
         <lfx-impact-breakdown-metric-row
           name="Transitive dependents"
-          signal-type="Primary"
           :description="getTransitiveDependentsDescription(data.transitiveDependents)"
           :value="data.transitiveDependents"
           :band="data.transitiveDependentsBand"
         />
         <lfx-impact-breakdown-metric-row
-          name="Graph centrality"
-          signal-type="Primary"
-          :description="getGraphCentralityDescription(data.centrality, data.centrality === null)"
-          :value="data.centrality"
-          :band="data.centralityBand"
-          :is-pending="data.centrality === null"
+          v-if="data.sonatypePopularityScore !== null"
+          name="Popularity (Maven Central)"
+          :description="getPopularityDescription(data.sonatypePopularityScore)"
+          :value="data.sonatypePopularityScore"
+          :band="data.sonatypePopularityScoreBand"
+          :value-formatter="popularityFormatter"
         />
         <lfx-impact-breakdown-metric-row
-          name="Downloads"
-          signal-type="Secondary"
+          v-if="!(data.sonatypePopularityScore !== null && data.downloads === null)"
+          name="Downloads (last 30 days)"
           :description="getDownloadsDescription(data.downloads)"
           :value="data.downloads"
           :band="data.downloadsBand"
+          :value-formatter="downloadsFormatter"
         />
         <lfx-impact-breakdown-metric-row
           name="Direct dependents"
-          signal-type="Secondary"
           :description="getDirectDependentsDescription(data.directDependents)"
           :value="data.directDependents"
           :band="data.directDependentsBand"
@@ -82,11 +81,12 @@ import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { getImpactLabelDisplay } from '~~/config/trust-score';
 import {
   getTransitiveDependentsDescription,
-  getGraphCentralityDescription,
+  getPopularityDescription,
   getDownloadsDescription,
   getDirectDependentsDescription,
   getImpactSummaryDescription,
 } from '~~/config/health-breakdown-templates';
+import { formatNumberApprox } from '~/components/shared/utils/formatter';
 import type { ImpactBreakdownResults } from '~~/types/overview/responses.types';
 
 const props = defineProps<{
@@ -103,6 +103,9 @@ const impactLabelDisplay = computed(() => getImpactLabelDisplay(props.impactLabe
 const impactDescription = computed(() =>
   getImpactSummaryDescription(props.impactLabel, props.data?.transitiveDependents),
 );
+
+const popularityFormatter = (value: number) => `${Math.round(value)} / 100`;
+const downloadsFormatter = (value: number) => `${formatNumberApprox(value)} / month`;
 </script>
 
 <script lang="ts">
