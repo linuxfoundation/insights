@@ -1,0 +1,40 @@
+name: Lint & Test API and Libs
+
+on:
+  pull_request:
+    paths:
+      - 'api/**'
+      - 'libs/**'
+
+permissions:
+  contents: read
+
+jobs:
+  lint-test-api-libs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.2
+
+      - name: Install dependencies
+        run: pnpm install --filter @lfx-insights/api... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
+
+      - name: Build workspace libs
+        run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
+
+      - name: Format check
+        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client format:check
+
+      - name: Lint
+        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client lint
+
+      - name: Type check
+        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client tsc-check
+
+      - name: Test
+        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/tinybird-client test
