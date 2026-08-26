@@ -17,10 +17,6 @@ SPDX-License-Identifier: MIT
       size="small"
       class="flex items-center gap-1"
     >
-      <span
-        class="size-1.5 rounded-full shrink-0"
-        :class="impactScoreDotClass"
-      />
       <span class="text-xs font-medium text-neutral-900">{{ impactScoreLabel }}</span>
       <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
     </lfx-chip>
@@ -66,16 +62,6 @@ const impactScoreLabel = computed(() => {
     minor: 'Minor',
   };
   return labels[band.value] ?? band.value;
-});
-
-const impactScoreDotClass = computed(() => {
-  const classes: Record<string, string> = {
-    foundational: 'bg-impact-foundational',
-    major: 'bg-impact-major',
-    moderate: 'bg-impact-moderate',
-    minor: 'bg-impact-minor',
-  };
-  return classes[band.value] ?? 'bg-impact-minor';
 });
 </script>
 

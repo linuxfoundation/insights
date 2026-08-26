@@ -11,18 +11,16 @@ SPDX-License-Identifier: MIT
     >
       <span class="text-xs font-medium text-neutral-500">Unavailable</span>
     </lfx-chip>
-    <lfx-chip
+    <lfx-tag
       v-else
-      type="bordered"
+      :variation="variation"
+      type="solid"
       size="small"
-      class="flex items-center gap-1"
+      class="capitalize"
+      :class="colorClasses"
     >
-      <span
-        class="size-1.5 rounded-full shrink-0"
-        :class="lifecycleDotClass"
-      />
-      <span class="text-xs font-medium text-neutral-900 capitalize">{{ props.lifecycleLabel }}</span>
-    </lfx-chip>
+      {{ props.lifecycleLabel }}
+    </lfx-tag>
 
     <template #content>
       <div class="space-y-0.5 text-xs">
@@ -39,24 +37,42 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { TagStyle } from '~/components/uikit/tag/types/tag.types';
 
 const props = defineProps<{
   lifecycleLabel?: string | null;
 }>();
 
 // active -> green, stable -> blue, declining -> amber, inert -> darker amber, abandoned -> red, archived -> neutral grey.
-const lifecycleDotClass = computed(() => {
-  const classes: Record<string, string> = {
-    active: 'bg-positive-500',
-    stable: 'bg-brand-500',
-    declining: 'bg-warning-500',
-    inert: 'bg-warning-600',
-    abandoned: 'bg-negative-500',
-    archived: 'bg-neutral-400',
+const variation = computed<TagStyle>(() => {
+  const variations: Record<string, TagStyle> = {
+    active: 'positive',
+    stable: 'info',
+    declining: 'warning',
+    inert: 'warning',
+    abandoned: 'negative',
+    archived: 'default',
   };
-  return classes[props.lifecycleLabel?.toLowerCase() ?? ''] ?? 'bg-neutral-400';
+  return variations[props.lifecycleLabel?.toLowerCase() ?? ''] ?? 'default';
+});
+
+// Figma-exact bg/text pairs — lfx-tag's generic variation colors don't match this design's tokens,
+// so override them directly (!important guards against Tailwind utility ordering).
+// inert uses warning-200/warning-600 (from app/assets/styles/variables/_colors.scss) to stay in the
+// same amber family as declining while remaining visually distinct — no Figma-exact token exists yet.
+const colorClasses = computed(() => {
+  const classes: Record<string, string> = {
+    active: '!bg-[#d0fae5] !text-[#009966]',
+    stable: '!bg-[#ecf4ff] !text-[#009aff]',
+    declining: '!bg-[#fef3c6] !text-[#e17100]',
+    inert: '!bg-[#fde68a] !text-[#d97706]',
+    abandoned: '!bg-[#ffe2e2] !text-[#e7000b]',
+    archived: '!bg-[#f1f5f9] !text-[#45556c]',
+  };
+  return classes[props.lifecycleLabel?.toLowerCase() ?? ''] ?? classes.archived;
 });
 </script>
 
