@@ -6,6 +6,7 @@ import CollectionLifecycleBadge from '~~/app/components/modules/collection/compo
 import CollectionHealthScorePill from '~~/app/components/modules/collection/components/details/collection-health-score-pill.vue';
 import CollectionImpactScorePill from '~~/app/components/modules/collection/components/details/collection-impact-score-pill.vue';
 import LfxTooltip from '~~/app/components/uikit/tooltip/tooltip.vue';
+import LfxChip from '~~/app/components/uikit/chip/chip.vue';
 
 describe('Collection detail pill components — IN-1239 regression suite', () => {
   describe('collection-lifecycle-badge.vue', () => {
@@ -27,6 +28,15 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
       // fails before fix: tooltip wrapper was missing
       expect(wrapper.findComponent(LfxTooltip).exists()).toBe(true);
       expect(wrapper.text()).toContain('active');
+    });
+
+    test('renders lifecycle label as a chip, not plain text', () => {
+      const wrapper = mount(CollectionLifecycleBadge, {
+        props: { lifecycleLabel: 'active' },
+      });
+
+      // fails before fix: rendered via a transparent lfx-tag (plain colored text, no chip container)
+      expect(wrapper.findComponent(LfxChip).exists()).toBe(true);
     });
   });
 

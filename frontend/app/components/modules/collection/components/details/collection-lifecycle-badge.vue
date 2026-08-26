@@ -11,21 +11,25 @@ SPDX-License-Identifier: MIT
     >
       <span class="text-xs font-medium text-neutral-500">Unavailable</span>
     </lfx-chip>
-    <lfx-tag
+    <lfx-chip
       v-else
-      :variation="variation"
-      type="transparent"
+      type="bordered"
       size="small"
-      class="capitalize"
+      class="flex items-center gap-1"
     >
-      {{ props.lifecycleLabel }}
-    </lfx-tag>
+      <span
+        class="size-1.5 rounded-full shrink-0"
+        :class="lifecycleDotClass"
+      />
+      <span class="text-xs font-medium text-neutral-900 capitalize">{{ props.lifecycleLabel }}</span>
+    </lfx-chip>
 
     <template #content>
       <div class="space-y-0.5 text-xs">
         <div><span class="font-semibold">Active</span> — Actively maintained</div>
         <div><span class="font-semibold">Stable</span> — Mature, stable</div>
         <div><span class="font-semibold">Declining</span> — Decreasing activity</div>
+        <div><span class="font-semibold">Inert</span> — Inactive, needs attention</div>
         <div><span class="font-semibold">Abandoned</span> — No longer maintained</div>
         <div><span class="font-semibold">Archived</span> — Archived</div>
       </div>
@@ -35,25 +39,24 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import type { TagStyle } from '~/components/uikit/tag/types/tag.types';
 
 const props = defineProps<{
   lifecycleLabel?: string | null;
 }>();
 
-const variation = computed<TagStyle>(() => {
-  const variations: Record<string, TagStyle> = {
-    active: 'positive',
-    stable: 'info',
-    declining: 'warning',
-    abandoned: 'negative',
-    inert: 'warning',
-    archived: 'default',
+// active -> green, stable -> blue, declining -> amber, inert -> darker amber, abandoned -> red, archived -> neutral grey.
+const lifecycleDotClass = computed(() => {
+  const classes: Record<string, string> = {
+    active: 'bg-positive-500',
+    stable: 'bg-brand-500',
+    declining: 'bg-warning-500',
+    inert: 'bg-warning-600',
+    abandoned: 'bg-negative-500',
+    archived: 'bg-neutral-400',
   };
-  return variations[props.lifecycleLabel?.toLowerCase() ?? ''] ?? 'default';
+  return classes[props.lifecycleLabel?.toLowerCase() ?? ''] ?? 'bg-neutral-400';
 });
 </script>
 

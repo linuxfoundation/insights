@@ -143,5 +143,7 @@ export default {
     'bg-impact-major',
     'bg-impact-moderate',
     'bg-impact-minor',
+    'bg-brand-500',
+    'bg-neutral-400',
   ],
 };
