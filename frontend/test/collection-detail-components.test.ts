@@ -6,6 +6,7 @@ import CollectionLifecycleBadge from '~~/app/components/modules/collection/compo
 import CollectionHealthScorePill from '~~/app/components/modules/collection/components/details/collection-health-score-pill.vue';
 import CollectionImpactScorePill from '~~/app/components/modules/collection/components/details/collection-impact-score-pill.vue';
 import LfxTooltip from '~~/app/components/uikit/tooltip/tooltip.vue';
+import LfxPopover from '~~/app/components/uikit/popover/popover.vue';
 import LfxTag from '~~/app/components/uikit/tag/tag.vue';
 
 describe('Collection detail pill components — IN-1239 regression suite', () => {
@@ -44,23 +45,23 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
   });
 
   describe('collection-health-score-pill.vue', () => {
-    test('wraps chip in lfx-tooltip when unavailable is true', () => {
+    test('wraps chip in lfx-popover when unavailable is true', () => {
       const wrapper = mount(CollectionHealthScorePill, {
         props: { score: 75, unavailable: true },
       });
 
-      // fails before fix: tooltip wrapper was missing
-      expect(wrapper.findComponent(LfxTooltip).exists()).toBe(true);
+      // fails before fix: popover wrapper was missing
+      expect(wrapper.findComponent(LfxPopover).exists()).toBe(true);
       expect(wrapper.text()).toContain('Unavailable');
     });
 
-    test('wraps chip in lfx-tooltip when score is available', () => {
+    test('wraps chip in lfx-popover when score is available', () => {
       const wrapper = mount(CollectionHealthScorePill, {
         props: { score: 85, unavailable: false },
       });
 
-      // fails before fix: tooltip wrapper was missing
-      expect(wrapper.findComponent(LfxTooltip).exists()).toBe(true);
+      // fails before fix: popover wrapper was missing
+      expect(wrapper.findComponent(LfxPopover).exists()).toBe(true);
       expect(wrapper.text()).toContain('Excellent');
       expect(wrapper.text()).toContain('85');
     });

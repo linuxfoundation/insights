@@ -75,6 +75,9 @@ SPDX-License-Identifier: MIT
           v-else
           :score="project.healthScoreV2 ?? 0"
           :health-label="project.healthLabel"
+          :maintainer-health-score-v2="project.maintainerHealthScoreV2"
+          :security-supply-chain-score-v2="project.securitySupplyChainScoreV2"
+          :development-activity-score-v2="project.developmentActivityScoreV2"
         />
       </td>
       <!-- TEMPORARILY HIDDEN (IN-1243): Impact column disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
@@ -176,6 +179,9 @@ SPDX-License-Identifier: MIT
             :score="project.healthScoreV2 ?? 0"
             :health-label="project.healthLabel"
             :unavailable="isHealthScoreUnavailable"
+            :maintainer-health-score-v2="project.maintainerHealthScoreV2"
+            :security-supply-chain-score-v2="project.securitySupplyChainScoreV2"
+            :development-activity-score-v2="project.developmentActivityScoreV2"
           />
           <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
           <lfx-collection-impact-score-pill

@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-tooltip placement="top">
+  <lfx-popover
+    placement="top"
+    trigger-event="hover"
+  >
     <lfx-chip
       v-if="props.unavailable"
       type="bordered"
@@ -26,27 +29,61 @@ SPDX-License-Identifier: MIT
     </lfx-chip>
 
     <template #content>
-      <div class="space-y-0.5 text-xs">
-        <div class="font-semibold mb-1">Health Score (0–100)</div>
-        <div><span class="font-semibold">Excellent</span> — 85–100</div>
-        <div><span class="font-semibold">Healthy</span> — 70–84</div>
-        <div><span class="font-semibold">Fair</span> — 50–69</div>
-        <div><span class="font-semibold">Concerning</span> — 30–49</div>
-        <div><span class="font-semibold">Critical</span> — 0–29</div>
+      <div class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3">
+        <div class="flex items-center gap-1.5">
+          <span
+            class="size-2 rounded-full shrink-0"
+            :class="healthScoreDotClass"
+          />
+          <span class="font-semibold text-neutral-900">{{ healthScoreLabel }}</span>
+          <span class="text-neutral-500">({{ props.score }}/100)</span>
+        </div>
+        <lfx-progress-bar
+          :values="[props.score]"
+          :color="progressBarColor"
+          size="small"
+        />
+        <p
+          v-if="healthScoreDescription"
+          class="text-neutral-500"
+        >
+          {{ healthScoreDescription }}
+        </p>
+        <div class="space-y-1.5 pt-1 border-t border-neutral-100">
+          <div
+            v-for="category in categories"
+            :key="category.key"
+            class="flex items-center gap-1.5"
+          >
+            <lfx-icon
+              :name="category.icon"
+              :size="11"
+              class="text-neutral-400 shrink-0"
+            />
+            <span class="text-neutral-500">{{ category.name }}</span>
+            <span class="ml-auto font-medium text-neutral-900">{{ category.display }}</span>
+          </div>
+        </div>
       </div>
     </template>
-  </lfx-tooltip>
+  </lfx-popover>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+import { getHealthScoreDescription } from '~~/config/health-breakdown-templates';
 
 const props = defineProps<{
   score: number;
   healthLabel?: string | null;
   unavailable?: boolean;
+  maintainerHealthScoreV2?: number | null;
+  securitySupplyChainScoreV2?: number | null;
+  developmentActivityScoreV2?: number | null;
 }>();
 
 // Akrites v2 bands (PRD): excellent 85-100, healthy 70-84, fair 50-69, concerning 30-49, critical 0-29.
@@ -83,6 +120,42 @@ const healthScoreDotClass = computed(() => {
   };
   return classes[band.value] ?? 'bg-health-critical';
 });
+
+const progressBarColor = computed(() => {
+  if (band.value === 'excellent' || band.value === 'healthy') return 'positive';
+  if (band.value === 'fair' || band.value === 'concerning') return 'warning';
+  return 'negative';
+});
+
+const healthScoreDescription = computed(() =>
+  getHealthScoreDescription(
+    props.healthLabel ?? null,
+    props.maintainerHealthScoreV2 ?? null,
+    props.securitySupplyChainScoreV2 ?? null,
+    props.developmentActivityScoreV2 ?? null,
+  ),
+);
+
+const categories = computed(() => [
+  {
+    key: 'maintainer-health',
+    name: 'Maintainer Health',
+    icon: 'heart-pulse',
+    display: `${props.maintainerHealthScoreV2 ?? '-'}/40`,
+  },
+  {
+    key: 'security-supply-chain',
+    name: 'Security & Supply Chain',
+    icon: 'shield-check',
+    display: `${props.securitySupplyChainScoreV2 ?? '-'}/35`,
+  },
+  {
+    key: 'development-activity',
+    name: 'Development Activity',
+    icon: 'laptop-code',
+    display: `${props.developmentActivityScoreV2 ?? '-'}/25`,
+  },
+]);
 </script>
 
 <script lang="ts">

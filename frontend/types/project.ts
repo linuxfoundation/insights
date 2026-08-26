@@ -177,6 +177,9 @@ export interface ProjectInsights {
   lifecycleLabel: string | null;
   impactScore: number | null;
   impactLabel: string | null;
+  maintainerHealthScoreV2: number | null;
+  securitySupplyChainScoreV2: number | null;
+  developmentActivityScoreV2: number | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;
