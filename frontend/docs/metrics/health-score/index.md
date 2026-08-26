@@ -20,39 +20,24 @@ No score captures all the nuance of an open source project. Different projects s
 | **Health Score** | How well-maintained is it? | 0–100, independent of popularity |
 | **Impact Score** | How much does it matter if this breaks? | 0–100, based on dependency graph reach |
 
-All three are shown together in the UI. When prioritizing stewardship, low Health combined with high Impact is the most urgent combination.
-
 This methodology was developed with community input. You can read the full discussion and the feedback that shaped these decisions in [GitHub Discussion #1939](https://github.com/linuxfoundation/insights/discussions/1939).
 
 ## Lifecycle State
-
-Look at the Lifecycle state before the numeric scores. It is derived from maintainer signals using a decision tree, not from the composite score itself.
 
 ### States
 
 | State | What it means |
 |---|---|
-| **Active** | Does not meet criteria for any other state. Any project not classified as Archived, Abandoned, Inert, Declining, or Stable falls here. No specific activity thresholds are required. |
-| **Stable** | Low activity by design. The project is mature and does not need frequent changes. Maintainers are still reachable. |
-| **Declining** | Activity dropped more than 50% in the last 6 months while issue volume increased; a sign the project is under pressure |
-| **Inert** | No commits in 18+ months, but no open issues or pull requests either. Nothing to judge responsiveness by. A quiet project, not a neglected one. |
-| **Abandoned** | No maintainer activity in 12+ months, with open issues or pull requests that have gone unanswered for an extended period |
-| **Archived** | Explicitly archived in the repository host or marked deprecated in the package registry |
+| **Active** | Regular commits in the last 6 months and maintainer is responsive to issues and pull requests. |
+| **Stable** | Commit activity has dropped more than 50% compared to the prior period, but a release was published within the last 12 months, fewer than 50 issues are open, and no critical vulnerabilities are unresolved. |
+| **Declining** | Commits in the last 6 months are less than half the prior 6 months, and the number of newly opened issues has increased. A sign the project is under pressure. |
+| **Inert** | No commits in 18 or more months, and no open issues or pull requests. Nothing to judge responsiveness by — a quiet project, not a neglected one. |
+| **Abandoned** | Open issues or pull requests have gone unanswered for 90 to 180 days, and no maintainer activity in the last 18 months. |
+| **Archived** | Explicitly archived in the repository host or marked deprecated or yanked in the package registry. |
 
 ::: tip
 "Silence alone is not abandonment — ignoring people is." A finished utility with no open issues, no CVEs, and no need for further development gets `Inert`, not `Abandoned`. The `Abandoned` state requires evidence of neglect: open items piling up while maintainers are absent. This distinction came directly from community feedback on the methodology.
 :::
-
-### Classification Rules
-
-The lifecycle state is assigned by evaluating the following conditions in order. The first match wins:
-
-1. **Archived:** the repository's archived flag is set, or the package registry marks the package as deprecated or yanked.
-2. **Abandoned:** open issues or pull requests have received no non-author response for an extended period (90 to 180 days), and maintainers have had no activity in the last 18 months.
-3. **Inert:** no commits in the last 18 months, and no open issues or pull requests in that window (nothing to judge responsiveness by).
-4. **Declining:** commits in the last 6 months are less than 50% of the prior 6 months, and the volume of newly opened issues is higher than the prior period.
-5. **Stable:** the latest release is within the last 12 months, fewer than 50 issues are open, no critical vulnerabilities are open, and commits have dropped more than 50% vs. the prior period.
-6. **Active:** all other projects.
 
 For multi-repo projects, the project takes the best state across all its repositories: Active beats Stable, Stable beats Declining, and so on down to Archived.
 
@@ -199,7 +184,7 @@ Gerrit repositories do not ingest issue data. This sub-signal is blocked for Ger
 
 #### 3.4 PR Merge Health (max 5 pts)
 
-Combines two independent measures over the last 12 months: what fraction of pull requests were merged rather than abandoned, and how quickly. Points from each component are added together.
+Combines two independent measures over the last 12 months: what fraction of pull requests were merged rather than abandoned, and how quickly. Points from each component are added together. For Gerrit projects, changesets and patchsets are mapped to the same metrics.
 
 **Merge ratio** (max 3 pts) — merged pull requests relative to all closed pull requests:
 
@@ -212,8 +197,6 @@ Combines two independent measures over the last 12 months: what fraction of pull
 - **2 pts:** Median merge time under 7 days
 - **1 pt:** Median merge time under 30 days
 - **0 pts:** 30 days or more, or no merged pull requests in the period
-
-Gerrit repositories do not ingest pull request data. This sub-signal is blocked for Gerrit-only projects and its weight redistributes within Development Activity.
 
 ### Handling Missing Data
 
@@ -277,7 +260,7 @@ Security practices and OpenSSF Scorecard are currently GitHub-only. GitLab proje
 
 **Gerrit projects:**
 
-Gerrit does not ingest issue or PR data in the same format as GitHub and GitLab. Issue Resolution, PR Merge Health, and Security Practices are typically blocked. Commit Activity and Bus Factor remain available. Development Activity may compute from a reduced set of sub-signals.
+Gerrit does not ingest issue data in the same format as GitHub and GitLab. Issue Resolution and Security Practices are typically blocked. PR Merge Health is available — Gerrit changesets and patchsets are mapped to the same merge metrics. Commit Activity and Bus Factor also remain available.
 
 **Projects without published packages:**
 
@@ -290,10 +273,6 @@ For multi-repo projects, sub-signals in a `partial` coverage state are computed 
 ::: info
 Health Score comparisons across projects with different platform or data coverage are not directly comparable. A project with full GitHub and package data is scored on more signals than one on Gerrit with no published packages. Coverage details are always shown alongside the score.
 :::
-
-## Bot and Non-Human Activity
-
-All time-based and activity-count signals (responsiveness, commit counts, issue metrics, PR metrics, bus factor recency) are computed from the cleaned activity stream, which excludes bots, team accounts, and organization accounts identified through contributor enrichment. This prevents automated issue floods or bot-authored PRs from distorting responsiveness or resolution metrics.
 
 ## How This Differs from the Previous Health Score
 
