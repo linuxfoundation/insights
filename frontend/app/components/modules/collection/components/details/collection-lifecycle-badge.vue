@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-tooltip placement="top">
+  <lfx-popover
+    placement="top"
+    trigger-event="hover"
+  >
     <lfx-chip
       v-if="!props.lifecycleLabel"
       type="bordered"
@@ -23,24 +26,27 @@ SPDX-License-Identifier: MIT
     </lfx-tag>
 
     <template #content>
-      <div class="space-y-0.5 text-xs">
-        <div><span class="font-semibold">Active</span> — Actively maintained</div>
-        <div><span class="font-semibold">Stable</span> — Mature, stable</div>
-        <div><span class="font-semibold">Declining</span> — Decreasing activity</div>
-        <div><span class="font-semibold">Inert</span> — Inactive, needs attention</div>
-        <div><span class="font-semibold">Abandoned</span> — No longer maintained</div>
-        <div><span class="font-semibold">Archived</span> — Archived</div>
+      <div class="w-64 space-y-1.5 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3">
+        <div class="flex items-center gap-1.5">
+          <span
+            class="size-2 rounded-full shrink-0"
+            :class="dotClass"
+          />
+          <span class="font-semibold text-neutral-900 capitalize">{{ props.lifecycleLabel ?? 'Unavailable' }}</span>
+        </div>
+        <p class="text-neutral-500">{{ lifecycleDescription }}</p>
       </div>
     </template>
-  </lfx-tooltip>
+  </lfx-popover>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 import type { TagStyle } from '~/components/uikit/tag/types/tag.types';
+import { getLifecycleDescription } from '~~/config/health-breakdown-templates';
 
 const props = defineProps<{
   lifecycleLabel?: string | null;
@@ -74,6 +80,20 @@ const colorClasses = computed(() => {
   };
   return classes[props.lifecycleLabel?.toLowerCase() ?? ''] ?? classes.archived;
 });
+
+const dotClass = computed(() => {
+  const classes: Record<string, string> = {
+    active: 'bg-[#009966]',
+    stable: 'bg-[#009aff]',
+    declining: 'bg-[#e17100]',
+    inert: 'bg-[#d97706]',
+    abandoned: 'bg-[#e7000b]',
+    archived: 'bg-[#45556c]',
+  };
+  return classes[props.lifecycleLabel?.toLowerCase() ?? ''] ?? classes.archived;
+});
+
+const lifecycleDescription = computed(() => getLifecycleDescription(props.lifecycleLabel?.toLowerCase() ?? null, null));
 </script>
 
 <script lang="ts">

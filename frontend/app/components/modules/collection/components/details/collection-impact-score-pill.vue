@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-tooltip placement="top">
+  <lfx-popover
+    placement="top"
+    trigger-event="hover"
+  >
     <lfx-chip
       v-if="props.score === null || props.score === undefined"
       type="bordered"
@@ -22,21 +25,33 @@ SPDX-License-Identifier: MIT
     </lfx-chip>
 
     <template #content>
-      <div class="space-y-0.5 text-xs">
-        <div class="font-semibold mb-1">Impact Score (0–100)</div>
-        <div><span class="font-semibold">Foundational</span> — 85–100</div>
-        <div><span class="font-semibold">Major</span> — 60–84</div>
-        <div><span class="font-semibold">Moderate</span> — 30–59</div>
-        <div><span class="font-semibold">Minor</span> — 0–29</div>
+      <div class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3">
+        <div class="flex items-center gap-1.5">
+          <span class="font-semibold text-neutral-900">{{ impactScoreLabel }}</span>
+          <span class="text-neutral-500">({{ props.score ?? 0 }}/100)</span>
+        </div>
+        <lfx-progress-bar
+          :values="[props.score ?? 0]"
+          color="normal"
+          size="small"
+        />
+        <p
+          v-if="impactDescription"
+          class="text-neutral-500"
+        >
+          {{ impactDescription }}
+        </p>
       </div>
     </template>
-  </lfx-tooltip>
+  </lfx-popover>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+import { getImpactSummaryDescription } from '~~/config/health-breakdown-templates';
 
 const props = defineProps<{
   score: number | null;
@@ -63,6 +78,8 @@ const impactScoreLabel = computed(() => {
   };
   return labels[band.value] ?? band.value;
 });
+
+const impactDescription = computed(() => getImpactSummaryDescription(props.impactLabel ?? null));
 </script>
 
 <script lang="ts">
