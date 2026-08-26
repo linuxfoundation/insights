@@ -40,9 +40,9 @@ Every collection detail page opens on the **Projects** tab. The header displays 
 The Projects tab lists all projects in the collection as a sortable table. Each row shows:
 
 - **Project** name (sortable alphabetically)
-- **Lifecycle** — a badge indicating the project's current lifecycle stage (Active, Stable, Declining, Abandoned, or Archived)
+- **Lifecycle** — a badge indicating the project's current lifecycle stage (Active, Stable, Declining, Abandoned, or Archived). Projects without a lifecycle stage show **Unavailable**.
 - **Health Score** — the project's LFX Health Score
-- **Impact** — a pill showing the project's Impact tier (Foundational, Major, Moderate, or Minor) with the underlying score
+- **Impact** — a pill showing the project's Impact tier (Foundational, Major, Moderate, or Minor) with the underlying score. Projects without an impact score show **N/A**.
 - **Contributors** — contributor count (sortable)
 - **Contributor / Organization dependency** — concentration risk indicators
 - **Achievements** — earned badges
