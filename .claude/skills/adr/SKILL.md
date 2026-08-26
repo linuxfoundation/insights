@@ -27,7 +27,17 @@ project. ADRs live in `api/docs/arch/adr/` at the repo root.
 
 ## ADR template
 
-Every ADR file must include all of these sections:
+Every ADR must have an H1 title stating the decision, and body prose covering
+the context, the decision itself, and the alternatives considered with why
+they were rejected. `README.md` and `template.md` are index/template files,
+not ADRs, and are exempt from this requirement.
+
+The body may be short free-form prose covering those points, or the full
+template below (Date/Status/Deciders header block, Context, Decision,
+Alternatives Considered, Consequences). The full template is recommended for
+new ADRs but not required — the `**Deciders**:` line is always optional. If
+the decision, its context, or the rejected alternatives can't be stated, stop
+and ask the user for the missing information before writing the file.
 
 ```markdown
 # ADR-NNNN: [Decision Title]
@@ -71,7 +81,7 @@ Every ADR file must include all of these sections:
 1. **Scan existing ADRs** — `Glob api/docs/arch/adr/[0-9]*.md` to find the highest existing number.
 2. **Assign next ID** — next sequential 4-digit number (e.g., `0003`).
 3. **Gather context** — ask the user for any missing details: who the deciders were, what alternatives were seriously considered, and what the consequences are.
-4. **Draft the ADR** — populate all mandatory sections from the template above.
+4. **Draft the ADR** — cover the context, decision, and rejected alternatives, either as free-form prose or using the full template above.
 5. **Present the draft** — show it to the user for review before writing any file.
 6. **Write the file** — `api/docs/arch/adr/NNNN-kebab-title.md` (kebab-case title, all lowercase).
 7. **Update the index** — append a new row to the `| ADR | Title | Status | Date |` table in `api/docs/arch/adr/README.md`.
