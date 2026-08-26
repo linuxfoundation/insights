@@ -23,7 +23,7 @@ features:
   link: /introduction/what-is-insights/index
   linkText: Learn more
 - title: Health Score
-  details: A single, unified metric that reflects the overall health of an open source project, from activity to security.
+  details: Three independent assessments — Lifecycle state, Health Score, and Impact Score — that together answer whether a project is well-maintained, healthy, and critical to the ecosystem.
   link: /metrics/health-score/index
   linkText: Learn more
 - title: FAQ
