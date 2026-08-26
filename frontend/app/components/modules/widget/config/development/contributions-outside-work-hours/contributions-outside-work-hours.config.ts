@@ -7,10 +7,9 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 const contributionsOutsideWorkHours: WidgetConfig = {
   key: 'contributionsOutsideWorkHours',
   availableInCollection: true,
-  name: 'Contributions outside work hours',
+  name: 'Contribution Time Distribution',
   description: () =>
-    'Contributors’ activity patterns focused on contributions performed during non-business hours ' +
-    'and weekends during the selected period.',
+    'Contributors’ activity patterns across the day and week during the selected period.',
   learnMoreLink: `/docs/metrics/development#contributions-outside-work-hours`,
   component: ContributionsOutsideWorkHours,
   share: true,
