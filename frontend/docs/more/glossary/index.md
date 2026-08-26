@@ -40,7 +40,7 @@ Criticality reflects how essential an open source project is to the broader soft
 
 ## Health Score
 
-LFX Insights surfaces three independent assessments for each project: a **Lifecycle state** (one of six categorical states indicating the project's current phase), a **Health Score** (0–100, measuring maintainer health, security and supply chain, and development activity), and an **Impact Score** (0–100, measuring dependency graph reach — only shown for projects with tracked published packages). The Health Score and Impact Score use standardized scoring logic across all projects to enable fair comparisons. See the [Health Score](../../metrics/health-score/index.md) page for full methodology details.
+LFX Insights surfaces three independent assessments for each project: a **Lifecycle state** (one of six categorical states indicating the project's current phase), a **Health Score** (0–100, measuring maintainer health, security and supply chain, and development activity), and an **Impact Score** (0–100, measuring dependency graph reach — only shown for projects with tracked published packages). The Health Score uses standardized scoring logic, but scores are not directly comparable across projects with different platform or data coverage — a project with full GitHub and package data is scored on more signals than one on Gerrit with no published packages. See the [Health Score](../../metrics/health-score/index.md) page for full methodology details.
 
 ## Issues
 

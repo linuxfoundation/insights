@@ -20,7 +20,7 @@ You can suggest changes or flag issues via the Insights dashboard ("report issue
 We have documented detailed explanations for each metric. You can explore project data across several views: [Contributors](../../metrics/contributors/index.md), [Development](../../metrics/development/index.md), [Popularity](../../metrics/popularity/index.md), and [Security & Best Practices](../../metrics/security/index.md). The [Health Score](../../metrics/health-score/index.md) page explains all three assessments in detail.
 
 **How is the overall project health score calculated?**  
-The Health Score is one of three independent assessments. It measures maintainer health, security and supply chain, and development activity — each weighted and combined into a 0–100 score. A separate Lifecycle state and Impact Score are also shown. You can read more details in the [Health Score](../../metrics/health-score/index.md) section.
+The Health Score is one of three independent assessments. It measures maintainer health, security and supply chain, and development activity — each weighted and combined into a 0–100 score. A Lifecycle state is always shown. An Impact Score (0–100) is shown for projects that publish tracked packages; projects without published packages do not receive one. You can read more details in the [Health Score](../../metrics/health-score/index.md) section.
 
 **What does “criticality” mean in this context?**  
 “Criticality” reflects how essential a project is to the broader ecosystem. It includes factors like usage, dependency footprint, contributor activity, and update frequency. We determine criticality based on the [OpenSSF Criticality Score](https://openssf.org/projects/criticality-score/).
