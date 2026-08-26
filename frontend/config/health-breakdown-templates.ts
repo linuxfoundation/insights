@@ -247,7 +247,7 @@ const getCategoryUnavailableDescription = (
     const availableSignals: string[] = [];
     if (signals?.responsivenessAvailable) availableSignals.push('maintainer responsiveness');
     if (signals?.busFactorAvailable) availableSignals.push('bus factor');
-    if (signals?.orgDiversityAvailable) availableSignals.push('org diversity');
+    if (signals?.orgDiversityAvailable) availableSignals.push('organization diversity');
     const namedAvailable =
       availableSignals.length > 0
         ? `Only ${availableSignals.join(', ')} ${availableSignals.length === 1 ? 'is' : 'are'} available.`
@@ -352,7 +352,10 @@ export const getBusFactorRow = (signals: HealthBreakdownResults): SignalRow => {
 
 export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow => {
   if (!signals.orgDiversityAvailable) {
-    return { status: 'no-data', description: blockedSignalDescription('Org diversity', signals) };
+    return {
+      status: 'no-data',
+      description: blockedSignalDescription('Organization diversity', signals),
+    };
   }
   const count = signals.orgCount ?? 0;
   if (count >= 3) {
