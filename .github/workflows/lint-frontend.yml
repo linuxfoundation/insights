@@ -21,7 +21,10 @@ jobs:
           version: 10.18.2
 
       - name: Install dependencies
-        run: pnpm install --filter lfx-insights...
+        run: pnpm install --filter lfx-insights... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
+
+      - name: Build workspace libs
+        run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
 
       - name: Lint code
         run: pnpm format:check && pnpm lint && pnpm tsc-check
