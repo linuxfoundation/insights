@@ -10,7 +10,8 @@ SPDX-License-Identifier: MIT
         height="10rem"
         width="100%"
       >
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- TEMPORARILY HIDDEN (IN-1243): grid-cols-2 instead of grid-cols-3 while Impact is hidden, so Health Score/Lifecycle split evenly. Revert to md:grid-cols-3 when Impact is re-enabled. -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex flex-col items-start gap-3">
             <div class="flex flex-row flex-wrap items-start justify-between gap-3 w-full">
               <div class="flex flex-col items-start gap-2">
