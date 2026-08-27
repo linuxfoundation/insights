@@ -10,7 +10,8 @@ SPDX-License-Identifier: MIT
         height="10rem"
         width="100%"
       >
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- TEMPORARILY HIDDEN (IN-1243): grid-cols-2 instead of grid-cols-3 while Impact is hidden, so Health Score/Lifecycle split evenly. Revert to md:grid-cols-3 when Impact is re-enabled. -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex flex-col items-start gap-3">
             <div class="flex flex-row flex-wrap items-start justify-between gap-3 w-full">
               <div class="flex flex-col items-start gap-2">
@@ -51,6 +52,7 @@ SPDX-License-Identifier: MIT
             </p>
           </div>
 
+          <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
           <div class="flex flex-col items-start gap-3 md:border-l md:border-neutral-200 md:pl-6">
             <span class="text-xs font-semibold text-neutral-500 tracking-wide">IMPACT</span>
             <div class="flex items-baseline gap-1.5">
@@ -76,6 +78,7 @@ SPDX-License-Identifier: MIT
               {{ impactDescription }}
             </p>
           </div>
+          -->
 
           <div class="flex flex-col items-start gap-3 md:border-l md:border-neutral-200 md:pl-6">
             <span class="text-xs font-semibold text-neutral-500 tracking-wide">LIFECYCLE</span>
@@ -142,10 +145,16 @@ import type { AsyncDataRequestStatus } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import LfxHealthScoreRing from './trust-score/health-score-ring.vue';
-import { getHealthScoreV2Config, getImpactLabelDisplay, getLifecycleLabelConfig } from '~~/config/trust-score';
+import {
+  getHealthScoreV2Config,
+  // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+  // getImpactLabelDisplay,
+  getLifecycleLabelConfig,
+} from '~~/config/trust-score';
 import { lfxColors } from '~/config/styles/colors';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
@@ -153,7 +162,8 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 import {
   getLifecycleDescription,
   getHealthScoreDescription,
-  getImpactSummaryDescription,
+  // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+  // getImpactSummaryDescription,
 } from '~~/config/health-breakdown-templates';
 import type { HealthBreakdownResults } from '~~/types/overview/responses.types';
 
@@ -197,9 +207,10 @@ const scoreTextColorClass = computed(() => {
   return 'text-negative-500';
 });
 
-const impactLabelDisplay = computed(() => getImpactLabelDisplay(props.impactLabel));
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// const impactLabelDisplay = computed(() => getImpactLabelDisplay(props.impactLabel));
 
-const impactDescription = computed(() => getImpactSummaryDescription(props.impactLabel));
+// const impactDescription = computed(() => getImpactSummaryDescription(props.impactLabel));
 
 const lifecycleConfig = computed(() => getLifecycleLabelConfig(props.lifecycleLabel));
 
