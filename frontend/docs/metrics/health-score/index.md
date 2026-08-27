@@ -1,24 +1,32 @@
 # Health Score Explained
 
-LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:
+<!-- TEMPORARILY HIDDEN (IN-1243): original intro described three assessments: "LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:" Re-enable by uncommenting and removing the two-assessment replacement below. -->
+LFX Insights surfaces **two independent assessments** for open source projects: a **Lifecycle state** and a **Health Score**. Together, these replace the previous single composite score and answer two distinct questions:
 
 - **Lifecycle:** what state is this project in?
 - **Health Score:** how well-maintained is it?
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score question hidden. Re-enable by uncommenting.
 - **Impact Score:** how much does it matter if something goes wrong?
+-->
 
+<!-- TEMPORARILY HIDDEN (IN-1243): sentence contrasting health vs. impact hidden. Re-enable by uncommenting.
 Separating health from impact means a popular but poorly maintained project can't score well on the Health Score, while its high reach is still captured in the Impact Score.
+-->
 
 ::: warning ⚠️ Please note
 No score captures all the nuance of an open source project. Different projects serve different goals: some are mature and stable by design, others are experimental or niche. These assessments are meant to highlight signals and risks, not to make final judgments. Always consider context alongside the numbers.
 :::
 
-## The Three Assessments
+<!-- TEMPORARILY HIDDEN (IN-1243): heading changed from "## The Three Assessments" to "## The Assessments" since the Impact Score row below is hidden. Re-enable by uncommenting and restoring the original heading. -->
+## The Assessments
 
 | Assessment | Question answered | Output |
 |---|---|---|
 | **Lifecycle** | What state is this project in? | One of six states: Active, Stable, Declining, Inert, Abandoned, Archived |
 | **Health Score** | How well-maintained is it? | 0–100, independent of popularity |
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score row hidden. Re-enable by uncommenting.
 | **Impact Score** | How much does it matter if this breaks? | 0–100, based on dependency graph reach |
+-->
 
 This methodology was developed with community input. You can read the full discussion and the feedback that shaped these decisions in [GitHub Discussion #1939](https://github.com/linuxfoundation/insights/discussions/1939).
 
@@ -43,7 +51,7 @@ For multi-repo projects, the project takes the best state across all its reposit
 
 ## Health Score (0–100)
 
-The Health Score measures how well-maintained a project is, independent of how popular or critical it is. A widely-used project with poor maintainer responsiveness will score low here, even if its Impact Score is high.
+The Health Score measures how well-maintained a project is, independent of how popular or critical it is. A widely-used project with poor maintainer responsiveness will score low here.<!-- TEMPORARILY HIDDEN (IN-1243): removed trailing clause ", even if its Impact Score is high." Re-enable by uncommenting and restoring the clause. -->
 
 **Health Score (0–100) = Maintainer Health (0–40 pts) + Security and Supply Chain (0–35 pts) + Development Activity (0–25 pts)**
 
@@ -248,7 +256,9 @@ An Insights project can span multiple repositories. Sub-signals are computed per
 
 - **Health Score and sub-scores:** straight mean across all active, non-excluded repositories.
 - **Lifecycle state:** best-state-wins. One active repository makes the project active, regardless of the state of other repositories.
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score rollup bullet hidden. Re-enable by uncommenting.
 - **Impact Score:** the highest impact score across all packages published by any repository in the project.
+-->
 
 Repositories marked as excluded (for example, experimental sandbox repos) are not included in scoring. This prevents an inactive experimental repository from dragging down a project's Health Score.
 
@@ -266,7 +276,7 @@ Gerrit does not ingest issue data in the same format as GitHub and GitLab. Issue
 
 **Projects without published packages:**
 
-Release Cadence, Dependency Health, and Supply Chain Integrity are all package-mediated signals. Projects that do not publish to a tracked registry (npm, PyPI, Maven, and others) will have these sub-signals blocked. Their weight redistributes to the signals that are available. Impact Score will not be shown for these projects.
+Release Cadence, Dependency Health, and Supply Chain Integrity are all package-mediated signals. Projects that do not publish to a tracked registry (npm, PyPI, Maven, and others) will have these sub-signals blocked. Their weight redistributes to the signals that are available.<!-- TEMPORARILY HIDDEN (IN-1243): removed trailing sentence "Impact Score will not be shown for these projects." Re-enable by uncommenting and restoring the sentence. -->
 
 **Projects with partial data across repos:**
 
@@ -279,14 +289,14 @@ Health Score comparisons across projects with different platform or data coverag
 ## How This Differs from the Previous Health Score
 
 ::: info
-The original Insights Health Score was a single 0–100 value, computed as an equal-weight mean of four sub-scores: Contributors (25 pts), Popularity (25 pts), Development (25 pts), and Security and Best Practices (25 pts). The current methodology replaces that with three independent assessments and re-weighted health categories.
+The original Insights Health Score was a single 0–100 value, computed as an equal-weight mean of four sub-scores: Contributors (25 pts), Popularity (25 pts), Development (25 pts), and Security and Best Practices (25 pts). The current methodology replaces that with independent assessments<!-- TEMPORARILY HIDDEN (IN-1243): originally "three independent assessments". Re-enable by uncommenting and restoring "three". --> and re-weighted health categories.
 :::
 
 | Aspect | Original Health Score | Current methodology |
 |---|---|---|
-| **Output** | Single score (0–100) | Three assessments: Lifecycle (state), Health Score (0–100), Impact Score (0–100) |
+| **Output** | Single score (0–100) | Two assessments: Lifecycle (state), Health Score (0–100)<!-- TEMPORARILY HIDDEN (IN-1243): cell originally read "Three assessments: Lifecycle (state), Health Score (0-100), Impact Score (0-100)". Re-enable by uncommenting and restoring the third assessment. --> |
 | **Health categories** | 4 equal categories at 25 pts each | 3 weighted categories: Maintainer (40), Security and Supply Chain (35), Development Activity (25) |
-| **Popularity** | Baked into Health Score as 25% of the total | Separate Impact Score; does not affect Health |
+| **Popularity** | Baked into Health Score as 25% of the total | Not baked into Health Score<!-- TEMPORARILY HIDDEN (IN-1243): cell originally read "Separate Impact Score; does not affect Health". Re-enable by uncommenting and restoring the Impact Score reference. --> |
 | **Lifecycle** | Not modeled | Six states: Active, Stable, Declining, Inert, Abandoned, Archived |
 | **Stable "done" libraries** | Penalized: low commits meant a low score | Lifecycle context added: a `Stable` classification signals low activity is intentional, but the Health Score formula still scores low-activity signals as low |
 | **Maintainer signal** | Contributor count only | Responsiveness, bus factor (curated plus observed), organizational diversity |
