@@ -30,7 +30,7 @@ function createEvent(slug: string) {
 }
 
 describe('IN-1244: kernel health score should be unavailable', () => {
-  it('returns a non-null healthScoreV2 for the-linux-kernel-organization even though sub-category signal is missing (BUG)', async () => {
+  it('returns a non-null healthScoreV2 for korg even though sub-category signal is missing (BUG)', async () => {
     // This mirrors the actual Tinybird `project_insights` response for Kernel:
     // partial GitHub signal is enough for the pipe to compute a non-null total,
     // while the underlying sub-category scores are null/unreliable.
@@ -49,7 +49,7 @@ describe('IN-1244: kernel health score should be unavailable', () => {
       ],
     });
 
-    const event = createEvent('the-linux-kernel-organization');
+    const event = createEvent('korg');
     const result = (await handler(event)) as { healthScoreV2: number | null };
 
     // Bug: this currently returns 42 (a computed number) instead of the

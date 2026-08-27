@@ -51,7 +51,7 @@ describe('IN-1244: kernel health score should be unavailable in collection proje
     mockPostToTinybird.mockResolvedValue({
       data: [
         {
-          slug: 'the-linux-kernel-organization',
+          slug: 'korg',
           healthScoreV2: 42,
           healthLabel: 'Fair',
           isLF: true,
@@ -72,7 +72,7 @@ describe('IN-1244: kernel health score should be unavailable in collection proje
       data: { slug: string; healthScoreV2: number | null; healthLabel: string | null }[];
     };
 
-    const kernel = result.data.find((p) => p.slug === 'the-linux-kernel-organization');
+    const kernel = result.data.find((p) => p.slug === 'korg');
     const other = result.data.find((p) => p.slug === 'some-other-project');
 
     // fails before fix: unfixed code returns the raw Tinybird values (42/'Fair') for Kernel

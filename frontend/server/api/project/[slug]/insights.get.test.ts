@@ -48,10 +48,10 @@ function mockTinybirdRow(slug: string) {
 }
 
 describe('IN-1244: kernel health score should be unavailable in project insights', () => {
-  it('nulls out healthScoreV2/healthLabel/healthScore for the-linux-kernel-organization', async () => {
-    mockTinybirdRow('the-linux-kernel-organization');
+  it('nulls out healthScoreV2/healthLabel/healthScore for korg', async () => {
+    mockTinybirdRow('korg');
 
-    const result = (await handler(createEvent('the-linux-kernel-organization'))) as {
+    const result = (await handler(createEvent('korg'))) as {
       healthScoreV2: number | null;
       healthLabel: string | null;
       healthScore: number | null;
