@@ -6,10 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="container">
     <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
       <div class="w-full md:w-3/4 flex flex-col gap-6">
-        <lfx-repos-exclusion-footer
-          v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
-          page-content="health-score"
-        />
+        <lfx-health-score-banner />
         <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
           <lfx-project-trust-score-v2
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
@@ -53,6 +50,11 @@ SPDX-License-Identifier: MIT
           />
         </lfx-card>
         -->
+
+        <lfx-repos-exclusion-footer
+          v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
+          page-content="health-score"
+        />
       </div>
       <div class="min-w-50 max-md:w-full w-1/4">
         <lfx-project-about-section />
@@ -73,6 +75,7 @@ import LfxHealthBreakdownSection from '~/components/modules/project/components/o
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import LfxHealthScoreBanner from '~/components/modules/project/components/overview/health-score-banner.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
