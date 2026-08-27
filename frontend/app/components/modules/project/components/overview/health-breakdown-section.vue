@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
     </p>
 
     <div
-      v-if="isEmpty"
+      v-if="allCategoriesEmpty"
       class="flex items-start gap-2 p-3 mb-4 bg-accent-100 border border-neutral-100 rounded-md"
     >
       <lfx-icon
@@ -131,8 +131,6 @@ const props = defineProps<{
   signals: HealthBreakdownResults | null;
 }>();
 
-const isEmpty = computed(() => props.healthScoreV2 === null);
-
 const allCategoriesEmpty = computed(
   () =>
     props.maintainerHealthScoreV2 === null &&
@@ -140,11 +138,7 @@ const allCategoriesEmpty = computed(
     props.developmentActivityScoreV2 === null,
 );
 
-const emptyMessage = computed(() =>
-  allCategoriesEmpty.value
-    ? 'Health Score unavailable. All three categories have less than 40% signal coverage for this project.'
-    : 'Health Score unavailable for this project.',
-);
+const emptyMessage = 'All three categories have less than 40% signal coverage for this project.';
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
 
