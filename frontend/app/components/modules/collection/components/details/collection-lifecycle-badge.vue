@@ -31,13 +31,13 @@ const props = defineProps<{
   lifecycleLabel?: string | null;
 }>();
 
-// active -> green, stable -> blue, declining -> amber, abandoned -> red, archived -> neutral grey.
 const variation = computed<TagStyle>(() => {
   const variations: Record<string, TagStyle> = {
     active: 'positive',
     stable: 'info',
     declining: 'warning',
     abandoned: 'negative',
+    inert: 'warning',
     archived: 'default',
   };
   return variations[props.lifecycleLabel?.toLowerCase() ?? ''] ?? 'default';

@@ -51,13 +51,13 @@ export const getImpactLabelDisplay = (label: string | null): string => {
   return 'Unavailable';
 };
 
-// Lifecycle labels come from health_score_v2's lifecycleLabelV2: active, stable, declining,
-// abandoned, archived (best-state-wins across a project's repos).
+// Lifecycle labels from health_score_v2's lifecycleLabelV2 (best-state-wins across repos).
 export const lifecycleLabelConfig: Record<string, { label: string; color: string }> = {
   active: { label: 'Active', color: 'bg-positive-500' },
   stable: { label: 'Stable', color: 'bg-accent-500' },
   declining: { label: 'Declining', color: 'bg-warning-500' },
   abandoned: { label: 'Abandoned', color: 'bg-negative-500' },
+  inert: { label: 'Inert', color: 'bg-warning-600' },
   archived: { label: 'Archived', color: 'bg-neutral-400' },
 };
 

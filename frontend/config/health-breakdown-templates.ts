@@ -51,6 +51,9 @@ export const getLifecycleDescription = (
           : '';
       return `No maintainer activity in over 18 months.${lastCommitDetail}${cveDetail}`;
     }
+    case 'inert': {
+      return 'No commits or activity recorded in the past 18 months. The project appears inactive and may require maintenance attention.';
+    }
     case 'archived': {
       return 'The repository has been explicitly archived. No further updates are expected and the project is no longer accepting contributions.';
     }
