@@ -208,6 +208,7 @@ Not every signal is available for every project. Insights uses two layers of red
 
 If all three categories fall below the 40% coverage threshold, the Health Score itself is emitted as `unavailable`, never as a zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
 
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score documentation section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 ## Impact Score (0–100)
 
 The Impact Score answers: how bad is it if this breaks? It is independent of the Health Score. A healthy project can have low impact; an unhealthy project can have high impact.
@@ -239,6 +240,7 @@ Impact is computed in two steps:
 
 1. **Score each signal relative to the ecosystem:** for each signal, a package's contribution is measured as its cumulative share of the total ecosystem signal. Packages at the top of each distribution score near 1; the long tail scores near 0. Signals with no data for a given ecosystem are excluded.
 2. **Average across available signals**, then scaled to 0–100. Packages are not penalized when a specific signal is unavailable for their ecosystem.
+-->
 
 ## Multi-Repo Projects
 

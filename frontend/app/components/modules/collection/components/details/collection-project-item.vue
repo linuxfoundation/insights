@@ -77,12 +77,14 @@ SPDX-License-Identifier: MIT
           :health-label="project.healthLabel"
         />
       </td>
+      <!-- TEMPORARILY HIDDEN (IN-1243): Impact column disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
       <td class="py-4 px-2 whitespace-nowrap">
         <lfx-collection-impact-score-pill
           :score="props.project.impactScore"
           :impact-label="props.project.impactLabel"
         />
       </td>
+      -->
       <td class="py-4 px-2 whitespace-nowrap">
         {{ formatNumber(props.project.contributorCount) }}
       </td>
@@ -111,7 +113,11 @@ SPDX-License-Identifier: MIT
     <template v-else>
       <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      <!-- TEMPORARILY HIDDEN (IN-1243): placeholder for the Impact column, disabled to match the
+           hidden Impact column above until the underlying data quality issue is fixed. Re-enable
+           by uncommenting alongside the Impact column.
       <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
+      -->
       <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="py-4 px-2 text-neutral-400 whitespace-nowrap">-</td>
       <td class="py-4 pl-2 pr-5 md:pr-10 text-right text-neutral-400 whitespace-nowrap">-</td>
@@ -171,10 +177,12 @@ SPDX-License-Identifier: MIT
             :health-label="project.healthLabel"
             :unavailable="isHealthScoreUnavailable"
           />
+          <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
           <lfx-collection-impact-score-pill
             :score="props.project.impactScore"
             :impact-label="props.project.impactLabel"
           />
+          -->
           <span class="text-neutral-400">・</span>
           <lfx-icon
             name="users"
@@ -202,7 +210,8 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxCollectionHealthScorePill from '~/components/modules/collection/components/details/collection-health-score-pill.vue';
 import LfxCollectionLifecycleBadge from '~/components/modules/collection/components/details/collection-lifecycle-badge.vue';
-import LfxCollectionImpactScorePill from '~/components/modules/collection/components/details/collection-impact-score-pill.vue';
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// import LfxCollectionImpactScorePill from '~/components/modules/collection/components/details/collection-impact-score-pill.vue';
 import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
 import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';
 import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
