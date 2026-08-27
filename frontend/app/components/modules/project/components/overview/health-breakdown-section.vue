@@ -27,14 +27,17 @@ SPDX-License-Identifier: MIT
 
     <div
       v-if="isEmpty"
-      class="flex items-center gap-1.5 text-xs text-neutral-500 mb-4"
+      class="flex items-start gap-2 p-3 mb-4 bg-accent-100 border border-neutral-100 rounded-md"
     >
       <lfx-icon
         name="circle-info"
         :size="14"
-        class="text-neutral-400 shrink-0"
+        class="text-accent-500 shrink-0"
       />
-      <span>{{ emptyMessage }}</span>
+      <div class="flex flex-col gap-1.5 text-xs">
+        <p class="font-semibold text-neutral-900">Health Score unavailable</p>
+        <p class="text-accent-900">{{ emptyMessage }}</p>
+      </div>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:items-stretch gap-1 p-1 bg-neutral-50 rounded-lg mb-4">
