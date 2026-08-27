@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createBucketCache } from '../src/bucket-cache.js';
-import { TinybirdClientError } from '../src/errors.js';
+import { TinybirdClientError, TinybirdUnavailableError } from '../src/errors.js';
 import type { BucketCacheStorage, TinybirdLogger, TinybirdResponse } from '../src/types.js';
 
 const logger: TinybirdLogger = { warn: vi.fn(), error: vi.fn() };
@@ -98,12 +98,23 @@ describe('createBucketCache — getBucketIdForProject', () => {
     await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow('Forbidden');
   });
 
-  it('returns null (rather than throwing) for unclassified errors', async () => {
+  it('wraps unclassified errors as TinybirdUnavailableError instead of a false "not found"', async () => {
     const storage = createMemoryStorage();
     const cache = createBucketCache(storage, logger);
     const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
 
-    await expect(cache.getBucketIdForProject('k8s', fetcher)).resolves.toBeNull();
+    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow(
+      TinybirdUnavailableError,
+    );
+  });
+
+  it('wraps unclassified errors as TinybirdUnavailableError when no storage is configured', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
+
+    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow(
+      TinybirdUnavailableError,
+    );
   });
 
   it('does not repopulate the cache from a stale in-flight write after clearBucketCache', async () => {

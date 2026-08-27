@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { TinybirdUnavailableError } from './errors.js';
 import type {
   TinybirdLogger,
   TinybirdQuery,
@@ -12,6 +13,24 @@ interface ProjectBucketResponse {
 }
 
 type Fetcher = <T>(path: string, query: TinybirdQuery) => Promise<TinybirdResponse<T>>;
+
+function isClassifiedTinybirdError(error: unknown): boolean {
+  return Boolean(error && typeof error === 'object' && 'statusCode' in error);
+}
+
+/**
+ * Rethrows classified Tinybird errors as-is; wraps everything else (network/DNS
+ * failures, malformed responses) so callers never mistake "lookup unavailable"
+ * for "project doesn't exist" — an unclassified error must never resolve to null.
+ */
+function classifyBucketLookupError(error: unknown, projectValue: string): never {
+  if (isClassifiedTinybirdError(error)) {
+    throw error;
+  }
+  throw new TinybirdUnavailableError(
+    `Failed to fetch bucketId for project ${projectValue}: ${error}`,
+  );
+}
 
 export function createBucketCache(storage: BucketCacheStorage | undefined, logger: TinybirdLogger) {
   /** In-memory map preventing cache stampede for concurrent requests on the same project. */
@@ -71,7 +90,11 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
 
     // No storage configured — always fetch fresh (local dev path)
     if (!storage) {
-      return fetchFromTinybird(projectValue, fetcher);
+      try {
+        return await fetchFromTinybird(projectValue, fetcher);
+      } catch (error: unknown) {
+        classifyBucketLookupError(error, projectValue);
+      }
     }
 
     // Prevent cache stampede: reuse any in-flight request for the same project
@@ -110,13 +133,10 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
 
         return bucketId;
       } catch (error: unknown) {
-        // Propagate all classified Tinybird errors (401/403/404/429/5xx) instead of
-        // masking auth/permission failures as a false "project not found".
-        if (error && typeof error === 'object' && 'statusCode' in error) {
-          throw error;
-        }
-        logger.warn(`Failed to fetch bucketId for project ${projectValue}: ${error}`);
-        return null;
+        // Propagate all classified Tinybird errors (401/403/404/429/5xx), and wrap
+        // unclassified failures (network/DNS) instead of masking either as a false
+        // "project not found" via a `null` return.
+        classifyBucketLookupError(error, projectValue);
       } finally {
         inFlightRequests.delete(projectValue);
       }
