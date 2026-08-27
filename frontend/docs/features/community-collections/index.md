@@ -33,14 +33,16 @@ Every collection detail page opens on the **Projects** tab. The header displays 
 
 - **Projects / Repositories** — the total number of projects and individual repositories included in the collection.
 - **Contributors** — the total number of unique contributors across all projects in the collection.
-- **Avg. Health** — the average LFX Health Score across all projects, labelled Excellent (80+), Healthy (60–79), Fair (40–59), Concerning (20–39), or Critical (below 20).
+- **Avg. Health** — the average LFX Health Score across all projects, labelled Excellent (85–100), Healthy (70–84), Fair (50–69), Concerning (30–49), or Critical (below 30).
 
 ### Projects tab
 
 The Projects tab lists all projects in the collection as a sortable table. Each row shows:
 
 - **Project** name (sortable alphabetically)
+- **Lifecycle** — a badge indicating the project's current lifecycle stage (Active, Stable, Declining, Abandoned, or Archived). Projects without a lifecycle stage show **Unavailable**.
 - **Health Score** — the project's LFX Health Score
+- **Impact** — a pill showing the project's Impact tier (Foundational, Major, Moderate, or Minor) with the underlying score. Projects without an impact score show **N/A**.
 - **Contributors** — contributor count (sortable)
 - **Contributor / Organization dependency** — concentration risk indicators
 - **Achievements** — earned badges
