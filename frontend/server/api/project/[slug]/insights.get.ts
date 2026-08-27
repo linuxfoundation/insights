@@ -3,6 +3,7 @@
 import type { ProjectInsightsTinybird } from '~~/types/project';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
+import { KERNEL_PROJECT_SLUG } from '~~/server/utils/common';
 
 export default defineEventHandler(async (event) => {
   const { slug } = event.context.params as Record<string, string>;
@@ -40,10 +41,12 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    const isKernel = project.slug === KERNEL_PROJECT_SLUG;
     return {
       ...project,
-      healthScore: project.healthScoreV2,
-      healthLabel: project.healthLabel,
+      healthScoreV2: isKernel ? null : project.healthScoreV2,
+      healthLabel: isKernel ? null : project.healthLabel,
+      healthScore: isKernel ? null : project.healthScoreV2,
       isLF: !!project.isLF,
       achievements:
         project.achievements?.map(

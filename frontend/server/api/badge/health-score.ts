@@ -3,6 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectInsightsTinybird } from '~~/types/project';
 import { getHealthScoreV2Config } from '~~/config/trust-score';
+import { KERNEL_PROJECT_SLUG } from '~~/server/utils/common';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);
@@ -16,7 +17,7 @@ export default defineEventHandler(async (event): Promise<void> => {
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const healthLabel = res.data[0].healthLabel;
+    const healthLabel = project === KERNEL_PROJECT_SLUG ? null : res.data[0].healthLabel;
     const config = getHealthScoreV2Config(healthLabel);
     const message = encodeURIComponent(config.label);
     const label = encodeURIComponent('Health Score');

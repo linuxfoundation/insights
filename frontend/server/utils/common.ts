@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: MIT
 import slugify from 'slugify';
 
+// Kernel's v2 health score is computed from partial GitHub signal and is unreliable,
+// so it always renders as unavailable (null), matching the pre-v2 treatment.
+export const KERNEL_PROJECT_SLUG = 'the-linux-kernel-organization';
+
 export const generateSlug = (name: string): string => slugify(name, { lower: true, strict: true });
 
 export const isLocal =

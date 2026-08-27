@@ -6,6 +6,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { postToTinybird } from '~~/server/data/tinybird/tinybird';
 import { getOptionalUser } from '~~/server/utils/jwt';
+import { KERNEL_PROJECT_SLUG } from '~~/server/utils/common';
 
 /**
  * API Endpoint: /api/collection/:slug/projects
@@ -84,16 +85,21 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
       },
     );
 
-    const data = response.data.map((project) => ({
-      ...project,
-      isLF: !!project.isLF,
-      achievements:
-        project.achievements?.map(([leaderboardType, rank, totalCount]) => ({
-          leaderboardType,
-          rank,
-          totalCount,
-        })) ?? [],
-    }));
+    const data = response.data.map((project) => {
+      const isKernel = project.slug === KERNEL_PROJECT_SLUG;
+      return {
+        ...project,
+        healthScoreV2: isKernel ? null : project.healthScoreV2,
+        healthLabel: isKernel ? null : project.healthLabel,
+        isLF: !!project.isLF,
+        achievements:
+          project.achievements?.map(([leaderboardType, rank, totalCount]) => ({
+            leaderboardType,
+            rank,
+            totalCount,
+          })) ?? [],
+      };
+    });
 
     return {
       page,

@@ -3,6 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectInsightsTinybird } from '~~/types/project';
 import type { HealthScoreV2Results } from '~~/types/overview/responses.types';
+import { KERNEL_PROJECT_SLUG } from '~~/server/utils/common';
 
 export default defineEventHandler(async (event): Promise<HealthScoreV2Results> => {
   const slug = (event.context.params as { slug: string }).slug;
@@ -27,9 +28,10 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
       securitySupplyChainScoreV2,
       developmentActivityScoreV2,
     } = res.data[0];
+    const isKernel = slug === KERNEL_PROJECT_SLUG;
     return {
-      healthScoreV2,
-      healthLabel,
+      healthScoreV2: isKernel ? null : healthScoreV2,
+      healthLabel: isKernel ? null : healthLabel,
       lifecycleLabel,
       impactScore,
       impactLabel,
