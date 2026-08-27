@@ -4,6 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="pb-5 lg:pb-10 flex flex-col">
+    <lfx-health-score-banner />
     <template v-if="!isPending && flatData.length">
       <!-- Mobile: card list -->
       <div class="container flex flex-col md:hidden">
@@ -213,6 +214,7 @@ import { createError, showError, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
+import LfxHealthScoreBanner from '../components/details/health-score-banner.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
 import type { Collection } from '~~/types/collection';
 
