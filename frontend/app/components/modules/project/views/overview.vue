@@ -51,6 +51,8 @@ SPDX-License-Identifier: MIT
             :status="impactBreakdownStatus"
           />
         </lfx-card>
+
+        <lfx-health-score-banner />
       </div>
       <div class="min-w-50 max-md:w-full w-1/4">
         <lfx-project-about-section />
@@ -70,6 +72,7 @@ import LfxImpactBreakdownSection from '~/components/modules/project/components/o
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import LfxHealthScoreBanner from '~/components/modules/project/components/overview/health-score-banner.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
