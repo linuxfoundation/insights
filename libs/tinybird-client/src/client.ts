@@ -101,7 +101,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     if (
       query.project &&
       typeof query.project === 'string' &&
-      !query.bucketId &&
+      query.bucketId == null &&
       path !== '/v0/pipes/project_buckets.json'
     ) {
       try {

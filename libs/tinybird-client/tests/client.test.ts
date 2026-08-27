@@ -91,6 +91,18 @@ describe('createTinybirdClient — fetch()', () => {
     expect(url).toBe('https://api.us-west-2.aws.tinybird.co/mock-path?key=value');
   });
 
+  it('does not perform a bucket lookup when bucketId is explicitly 0', async () => {
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
+
+    await client.fetch('/mock-path', { project: 'k8s', bucketId: 0 });
+
+    // A falsy-but-valid bucketId of 0 must be treated as already resolved —
+    // only the real query should fire, never an extra project_buckets lookup.
+    expect(mockFetch).toHaveBeenCalledOnce();
+    const [url] = mockFetch.mock.calls[0] as [string];
+    expect(url).toContain('bucketId=0');
+  });
+
   it('throws TinybirdClientError on non-2xx response', async () => {
     mockFetch.mockResolvedValue({
       ok: false,

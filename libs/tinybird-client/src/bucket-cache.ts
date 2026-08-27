@@ -97,13 +97,11 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
       }
     }
 
-    // Prevent cache stampede: reuse any in-flight request for the same project
+    // Prevent cache stampede: reuse any in-flight request for the same project.
+    // Its `finally` clause already removes it from the map, and every waiter must
+    // observe the same rejection rather than each starting its own replacement fetch.
     if (inFlightRequests.has(projectValue)) {
-      try {
-        return await inFlightRequests.get(projectValue)!;
-      } catch {
-        inFlightRequests.delete(projectValue);
-      }
+      return inFlightRequests.get(projectValue)!;
     }
 
     const cacheKey = `project_bucket:${projectValue}`;

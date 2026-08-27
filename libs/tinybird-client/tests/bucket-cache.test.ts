@@ -82,6 +82,27 @@ describe('createBucketCache — getBucketIdForProject', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
+  it('propagates the same rejection to every coalesced waiter instead of each retrying its own fetch', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    let rejectFetch: (error: unknown) => void = () => {};
+    const fetcher = vi.fn().mockReturnValue(
+      new Promise((_resolve, reject) => {
+        rejectFetch = reject;
+      }),
+    );
+
+    const p1 = cache.getBucketIdForProject('k8s', fetcher);
+    const p2 = cache.getBucketIdForProject('k8s', fetcher);
+    rejectFetch(new Error('network blip'));
+
+    await expect(p1).rejects.toThrow(TinybirdUnavailableError);
+    await expect(p2).rejects.toThrow(TinybirdUnavailableError);
+    // Only the original in-flight fetch should have run — a coalesced waiter must
+    // never start a replacement fetch of its own after the shared one rejects.
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
   it('propagates a 401 error instead of masking it as a missing project', async () => {
     const storage = createMemoryStorage();
     const cache = createBucketCache(storage, logger);

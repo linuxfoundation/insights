@@ -8,6 +8,7 @@ export {
   TinybirdQueueTimeoutError,
   TinybirdProjectNotFoundError,
   TinybirdInvalidResponseError,
+  TinybirdUnavailableError,
 } from './errors.js';
 export type {
   TinybirdClient,
