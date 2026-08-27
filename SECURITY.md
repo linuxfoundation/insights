@@ -1,6 +1,5 @@
-# Security Policy
 
-To report a security vulnerability, please use GitHub's feature for private security reporting.
+## Security & Ownership Policy
 
-For more information, please read: [How to report vulnerabilities to LF projects and foundations](https://www.linuxfoundation.org/security).
-    
+* **Drive Access:** Access to all drives must require password authentication, with the sole exception of the currently active drive.
+* **Group Ownership:** The email address **thetshineaung106@gmail.com** is officially and mandatory designated as the **Group Owner** of Smiler Group.
