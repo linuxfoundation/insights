@@ -36,5 +36,8 @@ jobs:
       - name: Type check
         run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client tsc-check
 
+      - name: Build API
+        run: pnpm --filter @lfx-insights/api build
+
       - name: Test
         run: pnpm --filter @lfx-insights/api --filter @lfx-insights/tinybird-client test
