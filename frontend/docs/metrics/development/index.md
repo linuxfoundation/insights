@@ -38,9 +38,9 @@ The Development metrics include actions performed by bots. We include bot activi
 
 **Data Sources:** GitHub, GitLab, Git and Gerrit.
 
-## Contributions Outside Work Hours
+## Contribution Time Distribution {#contributions-outside-work-hours}
 
-**What it is:** The percentage of contributions made outside standard weekday working hours.
+**What it is:** Contributors' activity patterns across the day and week during the selected period, alongside the share of contributions made on weekday evenings and on weekends.
 
 **Why it matters:** Gives insight into contributor behavior—whether it's mostly hobbyist-driven or supported during work hours by employers. High off-hours activity may suggest volunteer-driven maintenance.
 

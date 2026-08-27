@@ -40,6 +40,7 @@ SPDX-License-Identifier: MIT
           />
         </lfx-card>
 
+        <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
         <lfx-card
           v-if="healthScoreV2Status !== 'pending' && !isArchived"
           class="p-6"
@@ -51,6 +52,7 @@ SPDX-License-Identifier: MIT
             :status="impactBreakdownStatus"
           />
         </lfx-card>
+        -->
 
         <lfx-health-score-banner />
       </div>
@@ -68,7 +70,8 @@ import { storeToRefs } from 'pinia';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectTrustScoreV2 from '~/components/modules/project/components/overview/trust-score-v2.vue';
 import LfxHealthBreakdownSection from '~/components/modules/project/components/overview/health-breakdown-section.vue';
-import LfxImpactBreakdownSection from '~/components/modules/project/components/overview/impact-breakdown-section.vue';
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// import LfxImpactBreakdownSection from '~/components/modules/project/components/overview/impact-breakdown-section.vue';
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
@@ -88,17 +91,18 @@ const {
   suspense,
 } = OVERVIEW_API_SERVICE.fetchHealthScoreV2(params);
 
-const {
-  data: impactBreakdownData,
-  status: impactBreakdownStatus,
-  suspense: impactBreakdownSuspense,
-} = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// const {
+//   data: impactBreakdownData,
+//   status: impactBreakdownStatus,
+//   suspense: impactBreakdownSuspense,
+// } = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
 
 const { data: healthBreakdownData, suspense: healthBreakdownSuspense } =
   OVERVIEW_API_SERVICE.fetchHealthScoreBreakdown(params);
 
 onServerPrefetch(async () => {
-  await Promise.all([suspense(), impactBreakdownSuspense(), healthBreakdownSuspense()]);
+  await Promise.all([suspense(), healthBreakdownSuspense()]);
 });
 </script>
 
