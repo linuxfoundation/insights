@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
           v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
           page-content="health-score"
         />
-        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
+        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 pb-6">
           <lfx-project-trust-score-v2
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
             :health-label="healthScoreV2Data?.healthLabel ?? null"
