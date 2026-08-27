@@ -130,5 +130,15 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
         expect(wrapper.text()).toContain(label);
       });
     });
+
+    test('renders "Limited" for legacy server-sent impactLabel "minor"', () => {
+      // project_insights_copy.pipe still emits the old 'minor' vocabulary; must map to the new 'Limited' label, not render raw "minor"
+      const wrapper = mount(CollectionImpactScorePill, {
+        props: { score: 10, impactLabel: 'minor' },
+      });
+
+      expect(wrapper.text()).toContain('Limited');
+      expect(wrapper.text()).not.toContain('minor');
+    });
   });
 });

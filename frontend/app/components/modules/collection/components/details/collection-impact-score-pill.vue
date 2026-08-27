@@ -77,6 +77,8 @@ const impactScoreLabel = computed(() => {
     significant: 'Significant',
     moderate: 'Moderate',
     limited: 'Limited',
+    // backward-compat: crowd.dev's project_insights_copy.pipe still emits 'minor'; remove once that pipe is updated to the new vocabulary
+    minor: 'Limited',
   };
   return labels[band.value] ?? band.value;
 });

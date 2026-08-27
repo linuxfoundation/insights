@@ -43,6 +43,8 @@ export const impactLabelConfig: Record<string, string> = {
   significant: 'Significant',
   moderate: 'Moderate',
   limited: 'Limited',
+  // backward-compat: crowd.dev's project_insights_copy.pipe still emits 'minor'; remove once that pipe is updated to the new vocabulary
+  minor: 'Limited',
 };
 
 export const getImpactLabelDisplay = (label: string | null): string => {
