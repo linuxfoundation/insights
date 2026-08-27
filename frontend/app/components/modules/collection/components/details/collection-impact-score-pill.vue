@@ -58,13 +58,14 @@ const props = defineProps<{
   impactLabel?: string | null;
 }>();
 
-// Akrites impact bands (PRD alt-label tiers): foundational 85-100, major 60-84, moderate 30-59, minor 0-29.
+// Impact bands per content spec: foundational 80-100, major 60-79, significant 40-59, moderate 20-39, limited 0-19.
 // Prefers the server-computed impactLabel; falls back to client banding if absent.
 const bandFromScore = (score: number) => {
-  if (score >= 85) return 'foundational';
+  if (score >= 80) return 'foundational';
   if (score >= 60) return 'major';
-  if (score >= 30) return 'moderate';
-  return 'minor';
+  if (score >= 40) return 'significant';
+  if (score >= 20) return 'moderate';
+  return 'limited';
 };
 
 const band = computed(() => (props.impactLabel ?? bandFromScore(props.score ?? 0)).toLowerCase());
@@ -73,8 +74,9 @@ const impactScoreLabel = computed(() => {
   const labels: Record<string, string> = {
     foundational: 'Foundational',
     major: 'Major',
+    significant: 'Significant',
     moderate: 'Moderate',
-    minor: 'Minor',
+    limited: 'Limited',
   };
   return labels[band.value] ?? band.value;
 });

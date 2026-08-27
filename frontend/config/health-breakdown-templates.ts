@@ -67,10 +67,39 @@ export const getLifecycleDescription = (
 // Section 3: Health Score summary
 // ---------------------------------------------------------------------------
 
-const CATEGORY_LABEL: Record<'maintainer' | 'security' | 'development', string> = {
+type HealthCategoryKey = 'maintainer' | 'security' | 'development';
+
+const CATEGORY_LABEL: Record<HealthCategoryKey, string> = {
   maintainer: 'maintainer coverage',
   security: 'security posture',
   development: 'development cadence',
+};
+
+// Plain-name form for the redistribution clause, distinct from the lowercase CATEGORY_LABEL
+// used inline in strength/gap sentences.
+const CATEGORY_NAME: Record<HealthCategoryKey, string> = {
+  maintainer: 'Maintainer Health',
+  security: 'Security & Supply Chain',
+  development: 'Development Activity',
+};
+
+const capitalize = (value: string): string =>
+  value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : value;
+
+const joinWithAnd = (items: string[]): string => {
+  if (items.length === 0) return '';
+  if (items.length === 1) return items[0] as string;
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+};
+
+const buildRedistributionClause = (availableKeys: HealthCategoryKey[]): string => {
+  const allKeys: HealthCategoryKey[] = ['maintainer', 'security', 'development'];
+  const unavailable = allKeys.filter((key) => !availableKeys.includes(key));
+  if (unavailable.length === 0) return '';
+  const names = joinWithAnd(unavailable.map((key) => CATEGORY_NAME[key]));
+  const verb = unavailable.length === 1 ? 'is' : 'are';
+  return ` ${names} ${verb} unavailable, so weights were redistributed.`;
 };
 
 export const getHealthScoreDescription = (
@@ -82,33 +111,80 @@ export const getHealthScoreDescription = (
   if (healthLabel === null) {
     return 'No scoring data is available. This project has no indexed repositories or the connected platform has no supported data pipeline.';
   }
-  const categoryPercents = [
-    { key: 'maintainer' as const, percent: maintainerScore !== null ? maintainerScore / 40 : -1 },
-    { key: 'security' as const, percent: securityScore !== null ? securityScore / 35 : -1 },
-    {
-      key: 'development' as const,
-      percent: developmentScore !== null ? developmentScore / 25 : -1,
-    },
-  ].filter((c) => c.percent >= 0);
+  const categoryPercents = (
+    [
+      { key: 'maintainer', percent: maintainerScore !== null ? maintainerScore / 40 : -1 },
+      { key: 'security', percent: securityScore !== null ? securityScore / 35 : -1 },
+      { key: 'development', percent: developmentScore !== null ? developmentScore / 25 : -1 },
+    ] as { key: HealthCategoryKey; percent: number }[]
+  ).filter((c) => c.percent >= 0);
 
   if (categoryPercents.length === 0) {
     return `Overall project health is ${healthLabel}, based on maintainer activity, security posture, and development cadence.`;
   }
 
-  const strongest = categoryPercents.reduce((a, b) => (b.percent > a.percent ? b : a));
-  const weakest = categoryPercents.reduce((a, b) => (b.percent < a.percent ? b : a));
-  const strongLabel = CATEGORY_LABEL[strongest.key];
-  const weakLabel = CATEGORY_LABEL[weakest.key];
+  const availableKeys = categoryPercents.map((c) => c.key);
+  const redistributionClause = buildRedistributionClause(availableKeys);
 
-  if (healthLabel === 'excellent' || healthLabel === 'healthy') {
-    return strongest.key === weakest.key
-      ? `Strong ${strongLabel}, security practices, and development cadence across the board.`
-      : `Strong ${strongLabel}. ${weakLabel.charAt(0).toUpperCase() + weakLabel.slice(1)} is the remaining gap keeping the score from Excellent.`;
+  if (categoryPercents.length === 1) {
+    const only = categoryPercents[0] as { key: HealthCategoryKey; percent: number };
+    const label = CATEGORY_LABEL[only.key];
+    const strengthWord = only.percent >= 0.7 ? 'Strong' : only.percent >= 0.4 ? 'Middling' : 'Weak';
+    return `${strengthWord} ${label} is the only scored signal for this project.${redistributionClause}`;
   }
-  if (strongest.key === weakest.key) {
-    return `Overall project health is ${healthLabel}, based on maintainer activity, security posture, and development cadence.`;
+
+  const sorted = [...categoryPercents].sort((a, b) => b.percent - a.percent);
+  const strongest = sorted[0] as { key: HealthCategoryKey; percent: number };
+  const weakest = sorted[sorted.length - 1] as { key: HealthCategoryKey; percent: number };
+  const strengthLabels = sorted.slice(0, -1).map((c) => CATEGORY_LABEL[c.key]);
+  const strengthsText = joinWithAnd(strengthLabels);
+  const gapLabel = CATEGORY_LABEL[weakest.key];
+
+  if (strongest.percent === weakest.percent) {
+    const allLabels = joinWithAnd(sorted.map((c) => CATEGORY_LABEL[c.key]));
+    if (healthLabel === 'excellent' || healthLabel === 'healthy') {
+      return `Consistent ${allLabels} across the board.${redistributionClause || ' No single category stands out as a gap.'}`;
+    }
+    if (healthLabel === 'fair') {
+      return `${capitalize(allLabels)} are all middling, with no clear strength to lean on.${redistributionClause}`;
+    }
+    return `${capitalize(allLabels)} are all weak, with no clear strength to offset the risk.${redistributionClause}`;
   }
-  return `${weakLabel.charAt(0).toUpperCase() + weakLabel.slice(1)} is dragging the score down, despite stronger ${strongLabel}.`;
+
+  const strengthVerbHelp = strengthLabels.length === 1 ? 'helps' : 'help';
+  const strengthVerbBe = strengthLabels.length === 1 ? 'is' : 'are';
+  const strengthVerbShow = strengthLabels.length === 1 ? 'shows' : 'show';
+
+  let sentence1: string;
+  let sentence2: string;
+
+  switch (healthLabel) {
+    case 'excellent':
+      sentence1 = `Strong ${strengthsText}.`;
+      sentence2 = `${capitalize(gapLabel)} is the only remaining gap.`;
+      break;
+    case 'healthy':
+      sentence1 = `Solid ${strengthsText}.`;
+      sentence2 = `${capitalize(gapLabel)} keeps the score from reaching Excellent.`;
+      break;
+    case 'fair':
+      sentence1 = `${capitalize(gapLabel)} drags the score down.`;
+      sentence2 = `${capitalize(strengthsText)} ${strengthVerbHelp} keep it from falling further.`;
+      break;
+    case 'concerning':
+      sentence1 = `${capitalize(gapLabel)} is the lead risk.`;
+      sentence2 = `${capitalize(strengthsText)} ${strengthVerbBe} present but not enough to offset the structural risk.`;
+      break;
+    case 'critical':
+      sentence1 = `${capitalize(gapLabel)} is the primary crisis signal.`;
+      sentence2 = `${capitalize(strengthsText)} ${strengthVerbShow} little to offset it. Every health signal is at or near zero.`;
+      break;
+    default:
+      sentence1 = `Overall project health is ${healthLabel}.`;
+      sentence2 = `${capitalize(gapLabel)} is the weakest area.`;
+  }
+
+  return `${sentence1} ${sentence2}${redistributionClause}`;
 };
 
 // ---------------------------------------------------------------------------
@@ -620,7 +696,7 @@ export const getImpactSummaryDescription = (
   transitiveDependents?: number | null,
 ): string | null => {
   if (impactLabel === null) {
-    return 'This project publishes no tracked packages. Impact cannot be computed without a package registry presence.';
+    return 'No tracked packages are published, so impact cannot be computed without a package registry presence.';
   }
   const dependentsDetail =
     transitiveDependents !== null && transitiveDependents !== undefined
@@ -630,6 +706,8 @@ export const getImpactSummaryDescription = (
     return `Near-total blast radius across the dependency graph.${dependentsDetail}`;
   if (impactLabel === 'major')
     return `Large blast radius, depended on by many high-importance projects.${dependentsDetail}`;
+  if (impactLabel === 'significant')
+    return `Sizable blast radius, meaningfully depended on across the ecosystem without being critical-path for most consumers.${dependentsDetail}`;
   if (impactLabel === 'moderate')
     return `Moderate blast radius within its dependency graph.${dependentsDetail}`;
   return `Narrow blast radius, depended on by a small set of projects with limited transitive reach.${dependentsDetail}`;

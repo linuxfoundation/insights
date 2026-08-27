@@ -35,13 +35,14 @@ export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Confi
   return healthScoreV2Config.unavailable;
 };
 
-// Impact labels come from project_insights_copy.pipe's impactLabel multiIf: foundational (>=85),
-// major (>=60), moderate (>=30), minor (below).
+// Impact labels come from project_insights_copy.pipe's impactLabel multiIf: foundational (>=80),
+// major (>=60), significant (>=40), moderate (>=20), limited (below).
 export const impactLabelConfig: Record<string, string> = {
   foundational: 'Foundational',
   major: 'Major',
+  significant: 'Significant',
   moderate: 'Moderate',
-  minor: 'Minor',
+  limited: 'Limited',
 };
 
 export const getImpactLabelDisplay = (label: string | null): string => {

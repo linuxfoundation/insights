@@ -122,7 +122,7 @@ describe('Impact Breakdown signal descriptions', () => {
   describe('getImpactSummaryDescription', () => {
     it('returns null availability message when impactLabel is null', () => {
       const result = getImpactSummaryDescription(null);
-      expect(result).toContain('no tracked packages');
+      expect(result).toContain('No tracked packages');
     });
 
     it('returns foundational description for foundational label', () => {
@@ -135,6 +135,12 @@ describe('Impact Breakdown signal descriptions', () => {
       const result = getImpactSummaryDescription('major', 50000);
       expect(result).toContain('Large blast radius');
       expect(result).toContain('50,000');
+    });
+
+    it('returns significant description for significant label', () => {
+      const result = getImpactSummaryDescription('significant', 25000);
+      expect(result).toContain('Sizable blast radius');
+      expect(result).toContain('25,000');
     });
 
     it('returns moderate description for moderate label', () => {

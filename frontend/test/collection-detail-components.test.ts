@@ -117,9 +117,10 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
     test('shows correct impact tier for different scores', () => {
       const testCases = [
         { score: 90, label: 'Foundational' },
-        { score: 72, label: 'Major' },
-        { score: 45, label: 'Moderate' },
-        { score: 15, label: 'Minor' },
+        { score: 70, label: 'Major' },
+        { score: 50, label: 'Significant' },
+        { score: 30, label: 'Moderate' },
+        { score: 15, label: 'Limited' },
       ];
 
       testCases.forEach(({ score, label }) => {
