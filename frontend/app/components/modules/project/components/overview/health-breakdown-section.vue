@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
         :size="14"
         class="text-neutral-400 shrink-0"
       />
-      <span>Health Score unavailable. All three categories have less than 40% signal coverage for this project.</span>
+      <span>{{ emptyMessage }}</span>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:items-stretch gap-1 p-1 bg-neutral-50 rounded-lg mb-4">
@@ -129,6 +129,19 @@ const props = defineProps<{
 }>();
 
 const isEmpty = computed(() => props.healthScoreV2 === null);
+
+const allCategoriesEmpty = computed(
+  () =>
+    props.maintainerHealthScoreV2 === null &&
+    props.securitySupplyChainScoreV2 === null &&
+    props.developmentActivityScoreV2 === null,
+);
+
+const emptyMessage = computed(() =>
+  allCategoriesEmpty.value
+    ? 'Health Score unavailable. All three categories have less than 40% signal coverage for this project.'
+    : 'Health Score unavailable for this project.',
+);
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
 
