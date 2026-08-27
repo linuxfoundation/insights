@@ -29,6 +29,12 @@ const SKIP_THROTTLE_PATHS = new Set([
   '/v0/pipes/collection_buckets.json',
 ]);
 
+function stripTrailingSlashes(url: string): string {
+  let end = url.length;
+  while (end > 0 && url[end - 1] === '/') end--;
+  return url.slice(0, end);
+}
+
 function buildQueryString(query: TinybirdQuery): string {
   const parts: string[] = [];
   for (const [key, value] of Object.entries(query)) {
@@ -80,7 +86,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     bucketCache: bucketCacheStorage,
   } = config;
 
-  const baseUrl = rawBaseUrl.replace(/\/+$/, '');
+  const baseUrl = stripTrailingSlashes(rawBaseUrl);
   const logger: TinybirdLogger = config.logger ?? console;
   const semaphore = new AdaptiveSemaphore(maxConcurrent, maxQueueSize, logger);
   const bucketCache = createBucketCache(bucketCacheStorage, logger);
