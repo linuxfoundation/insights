@@ -36,6 +36,7 @@ SPDX-License-Identifier: MIT
             :signals="healthBreakdownData ?? null"
             :selected-repos-all-archived-or-excluded="selectedReposAllArchivedOrExcluded"
             :is-repo-selected="isRepoFilterActive"
+            :is-multiple-repos-selected="selectedRepositories.length > 1"
           />
         </lfx-card>
 

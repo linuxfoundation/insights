@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
       <h2 class="text-xl leading-8 font-primary font-semibold text-neutral-900">Health breakdown</h2>
       <lfx-chip
-        v-if="props.healthScoreV2 !== null"
+        v-if="props.healthScoreV2 !== null && !props.isMultipleReposSelected"
         type="bordered"
         size="xsmall"
         class="flex items-center gap-1.5"
@@ -138,6 +138,7 @@ const props = defineProps<{
   signals: HealthBreakdownResults | null;
   selectedReposAllArchivedOrExcluded: boolean;
   isRepoSelected: boolean;
+  isMultipleReposSelected: boolean;
 }>();
 
 const allCategoriesEmpty = computed(
