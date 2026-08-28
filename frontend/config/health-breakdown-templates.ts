@@ -593,7 +593,13 @@ export const getCommitActivityRow = (signals: HealthBreakdownResults): SignalRow
       description: `${commits} commit${commits === 1 ? '' : 's'} in the past six months, a slow pace.`,
     };
   }
-  return { status: 'negative', description: 'No commits in the past six months.' };
+  return {
+    status: 'negative',
+    description:
+      commits > 0
+        ? `${commits} commit${commits === 1 ? '' : 's'} in the past six months, but most repositories show little or no activity.`
+        : 'No commits in the past six months.',
+  };
 };
 
 export const getIssueResolutionRow = (signals: HealthBreakdownResults): SignalRow => {
