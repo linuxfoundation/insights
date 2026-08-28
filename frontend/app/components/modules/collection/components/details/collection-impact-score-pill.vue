@@ -3,44 +3,78 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-chip
-    v-if="props.score === null || props.score === undefined"
-    type="bordered"
-    size="small"
+  <lfx-popover
+    placement="top"
+    trigger-event="hover"
   >
-    <span class="text-xs font-medium text-neutral-500">N/A</span>
-  </lfx-chip>
-  <lfx-chip
-    v-else
-    type="bordered"
-    size="small"
-    class="flex items-center gap-1"
-  >
-    <span
-      class="size-1.5 rounded-full shrink-0"
-      :class="impactScoreDotClass"
-    />
-    <span class="text-xs font-medium text-neutral-900">{{ impactScoreLabel }}</span>
-    <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
-  </lfx-chip>
+    <lfx-chip
+      v-if="props.score === null || props.score === undefined"
+      type="bordered"
+      size="small"
+    >
+      <span class="text-xs font-medium text-neutral-500">Unavailable</span>
+    </lfx-chip>
+    <lfx-chip
+      v-else
+      type="bordered"
+      size="small"
+      class="flex items-center gap-1"
+    >
+      <span class="text-xs font-medium text-neutral-900">{{ impactScoreLabel }}</span>
+      <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
+    </lfx-chip>
+
+    <template #content>
+      <div
+        v-if="props.score === null || props.score === undefined"
+        class="w-64 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
+        <p class="text-neutral-500">Impact score is unavailable for this collection.</p>
+      </div>
+      <div
+        v-else
+        class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
+        <div class="flex items-center gap-1.5">
+          <span class="font-semibold text-neutral-900">{{ impactScoreLabel }}</span>
+          <span class="text-neutral-500">({{ props.score }}/100)</span>
+        </div>
+        <lfx-progress-bar
+          :values="[props.score]"
+          color="normal"
+          size="small"
+        />
+        <p
+          v-if="impactDescription"
+          class="text-neutral-500"
+        >
+          {{ impactDescription }}
+        </p>
+      </div>
+    </template>
+  </lfx-popover>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+import { getImpactSummaryDescription } from '~~/config/health-breakdown-templates';
 
 const props = defineProps<{
   score: number | null;
   impactLabel?: string | null;
 }>();
 
-// Akrites impact bands (PRD alt-label tiers): foundational 85-100, major 60-84, moderate 30-59, minor 0-29.
+// Impact bands per content spec: foundational 80-100, major 60-79, significant 40-59, moderate 20-39, limited 0-19.
 // Prefers the server-computed impactLabel; falls back to client banding if absent.
 const bandFromScore = (score: number) => {
-  if (score >= 85) return 'foundational';
+  if (score >= 80) return 'foundational';
   if (score >= 60) return 'major';
-  if (score >= 30) return 'moderate';
-  return 'minor';
+  if (score >= 40) return 'significant';
+  if (score >= 20) return 'moderate';
+  return 'limited';
 };
 
 const band = computed(() => (props.impactLabel ?? bandFromScore(props.score ?? 0)).toLowerCase());
@@ -49,21 +83,16 @@ const impactScoreLabel = computed(() => {
   const labels: Record<string, string> = {
     foundational: 'Foundational',
     major: 'Major',
+    significant: 'Significant',
     moderate: 'Moderate',
-    minor: 'Minor',
+    limited: 'Limited',
+    // backward-compat: crowd.dev's project_insights_copy.pipe still emits 'minor'; remove once that pipe is updated to the new vocabulary
+    minor: 'Limited',
   };
   return labels[band.value] ?? band.value;
 });
 
-const impactScoreDotClass = computed(() => {
-  const classes: Record<string, string> = {
-    foundational: 'bg-impact-foundational',
-    major: 'bg-impact-major',
-    moderate: 'bg-impact-moderate',
-    minor: 'bg-impact-minor',
-  };
-  return classes[band.value] ?? 'bg-impact-minor';
-});
+const impactDescription = computed(() => getImpactSummaryDescription(props.impactLabel ?? null));
 </script>
 
 <script lang="ts">

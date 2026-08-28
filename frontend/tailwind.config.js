@@ -139,9 +139,7 @@ export default {
     'bg-health-fair',
     'bg-health-concerning',
     'bg-health-critical',
-    'bg-impact-foundational',
-    'bg-impact-major',
-    'bg-impact-moderate',
-    'bg-impact-minor',
+    'bg-brand-500',
+    'bg-neutral-400',
   ],
 };
