@@ -29,7 +29,16 @@ SPDX-License-Identifier: MIT
     </lfx-chip>
 
     <template #content>
-      <div class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3">
+      <div
+        v-if="props.unavailable"
+        class="w-64 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
+        <p class="text-neutral-500">Health score is unavailable for this collection.</p>
+      </div>
+      <div
+        v-else
+        class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
         <div class="flex items-center gap-1.5">
           <span
             class="size-2 rounded-full shrink-0"

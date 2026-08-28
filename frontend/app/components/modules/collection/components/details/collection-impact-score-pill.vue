@@ -25,13 +25,22 @@ SPDX-License-Identifier: MIT
     </lfx-chip>
 
     <template #content>
-      <div class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3">
+      <div
+        v-if="props.score === null || props.score === undefined"
+        class="w-64 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
+        <p class="text-neutral-500">Impact score is unavailable for this collection.</p>
+      </div>
+      <div
+        v-else
+        class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
         <div class="flex items-center gap-1.5">
           <span class="font-semibold text-neutral-900">{{ impactScoreLabel }}</span>
-          <span class="text-neutral-500">({{ props.score ?? 0 }}/100)</span>
+          <span class="text-neutral-500">({{ props.score }}/100)</span>
         </div>
         <lfx-progress-bar
-          :values="[props.score ?? 0]"
+          :values="[props.score]"
           color="normal"
           size="small"
         />
