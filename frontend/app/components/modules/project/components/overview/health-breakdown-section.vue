@@ -33,14 +33,17 @@ SPDX-License-Identifier: MIT
 
     <div
       v-if="isLowSignalCoverage"
-      class="flex items-center gap-1.5 text-xs text-neutral-500 mb-4"
+      class="flex items-start gap-2 p-3 mb-4 bg-accent-100 border border-neutral-100 rounded-md"
     >
       <lfx-icon
         name="circle-info"
         :size="14"
-        class="text-neutral-400 shrink-0"
+        class="text-accent-500 shrink-0"
       />
-      <span>Health Score unavailable. All three categories have less than 40% signal coverage for this project.</span>
+      <div class="flex flex-col gap-1.5 text-xs">
+        <p class="font-semibold text-neutral-900">Health Score unavailable</p>
+        <p class="text-accent-900">All three categories have less than 40% signal coverage for this project.</p>
+      </div>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:items-stretch gap-1 p-1 bg-neutral-50 rounded-lg mb-4">
@@ -137,9 +140,20 @@ const props = defineProps<{
   isRepoSelected: boolean;
 }>();
 
+const allCategoriesEmpty = computed(
+  () =>
+    props.maintainerHealthScoreV2 === null &&
+    props.securitySupplyChainScoreV2 === null &&
+    props.developmentActivityScoreV2 === null,
+);
+
 // healthScoreV2 is intentionally null when a repo filter is active (State 2) — the
-// low-signal-coverage banner only applies to the unfiltered, project-wide total (State 1).
-const isLowSignalCoverage = computed(() => props.healthScoreV2 === null && !props.isRepoSelected);
+// low-signal-coverage banner only applies to the unfiltered, project-wide total (State 1),
+// and only when the category scores are also missing (a total masked for other reasons
+// while categories still have real data would make this message factually wrong).
+const isLowSignalCoverage = computed(
+  () => props.healthScoreV2 === null && !props.isRepoSelected && allCategoriesEmpty.value,
+);
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
 
