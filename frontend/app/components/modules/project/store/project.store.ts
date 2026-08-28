@@ -162,6 +162,19 @@ export const useProjectStore = defineStore('project', () => {
   // If all repos are archived or the project is archived
   const isArchived = computed(() => allArchived.value || isProjectArchived.value);
 
+  // Whole-project archival, independent of any repo selection: either the project record
+  // itself is archived, or literally all of the project's repos are archived. Unlike
+  // `isArchived`, this deliberately excludes the "current selection happens to be all
+  // archived" case - the Overview page (IN-1253) still shows Lifecycle for that selection
+  // state, it only hides the whole-project view for genuine whole-project archival.
+  const isEntireProjectArchived = computed(
+    () =>
+      isProjectArchived.value ||
+      (!isCollectionScope.value &&
+        !!projectRepos.value.length &&
+        archivedRepos.value.length === projectRepos.value.length),
+  );
+
   const emptyStateTitle = computed(() => {
     if (isProjectArchived.value) {
       return 'Archived Project';
@@ -182,6 +195,18 @@ export const useProjectStore = defineStore('project', () => {
       selectedReposValues.value.some((repo) => archivedRepos.value.includes(repo)),
   );
 
+  // True only when there IS an explicit repo selection and every selected repo is archived
+  // or excluded. Used to distinguish the "some active repo selected" vs "selection has no
+  // active repo at all" Health Score empty states (IN-1253). Intentionally separate from
+  // `allArchived`, which only accounts for `archivedRepos` and is consumed elsewhere.
+  const selectedReposAllArchivedOrExcluded = computed(
+    () =>
+      !!selectedReposValues.value.length &&
+      selectedReposValues.value.every(
+        (repo) => archivedRepos.value.includes(repo) || excludedRepos.value.includes(repo),
+      ),
+  );
+
   return {
     isCollectionScope,
     selectedTimeRangeKey,
@@ -200,9 +225,11 @@ export const useProjectStore = defineStore('project', () => {
     selectedReposValues,
     allArchived,
     hasSelectedArchivedRepos,
+    selectedReposAllArchivedOrExcluded,
     collaborationSet,
     isProjectArchived,
     isArchived,
+    isEntireProjectArchived,
     emptyStateTitle,
     emptyStateDescription,
   };

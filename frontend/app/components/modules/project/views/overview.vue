@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
         </lfx-card>
 
         <lfx-card
-          v-if="healthScoreV2Status !== 'pending' && !isArchived"
+          v-if="healthScoreV2Status !== 'pending' && !isEntireProjectArchived"
           class="p-6"
         >
           <lfx-health-breakdown-section
@@ -34,6 +34,7 @@ SPDX-License-Identifier: MIT
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :signals="healthBreakdownData ?? null"
+            :selected-repos-all-archived-or-excluded="selectedReposAllArchivedOrExcluded"
           />
         </lfx-card>
 
@@ -79,10 +80,17 @@ import LfxHealthScoreBanner from '~/components/modules/project/components/overvi
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
-const { hasSelectedArchivedRepos, selectedRepositories, isArchived } = storeToRefs(useProjectStore());
+const {
+  hasSelectedArchivedRepos,
+  selectedRepositories,
+  selectedReposValues,
+  selectedReposAllArchivedOrExcluded,
+  isEntireProjectArchived,
+} = storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
+  repos: selectedRepositories.value.length ? selectedReposValues.value : undefined,
 }));
 
 const {

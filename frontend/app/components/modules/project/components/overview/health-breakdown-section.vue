@@ -3,7 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div>
+  <lfx-empty-state
+    v-if="props.selectedReposAllArchivedOrExcluded"
+    icon="archive"
+    :title="healthScoreFilterEmptyState.stateUnavailable.title"
+    :description="healthScoreFilterEmptyState.stateUnavailable.description"
+  />
+  <div v-else>
     <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
       <h2 class="text-xl leading-8 font-primary font-semibold text-neutral-900">Health breakdown</h2>
       <lfx-chip
@@ -100,8 +106,9 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { getHealthScoreV2Config } from '~~/config/trust-score';
+import { getHealthScoreV2Config, healthScoreFilterEmptyState } from '~~/config/trust-score';
 import {
   getCategoryDescription,
   getCategoryScoreColor,
@@ -126,6 +133,7 @@ const props = defineProps<{
   securitySupplyChainScoreV2: number | null;
   developmentActivityScoreV2: number | null;
   signals: HealthBreakdownResults | null;
+  selectedReposAllArchivedOrExcluded: boolean;
 }>();
 
 const isEmpty = computed(() => props.healthScoreV2 === null);
