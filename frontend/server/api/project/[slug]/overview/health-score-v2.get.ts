@@ -9,29 +9,46 @@ const querySchema = z.object({
   repos: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
+interface RepoHealthScoreV2CategoryTotals {
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  maintainerHealthScoreV2: number | null;
+  securitySupplyChainScoreV2: number | null;
+  developmentActivityScoreV2: number | null;
+}
+
 export default defineEventHandler(async (event): Promise<HealthScoreV2Results> => {
   const slug = (event.context.params as { slug: string }).slug;
   const { repos: rawRepos } = await getValidatedQuery(event, querySchema.parse);
   const repos = Array.isArray(rawRepos) ? rawRepos : rawRepos ? [rawRepos] : undefined;
 
   try {
-    // A repo filter is active: Health Score/Impact totals are only ever shown for the
-    // full-project default, so only Lifecycle is fetched here, recomputed live for the
-    // selected repos via the repo-filtered pipe.
+    // A repo subset is selected: Health Score/breakdown/Lifecycle are recomputed live for just
+    // those repos. Whether the total is actually displayed (vs. suppressed with the "select all
+    // repositories" empty state, IN-1253 State 2) is a client-side decision based on whether the
+    // selection came from the top-of-page repo filter widget or a dedicated single-repo/group
+    // route — see `isRepoSelected`/`isRepoFilterActive` in overview.vue.
     if (repos && repos.length > 0) {
-      const res = await fetchFromTinybird<{ lifecycleLabel: string | null }[]>(
-        '/v0/pipes/repo_lifecycle_v2.json',
-        { slug, repos },
-      );
+      const [lifecycleRes, breakdownRes] = await Promise.all([
+        fetchFromTinybird<{ lifecycleLabel: string | null }[]>('/v0/pipes/repo_lifecycle_v2.json', {
+          slug,
+          repos,
+        }),
+        fetchFromTinybird<RepoHealthScoreV2CategoryTotals[]>(
+          '/v0/pipes/repo_health_score_v2_breakdown.json',
+          { slug, repos },
+        ),
+      ]);
+      const breakdown = breakdownRes.data[0];
       return {
-        healthScoreV2: null,
-        healthLabel: null,
-        lifecycleLabel: res.data[0]?.lifecycleLabel ?? null,
+        healthScoreV2: breakdown?.healthScoreV2 ?? null,
+        healthLabel: breakdown?.healthLabel ?? null,
+        lifecycleLabel: lifecycleRes.data[0]?.lifecycleLabel ?? null,
         impactScore: null,
         impactLabel: null,
-        maintainerHealthScoreV2: null,
-        securitySupplyChainScoreV2: null,
-        developmentActivityScoreV2: null,
+        maintainerHealthScoreV2: breakdown?.maintainerHealthScoreV2 ?? null,
+        securitySupplyChainScoreV2: breakdown?.securitySupplyChainScoreV2 ?? null,
+        developmentActivityScoreV2: breakdown?.developmentActivityScoreV2 ?? null,
       };
     }
 
