@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :status="healthScoreV2Status"
-            :is-repo-selected="selectedRepositories.length > 0"
+            :is-repo-selected="isRepoFilterActive"
             :signals="healthBreakdownData ?? null"
           />
         </lfx-card>
@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :signals="healthBreakdownData ?? null"
             :selected-repos-all-archived-or-excluded="selectedReposAllArchivedOrExcluded"
-            :is-repo-selected="selectedRepositories.length > 0"
+            :is-repo-selected="isRepoFilterActive"
           />
         </lfx-card>
 
@@ -87,7 +87,15 @@ const {
   selectedReposValues,
   selectedReposAllArchivedOrExcluded,
   isEntireProjectArchived,
+  selectedRepositoryGroup,
 } = storeToRefs(useProjectStore());
+
+// Dedicated single-repo (`route.params.name`) and repository-group routes always have a
+// non-empty `selectedRepositories`, but have no "select all repositories" control — only the
+// top-of-page repo filter widget (`route.query.repos`) should trigger that empty state.
+const isRepoFilterActive = computed(
+  () => !route.params.name && !selectedRepositoryGroup.value && selectedRepositories.value.length > 0,
+);
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
