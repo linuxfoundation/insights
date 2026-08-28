@@ -105,6 +105,7 @@ export interface HealthBreakdownResults {
 
   // Security
   openVulnScore: number | null;
+  openVulnAvailable: boolean | null;
   openCriticals: number | null;
   openHighs: number | null;
   openModerates: number | null;

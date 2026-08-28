@@ -259,14 +259,15 @@ const getCategoryUnavailableDescription = (
   }
   if (category === 'security') {
     const availableSignals: string[] = [];
+    if (signals?.openVulnAvailable) availableSignals.push('open vulnerability data');
     if (signals?.scorecardAvailable) availableSignals.push('OpenSSF Scorecard');
     if (signals?.securityPracticesAvailable) availableSignals.push('security practices');
     if (signals?.dependencyHealthAvailable) availableSignals.push('dependency health');
     const reason = signals?.isGerrit ? 'Gerrit-hosted projects' : 'this repository type';
     const namedAvailable =
       availableSignals.length > 0
-        ? `Only open vulnerability data and ${availableSignals.join(', ')} ${availableSignals.length === 1 ? 'is' : 'are'} available for ${reason}.`
-        : `Only open vulnerability data is available for ${reason}.`;
+        ? `Only ${availableSignals.join(', ')} ${availableSignals.length === 1 ? 'is' : 'are'} available for ${reason}.`
+        : `No security signals are available for ${reason}.`;
     return `${namedAvailable} The category has been dropped from the Health Score composite.`;
   }
   const availableSignals: string[] = [];
@@ -379,6 +380,12 @@ export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow =
 // --- Security signals ---
 
 export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
+  if (!signals.openVulnAvailable || signals.openVulnScore === null) {
+    return {
+      status: 'no-data',
+      description: blockedSignalDescription('Open vulnerabilities', signals),
+    };
+  }
   const criticals = signals.openCriticals ?? 0;
   const highs = signals.openHighs ?? 0;
   const moderates = signals.openModerates ?? 0;

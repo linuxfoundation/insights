@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect } from 'vitest';
-import { getLifecycleDescription } from './health-breakdown-templates';
+import type { HealthBreakdownResults } from '../types/overview/responses.types';
+import { getLifecycleDescription, getOpenVulnRow } from './health-breakdown-templates';
 
 describe('getLifecycleDescription', () => {
   test('should return the inert description when lifecycle state is "inert"', () => {
@@ -39,5 +40,55 @@ describe('getLifecycleDescription', () => {
     expect(result).toBe(
       'The repository has been explicitly archived. No further updates are expected and the project is no longer accepting contributions.',
     );
+  });
+});
+
+describe('health-breakdown-templates', () => {
+  test('getOpenVulnRow returns no-data when openVulnScore is null', () => {
+    const signals = {
+      openVulnScore: null,
+      openVulnAvailable: null,
+      openCriticals: null,
+      openHighs: null,
+      openModerates: null,
+      isGerrit: null,
+      isExcluded: null,
+    } as HealthBreakdownResults;
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('no-data');
+  });
+
+  test('getOpenVulnRow returns no-data when the repo has never completed a vulnerability scan', () => {
+    const signals = {
+      openVulnScore: 10,
+      openVulnAvailable: false,
+      openCriticals: null,
+      openHighs: null,
+      openModerates: null,
+      isGerrit: false,
+      isExcluded: false,
+    } as HealthBreakdownResults;
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('no-data');
+  });
+
+  test('getOpenVulnRow returns positive when the repo has been scanned and is clean', () => {
+    const signals = {
+      openVulnScore: 10,
+      openVulnAvailable: true,
+      openCriticals: 0,
+      openHighs: 0,
+      openModerates: 0,
+      isGerrit: false,
+      isExcluded: false,
+    } as HealthBreakdownResults;
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('positive');
   });
 });
