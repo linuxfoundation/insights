@@ -21,7 +21,7 @@ export default defineEventHandler(async (event): Promise<HealthBreakdownResults>
     if (repos && repos.length > 0) {
       const res = await fetchFromTinybird<HealthBreakdownResults[]>(
         '/v0/pipes/repo_health_score_v2_breakdown.json',
-        { repos },
+        { slug, repos },
       );
       return (
         res.data[0] ?? {

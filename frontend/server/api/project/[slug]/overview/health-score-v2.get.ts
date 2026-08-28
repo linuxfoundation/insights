@@ -21,7 +21,7 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
     if (repos && repos.length > 0) {
       const res = await fetchFromTinybird<{ lifecycleLabel: string | null }[]>(
         '/v0/pipes/repo_lifecycle_v2.json',
-        { repos },
+        { slug, repos },
       );
       return {
         healthScoreV2: null,
