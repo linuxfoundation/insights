@@ -284,7 +284,7 @@ const getSecurityDescription = (band: CategoryBand, signals: HealthBreakdownResu
 const getDevelopmentDescription = (band: CategoryBand, signals: HealthBreakdownResults): string => {
   if (band === 'success') {
     const releaseDetail =
-      signals.daysSinceLatest !== null
+      signals.daysSinceLatest !== null && signals.daysSinceLatest >= 0
         ? `Active commit stream, with the last release ${Math.round(signals.daysSinceLatest)} days ago.`
         : 'Active commit stream and a healthy release cadence.';
     return `${releaseDetail} Issue triage is keeping pace with incoming reports.`;
@@ -564,7 +564,7 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
     return { status: 'no-data', description: blockedSignalDescription('Release cadence', signals) };
   }
   const days = signals.daysSinceLatest;
-  if (days === null || signals.releaseCadenceScore === null) {
+  if (days === null || days < 0 || signals.releaseCadenceScore === null) {
     return { status: 'no-data', description: 'No release history is available for this project.' };
   }
   if (signals.releaseCadenceScore >= 8) {
