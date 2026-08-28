@@ -387,21 +387,20 @@ export const getResponsivenessRow = (signals: HealthBreakdownResults): SignalRow
       description: blockedSignalDescription('Maintainer responsiveness', signals),
     };
   }
-  if (signals.medianIssueResponseS === null) {
+  if (signals.medianIssueResponseS === null || signals.responsivenessScore === null) {
     return {
       status: 'no-data',
       description: 'No issue or PR response data available for this project.',
     };
   }
-  const days = Math.round(signals.medianIssueResponseS / 86400);
   const responseText = formatDays(signals.medianIssueResponseS);
-  if (days < 7) {
+  if (signals.responsivenessScore >= 10) {
     return {
       status: 'positive',
       description: `Median response time is ${responseText}, well within a week.`,
     };
   }
-  if (days < 30) {
+  if (signals.responsivenessScore >= 5) {
     return { status: 'warning', description: `Median response time is ${responseText}.` };
   }
   return {
@@ -411,17 +410,17 @@ export const getResponsivenessRow = (signals: HealthBreakdownResults): SignalRow
 };
 
 export const getBusFactorRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.busFactorAvailable) {
+  if (!signals.busFactorAvailable || signals.busFactorScore === null) {
     return { status: 'no-data', description: blockedSignalDescription('Bus factor', signals) };
   }
   const count = signals.busFactorCount ?? 0;
-  if (count >= 3) {
+  if (signals.busFactorScore >= 7) {
     return {
       status: 'positive',
       description: `${count} active maintainers currently have merge rights.`,
     };
   }
-  if (count >= 1) {
+  if (signals.busFactorScore >= 3) {
     return {
       status: 'warning',
       description: `Only ${count} active maintainer${count === 1 ? '' : 's'} currently ${count === 1 ? 'has' : 'have'} merge rights.`,
@@ -431,17 +430,17 @@ export const getBusFactorRow = (signals: HealthBreakdownResults): SignalRow => {
 };
 
 export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.orgDiversityAvailable) {
+  if (!signals.orgDiversityAvailable || signals.orgDiversityScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Organization diversity', signals),
     };
   }
   const count = signals.orgCount ?? 0;
-  if (count >= 3) {
+  if (signals.orgDiversityScore >= 4) {
     return { status: 'positive', description: `Contributors span ${count} organizations.` };
   }
-  if (count >= 1) {
+  if (signals.orgDiversityScore >= 2) {
     return {
       status: 'warning',
       description: `Contributors come from ${count} organization${count === 1 ? '' : 's'} only.`,
@@ -465,43 +464,43 @@ export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
   const criticals = signals.openCriticals ?? 0;
   const highs = signals.openHighs ?? 0;
   const moderates = signals.openModerates ?? 0;
-  if (criticals + highs > 0) {
-    return {
-      status: 'negative',
-      description: `${criticals + highs} open critical or high vulnerabilit${criticals + highs === 1 ? 'y' : 'ies'}.`,
-    };
+  if (signals.openVulnScore >= 10) {
+    return { status: 'positive', description: 'No open vulnerabilities of any severity.' };
   }
-  if (moderates > 0) {
+  if (signals.openVulnScore >= 5) {
     return {
       status: 'warning',
       description: `${moderates} open medium or low severity vulnerabilit${moderates === 1 ? 'y' : 'ies'}, no critical or high issues.`,
     };
   }
-  return { status: 'positive', description: 'No open vulnerabilities of any severity.' };
+  return {
+    status: 'negative',
+    description: `${criticals + highs} open critical or high vulnerabilit${criticals + highs === 1 ? 'y' : 'ies'}.`,
+  };
 };
 
 export const getScorecardRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.scorecardAvailable) {
+  if (!signals.scorecardAvailable || signals.scorecardScorePts === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('OpenSSF Scorecard', signals),
     };
   }
-  const score = signals.scorecardScore ?? 0;
-  if (score >= 7) {
-    return { status: 'positive', description: `OpenSSF Scorecard is ${score.toFixed(1)}/10.` };
+  const rawScore = signals.scorecardScore ?? 0;
+  if (signals.scorecardScorePts >= 7) {
+    return { status: 'positive', description: `OpenSSF Scorecard is ${rawScore.toFixed(1)}/10.` };
   }
-  if (score >= 4) {
+  if (signals.scorecardScorePts >= 4) {
     return {
       status: 'warning',
-      description: `OpenSSF Scorecard is ${score.toFixed(1)}/10, below the recommended baseline.`,
+      description: `OpenSSF Scorecard is ${rawScore.toFixed(1)}/10, below the recommended baseline.`,
     };
   }
-  return { status: 'negative', description: `OpenSSF Scorecard is ${score.toFixed(1)}/10.` };
+  return { status: 'negative', description: `OpenSSF Scorecard is ${rawScore.toFixed(1)}/10.` };
 };
 
 export const getSecurityPracticesRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.securityPracticesAvailable) {
+  if (!signals.securityPracticesAvailable || signals.securityPracticesScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Security practices', signals),
@@ -514,13 +513,13 @@ export const getSecurityPracticesRow = (signals: HealthBreakdownResults): Signal
     signals.branchProtectionRequiresStatusChecks,
   ];
   const enabledCount = practices.filter((p) => Boolean(p)).length;
-  if (enabledCount >= 3) {
+  if (signals.securityPracticesScore >= 6) {
     return {
       status: 'positive',
       description: `${enabledCount} of 4 tracked security practices are in place.`,
     };
   }
-  if (enabledCount >= 1) {
+  if (signals.securityPracticesScore >= 2) {
     const missing: string[] = [];
     if (!signals.securityPolicyEnabled) missing.push('no SECURITY.md');
     if (!signals.branchProtectionEnabled) missing.push('no branch protection');
@@ -533,20 +532,20 @@ export const getSecurityPracticesRow = (signals: HealthBreakdownResults): Signal
 };
 
 export const getDependencyHealthRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.dependencyHealthAvailable) {
+  if (!signals.dependencyHealthAvailable || signals.dependencyHealthScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Dependency health', signals),
     };
   }
   const vulnerable = signals.vulnerableDeps ?? 0;
-  if (vulnerable === 0) {
+  if (signals.dependencyHealthScore >= 5) {
     return {
       status: 'positive',
       description: 'All dependencies are clean of known vulnerabilities.',
     };
   }
-  if (vulnerable <= 3) {
+  if (signals.dependencyHealthScore >= 3) {
     return {
       status: 'warning',
       description: `${vulnerable} dependenc${vulnerable === 1 ? 'y has' : 'ies have'} a known vulnerability.`,
@@ -565,13 +564,13 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
     return { status: 'no-data', description: blockedSignalDescription('Release cadence', signals) };
   }
   const days = signals.daysSinceLatest;
-  if (days === null) {
+  if (days === null || signals.releaseCadenceScore === null) {
     return { status: 'no-data', description: 'No release history is available for this project.' };
   }
-  if (days <= 180) {
+  if (signals.releaseCadenceScore >= 8) {
     return { status: 'positive', description: `Last release was ${Math.round(days)} days ago.` };
   }
-  if (days <= 730) {
+  if (signals.releaseCadenceScore >= 2) {
     return {
       status: 'warning',
       description: `Last release was ${Math.round(days)} days ago, longer than six months.`,
@@ -582,13 +581,13 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
 
 export const getCommitActivityRow = (signals: HealthBreakdownResults): SignalRow => {
   const commits = signals.commitsLast6m;
-  if (commits === null) {
+  if (commits === null || signals.commitActivityScore === null) {
     return { status: 'no-data', description: 'No commit history is available for this project.' };
   }
-  if (commits > 20) {
+  if (signals.commitActivityScore >= 5) {
     return { status: 'positive', description: `${commits} commits in the past six months.` };
   }
-  if (commits > 0) {
+  if (signals.commitActivityScore >= 3) {
     return {
       status: 'warning',
       description: `${commits} commit${commits === 1 ? '' : 's'} in the past six months, a slow pace.`,
@@ -598,7 +597,7 @@ export const getCommitActivityRow = (signals: HealthBreakdownResults): SignalRow
 };
 
 export const getIssueResolutionRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.issueResolutionAvailable) {
+  if (!signals.issueResolutionAvailable || signals.issueResolutionScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Issue resolution', signals),
@@ -606,16 +605,16 @@ export const getIssueResolutionRow = (signals: HealthBreakdownResults): SignalRo
   }
   const closed = signals.closed12m ?? 0;
   const opened = signals.opened12m ?? 0;
-  if (opened === 0) {
-    return { status: 'positive', description: 'No new issues were opened in the past year.' };
-  }
-  if (closed >= opened) {
+  if (signals.issueResolutionScore >= 7) {
+    if (opened === 0) {
+      return { status: 'positive', description: 'No new issues were opened in the past year.' };
+    }
     return {
       status: 'positive',
       description: `${closed} issues closed against ${opened} opened in the past year, closing faster than opening.`,
     };
   }
-  if (closed >= opened * 0.5) {
+  if (signals.issueResolutionScore >= 4) {
     return {
       status: 'warning',
       description: `${closed} issues closed against ${opened} opened in the past year, a growing backlog.`,
@@ -634,20 +633,19 @@ export const getPrMergeRow = (signals: HealthBreakdownResults): SignalRow => {
   const merged = signals.merged12m ?? 0;
   const closedUnmerged = signals.closedUnmerged12m ?? 0;
   const total = merged + closedUnmerged;
-  if (total === 0) {
+  if (total === 0 || signals.prMergeScore === null) {
     return {
       status: 'no-data',
       description: 'No external pull requests were received in the past year.',
     };
   }
-  const mergeRate = merged / total;
-  if (mergeRate > 0.5) {
+  if (signals.prMergeScore >= 5) {
     return {
       status: 'positive',
       description: `${merged} of ${total} pull requests were merged in the past year.`,
     };
   }
-  if (mergeRate > 0) {
+  if (signals.prMergeScore >= 2) {
     return {
       status: 'warning',
       description: `${merged} of ${total} pull requests were merged in the past year, under half.`,
