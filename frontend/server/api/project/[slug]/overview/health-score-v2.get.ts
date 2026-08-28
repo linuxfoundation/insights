@@ -16,8 +16,8 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
 
   try {
     // A repo filter is active: Health Score/Impact totals are only ever shown for the
-    // full-project default (IN-1253), so only Lifecycle is fetched here, recomputed live
-    // for the selected repos via the repo-filtered pipe.
+    // full-project default, so only Lifecycle is fetched here, recomputed live for the
+    // selected repos via the repo-filtered pipe.
     if (repos && repos.length > 0) {
       const res = await fetchFromTinybird<{ lifecycleLabel: string | null }[]>(
         '/v0/pipes/repo_lifecycle_v2.json',

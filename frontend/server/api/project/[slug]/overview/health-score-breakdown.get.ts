@@ -14,10 +14,10 @@ export default defineEventHandler(async (event): Promise<HealthBreakdownResults>
   const repos = Array.isArray(rawRepos) ? rawRepos : rawRepos ? [rawRepos] : undefined;
 
   try {
-    // A repo filter is active: recompute the breakdown live for just the selected repos
-    // (IN-1253). The pipe filters out archived/excluded repos server-side, so a selection
-    // made up entirely of archived/excluded repos naturally has no matching rows - treat
-    // that as "no breakdown data" rather than an error.
+    // A repo filter is active: recompute the breakdown live for just the selected repos.
+    // The pipe filters out archived/excluded repos server-side, so a selection made up
+    // entirely of archived/excluded repos naturally has no matching rows - treat that as
+    // "no breakdown data" rather than an error.
     if (repos && repos.length > 0) {
       const res = await fetchFromTinybird<HealthBreakdownResults[]>(
         '/v0/pipes/repo_health_score_v2_breakdown.json',

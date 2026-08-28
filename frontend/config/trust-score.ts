@@ -35,10 +35,7 @@ export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Confi
   return healthScoreV2Config.unavailable;
 };
 
-// Health Score empty-state copy for the repo-selector states (IN-1253). `stateSelectAll`
-// matches the wording of the pre-IN-1212 repo-scoping banner (see git history) so its
-// removal wasn't a wording regression, just a relocation from "always shown while a repo is
-// selected" to "shown only in place of the Health Score total when a repo is selected".
+// Health Score empty-state copy for the repo-selector states.
 export const healthScoreFilterEmptyState = {
   stateSelectAll: {
     description: 'Select "All repositories" in order to get the aggregated Health Score',

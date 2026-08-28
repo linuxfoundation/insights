@@ -162,11 +162,8 @@ export const useProjectStore = defineStore('project', () => {
   // If all repos are archived or the project is archived
   const isArchived = computed(() => allArchived.value || isProjectArchived.value);
 
-  // Whole-project archival, independent of any repo selection: either the project record
-  // itself is archived, or literally all of the project's repos are archived. Unlike
-  // `isArchived`, this deliberately excludes the "current selection happens to be all
-  // archived" case - the Overview page (IN-1253) still shows Lifecycle for that selection
-  // state, it only hides the whole-project view for genuine whole-project archival.
+  // Unlike `isArchived`, this excludes the "current selection happens to be all archived"
+  // case - it's true only for genuine whole-project archival, not a selection-driven one.
   const isEntireProjectArchived = computed(
     () =>
       isProjectArchived.value ||
@@ -196,9 +193,7 @@ export const useProjectStore = defineStore('project', () => {
   );
 
   // True only when there IS an explicit repo selection and every selected repo is archived
-  // or excluded. Used to distinguish the "some active repo selected" vs "selection has no
-  // active repo at all" Health Score empty states (IN-1253). Intentionally separate from
-  // `allArchived`, which only accounts for `archivedRepos` and is consumed elsewhere.
+  // or excluded. Separate from `allArchived`, which only accounts for `archivedRepos`.
   const selectedReposAllArchivedOrExcluded = computed(
     () =>
       !!selectedReposValues.value.length &&
