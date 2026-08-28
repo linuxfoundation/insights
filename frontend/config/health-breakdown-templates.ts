@@ -397,7 +397,7 @@ export const getResponsivenessRow = (signals: HealthBreakdownResults): SignalRow
   if (signals.responsivenessScore >= 10) {
     return {
       status: 'positive',
-      description: `Median response time is ${responseText}, well within a week.`,
+      description: `Median response time is ${responseText}.`,
     };
   }
   if (signals.responsivenessScore >= 5) {
@@ -477,9 +477,16 @@ export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
     return { status: 'positive', description: 'No open vulnerabilities of any severity.' };
   }
   if (signals.openVulnScore >= 5) {
+    const parts: string[] = [];
+    if (criticals + highs > 0)
+      parts.push(
+        `${criticals + highs} critical or high vulnerabilit${criticals + highs === 1 ? 'y' : 'ies'}`,
+      );
+    if (moderates > 0)
+      parts.push(`${moderates} medium or low vulnerabilit${moderates === 1 ? 'y' : 'ies'}`);
     return {
       status: 'warning',
-      description: `${moderates} open medium or low severity vulnerabilit${moderates === 1 ? 'y' : 'ies'}, no critical or high issues.`,
+      description: parts.length > 0 ? `${parts.join(', ')} open.` : 'Some open vulnerabilities detected.',
     };
   }
   return {
@@ -588,7 +595,7 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
   if (signals.releaseCadenceScore >= 2) {
     return {
       status: 'warning',
-      description: `Last release was ${Math.round(days)} days ago, longer than six months.`,
+      description: `Last release was ${Math.round(days)} days ago.`,
     };
   }
   const years = Math.floor(days / 365);
@@ -630,25 +637,17 @@ export const getIssueResolutionRow = (signals: HealthBreakdownResults): SignalRo
   }
   const closed = signals.closed12m ?? 0;
   const opened = signals.opened12m ?? 0;
+  if (opened === 0 && closed === 0) {
+    return { status: 'positive', description: 'No new issues were opened in the past year.' };
+  }
+  const countText = `${closed} issue${closed === 1 ? '' : 's'} closed against ${opened} opened in the past year`;
   if (signals.issueResolutionScore >= 7) {
-    if (opened === 0) {
-      return { status: 'positive', description: 'No new issues were opened in the past year.' };
-    }
-    return {
-      status: 'positive',
-      description: `${closed} issues closed against ${opened} opened in the past year, closing faster than opening.`,
-    };
+    return { status: 'positive', description: `${countText}.` };
   }
   if (signals.issueResolutionScore >= 4) {
-    return {
-      status: 'warning',
-      description: `${closed} issues closed against ${opened} opened in the past year, a growing backlog.`,
-    };
+    return { status: 'warning', description: `${countText}.` };
   }
-  return {
-    status: 'negative',
-    description: `${closed} issues closed against ${opened} opened in the past year, the backlog is growing quickly.`,
-  };
+  return { status: 'negative', description: `${countText}.` };
 };
 
 export const getPrMergeRow = (signals: HealthBreakdownResults): SignalRow => {
@@ -664,22 +663,14 @@ export const getPrMergeRow = (signals: HealthBreakdownResults): SignalRow => {
       description: 'No external pull requests were received in the past year.',
     };
   }
+  const mergeText = `${merged} of ${total} pull request${total === 1 ? '' : 's'} merged in the past year`;
   if (signals.prMergeScore >= 5) {
-    return {
-      status: 'positive',
-      description: `${merged} of ${total} pull requests were merged in the past year.`,
-    };
+    return { status: 'positive', description: `${mergeText}.` };
   }
   if (signals.prMergeScore >= 2) {
-    return {
-      status: 'warning',
-      description: `${merged} of ${total} pull requests were merged in the past year, under half.`,
-    };
+    return { status: 'warning', description: `${mergeText}.` };
   }
-  return {
-    status: 'negative',
-    description: `None of ${total} pull requests were merged in the past year.`,
-  };
+  return { status: 'negative', description: `${mergeText}.` };
 };
 
 // ---------------------------------------------------------------------------
