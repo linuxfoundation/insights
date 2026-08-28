@@ -405,7 +405,7 @@ export const getResponsivenessRow = (signals: HealthBreakdownResults): SignalRow
   }
   return {
     status: 'negative',
-    description: `Median response time is ${responseText}, well over a month.`,
+    description: `Median response time is ${responseText}, but most repositories have response times over 90 days.`,
   };
 };
 
@@ -426,7 +426,13 @@ export const getBusFactorRow = (signals: HealthBreakdownResults): SignalRow => {
       description: `Only ${count} active maintainer${count === 1 ? '' : 's'} currently ${count === 1 ? 'has' : 'have'} merge rights.`,
     };
   }
-  return { status: 'negative', description: 'No active maintainers with merge rights were found.' };
+  return {
+    status: 'negative',
+    description:
+      count > 0
+        ? `${count} active maintainer${count === 1 ? '' : 's'} with merge rights, but most repositories have no active maintainer.`
+        : 'No active maintainers with merge rights were found.',
+  };
 };
 
 export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow => {
@@ -448,7 +454,10 @@ export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow =
   }
   return {
     status: 'negative',
-    description: 'No organization affiliation data is available for contributors.',
+    description:
+      count > 0
+        ? `Contributors span ${count} organization${count === 1 ? '' : 's'}, but most repositories lack organizational diversity.`
+        : 'No organization affiliation data is available for contributors.',
   };
 };
 
@@ -528,7 +537,13 @@ export const getSecurityPracticesRow = (signals: HealthBreakdownResults): Signal
       description: `${enabledCount} of 4 tracked security practices are in place, ${missing.join(', ') || 'with gaps remaining'}.`,
     };
   }
-  return { status: 'negative', description: 'No security practices are in place.' };
+  return {
+    status: 'negative',
+    description:
+      enabledCount > 0
+        ? `${enabledCount} of 4 tracked security practices are in place, but most repositories have none.`
+        : 'No security practices are in place.',
+  };
 };
 
 export const getDependencyHealthRow = (signals: HealthBreakdownResults): SignalRow => {
@@ -576,7 +591,11 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
       description: `Last release was ${Math.round(days)} days ago, longer than six months.`,
     };
   }
-  return { status: 'negative', description: `No release in over ${Math.floor(days / 365)} years.` };
+  const years = Math.floor(days / 365);
+  return {
+    status: 'negative',
+    description: years > 0 ? `No release in over ${years} year${years === 1 ? '' : 's'}.` : 'No recent release across most repositories.',
+  };
 };
 
 export const getCommitActivityRow = (signals: HealthBreakdownResults): SignalRow => {
