@@ -486,7 +486,8 @@ export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
       parts.push(`${moderates} medium or low vulnerabilit${moderates === 1 ? 'y' : 'ies'}`);
     return {
       status: 'warning',
-      description: parts.length > 0 ? `${parts.join(', ')} open.` : 'Some open vulnerabilities detected.',
+      description:
+        parts.length > 0 ? `${parts.join(', ')} open.` : 'Some open vulnerabilities detected.',
     };
   }
   return {
@@ -601,7 +602,10 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
   const years = Math.floor(days / 365);
   return {
     status: 'negative',
-    description: years > 0 ? `No release in over ${years} year${years === 1 ? '' : 's'}.` : 'No recent release across most repositories.',
+    description:
+      years > 0
+        ? `No release in over ${years} year${years === 1 ? '' : 's'}.`
+        : 'No recent release across most repositories.',
   };
 };
 
