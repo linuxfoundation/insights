@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
     </p>
 
     <div
-      v-if="isEmpty"
+      v-if="isLowSignalCoverage"
       class="flex items-center gap-1.5 text-xs text-neutral-500 mb-4"
     >
       <lfx-icon
@@ -134,9 +134,12 @@ const props = defineProps<{
   developmentActivityScoreV2: number | null;
   signals: HealthBreakdownResults | null;
   selectedReposAllArchivedOrExcluded: boolean;
+  isRepoSelected: boolean;
 }>();
 
-const isEmpty = computed(() => props.healthScoreV2 === null);
+// healthScoreV2 is intentionally null when a repo filter is active (State 2) — the
+// low-signal-coverage banner only applies to the unfiltered, project-wide total (State 1).
+const isLowSignalCoverage = computed(() => props.healthScoreV2 === null && !props.isRepoSelected);
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
 

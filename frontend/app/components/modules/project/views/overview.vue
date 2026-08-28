@@ -35,6 +35,7 @@ SPDX-License-Identifier: MIT
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :signals="healthBreakdownData ?? null"
             :selected-repos-all-archived-or-excluded="selectedReposAllArchivedOrExcluded"
+            :is-repo-selected="selectedRepositories.length > 0"
           />
         </lfx-card>
 
