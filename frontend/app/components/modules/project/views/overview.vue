@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
       <div class="w-full md:w-3/4 flex flex-col gap-6">
         <lfx-health-score-banner />
-        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
+        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5">
           <lfx-project-trust-score-v2
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
             :health-label="healthScoreV2Data?.healthLabel ?? null"

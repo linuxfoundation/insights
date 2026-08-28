@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="px-6">
+  <div
+    class="px-6"
+    :class="{ 'pb-6': !showShareBadge }"
+  >
     <template v-if="!isEntireProjectArchived">
       <lfx-skeleton-state
         :status="status"
