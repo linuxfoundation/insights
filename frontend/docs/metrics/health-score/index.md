@@ -80,7 +80,7 @@ Measures the median time for a non-author to respond to newly opened issues and 
 - **2 pts:** Median response time under 3 months
 - **0 pts:** Median response time 3 months or more, or no response data available
 
-Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal scores 0 pts (not redistributed) because the signal is `available` — there is simply no activity to measure. Only `blocked` sub-signals redistribute their weight.
+Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal scores 0 pts (not imputed) because the signal is `available` — there is simply no activity to measure. Only `blocked` sub-signals have their missing weight imputed at the population median rate.
 
 #### 1.2 Bus Factor (max 18 pts)
 
@@ -124,7 +124,7 @@ Checks whether the repository has adopted documented security practices:
 - **2 pts:** Required status checks before merging
 
 ::: info
-Security practices are currently evaluated for GitHub repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its weight redistributes to other available Security sub-signals.
+Security practices are currently evaluated for GitHub repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its missing weight is imputed at the population median rate.
 :::
 
 #### 2.3 OpenSSF Scorecard (max 7 pts)
@@ -137,7 +137,7 @@ Uses a banded mapping from the OpenSSF Scorecard's 0–10 raw score, calibrated 
 - **2 pts:** Scorecard raw ≥ 2.5
 - **0 pts:** Scorecard raw < 2.5 or unavailable
 
-Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked, and its weight redistributes within the Security category.
+Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its missing weight is imputed at the population median rate.
 
 #### 2.4 Dependency Health (max 5 pts)
 
@@ -288,7 +288,7 @@ Gerrit does not ingest issue data in the same format as GitHub and GitLab. Issue
 
 **Projects without published packages:**
 
-Release Cadence, Dependency Health, and Supply Chain Integrity are all package-mediated signals. Projects that do not publish to a tracked registry (npm, PyPI, Maven, and others) will have these sub-signals blocked. Their weight redistributes to the signals that are available.<!-- TEMPORARILY HIDDEN (IN-1243): removed trailing sentence "Impact Score will not be shown for these projects." Re-enable by uncommenting and restoring the sentence. -->
+Release Cadence and Dependency Health are package-mediated signals. Projects that do not publish to a tracked registry (npm, PyPI, Maven, and others) will have these sub-signals blocked; their missing weight is imputed at the population median rate. Supply Chain Integrity is permanently blocked for all projects and its weight has been explicitly reallocated within the Security category.<!-- TEMPORARILY HIDDEN (IN-1243): removed trailing sentence "Impact Score will not be shown for these projects." Re-enable by uncommenting and restoring the sentence. -->
 
 **Projects with partial data across repos:**
 

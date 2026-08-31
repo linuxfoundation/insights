@@ -72,7 +72,7 @@ You must be signed in with your LFID account to report an issue.
 
 ### Filling out the form
 
-The form asks for four things:
+The form has the following fields:
 
 | Field | Required | Notes |
 |---|---|---|

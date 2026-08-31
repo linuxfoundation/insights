@@ -23,16 +23,10 @@ SPDX-License-Identifier: MIT
         />
       </div>
       <h3 class="text-heading-3 font-secondary font-bold pb-1">Report issue on GitHub</h3>
+      <!-- prettier-ignore -->
       <p class="text-body-2 text-neutral-500">
         Help us improve our data by reporting issues or bugs. Your report will be posted as a public GitHub issue,
-        visible to anyone. View currently open 
-        <a
-          :href="links.issues"
-          target="_blank"
-          rel="noreferrer"
-          class="text-brand-500"
-          >Insights GitHub Issues</a
-        >.
+        visible to anyone. View currently open <a :href="links.issues" target="_blank" rel="noreferrer" class="text-brand-500">Insights GitHub Issues</a>.
       </p>
     </section>
 
