@@ -93,6 +93,10 @@ const props = defineProps<{
   link: ProjectLinkConfig;
 }>();
 
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
+
 const route = useRoute();
 const router = useRouter();
 
@@ -149,6 +153,7 @@ const handleReposChange = (repo: RepositoryItem) => {
       params: { name: repos[0] },
       query: { ...routeQuery, repos: undefined },
     });
+    emit('close');
   } else {
     router.push({
       name: props.link.projectRouteName,

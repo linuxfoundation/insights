@@ -3,11 +3,17 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div>
+  <lfx-empty-state
+    v-if="props.selectedReposAllArchivedOrExcluded"
+    icon="archive"
+    :title="healthScoreFilterEmptyState.stateUnavailable.title"
+    :description="healthScoreFilterEmptyState.stateUnavailable.description"
+  />
+  <div v-else>
     <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
       <h2 class="text-xl leading-8 font-primary font-semibold text-neutral-900">Health breakdown</h2>
       <lfx-chip
-        v-if="props.healthScoreV2 !== null"
+        v-if="props.healthScoreV2 !== null && !props.isMultipleReposSelected"
         type="bordered"
         size="xsmall"
         class="flex items-center gap-1.5"
@@ -26,15 +32,18 @@ SPDX-License-Identifier: MIT
     </p>
 
     <div
-      v-if="isEmpty"
-      class="flex items-center gap-1.5 text-xs text-neutral-500 mb-4"
+      v-if="isLowSignalCoverage"
+      class="flex items-start gap-2 p-3 mb-4 bg-accent-100 border border-neutral-100 rounded-md"
     >
       <lfx-icon
         name="circle-info"
         :size="14"
-        class="text-neutral-400 shrink-0"
+        class="text-accent-500 shrink-0"
       />
-      <span>Health Score unavailable. All three categories have less than 40% signal coverage for this project.</span>
+      <div class="flex flex-col gap-1.5 text-xs">
+        <p class="font-semibold text-neutral-900">Health Score unavailable</p>
+        <p class="text-accent-900">All three categories have less than 40% signal coverage for this project.</p>
+      </div>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:items-stretch gap-1 p-1 bg-neutral-50 rounded-lg mb-4">
@@ -100,8 +109,9 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { getHealthScoreV2Config } from '~~/config/trust-score';
+import { getHealthScoreV2Config, healthScoreFilterEmptyState } from '~~/config/trust-score';
 import {
   getCategoryDescription,
   getCategoryScoreColor,
@@ -126,9 +136,25 @@ const props = defineProps<{
   securitySupplyChainScoreV2: number | null;
   developmentActivityScoreV2: number | null;
   signals: HealthBreakdownResults | null;
+  selectedReposAllArchivedOrExcluded: boolean;
+  isRepoSelected: boolean;
+  isMultipleReposSelected: boolean;
 }>();
 
-const isEmpty = computed(() => props.healthScoreV2 === null);
+const allCategoriesEmpty = computed(
+  () =>
+    props.maintainerHealthScoreV2 === null &&
+    props.securitySupplyChainScoreV2 === null &&
+    props.developmentActivityScoreV2 === null,
+);
+
+// healthScoreV2 is intentionally null when a repo filter is active (State 2) — the
+// low-signal-coverage banner only applies to the unfiltered, project-wide total (State 1),
+// and only when the category scores are also missing (a total masked for other reasons
+// while categories still have real data would make this message factually wrong).
+const isLowSignalCoverage = computed(
+  () => props.healthScoreV2 === null && !props.isRepoSelected && allCategoriesEmpty.value,
+);
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
 

@@ -3,8 +3,11 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="px-6">
-    <template v-if="!isArchived">
+  <div
+    class="px-6"
+    :class="{ 'pb-6': !showShareBadge }"
+  >
+    <template v-if="!isEntireProjectArchived">
       <lfx-skeleton-state
         :status="status"
         height="10rem"
@@ -13,43 +16,65 @@ SPDX-License-Identifier: MIT
         <!-- TEMPORARILY HIDDEN (IN-1243): grid-cols-2 instead of grid-cols-3 while Impact is hidden, so Health Score/Lifecycle split evenly. Revert to md:grid-cols-3 when Impact is re-enabled. -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex flex-col items-start gap-3">
-            <div class="flex flex-row flex-wrap items-start justify-between gap-3 w-full">
-              <div class="flex flex-col items-start gap-2">
-                <span class="text-xs font-semibold text-neutral-500 tracking-wide flex items-center gap-1">
-                  HEALTH SCORE
-                  <lfx-tooltip placement="top">
-                    <lfx-icon
-                      name="circle-question"
-                      :size="11"
-                      class="cursor-help text-neutral-400"
-                    />
-                    <template #content>
-                      <div class="max-w-xs text-xs leading-relaxed">
-                        The Insights Health Score measures an open source project's overall trustworthiness, based on
-                        maintainer activity, security posture, and development cadence.
-                      </div>
-                    </template>
-                  </lfx-tooltip>
-                </span>
-                <span
-                  class="text-lg font-semibold"
-                  :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
-                  >{{ scoreLabel }}</span
-                >
+            <template v-if="!isRepoSelected">
+              <div class="flex flex-row flex-wrap items-start justify-between gap-3 w-full">
+                <div class="flex flex-col items-start gap-2">
+                  <span class="text-xs font-semibold text-neutral-500 tracking-wide flex items-center gap-1">
+                    HEALTH SCORE
+                    <lfx-tooltip placement="top">
+                      <lfx-icon
+                        name="circle-question"
+                        :size="11"
+                        class="cursor-help text-neutral-400"
+                      />
+                      <template #content>
+                        <div class="max-w-xs text-xs leading-relaxed">
+                          The Insights Health Score measures an open source project's overall trustworthiness, based on
+                          maintainer activity, security posture, and development cadence.
+                        </div>
+                      </template>
+                    </lfx-tooltip>
+                  </span>
+                  <span
+                    class="text-lg font-semibold"
+                    :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
+                    >{{ scoreLabel }}</span
+                  >
+                </div>
+                <lfx-health-score-ring
+                  :score="healthScoreV2 ?? 0"
+                  :color="scoreColorHex"
+                  :unavailable="isEmpty"
+                />
               </div>
-              <lfx-health-score-ring
-                :score="healthScoreV2 ?? 0"
-                :color="scoreColorHex"
-                :unavailable="isEmpty"
-              />
-            </div>
-            <div class="flex-grow" />
-            <p
-              v-if="healthScoreDescription"
-              class="text-xs text-neutral-500"
+              <div class="flex-grow" />
+              <p
+                v-if="healthScoreDescription"
+                class="text-xs text-neutral-500"
+              >
+                {{ healthScoreDescription }}
+              </p>
+            </template>
+
+            <div
+              v-else-if="!selectedReposAllArchivedOrExcluded"
+              class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 bg-brand-50 rounded-full px-1.5 py-1"
             >
-              {{ healthScoreDescription }}
-            </p>
+              <lfx-icon
+                name="info-circle"
+                :size="12"
+                type="solid"
+                class="text-brand-600"
+              />
+              {{ healthScoreFilterEmptyState.stateSelectAll.description }}
+            </div>
+
+            <lfx-empty-state
+              v-else
+              icon="archive"
+              :title="healthScoreFilterEmptyState.stateUnavailable.title"
+              :description="healthScoreFilterEmptyState.stateUnavailable.description"
+            />
           </div>
 
           <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
@@ -150,6 +175,7 @@ import {
   // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
   // getImpactLabelDisplay,
   getLifecycleLabelConfig,
+  healthScoreFilterEmptyState,
 } from '~~/config/trust-score';
 import { lfxColors } from '~/config/styles/colors';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
@@ -181,12 +207,22 @@ const props = defineProps<{
   signals: HealthBreakdownResults | null;
 }>();
 
-const { isArchived, emptyStateTitle, emptyStateDescription, selectedRepositories } = storeToRefs(useProjectStore());
+const {
+  isEntireProjectArchived,
+  emptyStateTitle,
+  emptyStateDescription,
+  selectedRepositories,
+  selectedReposAllArchivedOrExcluded,
+} = storeToRefs(useProjectStore());
 
 const isEmpty = computed(() => props.healthScoreV2 === null);
 
+// When a repo is selected, the badge switches to an active-contributors badge (see
+// share-badge.vue) which doesn't depend on the Health Score total, so it isn't gated on
+// `isEmpty` in that case - only the project-wide Health Score badge needs a non-null total.
 const showShareBadge = computed(
-  () => !isEmpty.value && props.status === 'success' && selectedRepositories.value.length <= 1,
+  () =>
+    props.status === 'success' && selectedRepositories.value.length <= 1 && (props.isRepoSelected || !isEmpty.value),
 );
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);

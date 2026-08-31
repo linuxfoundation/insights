@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <lfx-project-header :project="data" />
   <div>
     <div v-if="isLoading || projectIsOnboarded">
-      <nuxt-page />
+      <nuxt-page :page-key="route.fullPath" />
     </div>
     <div
       v-else-if="!isLoading && !projectIsOnboarded"

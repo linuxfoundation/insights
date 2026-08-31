@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
       <div class="w-full md:w-3/4 flex flex-col gap-6">
         <lfx-health-score-banner />
-        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
+        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5">
           <lfx-project-trust-score-v2
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
             :health-label="healthScoreV2Data?.healthLabel ?? null"
@@ -18,13 +18,13 @@ SPDX-License-Identifier: MIT
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :status="healthScoreV2Status"
-            :is-repo-selected="selectedRepositories.length > 0"
+            :is-repo-selected="isRepoFilterActive"
             :signals="healthBreakdownData ?? null"
           />
         </lfx-card>
 
         <lfx-card
-          v-if="healthScoreV2Status !== 'pending' && !isArchived"
+          v-if="healthScoreV2Status !== 'pending' && !isEntireProjectArchived"
           class="p-6"
         >
           <lfx-health-breakdown-section
@@ -34,6 +34,9 @@ SPDX-License-Identifier: MIT
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
             :signals="healthBreakdownData ?? null"
+            :selected-repos-all-archived-or-excluded="selectedReposAllArchivedOrExcluded"
+            :is-repo-selected="isRepoFilterActive"
+            :is-multiple-repos-selected="selectedRepositories.length > 1"
           />
         </lfx-card>
 
@@ -79,10 +82,25 @@ import LfxHealthScoreBanner from '~/components/modules/project/components/overvi
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
-const { hasSelectedArchivedRepos, selectedRepositories, isArchived } = storeToRefs(useProjectStore());
+const {
+  hasSelectedArchivedRepos,
+  selectedRepositories,
+  selectedReposValues,
+  selectedReposAllArchivedOrExcluded,
+  isEntireProjectArchived,
+  selectedRepositoryGroup,
+} = storeToRefs(useProjectStore());
+
+// Dedicated single-repo (`route.params.name`) and repository-group routes always have a
+// non-empty `selectedRepositories`, but have no "select all repositories" control — only the
+// top-of-page repo filter widget (`route.query.repos`) should trigger that empty state.
+const isRepoFilterActive = computed(
+  () => !route.params.name && !selectedRepositoryGroup.value && selectedRepositories.value.length > 0,
+);
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
+  repos: selectedRepositories.value.length ? selectedReposValues.value : undefined,
 }));
 
 const {
