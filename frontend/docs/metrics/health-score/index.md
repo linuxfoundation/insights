@@ -196,7 +196,7 @@ Combines two independent measures over the last 12 months: how many issues were 
 - **2 pts:** Median close time under 30 days
 - **0 pts:** 30 days or more, or no closed issues in the period
 
-Gerrit repositories do not ingest issue data. This sub-signal is blocked for Gerrit-only projects and its weight redistributes within Development Activity.
+Gerrit repositories do not ingest issue data. This sub-signal is blocked for Gerrit-only projects; its missing weight is imputed at the population median rate.
 
 #### 3.4 PR Merge Health (max 5 pts)
 

@@ -65,7 +65,7 @@ You must be signed in with your LFID account to report an issue.
 ### Where to find "Report issue"
 
 - **Widget menu**: click the three-dot menu on any insight widget. The area and data insight are pre-filled automatically.
-- **Project header**: click the three-dot menu or the report-issue icon at the top of any project page.
+- **Project header**: click the three-dot menu or the report-issue icon in the project header.
 - **Site footer**: a "Report issue" link is always available at the bottom of the page.
 
 ![Report Data Issue](../../images/report-data-issue.png)
@@ -76,8 +76,8 @@ The form has the following fields:
 
 | Field | Required | Notes |
 |---|---|---|
-| Area | Yes | Which section of Insights the issue is in (pre-filled from widget menu) |
-| Data insight | No | The specific widget or metric (pre-filled from widget menu) |
+| Area | Yes | Which section of Insights the issue is in (pre-filled from widget menu; hidden for footer reports) |
+| Data insight | No | The specific widget or metric (pre-filled from widget menu; hidden for footer reports) |
 | Description | Yes | What you observed |
 | Steps to reproduce | Yes | How to see the issue |
 | Expected behaviour | Yes | What you expected to see instead |
