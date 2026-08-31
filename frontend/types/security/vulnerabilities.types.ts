@@ -3,6 +3,7 @@
 
 export interface VulnerabilitiesSummary {
   count: number;
+  openCount: number;
   fixedPercentage: number;
   daysSinceLastVuln: number;
   avgCvssScore: number;

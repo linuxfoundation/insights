@@ -109,6 +109,7 @@ export interface HealthBreakdownResults {
   openCriticals: number | null;
   openHighs: number | null;
   openModerates: number | null;
+  openUnknowns: number | null;
   scorecardScorePts: number | null;
   scorecardAvailable: boolean | null;
   scorecardScore: number | null;
