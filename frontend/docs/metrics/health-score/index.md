@@ -129,7 +129,15 @@ Security practices are currently evaluated for GitHub repositories only. GitLab 
 
 #### 2.3 OpenSSF Scorecard (max 7 pts)
 
-Normalized from the OpenSSF Scorecard's 0–10 scale. Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked, and its weight redistributes within the Security category.
+Uses a banded mapping from the OpenSSF Scorecard's 0–10 raw score, calibrated to the real distribution of scores across tracked repositories:
+
+- **7 pts:** Scorecard raw ≥ 7.0
+- **5 pts:** Scorecard raw ≥ 5.5
+- **4 pts:** Scorecard raw ≥ 4.0
+- **2 pts:** Scorecard raw ≥ 2.5
+- **0 pts:** Scorecard raw < 2.5 or unavailable
+
+Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked, and its weight redistributes within the Security category.
 
 #### 2.4 Dependency Health (max 5 pts)
 
@@ -142,9 +150,9 @@ Evaluates the security posture of the project's direct dependencies:
 
 Available only for repositories that publish tracked packages. Repositories without published packages have this sub-signal blocked.
 
-#### 2.5 Supply Chain Integrity (max 5 pts)
+#### 2.5 Supply Chain Integrity
 
-Assesses build provenance attestation, artifact-to-repository consistency, and publisher account security. This sub-signal is in development and is currently blocked for all projects. Its weight redistributes to available Security sub-signals; projects are not penalized.
+Assesses build provenance attestation, artifact-to-repository consistency, and publisher account security. This sub-signal is in development and is currently blocked for all projects. Its weight has been permanently reallocated to the other available Security sub-signals; projects are not penalized and the Security category maximum remains at 35 pts.
 
 ### 3. Development Activity (0–25 pts)
 
@@ -208,13 +216,17 @@ Combines two independent measures over the last 12 months: what fraction of pull
 
 ### Handling Missing Data
 
-Not every signal is available for every project. Insights uses two layers of redistribution so projects aren't penalized for gaps in data coverage.
+Not every signal is available for every project. Insights uses two layers of handling so projects aren't penalized for gaps in data coverage.
 
-**Layer 1, sub-signal blocked:** if a specific sub-signal cannot be computed (for example, OpenSSF Scorecard is unavailable for a GitLab repository), the missing points are redistributed proportionally to the other available sub-signals in the same category. The category's maximum is preserved.
+**Layer 1, sub-signal blocked:** if a specific sub-signal cannot be computed (for example, OpenSSF Scorecard is unavailable for a GitLab repository), the missing weight is imputed at the population median rate for that sub-signal — the rate observed across all projects where the signal is available. This prevents a project that has a signal measured from being disadvantaged relative to one that does not.
 
-**Layer 2, category unavailable:** if fewer than 40% of a category's maximum points are covered by available sub-signals, the entire category is marked unavailable and dropped from the composite. The remaining available categories rescale to fill 100 points.
+**Layer 2, category requirements:**
 
-If all three categories fall below the 40% coverage threshold, the Health Score itself is emitted as `unavailable`, never as a zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
+- If **all 3 categories** are available, a full Health Score is shown.
+- If **exactly 1 category** is unavailable, the score is computed from the 2 available categories and shown with a **partial** indicator to signal that not all signals were observed.
+- If **2 or more categories** are unavailable, the Health Score is marked `unavailable` rather than computed from insufficient evidence.
+
+The Health Score is always either a number (full or partial) or explicitly `unavailable`, never a silent zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
 
 <!-- TEMPORARILY HIDDEN (IN-1243): Impact Score documentation section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 ## Impact Score (0–100)
@@ -254,7 +266,7 @@ Impact is computed in two steps:
 
 An Insights project can span multiple repositories. Sub-signals are computed per repository, then rolled up to the project level:
 
-- **Health Score and sub-scores:** straight mean across all active, non-excluded repositories.
+- **Health Score and category rollups:** median across all active, non-excluded repositories. The median is used for the total score and each of the three category rollups (Maintainer Health, Security and Supply Chain, Development Activity). Using the median prevents a long tail of less-active repositories from dragging down projects with strong flagship repos.
 - **Lifecycle state:** best-state-wins. One active repository makes the project active, regardless of the state of other repositories.
 <!-- TEMPORARILY HIDDEN (IN-1243): Impact Score rollup bullet hidden. Re-enable by uncommenting.
 - **Impact Score:** the highest impact score across all packages published by any repository in the project.
@@ -268,7 +280,7 @@ Insights collects data from GitHub, GitLab, and Gerrit. Not all signals are avai
 
 **GitLab projects:**
 
-Security practices and OpenSSF Scorecard are currently GitHub-only. GitLab projects will typically have these sub-signals blocked and absorbed by Layer-1 redistribution or, if Security coverage falls below 40%, the entire Security category may be marked unavailable. Health Score still computes from Maintainer Health and Development Activity. Broader security signal coverage for GitLab is in development.
+Security practices and OpenSSF Scorecard are currently GitHub-only. GitLab projects will typically have these sub-signals imputed at the population median rate (Layer 1). If the Security category itself becomes unavailable, the Health Score is computed from the remaining 2 categories and shown with a partial indicator. Health Score still computes from Maintainer Health and Development Activity. Broader security signal coverage for GitLab is in development.
 
 **Gerrit projects:**
 
@@ -301,7 +313,7 @@ The original Insights Health Score was a single 0–100 value, computed as an eq
 | **Stable "done" libraries** | Penalized: low commits meant a low score | Lifecycle context added: a `Stable` classification signals low activity is intentional, but the Health Score formula still scores low-activity signals as low |
 | **Maintainer signal** | Contributor count only | Responsiveness, bus factor (curated plus observed), organizational diversity |
 | **Security** | OpenSSF Baseline pass/fail ratio | Open CVEs with severity weighting, security practices, OpenSSF Scorecard, dependency health, supply chain integrity |
-| **Missing data** | Returned unavailable if any sub-score was absent | Two-layer redistribution: blocked sub-signals rescale within their category; scores are only marked unavailable when signal floor is too low to be defensible |
+| **Missing data** | Returned unavailable if any sub-score was absent | Blocked sub-signals are imputed at the population median rate; full score requires ≥2 categories, 1 missing shows a partial indicator, ≥2 missing returns unavailable |
 | **Rating bands** | Excellent / Healthy / Stable / Unsteady / Critical | Excellent / Healthy / Fair / Concerning / Critical |
 
 ### Why the original approach had gaps
