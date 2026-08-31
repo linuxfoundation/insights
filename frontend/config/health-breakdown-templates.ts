@@ -473,27 +473,26 @@ export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
   const criticals = signals.openCriticals ?? 0;
   const highs = signals.openHighs ?? 0;
   const moderates = signals.openModerates ?? 0;
-  if (signals.openVulnScore >= 10) {
-    return { status: 'positive', description: 'No open vulnerabilities of any severity.' };
-  }
-  if (signals.openVulnScore >= 5) {
-    const parts: string[] = [];
-    if (criticals + highs > 0)
-      parts.push(
-        `${criticals + highs} critical or high vulnerabilit${criticals + highs === 1 ? 'y' : 'ies'}`,
-      );
-    if (moderates > 0)
-      parts.push(`${moderates} medium or low vulnerabilit${moderates === 1 ? 'y' : 'ies'}`);
+  const unknowns = signals.openUnknowns ?? 0;
+  if (criticals + highs > 0) {
     return {
-      status: 'warning',
-      description:
-        parts.length > 0 ? `${parts.join(', ')} open.` : 'Some open vulnerabilities detected.',
+      status: 'negative',
+      description: `${criticals + highs} open critical or high vulnerabilit${criticals + highs === 1 ? 'y' : 'ies'}.`,
     };
   }
-  return {
-    status: 'negative',
-    description: `${criticals + highs} open critical or high vulnerabilit${criticals + highs === 1 ? 'y' : 'ies'}.`,
-  };
+  if (moderates > 0) {
+    return {
+      status: 'warning',
+      description: `${moderates} open medium/low severity vulnerabilit${moderates === 1 ? 'y' : 'ies'}, no critical or high.`,
+    };
+  }
+  if (unknowns > 0) {
+    return {
+      status: 'warning',
+      description: `${unknowns} open vulnerabilit${unknowns === 1 ? 'y' : 'ies'} with unscored severity (e.g. unmaintained dependencies).`,
+    };
+  }
+  return { status: 'positive', description: 'No open vulnerabilities of any severity.' };
 };
 
 export const getScorecardRow = (signals: HealthBreakdownResults): SignalRow => {
