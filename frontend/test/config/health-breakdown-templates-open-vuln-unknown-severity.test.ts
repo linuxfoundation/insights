@@ -81,4 +81,75 @@ describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities IN-1255', () => {
     // to pass once an `openUnknowns` field is added and threaded into this function.
     expect(result.status).toBe('warning');
   });
+
+  test('reports "negative" when there are open critical or high severity vulnerabilities', () => {
+    const signals: HealthBreakdownResults = {
+      ...defaultSignals,
+      openVulnAvailable: true,
+      openVulnScore: 2,
+      openCriticals: 1,
+      openHighs: 2,
+      openModerates: 5,
+      openUnknowns: 5,
+    };
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('negative');
+    expect(result.description).toBe('3 open critical or high vulnerabilities.');
+  });
+
+  test('reports "warning" for open moderate-severity vulnerabilities when no criticals or highs are open', () => {
+    const signals: HealthBreakdownResults = {
+      ...defaultSignals,
+      openVulnAvailable: true,
+      openVulnScore: 6,
+      openCriticals: 0,
+      openHighs: 0,
+      openModerates: 4,
+      openUnknowns: 0,
+    };
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('warning');
+    expect(result.description).toBe('4 open medium/low severity vulnerabilities, no critical or high.');
+  });
+
+  test('reports "positive" when all open vulnerability severity counts are zero', () => {
+    const signals: HealthBreakdownResults = {
+      ...defaultSignals,
+      openVulnAvailable: true,
+      openVulnScore: 10,
+      openCriticals: 0,
+      openHighs: 0,
+      openModerates: 0,
+      openUnknowns: 0,
+    };
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('positive');
+    expect(result.description).toBe('No open vulnerabilities of any severity.');
+  });
+
+  test('treats a null severity count as 0/absent rather than as a positive signal', () => {
+    // fails before fix: the original code had no unknowns handling at all, so this
+    // boundary case (null openUnknowns alongside all-zero known counts) only becomes
+    // meaningful once getOpenVulnRow's `?? 0` coalescing exists for every count.
+    const signals: HealthBreakdownResults = {
+      ...defaultSignals,
+      openVulnAvailable: true,
+      openVulnScore: 10,
+      openCriticals: 0,
+      openHighs: 0,
+      openModerates: 0,
+      openUnknowns: null,
+    };
+
+    const result = getOpenVulnRow(signals);
+
+    expect(result.status).toBe('positive');
+    expect(result.description).toBe('No open vulnerabilities of any severity.');
+  });
 });
