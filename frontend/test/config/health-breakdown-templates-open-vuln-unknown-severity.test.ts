@@ -4,7 +4,7 @@ import { describe, test, expect } from 'vitest';
 import { getOpenVulnRow } from '../../config/health-breakdown-templates';
 import type { HealthBreakdownResults } from '../../types/overview/responses.types';
 
-describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities IN-1255', () => {
+describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities', () => {
   const defaultSignals: HealthBreakdownResults = {
     busFactorScore: null,
     busFactorAvailable: false,
@@ -58,10 +58,7 @@ describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities IN-1255', () => {
     medianMergeS: null,
   };
 
-  test('reports "positive" (clean) even though 16 UNKNOWN-severity OPEN vulnerabilities exist', () => {
-    // openclaw production data (IN-1255): all known-severity open counts are 0 and
-    // openVulnScore is a perfect 10, but there are 16 OPEN vulnerabilities of UNKNOWN
-    // severity that none of openCriticals/openHighs/openModerates track.
+  test('reports "warning", not "positive", when only UNKNOWN-severity open vulnerabilities exist', () => {
     const signals: HealthBreakdownResults = {
       ...defaultSignals,
       openVulnAvailable: true,
@@ -74,11 +71,6 @@ describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities IN-1255', () => {
 
     const result = getOpenVulnRow(signals);
 
-    // Bug: getOpenVulnRow has no visibility into UNKNOWN-severity open vulns, so it
-    // falls through to the openVulnScore >= 10 branch and reports a false "clean" ('positive')
-    // status instead of the 'warning' status warranted by the 16 untracked open vulnerabilities.
-    // This assertion fails against current code (actual status is 'positive') and is expected
-    // to pass once an `openUnknowns` field is added and threaded into this function.
     expect(result.status).toBe('warning');
   });
 
@@ -134,9 +126,6 @@ describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities IN-1255', () => {
   });
 
   test('treats a null severity count as 0/absent rather than as a positive signal', () => {
-    // fails before fix: the original code had no unknowns handling at all, so this
-    // boundary case (null openUnknowns alongside all-zero known counts) only becomes
-    // meaningful once getOpenVulnRow's `?? 0` coalescing exists for every count.
     const signals: HealthBreakdownResults = {
       ...defaultSignals,
       openVulnAvailable: true,
