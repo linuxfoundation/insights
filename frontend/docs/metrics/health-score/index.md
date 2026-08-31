@@ -103,9 +103,9 @@ Measures how many distinct organizations the active maintainers are affiliated w
 
 ### 2. Security and Supply Chain (0–35 pts)
 
-A project's security posture depends on both what it ships and how it is built. This category measures known vulnerabilities, documented security practices, supply chain integrity, and the health of the project's own dependencies.
+A project's security posture depends on both what it ships and how it is built. This category measures known vulnerabilities, documented security practices, supply chain integrity, and the health of the project's own dependencies. The 5 points formerly reserved for Supply Chain Integrity have been permanently reallocated to the other sub-signals; the category total remains 35 pts.
 
-#### 2.1 Open Vulnerabilities (max 10 pts)
+#### 2.1 Open Vulnerabilities
 
 Counts unresolved security advisories scoped to the repository, sourced from OSV and GHSA. Points are deducted by severity:
 
@@ -114,7 +114,7 @@ Counts unresolved security advisories scoped to the repository, sourced from OSV
 
 If no vulnerability scan data is available for the repository, missing advisory counts are treated as zero. The project is scored as having no open vulnerabilities and receives the full 10 points. Absent scan data cannot currently be distinguished from a clean scan in the score calculation.
 
-#### 2.2 Security Practices (max 8 pts)
+#### 2.2 Security Practices
 
 Checks whether the repository has adopted documented security practices:
 
@@ -127,7 +127,7 @@ Checks whether the repository has adopted documented security practices:
 Security practices are currently evaluated for GitHub repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its missing weight is imputed at the population median rate.
 :::
 
-#### 2.3 OpenSSF Scorecard (max 7 pts)
+#### 2.3 OpenSSF Scorecard
 
 Uses a banded mapping from the OpenSSF Scorecard's 0–10 raw score, calibrated to the real distribution of scores across tracked repositories:
 
@@ -135,11 +135,11 @@ Uses a banded mapping from the OpenSSF Scorecard's 0–10 raw score, calibrated 
 - **5 pts:** Scorecard raw ≥ 5.5
 - **4 pts:** Scorecard raw ≥ 4.0
 - **2 pts:** Scorecard raw ≥ 2.5
-- **0 pts:** Scorecard raw < 2.5 or unavailable
+- **0 pts:** Scorecard raw < 2.5
 
 Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its missing weight is imputed at the population median rate.
 
-#### 2.4 Dependency Health (max 5 pts)
+#### 2.4 Dependency Health
 
 Evaluates the security posture of the project's direct dependencies:
 
@@ -222,7 +222,9 @@ Not every signal is available for every project. Insights uses two layers of han
 
 **Layer 2, category requirements:**
 
-- If **all 3 categories** are available, a full Health Score is shown.
+A category is marked unavailable when the repository platform does not support any of its sub-signals — for example, a Gerrit project with no package data may have no computable Security sub-signals. Once a category is unavailable it is dropped from the composite entirely.
+
+- If **all 3 categories** are available, the Health Score is computed normally.
 - If **exactly 1 category** is unavailable, the score is computed from the 2 available categories and shown with a **partial** indicator to signal that not all signals were observed.
 - If **2 or more categories** are unavailable, the Health Score is marked `unavailable` rather than computed from insufficient evidence.
 
