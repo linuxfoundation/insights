@@ -105,7 +105,9 @@ describe('getOpenVulnRow UNKNOWN-severity open vulnerabilities', () => {
     const result = getOpenVulnRow(signals);
 
     expect(result.status).toBe('warning');
-    expect(result.description).toBe('4 open medium/low severity vulnerabilities, no critical or high.');
+    expect(result.description).toBe(
+      '4 open medium/low severity vulnerabilities, no critical or high.',
+    );
   });
 
   test('reports "positive" when all open vulnerability severity counts are zero', () => {
