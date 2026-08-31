@@ -91,11 +91,9 @@ const {
   selectedRepositoryGroup,
 } = storeToRefs(useProjectStore());
 
-// Repository-group routes always have a non-empty `selectedRepositories` with no "select all
-// repositories" control, so they're excluded from this empty state. The dedicated single-repo
-// route (`route.params.name`) IS included: selecting exactly one repo counts as a repo filter
-// too, so it hides the aggregate score the same as any other non-empty selection.
-const isRepoFilterActive = computed(() => !selectedRepositoryGroup.value && selectedRepositories.value.length > 0);
+// A repository group is a multi-repo filter just like a manual multi-select, so it hides the
+// aggregate score and shows the "select all repositories" message the same way.
+const isRepoFilterActive = computed(() => !!selectedRepositoryGroup.value || selectedRepositories.value.length > 0);
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
