@@ -132,7 +132,8 @@ const healthScoreDotClass = computed(() => {
 
 const progressBarColor = computed(() => {
   if (band.value === 'excellent' || band.value === 'healthy') return 'positive';
-  if (band.value === 'fair' || band.value === 'concerning') return 'warning';
+  if (band.value === 'fair') return 'accent';
+  if (band.value === 'concerning') return 'warning';
   return 'negative';
 });
 
