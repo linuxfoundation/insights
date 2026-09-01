@@ -28,12 +28,27 @@ export const healthScoreV2Config: Record<string, HealthScoreV2Config> = {
   unavailable: { label: 'Unavailable', ghBadgeColor: lfxColors.neutral[400] },
 };
 
-export const getHealthScoreV2Config = (label: string | null): HealthScoreV2Config => {
-  if (label && healthScoreV2Config[label]) {
-    return healthScoreV2Config[label];
+export const getHealthScoreV2Config = (
+  label: string | null,
+  isPartial = false,
+): HealthScoreV2Config => {
+  const config =
+    label && healthScoreV2Config[label]
+      ? healthScoreV2Config[label]
+      : healthScoreV2Config.unavailable;
+  if (isPartial) {
+    return { ...config, label: `${config.label} - Partial` };
   }
-  return healthScoreV2Config.unavailable;
+  return config;
 };
+
+// A Health Score is partial when exactly 1 of the 3 v2 categories (Maintainer Health,
+// Security & Supply Chain, Development Activity) is missing data. project_insights.pipe already
+// encodes this via healthMaxScore: 100 when all 3 categories are covered, null when fewer than 2
+// are covered, and the capped denominator (60/65/75) when exactly one is missing - so this never
+// needs to recompute category coverage itself.
+export const isPartialHealthScore = (healthMaxScore: number | null): boolean =>
+  healthMaxScore !== null && healthMaxScore !== 100;
 
 // Health Score empty-state copy for the repo-selector states.
 export const healthScoreFilterEmptyState = {

@@ -40,6 +40,8 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
         ),
       ]);
       const breakdown = breakdownRes.data[0];
+      // repo_health_score_v2_breakdown doesn't carry coveredCategoryCount/healthMaxScore (those
+      // are project_insights-only fields), so a repo-filtered selection never renders as partial.
       return {
         healthScoreV2: breakdown?.healthScoreV2 ?? null,
         healthLabel: breakdown?.healthLabel ?? null,
@@ -49,6 +51,8 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
         maintainerHealthScoreV2: breakdown?.maintainerHealthScoreV2 ?? null,
         securitySupplyChainScoreV2: breakdown?.securitySupplyChainScoreV2 ?? null,
         developmentActivityScoreV2: breakdown?.developmentActivityScoreV2 ?? null,
+        coveredCategoryCount: null,
+        healthMaxScore: null,
       };
     }
 
@@ -70,6 +74,8 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
       maintainerHealthScoreV2,
       securitySupplyChainScoreV2,
       developmentActivityScoreV2,
+      coveredCategoryCount,
+      healthMaxScore,
     } = res.data[0];
     return {
       healthScoreV2,
@@ -80,6 +86,8 @@ export default defineEventHandler(async (event): Promise<HealthScoreV2Results> =
       maintainerHealthScoreV2,
       securitySupplyChainScoreV2,
       developmentActivityScoreV2,
+      coveredCategoryCount,
+      healthMaxScore,
     };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {

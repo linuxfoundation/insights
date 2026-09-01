@@ -67,6 +67,8 @@ export interface HealthScoreV2Results {
   maintainerHealthScoreV2: number | null;
   securitySupplyChainScoreV2: number | null;
   developmentActivityScoreV2: number | null;
+  coveredCategoryCount: number | null;
+  healthMaxScore: number | null;
 }
 
 export type ImpactBreakdownBand = 'Top 1%' | 'Top 10%' | 'Top 25%' | 'Top 50%' | 'Bottom 50%';

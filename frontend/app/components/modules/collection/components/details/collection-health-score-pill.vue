@@ -45,10 +45,10 @@ SPDX-License-Identifier: MIT
             :class="healthScoreDotClass"
           />
           <span class="font-semibold text-neutral-900">{{ healthScoreLabel }}</span>
-          <span class="text-neutral-500">({{ props.score }}/100)</span>
+          <span class="text-neutral-500">({{ props.score }}/{{ props.healthMaxScore ?? 100 }})</span>
         </div>
         <lfx-progress-bar
-          :values="[props.score]"
+          :values="[progressBarValue]"
           :color="progressBarColor"
           size="small"
         />
@@ -93,6 +93,7 @@ const props = defineProps<{
   maintainerHealthScoreV2?: number | null;
   securitySupplyChainScoreV2?: number | null;
   developmentActivityScoreV2?: number | null;
+  healthMaxScore?: number | null;
 }>();
 
 // Akrites v2 bands (PRD): excellent 85-100, healthy 70-84, fair 50-69, concerning 30-49, critical 0-29.
@@ -129,6 +130,10 @@ const healthScoreDotClass = computed(() => {
   };
   return classes[band.value] ?? 'bg-health-critical';
 });
+
+// The progress bar renders `values` as a raw 0-100 fill percentage, so a capped score (e.g. 45
+// out of a 65 max) needs rescaling - otherwise the bar under-fills relative to the displayed total.
+const progressBarValue = computed(() => (props.score / (props.healthMaxScore ?? 100)) * 100);
 
 const progressBarColor = computed(() => {
   if (band.value === 'excellent' || band.value === 'healthy') return 'positive';

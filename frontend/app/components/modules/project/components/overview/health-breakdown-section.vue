@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
           :class="scoreDotColorClass"
         />
         <span class="font-semibold text-neutral-900">{{ scoreLabel }}</span>
-        <span class="text-neutral-500">({{ props.healthScoreV2 }}/100)</span>
+        <span class="text-neutral-500">({{ props.healthScoreV2 }}/{{ props.healthMaxScore ?? 100 }})</span>
       </lfx-chip>
     </div>
     <p class="text-xs text-neutral-500 mb-4">
@@ -111,7 +111,7 @@ import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { getHealthScoreV2Config, healthScoreFilterEmptyState } from '~~/config/trust-score';
+import { getHealthScoreV2Config, isPartialHealthScore, healthScoreFilterEmptyState } from '~~/config/trust-score';
 import {
   getCategoryDescription,
   getCategoryScoreColor,
@@ -135,6 +135,7 @@ const props = defineProps<{
   maintainerHealthScoreV2: number | null;
   securitySupplyChainScoreV2: number | null;
   developmentActivityScoreV2: number | null;
+  healthMaxScore: number | null;
   signals: HealthBreakdownResults | null;
   selectedReposAllArchivedOrExcluded: boolean;
   isRepoSelected: boolean;
@@ -156,7 +157,9 @@ const isLowSignalCoverage = computed(
   () => props.healthScoreV2 === null && !props.isRepoSelected && allCategoriesEmpty.value,
 );
 
-const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
+const scoreLabel = computed(
+  () => getHealthScoreV2Config(props.healthLabel, isPartialHealthScore(props.healthMaxScore)).label,
+);
 
 const scoreDotColorClass = computed(() => {
   const label = props.healthLabel;

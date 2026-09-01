@@ -35,16 +35,36 @@ SPDX-License-Identifier: MIT
                       </template>
                     </lfx-tooltip>
                   </span>
-                  <span
-                    class="text-lg font-semibold"
-                    :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
-                    >{{ scoreLabel }}</span
-                  >
+                  <span class="flex items-center gap-1">
+                    <span
+                      class="text-lg font-semibold"
+                      :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
+                      >{{ scoreLabel }}</span
+                    >
+                    <lfx-tooltip
+                      v-if="isPartial"
+                      placement="top"
+                    >
+                      <lfx-icon
+                        name="circle-question"
+                        :size="11"
+                        class="cursor-help text-neutral-400"
+                      />
+                      <template #content>
+                        <div class="max-w-xs text-xs leading-relaxed">
+                          This Health Score is partial because one data category (Maintainer Health, Security & Supply
+                          Chain, or Development Activity) is missing data for this project. The score is computed from
+                          the remaining categories only.
+                        </div>
+                      </template>
+                    </lfx-tooltip>
+                  </span>
                 </div>
                 <lfx-health-score-ring
                   :score="healthScoreV2 ?? 0"
                   :color="scoreColorHex"
                   :unavailable="isEmpty"
+                  :max-score="healthMaxScore ?? 100"
                 />
               </div>
               <div class="flex-grow" />
@@ -172,6 +192,7 @@ import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import LfxHealthScoreRing from './trust-score/health-score-ring.vue';
 import {
   getHealthScoreV2Config,
+  isPartialHealthScore,
   // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
   // getImpactLabelDisplay,
   getLifecycleLabelConfig,
@@ -202,6 +223,7 @@ const props = defineProps<{
   maintainerHealthScoreV2: number | null;
   securitySupplyChainScoreV2: number | null;
   developmentActivityScoreV2: number | null;
+  healthMaxScore: number | null;
   status: AsyncDataRequestStatus;
   isRepoSelected: boolean;
   signals: HealthBreakdownResults | null;
@@ -225,7 +247,9 @@ const showShareBadge = computed(
     props.status === 'success' && selectedRepositories.value.length <= 1 && (props.isRepoSelected || !isEmpty.value),
 );
 
-const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).label);
+const isPartial = computed(() => isPartialHealthScore(props.healthMaxScore));
+
+const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel, isPartial.value).label);
 
 const scoreColorHex = computed(() => {
   const label = props.healthLabel;

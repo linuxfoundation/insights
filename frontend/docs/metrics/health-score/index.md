@@ -224,11 +224,11 @@ Not every signal is available for every project. Insights uses two layers of han
 
 A category is marked unavailable when the repository platform does not support any of its sub-signals — for example, a Gerrit project with no package data may have no computable Security sub-signals. Once a category is unavailable it is dropped from the composite entirely.
 
-- If **all 3 categories** are available, the Health Score is computed normally.
-- If **exactly 1 category** is unavailable, the score is computed from the 2 available categories and shown with a **partial** indicator to signal that not all signals were observed.
+- If **all 3 categories** are available, the Health Score is computed normally, out of a maximum of 100.
+- If **exactly 1 category** is unavailable, the score is computed from the 2 available categories and shown out of a reduced maximum: 60 if Maintainer Health (40 pts) is missing, 65 if Security and Supply Chain (35 pts) is missing, or 75 if Development Activity (25 pts) is missing. The rating label carries a **" - Partial"** suffix (for example, "Healthy - Partial") to signal that not all categories were observed, and a tooltip next to the score explains which category is missing.
 - If **2 or more categories** are unavailable, the Health Score is marked `unavailable` rather than computed from insufficient evidence.
 
-The Health Score is always either a number (full or partial) or explicitly `unavailable`, never a silent zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
+The Health Score is always either a number out of 100 (full), a number out of a reduced maximum with a partial indicator, or explicitly `unavailable` — never a silent zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
 
 <!-- TEMPORARILY HIDDEN (IN-1243): Impact Score documentation section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 ## Impact Score (0–100)
