@@ -29,16 +29,35 @@ const externals = {
   },
 };
 
+// A single-segment `*` in these patterns collides with the `:slug` param node that the real
+// `/api/project/[slug]/**` API routes register in Nitro's radix3 router, corrupting route
+// resolution for every route under `/api/project/:slug/**`. `**` matches one-or-more segments
+// without introducing a conflicting node type.
+const noCacheHeaders = {
+  'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0',
+};
+
 export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
     '/api/auth/**': { prerender: false, index: false, cache: false },
     '/__og-image__/**': { cache: false },
-    '/api/**/*.post': { cache: false },
-    '/api/**/*.put': { cache: false },
-    '/api/**/*.delete': { cache: false },
-    '/api/**/*.patch': { cache: false },
+    // These three apply regardless of NUXT_APP_ENV (they used to live in nitro.routeRules,
+    // applied unconditionally). Keep them out of the production-only block below, and never
+    // repeat their keys there — a route rule declared in two places for the same exact
+    // pattern doesn't merge, the later one replaces the earlier one wholesale. That's how
+    // `/api/security/**`'s `cache: false` got silently dropped, leaving the route to fall
+    // through to the `/**` catch-all's redis cache, which wraps this POST handler in Nitro's
+    // cachedEventHandler and strips the request body.
+    '/api/**': {
+      prerender: false,
+      ...(process.env.NUXT_APP_ENV === 'production'
+        ? { cache: { maxAge: shortCache, base: 'redis' } }
+        : {}),
+    },
+    '/api/security/**': { cache: false, headers: noCacheHeaders, prerender: false },
+    '/api/project/**/security/**': { headers: noCacheHeaders, prerender: false },
     ...(process.env.NUXT_APP_ENV === 'production'
       ? {
           '/api/health': { cache: false },
@@ -50,7 +69,6 @@ export default {
           '/api/report/ai-code-tracker/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/cncf': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/ai-code-tracker': { cache: { maxAge: longCache, base: 'redis' } },
-          '/api/security/**': { cache: false },
           '/api/collection': { cache: false },
           '/api/collection/**': { cache: false },
           '/api/community/list': { cache: { maxAge: longCache, base: 'redis' } },
@@ -64,7 +82,6 @@ export default {
           '/api/project/collections': { cache: false },
           '/api/repository/collections': { cache: false },
           '/api/ossindex': { cache: { maxAge: longCache, base: 'redis' } },
-          '/api/**': { cache: { maxAge: shortCache, base: 'redis' } },
           '/leaderboard': { cache: { maxAge: longCache, base: 'redis' } },
           '/leaderboard/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/project/**': { cache: false },
@@ -94,23 +111,6 @@ export default {
             },
           }
         : {}),
-    },
-    routeRules: {
-      '/api/**': {
-        prerender: false,
-      },
-      '/api/security/**': {
-        headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
-        prerender: false,
-      },
-      // A single-segment `*` here collides with the `:slug` param node that the real
-      // `/api/project/[slug]/**` API routes register in Nitro's radix3 router, corrupting
-      // route resolution for every route under `/api/project/:slug/**`.
-      // `**` matches one-or-more segments without introducing a conflicting node type.
-      '/api/project/**/security/**': {
-        headers: { 'cache-control': 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0' },
-        prerender: false,
-      },
     },
   },
 };
