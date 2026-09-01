@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
   </lfx-tag>
   <lfx-tag
     v-else-if="props.score >= 50"
-    variation="info"
+    variation="accent"
   >
     Fair
   </lfx-tag>

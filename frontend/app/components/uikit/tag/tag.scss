@@ -16,6 +16,10 @@
     @apply bg-brand-50 text-brand-600;
   }
 
+  &--accent {
+    @apply bg-accent-50 text-accent-500;
+  }
+
   &--positive {
     @apply bg-positive-50 text-positive-600;
   }

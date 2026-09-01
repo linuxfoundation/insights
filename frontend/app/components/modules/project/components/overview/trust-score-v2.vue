@@ -230,8 +230,8 @@ const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel).labe
 const scoreColorHex = computed(() => {
   const label = props.healthLabel;
   if (label === 'excellent' || label === 'healthy') return lfxColors.positive[500];
-  if (label === 'fair') return lfxColors.accent[500];
-  if (label === 'concerning') return lfxColors.warning[500];
+  if (label === 'fair') return lfxColors.health.fair;
+  if (label === 'concerning') return lfxColors.health.concerning;
   return lfxColors.negative[500];
 });
 
