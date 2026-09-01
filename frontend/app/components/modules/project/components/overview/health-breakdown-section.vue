@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
       />
       <div class="flex flex-col gap-1.5 text-xs">
         <p class="font-semibold text-neutral-900">Health Score unavailable</p>
-        <p class="text-accent-900">All three categories have less than 40% signal coverage for this project.</p>
+        <p class="text-accent-900">No signal data is available across any category for this project.</p>
       </div>
     </div>
 
