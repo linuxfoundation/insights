@@ -85,6 +85,7 @@ import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { getHealthScoreDescription } from '~~/config/health-breakdown-templates';
+import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
 
 const props = defineProps<{
   score: number;
@@ -109,16 +110,9 @@ const bandFromScore = (score: number) => {
 
 const band = computed(() => (props.healthLabel ?? bandFromScore(props.score)).toLowerCase());
 
-const healthScoreLabel = computed(() => {
-  const labels: Record<string, string> = {
-    excellent: 'Excellent',
-    healthy: 'Healthy',
-    fair: 'Fair',
-    concerning: 'Concerning',
-    critical: 'Critical',
-  };
-  return labels[band.value] ?? band.value;
-});
+const healthScoreLabel = computed(
+  () => getHealthScoreV2Config(band.value, isPartialHealthScore(props.healthMaxScore ?? null)).label,
+);
 
 const healthScoreDotClass = computed(() => {
   const classes: Record<string, string> = {

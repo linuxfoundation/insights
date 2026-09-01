@@ -183,6 +183,7 @@ SPDX-License-Identifier: MIT
             :maintainer-health-score-v2="project.maintainerHealthScoreV2"
             :security-supply-chain-score-v2="project.securitySupplyChainScoreV2"
             :development-activity-score-v2="project.developmentActivityScoreV2"
+            :health-max-score="project.healthMaxScore"
           />
           <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
           <lfx-collection-impact-score-pill
