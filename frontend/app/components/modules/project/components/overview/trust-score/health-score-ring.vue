@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
       <span
         v-if="!props.unavailable"
         class="text-xs text-neutral-500 mt-1"
-        >out of 100</span
+        >out of {{ props.maxScore }}</span
       >
     </div>
   </div>
@@ -36,17 +36,19 @@ const props = withDefaults(
     score: number;
     color?: string;
     unavailable?: boolean;
+    maxScore?: number;
   }>(),
   {
     color: undefined,
     unavailable: false,
+    maxScore: 100,
   },
 );
 
 const gaugeConfig = computed(() =>
   getGaugeChartConfig({
     value: props.score,
-    maxValue: 100,
+    maxValue: props.maxScore,
     gaugeType: 'full',
     name: '',
     graphOnly: true,
