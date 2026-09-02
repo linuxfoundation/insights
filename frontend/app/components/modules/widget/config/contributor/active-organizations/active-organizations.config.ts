@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { Granularity } from '@lfx-insights/types';
 import ActiveOrganizations from './active-organizations.vue';
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
-import { Granularity } from '~~/types/shared/granularity';
 
 const activeOrganizations: WidgetConfig = {
   key: 'activeOrganization',

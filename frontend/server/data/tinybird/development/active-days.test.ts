@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { Granularity } from '@lfx-insights/types';
 import {
   mockCurrentSummary,
   mockPreviousSummary,
   mockActiveDaysData,
 } from '../../../mocks/tinybird-active-days-response.mock';
 import type { ActiveDaysFilter } from '../../types';
-import { Granularity } from '~~/types/shared/granularity';
 import type { ActiveDays } from '~~/types/development/responses.types';
 
 const mockFetchFromTinybird = vi.fn();

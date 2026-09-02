@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { ActivityTypes, Granularity } from '@lfx-insights/types';
 import {
   mockCurrentOpenedPRsSummary,
   mockPreviousOpenedPRsSummary,
@@ -15,8 +16,6 @@ import {
   mockPullRequestsVelocity,
 } from '../../../mocks/tinybird-pull-requests-response.mock';
 import type { ActivityCountFilter } from '../../types';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { Granularity } from '~~/types/shared/granularity';
 import type { PullRequests } from '~~/types/development/responses.types';
 import type { DateRange } from '~~/server/data/util';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';

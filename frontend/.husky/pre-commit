@@ -1,5 +1,9 @@
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+
 #run husky pre-commit hook only if frontend changed
-if git diff --name-only --cached | grep 'frontend/';
+if git diff --name-only --cached | grep '^frontend/';
   then
     echo "FRONTEND FOLDER CHANGED --> starting husky..."
     cd frontend && \
@@ -8,6 +12,15 @@ if git diff --name-only --cached | grep 'frontend/';
     pnpm tsc-check
 fi
 
+if git diff --diff-filter=d --name-only --cached | grep '^api/';
+  then
+    echo "API FOLDER CHANGED --> running api checks..."
+    cd "$ROOT/api" && \
+    pnpm lint && \
+    pnpm tsc-check
+fi
+
+cd "$ROOT"
 #run lint-staged to add copyright license on top of all new files
 #
 # Guard: only run when JS/TS/Vue files are staged. When only non-lintable

@@ -99,6 +99,7 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { Granularity } from '@lfx-insights/types';
 import type { ActiveContributors } from '~~/types/contributors/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -116,7 +117,6 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { granularityTabs } from '~/components/modules/widget/components/contributors/config/granularity-tabs';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Granularity } from '~~/types/shared/granularity';
 import { Widget } from '~/components/modules/widget/types/widget';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';

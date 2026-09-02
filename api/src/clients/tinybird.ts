@@ -1,0 +1,8 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { createTinybirdClient, type TinybirdClient } from '@lfx-insights/tinybird-client';
+
+export const tinybirdClient: TinybirdClient = createTinybirdClient({
+  baseUrl: process.env.API_TB_HOST ?? 'https://api.us-west-2.aws.tinybird.co',
+  token: process.env.API_TB_TOKEN!,
+});

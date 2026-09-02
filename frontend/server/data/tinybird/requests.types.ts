@@ -1,9 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { DateTime } from 'luxon';
-import type { ActivityPlatforms } from '~~/types/shared/activity-platforms';
-import type { ActivityTypes } from '~~/types/shared/activity-types';
-import type { Granularity } from '~~/types/shared/granularity';
+import type { ActivityPlatforms, ActivityTypes, Granularity } from '@lfx-insights/types';
 
 /*
  * These are the types that the Tinybird API expects to receive.

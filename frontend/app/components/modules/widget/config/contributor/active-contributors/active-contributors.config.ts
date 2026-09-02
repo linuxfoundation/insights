@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { Granularity } from '@lfx-insights/types';
 import ActiveContributors from './active-contributors.vue';
 import LfxShareActiveContributors from './share-active-contributors.vue';
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
-import { Granularity } from '~~/types/shared/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
 const activeContributors: WidgetConfig = {

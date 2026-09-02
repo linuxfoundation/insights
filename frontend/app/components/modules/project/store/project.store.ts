@@ -5,12 +5,12 @@ import { ref, computed, watch } from 'vue';
 import { useRouter } from 'nuxt/app';
 import { DateTime } from 'luxon';
 import pluralize from 'pluralize';
+import { Granularity } from '@lfx-insights/types';
 import {
   dateOptKeys,
   lfxProjectDateOptions,
 } from '~/components/modules/project/config/date-options';
 import type { Project, ProjectRepository, ProjectRepositoryGroup } from '~~/types/project';
-import { Granularity } from '~~/types/shared/granularity';
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
   processProjectParams,

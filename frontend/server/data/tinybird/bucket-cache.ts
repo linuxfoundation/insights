@@ -11,6 +11,14 @@ import type { TinybirdResponse } from './tinybird';
 const inFlightRequests = new Map<string, Promise<number | null>>();
 const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 
+/** Per-key invalidation counters so a stale in-flight write can't repopulate a just-cleared cache entry. */
+const invalidationGenerations = new Map<string, number>();
+let globalInvalidationGeneration = 0;
+
+function currentGeneration(cacheKey: string): number {
+  return (invalidationGenerations.get(cacheKey) ?? 0) + globalInvalidationGeneration;
+}
+
 /**
  * Response type from the project_buckets Tinybird pipe
  */
@@ -81,6 +89,7 @@ export async function getBucketIdForProject(
   }
 
   const cacheKey = `project_bucket:${projectValue}`;
+  const generation = currentGeneration(cacheKey);
 
   // Create and store the fetch promise immediately to prevent race conditions
   const fetchPromise = (async () => {
@@ -103,21 +112,21 @@ export async function getBucketIdForProject(
         return null;
       }
 
-      try {
-        const storage = useStorage('redis');
-        await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-      } catch (cacheError) {
-        console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
+      if (currentGeneration(cacheKey) === generation) {
+        try {
+          const storage = useStorage('redis');
+          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+        } catch (cacheError) {
+          console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
+        }
       }
 
       return bucketId;
     } catch (error: unknown) {
-      // Propagate rate limit and server errors instead of masking them as 404
+      // Propagate all classified Tinybird errors (401/403/404/429/5xx) instead of
+      // masking auth/permission failures as a false "project not found".
       if (error && typeof error === 'object' && 'statusCode' in error) {
-        const status = (error as { statusCode: number }).statusCode;
-        if (status === 429 || status >= 500) {
-          throw error;
-        }
+        throw error;
       }
       console.warn(`Failed to fetch bucketId for project ${projectValue}:`, error);
       return null;
@@ -209,6 +218,7 @@ export async function getBucketIdForCollection(
   }
 
   const cacheKey = `collection_bucket:${slugValue}`;
+  const generation = currentGeneration(cacheKey);
 
   const fetchPromise = (async () => {
     try {
@@ -229,20 +239,19 @@ export async function getBucketIdForCollection(
         return null;
       }
 
-      try {
-        const storage = useStorage('redis');
-        await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-      } catch (cacheError) {
-        console.error(`Failed to cache bucketId for collection ${slugValue}:`, cacheError);
+      if (currentGeneration(cacheKey) === generation) {
+        try {
+          const storage = useStorage('redis');
+          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+        } catch (cacheError) {
+          console.error(`Failed to cache bucketId for collection ${slugValue}:`, cacheError);
+        }
       }
 
       return bucketId;
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'statusCode' in error) {
-        const status = (error as { statusCode: number }).statusCode;
-        if (status === 429 || status >= 500) {
-          throw error;
-        }
+        throw error;
       }
       console.warn(`Failed to fetch bucketId for collection ${slugValue}:`, error);
       return null;
@@ -315,6 +324,7 @@ export async function clearBucketCache(project: string): Promise<void> {
   }
 
   const cacheKey = `project_bucket:${projectValue}`;
+  invalidationGenerations.set(cacheKey, (invalidationGenerations.get(cacheKey) ?? 0) + 1);
 
   try {
     const storage = useStorage('redis');
@@ -339,6 +349,8 @@ export async function clearAllBucketCaches(): Promise<void> {
     // No cache to clear in local mode
     return;
   }
+
+  globalInvalidationGeneration += 1;
 
   try {
     const storage = useStorage('redis');

@@ -26,6 +26,8 @@
     "setup:guardrails": "node --env-file=.env scripts/setup-guardrails.js"
   },
   "dependencies": {
+    "@lfx-insights/tinybird-client": "workspace:*",
+    "@lfx-insights/types": "workspace:*",
     "@ai-sdk/amazon-bedrock": "^2.2.12",
     "@ai-sdk/openai": "^2.0.89",
     "@ai-sdk/vue": "^2.0.121",

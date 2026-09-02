@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { ActivityTypes, Granularity } from '@lfx-insights/types';
 import {
   mockPRParticipantsCurrentSummary,
   mockPRParticipantsPreviousSummary,
@@ -15,13 +16,11 @@ import {
 import type { CodeReviewEngagement } from '~~/types/development/responses.types';
 import type { CodeReviewEngagementFilter } from '~~/types/development/requests.types';
 import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
-import { ActivityTypes } from '~~/types/shared/activity-types';
 import {
   ActiveContributorsTinybirdQuery,
   ActivitiesCountTinybirdQuery,
   ContributorsLeaderboardTinybirdQuery,
 } from '~~/server/data/tinybird/requests.types';
-import { Granularity } from '~~/types/shared/granularity';
 
 const mockFetchFromTinybird = vi.fn();
 
