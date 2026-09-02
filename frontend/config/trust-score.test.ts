@@ -34,6 +34,10 @@ describe('isPartialHealthScore', () => {
     expect(isPartialHealthScore(null)).toBe(false);
   });
 
+  test('should return false when healthMaxScore is undefined (field omitted by an older response)', () => {
+    expect(isPartialHealthScore(undefined)).toBe(false);
+  });
+
   test('should return false when healthMaxScore is 100 (all 3 categories covered)', () => {
     expect(isPartialHealthScore(100)).toBe(false);
   });

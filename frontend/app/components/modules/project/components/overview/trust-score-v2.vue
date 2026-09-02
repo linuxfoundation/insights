@@ -52,9 +52,8 @@ SPDX-License-Identifier: MIT
                       />
                       <template #content>
                         <div class="max-w-xs text-xs leading-relaxed">
-                          This Health Score is partial because one data category (Maintainer Health, Security & Supply
-                          Chain, or Development Activity) is missing data for this project. The score is computed from
-                          the remaining categories only.
+                          This Health Score is partial because the {{ missingCategoryLabel }} category is missing data
+                          for this project. The score is computed from the remaining categories only.
                         </div>
                       </template>
                     </lfx-tooltip>
@@ -248,6 +247,13 @@ const showShareBadge = computed(
 );
 
 const isPartial = computed(() => isPartialHealthScore(props.healthMaxScore));
+
+const missingCategoryLabel = computed(() => {
+  if (props.maintainerHealthScoreV2 === null) return 'Maintainer Health';
+  if (props.securitySupplyChainScoreV2 === null) return 'Security & Supply Chain';
+  if (props.developmentActivityScoreV2 === null) return 'Development Activity';
+  return null;
+});
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel, isPartial.value).label);
 

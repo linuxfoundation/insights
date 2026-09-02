@@ -47,8 +47,8 @@ export const getHealthScoreV2Config = (
 // encodes this via healthMaxScore: 100 when all 3 categories are covered, null when fewer than 2
 // are covered, and the capped denominator (60/65/75) when exactly one is missing - so this never
 // needs to recompute category coverage itself.
-export const isPartialHealthScore = (healthMaxScore: number | null): boolean =>
-  healthMaxScore !== null && healthMaxScore !== 100;
+export const isPartialHealthScore = (healthMaxScore: number | null | undefined): boolean =>
+  healthMaxScore != null && healthMaxScore !== 100;
 
 // Health Score empty-state copy for the repo-selector states.
 export const healthScoreFilterEmptyState = {
