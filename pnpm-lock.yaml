@@ -47,7 +47,7 @@ overrides:
   terser-webpack-plugin: '>=5.6.1 <6'
   serialize-javascript: '>=7.0.5 <8'
 
-packageExtensionsChecksum: sha256-vlE9dNsfmreAP/mO0+CF4vebCCU7MhcFyydn+rSMe00=
+packageExtensionsChecksum: sha256-LYjMeaYefljdvK+FrsOBWwtRRn6nvDBA30g8KPeZvvY=
 
 patchedDependencies:
   nuxt-og-image@5.1.13:
@@ -23921,6 +23921,7 @@ snapshots:
       consola: 3.4.2
       diff: 8.0.2
       fuse.js: 7.1.0
+      h3: 1.15.5
       magic-string: 0.30.21
       nuxt-site-config: 3.2.18(magicast@0.5.1)(vue@3.5.40(typescript@5.9.3))
       ofetch: 1.5.1
@@ -24002,6 +24003,7 @@ snapshots:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@unhead/schema-org': 2.0.19(@unhead/vue@2.0.19(vue@3.5.40(typescript@5.9.3)))
       defu: 6.1.7
+      h3: 1.15.5
       nuxt-site-config: 3.2.18(magicast@0.5.1)(vue@3.5.40(typescript@5.9.3))
       pathe: 2.0.3
       pkg-types: 2.3.0
@@ -24024,6 +24026,7 @@ snapshots:
       defu: 6.1.7
       escape-string-regexp: 5.0.0
       fast-glob: 3.3.3
+      h3: 1.15.5
       image-size: 2.0.2
       nuxt-site-config: 3.2.18(magicast@0.5.1)(vue@3.5.40(typescript@5.9.3))
       pathe: 2.0.3

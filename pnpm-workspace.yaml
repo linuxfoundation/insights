@@ -25,6 +25,25 @@ packageExtensions:
   '@nuxtjs/sitemap@7.5.2':
     dependencies:
       h3: 1.15.5
+  # Same phantom-import bug: nuxt-schema-org's compiled debug.js imports
+  # defineEventHandler from `h3` without declaring `h3` as a dependency
+  # (see IN-1275).
+  nuxt-schema-org@5.0.10:
+    dependencies:
+      h3: 1.15.5
+  # Same phantom-import bug: nuxt-link-checker's compiled debug.js/inspect.js
+  # import defineEventHandler/readBody from `h3` without declaring `h3` as a
+  # dependency (see IN-1275).
+  nuxt-link-checker@4.3.9:
+    dependencies:
+      h3: 1.15.5
+  # Same phantom-import bug: nuxt-seo-utils's compiled
+  # resolveImagesInPagesDir.js/redirectCanonical.js import
+  # defineEventHandler/setHeader/getRequestHost/sendRedirect from `h3`
+  # without declaring `h3` as a dependency (see IN-1275).
+  nuxt-seo-utils@7.0.19:
+    dependencies:
+      h3: 1.15.5
 
 overrides:
   eslint-plugin-vue: ^10.2.0
