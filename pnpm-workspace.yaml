@@ -7,9 +7,20 @@ packages:
   - 'frontend'
   - 'services'
 
+packageExtensions:
+  # nuxt-og-image@5.1.13 imports `h3` directly (getQuery/createError) without
+  # declaring it as a dependency, so pnpm has no fixed slot to put it in and
+  # falls back to an ambiguous shared hoist that can pick the wrong h3 major
+  # (see the `h3` override below and IN-1275). Declaring it explicitly here
+  # forces pnpm to resolve it like any other declared dependency.
+  nuxt-og-image@5.1.13:
+    dependencies:
+      h3: 1.15.5
+
 overrides:
   eslint-plugin-vue: ^10.2.0
   h3: 1.15.5
+  'nuxt-og-image>nuxt-site-config': ^3.2.18
   '@nuxtjs/robots': ^5.7.0
   form-data: '>=4.0.4' # GHSA-fjxv-7rqg-78g4
   shell-quote: '>=1.8.4' # GHSA-w7jw-789q-3m8p
