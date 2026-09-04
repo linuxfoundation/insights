@@ -16,6 +16,15 @@ packageExtensions:
   nuxt-og-image@5.1.13:
     dependencies:
       h3: 1.15.5
+  # @nuxtjs/sitemap@7.5.2 has the same phantom-import bug: its compiled
+  # dist/runtime/server/sitemap/nitro.js imports getQuery/setHeader/
+  # createError/getHeader from `h3` without declaring `h3` as a dependency.
+  # Without a fixed slot it currently happens to hoist to h3@1.15.5, but a
+  # future lockfile regeneration could resolve it to h3 v2 and reproduce the
+  # same "Invalid URL" crash on sitemap.xml requests (see IN-1275).
+  '@nuxtjs/sitemap@7.5.2':
+    dependencies:
+      h3: 1.15.5
 
 overrides:
   eslint-plugin-vue: ^10.2.0

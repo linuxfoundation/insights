@@ -47,7 +47,7 @@ overrides:
   terser-webpack-plugin: '>=5.6.1 <6'
   serialize-javascript: '>=7.0.5 <8'
 
-packageExtensionsChecksum: sha256-0pt02oPhHk5P6sPCODfq6I4Ht+5k28QtEdpjvsdeOVM=
+packageExtensionsChecksum: sha256-vlE9dNsfmreAP/mO0+CF4vebCCU7MhcFyydn+rSMe00=
 
 patchedDependencies:
   nuxt-og-image@5.1.13:
@@ -432,7 +432,7 @@ importers:
         version: 2.2.4
       pg-promise:
         specifier: ^11.4.3
-        version: 11.13.0(pg-query-stream@4.8.1(pg@8.17.1))
+        version: 11.13.0(pg-query-stream@4.8.1(pg@8.14.1))
     devDependencies:
       '@types/config':
         specifier: ^3.3.1
@@ -729,7 +729,7 @@ importers:
         version: 1.13.4
       pg-promise:
         specifier: ^11.4.3
-        version: 11.13.0(pg-query-stream@4.8.1(pg@8.14.1))
+        version: 11.13.0(pg-query-stream@4.8.1(pg@8.17.1))
     devDependencies:
       '@types/node':
         specifier: ^18.16.3
@@ -16442,6 +16442,7 @@ snapshots:
       chalk: 5.6.2
       defu: 6.1.7
       fast-xml-parser: 5.9.3
+      h3: 1.15.5
       nuxt-site-config: 3.2.18(magicast@0.5.1)(vue@3.5.40(typescript@5.9.3))
       ofetch: 1.5.1
       pathe: 2.0.3
