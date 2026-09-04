@@ -21,6 +21,11 @@ overrides:
   eslint-plugin-vue: ^10.2.0
   h3: 1.15.5
   'nuxt-og-image>nuxt-site-config': ^3.2.18
+  # The nuxt-site-config override above shifts pnpm's peer resolution for
+  # vitest@4.1.10 -> vite from 7.3.1 down to 5.4.21, which vitest 4's
+  # `^6||^7||^8` peer range rejects (missing `./module-runner` export).
+  # Pin vite back to what main resolves so `pnpm test` keeps working.
+  vite: 7.3.1
   '@nuxtjs/robots': ^5.7.0
   form-data: '>=4.0.4' # GHSA-fjxv-7rqg-78g4
   shell-quote: '>=1.8.4' # GHSA-w7jw-789q-3m8p
