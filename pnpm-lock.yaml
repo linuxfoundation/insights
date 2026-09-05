@@ -98,7 +98,7 @@ importers:
         version: 6.2.0(29c8ab1433416813994d5de6b6d7412b)
       '@nuxtjs/seo':
         specifier: ^5.3.14
-        version: 5.3.14(2813392fb252e71fad9cfb7af1999669)
+        version: 5.3.14(544e0e356ed67cd6702ee248fc62103f)
       '@nuxtjs/sitemap':
         specifier: ^8.5.0
         version: 8.5.0(29c8ab1433416813994d5de6b6d7412b)
@@ -182,7 +182,7 @@ importers:
         version: 5.0.0(magic-string@1.2.3)(magicast@0.5.4)(oxc-parser@0.143.0)(rolldown@1.2.7)(unplugin@3.3.0(esbuild@0.25.12)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.28)))
       nuxt-og-image:
         specifier: ^6.7.8
-        version: 6.7.8(f439830a13075e01633a4453da02c038)
+        version: 6.7.8(a0060bfc9e0fd5793a50107d522244e7)
       ofetch:
         specifier: ^1.5.1
         version: 1.5.1
@@ -202,8 +202,8 @@ importers:
         specifier: ^4.5.5
         version: 4.5.5(vue@3.5.42(typescript@6.0.3))
       satori:
-        specifier: ~0.32.0
-        version: 0.32.0
+        specifier: ^0.33.4
+        version: 0.33.4
       slugify:
         specifier: ^1.6.9
         version: 1.6.9
@@ -8171,6 +8171,9 @@ packages:
     resolution: {integrity: sha512-4bRh1KzRvKDnFNTlLhzT1RZTpkKhQbQDl9j+7GXszWsvuspYdo29k6OHRf4PwiM6oLb8r/pMWeYiJjkfod5AvQ==}
     engines: {node: '>=20.0.0'}
 
+  harfbuzzjs@0.10.0:
+    resolution: {integrity: sha512-SN8LVwCOzvTq3OPNd0+EAghgXugItz56wst567D1vs7LnnKGWprhi3EG58aVOBwhN8HEbQxL4I9NDWkcXUutRw==}
+
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
     engines: {node: '>= 0.4'}
@@ -11004,8 +11007,8 @@ packages:
     engines: {node: '>=20.19.0'}
     hasBin: true
 
-  satori@0.32.0:
-    resolution: {integrity: sha512-WwYeCWKjxfXvk7SsLSLTJhcPOrB2HCxbptqGIiYor0yqaPu3xA5uMTQ/4Dan5mxClhhk2Wn9ZE1pLGIlGdUxFQ==}
+  satori@0.33.4:
+    resolution: {integrity: sha512-dCnaW6D/tkCJxG5UvpZPWnnvfTdGTVVSAq1tzH6xC5MeOhAeeswRcSq5zT7C6lRCdTGow9PRGus7PCzdp5JJYw==}
     engines: {node: '>=16'}
 
   sax@1.6.1:
@@ -16471,14 +16474,14 @@ snapshots:
       - vite
       - vue
 
-  '@nuxtjs/seo@5.3.14(2813392fb252e71fad9cfb7af1999669)':
+  '@nuxtjs/seo@5.3.14(544e0e356ed67cd6702ee248fc62103f)':
     dependencies:
       '@nuxt/kit': 4.5.2(magic-string@1.2.3)(magicast@0.5.4)(oxc-parser@0.143.0)(rolldown@1.2.7)(unplugin@3.3.0(esbuild@0.25.12)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.28)))
       '@nuxtjs/robots': 6.2.0(29c8ab1433416813994d5de6b6d7412b)
       '@nuxtjs/sitemap': 8.5.0(29c8ab1433416813994d5de6b6d7412b)
       nuxt: 4.5.2(@azure/identity@4.13.0)(@azure/storage-blob@12.26.0)(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@oxc-project/types@0.148.0)(@parcel/watcher@2.6.0)(@types/node@26.4.1)(@vue/compiler-sfc@3.5.42)(aws4fetch@1.0.20)(cac@7.0.0)(commander@14.0.3)(db0@0.3.4)(esbuild@0.25.12)(eslint@10.10.0(jiti@2.7.0))(ioredis@5.11.1)(lightningcss@1.33.0)(magicast@0.5.4)(optionator@0.9.4)(oxc-parser@0.143.0)(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))(rolldown@1.2.7)(rollup-plugin-visualizer@7.1.1(rolldown@1.2.7)(rollup@4.63.1))(rollup@4.63.1)(sass-embedded@1.104.0)(sass@1.104.0)(srvx@0.11.22)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.28))(yaml@2.9.0)
       nuxt-link-checker: 5.3.0(6308b7f187d5b4cf363a074f51920d8b)
-      nuxt-og-image: 6.7.8(f439830a13075e01633a4453da02c038)
+      nuxt-og-image: 6.7.8(a0060bfc9e0fd5793a50107d522244e7)
       nuxt-schema-org: 6.3.1(addd1459651824604843f00d5e09e748)
       nuxt-seo-utils: 8.5.0(8b40ff6eb1904a4420aa8a369fe40d24)
       nuxt-site-config: 4.2.3(29c8ab1433416813994d5de6b6d7412b)
@@ -21703,6 +21706,8 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  harfbuzzjs@0.10.0: {}
+
   has-bigints@1.1.0: {}
 
   has-flag@3.0.0: {}
@@ -23220,7 +23225,7 @@ snapshots:
       - vue
       - zod
 
-  nuxt-og-image@6.7.8(f439830a13075e01633a4453da02c038):
+  nuxt-og-image@6.7.8(a0060bfc9e0fd5793a50107d522244e7):
     dependencies:
       '@clack/prompts': 1.7.0
       '@nuxt/kit': 4.5.2(magic-string@1.2.3)(magicast@0.5.4)(oxc-parser@0.143.0)(rolldown@1.2.7)(unplugin@3.3.0(esbuild@0.25.12)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.28)))
@@ -23260,7 +23265,7 @@ snapshots:
       fontless: 0.2.1(@azure/identity@4.13.0)(@azure/storage-blob@12.26.0)(aws4fetch@1.0.20)(db0@0.3.4)(ioredis@5.11.1)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
       nitropack: 2.13.4(@azure/identity@4.13.0)(@azure/storage-blob@12.26.0)(@parcel/watcher@2.6.0)(aws4fetch@1.0.20)(oxc-parser@0.143.0)(rolldown@1.2.7)(srvx@0.11.22)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.28))
       playwright-core: 1.57.0
-      satori: 0.32.0
+      satori: 0.33.4
       tailwindcss: 3.4.19(tsx@4.23.13)(yaml@2.9.0)
       unifont: 0.7.5
       zod: 4.5.4
@@ -24971,7 +24976,7 @@ snapshots:
     optionalDependencies:
       '@parcel/watcher': 2.6.0
 
-  satori@0.32.0:
+  satori@0.33.4:
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
       css-background-parser: 0.1.0
@@ -24980,6 +24985,8 @@ snapshots:
       css-to-react-native: 3.2.0
       emoji-regex-xs: 2.0.1
       escape-html: 1.0.3
+      fflate: 0.7.3
+      harfbuzzjs: 0.10.0
       linebreak: 1.1.0
       parse-css-color: 0.2.1
       postcss-value-parser: 4.2.0

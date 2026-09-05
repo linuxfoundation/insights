@@ -1,5 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { createRequire } from 'node:module';
+
 const longCache = 86400; // 1 day in seconds
 const shortCache = 3600; // 1 hour in seconds
 
@@ -7,12 +9,20 @@ const redisUrl = process.env.NUXT_REDIS_URL || '';
 
 const cacheMountTtl = 60 * 60 * 24 * 3;
 
+// satori >=0.33 shapes text with harfbuzzjs, whose emscripten glue loads hb.wasm through a
+// computed path (locateFile) that the file tracer cannot follow, so the production server 500s
+// on every OG render with ENOENT hb.wasm. Resolve the file through satori's own dependency
+// chain (pnpm does not hoist it to the project root) and hand it to the tracer explicitly.
+const resolveFromRoot = createRequire(import.meta.url);
+const harfbuzzWasm = createRequire(resolveFromRoot.resolve('satori')).resolve('harfbuzzjs/hb.wasm');
+
 // Production runs on node:24-slim (Debian, glibc) — only the linux-x64-gnu native
 // binary is ever loaded at runtime. Nitro's dependency tracer (nitropack >=2.13)
 // full-traces every @resvg/resvg-js-* platform package it finds (Windows/macOS/
 // Android/musl included), ballooning the server bundle from ~80MB to ~440MB.
 // Known upstream issue: https://github.com/nuxt-modules/og-image/issues/412
 const externals = {
+  traceInclude: [harfbuzzWasm],
   traceOptions: {
     ignore: [
       '**/node_modules/@resvg/resvg-js-android-arm-eabi/**',
