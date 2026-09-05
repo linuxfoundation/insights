@@ -118,14 +118,14 @@ importers:
         specifier: ^5.102.8
         version: 5.102.8(vue@3.5.42(typescript@6.0.3))
       '@temporalio/client':
-        specifier: ~1.11.8
-        version: 1.11.8
+        specifier: ^1.23.0
+        version: 1.23.0
       '@temporalio/common':
-        specifier: ~1.11.8
-        version: 1.11.8
+        specifier: ^1.23.0
+        version: 1.23.0
       '@temporalio/proto':
-        specifier: ~1.11.8
-        version: 1.11.8
+        specifier: ^1.23.0
+        version: 1.23.0
       '@types/jsonwebtoken':
         specifier: ^9.0.10
         version: 9.0.10
@@ -5325,14 +5325,26 @@ packages:
   '@temporalio/client@1.11.8':
     resolution: {integrity: sha512-UpiU+awykWYjQSSJH5NLY5Id/uDdiD9yz5oaardv1YF80rMN7U1Q6W9lgPEbg/b62qOv3Mia1+fE5hrav7ying==}
 
+  '@temporalio/client@1.23.0':
+    resolution: {integrity: sha512-E9nXZPiKDGEDbPpRi0EyQ9i1x70fEIG26aMXZO88kKslKZnEKNPphs06xIic7bhuDoSrPsgVfdDap6o3l6IO2A==}
+    engines: {node: '>= 20.3.0'}
+
   '@temporalio/common@1.11.8':
     resolution: {integrity: sha512-hB+TSB/P2Vm8chYyZGcKALdywGvcBSqzSUzFG1lOm/JPDh2d4uK6lvE2S8OneEndlJSdzE++d2Mt5B+iKe2ytA==}
+
+  '@temporalio/common@1.23.0':
+    resolution: {integrity: sha512-TaZYb/ruzgzJ8jd42EqRUCI4ispLZETt2Jigc9szES6q9edDmfncRw143HyvPi7b8n9naohYmA/IxTe9COH/dg==}
+    engines: {node: '>= 20.3.0'}
 
   '@temporalio/core-bridge@1.11.8':
     resolution: {integrity: sha512-s1EkihwUHGIOylF31UFnsnntZmVqcKEgVTu8UvAf/J/br4jhs+nEO/mBFexqrzSWnraJhpq9UnzTNAklNHFVKg==}
 
   '@temporalio/proto@1.11.8':
     resolution: {integrity: sha512-L6QsIAq3PrnQpARAcqLCe4xMpbkpBEvA/9FQGddpzCESvViUOUAIHPwckL1DokYPedEAt19C+uuBGVBMCNx7vw==}
+
+  '@temporalio/proto@1.23.0':
+    resolution: {integrity: sha512-90JWnYEs1wyq97/SXkQGknRVMr/BCV9sZ0pOnK3fHTedVinfvz3/PBVFkeAJyU3CJqMQGnzRs9IIfsBTT1icrA==}
+    engines: {node: '>= 20.3.0'}
 
   '@temporalio/worker@1.11.8':
     resolution: {integrity: sha512-KNUEw8khhFoVLhOy93j9EkA6KfKtOVn7N7+c4kn9AM7QXkcxe73+1AUwNKgFYKZph4i6I26NBxs7MPrgh3GKxQ==}
@@ -9444,6 +9456,10 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
+  nexus-rpc@0.0.3:
+    resolution: {integrity: sha512-ksIBeYHDv6FHAR1h3Vwk0kQ6REhdo1STqDHXMzu/yn/VN/XzgOor2IUjewG6paoA7IgxlIPZoOU/PD78PC6HTg==}
+    engines: {node: '>= 20.0.0'}
+
   nitropack@2.13.4:
     resolution: {integrity: sha512-tX7bT6zxNeMwkc6hxHiZeUoTOjVrcjoh1Z3cmxOlodIqjl4HISgqfGOmkWSayky3Nv9Z5+KQH52F8nmXJY5AAA==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -10544,6 +10560,10 @@ packages:
 
   protobufjs@7.6.6:
     resolution: {integrity: sha512-dYDWdjSl5RNb7SgPxGQcRU+GtvP7s2fpkrY0r432PcOIaZ0/rBcxEZnQN67iJhFuQiVw754JDoPruPCNdGsbjg==}
+    engines: {node: '>=12.0.0'}
+
+  protobufjs@8.8.0:
+    resolution: {integrity: sha512-N3xhQ5yyBx3vQq4gubBfASzYhJGNzeDbjqBpu61g7UVylsN/qyffU96TKWD3GbbLOKF82VGNRNvv1+BFgE31Eg==}
     engines: {node: '>=12.0.0'}
 
   proxy-addr@2.0.7:
@@ -12085,6 +12105,10 @@ packages:
 
   utrie@1.0.2:
     resolution: {integrity: sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==}
+
+  uuid@11.1.1:
+    resolution: {integrity: sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==}
+    hasBin: true
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
@@ -18301,12 +18325,30 @@ snapshots:
       long: 5.3.2
       uuid: 9.0.1
 
+  '@temporalio/client@1.23.0':
+    dependencies:
+      '@grpc/grpc-js': 1.14.4
+      '@temporalio/common': 1.23.0
+      '@temporalio/proto': 1.23.0
+      abort-controller: 3.0.0
+      long: 5.3.2
+      nexus-rpc: 0.0.3
+      uuid: 11.1.1
+
   '@temporalio/common@1.11.8':
     dependencies:
       '@temporalio/proto': 1.11.8
       long: 5.3.2
       ms: 3.0.0-canary.1
       proto3-json-serializer: 2.0.2
+
+  '@temporalio/common@1.23.0':
+    dependencies:
+      '@temporalio/proto': 1.23.0
+      long: 5.3.2
+      ms: 3.0.0-canary.1
+      nexus-rpc: 0.0.3
+      protobufjs: 8.8.0
 
   '@temporalio/core-bridge@1.11.8':
     dependencies:
@@ -18319,6 +18361,11 @@ snapshots:
     dependencies:
       long: 5.3.2
       protobufjs: 7.6.6
+
+  '@temporalio/proto@1.23.0':
+    dependencies:
+      long: 5.3.2
+      protobufjs: 8.8.0
 
   '@temporalio/worker@1.11.8(@swc/helpers@0.5.23)':
     dependencies:
@@ -22965,6 +23012,8 @@ snapshots:
 
   neo-async@2.6.2: {}
 
+  nexus-rpc@0.0.3: {}
+
   nitropack@2.13.4(@azure/identity@4.13.0)(@azure/storage-blob@12.26.0)(@parcel/watcher@2.6.0)(aws4fetch@1.0.20)(oxc-parser@0.143.0)(rolldown@1.2.7)(srvx@0.11.22)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.2
@@ -24426,6 +24475,10 @@ snapshots:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.2
       '@types/node': 24.13.3
+      long: 5.3.2
+
+  protobufjs@8.8.0:
+    dependencies:
       long: 5.3.2
 
   proxy-addr@2.0.7:
@@ -26223,6 +26276,8 @@ snapshots:
   utrie@1.0.2:
     dependencies:
       base64-arraybuffer: 1.0.2
+
+  uuid@11.1.1: {}
 
   uuid@8.3.2: {}
 

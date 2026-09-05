@@ -21,8 +21,16 @@ const harfbuzzWasm = createRequire(resolveFromRoot.resolve('satori')).resolve('h
 // full-traces every @resvg/resvg-js-* platform package it finds (Windows/macOS/
 // Android/musl included), ballooning the server bundle from ~80MB to ~440MB.
 // Known upstream issue: https://github.com/nuxt-modules/og-image/issues/412
+// @temporalio/client's CommonJS entry carries an `import ... from` usage sample inside its JSDoc.
+// Nitro's ESM/CJS sniffing (mlly isValidNodeImport) reads that as mixed syntax and inlines the
+// package, which leaves extensionless `lib/*` imports that fail at startup. Keep it external
+// (rollupConfig.external below) and trace it by hand so it still ships in .output/server.
+const manuallyTracedPackages = ['@temporalio/client'];
+
 const externals = {
-  traceInclude: [harfbuzzWasm],
+  // Absolute paths: rollup reports the bare ids above as external without resolving them, and
+  // the tracer needs real files.
+  traceInclude: [harfbuzzWasm, ...manuallyTracedPackages.map((id) => resolveFromRoot.resolve(id))],
   traceOptions: {
     ignore: [
       '**/node_modules/@resvg/resvg-js-android-arm-eabi/**',
@@ -103,6 +111,7 @@ export default {
   },
   nitro: {
     externals,
+    rollupConfig: { external: manuallyTracedPackages },
     storage: {
       redis: {
         driver: 'redis',
