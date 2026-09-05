@@ -7,17 +7,20 @@ import ControlAssessmentHead from './control-assessment-head.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 
 // Mock dependencies
-vi.mock('@tanstack/vue-query', () => ({
+vi.mock('@tanstack/vue-query', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@tanstack/vue-query')>()),
   useQueryClient: vi.fn(),
 }));
 
-vi.mock('nuxt/app', () => ({
+vi.mock('nuxt/app', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('nuxt/app')>()),
   useRoute: vi.fn(() => ({
     params: { slug: 'test-project', name: 'test-repo' },
   })),
 }));
 
-vi.mock('pinia', () => ({
+vi.mock('pinia', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('pinia')>()),
   storeToRefs: vi.fn((store) => store),
 }));
 

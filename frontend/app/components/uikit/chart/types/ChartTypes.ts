@@ -55,11 +55,7 @@ export interface CategoryData {
 
 export type RawChartData = Record<string, string | number | boolean | null>;
 export type SeriesTypes =
-  | BarSeriesOption
-  | LineSeriesOption
-  | PieSeriesOption
-  | MapSeriesOption
-  | RadarSeriesOption;
+  BarSeriesOption | LineSeriesOption | PieSeriesOption | MapSeriesOption | RadarSeriesOption;
 
 export interface TreeMapItem {
   id: string;

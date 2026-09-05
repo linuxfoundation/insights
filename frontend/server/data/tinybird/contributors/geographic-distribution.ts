@@ -50,19 +50,17 @@ export async function fetchGeographicDistribution(filter: GeographicDistribution
 
   const processedData: GeographicDistributionDataPoint[] = (
     data as TinybirdResponse<TinybirdGeographicDistributionData>
-  )?.data.map(
-    (item): GeographicDistributionDataPoint => ({
-      name: item.country,
-      code: item.country_code,
-      flag: item.flag,
-      count: (queryType === DemographicType.CONTRIBUTORS
-        ? item.contributorCount
-        : item.organizationCount) as number,
-      percentage: (queryType === DemographicType.CONTRIBUTORS
-        ? item.contributorPercentage
-        : item.organizationPercentage) as number,
-    }),
-  );
+  )?.data.map((item): GeographicDistributionDataPoint => ({
+    name: item.country,
+    code: item.country_code,
+    flag: item.flag,
+    count: (queryType === DemographicType.CONTRIBUTORS
+      ? item.contributorCount
+      : item.organizationCount) as number,
+    percentage: (queryType === DemographicType.CONTRIBUTORS
+      ? item.contributorPercentage
+      : item.organizationPercentage) as number,
+  }));
 
   const response: GeographicDistributionResponse = {
     summary: {
