@@ -9,11 +9,10 @@ packages:
 
 overrides:
   eslint-plugin-vue: ^10.2.0
-  h3: 1.15.5
-  '@nuxtjs/robots': ^5.7.0
+  h3@1: '>=1.15.11 <2' # floor only; nuxt 4.5 pulls the latest 1.x itself
   form-data: '>=4.0.4' # GHSA-fjxv-7rqg-78g4
   shell-quote: '>=1.8.4' # GHSA-w7jw-789q-3m8p
-  protobufjs: '>=7.5.5 <8' # GHSA-xq3m-2v4x-88gg
+  protobufjs@7: '>=7.5.5 <8' # GHSA-xq3m-2v4x-88gg (7.x line only; @temporalio >=1.23 needs 8.x)
   simple-git: '>=3.32.3' # GHSA-r275-fr43-pm7q
   fast-xml-parser@5: '>=5.7.0' # GHSA-m7jm-9gc2-mpf2 (5.x line only; 4.x deferred, needs-human)
   '@grpc/grpc-js': '>=1.13.5 <2' # GHSA-5375-pq7m-f5r2, GHSA-99f4-grh7-6pcq
@@ -44,6 +43,5 @@ overrides:
   minimatch@10: '>=10.2.3 <11' # same GHSAs (10.x line)
   rollup@2: '>=2.80.0 <3' # GHSA-mw96-cpmx-2vgc (2.x line; 4.x deferred, needs-human — shares resolution with production nuxt build)
   lodash: '>=4.18.1 <5' # GHSA stacked (<=4.17.23); 4.18.0 is npm-deprecated "bad release", use 4.18.1
-  storybook: '>=8.6.17 <9' # GHSA (8.1.0-8.6.16); @nuxtjs/storybook@8.3.3 exact-pins 8.4.7, needs manual pnpm storybook / storybook:build check
   terser-webpack-plugin: '>=5.6.1 <6' # dev-only (webpack's own minifier dep); 5.3.17+ dropped serialize-javascript entirely, removing the vulnerable pin
   serialize-javascript: '>=7.0.5 <8' # GHSA (CVE-2026-34043); @rollup/plugin-terser@0.4.4 declares ^6.0.1 but only calls the stable default export, API unchanged across the major

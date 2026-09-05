@@ -110,23 +110,19 @@ const initializeFromSourceCollection = async () => {
     );
     form.value.projects = response.data
       .filter((p) => p.type === 'project')
-      .map(
-        (p): CollectionProject => ({
-          id: p.id,
-          name: p.name,
-          slug: p.slug,
-          logo: p.logoUrl || null,
-        }),
-      );
+      .map((p): CollectionProject => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        logo: p.logoUrl || null,
+      }));
     form.value.repositories = response.data
       .filter((r) => r.type === 'repo')
-      .map(
-        (r): CollectionRepository => ({
-          name: r.name,
-          slug: r.slug,
-          url: r.repoUrl,
-        }),
-      );
+      .map((r): CollectionRepository => ({
+        name: r.name,
+        slug: r.slug,
+        url: r.repoUrl,
+      }));
   } catch (error) {
     console.error('Failed to load source collection projects:', error);
   } finally {

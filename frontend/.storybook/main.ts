@@ -4,10 +4,10 @@ import type { StorybookConfig } from '@storybook-vue/nuxt';
 
 const config: StorybookConfig = {
   stories: ['../app/components/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  // Storybook 9 folded essentials/interactions into core; docs stays a separate addon.
   addons: [
-    '@storybook/addon-essentials',
-    // '@chromatic-com/storybook', // Disabled: incompatible with Storybook 8.6.x
-    '@storybook/addon-interactions',
+    '@storybook/addon-docs',
+    // '@chromatic-com/storybook', // Disabled: not used in this project's Storybook setup
   ],
   framework: {
     name: '@storybook-vue/nuxt',

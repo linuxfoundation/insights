@@ -148,8 +148,7 @@ export default defineEventHandler(async (event) => {
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
       username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
-        | string
-        | undefined,
+        string | undefined,
       intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 

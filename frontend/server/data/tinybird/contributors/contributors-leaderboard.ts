@@ -55,15 +55,13 @@ export async function fetchContributorsLeaderboard(
       limit: filter.limit || 10,
       total: countResponse?.data?.[0]?.count || 0,
     },
-    data: dataResponse.data.map(
-      (item): Contributor => ({
-        avatar: item.avatar,
-        name: item.displayName,
-        contributions: item.contributionCount,
-        percentage: item.contributionPercentage,
-        roles: item.roles || [],
-        githubHandleArray: item.githubHandleArray,
-      }),
-    ),
+    data: dataResponse.data.map((item): Contributor => ({
+      avatar: item.avatar,
+      name: item.displayName,
+      contributions: item.contributionCount,
+      percentage: item.contributionPercentage,
+      roles: item.roles || [],
+      githubHandleArray: item.githubHandleArray,
+    })),
   };
 }

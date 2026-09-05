@@ -5,11 +5,9 @@
   "include": ["app/**/*.ts", "app/**/*.vue", "lib/**/*.ts", "shims-vue.d.ts"],
   "compilerOptions": {
     "types": ["nuxt", "nuxt-echarts"],
-    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strict": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "@/*": ["./app/*"],

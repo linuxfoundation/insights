@@ -42,7 +42,7 @@ export default {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
     '/api/auth/**': { prerender: false, index: false, cache: false },
-    '/__og-image__/**': { cache: false },
+    '/_og/**': { cache: false },
     // These three apply regardless of NUXT_APP_ENV (they used to live in nitro.routeRules,
     // applied unconditionally). Keep them out of the production-only block below, and never
     // repeat their keys there — a route rule declared in two places for the same exact

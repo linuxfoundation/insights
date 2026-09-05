@@ -24,8 +24,7 @@ SPDX-License-Identifier: MIT
     <pre
       lang="yaml"
       class="mt-6 p-4 bg-white border border-neutral-200 rounded-xl overflow-auto text-sm font-mono flex-grow"
-      >{{ yaml }}</pre
-    >
+      >{{ yaml }}</pre>
   </div>
 </template>
 

@@ -245,7 +245,7 @@ const description = computed(() => {
   return desc.substring(0, 157).trim() + '...';
 });
 
-defineOgImageComponent('collection', {
+defineOgImage('Collection', {
   collectionSlug: slug as string,
 });
 
