@@ -387,10 +387,17 @@ export const getResponsivenessRow = (signals: HealthBreakdownResults): SignalRow
       description: blockedSignalDescription('Maintainer responsiveness', signals),
     };
   }
-  if (signals.medianIssueResponseS === null || signals.responsivenessScore === null) {
+  if (signals.responsivenessScore === null) {
     return {
       status: 'no-data',
       description: 'No issue or PR response data available for this project.',
+    };
+  }
+  if (signals.medianIssueResponseS === null) {
+    return {
+      status: 'negative',
+      description:
+        'No PRs or issues were opened in the review window, so response time could not be measured.',
     };
   }
   const responseText = formatDays(signals.medianIssueResponseS);
