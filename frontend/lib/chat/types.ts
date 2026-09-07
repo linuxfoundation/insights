@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { DataStreamWriter } from 'ai';
+import type { UIMessageStreamWriter } from 'ai';
 import type { Pool } from 'pg';
 import { z } from 'zod';
 import { RouterDecisionAction } from './enums';
@@ -15,7 +15,7 @@ import type { ChatResponse } from '~~/server/repo/chat.repo';
 export const pipeExecutionSchema = z.object({
   id: z.string().describe('Unique identifier for referencing this pipe'),
   name: z.string().describe('Actual pipe name to execute'),
-  inputs: z.record(z.any()).describe('Input parameters for the pipe'),
+  inputs: z.record(z.string(), z.any()).describe('Input parameters for the pipe'),
 });
 
 // Schema for output column mapping - either direct mapping or formula
@@ -154,7 +154,7 @@ export interface RouterAgentInput {
 }
 
 export interface PipeAgentStreamInput extends Omit<PipeAgentInput, 'model' | 'tools' | 'date'> {
-  dataStream: DataStreamWriter;
+  dataStream: UIMessageStreamWriter;
   date: string;
   responseData: ChatResponse;
   routerOutput: RouterOutput;
@@ -182,7 +182,7 @@ export interface DataCopilotQueryInput {
   conversationId: string;
   insightsDbPool: Pool;
   userEmail: string;
-  dataStream: DataStreamWriter; // DataStreamWriter from AI SDK
+  dataStream: UIMessageStreamWriter; // UIMessageStreamWriter from AI SDK
 }
 
 export interface SqlErrorContext {
@@ -233,5 +233,5 @@ export interface AgentResponseCompleteParams {
   conversationId?: string;
   insightsDbPool: Pool;
   userEmail: string;
-  dataStream: DataStreamWriter;
+  dataStream: UIMessageStreamWriter;
 }

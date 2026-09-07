@@ -213,23 +213,22 @@ class CopilotApiService {
     chatResponseId?: string;
   } | null {
     try {
-      // Parse AI SDK data stream format: "prefix:data"
-      const colonIndex = line.indexOf(':');
-      if (colonIndex === -1) return null;
+      // Parse AI SDK UI message stream (SSE): "data: <json chunk>"
+      if (!line.startsWith('data:')) return null;
 
-      const prefix = line.slice(0, colonIndex);
-      const dataString = line.slice(colonIndex + 1);
+      const dataString = line.slice(5).trim();
+      if (!dataString || dataString === '[DONE]') return null;
 
-      if (!dataString.trim()) return null;
+      const chunk = JSON.parse(dataString);
 
-      // Handle different stream prefixes
-      if (prefix === '2') {
+      // Handle the chunk types the copilot backend emits
+      if (chunk.type === 'data-copilot') {
         assistantMessageId = null;
         let capturedConversationId: string | undefined = undefined;
         let capturedChatResponseId: string | undefined = currentChatResponseId;
 
         // Custom data events from your backend (like router-status)
-        const dataArray = JSON.parse(dataString);
+        const dataArray = [chunk.data];
         for (const data of dataArray) {
           const statusText = this.getStatusText(data.type, data.status, data.reasoning, data.error);
 
@@ -319,9 +318,9 @@ class CopilotApiService {
           conversationId: capturedConversationId,
           chatResponseId: capturedChatResponseId,
         };
-      } else if (prefix === '0') {
+      } else if (chunk.type === 'text-delta') {
         // Text delta from streamText (streaming text content)
-        const textDelta = JSON.parse(dataString);
+        const textDelta: string = chunk.delta ?? '';
 
         // Create assistant message if it doesn't exist yet
         if (!assistantMessageId) {
@@ -347,19 +346,9 @@ class CopilotApiService {
         if (messageIndex !== -1 && messages[messageIndex]) {
           messageCallBack({ ...messages[messageIndex], content: assistantContent }, messageIndex);
         }
-        // } else if (prefix === 'f') {
-        //   // Final message metadata (message ID, etc.)
-        //   const metadata = JSON.parse(dataString)
-        //   console.log('Message metadata:', metadata)
-      } else if (prefix === 'e') {
+      } else if (chunk.type === 'finish') {
         // Stream end with completion info
-        // const endData = JSON.parse(dataString)
-        // console.log('Stream completed:', endData)
         statusCallBack('');
-        // } else if (prefix === 'd') {
-        //   // Final completion data
-        //   const completionData = JSON.parse(dataString)
-        //   console.log('Completion data:', completionData)
       }
 
       return { assistantMessageId, assistantContent };

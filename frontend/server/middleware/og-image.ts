@@ -5,9 +5,35 @@ import { sendRedirect } from 'h3';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectTinybird } from '~~/types/project';
 
-const OG_IMAGE_PREFIX = '/__og-image__/';
-const OG_IMAGE_COLLECTION_PREFIX = '/__og-image__/image/collection/details/';
-const OG_IMAGE_PROJECT_PREFIX = '/__og-image__/image/project/';
+// nuxt-og-image v6 serves images from /_og/d/<params>.<ext> (dynamic) and /_og/s/ (static).
+// <params> is a comma-separated list of alias_value pairs; the page path travels as
+// p_<base64url(JSON string)>, so the entity slug is read from that decoded page path.
+const OG_IMAGE_PREFIX = '/_og/';
+const OG_IMAGE_RENDER_PATH = /^\/_og\/[ds]\/(.+?)(?:\.\w+)?$/;
+const COLLECTION_PAGE_PREFIX = '/collection/details/';
+const PROJECT_PAGE_PREFIX = '/project/';
+
+function decodeBase64Url(value: string): string {
+  const standard = value.replace(/-/g, '+').replace(/~/g, '/');
+  return Buffer.from(standard, 'base64').toString('utf8');
+}
+
+/** Returns the page path an OG image request was generated for, if it can be decoded. */
+export function getOgImagePagePath(path: string): string | null {
+  const encoded = path.match(OG_IMAGE_RENDER_PATH)?.[1];
+  if (!encoded) return null;
+  const pathParam = encoded
+    .replace(/,s_[^,]+$/, '')
+    .split(/,(?=\w+_)/)
+    .find((part) => part.startsWith('p_'));
+  if (!pathParam) return null;
+  try {
+    const decoded = JSON.parse(decodeBase64Url(pathParam.slice(2)));
+    return typeof decoded === 'string' ? decoded : null;
+  } catch {
+    return null;
+  }
+}
 
 // ---- bot rate limiting ----
 // Prevents bot crawlers (bingbot, PetalBot, Amzn-SearchBot, etc.) from
@@ -146,8 +172,9 @@ export default defineEventHandler(async (event) => {
   // letting the rendering pipeline throw a 500 for a removed/archived slug.
   // Uses the same Tinybird pipes as their respective API endpoints to avoid
   // discrepancies between data sources.
-  if (path.startsWith(OG_IMAGE_COLLECTION_PREFIX)) {
-    const slug = path.slice(OG_IMAGE_COLLECTION_PREFIX.length).split('/')[0];
+  const pagePath = getOgImagePagePath(path) ?? '';
+  if (pagePath.startsWith(COLLECTION_PAGE_PREFIX)) {
+    const slug = pagePath.slice(COLLECTION_PAGE_PREFIX.length).split('/')[0];
     if (slug) {
       try {
         const collectionRes = await fetchFromTinybird<Record<string, unknown>[]>(
@@ -167,8 +194,8 @@ export default defineEventHandler(async (event) => {
         return sendRedirect(event, '/og-image.png', 302);
       }
     }
-  } else if (path.startsWith(OG_IMAGE_PROJECT_PREFIX)) {
-    const slug = path.slice(OG_IMAGE_PROJECT_PREFIX.length).split('/')[0];
+  } else if (pagePath.startsWith(PROJECT_PAGE_PREFIX)) {
+    const slug = pagePath.slice(PROJECT_PAGE_PREFIX.length).split('/')[0];
     if (slug) {
       try {
         const projectRes = await fetchFromTinybird<ProjectTinybird[]>(

@@ -49,6 +49,16 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
+/** Builds a nuxt-og-image v6 dynamic image URL for the given page path. */
+function ogPath(pagePath: string) {
+  const encoded = Buffer.from(JSON.stringify(pagePath), 'utf8')
+    .toString('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '~');
+  return `/_og/d/c_project,p_${encoded}.png`;
+}
+
 function createEvent(path: string) {
   const headers: Record<string, string> = {};
   const res = {
@@ -79,7 +89,7 @@ describe('og-image bot rate limiting', () => {
 
   it('should skip non-bot user agents', async () => {
     mockGetHeader.mockReturnValue('Mozilla/5.0');
-    const { event } = createEvent('/__og-image__/test');
+    const { event } = createEvent(ogPath('/test'));
 
     await handler(event);
 
@@ -88,7 +98,7 @@ describe('og-image bot rate limiting', () => {
 
   it('should allow initial bot request', async () => {
     mockGetHeader.mockReturnValue('unique-bot-' + Math.random());
-    const { event } = createEvent('/__og-image__/test1');
+    const { event } = createEvent(ogPath('/test1'));
 
     await handler(event);
 
@@ -100,7 +110,7 @@ describe('og-image bot rate limiting', () => {
 
     for (const pattern of botPatterns) {
       mockGetHeader.mockReturnValue(pattern);
-      const { event } = createEvent('/__og-image__/test');
+      const { event } = createEvent(ogPath('/test'));
 
       await handler(event);
 
@@ -111,7 +121,7 @@ describe('og-image bot rate limiting', () => {
 
   it('should evict stale entries periodically', async () => {
     mockGetHeader.mockReturnValue('bingbot');
-    const { event } = createEvent('/__og-image__/test');
+    const { event } = createEvent(ogPath('/test'));
     await handler(event);
 
     expect(mockSendError).not.toHaveBeenCalled();
@@ -120,7 +130,7 @@ describe('og-image bot rate limiting', () => {
     // and past the 1-second window reset
     vi.advanceTimersByTime(15000);
 
-    const { event: event2 } = createEvent('/__og-image__/test2');
+    const { event: event2 } = createEvent(ogPath('/test2'));
     await handler(event2);
 
     expect(mockSendError).not.toHaveBeenCalled();
@@ -138,7 +148,7 @@ describe('og-image cache headers', () => {
   });
 
   it('applies long-term cache on a 200 response', async () => {
-    const { event, res, headers } = createEvent('/__og-image__/test');
+    const { event, res, headers } = createEvent(ogPath('/test'));
 
     await handler(event);
     res.writeHead(200);
@@ -149,7 +159,7 @@ describe('og-image cache headers', () => {
   });
 
   it('applies a short cache on a 302 redirect', async () => {
-    const { event, res, headers } = createEvent('/__og-image__/test');
+    const { event, res, headers } = createEvent(ogPath('/test'));
 
     await handler(event);
     res.writeHead(302);
@@ -158,7 +168,7 @@ describe('og-image cache headers', () => {
   });
 
   it('applies no-cache on an error response', async () => {
-    const { event, res, headers } = createEvent('/__og-image__/test');
+    const { event, res, headers } = createEvent(ogPath('/test'));
 
     await handler(event);
     res.writeHead(500);
@@ -169,7 +179,7 @@ describe('og-image cache headers', () => {
 
 describe('og-image collection existence check', () => {
   it('should skip non-collection OG image paths', async () => {
-    const { event } = createEvent('/__og-image__/image/project/test');
+    const { event } = createEvent(ogPath('/project/test'));
 
     await handler(event);
 
@@ -181,7 +191,7 @@ describe('og-image collection existence check', () => {
 
   it('should allow valid collections', async () => {
     mockFetchFromTinybird.mockResolvedValue({ data: [{ slug: 'valid' }] });
-    const { event } = createEvent('/__og-image__/image/collection/details/valid-slug/');
+    const { event } = createEvent(ogPath('/collection/details/valid-slug/'));
 
     await handler(event);
 
@@ -194,7 +204,7 @@ describe('og-image collection existence check', () => {
 
   it('should redirect on missing collection', async () => {
     mockFetchFromTinybird.mockResolvedValue({ data: [] });
-    const { event } = createEvent('/__og-image__/image/collection/details/missing/');
+    const { event } = createEvent(ogPath('/collection/details/missing/'));
 
     await handler(event);
 
@@ -203,7 +213,7 @@ describe('og-image collection existence check', () => {
 
   it('should redirect on Tinybird errors', async () => {
     mockFetchFromTinybird.mockRejectedValue(new Error('Network error'));
-    const { event } = createEvent('/__og-image__/image/collection/details/test/');
+    const { event } = createEvent(ogPath('/collection/details/test/'));
 
     await handler(event);
 
@@ -211,9 +221,7 @@ describe('og-image collection existence check', () => {
   });
 
   it('should extract slug from URL path correctly', async () => {
-    const { event } = createEvent(
-      '/__og-image__/image/collection/details/my-collection/extra/path',
-    );
+    const { event } = createEvent(ogPath('/collection/details/my-collection/extra/path'));
 
     await handler(event);
 
@@ -224,7 +232,7 @@ describe('og-image collection existence check', () => {
   });
 
   it('should handle missing slug in path', async () => {
-    const { event } = createEvent('/__og-image__/image/collection/details/');
+    const { event } = createEvent(ogPath('/collection/details/'));
 
     await handler(event);
 
@@ -235,7 +243,7 @@ describe('og-image collection existence check', () => {
 describe('og-image project existence check', () => {
   it('should allow valid projects', async () => {
     mockFetchFromTinybird.mockResolvedValue({ data: [{ slug: 'valid' }] });
-    const { event } = createEvent('/__og-image__/image/project/valid-slug/');
+    const { event } = createEvent(ogPath('/project/valid-slug/'));
 
     await handler(event);
 
@@ -248,7 +256,7 @@ describe('og-image project existence check', () => {
 
   it('should redirect on missing project', async () => {
     mockFetchFromTinybird.mockResolvedValue({ data: [] });
-    const { event } = createEvent('/__og-image__/image/project/missing/');
+    const { event } = createEvent(ogPath('/project/missing/'));
 
     await handler(event);
 
@@ -257,7 +265,7 @@ describe('og-image project existence check', () => {
 
   it('should redirect on Tinybird errors', async () => {
     mockFetchFromTinybird.mockRejectedValue(new Error('Network error'));
-    const { event } = createEvent('/__og-image__/image/project/test/');
+    const { event } = createEvent(ogPath('/project/test/'));
 
     await handler(event);
 
@@ -267,7 +275,7 @@ describe('og-image project existence check', () => {
 
 describe('og-image render timeout', () => {
   it('should register finish handler for OG image requests', async () => {
-    const { event, res } = createEvent('/__og-image__/test');
+    const { event, res } = createEvent(ogPath('/test'));
 
     await handler(event);
 
@@ -275,7 +283,7 @@ describe('og-image render timeout', () => {
   });
 
   it('should send fallback on timeout', async () => {
-    const { event } = createEvent('/__og-image__/test');
+    const { event } = createEvent(ogPath('/test'));
 
     void handler(event);
     await vi.advanceTimersByTimeAsync(8000);
@@ -284,7 +292,7 @@ describe('og-image render timeout', () => {
   });
 
   it('should not send redirect if headers already sent', async () => {
-    const { event, res } = createEvent('/__og-image__/test');
+    const { event, res } = createEvent(ogPath('/test'));
     res.headersSent = true;
 
     void handler(event);
@@ -294,7 +302,7 @@ describe('og-image render timeout', () => {
   });
 
   it('should clear timeout when response finishes', async () => {
-    const { event, res } = createEvent('/__og-image__/test');
+    const { event, res } = createEvent(ogPath('/test'));
     let finishCallback: (() => void) | undefined;
 
     (res.once as any).mockImplementation((eventType: string, callback: () => void) => {

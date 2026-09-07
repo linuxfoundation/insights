@@ -26,8 +26,8 @@ SPDX-License-Identifier: MIT
       L E A D E R B O A R D
     </div>
 
-    <!-- Main Title -->
-    <div
+    <!-- Main Title (a <p>, not a <div>: satori only accepts display:-webkit-box on non-div nodes) -->
+    <p
       style="
         position: absolute;
         left: 80px;
@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
       "
     >
       {{ safeTitle }}
-    </div>
+    </p>
 
     <!-- LFX Insights Logo -->
     <img

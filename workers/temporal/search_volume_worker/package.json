@@ -18,14 +18,14 @@
     "@insights/temporal-worker": "workspace:*",
     "@temporalio/client": "~1.11.8",
     "@temporalio/workflow": "~1.11.8",
-    "luxon": "^3.6.1",
-    "ofetch": "^1.4.1",
-    "tsx": "^4.20.3",
-    "typescript": "^5.8"
+    "luxon": "^3.7.2",
+    "ofetch": "^1.5.1",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/luxon": "^3.6.2",
-    "@types/node": "^22.15.30",
-    "nodemon": "^3.1.10"
+    "@types/luxon": "^3.7.5",
+    "@types/node": "^24.13.3",
+    "nodemon": "^3.1.14"
   }
 }

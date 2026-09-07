@@ -11,6 +11,8 @@
             "ES2021.String"
         ],
         "skipLibCheck": true,
+        "strict": false,
+        "types": ["node"],
         "moduleResolution": "node16",
         "experimentalDecorators": true,
         "esModuleInterop": true

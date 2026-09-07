@@ -40,7 +40,8 @@ export default {
       content: shortDescription,
     },
     { hid: 'og:type', property: 'og:type', content: 'website' },
-    { hid: 'og:image', property: 'og:image', content: '/og-image.png' },
+    // Static fallback; pages calling defineOgImage() override it (nuxt-og-image injects with high priority)
+    { hid: 'og:image', property: 'og:image', content: '/og-image.png', tagPriority: 'low' },
     { hid: 'og:url', property: 'og:url', content: 'https://insights.lfx.org' },
     { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
     {
@@ -53,7 +54,7 @@ export default {
       name: 'twitter:description',
       content: shortDescription,
     },
-    { hid: 'twitter:image', name: 'twitter:image', content: '/og-image.png' },
+    { hid: 'twitter:image', name: 'twitter:image', content: '/og-image.png', tagPriority: 'low' },
   ],
   link: [
     {

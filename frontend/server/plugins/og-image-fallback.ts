@@ -6,7 +6,7 @@
 // instead of returning a 500 to crawlers.
 export default defineNitroPlugin((nitroApp) => {
   nitroApp.hooks.hook('error', async (error, { event }) => {
-    if (!event?.path?.startsWith('/__og-image__/')) return;
+    if (!event?.path?.startsWith('/_og/')) return;
 
     // Detect timeout errors
     const isTimeout =

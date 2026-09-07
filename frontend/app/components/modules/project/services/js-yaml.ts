@@ -8,7 +8,7 @@ export const getYaml = (data: object): string => {
     lineWidth: 80,
     noRefs: true,
     sortKeys: false,
-    noArrayIndent: false,
+    seqNoIndent: false,
     skipInvalid: true,
   });
   yaml = yaml.replace(/\n\s*-\n\s+/g, '\n  - ');
