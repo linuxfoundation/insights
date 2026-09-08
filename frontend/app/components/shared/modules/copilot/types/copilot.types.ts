@@ -16,12 +16,7 @@ export interface CopilotData {
 export type CopilotParams = Record<string, string | number | null>;
 
 export type MessagePartType =
-  | 'router-status'
-  | 'sql-result'
-  | 'text'
-  | 'pipe-result'
-  | 'chat-response-id'
-  | 'conversation-id';
+  'router-status' | 'sql-result' | 'text' | 'pipe-result' | 'chat-response-id' | 'conversation-id';
 export type MessageStatus = 'analyzing' | 'complete' | 'error' | 'ask_clarification';
 export type MessageData = Record<string, string | number | null | string[] | object>;
 export type MessageRole = 'user' | 'assistant';

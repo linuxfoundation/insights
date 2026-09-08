@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
-import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai';
+import type { LanguageModel } from 'ai';
+import { createMCPClient } from '@ai-sdk/mcp';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { Pool } from 'pg';
 import { ofetch } from 'ofetch';
@@ -26,6 +27,7 @@ import type {
 } from './types';
 import { RouterDecisionAction, StreamDataStatus, StreamDataType } from './enums';
 import { generateDataSummary } from './utils/data-summary';
+import { writeStreamData } from './utils/stream-data';
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
@@ -64,10 +66,10 @@ export class DataCopilot {
   private tbMcpUrl: string = '';
 
   /** Amazon Bedrock language model instance for routing and piping agents (Sonnet) */
-  private sonnetModel: LanguageModelV1;
+  private sonnetModel: LanguageModel;
 
   /** Amazon Bedrock language model instance for text-to-SQL, auditor, and chart agents (Opus) */
-  private opusModel: LanguageModelV1;
+  private opusModel: LanguageModel;
 
   /** Bedrock model identifier for general agents */
   private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
@@ -103,7 +105,7 @@ export class DataCopilot {
 
     // Filter out tools with empty descriptions — Bedrock rejects them with a validation error
     this.tbTools = Object.fromEntries(
-      Object.entries(allTools).filter(([_, tool]: [string, any]) => {
+      Object.entries(allTools as Record<string, any>).filter(([_, tool]: [string, any]) => {
         const description =
           (tool?.description as string) || (tool?.meta?.description as string) || '';
         return description.trim().length > 0;
@@ -228,8 +230,8 @@ export class DataCopilot {
       agent,
       model,
       response,
-      inputTokens: response?.usage?.promptTokens || 0,
-      outputTokens: response?.usage?.completionTokens || 0,
+      inputTokens: response?.usage?.inputTokens || 0,
+      outputTokens: response?.usage?.outputTokens || 0,
       responseTimeSeconds,
       instructions,
       errorMessage,
@@ -450,7 +452,7 @@ export class DataCopilot {
     while (attemptNumber <= this.MAX_AUDITOR_RETRIES) {
       // Run router agent - only stream status on first attempt
       if (attemptNumber === 0) {
-        dataStream.writeData({
+        writeStreamData(dataStream, {
           type: StreamDataType.ROUTER_STATUS,
           status: StreamDataStatus.ANALYZING,
         });
@@ -492,8 +494,8 @@ export class DataCopilot {
 
       // Accumulate router token usage
       if (routerOutput.usage) {
-        responseData.inputTokens += routerOutput.usage.promptTokens || 0;
-        responseData.outputTokens += routerOutput.usage.completionTokens || 0;
+        responseData.inputTokens += routerOutput.usage.inputTokens || 0;
+        responseData.outputTokens += routerOutput.usage.outputTokens || 0;
       }
 
       // Handle STOP and ASK_CLARIFICATION - no auditor needed
@@ -506,7 +508,7 @@ export class DataCopilot {
 
       // Router decided on CREATE_QUERY or PIPES - only stream complete status on first attempt
       if (attemptNumber === 0) {
-        dataStream.writeData({
+        writeStreamData(dataStream, {
           type: StreamDataType.ROUTER_STATUS,
           status: StreamDataStatus.COMPLETE,
           reasoning: routerOutput.reasoning,
@@ -555,7 +557,7 @@ export class DataCopilot {
       }
 
       // Stream auditor status
-      dataStream.writeData({
+      writeStreamData(dataStream, {
         type: StreamDataType.AUDITOR_STATUS,
         status: attemptNumber === 0 ? StreamDataStatus.VALIDATING : StreamDataStatus.RETRYING,
         attempt: attemptNumber + 1,
@@ -600,13 +602,13 @@ export class DataCopilot {
 
       // Accumulate auditor token usage
       if (auditorResult.usage) {
-        responseData.inputTokens += auditorResult.usage.promptTokens || 0;
-        responseData.outputTokens += auditorResult.usage.completionTokens || 0;
+        responseData.inputTokens += auditorResult.usage.inputTokens || 0;
+        responseData.outputTokens += auditorResult.usage.outputTokens || 0;
       }
 
       if (auditorResult.is_valid) {
         // Data is valid, stream summary and data
-        dataStream.writeData({
+        writeStreamData(dataStream, {
           type: StreamDataType.AUDITOR_STATUS,
           status: StreamDataStatus.VALIDATED,
           summary: auditorResult.summary,
@@ -615,7 +617,7 @@ export class DataCopilot {
 
         // Stream data after auditor approval
         if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.SQL_RESULT,
             instructions: sqlQuery,
             explanation,
@@ -623,7 +625,7 @@ export class DataCopilot {
             chatResponseId,
           });
         } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.PIPE_RESULT,
             instructions: pipeInstructions,
             explanation,
@@ -638,7 +640,7 @@ export class DataCopilot {
       // Data is invalid
       if (attemptNumber >= this.MAX_AUDITOR_RETRIES) {
         // Max retries reached, send final status and stream data anyway
-        dataStream.writeData({
+        writeStreamData(dataStream, {
           type: StreamDataType.AUDITOR_STATUS,
           status: StreamDataStatus.MAX_RETRIES,
           feedback: auditorResult.feedback_to_router,
@@ -647,7 +649,7 @@ export class DataCopilot {
 
         // Stream data even though validation failed (max retries reached)
         if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.SQL_RESULT,
             instructions: sqlQuery,
             explanation,
@@ -655,7 +657,7 @@ export class DataCopilot {
             chatResponseId,
           });
         } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.PIPE_RESULT,
             instructions: pipeInstructions,
             explanation,
@@ -671,7 +673,7 @@ export class DataCopilot {
       previousFeedback = auditorResult.feedback_to_router || undefined;
       attemptNumber++;
 
-      dataStream.writeData({
+      writeStreamData(dataStream, {
         type: StreamDataType.AUDITOR_STATUS,
         status: StreamDataStatus.RETRYING,
         feedback: previousFeedback,
@@ -697,7 +699,7 @@ export class DataCopilot {
    * Send keepalive message to prevent Cloudflare timeout
    */
   private sendKeepalive(dataStream: any, message: string): void {
-    dataStream.writeData({
+    writeStreamData(dataStream, {
       type: 'keepalive',
       message,
       timestamp: new Date().toISOString(),
@@ -708,7 +710,7 @@ export class DataCopilot {
    * Send progress update message
    */
   private sendProgress(dataStream: any, status: string, message: string): void {
-    dataStream.writeData({
+    writeStreamData(dataStream, {
       type: StreamDataType.ROUTER_STATUS,
       status: 'progress',
       message,
@@ -826,7 +828,7 @@ export class DataCopilot {
     );
 
     // Stream the chat response ID immediately
-    dataStream.writeData({
+    writeStreamData(dataStream, {
       type: StreamDataType.CHAT_RESPONSE_ID,
       id: chatResponseId,
       conversationId: conversationId || '',
@@ -899,7 +901,7 @@ export class DataCopilot {
         dataStream,
       });
     } catch (error) {
-      dataStream.writeData({
+      writeStreamData(dataStream, {
         type: 'router-status',
         status: 'error',
         error: error instanceof Error ? error.message : 'An error occurred',
@@ -919,7 +921,7 @@ export class DataCopilot {
     insightsDbPool: Pool,
     conversationId?: string,
   ): Promise<void> {
-    dataStream.writeData({
+    writeStreamData(dataStream, {
       type: StreamDataType.ROUTER_STATUS,
       status: StreamDataStatus.COMPLETE,
       reasoning: routerOutput.reasoning,
@@ -952,7 +954,7 @@ export class DataCopilot {
     insightsDbPool: Pool,
     conversationId?: string,
   ): Promise<void> {
-    dataStream.writeData({
+    writeStreamData(dataStream, {
       type: StreamDataType.ROUTER_STATUS,
       status: StreamDataStatus.ASK_CLARIFICATION,
       question: routerOutput.clarification_question,
@@ -1008,14 +1010,14 @@ export class DataCopilot {
         // Send status update
         if (attemptNumber === 0) {
           this.sendProgress(dataStream, 'progress', 'Analyzing database schema...');
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.SQL_STATUS,
             status: StreamDataStatus.EXECUTING,
             attempt: attemptNumber + 1,
             maxAttempts: this.MAX_SQL_RETRIES + 1,
           });
         } else {
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.SQL_STATUS,
             status: StreamDataStatus.RETRYING,
             attempt: attemptNumber + 1,
@@ -1135,7 +1137,7 @@ export class DataCopilot {
           // Check if we've exhausted retries
           if (attemptNumber >= this.MAX_SQL_RETRIES) {
             clearInterval(keepaliveInterval);
-            dataStream.writeData({
+            writeStreamData(dataStream, {
               type: StreamDataType.SQL_STATUS,
               status: StreamDataStatus.MAX_RETRIES,
               error: enhancedErrorMessage,
@@ -1154,7 +1156,7 @@ export class DataCopilot {
           };
           attemptNumber++;
 
-          dataStream.writeData({
+          writeStreamData(dataStream, {
             type: StreamDataType.SQL_STATUS,
             status: StreamDataStatus.EXECUTION_ERROR,
             error: enhancedErrorMessage,
@@ -1247,8 +1249,8 @@ export class DataCopilot {
 
     // Accumulate token usage from pipe agent
     if (pipeOutput.usage) {
-      responseData.inputTokens += pipeOutput.usage.promptTokens || 0;
-      responseData.outputTokens += pipeOutput.usage.completionTokens || 0;
+      responseData.inputTokens += pipeOutput.usage.inputTokens || 0;
+      responseData.outputTokens += pipeOutput.usage.outputTokens || 0;
     }
 
     // Execute the pipes according to the instructions and combine results (don't stream data yet, auditor will do it)

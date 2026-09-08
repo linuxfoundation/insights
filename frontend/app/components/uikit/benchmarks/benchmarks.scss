@@ -58,6 +58,32 @@
   &--negative {
     @apply text-negative-500;
   }
+
+  &--no-data {
+    @apply text-neutral-400;
+  }
+
+  &--circle {
+    @apply flex items-center justify-center rounded-full shrink-0;
+    width: 24px;
+    height: 24px;
+
+    &.c-benchmarks-icon--positive {
+      background-color: #d0fae5;
+    }
+
+    &.c-benchmarks-icon--warning {
+      background-color: #fef3c7;
+    }
+
+    &.c-benchmarks-icon--negative {
+      background-color: #fee2e2;
+    }
+
+    &.c-benchmarks-icon--no-data {
+      @apply bg-neutral-100;
+    }
+  }
 }
 
 .c-benchmarks-wrap {

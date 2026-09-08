@@ -74,6 +74,7 @@
                   "status": "active",
                   "maturity": "graduated",
                   "healthScore": 87,
+                  "healthLabel": "excellent",
                   "contributorHealthScore": 90,
                   "popularityHealthScore": 95,
                   "developmentHealthScore": 80,
@@ -252,6 +253,19 @@
             "minimum": 0,
             "maximum": 100,
             "description": "Overall health score"
+          },
+          "healthLabel": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "excellent",
+              "healthy",
+              "fair",
+              "concerning",
+              "critical",
+              null
+            ],
+            "description": "Qualitative band for healthScore. Null if not yet computed for this project."
           },
           "contributorHealthScore": {
             "type": "number",

@@ -39,7 +39,7 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
   const body: SecurityUpdateRequest = await readBody(event);
 
   // Validate request body
-  if (!body.slug) {
+  if (!body?.slug) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Missing required field: slug is required',
@@ -63,6 +63,10 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
   }
 
   const { slug } = body;
+  // Sanitize repoUrl for use in workflowId (replace non-alphanumeric chars with dashes).
+  // Computed before the try so it's available to the catch block's error log.
+  const sanitizedRepo = body.repoUrl.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
+  const workflowId = `security-update-${slug}-${sanitizedRepo}`;
 
   try {
     // Fetch project details to get the project ID
@@ -98,10 +102,6 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
     // Use static workflowId per repo so concurrent triggers for the same repo collide.
     // workflowIdConflictPolicy: 'FAIL' rejects only when a workflow with this ID is currently
     // running; once the previous run has closed, the ID can be reused for a fresh update.
-    // Sanitize repoUrl for use in workflowId (replace non-alphanumeric chars with dashes)
-    const sanitizedRepo = body.repoUrl.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
-    const workflowId = `security-update-${slug}-${sanitizedRepo}`;
-
     await client.workflow.start(UPSERT_OSPS_BASELINE_WORKFLOW, {
       taskQueue: SECURITY_BEST_PRACTICES_TASK_QUEUE,
       workflowId,
@@ -125,7 +125,13 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       });
     }
 
-    console.error('Error triggering security update:', err);
+    // Re-throw errors already thrown above (404 project not found, 400 repo mismatch) instead
+    // of masking them as a generic 500 below.
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      throw err;
+    }
+
+    console.error(`Error triggering security update (workflowId: ${workflowId}):`, err);
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to trigger security update',

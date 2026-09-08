@@ -9,7 +9,8 @@
 
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { createAmazonBedrock, type AmazonBedrockProvider } from '@ai-sdk/amazon-bedrock';
-import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai';
+import type { LanguageModel } from 'ai';
+import { createMCPClient } from '@ai-sdk/mcp';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
 import { RouterAgent } from '../agents/router';
@@ -19,7 +20,7 @@ import type { ChatMessage, RouterAgentInput } from '../types';
 let bedrock: AmazonBedrockProvider | null = null;
 
 describe('Router Agent', () => {
-  let model: LanguageModelV1;
+  let model: LanguageModel;
   let mcpClient: any;
   let tbTools: Record<string, any> = {};
   let toolsOverview: string = '';

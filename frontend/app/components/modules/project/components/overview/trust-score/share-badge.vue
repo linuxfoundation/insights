@@ -3,24 +3,27 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="border-solid border border-neutral-200 rounded-md p-3 flex flex-col items-start gap-2">
-    <img
-      :src="props.isRepoSelected ? repoBadgeUrl : badgeUrl"
-      alt="Health Score Badge"
-      class="w-auto h-4"
-    />
+  <div class="bg-neutral-50 rounded-md px-6 py-[9px] flex items-center justify-between gap-3 w-full">
+    <div class="flex items-center gap-2.5">
+      <img
+        :src="props.isRepoSelected ? repoBadgeUrl : badgeUrl"
+        alt="Health Score Badge"
+        class="w-auto h-4"
+      />
+      <span class="text-xs text-neutral-600">
+        <template v-if="!props.isRepoSelected">Display your project Health score on your GitHub page.</template>
+        <template v-else>Display your repository's number of active contributors on your GitHub page.</template>
+      </span>
+    </div>
 
-    <p class="text-xs leading-4.5 text-neutral-500">
-      <span v-if="!props.isRepoSelected"> Share your project Health Score in your GitHub page. </span>
-      <span v-else> Share your repository's number of active contributors on your GitHub page. </span>
-      <br />
-      <br />
-      <span
-        class="text-brand-500 cursor-pointer"
-        @click="share"
-        >Generate badge</span
-      >
-    </p>
+    <lfx-button
+      type="transparent"
+      size="small"
+      icon="share-nodes"
+      label="Share badge"
+      class="shrink-0 !text-accent-500"
+      @click="share"
+    />
   </div>
 </template>
 
@@ -31,6 +34,7 @@ import { useRoute } from 'nuxt/app';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { getBadgeUrl } from '~~/config/trust-score';
+import LfxButton from '~/components/uikit/button/button.vue';
 
 const props = defineProps<{
   isRepoSelected?: boolean;

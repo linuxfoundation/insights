@@ -201,23 +201,19 @@ const initializeForm = () => {
       description: props.collection.description,
       projects: collectionProjects.value
         .filter((p: ProjectInsights) => p.type === 'project')
-        .map(
-          (p: ProjectInsights): CollectionProject => ({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            logo: p.logoUrl,
-          }),
-        ),
+        .map((p: ProjectInsights): CollectionProject => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          logo: p.logoUrl,
+        })),
       repositories: collectionProjects.value
         .filter((p: ProjectInsights) => p.type === 'repo')
-        .map(
-          (p: ProjectInsights): CollectionRepository => ({
-            name: p.name,
-            slug: p.slug,
-            url: p.repoUrl,
-          }),
-        ),
+        .map((p: ProjectInsights): CollectionRepository => ({
+          name: p.name,
+          slug: p.slug,
+          url: p.repoUrl,
+        })),
       visibility: props.collection.isPrivate ? 'private' : 'public',
     };
     form.value = formData;

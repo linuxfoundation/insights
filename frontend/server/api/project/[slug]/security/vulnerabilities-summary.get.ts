@@ -14,11 +14,21 @@ export default defineEventHandler(async (event): Promise<VulnerabilitiesSummary 
   const project = (event.context.params as { slug: string }).slug;
 
   try {
-    const res = await fetchFromTinybird<VulnerabilitiesSummary[]>(
-      '/v0/pipes/vulnerabilities_summary.json',
-      { project, repos },
-    );
-    return res.data[0];
+    const [summaryRes, openCountRes] = await Promise.all([
+      fetchFromTinybird<VulnerabilitiesSummary[]>('/v0/pipes/vulnerabilities_summary.json', {
+        project,
+        repos,
+      }),
+      fetchFromTinybird<{ count: number }[]>('/v0/pipes/vulnerabilities_list.json', {
+        project,
+        repos,
+        status: 'OPEN',
+        count: true,
+      }),
+    ]);
+    return summaryRes.data[0]
+      ? { ...summaryRes.data[0], openCount: openCountRes.data[0]?.count ?? 0 }
+      : undefined;
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) throw err;
     console.error('Error fetching vulnerabilities summary:', err);

@@ -3,57 +3,168 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-chip
-    v-if="props.unavailable"
-    type="bordered"
-    size="small"
+  <lfx-popover
+    placement="top"
+    trigger-event="hover"
   >
-    <span class="text-xs font-medium text-neutral-500">Unavailable</span>
-  </lfx-chip>
-  <lfx-chip
-    v-else
-    type="bordered"
-    size="small"
-    class="flex items-center gap-1"
-  >
-    <span
-      class="size-1.5 rounded-full shrink-0"
-      :class="healthScoreDotClass"
-    />
-    <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
-    <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
-  </lfx-chip>
+    <lfx-chip
+      v-if="props.unavailable"
+      type="bordered"
+      size="small"
+    >
+      <span class="text-xs font-medium text-neutral-500">Unavailable</span>
+    </lfx-chip>
+    <lfx-chip
+      v-else
+      type="bordered"
+      size="small"
+      class="flex items-center gap-1"
+    >
+      <span
+        class="size-1.5 rounded-full shrink-0"
+        :class="healthScoreDotClass"
+      />
+      <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
+      <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
+    </lfx-chip>
+
+    <template #content>
+      <div
+        v-if="props.unavailable"
+        class="w-64 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
+        <p class="text-neutral-500">Health score is unavailable for this collection.</p>
+      </div>
+      <div
+        v-else
+        class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+      >
+        <div class="flex items-center gap-1.5">
+          <span
+            class="size-2 rounded-full shrink-0"
+            :class="healthScoreDotClass"
+          />
+          <span class="font-semibold text-neutral-900">{{ healthScoreLabel }}</span>
+          <span class="text-neutral-500">({{ props.score }}/{{ props.healthMaxScore ?? 100 }})</span>
+        </div>
+        <lfx-progress-bar
+          :values="[progressBarValue]"
+          :color="progressBarColor"
+          size="small"
+        />
+        <p
+          v-if="healthScoreDescription"
+          class="text-neutral-500"
+        >
+          {{ healthScoreDescription }}
+        </p>
+        <div class="space-y-1.5 pt-1 border-t border-neutral-100">
+          <div
+            v-for="category in categories"
+            :key="category.key"
+            class="flex items-center gap-1.5"
+          >
+            <lfx-icon
+              :name="category.icon"
+              :size="11"
+              class="text-neutral-400 shrink-0"
+            />
+            <span class="text-neutral-500">{{ category.name }}</span>
+            <span class="ml-auto font-medium text-neutral-900">{{ category.display }}</span>
+          </div>
+        </div>
+      </div>
+    </template>
+  </lfx-popover>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+import { getHealthScoreDescription } from '~~/config/health-breakdown-templates';
+import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
 
 const props = defineProps<{
   score: number;
+  healthLabel?: string | null;
   unavailable?: boolean;
+  maintainerHealthScoreV2?: number | null;
+  securitySupplyChainScoreV2?: number | null;
+  developmentActivityScoreV2?: number | null;
+  healthMaxScore?: number | null;
 }>();
 
-// Mirrors the dot+label+score thresholds/colors in collection-metrics-row.vue, scoped to the
-// collection project table's Health Score column (a bordered table-cell pill instead of a
-// labeled metrics chip). Duplicated rather than shared: only two call sites (row/card) and the
-// logic is ~10 lines, so a composable would be more ceremony than the duplication it avoids.
-// health-score.vue itself is intentionally left untouched (used elsewhere in the app).
-const healthScoreLabel = computed(() => {
-  const score = props.score;
-  if (score >= 80) return 'Excellent';
-  if (score >= 60) return 'Healthy';
-  if (score >= 40) return 'Fair';
-  if (score >= 20) return 'Concerning';
-  return 'Critical';
-});
+// Akrites v2 bands (PRD): excellent 85-100, healthy 70-84, fair 50-69, concerning 30-49, critical 0-29.
+// Prefers the server-computed healthLabel (Akrites package rollup); falls back to client banding
+// only when the server label is absent, per the ticket's "derivable frontend-side" allowance.
+const bandFromScore = (score: number) => {
+  if (score >= 85) return 'excellent';
+  if (score >= 70) return 'healthy';
+  if (score >= 50) return 'fair';
+  if (score >= 30) return 'concerning';
+  return 'critical';
+};
+
+const band = computed(() => (props.healthLabel ?? bandFromScore(props.score)).toLowerCase());
+
+const healthScoreLabel = computed(
+  () => getHealthScoreV2Config(band.value, isPartialHealthScore(props.healthMaxScore ?? null)).label,
+);
 
 const healthScoreDotClass = computed(() => {
-  const score = props.score;
-  if (score >= 60) return 'bg-health-healthy';
-  if (score >= 20) return 'bg-health-concerning';
-  return 'bg-health-critical';
+  const classes: Record<string, string> = {
+    excellent: 'bg-health-excellent',
+    healthy: 'bg-health-healthy',
+    fair: 'bg-health-fair',
+    concerning: 'bg-health-concerning',
+    critical: 'bg-health-critical',
+  };
+  return classes[band.value] ?? 'bg-health-critical';
 });
+
+// The progress bar renders `values` as a raw 0-100 fill percentage, so a capped score (e.g. 45
+// out of a 65 max) needs rescaling - otherwise the bar under-fills relative to the displayed total.
+const progressBarValue = computed(() => (props.score / (props.healthMaxScore ?? 100)) * 100);
+
+const progressBarColor = computed(() => {
+  if (band.value === 'excellent' || band.value === 'healthy') return 'positive';
+  if (band.value === 'fair') return 'accent';
+  if (band.value === 'concerning') return 'warning';
+  return 'negative';
+});
+
+const healthScoreDescription = computed(() =>
+  getHealthScoreDescription(
+    props.healthLabel ?? null,
+    props.maintainerHealthScoreV2 ?? null,
+    props.securitySupplyChainScoreV2 ?? null,
+    props.developmentActivityScoreV2 ?? null,
+  ),
+);
+
+const categories = computed(() => [
+  {
+    key: 'maintainer-health',
+    name: 'Maintainer Health',
+    icon: 'heart-pulse',
+    display: `${props.maintainerHealthScoreV2 ?? '-'}/40`,
+  },
+  {
+    key: 'security-supply-chain',
+    name: 'Security & Supply Chain',
+    icon: 'shield-check',
+    display: `${props.securitySupplyChainScoreV2 ?? '-'}/35`,
+  },
+  {
+    key: 'development-activity',
+    name: 'Development Activity',
+    icon: 'laptop-code',
+    display: `${props.developmentActivityScoreV2 ?? '-'}/25`,
+  },
+]);
 </script>
 
 <script lang="ts">

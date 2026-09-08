@@ -10,6 +10,10 @@ export default {
     './docs/.vitepress/**/*.{js,ts,vue}',
     './docs/.vitepress/theme/**/*.{js,ts,vue}',
     './docs/.vitepress/components/**/*.{js,ts,vue}',
+    // Built docs output/cache match the globs above; their minified bundles produce garbage
+    // class candidates (e.g. regex fragments) that lightningcss rejects during the Nuxt build.
+    '!./docs/.vitepress/dist/**',
+    '!./docs/.vitepress/cache/**',
   ],
   theme: {
     screens: {
@@ -134,8 +138,12 @@ export default {
     '!bg-neutral-300',
     '!bg-negative-900',
     'bg-neutral-50',
+    'bg-health-excellent',
     'bg-health-healthy',
+    'bg-health-fair',
     'bg-health-concerning',
     'bg-health-critical',
+    'bg-brand-500',
+    'bg-neutral-400',
   ],
 };

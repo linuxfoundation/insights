@@ -116,8 +116,8 @@ SPDX-License-Identifier: MIT
       {{ truncatedProjectName }}
     </div>
 
-    <!-- Description -->
-    <div
+    <!-- Description (a <p>, not a <div>: satori only accepts display:-webkit-box on non-div nodes) -->
+    <p
       style="
         position: absolute;
         left: 80px;
@@ -136,7 +136,7 @@ SPDX-License-Identifier: MIT
       "
     >
       {{ truncatedDescription }}
-    </div>
+    </p>
 
     <!-- Project Logo Box -->
     <div

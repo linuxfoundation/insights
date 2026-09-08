@@ -3,7 +3,7 @@
 import DOMPurify from 'isomorphic-dompurify';
 
 export const useSanitize = () => {
-  const sanitize = (dirty: string) => DOMPurify.sanitize(dirty);
+  const sanitize = (dirty: string, config?: DOMPurify.Config) => DOMPurify.sanitize(dirty, config);
 
   return { sanitize };
 };
