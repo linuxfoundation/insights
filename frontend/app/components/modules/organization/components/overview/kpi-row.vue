@@ -5,48 +5,61 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="c-card org-kpi-row">
     <div
-      v-for="kpi in kpis"
-      :key="kpi.label"
-      class="org-kpi-item"
+      v-if="isError"
+      class="flex flex-col items-center justify-center py-10 gap-2 w-full"
     >
-      <template v-if="!isLoading">
-        <div class="flex gap-3">
-          <div
-            class="size-12 bg-white border border-neutral-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-          >
-            <lfx-icon
-              :name="kpi.icon"
-              :size="20"
-            />
-          </div>
-          <div class="min-w-0">
-            <div class="org-kpi-value-row">
-              <p class="text-heading-2 font-bold org-kpi-value">
-                {{ formatNumber(kpi.value) }}
-              </p>
-              <span
-                v-if="kpi.trend !== undefined"
-                class="org-kpi-trend"
-                :class="kpi.trend >= 0 ? 'org-kpi-trend-up' : 'org-kpi-trend-down'"
-              >
-                <lfx-icon
-                  :name="kpi.trend >= 0 ? 'circle-arrow-up' : 'circle-arrow-down'"
-                  type="solid"
-                  :size="12"
-                />
-                {{ Math.abs(kpi.trend) }}%
-                <span v-if="kpi.trendAbsolute !== undefined">
-                  ({{ kpi.trendAbsolute >= 0 ? '+' : '' }}{{ formatNumber(kpi.trendAbsolute) }})
-                </span>
-              </span>
-            </div>
-            <p class="org-kpi-label">
-              {{ kpi.label }}
-            </p>
-          </div>
-        </div>
-      </template>
+      <lfx-icon
+        name="eyes"
+        :size="40"
+        class="text-neutral-300"
+      />
+      <p class="text-sm text-neutral-500">No data available</p>
     </div>
+    <template v-else>
+      <div
+        v-for="kpi in kpis"
+        :key="kpi.label"
+        class="org-kpi-item"
+      >
+        <template v-if="!isLoading">
+          <div class="flex gap-3">
+            <div
+              class="size-12 bg-white border border-neutral-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+            >
+              <lfx-icon
+                :name="kpi.icon"
+                :size="20"
+              />
+            </div>
+            <div class="min-w-0">
+              <div class="org-kpi-value-row">
+                <p class="text-heading-2 font-bold org-kpi-value">
+                  {{ formatNumber(kpi.value) }}
+                </p>
+                <span
+                  v-if="kpi.trend !== undefined"
+                  class="org-kpi-trend"
+                  :class="kpi.trend >= 0 ? 'org-kpi-trend-up' : 'org-kpi-trend-down'"
+                >
+                  <lfx-icon
+                    :name="kpi.trend >= 0 ? 'circle-arrow-up' : 'circle-arrow-down'"
+                    type="solid"
+                    :size="12"
+                  />
+                  {{ Math.abs(kpi.trend) }}%
+                  <span v-if="kpi.trendAbsolute !== undefined">
+                    ({{ kpi.trendAbsolute >= 0 ? '+' : '' }}{{ formatNumber(kpi.trendAbsolute) }})
+                  </span>
+                </span>
+              </div>
+              <p class="org-kpi-label">
+                {{ kpi.label }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -69,7 +82,7 @@ const orgDisplayName = computed(() => organization.value?.displayName || 'this o
 
 const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_KPIS, orgSlug]);
 
-const { data, isLoading } = useQuery<OrganizationKpis>({
+const { data, isLoading, isError } = useQuery<OrganizationKpis>({
   queryKey,
   queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchKpis(orgSlug),
 });
