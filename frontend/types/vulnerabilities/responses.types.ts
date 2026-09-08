@@ -98,6 +98,7 @@ export const STATUS_OPTIONS = Object.values(STATUS_CONFIG);
 
 export interface VulnerabilitySummary {
   count: number;
+  openCount: number;
   fixedPercentage: number;
   daysSinceLastVuln: number;
   avgCvssScore: number;

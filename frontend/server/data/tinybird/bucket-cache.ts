@@ -9,6 +9,7 @@ import type { TinybirdResponse } from './tinybird';
  * Only used when Redis is available.
  */
 const inFlightRequests = new Map<string, Promise<number | null>>();
+const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 
 /**
  * Response type from the project_buckets Tinybird pipe
@@ -18,8 +19,12 @@ interface ProjectBucketResponse {
 }
 
 /**
- * Check if Redis caching is enabled
+ * Response type from the collection_buckets Tinybird pipe
  */
+interface CollectionBucketResponse {
+  bucketId: number;
+}
+
 function isRedisEnabled(): boolean {
   return !!process.env.NUXT_REDIS_URL && process.env.NUXT_REDIS_URL.length > 0;
 }
@@ -171,6 +176,125 @@ async function fetchBucketIdFromTinybird(
   return bucketId;
 }
 
+export async function getBucketIdForCollection(
+  collectionSlug: string,
+  fetcher: <T>(
+    path: string,
+    query: Record<string, string | number | boolean | string[] | undefined | null>,
+  ) => Promise<TinybirdResponse<T>>,
+): Promise<number | null> {
+  const slugValue = collectionSlug?.toString().trim();
+  if (!slugValue || slugValue.length === 0) {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_collection',
+        timestamp: new Date().toISOString(),
+      }),
+    );
+    return null;
+  }
+
+  const redisEnabled = isRedisEnabled();
+
+  if (!redisEnabled) {
+    return await fetchBucketIdForCollectionFromTinybird(slugValue, fetcher);
+  }
+
+  if (collectionInFlightRequests.has(slugValue)) {
+    try {
+      return await collectionInFlightRequests.get(slugValue)!;
+    } catch {
+      collectionInFlightRequests.delete(slugValue);
+    }
+  }
+
+  const cacheKey = `collection_bucket:${slugValue}`;
+
+  const fetchPromise = (async () => {
+    try {
+      const storage = useStorage('redis');
+      const cachedBucketId = await storage.getItem<number>(cacheKey);
+
+      if (cachedBucketId !== null && cachedBucketId !== undefined) {
+        return cachedBucketId;
+      }
+    } catch (cacheError) {
+      console.error(`Failed to read from Redis cache for collection ${slugValue}:`, cacheError);
+    }
+
+    try {
+      const bucketId = await fetchBucketIdForCollectionFromTinybird(slugValue, fetcher);
+
+      if (bucketId === null) {
+        return null;
+      }
+
+      try {
+        const storage = useStorage('redis');
+        await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+      } catch (cacheError) {
+        console.error(`Failed to cache bucketId for collection ${slugValue}:`, cacheError);
+      }
+
+      return bucketId;
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      console.warn(`Failed to fetch bucketId for collection ${slugValue}:`, error);
+      return null;
+    } finally {
+      collectionInFlightRequests.delete(slugValue);
+    }
+  })();
+
+  collectionInFlightRequests.set(slugValue, fetchPromise);
+
+  return fetchPromise;
+}
+
+async function fetchBucketIdForCollectionFromTinybird(
+  slugValue: string,
+  fetcher: <T>(
+    path: string,
+    query: Record<string, string | number | boolean | string[] | undefined | null>,
+  ) => Promise<TinybirdResponse<T>>,
+): Promise<number | null> {
+  const response = await fetcher<CollectionBucketResponse[]>('/v0/pipes/collection_buckets.json', {
+    collectionSlug: slugValue,
+  });
+
+  if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_not_found',
+        collectionSlug: slugValue,
+        timestamp: new Date().toISOString(),
+      }),
+    );
+    return null;
+  }
+
+  const bucketId = response.data[0]?.bucketId;
+
+  if (typeof bucketId !== 'number') {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_type',
+        collectionSlug: slugValue,
+        bucketIdType: typeof bucketId,
+        timestamp: new Date().toISOString(),
+      }),
+    );
+    return null;
+  }
+
+  return bucketId;
+}
+
 /**
  * Clears the cached bucketId for a specific project.
  * Only works when Redis is enabled.
@@ -219,12 +343,14 @@ export async function clearAllBucketCaches(): Promise<void> {
   try {
     const storage = useStorage('redis');
     const keys = await storage.getKeys('project_bucket:');
+    const collectionKeys = await storage.getKeys('collection_bucket:');
 
-    await Promise.all(keys.map((key) => storage.removeItem(key)));
+    await Promise.all([...keys, ...collectionKeys].map((key) => storage.removeItem(key)));
   } catch (error) {
     console.error('Failed to clear all bucket caches:', error);
   }
 
   // Clear in-flight requests
   inFlightRequests.clear();
+  collectionInFlightRequests.clear();
 }

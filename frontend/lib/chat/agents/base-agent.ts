@@ -4,13 +4,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { z } from 'zod';
-import { generateText } from 'ai';
+import { generateText, isStepCount } from 'ai';
 import { extractJSON } from 'extract-first-json';
 import type { ChatMessage } from '../types';
 
 export abstract class BaseAgent<TInput, TOutput> {
   abstract readonly name: string;
-  abstract readonly outputSchema: z.ZodSchema<TOutput>;
+  abstract readonly outputSchema: z.ZodType<TOutput>;
   abstract readonly temperature: number;
   abstract readonly maxSteps: number;
 
@@ -46,7 +46,7 @@ export abstract class BaseAgent<TInput, TOutput> {
   /**
    * Extracts the shape of a Zod schema for documentation
    */
-  private getSchemaShape(schema: z.ZodSchema<any>): any {
+  private getSchemaShape(schema: z.ZodType<any>): any {
     if (schema instanceof z.ZodObject) {
       const shape: any = {};
       const schemaShape = (schema as any).shape;
@@ -60,13 +60,13 @@ export abstract class BaseAgent<TInput, TOutput> {
         } else if (field instanceof z.ZodBoolean) {
           shape[key] = field.description || 'boolean';
         } else if (field instanceof z.ZodArray) {
-          const elementType = this.getFieldDescription(field._def.type);
+          const elementType = this.getFieldDescription(field.element);
           shape[key] = field.description || `array of ${elementType}`;
         } else if (field instanceof z.ZodEnum) {
-          const values = (field as any)._def.values;
+          const values = field.options;
           shape[key] = field.description || `one of: ${values.join(' | ')}`;
         } else if (field instanceof z.ZodOptional || field instanceof z.ZodNullable) {
-          const innerType = (field as any)._def.innerType;
+          const innerType = field.unwrap();
           shape[key] = `${this.getFieldDescription(innerType)} (optional)`;
         } else if (field instanceof z.ZodAny) {
           shape[key] = field.description || 'any value';
@@ -112,7 +112,7 @@ export abstract class BaseAgent<TInput, TOutput> {
         model: this.getModel(input),
         system: fullSystemPrompt,
         tools,
-        maxSteps: this.maxSteps,
+        stopWhen: isStepCount(this.maxSteps),
         temperature: this.temperature,
       };
 
@@ -268,8 +268,8 @@ export abstract class BaseAgent<TInput, TOutput> {
             [
               '🛠️ Tool Call:',
               `  - Name: ${call.toolName}`,
-              `  - Input: ${JSON.stringify(call.args, null, 2)}`,
-              result ? `  - Output: ${JSON.stringify(result.result, null, 2)}` : undefined,
+              `  - Input: ${JSON.stringify(call.input, null, 2)}`,
+              result ? `  - Output: ${JSON.stringify(result.output, null, 2)}` : undefined,
             ]
               .filter(Boolean)
               .join('\n'),

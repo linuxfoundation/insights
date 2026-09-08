@@ -9,7 +9,7 @@
 
 import { describe, test, expect, beforeAll } from 'vitest';
 import { createAmazonBedrock, type AmazonBedrockProvider } from '@ai-sdk/amazon-bedrock';
-import type { LanguageModelV1 } from 'ai';
+import type { LanguageModel } from 'ai';
 
 import { AuditorAgent } from '../agents/auditor';
 import { generateDataSummary } from '../utils/data-summary';
@@ -18,7 +18,7 @@ import type { ChatMessage } from '../types';
 let bedrock: AmazonBedrockProvider | null = null;
 
 describe('Auditor Agent', () => {
-  let model: LanguageModelV1;
+  let model: LanguageModel;
 
   beforeAll(async () => {
     // Check if we have the required environment variables

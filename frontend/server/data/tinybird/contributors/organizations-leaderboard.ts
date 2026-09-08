@@ -43,16 +43,14 @@ export async function fetchOrganizationsLeaderboard(
       limit: filter.limit || 10,
       total: countResponse?.data[0].count || 0,
     },
-    data: dataResponse.data.map(
-      (item): Organization => ({
-        id: item.id,
-        slug: item.slug,
-        logo: item.logo,
-        name: item.displayName,
-        contributions: item.contributionCount,
-        percentage: item.contributionPercentage,
-        website: '', // We don't seem to have this at the moment
-      }),
-    ),
+    data: dataResponse.data.map((item): Organization => ({
+      id: item.id,
+      slug: item.slug,
+      logo: item.logo,
+      name: item.displayName,
+      contributions: item.contributionCount,
+      percentage: item.contributionPercentage,
+      website: '', // We don't seem to have this at the moment
+    })),
   };
 }

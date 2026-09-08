@@ -45,8 +45,7 @@ SPDX-License-Identifier: MIT
           <pre
             v-else
             class="bg-neutral-50 border border-neutral-200 rounded-md py-2 px-2.5 overflow-auto"
-            >{{ iframe }}</pre
-          >
+            >{{ iframe }}</pre>
         </div>
         <lfx-button
           type="tertiary"

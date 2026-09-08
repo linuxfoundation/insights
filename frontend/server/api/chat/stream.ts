@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import { createDataStreamResponse } from 'ai';
+import { createUIMessageStream, createUIMessageStreamResponse } from 'ai';
 import { DataCopilot } from '~~/lib/chat/data-copilot';
 import { InsightsProjectsRepository } from '~~/server/repo/insightsProjects.repo';
 
@@ -22,7 +22,6 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
   setHeader(event, 'Pragma', 'no-cache');
   setHeader(event, 'Expires', '0');
   setHeader(event, 'X-Accel-Buffering', 'no');
-  setHeader(event, 'Content-Type', 'text/plain; charset=utf-8');
   setHeader(event, 'Connection', 'close');
 
   const config = useRuntimeConfig();
@@ -64,8 +63,8 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
     const dataCopilot = new DataCopilot();
     await dataCopilot.initialize();
 
-    return createDataStreamResponse({
-      execute: async (dataStream) => {
+    const stream = createUIMessageStream({
+      execute: async ({ writer }) => {
         await dataCopilot.streamingAgentRequestHandler({
           currentQuestion: question,
           segmentId: segmentId,
@@ -75,10 +74,12 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
           conversationId: finalConversationId,
           insightsDbPool,
           userEmail: event.context.user.email,
-          dataStream,
+          dataStream: writer,
         });
       },
     });
+
+    return createUIMessageStreamResponse({ stream });
   } catch (error) {
     throw createError({
       statusCode: 500,

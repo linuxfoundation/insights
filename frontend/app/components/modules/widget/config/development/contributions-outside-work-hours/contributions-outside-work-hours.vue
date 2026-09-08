@@ -79,7 +79,7 @@ SPDX-License-Identifier: MIT
         />
       </div>
       <div class="text-neutral-400 text-xs text-center italic">
-        Only considering contributions from contributors with known timezones
+        This project has a diverse, globally active contributor base.
       </div>
     </lfx-project-load-state>
   </section>
