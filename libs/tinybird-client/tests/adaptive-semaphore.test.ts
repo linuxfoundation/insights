@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AdaptiveSemaphore } from './adaptive-semaphore';
+import { AdaptiveSemaphore } from '../src/adaptive-semaphore.js';
+import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '../src/errors.js';
 
 describe('AdaptiveSemaphore', () => {
   beforeEach(() => {
@@ -48,31 +49,27 @@ describe('AdaptiveSemaphore', () => {
       expect(resolved).toBe(true);
     });
 
-    it('rejects with 503 when queue is full', async () => {
+    it('rejects with TinybirdQueueFullError when queue is full', async () => {
       const sem = new AdaptiveSemaphore(1, 1);
       await sem.acquire(5000);
-      sem.acquire(5000); // fills queue (1 item)
+      sem.acquire(5000); // fills queue
 
-      await expect(sem.acquire(5000)).rejects.toMatchObject({
-        statusCode: 503,
-        statusMessage: expect.stringContaining('queue full'),
-      });
+      await expect(sem.acquire(5000)).rejects.toBeInstanceOf(TinybirdQueueFullError);
+      await expect(sem.acquire(5000)).rejects.toMatchObject({ statusCode: 503 });
 
       // cleanup
       sem.release();
     });
 
-    it('rejects with 503 on queue timeout', async () => {
+    it('rejects with TinybirdQueueTimeoutError on queue timeout', async () => {
       const sem = new AdaptiveSemaphore(1, 10);
       await sem.acquire(1000);
 
       const promise = sem.acquire(100);
       vi.advanceTimersByTime(101);
 
-      await expect(promise).rejects.toMatchObject({
-        statusCode: 503,
-        statusMessage: expect.stringContaining('timeout'),
-      });
+      await expect(promise).rejects.toBeInstanceOf(TinybirdQueueTimeoutError);
+      await expect(promise).rejects.toMatchObject({ statusCode: 503 });
     });
   });
 

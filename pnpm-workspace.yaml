@@ -6,6 +6,8 @@ packages:
   - 'workers/temporal/*'
   - 'frontend'
   - 'services'
+  - 'api'
+  - 'libs/*'
 
 overrides:
   eslint-plugin-vue: ^10.2.0

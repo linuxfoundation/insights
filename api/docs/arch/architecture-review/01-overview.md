@@ -4,7 +4,7 @@
 **Author:** LFX Insights Engineering  
 **Status:** Pending architecture team approval
 
-**ADRs:** Architecture Decision Records are committed to the codebase at [`docs/adr/`](../adr/) alongside the code they describe. Future engineers can find the reasoning for any decision without hunting through wikis or Notion. ADRs are append-only; past decisions are never edited, only superseded by new ones.
+**ADRs:** Architecture Decision Records are committed to the codebase at [`api/docs/arch/adr/`](../adr/) alongside the code they describe. Future engineers can find the reasoning for any decision without hunting through wikis or Notion. ADRs are append-only; past decisions are never edited, only superseded by new ones.
 
 ---
 
@@ -138,7 +138,7 @@ Credentials come from the shared LFX PAT service, scoped to Insights by audience
 Rather than duplicating Tinybird query logic, three workspace libraries are extracted:
 
 - `libs/tinybird-client`: Tinybird HTTP client, AdaptiveSemaphore, bucket-per-project routing. Both `frontend/` and `api/` depend on it.
-- `libs/insights-types`: shared enum definitions only (`ActivityPlatforms`, `ActivityTypes`, `Granularity`). Request/response shapes are defined separately per app.
+- `libs/types`: shared enum definitions only (`ActivityPlatforms`, `ActivityTypes`, `Granularity`). Request/response shapes are defined separately per app.
 - `libs/rate-limiter`: Redis sliding-window rate limiter, forked from `frontend/server/utils/rate-limiter.ts`.
 
 ---

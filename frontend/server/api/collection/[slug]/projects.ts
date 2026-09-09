@@ -98,7 +98,7 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
     return {
       page,
       pageSize,
-      total: response.rows_before_limit_at_least,
+      total: response.rows_before_limit_at_least ?? response.rows,
       data,
     };
   } catch (error: unknown) {

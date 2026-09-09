@@ -19,11 +19,14 @@ jobs:
           version: 10.18.2
 
       - name: Install dependencies
-        run: pnpm install --filter lfx-insights...
+        run: pnpm install --filter lfx-insights... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
+
+      - name: Build workspace libs
+        run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
 
       - name: Run tests
         env:
-          TINYBIRD_BASE_URL: https://tb.lf.org/
-          TINYBIRD_TOKEN: arandomtoken
+          NUXT_TINYBIRD_BASE_URL: https://tb.lf.org/
+          NUXT_TINYBIRD_TOKEN: arandomtoken
         run: pnpm vitest
         working-directory: frontend

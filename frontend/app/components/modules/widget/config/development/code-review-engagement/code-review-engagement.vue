@@ -84,6 +84,7 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import type { Granularity } from '@lfx-insights/types';
 import type {
   CodeReviewEngagement,
   CodeReviewEngagementPRParticipantsItem,
@@ -110,7 +111,6 @@ import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities } from '~/components/shared/types/granularity';
 import {
   DEVELOPMENT_API_SERVICE,
