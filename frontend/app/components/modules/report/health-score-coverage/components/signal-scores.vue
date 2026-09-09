@@ -84,7 +84,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { fetchHealthScoreCoverageSignalScoresQuery } from '../services/signal-scores.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -118,7 +118,11 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 const CATEGORY_ORDER = ['maintainerHealth', 'securitySupplyChain', 'developmentActivity'];
 
-const { data, isLoading } = fetchHealthScoreCoverageSignalScoresQuery();
+const { data, isLoading, suspense } = fetchHealthScoreCoverageSignalScoresQuery();
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const signals = computed<HealthScoreCoverageSignalScore[]>(() => data.value?.signals ?? []);
 

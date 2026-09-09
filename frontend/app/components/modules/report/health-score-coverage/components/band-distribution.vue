@@ -61,7 +61,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onServerPrefetch, ref } from 'vue';
 import { merge } from 'lodash-es';
 import { fetchHealthScoreCoverageBandsQuery } from '../services/band-distribution.query';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -84,7 +84,11 @@ const SCOPE_TABS = [
 
 const scope = ref<HealthScoreCoverageScope>('all');
 
-const { data, isLoading } = fetchHealthScoreCoverageBandsQuery(computed(() => scope.value));
+const { data, isLoading, suspense } = fetchHealthScoreCoverageBandsQuery(computed(() => scope.value));
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const bandLabels = computed(() =>
   (data.value?.bands ?? []).map((band) => band.band.charAt(0).toUpperCase() + band.band.slice(1)),

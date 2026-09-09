@@ -10,13 +10,18 @@
 
 import { fetchHealthScoreCoverageSignalAvailabilityLf } from '~~/server/data/tinybird/report/health-score-coverage-signal-availability-lf';
 import type { HealthScoreCoverageSignalAvailabilityLfData } from '~~/types/report/health-score-coverage-signal-availability-lf.types';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(
   async (): Promise<HealthScoreCoverageSignalAvailabilityLfData> => {
     try {
       return await fetchHealthScoreCoverageSignalAvailabilityLf();
     } catch (error: unknown) {
-      console.error('[health-score-coverage/signal-availability-lf] error:', error);
+      logError(
+        'health-score-coverage/signal-availability-lf',
+        'Failed to fetch health score coverage signal-availability-lf',
+        error,
+      );
       if (error && typeof error === 'object' && 'statusCode' in error) {
         throw error;
       }

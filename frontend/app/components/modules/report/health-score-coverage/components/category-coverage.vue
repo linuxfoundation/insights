@@ -56,7 +56,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { fetchHealthScoreCoverageCategoryCoverageQuery } from '../services/category-coverage.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -76,7 +76,11 @@ const CATEGORY_LABELS: Record<HealthScoreCoverageCategoryCount['categoryKey'], s
   securitySupplyChain: 'Security & supply chain',
 };
 
-const { data, isLoading } = fetchHealthScoreCoverageCategoryCoverageQuery();
+const { data, isLoading, suspense } = fetchHealthScoreCoverageCategoryCoverageQuery();
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const categories = computed(() => data.value?.categories ?? []);
 const reposTracked = computed(() => data.value?.reposTracked ?? 0);

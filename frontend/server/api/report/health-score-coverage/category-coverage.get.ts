@@ -9,12 +9,17 @@
 
 import { fetchHealthScoreCoverageCategoryCoverage } from '~~/server/data/tinybird/report/health-score-coverage-category-coverage';
 import type { HealthScoreCoverageCategoryCoverageData } from '~~/types/report/health-score-coverage-category-coverage.types';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageCategoryCoverageData> => {
   try {
     return await fetchHealthScoreCoverageCategoryCoverage();
   } catch (error: unknown) {
-    console.error('[health-score-coverage/category-coverage] error:', error);
+    logError(
+      'health-score-coverage/category-coverage',
+      'Failed to fetch health score coverage category-coverage',
+      error,
+    );
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }
