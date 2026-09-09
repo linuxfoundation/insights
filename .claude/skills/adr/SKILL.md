@@ -80,7 +80,7 @@ and ask the user for the missing information before writing the file.
 
 1. **Scan existing ADRs** — `Glob api/docs/arch/adr/[0-9]*.md` to find the highest existing number.
 2. **Assign next ID** — next sequential 4-digit number (e.g., `0003`).
-3. **Gather context** — ask the user for any missing details: who the deciders were, what alternatives were seriously considered, and what the consequences are.
+3. **Gather context** — ask the user for any missing details on the context, the decision, and the alternatives considered with why they were rejected. Only ask about deciders and consequences if the user opts into the full template.
 4. **Draft the ADR** — cover the context, decision, and rejected alternatives, either as free-form prose or using the full template above.
 5. **Present the draft** — show it to the user for review before writing any file.
 6. **Write the file** — `api/docs/arch/adr/NNNN-kebab-title.md` (kebab-case title, all lowercase).
