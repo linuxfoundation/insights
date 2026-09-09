@@ -6,6 +6,7 @@
 // health-score-coverage-lifecycle.types.ts.
 
 import { fetchHealthScoreCoverageLifecycle } from '~~/server/data/tinybird/report/health-score-coverage-lifecycle';
+import { logError } from '~~/server/utils/log';
 import type {
   HealthScoreCoverageLifecycleData,
   HealthScoreCoverageScope,
@@ -24,7 +25,11 @@ export default defineEventHandler(async (event): Promise<HealthScoreCoverageLife
   try {
     return await fetchHealthScoreCoverageLifecycle(scope as HealthScoreCoverageScope);
   } catch (error: unknown) {
-    console.error('[health-score-coverage/lifecycle] error:', error);
+    logError(
+      'health-score-coverage/lifecycle',
+      'Failed to fetch health score coverage lifecycle',
+      error,
+    );
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }

@@ -44,11 +44,25 @@ SPDX-License-Identifier: MIT
     <!-- How projects score -->
     <div class="flex flex-col gap-6">
       <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">How projects score</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <band-distribution />
+        <lifecycle-distribution />
+      </div>
+      <signal-scores />
     </div>
 
     <!-- What we can see -->
     <div class="flex flex-col gap-6">
       <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">What we can see</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <category-coverage />
+        <signal-availability />
+      </div>
+      <signal-availability-lf />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <category-maximum-table />
+        <github-security-funnel />
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +71,14 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { HEALTH_SCORE_COVERAGE_API_SERVICE } from '../services/health-score-coverage.api.service';
 import KpiRow from '../components/kpi-row.vue';
+import BandDistribution from '../components/band-distribution.vue';
+import LifecycleDistribution from '../components/lifecycle-distribution.vue';
+import SignalScores from '../components/signal-scores.vue';
+import CategoryCoverage from '../components/category-coverage.vue';
+import SignalAvailability from '../components/signal-availability.vue';
+import SignalAvailabilityLf from '../components/signal-availability-lf.vue';
+import CategoryMaximumTable from '../components/category-maximum-table.vue';
+import GithubSecurityFunnel from '../components/github-security-funnel.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { formatNumber, formatDate } from '~/components/shared/utils/formatter';
 

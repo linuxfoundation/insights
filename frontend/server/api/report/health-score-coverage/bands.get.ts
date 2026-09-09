@@ -5,6 +5,7 @@
 // shared health-score-coverage report view/service - see health-score-coverage-bands.types.ts.
 
 import { fetchHealthScoreCoverageBands } from '~~/server/data/tinybird/report/health-score-coverage-bands';
+import { logError } from '~~/server/utils/log';
 import type {
   HealthScoreCoverageBandsData,
   HealthScoreCoverageScope,
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event): Promise<HealthScoreCoverageBand
   try {
     return await fetchHealthScoreCoverageBands(scope as HealthScoreCoverageScope);
   } catch (error: unknown) {
-    console.error('[health-score-coverage/bands] error:', error);
+    logError('health-score-coverage/bands', 'Failed to fetch health score coverage bands', error);
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }

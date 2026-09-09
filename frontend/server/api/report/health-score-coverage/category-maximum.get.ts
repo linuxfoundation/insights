@@ -9,12 +9,17 @@
 
 import { fetchHealthScoreCoverageCategoryMaximum } from '~~/server/data/tinybird/report/health-score-coverage-category-maximum';
 import type { HealthScoreCoverageCategoryMaximumData } from '~~/types/report/health-score-coverage-category-maximum.types';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageCategoryMaximumData> => {
   try {
     return await fetchHealthScoreCoverageCategoryMaximum();
   } catch (error: unknown) {
-    console.error('[health-score-coverage/category-maximum] error:', error);
+    logError(
+      'health-score-coverage/category-maximum',
+      'Failed to fetch health score coverage category-maximum',
+      error,
+    );
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }

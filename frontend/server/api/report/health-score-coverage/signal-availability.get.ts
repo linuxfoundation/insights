@@ -6,6 +6,7 @@
 // health-score-coverage-signal-availability.types.ts.
 
 import { fetchHealthScoreCoverageSignalAvailability } from '~~/server/data/tinybird/report/health-score-coverage-signal-availability';
+import { logError } from '~~/server/utils/log';
 import type {
   HealthScoreCoverageScope,
   HealthScoreCoverageSignalAvailabilityData,
@@ -25,7 +26,11 @@ export default defineEventHandler(
     try {
       return await fetchHealthScoreCoverageSignalAvailability(scope as HealthScoreCoverageScope);
     } catch (error: unknown) {
-      console.error('[health-score-coverage/signal-availability] error:', error);
+      logError(
+        'health-score-coverage/signal-availability',
+        'Failed to fetch health score coverage signal-availability',
+        error,
+      );
       if (error && typeof error === 'object' && 'statusCode' in error) {
         throw error;
       }
