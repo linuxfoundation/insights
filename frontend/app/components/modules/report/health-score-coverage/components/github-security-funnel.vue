@@ -80,7 +80,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { fetchHealthScoreCoverageGithubSecurityQuery } from '../services/github-security.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
@@ -88,7 +88,11 @@ import LfxTable from '~/components/uikit/table/table.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageGithubSecurityStageCount } from '~~/types/report/health-score-coverage-github-security.types';
 
-const { data, isLoading } = fetchHealthScoreCoverageGithubSecurityQuery();
+const { data, isLoading, suspense } = fetchHealthScoreCoverageGithubSecurityQuery();
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const stages = computed<HealthScoreCoverageGithubSecurityStageCount[]>(() => data.value?.stages ?? []);
 

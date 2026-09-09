@@ -68,7 +68,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { HEALTH_SCORE_COVERAGE_API_SERVICE } from '../services/health-score-coverage.api.service';
 import KpiRow from '../components/kpi-row.vue';
 import BandDistribution from '../components/band-distribution.vue';
@@ -82,7 +82,11 @@ import GithubSecurityFunnel from '../components/github-security-funnel.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { formatNumber, formatDate } from '~/components/shared/utils/formatter';
 
-const { data: glanceData, status } = HEALTH_SCORE_COVERAGE_API_SERVICE.fetchGlance();
+const { data: glanceData, status, suspense } = HEALTH_SCORE_COVERAGE_API_SERVICE.fetchGlance();
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const isLoading = computed(() => status.value === 'pending');
 const isError = computed(() => status.value === 'error');

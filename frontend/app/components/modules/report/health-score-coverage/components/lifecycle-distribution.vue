@@ -65,7 +65,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onServerPrefetch, ref } from 'vue';
 import { merge } from 'lodash-es';
 import { fetchHealthScoreCoverageLifecycleQuery } from '../services/lifecycle-distribution.query';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -103,7 +103,11 @@ const displayLabel = (label: string): string =>
 
 const scope = ref<HealthScoreCoverageScope>('all');
 
-const { data, isLoading } = fetchHealthScoreCoverageLifecycleQuery(computed(() => scope.value));
+const { data, isLoading, suspense } = fetchHealthScoreCoverageLifecycleQuery(computed(() => scope.value));
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const rows = computed<HealthScoreCoverageLifecycleCount[]>(() => data.value?.rows ?? []);
 const total = computed(() => data.value?.total ?? 0);

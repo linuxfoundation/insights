@@ -56,7 +56,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onServerPrefetch, ref } from 'vue';
 import { merge } from 'lodash-es';
 import { fetchHealthScoreCoverageSignalAvailabilityQuery } from '../services/signal-availability.query';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -93,7 +93,11 @@ const displayLabel = (signalKey: string): string => SIGNAL_LABELS[signalKey] ?? 
 // still takes a scope so the underlying fetcher/mapper support lf/other, reused by widget 06.
 const scope = ref<HealthScoreCoverageScope>('all');
 
-const { data, isLoading } = fetchHealthScoreCoverageSignalAvailabilityQuery(computed(() => scope.value));
+const { data, isLoading, suspense } = fetchHealthScoreCoverageSignalAvailabilityQuery(computed(() => scope.value));
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const signals = computed<HealthScoreCoverageSignalAvailabilityCount[]>(() => data.value?.signals ?? []);
 
