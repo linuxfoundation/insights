@@ -26,6 +26,7 @@
     "setup:guardrails": "node --env-file=.env scripts/setup-guardrails.js"
   },
   "dependencies": {
+    "@lfx-insights/types": "workspace:*",
     "@ai-sdk/amazon-bedrock": "^5.0.75",
     "@ai-sdk/mcp": "^2.0.45",
     "@ai-sdk/openai": "^4.0.59",
