@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --filter lfx-insights...
 
+      - name: Build workspace libs
+        run: pnpm --filter @lfx-insights/types build
+
       - name: Run tests
         env:
           TINYBIRD_BASE_URL: https://tb.lf.org/
