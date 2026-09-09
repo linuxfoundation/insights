@@ -18,17 +18,17 @@
     "@crowd/redis": "workspace:*",
     "@crowd/types": "workspace:*",
     "@insights/temporal-worker": "workspace:*",
-    "@temporalio/client": "~1.11.1",
-    "@temporalio/workflow": "~1.11.1",
-    "axios": "^1.6.8",
-    "js-yaml": "^4.1.0",
-    "moment": "~2.29.4",
-    "prettier": "^3.8.0",
-    "tsx": "^4.7.1",
-    "typescript": "^5.6.3"
+    "@temporalio/client": "~1.11.8",
+    "@temporalio/workflow": "~1.11.8",
+    "axios": "^1.20.0",
+    "js-yaml": "^5.4.1",
+    "moment": "~2.30.1",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/node": "^20.8.2",
-    "nodemon": "^3.0.1"
+    "@types/node": "^24.13.3",
+    "nodemon": "^3.1.14"
   }
 }

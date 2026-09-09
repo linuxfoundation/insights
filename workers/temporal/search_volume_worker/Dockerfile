@@ -17,7 +17,6 @@ RUN npm install -g corepack@latest && \
 
 # Copy root-level files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY patches ./patches
 
 COPY ./workers/temporal/search_volume_worker/package.json ./workers/temporal/search_volume_worker/
 

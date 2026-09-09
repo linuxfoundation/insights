@@ -44,7 +44,7 @@ const projectDescription = computed(
 const repositoryName = computed(() => selectedRepositoryGroup.value?.name || '');
 const projectLogo = computed(() => project.value?.logo || '');
 
-defineOgImageComponent('project', {
+defineOgImage('Project', {
   projectName,
   projectDescription,
   repositoryName,

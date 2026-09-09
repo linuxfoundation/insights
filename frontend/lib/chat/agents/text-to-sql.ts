@@ -37,7 +37,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     input: TextToSqlAgentInput & { messages: any[] },
   ): Promise<SqlOutput & { usage?: any }> {
     try {
-      const { generateText } = await import('ai');
+      const { generateText, isStepCount } = await import('ai');
       const systemPrompt = this.getSystemPrompt(input);
       const tools = this.getTools(input);
       const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input.messages);
@@ -62,7 +62,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
         model: this.getModel(input),
         system: fullSystemPrompt,
         tools: workingTools,
-        maxSteps: this.maxSteps,
+        stopWhen: isStepCount(this.maxSteps),
         temperature: this.temperature,
       };
 

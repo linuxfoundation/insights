@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectInsightsTinybird } from '~~/types/project';
-import { getHealthScoreV2Config } from '~~/config/trust-score';
+import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);
@@ -17,7 +17,8 @@ export default defineEventHandler(async (event): Promise<void> => {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
     const healthLabel = res.data[0].healthLabel;
-    const config = getHealthScoreV2Config(healthLabel);
+    const healthMaxScore = res.data[0].healthMaxScore;
+    const config = getHealthScoreV2Config(healthLabel, isPartialHealthScore(healthMaxScore));
     const message = encodeURIComponent(config.label);
     const label = encodeURIComponent('Health Score');
     const color = config.ghBadgeColor.replace('#', '');

@@ -1,9 +1,9 @@
 {
 	"packageManager": "pnpm@10.18.2",
 	"devDependencies": {
-		"@commitlint/cli": "^19.8.1",
-		"@commitlint/config-conventional": "^19.8.1",
-		"lint-staged": "^15.5.2"
+		"@commitlint/cli": "^21.2.2",
+		"@commitlint/config-conventional": "^21.2.2",
+		"lint-staged": "^17.5.0"
 	},
 	"lint-staged": {
 		"*.{js,ts,vue}": [
@@ -12,10 +12,5 @@
 	},
 	"dependencies": {
 		"jwt-decode": "^4.0.0"
-	},
-	"pnpm": {
-		"patchedDependencies": {
-			"nuxt-og-image@5.1.13": "patches/nuxt-og-image@5.1.13.patch"
-		}
 	}
 }

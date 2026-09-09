@@ -23,7 +23,8 @@ features:
   link: /introduction/what-is-insights/index
   linkText: Learn more
 - title: Health Score
-  details: Three independent assessments — Lifecycle state, Health Score, and Impact Score — that together answer whether a project is well-maintained, healthy, and critical to the ecosystem.
+  # TEMPORARILY HIDDEN (IN-1243): original details described three assessments: "Three independent assessments — Lifecycle state, Health Score, and Impact Score — that together answer whether a project is well-maintained, healthy, and critical to the ecosystem." Re-enable by uncommenting and removing the two-assessment replacement below.
+  details: Two independent assessments — Lifecycle state and Health Score — that together answer whether a project is well-maintained and healthy.
   link: /metrics/health-score/index
   linkText: Learn more
 - title: FAQ

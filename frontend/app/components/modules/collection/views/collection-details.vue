@@ -30,7 +30,9 @@ SPDX-License-Identifier: MIT
               <col class="w-[16rem]" />
               <col class="w-[8rem]" />
               <col class="w-[9rem]" />
+              <!-- TEMPORARILY HIDDEN (IN-1243): Impact column disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
               <col class="w-[9rem]" />
+              -->
               <col class="w-[7rem]" />
               <col class="w-[12rem]" />
               <col class="w-[8rem]" />
@@ -52,7 +54,9 @@ SPDX-License-Identifier: MIT
                 </th>
                 <th class="py-5 px-2 text-left whitespace-nowrap font-semibold">Lifecycle</th>
                 <th class="py-5 px-2 text-left whitespace-nowrap font-semibold">Health Score</th>
+                <!-- TEMPORARILY HIDDEN (IN-1243): Impact column disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
                 <th class="py-5 px-2 text-left whitespace-nowrap font-semibold">Impact</th>
+                -->
                 <th
                   class="py-5 px-2 text-left whitespace-nowrap cursor-pointer group font-semibold"
                   @click="handleSort('contributorCount')"
@@ -78,7 +82,9 @@ SPDX-License-Identifier: MIT
               <col class="w-[16rem]" />
               <col class="w-[8rem]" />
               <col class="w-[9rem]" />
+              <!-- TEMPORARILY HIDDEN (IN-1243): Impact column disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
               <col class="w-[9rem]" />
+              -->
               <col class="w-[7rem]" />
               <col class="w-[12rem]" />
               <col class="w-[8rem]" />

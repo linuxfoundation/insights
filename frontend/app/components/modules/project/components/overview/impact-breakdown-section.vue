@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
       v-if="isEmpty"
       icon="chart-network"
       title="Impact not available"
-      description="This project publishes no tracked packages. Impact cannot be computed without a package registry presence."
+      description="No tracked packages are published, so impact cannot be computed without a package registry presence."
     />
     <template v-else>
       <p

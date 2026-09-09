@@ -22,6 +22,11 @@
       @apply bg-positive-500;
     }
   }
+  &--accent {
+    .c-progress-bar__value {
+      @apply bg-accent-500;
+    }
+  }
   &--warning {
     .c-progress-bar__value {
       @apply bg-warning-500;

@@ -4,7 +4,7 @@
 **Author:** LFX Insights Engineering  
 **Status:** Pending architecture team approval
 
-**ADRs:** Architecture Decision Records are committed to the codebase at [`docs/adr/`](../adr/) alongside the code they describe. Future engineers can find the reasoning for any decision without hunting through wikis or Notion. ADRs are append-only; past decisions are never edited, only superseded by new ones.
+**ADRs:** Architecture Decision Records are committed to the codebase at [`api/docs/arch/adr/`](../adr/) alongside the code they describe. Future engineers can find the reasoning for any decision without hunting through wikis or Notion. ADRs are append-only; past decisions are never edited, only superseded by new ones.
 
 ---
 

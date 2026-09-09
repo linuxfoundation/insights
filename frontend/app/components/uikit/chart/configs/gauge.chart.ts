@@ -114,6 +114,7 @@ const fullDataOpts = {
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   const gaugeSeries = { ...(data.gaugeType === 'half' ? halfSeriesStyle : fullSeriesStyle) };
+  gaugeSeries.max = data.maxValue || 100;
   if (data.lineWidth !== undefined) {
     gaugeSeries.axisLine = {
       ...gaugeSeries.axisLine,

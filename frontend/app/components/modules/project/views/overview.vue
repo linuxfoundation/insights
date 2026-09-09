@@ -6,11 +6,8 @@ SPDX-License-Identifier: MIT
   <div class="container">
     <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
       <div class="w-full md:w-3/4 flex flex-col gap-6">
-        <lfx-repos-exclusion-footer
-          v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
-          page-content="health-score"
-        />
-        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5 !pb-0">
+        <lfx-health-score-banner />
+        <lfx-card class="pt-6 flex flex-col md:gap-10 gap-5">
           <lfx-project-trust-score-v2
             :health-score-v2="healthScoreV2Data?.healthScoreV2 ?? null"
             :health-label="healthScoreV2Data?.healthLabel ?? null"
@@ -20,14 +17,15 @@ SPDX-License-Identifier: MIT
             :maintainer-health-score-v2="healthScoreV2Data?.maintainerHealthScoreV2 ?? null"
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
+            :health-max-score="healthScoreV2Data?.healthMaxScore ?? null"
             :status="healthScoreV2Status"
-            :is-repo-selected="selectedRepositories.length > 0"
+            :is-repo-selected="isRepoFilterActive"
             :signals="healthBreakdownData ?? null"
           />
         </lfx-card>
 
         <lfx-card
-          v-if="healthScoreV2Status !== 'pending' && !isArchived"
+          v-if="healthScoreV2Status !== 'pending' && !isEntireProjectArchived"
           class="p-6"
         >
           <lfx-health-breakdown-section
@@ -36,10 +34,15 @@ SPDX-License-Identifier: MIT
             :maintainer-health-score-v2="healthScoreV2Data?.maintainerHealthScoreV2 ?? null"
             :security-supply-chain-score-v2="healthScoreV2Data?.securitySupplyChainScoreV2 ?? null"
             :development-activity-score-v2="healthScoreV2Data?.developmentActivityScoreV2 ?? null"
+            :health-max-score="healthScoreV2Data?.healthMaxScore ?? null"
             :signals="healthBreakdownData ?? null"
+            :selected-repos-all-archived-or-excluded="selectedReposAllArchivedOrExcluded"
+            :is-repo-selected="isRepoFilterActive"
+            :is-multiple-repos-selected="selectedRepositories.length > 1"
           />
         </lfx-card>
 
+        <!-- TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
         <lfx-card
           v-if="healthScoreV2Status !== 'pending' && !isArchived"
           class="p-6"
@@ -51,6 +54,12 @@ SPDX-License-Identifier: MIT
             :status="impactBreakdownStatus"
           />
         </lfx-card>
+        -->
+
+        <lfx-repos-exclusion-footer
+          v-if="hasSelectedArchivedRepos && healthScoreV2Status !== 'pending'"
+          page-content="health-score"
+        />
       </div>
       <div class="min-w-50 max-md:w-full w-1/4">
         <lfx-project-about-section />
@@ -66,17 +75,31 @@ import { storeToRefs } from 'pinia';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectTrustScoreV2 from '~/components/modules/project/components/overview/trust-score-v2.vue';
 import LfxHealthBreakdownSection from '~/components/modules/project/components/overview/health-breakdown-section.vue';
-import LfxImpactBreakdownSection from '~/components/modules/project/components/overview/impact-breakdown-section.vue';
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// import LfxImpactBreakdownSection from '~/components/modules/project/components/overview/impact-breakdown-section.vue';
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import LfxHealthScoreBanner from '~/components/modules/project/components/overview/health-score-banner.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const route = useRoute();
-const { hasSelectedArchivedRepos, selectedRepositories, isArchived } = storeToRefs(useProjectStore());
+const {
+  hasSelectedArchivedRepos,
+  selectedRepositories,
+  selectedReposValues,
+  selectedReposAllArchivedOrExcluded,
+  isEntireProjectArchived,
+  selectedRepositoryGroup,
+} = storeToRefs(useProjectStore());
+
+// A repository group is a multi-repo filter just like a manual multi-select, so it hides the
+// aggregate score and shows the "select all repositories" message the same way.
+const isRepoFilterActive = computed(() => !!selectedRepositoryGroup.value || selectedRepositories.value.length > 0);
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
+  repos: selectedRepositories.value.length ? selectedReposValues.value : undefined,
 }));
 
 const {
@@ -85,17 +108,18 @@ const {
   suspense,
 } = OVERVIEW_API_SERVICE.fetchHealthScoreV2(params);
 
-const {
-  data: impactBreakdownData,
-  status: impactBreakdownStatus,
-  suspense: impactBreakdownSuspense,
-} = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
+// TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
+// const {
+//   data: impactBreakdownData,
+//   status: impactBreakdownStatus,
+//   suspense: impactBreakdownSuspense,
+// } = OVERVIEW_API_SERVICE.fetchHealthScoreImpactBreakdown(params);
 
 const { data: healthBreakdownData, suspense: healthBreakdownSuspense } =
   OVERVIEW_API_SERVICE.fetchHealthScoreBreakdown(params);
 
 onServerPrefetch(async () => {
-  await Promise.all([suspense(), impactBreakdownSuspense(), healthBreakdownSuspense()]);
+  await Promise.all([suspense(), healthBreakdownSuspense()]);
 });
 </script>
 

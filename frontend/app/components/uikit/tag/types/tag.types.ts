@@ -4,6 +4,7 @@ export const tagStyles = [
   'default',
   'neutral',
   'info',
+  'accent',
   'positive',
   'warning',
   'negative',

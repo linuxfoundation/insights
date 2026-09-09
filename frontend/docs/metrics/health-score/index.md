@@ -1,24 +1,32 @@
 # Health Score Explained
 
-LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:
+<!-- TEMPORARILY HIDDEN (IN-1243): original intro described three assessments: "LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:" Re-enable by uncommenting and removing the two-assessment replacement below. -->
+LFX Insights surfaces **two independent assessments** for open source projects: a **Lifecycle state** and a **Health Score**. Together, these replace the previous single composite score and answer two distinct questions:
 
 - **Lifecycle:** what state is this project in?
 - **Health Score:** how well-maintained is it?
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score question hidden. Re-enable by uncommenting.
 - **Impact Score:** how much does it matter if something goes wrong?
+-->
 
+<!-- TEMPORARILY HIDDEN (IN-1243): sentence contrasting health vs. impact hidden. Re-enable by uncommenting.
 Separating health from impact means a popular but poorly maintained project can't score well on the Health Score, while its high reach is still captured in the Impact Score.
+-->
 
 ::: warning ⚠️ Please note
 No score captures all the nuance of an open source project. Different projects serve different goals: some are mature and stable by design, others are experimental or niche. These assessments are meant to highlight signals and risks, not to make final judgments. Always consider context alongside the numbers.
 :::
 
-## The Three Assessments
+<!-- TEMPORARILY HIDDEN (IN-1243): heading changed from "## The Three Assessments" to "## The Assessments" since the Impact Score row below is hidden. Re-enable by uncommenting and restoring the original heading. -->
+## The Assessments
 
 | Assessment | Question answered | Output |
 |---|---|---|
 | **Lifecycle** | What state is this project in? | One of six states: Active, Stable, Declining, Inert, Abandoned, Archived |
 | **Health Score** | How well-maintained is it? | 0–100, independent of popularity |
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score row hidden. Re-enable by uncommenting.
 | **Impact Score** | How much does it matter if this breaks? | 0–100, based on dependency graph reach |
+-->
 
 This methodology was developed with community input. You can read the full discussion and the feedback that shaped these decisions in [GitHub Discussion #1939](https://github.com/linuxfoundation/insights/discussions/1939).
 
@@ -43,7 +51,7 @@ For multi-repo projects, the project takes the best state across all its reposit
 
 ## Health Score (0–100)
 
-The Health Score measures how well-maintained a project is, independent of how popular or critical it is. A widely-used project with poor maintainer responsiveness will score low here, even if its Impact Score is high.
+The Health Score measures how well-maintained a project is, independent of how popular or critical it is. A widely-used project with poor maintainer responsiveness will score low here.<!-- TEMPORARILY HIDDEN (IN-1243): removed trailing clause ", even if its Impact Score is high." Re-enable by uncommenting and restoring the clause. -->
 
 **Health Score (0–100) = Maintainer Health (0–40 pts) + Security and Supply Chain (0–35 pts) + Development Activity (0–25 pts)**
 
@@ -72,7 +80,7 @@ Measures the median time for a non-author to respond to newly opened issues and 
 - **2 pts:** Median response time under 3 months
 - **0 pts:** Median response time 3 months or more, or no response data available
 
-Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal scores 0 pts (not redistributed) because the signal is `available` — there is simply no activity to measure. Only `blocked` sub-signals redistribute their weight.
+Projects with no open issues or pull requests in the measurement window have no response data. This sub-signal scores 0 pts (not imputed) because the signal is `available` — there is simply no activity to measure. Only `blocked` sub-signals have their missing weight imputed at the population median rate.
 
 #### 1.2 Bus Factor (max 18 pts)
 
@@ -95,9 +103,9 @@ Measures how many distinct organizations the active maintainers are affiliated w
 
 ### 2. Security and Supply Chain (0–35 pts)
 
-A project's security posture depends on both what it ships and how it is built. This category measures known vulnerabilities, documented security practices, supply chain integrity, and the health of the project's own dependencies.
+A project's security posture depends on both what it ships and how it is built. This category measures known vulnerabilities, documented security practices, supply chain integrity, and the health of the project's own dependencies. The 5 points formerly reserved for Supply Chain Integrity have been permanently reallocated to the other sub-signals; the category total remains 35 pts.
 
-#### 2.1 Open Vulnerabilities (max 10 pts)
+#### 2.1 Open Vulnerabilities
 
 Counts unresolved security advisories scoped to the repository, sourced from OSV and GHSA. Points are deducted by severity:
 
@@ -106,7 +114,7 @@ Counts unresolved security advisories scoped to the repository, sourced from OSV
 
 If no vulnerability scan data is available for the repository, missing advisory counts are treated as zero. The project is scored as having no open vulnerabilities and receives the full 10 points. Absent scan data cannot currently be distinguished from a clean scan in the score calculation.
 
-#### 2.2 Security Practices (max 8 pts)
+#### 2.2 Security Practices
 
 Checks whether the repository has adopted documented security practices:
 
@@ -116,14 +124,22 @@ Checks whether the repository has adopted documented security practices:
 - **2 pts:** Required status checks before merging
 
 ::: info
-Security practices are currently evaluated for GitHub repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its weight redistributes to other available Security sub-signals.
+Security practices are currently evaluated for GitHub repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its missing weight is imputed at the population median rate.
 :::
 
-#### 2.3 OpenSSF Scorecard (max 7 pts)
+#### 2.3 OpenSSF Scorecard
 
-Normalized from the OpenSSF Scorecard's 0–10 scale. Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked, and its weight redistributes within the Security category.
+Uses a banded mapping from the OpenSSF Scorecard's 0–10 raw score, calibrated to the real distribution of scores across tracked repositories:
 
-#### 2.4 Dependency Health (max 5 pts)
+- **7 pts:** Scorecard raw ≥ 7.0
+- **5 pts:** Scorecard raw ≥ 5.5
+- **4 pts:** Scorecard raw ≥ 4.0
+- **2 pts:** Scorecard raw ≥ 2.5
+- **0 pts:** Scorecard raw < 2.5
+
+Currently available for GitHub-hosted repositories only. GitLab and Gerrit repositories have this sub-signal blocked; its missing weight is imputed at the population median rate.
+
+#### 2.4 Dependency Health
 
 Evaluates the security posture of the project's direct dependencies:
 
@@ -134,9 +150,9 @@ Evaluates the security posture of the project's direct dependencies:
 
 Available only for repositories that publish tracked packages. Repositories without published packages have this sub-signal blocked.
 
-#### 2.5 Supply Chain Integrity (max 5 pts)
+#### 2.5 Supply Chain Integrity
 
-Assesses build provenance attestation, artifact-to-repository consistency, and publisher account security. This sub-signal is in development and is currently blocked for all projects. Its weight redistributes to available Security sub-signals; projects are not penalized.
+Assesses build provenance attestation, artifact-to-repository consistency, and publisher account security. This sub-signal is in development and is currently blocked for all projects. Its weight has been permanently reallocated to the other available Security sub-signals; projects are not penalized and the Security category maximum remains at 35 pts.
 
 ### 3. Development Activity (0–25 pts)
 
@@ -180,7 +196,7 @@ Combines two independent measures over the last 12 months: how many issues were 
 - **2 pts:** Median close time under 30 days
 - **0 pts:** 30 days or more, or no closed issues in the period
 
-Gerrit repositories do not ingest issue data. This sub-signal is blocked for Gerrit-only projects and its weight redistributes within Development Activity.
+Gerrit repositories do not ingest issue data. This sub-signal is blocked for Gerrit-only projects; its missing weight is imputed at the population median rate.
 
 #### 3.4 PR Merge Health (max 5 pts)
 
@@ -200,14 +216,21 @@ Combines two independent measures over the last 12 months: what fraction of pull
 
 ### Handling Missing Data
 
-Not every signal is available for every project. Insights uses two layers of redistribution so projects aren't penalized for gaps in data coverage.
+Not every signal is available for every project. Insights uses two layers of handling so projects aren't penalized for gaps in data coverage.
 
-**Layer 1, sub-signal blocked:** if a specific sub-signal cannot be computed (for example, OpenSSF Scorecard is unavailable for a GitLab repository), the missing points are redistributed proportionally to the other available sub-signals in the same category. The category's maximum is preserved.
+**Layer 1, sub-signal blocked:** if a specific sub-signal cannot be computed (for example, OpenSSF Scorecard is unavailable for a GitLab repository), the missing weight is imputed at the population median rate for that sub-signal — the rate observed across all projects where the signal is available. This prevents a project that has a signal measured from being disadvantaged relative to one that does not.
 
-**Layer 2, category unavailable:** if fewer than 40% of a category's maximum points are covered by available sub-signals, the entire category is marked unavailable and dropped from the composite. The remaining available categories rescale to fill 100 points.
+**Layer 2, category requirements:**
 
-If all three categories fall below the 40% coverage threshold, the Health Score itself is emitted as `unavailable`, never as a zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
+A category is marked unavailable when the repository platform does not support any of its sub-signals — for example, a Gerrit project with no package data may have no computable Security sub-signals. Once a category is unavailable it is dropped from the composite entirely.
 
+- If **all 3 categories** are available, the Health Score is computed normally, out of a maximum of 100.
+- If **exactly 1 category** is unavailable, the score is computed from the 2 available categories and shown out of a reduced maximum: 60 if Maintainer Health (40 pts) is missing, 65 if Security and Supply Chain (35 pts) is missing, or 75 if Development Activity (25 pts) is missing. The rating label carries a **" - Partial"** suffix (for example, "Healthy - Partial") to signal that not all categories were observed, and a tooltip next to the score explains which category is missing.
+- If **2 or more categories** are unavailable, the Health Score is marked `unavailable` rather than computed from insufficient evidence.
+
+The Health Score is always either a number out of 100 (full), a number out of a reduced maximum with a partial indicator, or explicitly `unavailable` — never a silent zero or blank. This way you can always distinguish "we could not measure this" from "this project scored poorly."
+
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score documentation section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 ## Impact Score (0–100)
 
 The Impact Score answers: how bad is it if this breaks? It is independent of the Health Score. A healthy project can have low impact; an unhealthy project can have high impact.
@@ -239,14 +262,17 @@ Impact is computed in two steps:
 
 1. **Score each signal relative to the ecosystem:** for each signal, a package's contribution is measured as its cumulative share of the total ecosystem signal. Packages at the top of each distribution score near 1; the long tail scores near 0. Signals with no data for a given ecosystem are excluded.
 2. **Average across available signals**, then scaled to 0–100. Packages are not penalized when a specific signal is unavailable for their ecosystem.
+-->
 
 ## Multi-Repo Projects
 
 An Insights project can span multiple repositories. Sub-signals are computed per repository, then rolled up to the project level:
 
-- **Health Score and sub-scores:** straight mean across all active, non-excluded repositories.
+- **Health Score and category rollups:** median across all active, non-excluded repositories. The median is used for the total score and each of the three category rollups (Maintainer Health, Security and Supply Chain, Development Activity). Using the median prevents a long tail of less-active repositories from dragging down projects with strong flagship repos.
 - **Lifecycle state:** best-state-wins. One active repository makes the project active, regardless of the state of other repositories.
+<!-- TEMPORARILY HIDDEN (IN-1243): Impact Score rollup bullet hidden. Re-enable by uncommenting.
 - **Impact Score:** the highest impact score across all packages published by any repository in the project.
+-->
 
 Repositories marked as excluded (for example, experimental sandbox repos) are not included in scoring. This prevents an inactive experimental repository from dragging down a project's Health Score.
 
@@ -256,7 +282,7 @@ Insights collects data from GitHub, GitLab, and Gerrit. Not all signals are avai
 
 **GitLab projects:**
 
-Security practices and OpenSSF Scorecard are currently GitHub-only. GitLab projects will typically have these sub-signals blocked and absorbed by Layer-1 redistribution or, if Security coverage falls below 40%, the entire Security category may be marked unavailable. Health Score still computes from Maintainer Health and Development Activity. Broader security signal coverage for GitLab is in development.
+Security practices and OpenSSF Scorecard are currently GitHub-only. GitLab projects will typically have these sub-signals imputed at the population median rate (Layer 1). If the Security category itself becomes unavailable, the Health Score is computed from the remaining 2 categories and shown with a partial indicator. Health Score still computes from Maintainer Health and Development Activity. Broader security signal coverage for GitLab is in development.
 
 **Gerrit projects:**
 
@@ -264,7 +290,7 @@ Gerrit does not ingest issue data in the same format as GitHub and GitLab. Issue
 
 **Projects without published packages:**
 
-Release Cadence, Dependency Health, and Supply Chain Integrity are all package-mediated signals. Projects that do not publish to a tracked registry (npm, PyPI, Maven, and others) will have these sub-signals blocked. Their weight redistributes to the signals that are available. Impact Score will not be shown for these projects.
+Release Cadence and Dependency Health are package-mediated signals. Projects that do not publish to a tracked registry (npm, PyPI, Maven, and others) will have these sub-signals blocked; their missing weight is imputed at the population median rate. Supply Chain Integrity is permanently blocked for all projects and its weight has been explicitly reallocated within the Security category.<!-- TEMPORARILY HIDDEN (IN-1243): removed trailing sentence "Impact Score will not be shown for these projects." Re-enable by uncommenting and restoring the sentence. -->
 
 **Projects with partial data across repos:**
 
@@ -277,19 +303,19 @@ Health Score comparisons across projects with different platform or data coverag
 ## How This Differs from the Previous Health Score
 
 ::: info
-The original Insights Health Score was a single 0–100 value, computed as an equal-weight mean of four sub-scores: Contributors (25 pts), Popularity (25 pts), Development (25 pts), and Security and Best Practices (25 pts). The current methodology replaces that with three independent assessments and re-weighted health categories.
+The original Insights Health Score was a single 0–100 value, computed as an equal-weight mean of four sub-scores: Contributors (25 pts), Popularity (25 pts), Development (25 pts), and Security and Best Practices (25 pts). The current methodology replaces that with independent assessments<!-- TEMPORARILY HIDDEN (IN-1243): originally "three independent assessments". Re-enable by uncommenting and restoring "three". --> and re-weighted health categories.
 :::
 
 | Aspect | Original Health Score | Current methodology |
 |---|---|---|
-| **Output** | Single score (0–100) | Three assessments: Lifecycle (state), Health Score (0–100), Impact Score (0–100) |
+| **Output** | Single score (0–100) | Two assessments: Lifecycle (state), Health Score (0–100)<!-- TEMPORARILY HIDDEN (IN-1243): cell originally read "Three assessments: Lifecycle (state), Health Score (0-100), Impact Score (0-100)". Re-enable by uncommenting and restoring the third assessment. --> |
 | **Health categories** | 4 equal categories at 25 pts each | 3 weighted categories: Maintainer (40), Security and Supply Chain (35), Development Activity (25) |
-| **Popularity** | Baked into Health Score as 25% of the total | Separate Impact Score; does not affect Health |
+| **Popularity** | Baked into Health Score as 25% of the total | Not baked into Health Score<!-- TEMPORARILY HIDDEN (IN-1243): cell originally read "Separate Impact Score; does not affect Health". Re-enable by uncommenting and restoring the Impact Score reference. --> |
 | **Lifecycle** | Not modeled | Six states: Active, Stable, Declining, Inert, Abandoned, Archived |
 | **Stable "done" libraries** | Penalized: low commits meant a low score | Lifecycle context added: a `Stable` classification signals low activity is intentional, but the Health Score formula still scores low-activity signals as low |
 | **Maintainer signal** | Contributor count only | Responsiveness, bus factor (curated plus observed), organizational diversity |
 | **Security** | OpenSSF Baseline pass/fail ratio | Open CVEs with severity weighting, security practices, OpenSSF Scorecard, dependency health, supply chain integrity |
-| **Missing data** | Returned unavailable if any sub-score was absent | Two-layer redistribution: blocked sub-signals rescale within their category; scores are only marked unavailable when signal floor is too low to be defensible |
+| **Missing data** | Returned unavailable if any sub-score was absent | Blocked sub-signals are imputed at the population median rate; full score requires ≥2 categories, 1 missing shows a partial indicator, ≥2 missing returns unavailable |
 | **Rating bands** | Excellent / Healthy / Stable / Unsteady / Critical | Excellent / Healthy / Fair / Concerning / Critical |
 
 ### Why the original approach had gaps

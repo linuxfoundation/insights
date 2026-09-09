@@ -27,10 +27,16 @@ export interface ScoreDataQueryParams extends OverviewQueryParams {
 
 // TODO: Refactor other services to follow this pattern
 class OverviewApiService {
-  fetchHealthScoreV2(params: ComputedRef<{ projectSlug: string }>) {
-    const queryKey = computed(() => [TanstackKey.HEALTH_SCORE_V2, params.value.projectSlug]);
+  fetchHealthScoreV2(params: ComputedRef<OverviewQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.HEALTH_SCORE_V2,
+      params.value.projectSlug,
+      params.value.repos,
+    ]);
     const queryFn: QueryFunction<HealthScoreV2Results> = async () =>
-      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-v2`);
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-v2`, {
+        params: { repos: params.value.repos },
+      });
 
     return useQuery<HealthScoreV2Results>({
       queryKey,
@@ -52,10 +58,16 @@ class OverviewApiService {
     });
   }
 
-  fetchHealthScoreBreakdown(params: ComputedRef<{ projectSlug: string }>) {
-    const queryKey = computed(() => [TanstackKey.HEALTH_SCORE_BREAKDOWN, params.value.projectSlug]);
+  fetchHealthScoreBreakdown(params: ComputedRef<OverviewQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.HEALTH_SCORE_BREAKDOWN,
+      params.value.projectSlug,
+      params.value.repos,
+    ]);
     const queryFn: QueryFunction<HealthBreakdownResults> = async () =>
-      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-breakdown`);
+      await $fetch(`/api/project/${params.value.projectSlug}/overview/health-score-breakdown`, {
+        params: { repos: params.value.repos },
+      });
 
     return useQuery<HealthBreakdownResults>({
       queryKey,

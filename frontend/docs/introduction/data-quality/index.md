@@ -58,14 +58,36 @@ At this point, data correctness is typically above 90%, continuously improving w
 
 We know that the data is not perfect (and probably never will be). There are too many moving parts in open source and too many weak control data sources. We therefore rely on the community to help us correct incorrect data.
 
-1. **Click "Report issue"** on any data point in Insights
+::: warning ⚠️ Note
+You must be signed in with your LFID account to report an issue.
+:::
+
+### Where to find "Report issue"
+
+- **Widget menu**: click the three-dot menu on any insight widget. The area and data insight are pre-filled automatically.
+- **Project header**: click the three-dot menu or the report-issue icon in the project header.
+- **Site footer**: a "Report issue" link is always available at the bottom of the page.
 
 ![Report Data Issue](../../images/report-data-issue.png)
 
-2. **Fill out the form** and click "Submit"
+### Filling out the form
+
+The form has the following fields:
+
+| Field | Required | Notes |
+|---|---|---|
+| Area | Yes | Which section of Insights the issue is in (pre-filled from widget menu; hidden for footer reports) |
+| Data insight | No | The specific widget or metric (pre-filled from widget menu; hidden for footer reports) |
+| Description | Yes | What you observed |
+| Steps to reproduce | Yes | How to see the issue |
+| Expected behaviour | Yes | What you expected to see instead |
+
+Click **"Report issue"** to submit.
 
 ![Report Data Issue Form](../../images/report-data-issue-form.png)
 
-3. **We'll review the issue** and get back to you (if you left us an email address)
+### What happens after you submit
+
+Your report opens a **public** GitHub issue on the `linuxfoundation/insights` repository tagged `needs-triage`. The success notification includes a "View issue" link so you can track its status. The LFX team is also notified internally.
 
 You can also contact us directly at [insights@linuxfoundation.org](mailto:insights@linuxfoundation.org).

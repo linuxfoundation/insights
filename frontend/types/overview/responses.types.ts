@@ -67,6 +67,8 @@ export interface HealthScoreV2Results {
   maintainerHealthScoreV2: number | null;
   securitySupplyChainScoreV2: number | null;
   developmentActivityScoreV2: number | null;
+  coveredCategoryCount: number | null;
+  healthMaxScore: number | null;
 }
 
 export type ImpactBreakdownBand = 'Top 1%' | 'Top 10%' | 'Top 25%' | 'Top 50%' | 'Bottom 50%';
@@ -105,9 +107,11 @@ export interface HealthBreakdownResults {
 
   // Security
   openVulnScore: number | null;
+  openVulnAvailable: boolean | null;
   openCriticals: number | null;
   openHighs: number | null;
   openModerates: number | null;
+  openUnknowns: number | null;
   scorecardScorePts: number | null;
   scorecardAvailable: boolean | null;
   scorecardScore: number | null;

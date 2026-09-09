@@ -29,7 +29,7 @@ const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const badgeKey = computed(() => route.query.badge as string | undefined);
 const projectSlug = computed(() => route.params.slug as string | undefined);
 
-defineOgImageComponent('project', {
+defineOgImage('Project', {
   projectName: project.value?.name || '',
   projectLogo: project.value?.logo || '',
   projectDescription: project.value?.description || '',

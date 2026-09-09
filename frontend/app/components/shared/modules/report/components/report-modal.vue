@@ -22,16 +22,11 @@ SPDX-License-Identifier: MIT
           @click="isModalOpen = false"
         />
       </div>
-      <h3 class="text-heading-3 font-secondary font-bold pb-1">Report issue</h3>
+      <h3 class="text-heading-3 font-secondary font-bold pb-1">Report issue on GitHub</h3>
+      <!-- prettier-ignore -->
       <p class="text-body-2 text-neutral-500">
-        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the currently open
-        <a
-          :href="links.issues"
-          target="_blank"
-          rel="noreferrer"
-          class="text-brand-500"
-          >Insights GitHub Issues</a
-        >.
+        Help us improve our data by reporting issues or bugs. Your report will be posted as a public GitHub issue,
+        visible to anyone. View currently open <a :href="links.issues" target="_blank" rel="noreferrer" class="text-brand-500">Insights GitHub Issues</a>.
       </p>
     </section>
 

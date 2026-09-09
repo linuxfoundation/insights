@@ -51,6 +51,9 @@ export const getLifecycleDescription = (
           : '';
       return `No maintainer activity in over 18 months.${lastCommitDetail}${cveDetail}`;
     }
+    case 'inert': {
+      return 'No commits or activity recorded in the past 18 months. The project appears inactive and may require maintenance attention.';
+    }
     case 'archived': {
       return 'The repository has been explicitly archived. No further updates are expected and the project is no longer accepting contributions.';
     }
@@ -64,10 +67,39 @@ export const getLifecycleDescription = (
 // Section 3: Health Score summary
 // ---------------------------------------------------------------------------
 
-const CATEGORY_LABEL: Record<'maintainer' | 'security' | 'development', string> = {
+type HealthCategoryKey = 'maintainer' | 'security' | 'development';
+
+const CATEGORY_LABEL: Record<HealthCategoryKey, string> = {
   maintainer: 'maintainer coverage',
   security: 'security posture',
   development: 'development cadence',
+};
+
+// Plain-name form for the redistribution clause, distinct from the lowercase CATEGORY_LABEL
+// used inline in strength/gap sentences.
+const CATEGORY_NAME: Record<HealthCategoryKey, string> = {
+  maintainer: 'Maintainer Health',
+  security: 'Security & Supply Chain',
+  development: 'Development Activity',
+};
+
+const capitalize = (value: string): string =>
+  value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : value;
+
+const joinWithAnd = (items: string[]): string => {
+  if (items.length === 0) return '';
+  if (items.length === 1) return items[0] as string;
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+};
+
+const buildRedistributionClause = (availableKeys: HealthCategoryKey[]): string => {
+  const allKeys: HealthCategoryKey[] = ['maintainer', 'security', 'development'];
+  const unavailable = allKeys.filter((key) => !availableKeys.includes(key));
+  if (unavailable.length === 0) return '';
+  const names = joinWithAnd(unavailable.map((key) => CATEGORY_NAME[key]));
+  const verb = unavailable.length === 1 ? 'is' : 'are';
+  return ` ${names} ${verb} unavailable, so weights were redistributed.`;
 };
 
 export const getHealthScoreDescription = (
@@ -79,33 +111,80 @@ export const getHealthScoreDescription = (
   if (healthLabel === null) {
     return 'No scoring data is available. This project has no indexed repositories or the connected platform has no supported data pipeline.';
   }
-  const categoryPercents = [
-    { key: 'maintainer' as const, percent: maintainerScore !== null ? maintainerScore / 40 : -1 },
-    { key: 'security' as const, percent: securityScore !== null ? securityScore / 35 : -1 },
-    {
-      key: 'development' as const,
-      percent: developmentScore !== null ? developmentScore / 25 : -1,
-    },
-  ].filter((c) => c.percent >= 0);
+  const categoryPercents = (
+    [
+      { key: 'maintainer', percent: maintainerScore !== null ? maintainerScore / 40 : -1 },
+      { key: 'security', percent: securityScore !== null ? securityScore / 35 : -1 },
+      { key: 'development', percent: developmentScore !== null ? developmentScore / 25 : -1 },
+    ] as { key: HealthCategoryKey; percent: number }[]
+  ).filter((c) => c.percent >= 0);
 
   if (categoryPercents.length === 0) {
     return `Overall project health is ${healthLabel}, based on maintainer activity, security posture, and development cadence.`;
   }
 
-  const strongest = categoryPercents.reduce((a, b) => (b.percent > a.percent ? b : a));
-  const weakest = categoryPercents.reduce((a, b) => (b.percent < a.percent ? b : a));
-  const strongLabel = CATEGORY_LABEL[strongest.key];
-  const weakLabel = CATEGORY_LABEL[weakest.key];
+  const availableKeys = categoryPercents.map((c) => c.key);
+  const redistributionClause = buildRedistributionClause(availableKeys);
 
-  if (healthLabel === 'excellent' || healthLabel === 'healthy') {
-    return strongest.key === weakest.key
-      ? `Strong ${strongLabel}, security practices, and development cadence across the board.`
-      : `Strong ${strongLabel}. ${weakLabel.charAt(0).toUpperCase() + weakLabel.slice(1)} is the remaining gap keeping the score from Excellent.`;
+  if (categoryPercents.length === 1) {
+    const only = categoryPercents[0] as { key: HealthCategoryKey; percent: number };
+    const label = CATEGORY_LABEL[only.key];
+    const strengthWord = only.percent >= 0.7 ? 'Strong' : only.percent >= 0.4 ? 'Middling' : 'Weak';
+    return `${strengthWord} ${label} is the only scored signal for this project.${redistributionClause}`;
   }
-  if (strongest.key === weakest.key) {
-    return `Overall project health is ${healthLabel}, based on maintainer activity, security posture, and development cadence.`;
+
+  const sorted = [...categoryPercents].sort((a, b) => b.percent - a.percent);
+  const strongest = sorted[0] as { key: HealthCategoryKey; percent: number };
+  const weakest = sorted[sorted.length - 1] as { key: HealthCategoryKey; percent: number };
+  const strengthLabels = sorted.slice(0, -1).map((c) => CATEGORY_LABEL[c.key]);
+  const strengthsText = joinWithAnd(strengthLabels);
+  const gapLabel = CATEGORY_LABEL[weakest.key];
+
+  if (strongest.percent === weakest.percent) {
+    const allLabels = joinWithAnd(sorted.map((c) => CATEGORY_LABEL[c.key]));
+    if (healthLabel === 'excellent' || healthLabel === 'healthy') {
+      return `Consistent ${allLabels} across the board.${redistributionClause || ' No single category stands out as a gap.'}`;
+    }
+    if (healthLabel === 'fair') {
+      return `${capitalize(allLabels)} are all middling, with no clear strength to lean on.${redistributionClause}`;
+    }
+    return `${capitalize(allLabels)} are all weak, with no clear strength to offset the risk.${redistributionClause}`;
   }
-  return `${weakLabel.charAt(0).toUpperCase() + weakLabel.slice(1)} is dragging the score down, despite stronger ${strongLabel}.`;
+
+  const strengthVerbHelp = strengthLabels.length === 1 ? 'helps' : 'help';
+  const strengthVerbBe = strengthLabels.length === 1 ? 'is' : 'are';
+  const strengthVerbShow = strengthLabels.length === 1 ? 'shows' : 'show';
+
+  let sentence1: string;
+  let sentence2: string;
+
+  switch (healthLabel) {
+    case 'excellent':
+      sentence1 = `Strong ${strengthsText}.`;
+      sentence2 = `${capitalize(gapLabel)} is the only remaining gap.`;
+      break;
+    case 'healthy':
+      sentence1 = `Solid ${strengthsText}.`;
+      sentence2 = `${capitalize(gapLabel)} keeps the score from reaching Excellent.`;
+      break;
+    case 'fair':
+      sentence1 = `${capitalize(gapLabel)} drags the score down.`;
+      sentence2 = `${capitalize(strengthsText)} ${strengthVerbHelp} keep it from falling further.`;
+      break;
+    case 'concerning':
+      sentence1 = `${capitalize(gapLabel)} is the lead risk.`;
+      sentence2 = `${capitalize(strengthsText)} ${strengthVerbBe} present but not enough to offset the structural risk.`;
+      break;
+    case 'critical':
+      sentence1 = `${capitalize(gapLabel)} is the primary crisis signal.`;
+      sentence2 = `${capitalize(strengthsText)} ${strengthVerbShow} little to offset it. Every health signal is at or near zero.`;
+      break;
+    default:
+      sentence1 = `Overall project health is ${healthLabel}.`;
+      sentence2 = `${capitalize(gapLabel)} is the weakest area.`;
+  }
+
+  return `${sentence1} ${sentence2}${redistributionClause}`;
 };
 
 // ---------------------------------------------------------------------------
@@ -205,7 +284,7 @@ const getSecurityDescription = (band: CategoryBand, signals: HealthBreakdownResu
 const getDevelopmentDescription = (band: CategoryBand, signals: HealthBreakdownResults): string => {
   if (band === 'success') {
     const releaseDetail =
-      signals.daysSinceLatest !== null
+      signals.daysSinceLatest !== null && signals.daysSinceLatest >= 0
         ? `Active commit stream, with the last release ${Math.round(signals.daysSinceLatest)} days ago.`
         : 'Active commit stream and a healthy release cadence.';
     return `${releaseDetail} Issue triage is keeping pace with incoming reports.`;
@@ -256,14 +335,15 @@ const getCategoryUnavailableDescription = (
   }
   if (category === 'security') {
     const availableSignals: string[] = [];
+    if (signals?.openVulnAvailable) availableSignals.push('open vulnerability data');
     if (signals?.scorecardAvailable) availableSignals.push('OpenSSF Scorecard');
     if (signals?.securityPracticesAvailable) availableSignals.push('security practices');
     if (signals?.dependencyHealthAvailable) availableSignals.push('dependency health');
     const reason = signals?.isGerrit ? 'Gerrit-hosted projects' : 'this repository type';
     const namedAvailable =
       availableSignals.length > 0
-        ? `Only open vulnerability data and ${availableSignals.join(', ')} ${availableSignals.length === 1 ? 'is' : 'are'} available for ${reason}.`
-        : `Only open vulnerability data is available for ${reason}.`;
+        ? `Only ${availableSignals.join(', ')} ${availableSignals.length === 1 ? 'is' : 'are'} available for ${reason}.`
+        : `No security signals are available for ${reason}.`;
     return `${namedAvailable} The category has been dropped from the Health Score composite.`;
   }
   const availableSignals: string[] = [];
@@ -307,61 +387,73 @@ export const getResponsivenessRow = (signals: HealthBreakdownResults): SignalRow
       description: blockedSignalDescription('Maintainer responsiveness', signals),
     };
   }
-  if (signals.medianIssueResponseS === null) {
+  if (signals.responsivenessScore === null) {
     return {
       status: 'no-data',
       description: 'No issue or PR response data available for this project.',
     };
   }
-  const days = Math.round(signals.medianIssueResponseS / 86400);
-  const responseText = formatDays(signals.medianIssueResponseS);
-  if (days < 7) {
+  if (signals.medianIssueResponseS === null) {
     return {
-      status: 'positive',
-      description: `Median response time is ${responseText}, well within a week.`,
+      status: 'negative',
+      description:
+        'No PRs or issues were opened in the review window, so response time could not be measured.',
     };
   }
-  if (days < 30) {
+  const responseText = formatDays(signals.medianIssueResponseS);
+  if (signals.responsivenessScore >= 10) {
+    return {
+      status: 'positive',
+      description: `Median response time is ${responseText}.`,
+    };
+  }
+  if (signals.responsivenessScore >= 5) {
     return { status: 'warning', description: `Median response time is ${responseText}.` };
   }
   return {
     status: 'negative',
-    description: `Median response time is ${responseText}, well over a month.`,
+    description: `Median response time is ${responseText}, but most repositories have response times over 90 days.`,
   };
 };
 
 export const getBusFactorRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.busFactorAvailable) {
+  if (!signals.busFactorAvailable || signals.busFactorScore === null) {
     return { status: 'no-data', description: blockedSignalDescription('Bus factor', signals) };
   }
   const count = signals.busFactorCount ?? 0;
-  if (count >= 3) {
+  if (signals.busFactorScore >= 7) {
     return {
       status: 'positive',
       description: `${count} active maintainers currently have merge rights.`,
     };
   }
-  if (count >= 1) {
+  if (signals.busFactorScore >= 3) {
     return {
       status: 'warning',
       description: `Only ${count} active maintainer${count === 1 ? '' : 's'} currently ${count === 1 ? 'has' : 'have'} merge rights.`,
     };
   }
-  return { status: 'negative', description: 'No active maintainers with merge rights were found.' };
+  return {
+    status: 'negative',
+    description:
+      count > 0
+        ? `${count} active maintainer${count === 1 ? '' : 's'} with merge rights, but most repositories have no active maintainer.`
+        : 'No active maintainers with merge rights were found.',
+  };
 };
 
 export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.orgDiversityAvailable) {
+  if (!signals.orgDiversityAvailable || signals.orgDiversityScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Organization diversity', signals),
     };
   }
   const count = signals.orgCount ?? 0;
-  if (count >= 3) {
+  if (signals.orgDiversityScore >= 4) {
     return { status: 'positive', description: `Contributors span ${count} organizations.` };
   }
-  if (count >= 1) {
+  if (signals.orgDiversityScore >= 2) {
     return {
       status: 'warning',
       description: `Contributors come from ${count} organization${count === 1 ? '' : 's'} only.`,
@@ -369,16 +461,26 @@ export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow =
   }
   return {
     status: 'negative',
-    description: 'No organization affiliation data is available for contributors.',
+    description:
+      count > 0
+        ? `Contributors span ${count} organization${count === 1 ? '' : 's'}, but most repositories lack organizational diversity.`
+        : 'No organization affiliation data is available for contributors.',
   };
 };
 
 // --- Security signals ---
 
 export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
+  if (!signals.openVulnAvailable || signals.openVulnScore === null) {
+    return {
+      status: 'no-data',
+      description: blockedSignalDescription('Open vulnerabilities', signals),
+    };
+  }
   const criticals = signals.openCriticals ?? 0;
   const highs = signals.openHighs ?? 0;
   const moderates = signals.openModerates ?? 0;
+  const unknowns = signals.openUnknowns ?? 0;
   if (criticals + highs > 0) {
     return {
       status: 'negative',
@@ -388,34 +490,40 @@ export const getOpenVulnRow = (signals: HealthBreakdownResults): SignalRow => {
   if (moderates > 0) {
     return {
       status: 'warning',
-      description: `${moderates} open medium or low severity vulnerabilit${moderates === 1 ? 'y' : 'ies'}, no critical or high issues.`,
+      description: `${moderates} open medium/low severity vulnerabilit${moderates === 1 ? 'y' : 'ies'}, no critical or high.`,
+    };
+  }
+  if (unknowns > 0) {
+    return {
+      status: 'warning',
+      description: `${unknowns} open vulnerabilit${unknowns === 1 ? 'y' : 'ies'} with unscored severity (e.g. unmaintained dependencies).`,
     };
   }
   return { status: 'positive', description: 'No open vulnerabilities of any severity.' };
 };
 
 export const getScorecardRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.scorecardAvailable) {
+  if (!signals.scorecardAvailable || signals.scorecardScorePts === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('OpenSSF Scorecard', signals),
     };
   }
-  const score = signals.scorecardScore ?? 0;
-  if (score >= 7) {
-    return { status: 'positive', description: `OpenSSF Scorecard is ${score.toFixed(1)}/10.` };
+  const rawScore = signals.scorecardScore ?? 0;
+  if (signals.scorecardScorePts >= 7) {
+    return { status: 'positive', description: `OpenSSF Scorecard is ${rawScore.toFixed(1)}/10.` };
   }
-  if (score >= 4) {
+  if (signals.scorecardScorePts >= 4) {
     return {
       status: 'warning',
-      description: `OpenSSF Scorecard is ${score.toFixed(1)}/10, below the recommended baseline.`,
+      description: `OpenSSF Scorecard is ${rawScore.toFixed(1)}/10, below the recommended baseline.`,
     };
   }
-  return { status: 'negative', description: `OpenSSF Scorecard is ${score.toFixed(1)}/10.` };
+  return { status: 'negative', description: `OpenSSF Scorecard is ${rawScore.toFixed(1)}/10.` };
 };
 
 export const getSecurityPracticesRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.securityPracticesAvailable) {
+  if (!signals.securityPracticesAvailable || signals.securityPracticesScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Security practices', signals),
@@ -428,13 +536,13 @@ export const getSecurityPracticesRow = (signals: HealthBreakdownResults): Signal
     signals.branchProtectionRequiresStatusChecks,
   ];
   const enabledCount = practices.filter((p) => Boolean(p)).length;
-  if (enabledCount >= 3) {
+  if (signals.securityPracticesScore >= 6) {
     return {
       status: 'positive',
       description: `${enabledCount} of 4 tracked security practices are in place.`,
     };
   }
-  if (enabledCount >= 1) {
+  if (signals.securityPracticesScore >= 2) {
     const missing: string[] = [];
     if (!signals.securityPolicyEnabled) missing.push('no SECURITY.md');
     if (!signals.branchProtectionEnabled) missing.push('no branch protection');
@@ -443,24 +551,30 @@ export const getSecurityPracticesRow = (signals: HealthBreakdownResults): Signal
       description: `${enabledCount} of 4 tracked security practices are in place, ${missing.join(', ') || 'with gaps remaining'}.`,
     };
   }
-  return { status: 'negative', description: 'No security practices are in place.' };
+  return {
+    status: 'negative',
+    description:
+      enabledCount > 0
+        ? `${enabledCount} of 4 tracked security practices are in place, but most repositories have none.`
+        : 'No security practices are in place.',
+  };
 };
 
 export const getDependencyHealthRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.dependencyHealthAvailable) {
+  if (!signals.dependencyHealthAvailable || signals.dependencyHealthScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Dependency health', signals),
     };
   }
   const vulnerable = signals.vulnerableDeps ?? 0;
-  if (vulnerable === 0) {
+  if (signals.dependencyHealthScore >= 5) {
     return {
       status: 'positive',
       description: 'All dependencies are clean of known vulnerabilities.',
     };
   }
-  if (vulnerable <= 3) {
+  if (signals.dependencyHealthScore >= 3) {
     return {
       status: 'warning',
       description: `${vulnerable} dependenc${vulnerable === 1 ? 'y has' : 'ies have'} a known vulnerability.`,
@@ -479,40 +593,53 @@ export const getReleaseCadenceRow = (signals: HealthBreakdownResults): SignalRow
     return { status: 'no-data', description: blockedSignalDescription('Release cadence', signals) };
   }
   const days = signals.daysSinceLatest;
-  if (days === null) {
+  if (days === null || days < 0 || signals.releaseCadenceScore === null) {
     return { status: 'no-data', description: 'No release history is available for this project.' };
   }
-  if (days <= 180) {
+  if (signals.releaseCadenceScore >= 8) {
     return { status: 'positive', description: `Last release was ${Math.round(days)} days ago.` };
   }
-  if (days <= 730) {
+  if (signals.releaseCadenceScore >= 2) {
     return {
       status: 'warning',
-      description: `Last release was ${Math.round(days)} days ago, longer than six months.`,
+      description: `Last release was ${Math.round(days)} days ago.`,
     };
   }
-  return { status: 'negative', description: `No release in over ${Math.floor(days / 365)} years.` };
+  const years = Math.floor(days / 365);
+  return {
+    status: 'negative',
+    description:
+      years > 0
+        ? `No release in over ${years} year${years === 1 ? '' : 's'}.`
+        : 'No recent release across most repositories.',
+  };
 };
 
 export const getCommitActivityRow = (signals: HealthBreakdownResults): SignalRow => {
   const commits = signals.commitsLast6m;
-  if (commits === null) {
+  if (commits === null || signals.commitActivityScore === null) {
     return { status: 'no-data', description: 'No commit history is available for this project.' };
   }
-  if (commits > 20) {
+  if (signals.commitActivityScore >= 5) {
     return { status: 'positive', description: `${commits} commits in the past six months.` };
   }
-  if (commits > 0) {
+  if (signals.commitActivityScore >= 3) {
     return {
       status: 'warning',
       description: `${commits} commit${commits === 1 ? '' : 's'} in the past six months, a slow pace.`,
     };
   }
-  return { status: 'negative', description: 'No commits in the past six months.' };
+  return {
+    status: 'negative',
+    description:
+      commits > 0
+        ? `${commits} commit${commits === 1 ? '' : 's'} in the past six months, but most repositories show little or no activity.`
+        : 'No commits in the past six months.',
+  };
 };
 
 export const getIssueResolutionRow = (signals: HealthBreakdownResults): SignalRow => {
-  if (!signals.issueResolutionAvailable) {
+  if (!signals.issueResolutionAvailable || signals.issueResolutionScore === null) {
     return {
       status: 'no-data',
       description: blockedSignalDescription('Issue resolution', signals),
@@ -520,25 +647,17 @@ export const getIssueResolutionRow = (signals: HealthBreakdownResults): SignalRo
   }
   const closed = signals.closed12m ?? 0;
   const opened = signals.opened12m ?? 0;
-  if (opened === 0) {
+  if (opened === 0 && closed === 0) {
     return { status: 'positive', description: 'No new issues were opened in the past year.' };
   }
-  if (closed >= opened) {
-    return {
-      status: 'positive',
-      description: `${closed} issues closed against ${opened} opened in the past year, closing faster than opening.`,
-    };
+  const countText = `${closed} issue${closed === 1 ? '' : 's'} closed against ${opened} opened in the past year`;
+  if (signals.issueResolutionScore >= 7) {
+    return { status: 'positive', description: `${countText}.` };
   }
-  if (closed >= opened * 0.5) {
-    return {
-      status: 'warning',
-      description: `${closed} issues closed against ${opened} opened in the past year, a growing backlog.`,
-    };
+  if (signals.issueResolutionScore >= 4) {
+    return { status: 'warning', description: `${countText}.` };
   }
-  return {
-    status: 'negative',
-    description: `${closed} issues closed against ${opened} opened in the past year, the backlog is growing quickly.`,
-  };
+  return { status: 'negative', description: `${countText}.` };
 };
 
 export const getPrMergeRow = (signals: HealthBreakdownResults): SignalRow => {
@@ -548,29 +667,20 @@ export const getPrMergeRow = (signals: HealthBreakdownResults): SignalRow => {
   const merged = signals.merged12m ?? 0;
   const closedUnmerged = signals.closedUnmerged12m ?? 0;
   const total = merged + closedUnmerged;
-  if (total === 0) {
+  if (total === 0 || signals.prMergeScore === null) {
     return {
       status: 'no-data',
       description: 'No external pull requests were received in the past year.',
     };
   }
-  const mergeRate = merged / total;
-  if (mergeRate > 0.5) {
-    return {
-      status: 'positive',
-      description: `${merged} of ${total} pull requests were merged in the past year.`,
-    };
+  const mergeText = `${merged} of ${total} pull request${total === 1 ? '' : 's'} merged in the past year`;
+  if (signals.prMergeScore >= 5) {
+    return { status: 'positive', description: `${mergeText}.` };
   }
-  if (mergeRate > 0) {
-    return {
-      status: 'warning',
-      description: `${merged} of ${total} pull requests were merged in the past year, under half.`,
-    };
+  if (signals.prMergeScore >= 2) {
+    return { status: 'warning', description: `${mergeText}.` };
   }
-  return {
-    status: 'negative',
-    description: `None of ${total} pull requests were merged in the past year.`,
-  };
+  return { status: 'negative', description: `${mergeText}.` };
 };
 
 // ---------------------------------------------------------------------------
@@ -617,7 +727,7 @@ export const getImpactSummaryDescription = (
   transitiveDependents?: number | null,
 ): string | null => {
   if (impactLabel === null) {
-    return 'This project publishes no tracked packages. Impact cannot be computed without a package registry presence.';
+    return 'No tracked packages are published, so impact cannot be computed without a package registry presence.';
   }
   const dependentsDetail =
     transitiveDependents !== null && transitiveDependents !== undefined
@@ -627,6 +737,8 @@ export const getImpactSummaryDescription = (
     return `Near-total blast radius across the dependency graph.${dependentsDetail}`;
   if (impactLabel === 'major')
     return `Large blast radius, depended on by many high-importance projects.${dependentsDetail}`;
+  if (impactLabel === 'significant')
+    return `Sizable blast radius, meaningfully depended on across the ecosystem without being critical-path for most consumers.${dependentsDetail}`;
   if (impactLabel === 'moderate')
     return `Moderate blast radius within its dependency graph.${dependentsDetail}`;
   return `Narrow blast radius, depended on by a small set of projects with limited transitive reach.${dependentsDetail}`;
