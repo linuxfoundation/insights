@@ -9,12 +9,17 @@
 
 import { fetchHealthScoreCoverageSignalScores } from '~~/server/data/tinybird/report/health-score-coverage-signal-scores';
 import type { HealthScoreCoverageSignalScoresData } from '~~/types/report/health-score-coverage-signal-scores.types';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageSignalScoresData> => {
   try {
     return await fetchHealthScoreCoverageSignalScores();
   } catch (error: unknown) {
-    console.error('[health-score-coverage/signal-scores] error:', error);
+    logError(
+      'health-score-coverage/signal-scores',
+      'Failed to fetch health score coverage signal-scores',
+      error,
+    );
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }

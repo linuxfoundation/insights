@@ -72,7 +72,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { fetchHealthScoreCoverageCategoryMaximumQuery } from '../services/category-maximum.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
@@ -80,7 +80,11 @@ import LfxTable from '~/components/uikit/table/table.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageCategoryMaximumCount } from '~~/types/report/health-score-coverage-category-maximum.types';
 
-const { data, isLoading } = fetchHealthScoreCoverageCategoryMaximumQuery();
+const { data, isLoading, suspense } = fetchHealthScoreCoverageCategoryMaximumQuery();
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const categories = computed<HealthScoreCoverageCategoryMaximumCount[]>(() => data.value?.categories ?? []);
 const reposTracked = computed(() => data.value?.reposTracked ?? 0);

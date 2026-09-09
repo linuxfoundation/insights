@@ -11,12 +11,17 @@
 
 import { fetchHealthScoreCoverageGithubSecurity } from '~~/server/data/tinybird/report/health-score-coverage-github-security';
 import type { HealthScoreCoverageGithubSecurityData } from '~~/types/report/health-score-coverage-github-security.types';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageGithubSecurityData> => {
   try {
     return await fetchHealthScoreCoverageGithubSecurity();
   } catch (error: unknown) {
-    console.error('[health-score-coverage/github-security] error:', error);
+    logError(
+      'health-score-coverage/github-security',
+      'Failed to fetch health score coverage github-security',
+      error,
+    );
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }
