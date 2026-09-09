@@ -230,8 +230,9 @@ const description = computed(() => {
   if (!desc) {
     const name = data.value?.name;
     if (!name) return '';
-    const projectCount = data.value?.projectCount;
-    const scope = projectCount ? `${projectCount} open source projects` : 'open source projects';
+    // Collections can contain standalone repositories too - the UI counts both as the collection total
+    const totalCount = (data.value?.projectCount ?? 0) + (data.value?.repositoryCount ?? 0);
+    const scope = totalCount > 0 ? `${totalCount} open source projects` : 'open source projects';
     return `Explore the ${name} collection on LFX Insights: health, contributor, and security metrics for ${scope}.`;
   }
 

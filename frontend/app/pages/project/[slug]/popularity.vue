@@ -16,7 +16,6 @@ import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
 
 const route = useRoute();
-const config = useRuntimeConfig();
 const { project } = storeToRefs(useProjectStore());
 
 const widget = route.query?.widget;
@@ -36,7 +35,6 @@ const description = computed(() =>
 );
 
 const imageAlt = computed(() => `${project.value?.name} Popularity Insights - LFX Insights`);
-const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
 const projectName = computed(() => project.value?.name || '');
 const projectDescription = computed(() => project.value?.description || '');
@@ -53,7 +51,6 @@ useSeoMeta({
   title,
   description,
   ogType: 'website',
-  ogUrl: url,
   ogTitle: title,
   ogDescription: description,
   ogImageAlt: imageAlt,
