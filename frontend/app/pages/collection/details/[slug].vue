@@ -223,11 +223,17 @@ const handleCollectionUpdated = (collection: Collection) => {
   queryClient.setQueryData(queryKey.value, collection);
 };
 
-const title = computed(() => `${data.value?.name || 'Collection'} Insights`);
+const title = computed(() => `${data.value?.name || 'Collection'} – Open Source Project Collection | LFX Insights`);
 
 const description = computed(() => {
   const desc = data.value?.description || '';
-  if (!desc) return '';
+  if (!desc) {
+    const name = data.value?.name;
+    if (!name) return '';
+    const projectCount = data.value?.projectCount;
+    const scope = projectCount ? `${projectCount} open source projects` : 'open source projects';
+    return `Explore the ${name} collection on LFX Insights: health, contributor, and security metrics for ${scope}.`;
+  }
 
   const sentences = desc.match(/[^.!?]+[.!?]+/g) || [desc];
 

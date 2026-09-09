@@ -16,7 +16,9 @@ const route = useRoute();
 const { project } = storeToRefs(useProjectStore());
 const config = useRuntimeConfig();
 
-const title = computed(() => (project.value ? `${project.value.name} Insights` : 'LFX Insights'));
+const title = computed(() =>
+  project.value ? `${project.value.name} – Health Score, Contributors & Security | LFX Insights` : 'LFX Insights',
+);
 const description = computed(() =>
   project.value
     ? project.value.description || `Explore ${project.value.name} insights`

@@ -8,10 +8,34 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRoute, useRequestFetch } from 'nuxt/app';
+import { useQuery } from '@tanstack/vue-query';
+import type { Collection } from '~~/types/collection';
 import LfxCollectionPopularityView from '~/components/modules/collection/views/collection-popularity.vue';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 
-const title = computed(() => 'Collection Popularity Insights');
-const description = computed(() => 'See stars and forks aggregated across every project in this collection.');
+const route = useRoute();
+const { slug } = route.params;
+const requestFetch = useRequestFetch();
+
+// Same query key as the parent [slug].vue, so this resolves from the cache without refetching
+const { data: collection } = useQuery<Collection>({
+  queryKey: computed(() => [TanstackKey.COLLECTION, slug]),
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string, requestFetch),
+  retry: false,
+});
+
+const title = computed(() =>
+  collection.value?.name
+    ? `${collection.value.name} Popularity – Collection Insights | LFX Insights`
+    : 'Collection Popularity Insights',
+);
+const description = computed(() =>
+  collection.value?.name
+    ? `See stars and forks aggregated across every project in the ${collection.value.name} collection.`
+    : 'See stars and forks aggregated across every project in this collection.',
+);
 
 useSeoMeta({
   title,

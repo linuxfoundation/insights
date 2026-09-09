@@ -23,14 +23,17 @@ const { project } = storeToRefs(useProjectStore());
 const widget = route.query?.widget;
 
 const title = computed(() => {
+  const name = project.value?.name;
+  if (!name) return 'LFX Insights';
   const widgetName =
     widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Development Insights';
-  return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Development Insights`;
+  return widget ? `${name} ${widgetName} | LFX Insights` : `${name} Development Activity | LFX Insights`;
 });
-const description = computed(
-  () =>
-    `Track ${project.value?.name} development activity, ` +
-    `including commits, releases, pull requests, and issues over time.`,
+const description = computed(() =>
+  project.value?.name
+    ? `Track ${project.value.name} development activity, ` +
+      `including commits, releases, pull requests, and issues over time.`
+    : 'Track development activity, including commits, releases, pull requests, and issues over time.',
 );
 
 const imageAlt = computed(() => `${project.value?.name} Development Insights - LFX Insights`);

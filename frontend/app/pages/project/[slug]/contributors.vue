@@ -22,14 +22,17 @@ const { project } = storeToRefs(useProjectStore());
 const widget = route.query?.widget;
 
 const title = computed(() => {
+  const name = project.value?.name;
+  if (!name) return 'LFX Insights';
   const widgetName =
     widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Contributors Insights';
-  return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Contributors Insights`;
+  return widget ? `${name} ${widgetName} | LFX Insights` : `${name} Contributors & Organizations | LFX Insights`;
 });
-const description = computed(
-  () =>
-    `See who contributes to ${project.value?.name}, ` +
-    `with insights on maintainers, top contributors, and organizations in open source.`,
+const description = computed(() =>
+  project.value?.name
+    ? `See who contributes to ${project.value.name}, ` +
+      `with insights on maintainers, top contributors, and organizations in open source.`
+    : 'See who contributes to this project, with insights on maintainers, top contributors, and organizations.',
 );
 
 const imageAlt = computed(() => `${project.value?.name} Contributors Insights - LFX Insights`);

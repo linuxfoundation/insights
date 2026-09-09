@@ -22,14 +22,17 @@ const { project } = storeToRefs(useProjectStore());
 const widget = route.query?.widget;
 
 const title = computed(() => {
+  const name = project.value?.name;
+  if (!name) return 'LFX Insights';
   const widgetName =
     widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Popularity Insights';
-  return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Popularity Insights`;
+  return widget ? `${name} ${widgetName} | LFX Insights` : `${name} Popularity & Adoption | LFX Insights`;
 });
-const description = computed(
-  () =>
-    `Explore ${project.value?.name} popularity with data on stars, forks, watchers, ` +
-    `and adoption across the open source ecosystem.`,
+const description = computed(() =>
+  project.value?.name
+    ? `Explore ${project.value.name} popularity with data on stars, forks, watchers, ` +
+      `and adoption across the open source ecosystem.`
+    : 'Explore project popularity with data on stars, forks, watchers, and adoption across the open source ecosystem.',
 );
 
 const imageAlt = computed(() => `${project.value?.name} Popularity Insights - LFX Insights`);
