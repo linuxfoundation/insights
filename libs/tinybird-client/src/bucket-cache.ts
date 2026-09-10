@@ -124,6 +124,12 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
         if (currentGeneration(cacheKey) === generation) {
           try {
             await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+            // A concurrent clearBucketCache()/clearAllBucketCaches() may have bumped the
+            // generation while the write above was in flight; remove the just-written
+            // value so it doesn't outlive the invalidation that raced it.
+            if (currentGeneration(cacheKey) !== generation) {
+              await storage.removeItem(cacheKey);
+            }
           } catch (err) {
             logger.error(`Failed to cache bucketId for project ${projectValue}: ${err}`);
           }
