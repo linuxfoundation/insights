@@ -3,23 +3,24 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { TinybirdResponse } from './tinybird';
 
-// The `redis` storage mount points at a real Redis driver (see setup/caching.ts), which isn't
-// reachable in tests. Replace `#imports` with an in-memory stand-in so `useStorage('redis')`
-// resolves to something the write-coordination tests below can control deterministically.
-vi.mock('#imports', () => {
-  const store = new Map<string, unknown>();
-  const storage = {
-    getItem: async (key: string) => (store.has(key) ? store.get(key) : null),
-    setItem: async (key: string, value: unknown) => {
-      store.set(key, value);
-    },
-    removeItem: async (key: string) => {
-      store.delete(key);
-    },
-    getKeys: async (prefix: string) => [...store.keys()].filter((key) => key.startsWith(prefix)),
-  };
-  return { useStorage: () => storage };
-});
+// `useStorage` is auto-imported by Nitro in real server code but isn't injected into test
+// files, and the `redis` mount it would otherwise resolve to points at a real Redis driver
+// (see setup/caching.ts) that isn't reachable in tests. Stub it globally (same convention as
+// `server/middleware/rate-limiter.test.ts`) with an in-memory stand-in so the write-coordination
+// tests below can control timing deterministically.
+const mockStorageStore = new Map<string, unknown>();
+const mockStorage = {
+  getItem: async (key: string) => (mockStorageStore.has(key) ? mockStorageStore.get(key) : null),
+  setItem: async (key: string, value: unknown) => {
+    mockStorageStore.set(key, value);
+  },
+  removeItem: async (key: string) => {
+    mockStorageStore.delete(key);
+  },
+  getKeys: async (prefix: string) =>
+    [...mockStorageStore.keys()].filter((key) => key.startsWith(prefix)),
+};
+global.useStorage = vi.fn(() => mockStorage);
 
 function mockResponse<T>(data: T): TinybirdResponse<T> {
   return {
@@ -103,8 +104,7 @@ describe('clearBucketCache / clearAllBucketCaches — write coordination', () =>
   it('clearBucketCache waits for an already-started project write so no stale value can be read once it resolves', async () => {
     process.env.NUXT_REDIS_URL = 'redis://localhost:6379';
     const { getBucketIdForProject, clearBucketCache } = await import('./bucket-cache');
-    const { useStorage } = await import('#imports');
-    const storage = useStorage('redis');
+    const storage = mockStorage;
 
     let setItemStarted!: () => void;
     const setItemStartedPromise = new Promise<void>((resolve) => {
@@ -151,8 +151,7 @@ describe('clearBucketCache / clearAllBucketCaches — write coordination', () =>
   it('clearAllBucketCaches waits for an already-started collection write before clearing', async () => {
     process.env.NUXT_REDIS_URL = 'redis://localhost:6379';
     const { getBucketIdForCollection, clearAllBucketCaches } = await import('./bucket-cache');
-    const { useStorage } = await import('#imports');
-    const storage = useStorage('redis');
+    const storage = mockStorage;
 
     let setItemStarted!: () => void;
     const setItemStartedPromise = new Promise<void>((resolve) => {
