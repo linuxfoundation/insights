@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { TinybirdInvalidResponseError } from '@lfx-insights/tinybird-client';
 import type { TinybirdResponse } from './tinybird';
 
 /**
@@ -116,6 +117,12 @@ export async function getBucketIdForProject(
         try {
           const storage = useStorage('redis');
           await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+          // A concurrent clearBucketCache() may have bumped the generation while the
+          // write above was in flight; remove the just-written value so it doesn't
+          // outlive the invalidation that raced it.
+          if (currentGeneration(cacheKey) !== generation) {
+            await storage.removeItem(cacheKey);
+          }
         } catch (cacheError) {
           console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
         }
@@ -156,8 +163,15 @@ async function fetchBucketIdFromTinybird(
     project: projectValue,
   });
 
-  // Validate response structure
-  if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
+  // A missing or non-array `data` is a malformed upstream response, not "not found" -
+  // throw so it isn't masked as a 404 by callers.
+  if (!response?.data || !Array.isArray(response.data)) {
+    throw new TinybirdInvalidResponseError(
+      `Malformed project_buckets response for project ${projectValue}`,
+    );
+  }
+
+  if (response.data.length === 0) {
     console.warn(
       JSON.stringify({
         message: 'tinybird_bucket_not_found',
@@ -171,15 +185,9 @@ async function fetchBucketIdFromTinybird(
   const bucketId = response.data[0]?.bucketId;
 
   if (typeof bucketId !== 'number') {
-    console.warn(
-      JSON.stringify({
-        message: 'tinybird_bucket_invalid_type',
-        project: projectValue,
-        bucketIdType: typeof bucketId,
-        timestamp: new Date().toISOString(),
-      }),
+    throw new TinybirdInvalidResponseError(
+      `Malformed bucketId (type ${typeof bucketId}) for project ${projectValue}`,
     );
-    return null;
   }
 
   return bucketId;
@@ -243,6 +251,12 @@ export async function getBucketIdForCollection(
         try {
           const storage = useStorage('redis');
           await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+          // A concurrent clearBucketCache()/clearAllBucketCaches() may have bumped the
+          // generation while the write above was in flight; remove the just-written
+          // value so it doesn't outlive the invalidation that raced it.
+          if (currentGeneration(cacheKey) !== generation) {
+            await storage.removeItem(cacheKey);
+          }
         } catch (cacheError) {
           console.error(`Failed to cache bucketId for collection ${slugValue}:`, cacheError);
         }
@@ -276,7 +290,15 @@ async function fetchBucketIdForCollectionFromTinybird(
     collectionSlug: slugValue,
   });
 
-  if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
+  // A missing or non-array `data` is a malformed upstream response, not "not found" -
+  // throw so it isn't masked as a silent fallback-to-union-pipe by callers.
+  if (!response?.data || !Array.isArray(response.data)) {
+    throw new TinybirdInvalidResponseError(
+      `Malformed collection_buckets response for collection ${slugValue}`,
+    );
+  }
+
+  if (response.data.length === 0) {
     console.warn(
       JSON.stringify({
         message: 'tinybird_bucket_not_found',
@@ -290,15 +312,9 @@ async function fetchBucketIdForCollectionFromTinybird(
   const bucketId = response.data[0]?.bucketId;
 
   if (typeof bucketId !== 'number') {
-    console.warn(
-      JSON.stringify({
-        message: 'tinybird_bucket_invalid_type',
-        collectionSlug: slugValue,
-        bucketIdType: typeof bucketId,
-        timestamp: new Date().toISOString(),
-      }),
+    throw new TinybirdInvalidResponseError(
+      `Malformed bucketId (type ${typeof bucketId}) for collection ${slugValue}`,
     );
-    return null;
   }
 
   return bucketId;
