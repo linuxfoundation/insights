@@ -24,6 +24,9 @@ jobs:
       - name: Build workspace libs
         run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
 
+      - name: Run tinybird-client tests
+        run: pnpm --filter @lfx-insights/tinybird-client test
+
       - name: Run tests
         env:
           NUXT_TINYBIRD_BASE_URL: https://tb.lf.org/
