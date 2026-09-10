@@ -50,7 +50,13 @@ SPDX-License-Identifier: MIT
           :key="group.categoryKey"
           class="flex flex-col gap-1"
         >
-          <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">{{ group.label }}</p>
+          <p class="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+            <i
+              class="inline-block w-2 h-2 rounded-full"
+              :style="{ background: group.color }"
+            />
+            {{ group.label }}
+          </p>
           <div :style="{ height: `${group.signals.length * 64 + 24}px` }">
             <client-only>
               <lfx-chart
@@ -63,11 +69,8 @@ SPDX-License-Identifier: MIT
 
         <div class="flex flex-wrap gap-x-6 gap-y-1 text-body-2 text-neutral-500">
           <span class="flex items-center gap-2">
-            <i
-              class="inline-block w-3 h-3 rounded-sm"
-              :style="{ background: lfxColors.brand[500] }"
-            />
-            Linux Foundation projects ({{ formatNumber(lfReposTracked) }} repositories)
+            Linux Foundation projects ({{ formatNumber(lfReposTracked) }} repositories) &mdash; colored by category
+            above
           </span>
           <span class="flex items-center gap-2">
             <i
@@ -121,6 +124,13 @@ const CATEGORY_LABELS: Record<string, string> = {
   securitySupplyChain: 'Security & supply chain',
   developmentActivity: 'Development activity',
 };
+// One distinct color per category for the "Linux Foundation projects" bars (IN-1304 item 11) -
+// "Other tracked projects" stays neutral[400] across all three, unchanged.
+const CATEGORY_COLORS: Record<string, string> = {
+  maintainerHealth: lfxColors.brand[500],
+  securitySupplyChain: lfxColors.violet[500],
+  developmentActivity: lfxColors.positive[500],
+};
 const CATEGORY_ORDER = ['maintainerHealth', 'securitySupplyChain', 'developmentActivity'];
 
 const { data, isLoading, suspense } = fetchHealthScoreCoverageSignalAvailabilityLfQuery();
@@ -140,6 +150,7 @@ const round1 = (value: number): number => Math.round(value * 10) / 10;
 interface CategoryGroup {
   categoryKey: string;
   label: string;
+  color: string;
   signals: HealthScoreCoverageSignalAvailabilityLfSignal[];
   chartConfig: ECOption;
 }
@@ -149,7 +160,10 @@ interface CategoryGroup {
 // categories and inline group headers echarts has no native support for. Inline here rather than
 // a separate chart-config module - `pnpm tsc-check` doesn't parse `.vue` files, which broke a
 // prior widget's standalone module that imported a type re-exported only from a `.vue` file.
-const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalAvailabilityLfSignal[]): ECOption => {
+const buildCategoryChartConfig = (
+  categorySignals: HealthScoreCoverageSignalAvailabilityLfSignal[],
+  lfColor: string,
+): ECOption => {
   const categories = categorySignals.map((signal) => displayLabel(signal.signalKey));
   const lfValues = categorySignals.map((signal) => round1(signal.lf.availablePct));
   const otherValues = categorySignals.map((signal) => round1(signal.other.availablePct));
@@ -213,7 +227,7 @@ const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalAvai
         data: lfValues,
         barMaxWidth: 8,
         itemStyle: {
-          color: lfxColors.brand[500],
+          color: lfColor,
           borderRadius: [10, 10, 10, 10],
         },
       },
@@ -236,12 +250,14 @@ const categoryGroups = computed(() =>
     const categorySignals = signals.value
       .filter((signal) => signal.categoryKey === categoryKey)
       .sort((a, b) => b.lf.availablePct - a.lf.availablePct);
+    const color = CATEGORY_COLORS[categoryKey] ?? lfxColors.brand[500];
 
     return {
       categoryKey,
       label: CATEGORY_LABELS[categoryKey] ?? categoryKey,
+      color,
       signals: categorySignals,
-      chartConfig: buildCategoryChartConfig(categorySignals),
+      chartConfig: buildCategoryChartConfig(categorySignals, color),
     } satisfies CategoryGroup;
   }).filter((group) => group.signals.length > 0),
 );
