@@ -23,7 +23,22 @@ SPDX-License-Identifier: MIT
       :key="kpi.label"
       class="bg-neutral-50 rounded-lg p-3 md:p-4 flex flex-col gap-1"
     >
-      <div class="text-body-2 text-neutral-500">{{ kpi.label }}</div>
+      <div class="flex items-center gap-1 text-body-2 text-neutral-500">
+        {{ kpi.label }}
+        <lfx-tooltip
+          v-if="kpi.tooltip"
+          placement="top"
+        >
+          <lfx-icon
+            name="circle-question"
+            :size="11"
+            class="cursor-help text-neutral-400"
+          />
+          <template #content>
+            <div class="max-w-xs text-xs leading-relaxed">{{ kpi.tooltip }}</div>
+          </template>
+        </lfx-tooltip>
+      </div>
       <div v-if="isLoading">
         <lfx-skeleton
           height="32px"
@@ -43,9 +58,10 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 defineProps<{
-  kpiCards: { label: string; value: string }[];
+  kpiCards: { label: string; value: string; tooltip?: string }[];
   isLoading: boolean;
   isError: boolean;
 }>();
