@@ -85,6 +85,7 @@ describe('clearBucketCache / clearAllBucketCaches — write coordination', () =>
   it('clearBucketCache waits for an already-started project write so no stale value can be read once it resolves', async () => {
     process.env.NUXT_REDIS_URL = 'redis://localhost:6379';
     const { getBucketIdForProject, clearBucketCache } = await import('./bucket-cache');
+    const { useStorage } = await import('#imports');
     const storage = useStorage('redis');
 
     let setItemStarted!: () => void;
@@ -132,6 +133,7 @@ describe('clearBucketCache / clearAllBucketCaches — write coordination', () =>
   it('clearAllBucketCaches waits for an already-started collection write before clearing', async () => {
     process.env.NUXT_REDIS_URL = 'redis://localhost:6379';
     const { getBucketIdForCollection, clearAllBucketCaches } = await import('./bucket-cache');
+    const { useStorage } = await import('#imports');
     const storage = useStorage('redis');
 
     let setItemStarted!: () => void;
