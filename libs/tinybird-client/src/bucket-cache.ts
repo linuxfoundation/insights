@@ -46,8 +46,41 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
   /** Same stampede-prevention strategy as above, kept separate since collection lookups are nonfatal on failure. */
   const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 
+  /**
+   * Tracks the in-flight storage write for each cache key. A clear must await the
+   * matching entry (if any) before it removes the key, so a write that was already
+   * underway when the clear started cannot land afterward and outlive it — closing
+   * the window where a reader could observe a stale value after invalidation.
+   */
+  const pendingWrites = new Map<string, Promise<void>>();
+
   function currentGeneration(cacheKey: string): number {
     return (invalidationGenerations.get(cacheKey) ?? 0) + globalInvalidationGeneration;
+  }
+
+  async function writeToCache(cacheKey: string, bucketId: number, label: string): Promise<void> {
+    const writePromise = (async () => {
+      try {
+        await storage!.setItem(cacheKey, bucketId, { ttl: 86400 });
+      } catch (err) {
+        logger.error(`Failed to cache bucketId for ${label}: ${err}`);
+      }
+    })();
+    pendingWrites.set(cacheKey, writePromise);
+    try {
+      await writePromise;
+    } finally {
+      if (pendingWrites.get(cacheKey) === writePromise) {
+        pendingWrites.delete(cacheKey);
+      }
+    }
+  }
+
+  async function waitForPendingWrite(cacheKey: string): Promise<void> {
+    const pending = pendingWrites.get(cacheKey);
+    if (pending) {
+      await pending.catch(() => {});
+    }
   }
 
   async function fetchFromTinybird(project: string, fetcher: Fetcher): Promise<number | null> {
@@ -129,17 +162,7 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
         if (bucketId === null) return null;
 
         if (currentGeneration(cacheKey) === generation) {
-          try {
-            await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-            // A concurrent clearBucketCache()/clearAllBucketCaches() may have bumped the
-            // generation while the write above was in flight; remove the just-written
-            // value so it doesn't outlive the invalidation that raced it.
-            if (currentGeneration(cacheKey) !== generation) {
-              await storage.removeItem(cacheKey);
-            }
-          } catch (err) {
-            logger.error(`Failed to cache bucketId for project ${projectValue}: ${err}`);
-          }
+          await writeToCache(cacheKey, bucketId, `project ${projectValue}`);
         }
 
         return bucketId;
@@ -239,14 +262,7 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
       if (bucketId === null) return null;
 
       if (currentGeneration(cacheKey) === generation) {
-        try {
-          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-          if (currentGeneration(cacheKey) !== generation) {
-            await storage.removeItem(cacheKey);
-          }
-        } catch (err) {
-          logger.error(`Failed to cache bucketId for collection ${slugValue}: ${err}`);
-        }
+        await writeToCache(cacheKey, bucketId, `collection ${slugValue}`);
       }
 
       return bucketId;
@@ -287,6 +303,10 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
 
     if (!storage) return;
 
+    // Wait for any write already underway for this key before clearing it, so that
+    // write cannot land after we've cleared and leave a stale value behind.
+    await waitForPendingWrite(cacheKey);
+
     try {
       await storage.removeItem(cacheKey);
     } catch (err) {
@@ -300,6 +320,9 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     globalInvalidationGeneration += 1;
 
     if (!storage) return;
+
+    // Wait for every write already underway before clearing, for the same reason as above.
+    await Promise.all([...pendingWrites.values()].map((p) => p.catch(() => {})));
 
     try {
       const [projectKeys, collectionKeys] = await Promise.all([

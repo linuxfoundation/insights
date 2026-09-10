@@ -164,6 +164,55 @@ describe('createBucketCache — getBucketIdForProject', () => {
     expect(freshFetcher).toHaveBeenCalledTimes(1);
   });
 
+  it('clearBucketCache waits for an already-started write so no stale value can be read once it resolves', async () => {
+    const storage = createMemoryStorage();
+    let setItemStarted!: () => void;
+    const setItemStartedPromise = new Promise<void>((resolve) => {
+      setItemStarted = resolve;
+    });
+    let resolveSetItem: () => void = () => {};
+    let firstSetItem = true;
+    const slowStorage: BucketCacheStorage = {
+      ...storage,
+      async setItem(key, value, options) {
+        if (firstSetItem) {
+          firstSetItem = false;
+          setItemStarted();
+          await new Promise<void>((resolve) => {
+            resolveSetItem = resolve;
+          });
+        }
+        await storage.setItem(key, value, options);
+      },
+    };
+    const cache = createBucketCache(slowStorage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(7));
+
+    const lookup = cache.getBucketIdForProject('k8s', fetcher);
+    // Wait for the write to actually start (setItem is now blocked on resolveSetItem).
+    await setItemStartedPromise;
+
+    const clearPromise = cache.clearBucketCache('k8s');
+    let clearResolved = false;
+    void clearPromise.then(() => {
+      clearResolved = true;
+    });
+
+    // clearBucketCache must not resolve while the write it raced is still pending.
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(clearResolved).toBe(false);
+
+    resolveSetItem();
+    await lookup;
+    await clearPromise;
+
+    expect(clearResolved).toBe(true);
+    // No stale value should be observable once the clear has resolved.
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(9));
+    const afterClear = await cache.getBucketIdForProject('k8s', freshFetcher);
+    expect(afterClear).toBe(9);
+  });
+
   it('does not repopulate any cache entry from a stale in-flight write after clearAllBucketCaches', async () => {
     const storage = createMemoryStorage();
     const cache = createBucketCache(storage, logger);
