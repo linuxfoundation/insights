@@ -250,26 +250,29 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
 
     const fetchPromise = (async () => {
       try {
-        const cached = await storage.getItem(cacheKey);
-        if (cached !== null && cached !== undefined) {
-          return cached;
+        try {
+          const cached = await storage.getItem(cacheKey);
+          if (cached !== null && cached !== undefined) {
+            return cached;
+          }
+        } catch (err) {
+          logger.error(`Failed to read from bucket cache for collection ${slugValue}: ${err}`);
         }
-      } catch (err) {
-        logger.error(`Failed to read from bucket cache for collection ${slugValue}: ${err}`);
+
+        const bucketId = await fetchCollectionSafely(slugValue, fetcher);
+        if (bucketId === null) return null;
+
+        if (currentGeneration(cacheKey) === generation) {
+          await writeToCache(cacheKey, bucketId, `collection ${slugValue}`);
+        }
+
+        return bucketId;
+      } finally {
+        collectionInFlightRequests.delete(slugValue);
       }
-
-      const bucketId = await fetchCollectionSafely(slugValue, fetcher);
-      if (bucketId === null) return null;
-
-      if (currentGeneration(cacheKey) === generation) {
-        await writeToCache(cacheKey, bucketId, `collection ${slugValue}`);
-      }
-
-      return bucketId;
     })();
 
     collectionInFlightRequests.set(slugValue, fetchPromise);
-    fetchPromise.finally(() => collectionInFlightRequests.delete(slugValue));
     return fetchPromise;
   }
 
