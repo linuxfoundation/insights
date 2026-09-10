@@ -17,7 +17,9 @@ export default defineNuxtPlugin(() => {
 
   // Watch for route changes and update canonical URL and og:url together,
   // so social crawlers always see the same URL search engines canonicalize to.
-  // Pages that pass ogUrl to useSeoMeta (e.g. project pages) override the meta tag.
+  // Repository and repository-group pages still pass ogUrl to useSeoMeta and
+  // override this tag with the full path including query params - those
+  // overrides should be removed when their metadata gets the same treatment.
   useHead({
     link: [
       {

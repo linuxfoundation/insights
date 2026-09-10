@@ -19,11 +19,14 @@ const route = useRoute();
 const { slug } = route.params;
 const requestFetch = useRequestFetch();
 
-// Same query key as the parent [slug].vue, so this resolves from the cache without refetching
+// Same query key as the parent [slug].vue - this observer only reads the parent's cached
+// data for metadata; enabled: false keeps it from ever firing a duplicate request
+// (the global 30s staleTime + refetchOnMount would otherwise refetch on tab open)
 const { data: collection } = useQuery<Collection>({
   queryKey: computed(() => [TanstackKey.COLLECTION, slug]),
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string, requestFetch),
   retry: false,
+  enabled: false,
 });
 
 const title = computed(() =>
