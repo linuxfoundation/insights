@@ -16,8 +16,42 @@ const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 const invalidationGenerations = new Map<string, number>();
 let globalInvalidationGeneration = 0;
 
+/**
+ * Tracks the in-flight Redis write for each cache key. A clear must await the matching
+ * entry (if any) before it removes the key, so a write that was already underway when
+ * the clear started cannot land afterward and outlive it — closing the window where a
+ * reader could observe a stale value after invalidation.
+ */
+const pendingWrites = new Map<string, Promise<void>>();
+
 function currentGeneration(cacheKey: string): number {
   return (invalidationGenerations.get(cacheKey) ?? 0) + globalInvalidationGeneration;
+}
+
+async function writeToCache(cacheKey: string, bucketId: number, label: string): Promise<void> {
+  const writePromise = (async () => {
+    try {
+      const storage = useStorage('redis');
+      await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+    } catch (cacheError) {
+      console.error(`Failed to cache bucketId for ${label}:`, cacheError);
+    }
+  })();
+  pendingWrites.set(cacheKey, writePromise);
+  try {
+    await writePromise;
+  } finally {
+    if (pendingWrites.get(cacheKey) === writePromise) {
+      pendingWrites.delete(cacheKey);
+    }
+  }
+}
+
+async function waitForPendingWrite(cacheKey: string): Promise<void> {
+  const pending = pendingWrites.get(cacheKey);
+  if (pending) {
+    await pending.catch(() => {});
+  }
 }
 
 /**
@@ -114,18 +148,7 @@ export async function getBucketIdForProject(
       }
 
       if (currentGeneration(cacheKey) === generation) {
-        try {
-          const storage = useStorage('redis');
-          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-          // A concurrent clearBucketCache() may have bumped the generation while the
-          // write above was in flight; remove the just-written value so it doesn't
-          // outlive the invalidation that raced it.
-          if (currentGeneration(cacheKey) !== generation) {
-            await storage.removeItem(cacheKey);
-          }
-        } catch (cacheError) {
-          console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
-        }
+        await writeToCache(cacheKey, bucketId, `project ${projectValue}`);
       }
 
       return bucketId;
@@ -248,18 +271,7 @@ export async function getBucketIdForCollection(
       }
 
       if (currentGeneration(cacheKey) === generation) {
-        try {
-          const storage = useStorage('redis');
-          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-          // A concurrent clearBucketCache()/clearAllBucketCaches() may have bumped the
-          // generation while the write above was in flight; remove the just-written
-          // value so it doesn't outlive the invalidation that raced it.
-          if (currentGeneration(cacheKey) !== generation) {
-            await storage.removeItem(cacheKey);
-          }
-        } catch (cacheError) {
-          console.error(`Failed to cache bucketId for collection ${slugValue}:`, cacheError);
-        }
+        await writeToCache(cacheKey, bucketId, `collection ${slugValue}`);
       }
 
       return bucketId;
@@ -342,6 +354,10 @@ export async function clearBucketCache(project: string): Promise<void> {
   const cacheKey = `project_bucket:${projectValue}`;
   invalidationGenerations.set(cacheKey, (invalidationGenerations.get(cacheKey) ?? 0) + 1);
 
+  // Wait for any write already underway for this key before clearing it, so that
+  // write cannot land after we've cleared and leave a stale value behind.
+  await waitForPendingWrite(cacheKey);
+
   try {
     const storage = useStorage('redis');
     await storage.removeItem(cacheKey);
@@ -367,6 +383,9 @@ export async function clearAllBucketCaches(): Promise<void> {
   }
 
   globalInvalidationGeneration += 1;
+
+  // Wait for every write already underway before clearing, for the same reason as above.
+  await Promise.all([...pendingWrites.values()].map((p) => p.catch(() => {})));
 
   try {
     const storage = useStorage('redis');
