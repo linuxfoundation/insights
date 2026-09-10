@@ -3,6 +3,24 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { TinybirdResponse } from './tinybird';
 
+// The `redis` storage mount points at a real Redis driver (see setup/caching.ts), which isn't
+// reachable in tests. Replace `#imports` with an in-memory stand-in so `useStorage('redis')`
+// resolves to something the write-coordination tests below can control deterministically.
+vi.mock('#imports', () => {
+  const store = new Map<string, unknown>();
+  const storage = {
+    getItem: async (key: string) => (store.has(key) ? store.get(key) : null),
+    setItem: async (key: string, value: unknown) => {
+      store.set(key, value);
+    },
+    removeItem: async (key: string) => {
+      store.delete(key);
+    },
+    getKeys: async (prefix: string) => [...store.keys()].filter((key) => key.startsWith(prefix)),
+  };
+  return { useStorage: () => storage };
+});
+
 function mockResponse<T>(data: T): TinybirdResponse<T> {
   return {
     data,
