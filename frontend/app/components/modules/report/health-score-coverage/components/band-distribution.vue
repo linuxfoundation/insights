@@ -128,8 +128,8 @@ const chartConfig = computed<ECOption>(() => {
   const baseData: HorizontalBarData[] = bandLabels.value.map((category) => ({ category, value: 0 }));
   const baseConfig = getHorizontalBarChartConfig(baseData, lfxColors.brand[500]);
 
-  const fullLegendLabel = `Scored in full, three categories (${fullTotal})`;
-  const partialLegendLabel = `Partially scored, two categories (${partialTotal})`;
+  const fullLegendLabel = `Scored in full, three categories (${formatNumber(fullTotal)})`;
+  const partialLegendLabel = `Partially scored, two categories (${formatNumber(partialTotal)})`;
 
   return merge({}, baseConfig, {
     xAxis: {
@@ -157,7 +157,7 @@ const chartConfig = computed<ECOption>(() => {
           .map((param) => {
             const band = bands[param.dataIndex];
             const count = param.seriesName === fullLegendLabel ? band?.full : band?.partial;
-            return `${param.seriesName}: ${count ?? 0} (${param.value}%)`;
+            return `${param.seriesName}: ${formatNumber(count ?? 0)} (${param.value}%)`;
           })
           .join('<br/>');
       },
