@@ -187,3 +187,102 @@ describe('createBucketCache — getBucketIdForProject', () => {
     expect(freshFetcher).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('createBucketCache — getBucketIdForCollection', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('caches the bucketId in storage after a successful fetch', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(9));
+
+    await cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+    const second = await cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+
+    expect(second).toBe(9);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('coalesces concurrent in-flight requests for the same collection', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const fetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const p1 = cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+    const p2 = cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+    resolveFetch(bucketResponse(3));
+
+    expect(await p1).toBe(3);
+    expect(await p2).toBe(3);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns null instead of throwing when no collection bucket is found', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockResolvedValue({
+      data: [],
+      meta: [],
+      rows: 0,
+      statistics: { elapsed: 0, rows_read: 0, bytes_read: 0 },
+    });
+
+    await expect(cache.getBucketIdForCollection('unknown', fetcher)).resolves.toBeNull();
+  });
+
+  it('returns null instead of throwing on an unclassified fetch error', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
+
+    await expect(
+      cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher),
+    ).resolves.toBeNull();
+  });
+
+  it('propagates a 429 error instead of masking it as a missing collection', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new TinybirdClientError(429, 'Too Many Requests'));
+
+    await expect(cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher)).rejects.toThrow(
+      'Too Many Requests',
+    );
+  });
+
+  it('propagates a 5xx error instead of masking it as a missing collection', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new TinybirdClientError(503, 'Unavailable'));
+
+    await expect(cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher)).rejects.toThrow(
+      'Unavailable',
+    );
+  });
+
+  it('does not repopulate the cache from a stale in-flight write after clearAllBucketCaches', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const slowFetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const inFlight = cache.getBucketIdForCollection('kubernetes-ecosystem', slowFetcher);
+    await cache.clearAllBucketCaches();
+    resolveFetch(bucketResponse(5));
+    await inFlight;
+
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(13));
+    const afterClear = await cache.getBucketIdForCollection('kubernetes-ecosystem', freshFetcher);
+
+    expect(afterClear).toBe(13);
+    expect(freshFetcher).toHaveBeenCalledTimes(1);
+  });
+});

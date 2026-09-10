@@ -12,6 +12,10 @@ interface ProjectBucketResponse {
   bucketId: number;
 }
 
+interface CollectionBucketResponse {
+  bucketId: number;
+}
+
 type Fetcher = <T>(path: string, query: TinybirdQuery) => Promise<TinybirdResponse<T>>;
 
 function isClassifiedTinybirdError(error: unknown): boolean {
@@ -38,6 +42,9 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
   /** Per-key invalidation counters so a stale in-flight write can't repopulate a just-cleared cache entry. */
   const invalidationGenerations = new Map<string, number>();
   let globalInvalidationGeneration = 0;
+
+  /** Same stampede-prevention strategy as above, kept separate since collection lookups are nonfatal on failure. */
+  const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 
   function currentGeneration(cacheKey: string): number {
     return (invalidationGenerations.get(cacheKey) ?? 0) + globalInvalidationGeneration;
@@ -150,6 +157,125 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     return fetchPromise;
   }
 
+  async function fetchCollectionFromTinybird(
+    collectionSlug: string,
+    fetcher: Fetcher,
+  ): Promise<number | null> {
+    const response = await fetcher<CollectionBucketResponse[]>(
+      '/v0/pipes/collection_buckets.json',
+      { collectionSlug },
+    );
+
+    if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
+      logger.warn(
+        JSON.stringify({
+          message: 'tinybird_bucket_not_found',
+          collectionSlug,
+          timestamp: new Date().toISOString(),
+        }),
+      );
+      return null;
+    }
+
+    const bucketId = response.data[0]?.bucketId;
+    if (typeof bucketId !== 'number') {
+      logger.warn(
+        JSON.stringify({
+          message: 'tinybird_bucket_invalid_type',
+          collectionSlug,
+          bucketIdType: typeof bucketId,
+          timestamp: new Date().toISOString(),
+        }),
+      );
+      return null;
+    }
+
+    return bucketId;
+  }
+
+  /**
+   * Unlike project routing, a failed or missing collection lookup is nonfatal: callers
+   * fall back to the multi-bucket union pipe, so this never throws for a 404/empty result.
+   * Rate-limit and server errors still propagate so they aren't silently swallowed as
+   * "no collection bucket".
+   */
+  async function getBucketIdForCollection(
+    collectionSlug: string,
+    fetcher: Fetcher,
+  ): Promise<number | null> {
+    const slugValue = collectionSlug?.toString().trim();
+    if (!slugValue) {
+      logger.warn(
+        JSON.stringify({
+          message: 'tinybird_bucket_invalid_collection',
+          timestamp: new Date().toISOString(),
+        }),
+      );
+      return null;
+    }
+
+    if (!storage) {
+      return fetchCollectionSafely(slugValue, fetcher);
+    }
+
+    if (collectionInFlightRequests.has(slugValue)) {
+      return collectionInFlightRequests.get(slugValue)!;
+    }
+
+    const cacheKey = `collection_bucket:${slugValue}`;
+    const generation = currentGeneration(cacheKey);
+
+    const fetchPromise = (async () => {
+      try {
+        const cached = await storage.getItem(cacheKey);
+        if (cached !== null && cached !== undefined) {
+          return cached;
+        }
+      } catch (err) {
+        logger.error(`Failed to read from bucket cache for collection ${slugValue}: ${err}`);
+      }
+
+      const bucketId = await fetchCollectionSafely(slugValue, fetcher);
+      if (bucketId === null) return null;
+
+      if (currentGeneration(cacheKey) === generation) {
+        try {
+          await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+          if (currentGeneration(cacheKey) !== generation) {
+            await storage.removeItem(cacheKey);
+          }
+        } catch (err) {
+          logger.error(`Failed to cache bucketId for collection ${slugValue}: ${err}`);
+        }
+      }
+
+      return bucketId;
+    })();
+
+    collectionInFlightRequests.set(slugValue, fetchPromise);
+    fetchPromise.finally(() => collectionInFlightRequests.delete(slugValue));
+    return fetchPromise;
+  }
+
+  /** Fetches without throwing: propagates only rate-limit/server errors, otherwise logs and returns null. */
+  async function fetchCollectionSafely(
+    slugValue: string,
+    fetcher: Fetcher,
+  ): Promise<number | null> {
+    try {
+      return await fetchCollectionFromTinybird(slugValue, fetcher);
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        const status = (error as { statusCode: number }).statusCode;
+        if (status === 429 || status >= 500) {
+          throw error;
+        }
+      }
+      logger.warn(`Failed to fetch bucketId for collection ${slugValue}: ${error}`);
+      return null;
+    }
+  }
+
   async function clearBucketCache(project: string): Promise<void> {
     const projectValue = project?.toString().trim();
     if (!projectValue) return;
@@ -170,17 +296,26 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
 
   async function clearAllBucketCaches(): Promise<void> {
     inFlightRequests.clear();
+    collectionInFlightRequests.clear();
     globalInvalidationGeneration += 1;
 
     if (!storage) return;
 
     try {
-      const keys = await storage.getKeys('project_bucket:');
-      await Promise.all(keys.map((key) => storage.removeItem(key)));
+      const [projectKeys, collectionKeys] = await Promise.all([
+        storage.getKeys('project_bucket:'),
+        storage.getKeys('collection_bucket:'),
+      ]);
+      await Promise.all([...projectKeys, ...collectionKeys].map((key) => storage.removeItem(key)));
     } catch (err) {
       logger.error(`Failed to clear all bucket caches: ${err}`);
     }
   }
 
-  return { getBucketIdForProject, clearBucketCache, clearAllBucketCaches };
+  return {
+    getBucketIdForProject,
+    getBucketIdForCollection,
+    clearBucketCache,
+    clearAllBucketCaches,
+  };
 }

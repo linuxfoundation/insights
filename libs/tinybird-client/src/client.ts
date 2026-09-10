@@ -198,6 +198,24 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
       }
     }
 
+    // Resolve bucket routing for collection queries. Unlike project routing, a missing
+    // or failed lookup is nonfatal — bucketId is simply left unset so the request falls
+    // back to the (more expensive) multi-bucket union pipe instead of erroring out.
+    if (
+      query.collectionSlug &&
+      typeof query.collectionSlug === 'string' &&
+      query.bucketId == null &&
+      path !== '/v0/pipes/collection_buckets.json'
+    ) {
+      const bucketId = await bucketCache.getBucketIdForCollection(
+        query.collectionSlug as string,
+        fetchFromTinybird,
+      );
+      if (bucketId !== null) {
+        query = { ...query, bucketId };
+      }
+    }
+
     const qs = buildQueryString(query);
     const url = qs ? `${baseUrl}${path}?${qs}` : `${baseUrl}${path}`;
     const skipThrottle = SKIP_THROTTLE_PATHS.has(path);
@@ -243,6 +261,8 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     ingest,
     getBucketIdForProject: (project: string) =>
       bucketCache.getBucketIdForProject(project, fetchFromTinybird),
+    getBucketIdForCollection: (collectionSlug: string) =>
+      bucketCache.getBucketIdForCollection(collectionSlug, fetchFromTinybird),
     clearBucketCache: bucketCache.clearBucketCache,
     clearAllBucketCaches: bucketCache.clearAllBucketCaches,
   };
