@@ -64,7 +64,12 @@ async function parseResponse<T>(response: Response): Promise<TinybirdResponse<T>
       `Tinybird request failed: ${response.statusText}${detail}`,
     );
   }
-  const data = (await response.json()) as TinybirdResponse<T>;
+  let data: TinybirdResponse<T>;
+  try {
+    data = (await response.json()) as TinybirdResponse<T>;
+  } catch {
+    throw new TinybirdInvalidResponseError('Tinybird response was not valid JSON');
+  }
   if (!data || !data.data) {
     throw new TinybirdInvalidResponseError();
   }
@@ -92,6 +97,75 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
   const bucketCache = createBucketCache(bucketCacheStorage, logger);
 
   const authHeaders = { Authorization: `Bearer ${token}` };
+
+  async function withThrottle<T>(
+    path: string,
+    params: TinybirdQuery,
+    skipThrottle: boolean,
+    send: () => Promise<Response>,
+  ): Promise<TinybirdResponse<T>> {
+    let acquired = false;
+    let wasQueued = false;
+    const fetchStart = Date.now();
+
+    try {
+      if (!skipThrottle) {
+        wasQueued = await semaphore.acquire(queueTimeoutMs);
+        acquired = true;
+      }
+
+      const response = await send();
+      const data = await parseResponse<T>(response);
+
+      const durationMs = Date.now() - fetchStart;
+      if (durationMs > slowRequestThresholdMs) {
+        logger.warn(
+          JSON.stringify({
+            message: 'tinybird_slow_request',
+            pipe: path,
+            params,
+            durationMs,
+            wasQueued,
+            active: semaphore.getActive(),
+            queued: semaphore.getQueueLength(),
+            timestamp: new Date().toISOString(),
+          }),
+        );
+      }
+
+      return data;
+    } catch (error: unknown) {
+      // Only TinybirdClientError carries statusCode; plain network failures (DNS, TCP reset)
+      // will log status: undefined and will NOT trigger rate-limit backoff.
+      const status =
+        error && typeof error === 'object' && 'statusCode' in error
+          ? (error as { statusCode: number }).statusCode
+          : undefined;
+
+      logger.error(
+        JSON.stringify({
+          message: 'tinybird_request_error',
+          pipe: path,
+          params,
+          status,
+          durationMs: Date.now() - fetchStart,
+          wasQueued,
+          active: semaphore.getActive(),
+          queued: semaphore.getQueueLength(),
+          timestamp: new Date().toISOString(),
+        }),
+      );
+
+      if (status === 429) {
+        semaphore.reportTinybirdRateLimit();
+      }
+      throw error;
+    } finally {
+      if (acquired) {
+        semaphore.release();
+      }
+    }
+  }
 
   async function fetchFromTinybird<T>(
     path: string,
@@ -128,67 +202,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = qs ? `${baseUrl}${path}?${qs}` : `${baseUrl}${path}`;
     const skipThrottle = SKIP_THROTTLE_PATHS.has(path);
 
-    let acquired = false;
-    let wasQueued = false;
-    const fetchStart = Date.now();
-
-    try {
-      if (!skipThrottle) {
-        wasQueued = await semaphore.acquire(queueTimeoutMs);
-        acquired = true;
-      }
-
-      const response = await fetch(url, { headers: authHeaders });
-      const data = await parseResponse<T>(response);
-
-      const durationMs = Date.now() - fetchStart;
-      if (durationMs > slowRequestThresholdMs) {
-        logger.warn(
-          JSON.stringify({
-            message: 'tinybird_slow_request',
-            pipe: path,
-            params: query,
-            durationMs,
-            wasQueued,
-            active: semaphore.getActive(),
-            queued: semaphore.getQueueLength(),
-            timestamp: new Date().toISOString(),
-          }),
-        );
-      }
-
-      return data;
-    } catch (error: unknown) {
-      // Only TinybirdClientError carries statusCode; plain network failures (DNS, TCP reset)
-      // will log status: undefined and will NOT trigger rate-limit backoff.
-      const status =
-        error && typeof error === 'object' && 'statusCode' in error
-          ? (error as { statusCode: number }).statusCode
-          : undefined;
-
-      logger.error(
-        JSON.stringify({
-          message: 'tinybird_request_error',
-          pipe: path,
-          params: query,
-          status,
-          durationMs: Date.now() - fetchStart,
-          wasQueued,
-          active: semaphore.getActive(),
-          queued: semaphore.getQueueLength(),
-          timestamp: new Date().toISOString(),
-        }),
-      );
-
-      if (status === 429) {
-        semaphore.reportTinybirdRateLimit();
-      }
-      throw error;
-    } finally {
-      if (acquired) {
-        semaphore.release();
-      }
-    }
+    return withThrottle<T>(path, query, skipThrottle, () => fetch(url, { headers: authHeaders }));
   }
 
   async function postToTinybird<T>(
@@ -197,12 +211,14 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
   ): Promise<TinybirdResponse<T>> {
     const url = `${baseUrl}${path}`;
     const body = buildBodyString(params);
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { ...authHeaders, 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
-    });
-    return parseResponse<T>(response);
+
+    return withThrottle<T>(path, params, false, () =>
+      fetch(url, {
+        method: 'POST',
+        headers: { ...authHeaders, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      }),
+    );
   }
 
   async function ingest(datasource: string, data: object): Promise<boolean> {

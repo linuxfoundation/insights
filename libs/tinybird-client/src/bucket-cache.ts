@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { TinybirdUnavailableError } from './errors.js';
+import { TinybirdInvalidResponseError, TinybirdUnavailableError } from './errors.js';
 import type {
   TinybirdLogger,
   TinybirdQuery,
@@ -48,7 +48,13 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
       project,
     });
 
-    if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
+    if (!response?.data || !Array.isArray(response.data)) {
+      throw new TinybirdInvalidResponseError(
+        `Malformed project_buckets response for project ${project}`,
+      );
+    }
+
+    if (response.data.length === 0) {
       logger.warn(
         JSON.stringify({
           message: 'tinybird_bucket_not_found',
@@ -62,15 +68,9 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     const bucketId = response.data[0]?.bucketId;
 
     if (typeof bucketId !== 'number') {
-      logger.warn(
-        JSON.stringify({
-          message: 'tinybird_bucket_invalid_type',
-          project,
-          bucketIdType: typeof bucketId,
-          timestamp: new Date().toISOString(),
-        }),
+      throw new TinybirdInvalidResponseError(
+        `Malformed bucketId (type ${typeof bucketId}) for project ${project}`,
       );
-      return null;
     }
 
     return bucketId;
