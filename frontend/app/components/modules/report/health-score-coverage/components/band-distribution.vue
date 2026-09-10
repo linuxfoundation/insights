@@ -136,6 +136,13 @@ const chartConfig = computed<ECOption>(() => {
       max: 100,
       axisLabel: { formatter: '{value}%' },
     },
+    // Reserve room below the plot for the x-axis labels plus the legend row(s) - the shared
+    // getHorizontalBarChartConfig grid defaults to bottom: 0, which otherwise puts the legend
+    // directly on top of the x-axis at every viewport width, worsening as the legend text wraps
+    // to two lines on narrower containers.
+    grid: {
+      bottom: 72,
+    },
     legend: {
       bottom: 0,
       data: [fullLegendLabel, partialLegendLabel],

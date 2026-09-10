@@ -43,7 +43,12 @@ SPDX-License-Identifier: MIT
 
     <!-- How projects score -->
     <div class="flex flex-col gap-6">
-      <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">How projects score</h2>
+      <div>
+        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">How projects score</h2>
+        <p class="text-body-2 text-neutral-500 mt-1">
+          Health scores, maintenance state, and how repositories perform on each signal.
+        </p>
+      </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <band-distribution />
         <lifecycle-distribution />
@@ -53,7 +58,13 @@ SPDX-License-Identifier: MIT
 
     <!-- What we can see -->
     <div class="flex flex-col gap-6">
-      <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">What we can see</h2>
+      <div>
+        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">What we can see</h2>
+        <p class="text-body-2 text-neutral-500 mt-1">
+          A health score needs two of the three categories, and a category needs enough of its own signals. Some
+          projects score lower simply because less of their data reaches us.
+        </p>
+      </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <category-coverage />
         <signal-availability />
