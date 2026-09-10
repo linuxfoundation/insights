@@ -29,6 +29,28 @@ const SKIP_THROTTLE_PATHS = new Set([
   '/v0/pipes/collection_buckets.json',
 ]);
 
+/**
+ * Matches ofetch's default retry behavior (which the previous `ofetch`-based implementation
+ * relied on): GET requests get one retry on a network error or one of these transient status
+ * codes, so a request that used to recover after one retry doesn't now fail immediately.
+ */
+const RETRYABLE_STATUS_CODES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
+const GET_RETRY_COUNT = 1;
+
+async function fetchWithRetry(url: string, init: RequestInit, retries: number): Promise<Response> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const response = await fetch(url, init);
+      if (!response.ok && RETRYABLE_STATUS_CODES.has(response.status) && attempt < retries) {
+        continue;
+      }
+      return response;
+    } catch (error) {
+      if (attempt >= retries) throw error;
+    }
+  }
+}
+
 function stripTrailingSlashes(url: string): string {
   let end = url.length;
   while (end > 0 && url[end - 1] === '/') end--;
@@ -220,7 +242,9 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = qs ? `${baseUrl}${path}?${qs}` : `${baseUrl}${path}`;
     const skipThrottle = SKIP_THROTTLE_PATHS.has(path);
 
-    return withThrottle<T>(path, query, skipThrottle, () => fetch(url, { headers: authHeaders }));
+    return withThrottle<T>(path, query, skipThrottle, () =>
+      fetchWithRetry(url, { headers: authHeaders }, GET_RETRY_COUNT),
+    );
   }
 
   async function postToTinybird<T>(
