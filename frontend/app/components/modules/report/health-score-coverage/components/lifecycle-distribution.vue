@@ -86,12 +86,13 @@ const SCOPE_TABS = [
   { value: 'other', label: 'Other' },
 ];
 
-// Caption wording per scope, matching the artifact: "Project lifecycle · all tracked projects (n)"
-// swapped to "Linux Foundation" / "other" for the lf/other toggles.
+// Caption wording per scope, verbatim from the artifact: the "all" scope reads "all tracked
+// projects", but "lf"/"other" don't just swap in a word - they're their own phrasing
+// ("Linux Foundation projects" / "projects outside the Linux Foundation").
 const SCOPE_CAPTION_WORDING: Record<HealthScoreCoverageScope, string> = {
-  all: 'all',
-  lf: 'Linux Foundation',
-  other: 'other',
+  all: 'all tracked projects',
+  lf: 'Linux Foundation projects',
+  other: 'projects outside the Linux Foundation',
 };
 
 const LABEL_DISPLAY_OVERRIDES: Record<string, string> = {
@@ -120,7 +121,7 @@ const percentOf = (count: number, totalCount: number): number =>
   totalCount > 0 ? round1((count / totalCount) * 100) : 0;
 
 const captionText = computed(
-  () => `Project lifecycle · ${SCOPE_CAPTION_WORDING[scope.value]} tracked projects (${formatNumber(total.value)})`,
+  () => `Project lifecycle · ${SCOPE_CAPTION_WORDING[scope.value]} (${formatNumber(total.value)})`,
 );
 
 interface LifecycleTooltipParam {
