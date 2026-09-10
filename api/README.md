@@ -14,7 +14,7 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
 # from repo root
 pnpm install --filter @lfx-insights/api
 
-# start with hot reload (requires PORT env var or defaults to 4000)
+# start with hot reload (uses PORT env var or defaults to 4000)
 pnpm --filter @lfx-insights/api dev
 ```
 

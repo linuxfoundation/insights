@@ -2,7 +2,16 @@
 // SPDX-License-Identifier: MIT
 import { buildApp } from './app.js';
 
-const port = Number(process.env.PORT ?? 4000);
+function parsePort(value: string | undefined): number {
+  if (value === undefined) return 4000;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 1 || parsed > 65535) {
+    throw new Error(`Invalid PORT environment variable: ${value}`);
+  }
+  return parsed;
+}
+
+const port = parsePort(process.env.PORT);
 const host = process.env.HOST ?? '0.0.0.0';
 
 const app = await buildApp();
