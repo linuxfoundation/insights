@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { ActivityTypes, Granularity } from '@lfx-insights/types';
 import {
   mockCurrentSummaryData,
   mockPreviousSummaryData,
@@ -9,8 +10,6 @@ import {
   mockCurrentNewTimeseries,
 } from '../../../mocks/tinybird-stars-response.mock';
 import { ActivityFilterCountType } from '../../types';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { Granularity } from '~~/types/shared/granularity';
 import type { StarsData } from '~~/types/popularity/responses.types';
 
 const mockFetchFromTinybird = vi.fn();

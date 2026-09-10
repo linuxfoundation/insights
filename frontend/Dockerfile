@@ -21,10 +21,11 @@ WORKDIR /app
 # Copy workspace configuration files first (better cache)
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY frontend/package.json ./frontend/
+COPY libs/types/package.json ./libs/types/
 
 # Install dependencies with BuildKit cache mount for pnpm store
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install --filter lfx-insights... --frozen-lockfile
+    pnpm install --filter lfx-insights... --filter @lfx-insights/types --frozen-lockfile
 
 # ============================================
 # Builder stage: Build the application
@@ -40,8 +41,12 @@ ENV NODE_OPTIONS=--max-old-space-size=4096
 
 WORKDIR /app
 
-# Copy frontend source
+# Copy frontend source and its workspace-linked lib dependencies
 COPY frontend ./frontend
+COPY libs/types ./libs/types
+
+# Build the workspace libs before the frontend consumes their dist/ output
+RUN pnpm --filter @lfx-insights/types build
 
 WORKDIR /app/frontend
 

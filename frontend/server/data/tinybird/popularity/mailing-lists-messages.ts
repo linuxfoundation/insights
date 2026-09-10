@@ -1,12 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { ActivityTypes, ActivityPlatforms } from '@lfx-insights/types';
 import type { ActivityCountFilter } from '../../types';
 import { ActivityFilterCountType } from '../../types';
 import { fetchFromTinybird } from '../tinybird';
 import type { MailingListsMessages } from '~~/types/popularity/responses.types';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 
 // This is the data part of the response from Tinybird
 type TinybirdActivityCountData = {

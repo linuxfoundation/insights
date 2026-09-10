@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { ActivityTypes, ActivityPlatforms } from '@lfx-insights/types';
 import {
   mockTimeseries,
   mockOrganizationsLeaderboardCount,
 } from '../../../mocks/tinybird-organizations-leaderboard-response.mock';
 import type { OrganizationLeaderboard } from '~~/types/contributors/responses.types';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 import type { OrganizationsLeaderboardFilter } from '~~/server/data/types';
 import type { OrganizationsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
