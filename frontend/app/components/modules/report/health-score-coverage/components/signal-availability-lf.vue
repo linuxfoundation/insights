@@ -75,7 +75,7 @@ SPDX-License-Identifier: MIT
           <span class="flex items-center gap-2">
             <i
               class="inline-block w-3 h-3 rounded-sm"
-              :style="{ background: lfxColors.accent[500] }"
+              :style="{ background: lfxColors.neutral[400] }"
             />
             Other tracked projects ({{ formatNumber(otherReposTracked) }} repositories)
           </span>
@@ -237,7 +237,7 @@ const buildCategoryChartConfig = (
         data: otherValues,
         barMaxWidth: 8,
         itemStyle: {
-          color: lfxColors.accent[500],
+          color: lfxColors.neutral[400],
           borderRadius: [10, 10, 10, 10],
         },
       },
