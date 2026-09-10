@@ -11,19 +11,19 @@ import { storeToRefs } from 'pinia';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxProjectSecurityView from '~/components/modules/project/views/security.vue';
 
-const route = useRoute();
-const config = useRuntimeConfig();
 const { project } = storeToRefs(useProjectStore());
 
-const title = computed(() => `${project.value?.name} Security Insights`);
-const description = computed(
-  () =>
-    `Check ${project.value?.name} security and best practices, ` +
-    `including vulnerabilities, dependencies, licensing, and governance compliance.`,
+const title = computed(() =>
+  project.value?.name ? `${project.value.name} Security & Best Practices | LFX Insights` : 'LFX Insights',
+);
+const description = computed(() =>
+  project.value?.name
+    ? `Check ${project.value.name} security and best practices, ` +
+      `including vulnerabilities, dependencies, licensing, and governance compliance.`
+    : 'Check project security and best practices, including vulnerabilities, dependencies, and governance.',
 );
 
 const imageAlt = computed(() => `${project.value?.name} Security Insights - LFX Insights`);
-const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
 const projectName = computed(() => project.value?.name || '');
 const projectDescription = computed(() => project.value?.description || '');
@@ -40,7 +40,6 @@ useSeoMeta({
   title,
   description,
   ogType: 'website',
-  ogUrl: url,
   ogTitle: title,
   ogDescription: description,
   ogImageAlt: imageAlt,

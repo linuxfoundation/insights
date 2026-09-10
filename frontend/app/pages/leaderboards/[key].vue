@@ -19,6 +19,26 @@ const leaderboardKey = computed<string>(() => route.params.key as string);
 const config = computed(() => leaderboardConfigs.find((c) => c.key === leaderboardKey.value));
 const title = computed(() => config.value?.name || 'Leaderboard');
 
+const seoTitle = computed(() =>
+  config.value?.name
+    ? `${config.value.name} Leaderboard – Top Open Source Projects | LFX Insights`
+    : 'Leaderboard | LFX Insights',
+);
+const seoDescription = computed(
+  () =>
+    config.value?.description ||
+    'Explore leaderboards for the world’s most critical open source projects. Powered by the Linux Foundation.',
+);
+
+useSeoMeta({
+  title: seoTitle,
+  description: seoDescription,
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
+  twitterTitle: seoTitle,
+  twitterDescription: seoDescription,
+});
+
 defineOgImage('Leaderboard', {
   leaderboardTitle: title,
 });

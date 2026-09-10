@@ -42,7 +42,7 @@ export default {
     { hid: 'og:type', property: 'og:type', content: 'website' },
     // Static fallback; pages calling defineOgImage() override it (nuxt-og-image injects with high priority)
     { hid: 'og:image', property: 'og:image', content: '/og-image.png', tagPriority: 'low' },
-    { hid: 'og:url', property: 'og:url', content: 'https://insights.lfx.org' },
+    // og:url is set per-page by plugins/canonical.ts so it always matches the canonical URL
     { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
     {
       hid: 'twitter:title',

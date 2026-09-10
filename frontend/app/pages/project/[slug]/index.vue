@@ -14,16 +14,16 @@ import LfxProjectOverviewView from '~/components/modules/project/views/overview.
 
 const route = useRoute();
 const { project } = storeToRefs(useProjectStore());
-const config = useRuntimeConfig();
 
-const title = computed(() => (project.value ? `${project.value.name} Insights` : 'LFX Insights'));
+const title = computed(() =>
+  project.value ? `${project.value.name} – Health Score, Contributors & Security | LFX Insights` : 'LFX Insights',
+);
 const description = computed(() =>
   project.value
     ? project.value.description || `Explore ${project.value.name} insights`
     : 'Explore LFX Project insights',
 );
 const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : 'LFX Project insights'));
-const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
 // Check for badge query parameter
 const badgeKey = computed(() => route.query.badge as string | undefined);
@@ -41,7 +41,6 @@ useSeoMeta({
   title,
   description,
   ogType: 'website',
-  ogUrl: url,
   ogTitle: title,
   ogDescription: description,
   ogImageAlt: imageAlt,
