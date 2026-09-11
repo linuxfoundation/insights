@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-4">
       <div class="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">02 · Distribution</p>
+          <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Distribution</p>
           <h3 class="text-body-1 md:text-heading-4 font-secondary font-semibold text-neutral-900">
             How projects are maintained
           </h3>

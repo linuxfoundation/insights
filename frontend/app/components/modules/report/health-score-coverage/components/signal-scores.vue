@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
   <lfx-card class="p-4 md:p-6">
     <div class="flex flex-col gap-4">
       <div>
-        <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">03 · Distribution</p>
+        <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Distribution</p>
         <h3 class="text-body-1 md:text-heading-4 font-secondary font-semibold text-neutral-900">
           Where the strongest repositories pull ahead
         </h3>

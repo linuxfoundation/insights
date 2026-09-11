@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
   <lfx-card class="p-4 md:p-6">
     <div class="flex flex-col gap-4">
       <div>
-        <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">07 · Availability</p>
+        <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Availability</p>
         <h3 class="text-body-1 md:text-heading-4 font-secondary font-semibold text-neutral-900">
           Repositories scoring full marks
         </h3>
