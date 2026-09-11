@@ -3,9 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <!--
-  Standalone widget 03 "Where the strongest repositories pull ahead" component for the Health
-  Score Coverage report (IN-1288, epic IN-1276). Not yet wired into
-  health-score-coverage-report.vue - see health-score-coverage-signal-scores.types.ts for why.
+  Widget 03 "Where the strongest repositories pull ahead" for the Health Score Coverage report
+  (IN-1288, epic IN-1276). Wired into health-score-coverage-report.vue.
 -->
 <template>
   <lfx-card class="p-4 md:p-6">
@@ -99,10 +98,12 @@ const SIGNAL_LABELS: Record<string, string> = {
   busFactor: 'Bus factor',
   orgDiversity: 'Organizational diversity',
   responsiveness: 'Responsiveness',
+  openVuln: 'Known vulnerabilities',
   scorecard: 'OpenSSF Scorecard',
   securityPractices: 'Security practices',
   dependencyHealth: 'Dependency health',
   releaseCadence: 'Release cadence',
+  commitActivity: 'Commit activity',
   issueResolution: 'Issue resolution',
   prMerge: 'Pull request merge',
 };
