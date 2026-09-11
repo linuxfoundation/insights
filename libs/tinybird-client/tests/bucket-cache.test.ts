@@ -1,0 +1,360 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createBucketCache } from '../src/bucket-cache.js';
+import { TinybirdClientError, TinybirdUnavailableError } from '../src/errors.js';
+import type { BucketCacheStorage, TinybirdLogger, TinybirdResponse } from '../src/types.js';
+
+const logger: TinybirdLogger = { warn: vi.fn(), error: vi.fn() };
+
+function bucketResponse(bucketId: number): TinybirdResponse<{ bucketId: number }[]> {
+  return {
+    data: [{ bucketId }],
+    meta: [{ name: 'bucketId', type: 'Int32' }],
+    rows: 1,
+    statistics: { elapsed: 0.1, rows_read: 1, bytes_read: 10 },
+  };
+}
+
+function createMemoryStorage(): BucketCacheStorage {
+  const store = new Map<string, number>();
+  return {
+    async getItem(key) {
+      return store.has(key) ? store.get(key)! : null;
+    },
+    async setItem(key, value) {
+      store.set(key, value);
+    },
+    async removeItem(key) {
+      store.delete(key);
+    },
+    async getKeys(prefix) {
+      return [...store.keys()].filter((k) => k.startsWith(prefix));
+    },
+  };
+}
+
+describe('createBucketCache — getBucketIdForProject', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('fetches fresh every time when no storage is configured', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(7));
+
+    const first = await cache.getBucketIdForProject('k8s', fetcher);
+    const second = await cache.getBucketIdForProject('k8s', fetcher);
+
+    expect(first).toBe(7);
+    expect(second).toBe(7);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('caches the bucketId in storage after a successful fetch', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(9));
+
+    await cache.getBucketIdForProject('k8s', fetcher);
+    const second = await cache.getBucketIdForProject('k8s', fetcher);
+
+    expect(second).toBe(9);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('coalesces concurrent in-flight requests for the same project', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const fetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const p1 = cache.getBucketIdForProject('k8s', fetcher);
+    const p2 = cache.getBucketIdForProject('k8s', fetcher);
+    resolveFetch(bucketResponse(3));
+
+    expect(await p1).toBe(3);
+    expect(await p2).toBe(3);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('propagates the same rejection to every coalesced waiter instead of each retrying its own fetch', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    let rejectFetch: (error: unknown) => void = () => {};
+    const fetcher = vi.fn().mockReturnValue(
+      new Promise((_resolve, reject) => {
+        rejectFetch = reject;
+      }),
+    );
+
+    const p1 = cache.getBucketIdForProject('k8s', fetcher);
+    const p2 = cache.getBucketIdForProject('k8s', fetcher);
+    rejectFetch(new Error('network blip'));
+
+    await expect(p1).rejects.toThrow(TinybirdUnavailableError);
+    await expect(p2).rejects.toThrow(TinybirdUnavailableError);
+    // Only the original in-flight fetch should have run — a coalesced waiter must
+    // never start a replacement fetch of its own after the shared one rejects.
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('propagates a 401 error instead of masking it as a missing project', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockRejectedValue(new TinybirdClientError(401, 'Unauthorized'));
+
+    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow('Unauthorized');
+  });
+
+  it('propagates a 403 error instead of masking it as a missing project', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockRejectedValue(new TinybirdClientError(403, 'Forbidden'));
+
+    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow('Forbidden');
+  });
+
+  it('wraps unclassified errors as TinybirdUnavailableError instead of a false "not found"', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
+
+    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow(
+      TinybirdUnavailableError,
+    );
+  });
+
+  it('wraps unclassified errors as TinybirdUnavailableError when no storage is configured', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
+
+    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow(
+      TinybirdUnavailableError,
+    );
+  });
+
+  it('does not repopulate the cache from a stale in-flight write after clearBucketCache', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const slowFetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const inFlight = cache.getBucketIdForProject('k8s', slowFetcher);
+    // Cache is cleared while the lookup above is still in flight.
+    await cache.clearBucketCache('k8s');
+    resolveFetch(bucketResponse(5));
+    await inFlight;
+
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(11));
+    const afterClear = await cache.getBucketIdForProject('k8s', freshFetcher);
+
+    // The stale write from the in-flight lookup must not have won; the cache should
+    // have been empty, forcing a fresh fetch that returns the new value.
+    expect(afterClear).toBe(11);
+    expect(freshFetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('clearBucketCache waits for an already-started write so no stale value can be read once it resolves', async () => {
+    const storage = createMemoryStorage();
+    let setItemStarted!: () => void;
+    const setItemStartedPromise = new Promise<void>((resolve) => {
+      setItemStarted = resolve;
+    });
+    let resolveSetItem: () => void = () => {};
+    let firstSetItem = true;
+    const slowStorage: BucketCacheStorage = {
+      ...storage,
+      async setItem(key, value, options) {
+        if (firstSetItem) {
+          firstSetItem = false;
+          setItemStarted();
+          await new Promise<void>((resolve) => {
+            resolveSetItem = resolve;
+          });
+        }
+        await storage.setItem(key, value, options);
+      },
+    };
+    const cache = createBucketCache(slowStorage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(7));
+
+    const lookup = cache.getBucketIdForProject('k8s', fetcher);
+    // Wait for the write to actually start (setItem is now blocked on resolveSetItem).
+    await setItemStartedPromise;
+
+    const clearPromise = cache.clearBucketCache('k8s');
+    let clearResolved = false;
+    void clearPromise.then(() => {
+      clearResolved = true;
+    });
+
+    // clearBucketCache must not resolve while the write it raced is still pending.
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(clearResolved).toBe(false);
+
+    resolveSetItem();
+    await lookup;
+    await clearPromise;
+
+    expect(clearResolved).toBe(true);
+    // No stale value should be observable once the clear has resolved.
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(9));
+    const afterClear = await cache.getBucketIdForProject('k8s', freshFetcher);
+    expect(afterClear).toBe(9);
+  });
+
+  it('does not repopulate any cache entry from a stale in-flight write after clearAllBucketCaches', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const slowFetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const inFlight = cache.getBucketIdForProject('k8s', slowFetcher);
+    await cache.clearAllBucketCaches();
+    resolveFetch(bucketResponse(5));
+    await inFlight;
+
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(13));
+    const afterClear = await cache.getBucketIdForProject('k8s', freshFetcher);
+
+    expect(afterClear).toBe(13);
+    expect(freshFetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('clears the in-flight entry on a cache hit so a later clearBucketCache + refetch is not stuck on the stale resolved promise', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(7));
+
+    // First call populates storage.
+    await cache.getBucketIdForProject('k8s', fetcher);
+    // Second call is a cache hit — this must not leave a stale resolved promise
+    // parked in the in-flight map once it returns.
+    const cacheHit = await cache.getBucketIdForProject('k8s', fetcher);
+    expect(cacheHit).toBe(7);
+
+    await cache.clearBucketCache('k8s');
+
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(21));
+    const afterClear = await cache.getBucketIdForProject('k8s', freshFetcher);
+
+    // If the cache-hit path had left its entry in inFlightRequests, this call would
+    // reuse that stale resolved promise (still 7) instead of checking storage again.
+    expect(afterClear).toBe(21);
+    expect(freshFetcher).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('createBucketCache — getBucketIdForCollection', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('caches the bucketId in storage after a successful fetch', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(9));
+
+    await cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+    const second = await cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+
+    expect(second).toBe(9);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('coalesces concurrent in-flight requests for the same collection', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const fetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const p1 = cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+    const p2 = cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher);
+    resolveFetch(bucketResponse(3));
+
+    expect(await p1).toBe(3);
+    expect(await p2).toBe(3);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns null instead of throwing when no collection bucket is found', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockResolvedValue({
+      data: [],
+      meta: [],
+      rows: 0,
+      statistics: { elapsed: 0, rows_read: 0, bytes_read: 0 },
+    });
+
+    await expect(cache.getBucketIdForCollection('unknown', fetcher)).resolves.toBeNull();
+  });
+
+  it('returns null instead of throwing on an unclassified fetch error', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
+
+    await expect(
+      cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher),
+    ).resolves.toBeNull();
+  });
+
+  it('propagates a 429 error instead of masking it as a missing collection', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new TinybirdClientError(429, 'Too Many Requests'));
+
+    await expect(cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher)).rejects.toThrow(
+      'Too Many Requests',
+    );
+  });
+
+  it('propagates a 5xx error instead of masking it as a missing collection', async () => {
+    const cache = createBucketCache(undefined, logger);
+    const fetcher = vi.fn().mockRejectedValue(new TinybirdClientError(503, 'Unavailable'));
+
+    await expect(cache.getBucketIdForCollection('kubernetes-ecosystem', fetcher)).rejects.toThrow(
+      'Unavailable',
+    );
+  });
+
+  it('does not repopulate the cache from a stale in-flight write after clearAllBucketCaches', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+
+    let resolveFetch: (value: TinybirdResponse<{ bucketId: number }[]>) => void = () => {};
+    const slowFetcher = vi.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+
+    const inFlight = cache.getBucketIdForCollection('kubernetes-ecosystem', slowFetcher);
+    await cache.clearAllBucketCaches();
+    resolveFetch(bucketResponse(5));
+    await inFlight;
+
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(13));
+    const afterClear = await cache.getBucketIdForCollection('kubernetes-ecosystem', freshFetcher);
+
+    expect(afterClear).toBe(13);
+    expect(freshFetcher).toHaveBeenCalledTimes(1);
+  });
+});
