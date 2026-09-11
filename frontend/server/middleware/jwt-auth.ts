@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
     '/api/report/cncf/geo-distribution',
     '/api/report/ai-code-tracker',
     '/api/report/agentic-ai-momentum',
+    '/api/report/health-score-coverage',
   ];
   const isPublicReport = publicReportRoutes.some((route) => url.startsWith(route));
   if (isPublicReport) {
