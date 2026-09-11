@@ -3,6 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { Leaderboard, LeaderboardTinybird } from '~~/types/leaderboard/leaderboard';
 import { Pagination } from '~~/types/shared/pagination';
+import { paginationTotal } from '~~/server/utils/pagination';
 
 export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>> => {
   const query = getQuery(event);
@@ -31,7 +32,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>
       })),
       page: page,
       pageSize: pageSize,
-      total: response.rows_before_limit_at_least,
+      total: paginationTotal(response, page, pageSize),
     };
   } catch (error) {
     console.error('Error fetching leaderboard list:', error);

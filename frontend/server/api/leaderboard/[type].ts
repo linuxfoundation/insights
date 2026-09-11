@@ -3,6 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import { Pagination } from '~~/types/shared/pagination';
+import { paginationTotal } from '~~/server/utils/pagination';
 
 export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>> => {
   const { type } = event.context.params as Record<string, string>;
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>
       data: response.data,
       page: page,
       pageSize: pageSize,
-      total: response.rows_before_limit_at_least,
+      total: paginationTotal(response, page, pageSize),
     };
   } catch (error) {
     console.error('Error fetching leaderboard:', error);

@@ -4,6 +4,7 @@ import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { VulnerabilityListItem } from '~~/types/security/vulnerabilities.types';
 import type { Pagination } from '~~/types/shared/pagination';
 import { getBooleanQueryParam } from '~~/server/utils/common';
+import { paginationTotal } from '~~/server/utils/pagination';
 
 export default defineEventHandler(
   async (event): Promise<Pagination<VulnerabilityListItem> | Error> => {
@@ -43,7 +44,7 @@ export default defineEventHandler(
         data: res.data,
         page,
         pageSize,
-        total: res.rows_before_limit_at_least,
+        total: paginationTotal(res, page, pageSize),
       };
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404)
