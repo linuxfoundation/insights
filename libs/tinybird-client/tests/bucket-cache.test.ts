@@ -235,6 +235,29 @@ describe('createBucketCache — getBucketIdForProject', () => {
     expect(afterClear).toBe(13);
     expect(freshFetcher).toHaveBeenCalledTimes(1);
   });
+
+  it('clears the in-flight entry on a cache hit so a later clearBucketCache + refetch is not stuck on the stale resolved promise', async () => {
+    const storage = createMemoryStorage();
+    const cache = createBucketCache(storage, logger);
+    const fetcher = vi.fn().mockResolvedValue(bucketResponse(7));
+
+    // First call populates storage.
+    await cache.getBucketIdForProject('k8s', fetcher);
+    // Second call is a cache hit — this must not leave a stale resolved promise
+    // parked in the in-flight map once it returns.
+    const cacheHit = await cache.getBucketIdForProject('k8s', fetcher);
+    expect(cacheHit).toBe(7);
+
+    await cache.clearBucketCache('k8s');
+
+    const freshFetcher = vi.fn().mockResolvedValue(bucketResponse(21));
+    const afterClear = await cache.getBucketIdForProject('k8s', freshFetcher);
+
+    // If the cache-hit path had left its entry in inFlightRequests, this call would
+    // reuse that stale resolved promise (still 7) instead of checking storage again.
+    expect(afterClear).toBe(21);
+    expect(freshFetcher).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('createBucketCache — getBucketIdForCollection', () => {

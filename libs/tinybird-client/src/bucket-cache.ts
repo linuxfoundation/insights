@@ -149,28 +149,30 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
 
     const fetchPromise = (async () => {
       try {
-        const cached = await storage.getItem(cacheKey);
-        if (cached !== null && cached !== undefined) {
-          return cached;
-        }
-      } catch (err) {
-        logger.error(`Failed to read from bucket cache for project ${projectValue}: ${err}`);
-      }
-
-      try {
-        const bucketId = await fetchFromTinybird(projectValue, fetcher);
-        if (bucketId === null) return null;
-
-        if (currentGeneration(cacheKey) === generation) {
-          await writeToCache(cacheKey, bucketId, `project ${projectValue}`);
+        try {
+          const cached = await storage.getItem(cacheKey);
+          if (cached !== null && cached !== undefined) {
+            return cached;
+          }
+        } catch (err) {
+          logger.error(`Failed to read from bucket cache for project ${projectValue}: ${err}`);
         }
 
-        return bucketId;
-      } catch (error: unknown) {
-        // Propagate all classified Tinybird errors (401/403/404/429/5xx), and wrap
-        // unclassified failures (network/DNS) instead of masking either as a false
-        // "project not found" via a `null` return.
-        classifyBucketLookupError(error, projectValue);
+        try {
+          const bucketId = await fetchFromTinybird(projectValue, fetcher);
+          if (bucketId === null) return null;
+
+          if (currentGeneration(cacheKey) === generation) {
+            await writeToCache(cacheKey, bucketId, `project ${projectValue}`);
+          }
+
+          return bucketId;
+        } catch (error: unknown) {
+          // Propagate all classified Tinybird errors (401/403/404/429/5xx), and wrap
+          // unclassified failures (network/DNS) instead of masking either as a false
+          // "project not found" via a `null` return.
+          classifyBucketLookupError(error, projectValue);
+        }
       } finally {
         inFlightRequests.delete(projectValue);
       }
