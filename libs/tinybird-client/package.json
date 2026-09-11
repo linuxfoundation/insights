@@ -2,6 +2,7 @@
   "name": "@lfx-insights/tinybird-client",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {

@@ -57,7 +57,10 @@ export class AdaptiveSemaphore {
 
   reportTinybirdRateLimit(): void {
     const previousLimit = this.effectiveLimit;
-    this.effectiveLimit = Math.max(Math.floor(this.limit * this.backoffFactor), this.minLimit);
+    this.effectiveLimit = Math.min(
+      this.limit,
+      Math.max(Math.floor(this.limit * this.backoffFactor), this.minLimit),
+    );
 
     this.logger.warn(
       JSON.stringify({

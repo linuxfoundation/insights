@@ -116,4 +116,81 @@ describe('createTinybirdClient — fetch()', () => {
 
     await expect(client.fetch('/mock-path', {})).rejects.toMatchObject({ statusCode: 500 });
   });
+
+  it('retries once on a transient 503 response, then succeeds', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 503,
+        statusText: 'Service Unavailable',
+        text: () => Promise.resolve(''),
+        json: () => Promise.resolve({}),
+      } as unknown as Response)
+      .mockResolvedValueOnce(okResponse(mockResult));
+
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
+
+    const result = await client.fetch('/mock-path', {});
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(result).toEqual(mockResult);
+  });
+
+  it('retries once on a network error, then succeeds', async () => {
+    mockFetch
+      .mockRejectedValueOnce(new Error('network error'))
+      .mockResolvedValueOnce(okResponse(mockResult));
+
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
+
+    const result = await client.fetch('/mock-path', {});
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(result).toEqual(mockResult);
+  });
+
+  it('gives up after exhausting the single retry on repeated 429s', async () => {
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 429,
+      statusText: 'Too Many Requests',
+      text: () => Promise.resolve(''),
+      json: () => Promise.resolve({}),
+    } as unknown as Response);
+
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
+
+    await expect(client.fetch('/mock-path', {})).rejects.toMatchObject({ statusCode: 429 });
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not retry a non-retryable 400 response', async () => {
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 400,
+      statusText: 'Bad Request',
+      text: () => Promise.resolve(''),
+      json: () => Promise.resolve({}),
+    } as unknown as Response);
+
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
+
+    await expect(client.fetch('/mock-path', {})).rejects.toMatchObject({ statusCode: 400 });
+    expect(mockFetch).toHaveBeenCalledOnce();
+  });
+
+  it('does not retry POST requests on a transient 503', async () => {
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 503,
+      statusText: 'Service Unavailable',
+      text: () => Promise.resolve(''),
+      json: () => Promise.resolve({}),
+    } as unknown as Response);
+
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
+
+    await expect(client.post('/mock-path', {})).rejects.toMatchObject({ statusCode: 503 });
+    expect(mockFetch).toHaveBeenCalledOnce();
+  });
 });

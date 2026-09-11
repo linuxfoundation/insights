@@ -56,6 +56,7 @@ export interface TinybirdClient {
   post<T>(path: string, params: TinybirdQuery): Promise<TinybirdResponse<T>>;
   ingest(datasource: string, data: object): Promise<boolean>;
   getBucketIdForProject(project: string): Promise<number | null>;
+  getBucketIdForCollection(collectionSlug: string): Promise<number | null>;
   clearBucketCache(project: string): Promise<void>;
   clearAllBucketCaches(): Promise<void>;
 }
