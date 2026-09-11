@@ -131,7 +131,7 @@ const chartConfig = computed<ECOption>(() => {
           formatter: (params: { dataIndex: number }) => {
             const row = rows[params.dataIndex];
             if (!row) return '';
-            return `${formatNumber(row.scored)} · ${percentOf(row.scored, total)}%`;
+            return `${percentOf(row.scored, total)}%`;
           },
         },
       },

@@ -3,9 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <!--
-  Standalone widget 03 "Where the strongest repositories pull ahead" component for the Health
-  Score Coverage report (IN-1288, epic IN-1276). Not yet wired into
-  health-score-coverage-report.vue - see health-score-coverage-signal-scores.types.ts for why.
+  Widget 03 "Where the strongest repositories pull ahead" for the Health Score Coverage report
+  (IN-1288, epic IN-1276). Wired into health-score-coverage-report.vue.
 -->
 <template>
   <lfx-card class="p-4 md:p-6">
@@ -49,7 +48,13 @@ SPDX-License-Identifier: MIT
           :key="group.categoryKey"
           class="flex flex-col gap-1"
         >
-          <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">{{ group.label }}</p>
+          <p class="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+            <i
+              class="inline-block w-2 h-2 rounded-full"
+              :style="{ background: group.color }"
+            />
+            {{ group.label }}
+          </p>
           <div :style="{ height: `${group.signals.length * 64 + 24}px` }">
             <client-only>
               <lfx-chart
@@ -61,13 +66,7 @@ SPDX-License-Identifier: MIT
         </div>
 
         <div class="flex flex-wrap gap-x-6 gap-y-1 text-body-2 text-neutral-500">
-          <span class="flex items-center gap-2">
-            <i
-              class="inline-block w-3 h-3 rounded-sm"
-              :style="{ background: lfxColors.brand[500] }"
-            />
-            Top 20% of repositories
-          </span>
+          <span class="flex items-center gap-2"> Top 20% of repositories &mdash; colored by category above </span>
           <span class="flex items-center gap-2">
             <i
               class="inline-block w-3 h-3 rounded-sm"
@@ -99,10 +98,12 @@ const SIGNAL_LABELS: Record<string, string> = {
   busFactor: 'Bus factor',
   orgDiversity: 'Organizational diversity',
   responsiveness: 'Responsiveness',
+  openVuln: 'Known vulnerabilities',
   scorecard: 'OpenSSF Scorecard',
   securityPractices: 'Security practices',
   dependencyHealth: 'Dependency health',
   releaseCadence: 'Release cadence',
+  commitActivity: 'Commit activity',
   issueResolution: 'Issue resolution',
   prMerge: 'Pull request merge',
 };
@@ -115,6 +116,14 @@ const CATEGORY_LABELS: Record<string, string> = {
   maintainerHealth: 'Maintainer health',
   securitySupplyChain: 'Security & supply chain',
   developmentActivity: 'Development activity',
+};
+// One distinct color per category for the "Top 20%" series - matches widget 06's
+// (signal-availability-lf.vue) per-category coloring pattern. "Typical repository, the median"
+// stays neutral[400] across all three, unchanged.
+const CATEGORY_COLORS: Record<string, string> = {
+  maintainerHealth: lfxColors.brand[500],
+  securitySupplyChain: lfxColors.violet[500],
+  developmentActivity: lfxColors.positive[500],
 };
 const CATEGORY_ORDER = ['maintainerHealth', 'securitySupplyChain', 'developmentActivity'];
 
@@ -133,6 +142,7 @@ const round1 = (value: number): number => Math.round(value * 10) / 10;
 interface CategoryGroup {
   categoryKey: string;
   label: string;
+  color: string;
   signals: HealthScoreCoverageSignalScore[];
   chartConfig: ECOption;
 }
@@ -141,7 +151,7 @@ interface CategoryGroup {
 // 20% vs median). Inline here rather than a separate chart-config module - `pnpm tsc-check`
 // doesn't parse `.vue` files, which broke a prior widget's standalone module that imported a type
 // re-exported only from a `.vue` file.
-const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalScore[]): ECOption => {
+const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalScore[], p80Color: string): ECOption => {
   const categories = categorySignals.map((signal) => displayLabel(signal.signalKey));
   const p80Values = categorySignals.map((signal) => round1(signal.p80Pct));
   const medianValues = categorySignals.map((signal) => round1(signal.medianPct));
@@ -205,7 +215,7 @@ const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalScor
         data: p80Values,
         barMaxWidth: 8,
         itemStyle: {
-          color: lfxColors.brand[500],
+          color: p80Color,
           borderRadius: [10, 10, 10, 10],
         },
       },
@@ -226,12 +236,14 @@ const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalScor
 const categoryGroups = computed(() =>
   CATEGORY_ORDER.map((categoryKey) => {
     const categorySignals = signals.value.filter((signal) => signal.categoryKey === categoryKey);
+    const color = CATEGORY_COLORS[categoryKey] ?? lfxColors.brand[500];
 
     return {
       categoryKey,
       label: CATEGORY_LABELS[categoryKey] ?? categoryKey,
+      color,
       signals: categorySignals,
-      chartConfig: buildCategoryChartConfig(categorySignals),
+      chartConfig: buildCategoryChartConfig(categorySignals, color),
     } satisfies CategoryGroup;
   }).filter((group) => group.signals.length > 0),
 );
