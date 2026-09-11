@@ -7,7 +7,7 @@ import {
   type TinybirdResponse,
   BucketCacheStorage,
 } from '@lfx-insights/tinybird-client';
-import { getBucketIdForCollection, getBucketIdForProject } from './bucket-cache';
+import { getBucketIdForProject } from './bucket-cache';
 
 export type { TinybirdResponse };
 
@@ -71,17 +71,6 @@ export async function fetchFromTinybird<T>(
   path: string,
   query: Record<string, DateTimeOrPrimitive>,
 ): Promise<TinybirdResponse<T>> {
-  const tinybirdBaseUrl =
-    process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
-  const tinybirdToken = process.env.NUXT_TINYBIRD_TOKEN;
-
-  if (!tinybirdBaseUrl) {
-    throw new Error('Tinybird base URL is not defined');
-  }
-  if (!tinybirdToken) {
-    throw new Error('Tinybird token is not defined');
-  }
-
   // Fetch and add bucketId if query contains a project parameter
   // Tinybird will route the request to the correct bucket that contains the data for that project
   if (
@@ -111,31 +100,9 @@ export async function fetchFromTinybird<T>(
     }
   }
 
-  // Fetch and add bucketId if query contains a collectionSlug parameter
-  // Tinybird will route the request to the single bucket that contains the collection's data
-  // instead of scanning the 10-way union
-  if (
-    query.collectionSlug &&
-    typeof query.collectionSlug === 'string' &&
-    !query.bucketId &&
-    path !== '/v0/pipes/collection_buckets.json'
-  ) {
-    try {
-      const bucketId = await getBucketIdForCollection(query.collectionSlug, fetchFromTinybird);
-      if (bucketId !== null) {
-        query.bucketId = bucketId;
-      }
-      // No bucketId found is not fatal for collections (unlike projects) - fall back to the union pipe
-    } catch (error: unknown) {
-      // Re-throw all classified Tinybird errors (401/403/404/429/5xx) instead of
-      // masking auth/permission failures as a fallback-to-union-pipe case.
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error;
-      }
-      console.warn(`Failed to fetch bucketId for collection ${query.collectionSlug}:`, error);
-      // Continue without bucketId - falls back to the union pipe
-    }
-  }
+  // Collection bucket routing is handled internally by client.fetch (via the
+  // bucketCache adapter passed into createTinybirdClient) - no local pre-resolution
+  // needed here, unlike the project case above which chart.ts also depends on directly.
 
   try {
     return await client.fetch<T>(path, serializeQuery(query));

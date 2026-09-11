@@ -10,7 +10,6 @@ import type { TinybirdResponse } from './tinybird';
  * Only used when Redis is available.
  */
 const inFlightRequests = new Map<string, Promise<number | null>>();
-const collectionInFlightRequests = new Map<string, Promise<number | null>>();
 
 /** Per-key invalidation counters so a stale in-flight write can't repopulate a just-cleared cache entry. */
 const invalidationGenerations = new Map<string, number>();
@@ -58,13 +57,6 @@ async function waitForPendingWrite(cacheKey: string): Promise<void> {
  * Response type from the project_buckets Tinybird pipe
  */
 interface ProjectBucketResponse {
-  bucketId: number;
-}
-
-/**
- * Response type from the collection_buckets Tinybird pipe
- */
-interface CollectionBucketResponse {
   bucketId: number;
 }
 
@@ -216,122 +208,6 @@ async function fetchBucketIdFromTinybird(
   return bucketId;
 }
 
-export async function getBucketIdForCollection(
-  collectionSlug: string,
-  fetcher: <T>(
-    path: string,
-    query: Record<string, string | number | boolean | string[] | undefined | null>,
-  ) => Promise<TinybirdResponse<T>>,
-): Promise<number | null> {
-  const slugValue = collectionSlug?.toString().trim();
-  if (!slugValue || slugValue.length === 0) {
-    console.warn(
-      JSON.stringify({
-        message: 'tinybird_bucket_invalid_collection',
-        timestamp: new Date().toISOString(),
-      }),
-    );
-    return null;
-  }
-
-  const redisEnabled = isRedisEnabled();
-
-  if (!redisEnabled) {
-    return await fetchBucketIdForCollectionFromTinybird(slugValue, fetcher);
-  }
-
-  if (collectionInFlightRequests.has(slugValue)) {
-    try {
-      return await collectionInFlightRequests.get(slugValue)!;
-    } catch {
-      collectionInFlightRequests.delete(slugValue);
-    }
-  }
-
-  const cacheKey = `collection_bucket:${slugValue}`;
-  const generation = currentGeneration(cacheKey);
-
-  const fetchPromise = (async () => {
-    try {
-      const storage = useStorage('redis');
-      const cachedBucketId = await storage.getItem<number>(cacheKey);
-
-      if (cachedBucketId !== null && cachedBucketId !== undefined) {
-        return cachedBucketId;
-      }
-    } catch (cacheError) {
-      console.error(`Failed to read from Redis cache for collection ${slugValue}:`, cacheError);
-    }
-
-    try {
-      const bucketId = await fetchBucketIdForCollectionFromTinybird(slugValue, fetcher);
-
-      if (bucketId === null) {
-        return null;
-      }
-
-      if (currentGeneration(cacheKey) === generation) {
-        await writeToCache(cacheKey, bucketId, `collection ${slugValue}`);
-      }
-
-      return bucketId;
-    } catch (error: unknown) {
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error;
-      }
-      console.warn(`Failed to fetch bucketId for collection ${slugValue}:`, error);
-      return null;
-    } finally {
-      collectionInFlightRequests.delete(slugValue);
-    }
-  })();
-
-  collectionInFlightRequests.set(slugValue, fetchPromise);
-
-  return fetchPromise;
-}
-
-async function fetchBucketIdForCollectionFromTinybird(
-  slugValue: string,
-  fetcher: <T>(
-    path: string,
-    query: Record<string, string | number | boolean | string[] | undefined | null>,
-  ) => Promise<TinybirdResponse<T>>,
-): Promise<number | null> {
-  const response = await fetcher<CollectionBucketResponse[]>('/v0/pipes/collection_buckets.json', {
-    collectionSlug: slugValue,
-  });
-
-  // A missing or non-array `data` is a malformed upstream response, not "not found" -
-  // throw so it isn't masked as a silent fallback-to-union-pipe by callers.
-  if (!response?.data || !Array.isArray(response.data)) {
-    throw new TinybirdInvalidResponseError(
-      `Malformed collection_buckets response for collection ${slugValue}`,
-    );
-  }
-
-  if (response.data.length === 0) {
-    console.warn(
-      JSON.stringify({
-        message: 'tinybird_bucket_not_found',
-        collectionSlug: slugValue,
-        timestamp: new Date().toISOString(),
-      }),
-    );
-    return null;
-  }
-
-  const bucketId = response.data[0]?.bucketId;
-
-  if (typeof bucketId !== 'number') {
-    throw new TinybirdInvalidResponseError(
-      `Malformed bucketId (type ${typeof bucketId}) for collection ${slugValue}`,
-    );
-  }
-
-  return bucketId;
-}
-
 /**
  * Clears the cached bucketId for a specific project.
  * Only works when Redis is enabled.
@@ -399,5 +275,4 @@ export async function clearAllBucketCaches(): Promise<void> {
 
   // Clear in-flight requests
   inFlightRequests.clear();
-  collectionInFlightRequests.clear();
 }
