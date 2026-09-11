@@ -116,16 +116,19 @@ const kpiCards = computed(() => {
     { label: 'Repositories tracked', value: formatNumber(reposTracked) },
     {
       label: 'Repositories scored',
-      value: `${formatNumber(reposScored)} (${percentOfTracked(reposScored, reposTracked)}) of ${formatNumber(reposTracked)} tracked`,
+      value: `${formatNumber(reposScored)} (${percentOfTracked(reposScored, reposTracked)})`,
+      caption: `of ${formatNumber(reposTracked)} tracked`,
     },
     { label: 'Projects tracked', value: formatNumber(projectsTracked) },
     {
       label: 'Projects scored',
-      value: `${formatNumber(projectsScored)} (${percentOfTracked(projectsScored, projectsTracked)}) of ${formatNumber(projectsTracked)} tracked`,
+      value: `${formatNumber(projectsScored)} (${percentOfTracked(projectsScored, projectsTracked)})`,
+      caption: `of ${formatNumber(projectsTracked)} tracked`,
     },
     {
       label: 'Projects partially scored',
-      value: `${formatNumber(projectsPartial)} (${percentOfTracked(projectsPartial, projectsTracked)}) of ${formatNumber(projectsTracked)} tracked`,
+      value: `${formatNumber(projectsPartial)} (${percentOfTracked(projectsPartial, projectsTracked)})`,
+      caption: `of ${formatNumber(projectsTracked)} tracked`,
       tooltip:
         'A project scores in full when all three categories (Maintainer health, Development activity, Security & supply chain) can be measured, and partially when only two can. The score is then rescaled to 100 so it can be compared against fully-scored projects.',
     },

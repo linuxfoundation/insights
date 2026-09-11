@@ -45,12 +45,17 @@ SPDX-License-Identifier: MIT
           width="80%"
         />
       </div>
-      <span
-        v-else
-        class="text-heading-3 md:text-heading-2 font-bold text-neutral-900"
-      >
-        {{ kpi.value }}
-      </span>
+      <div v-else>
+        <span class="text-heading-3 md:text-heading-2 font-bold text-neutral-900">
+          {{ kpi.value }}
+        </span>
+        <span
+          v-if="kpi.caption"
+          class="block text-body-2 text-neutral-500"
+        >
+          {{ kpi.caption }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
