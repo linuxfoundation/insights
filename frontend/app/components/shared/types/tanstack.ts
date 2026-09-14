@@ -105,6 +105,9 @@ export enum TanstackKey {
   AGENTIC_AI_GLANCE = 'agentic-ai-glance',
   AGENTIC_AI_TB_PROJECTS = 'agentic-ai-tb-projects',
 
+  // Health Score Coverage
+  HEALTH_SCORE_COVERAGE_GLANCE = 'health-score-coverage-glance',
+
   // Organization Page
   ORGANIZATION_PAGE = 'organization-page',
   ORGANIZATION_PAGE_KPIS = 'organization-page-kpis',
