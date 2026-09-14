@@ -20,8 +20,7 @@ issued for other LFX products at a glance.
 
 The PAT is shown once at creation time. Store it the way you would any other long-lived
 secret (a secrets manager, CI secret store, or local `.env` file that is not committed).
-There is no client-side token-swap step: you send the PAT itself on every call, and the
-API's edge layer exchanges it for a short-lived signed token behind the scenes.
+There is no client-side token-swap step: you send the PAT itself on every call.
 
 ## 2. Make your first request {#make-your-first-request}
 
@@ -37,9 +36,9 @@ A successful response is plain JSON with camelCase field names (see
 non-2xx status code and a JSON error body, described below.
 
 Every response, success or failure, also carries `Cache-Control: private, max-age=0`.
-That tells your HTTP client, and any proxy in between, not to cache the response: caching
-happens once, at our origin, so we can tune freshness centrally without breaking your
-integration. See [Pagination](/pagination) for how this interacts with list endpoints.
+That tells your HTTP client, and any proxy in between, not to cache the response, so
+every request you make returns current data. See [Pagination](/pagination) for how this
+interacts with list endpoints.
 
 ## 3. Understand the error envelope
 
@@ -62,8 +61,8 @@ list of error codes you may encounter.
 ## 4. Watch your rate limit {#watch-your-rate-limit}
 
 Every PAT is tied to your organization's LFX membership tier, and that tier determines
-your rate limit pool. Rate limits protect the service for every customer, so once you hit
-your limit, the API responds with `429 Too Many Requests` and a `Retry-After` header
+your rate limit pool. Once you hit your limit, the API responds with
+`429 Too Many Requests` and a `Retry-After` header
 telling you how long to wait before trying again. Rate-limit accounting is returned on
 every response via `X-RateLimit-*` headers so you can back off before you ever see a 429.
 
@@ -73,8 +72,7 @@ add your own client-side backoff on `429` responses.
 
 ## Where to go next
 
-- [Authentication](/authentication) — full detail on the `lfi_` PAT scheme and the token
-  exchange behind it.
-- [Pagination](/pagination) — cursor-based pagination for list endpoints.
-- [Errors](/errors) — the full error code reference, plus our JSON and date conventions.
-- [Changelog](/changelog) — what changed, release by release.
+- [Authentication](/authentication): full detail on the `lfi_` PAT scheme.
+- [Pagination](/pagination): cursor-based pagination for list endpoints.
+- [Errors](/errors): the full error code reference, plus our JSON and date conventions.
+- [Changelog](/changelog): what changed, release by release.

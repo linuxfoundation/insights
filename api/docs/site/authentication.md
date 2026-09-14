@@ -27,12 +27,8 @@ Send the PAT as a bearer token on the `Authorization` header of every request:
 Authorization: Bearer lfi_your_token_here
 ```
 
-You do not exchange the PAT for anything yourself. Behind the scenes, our edge layer
-validates the `lfi_` prefix and exchanges the token for a short-lived, signed credential
-using Auth0 Custom Token Exchange, then resolves your organization and membership tier and
-forwards the request to the API. That exchange result is cached for a few minutes, so
-most requests do not pay the exchange cost. None of this changes what you send: it is
-always the same PAT, on every request, forever (until you rotate or revoke it).
+There is no exchange step on your side: you send the same PAT on every request, and it
+keeps working until you rotate or revoke it.
 
 ## Rotating and revoking
 
@@ -43,24 +39,22 @@ makes zero-downtime rotation straightforward:
 2. Switch your integration over to it.
 3. Revoke the old PAT once you have confirmed the new one works.
 
-Revoking a PAT takes effect on the next token exchange, so the effective revocation
-window is bounded by the exchange cache (on the order of a few minutes), not immediate.
-Plan for that short window if a token may have been compromised.
+Revocation is not instant: it can take a few minutes to propagate. Plan for that short
+window if a token may have been compromised.
 
 ## What determines your rate limit
 
-Your organization's LFX membership tier is resolved as part of the token exchange above
-and used as the key for rate limiting, see the quickstart's [rate limit
-section](/#watch-your-rate-limit) for how limits are enforced and reported.
+Your organization's LFX membership tier determines your rate limit. See the quickstart's
+[rate limit section](/#watch-your-rate-limit) for how limits are enforced and reported.
 
 ## Common mistakes
 
 - **Wrong prefix.** If your token does not start with `lfi_`, it was not issued for the
   Insights audience and will be rejected.
 - **Pasting the PAT into a browser tool.** The API's interactive documentation does not
-  offer a "try it" client that executes requests from the browser, specifically so
-  customers are not tempted to paste long-lived credentials into a page. Use `curl`,
-  a script, or your own backend service instead.
+  offer a "try it" client that executes requests from the browser. Use `curl`, a script,
+  or your own backend service instead, and treat the PAT as a secret that never belongs
+  in a browser.
 - **Committing the token to source control.** Treat an `lfi_` PAT like any other
   long-lived secret: environment variable, secret manager, or CI secret store, never a
   committed file.

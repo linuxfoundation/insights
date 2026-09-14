@@ -36,8 +36,7 @@ other error they don't specifically handle.
 
 All request and response field names are **camelCase** (`startDate`, `activityTypes`,
 `includeCodeContributions`), including inside error responses and paginated envelopes.
-There is no snake_case anywhere in the public contract, even where the data originates
-from an internal store that uses different naming.
+There is no snake_case anywhere in the public contract.
 
 Date and timestamp values are always **ISO-8601** strings in UTC, for example
 `2025-12-31T23:59:59Z`. The API never returns Unix timestamps or locale-formatted dates.
@@ -67,6 +66,6 @@ section](/#watch-your-rate-limit) for more detail.
 
 ## Caching headers on error responses
 
-Error responses are not cached any differently from successful ones — see the quickstart's
+Error responses are not cached any differently from successful ones. See the quickstart's
 [caching note](/#make-your-first-request) for the response-wide caching contract, which
 applies here too.

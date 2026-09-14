@@ -42,28 +42,18 @@ curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100&cursor=e
   -H "Authorization: Bearer lfi_your_token_here"
 ```
 
-## Why cursors instead of page numbers
+## What cursors guarantee
 
-Cursor-based pagination anchors each page to the sort key of the last row you saw,
-rather than to a numeric offset. That matters for two reasons:
-
-- **Stability under mutations.** With offset pagination (`page`/`pageSize`), an insertion
-  or deletion between two page fetches shifts every row after it, which can cause rows to
-  be skipped or duplicated across pages. A cursor is immune to this, because it does not
-  depend on position, only on the value of the last row returned. This is a real concern
-  here: Insights data (commits, contributors, vulnerabilities) grows continuously.
-- **Cost at scale.** Offset pagination gets more expensive the deeper you page, because
-  the database still has to scan and discard every skipped row. A cursor query is a
-  simple indexed range lookup, so the first page and the hundredth page cost the same.
-
-This mirrors how Stripe, GitHub, AWS, Linear, and Slack paginate their public APIs.
+- **No skipped or duplicated rows.** Each page picks up exactly where the previous one
+  ended, even when data is added or removed between your requests.
+- **Consistent performance.** The first page and the hundredth page respond equally fast,
+  so iterating a large collection does not slow down as you go deeper.
 
 ## Cursors are opaque
 
 Treat `nextCursor` as an opaque string. Do not parse it, construct one by hand, or persist
-it as structured data; pass it back to the API exactly as received. The internal encoding
-may change between releases without that being a breaking change, precisely because the
-cursor's contents are not part of the public contract.
+it as structured data; pass it back to the API exactly as received. The encoding may
+change between releases without notice, and that is not a breaking change.
 
 Cursors are also tied to the `sort` value used to generate them. If an endpoint supports a
 `sort` parameter, do not reuse a cursor obtained under one `sort` value after switching to
@@ -71,10 +61,9 @@ another; request a fresh first page instead.
 
 ## No `total` field
 
-Paginated responses never include a total count. Computing one requires a separate
-counting query on every request, which we do not do by default. If you need a total for a
-specific use case, check whether the endpoint offers a dedicated count endpoint before
-resorting to counting pages yourself.
+Paginated responses never include a total count. If you need a total for a specific use
+case, check whether the endpoint offers a dedicated count endpoint before resorting to
+counting pages yourself.
 
 ## Caching
 
