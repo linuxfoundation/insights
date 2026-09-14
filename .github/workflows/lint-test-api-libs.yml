@@ -5,6 +5,8 @@ on:
     paths:
       - 'api/**'
       - 'libs/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
 
 permissions:
   contents: read
