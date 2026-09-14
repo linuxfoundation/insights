@@ -15,13 +15,10 @@ integrations, or to grant you Key Contact status.
 
 ## Creating a PAT
 
-1. Sign in to [LFX](https://app.lfx.dev/).
-2. Open [Developer Settings](https://app.lfx.dev/settings) and create a new token scoped
-   to the **Insights** audience.
-3. Give it a name that tells you where it is used (for example, `ci-nightly-export`).
-4. Choose an expiration: 30, 60, or 90 days, 1 year, or no expiration.
-5. Copy the token when it is shown. This token will not be shown again; if you lose it,
-   revoke it and create a new one.
+Create a PAT in [LFX Self-Serve Developer Settings](https://app.lfx.dev/settings), scoped
+to the **Insights** audience. You'll name the token and choose an expiration (30, 60, or
+90 days, 1 year, or no expiration). The token is shown once; copy it immediately. If you
+lose it, revoke it and create a new one.
 
 Insights-audience PATs always carry the `lfi_` prefix, so they are easy to distinguish
 from tokens issued for other LFX products.
@@ -41,12 +38,9 @@ Contact status changes.
 ## Rotating and revoking
 
 PATs expire on the schedule you chose at creation (unless you picked no expiration), and
-you can hold multiple active PATs per user at once. That makes zero-downtime rotation
-straightforward:
-
-1. Mint a new PAT in Developer Settings.
-2. Switch your integration over to it.
-3. Revoke the old PAT once you have confirmed the new one works.
+you can hold multiple active PATs per user at once. To rotate without downtime, mint a
+new PAT in [Developer Settings](https://app.lfx.dev/settings), switch your integration
+over to it, then revoke the old one once you have confirmed the new one works.
 
 Revocation is not instant: it can take up to about 10 minutes to take effect. Plan for
 that window if a token may have been compromised.
