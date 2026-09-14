@@ -14,7 +14,6 @@ import type { H3Error, H3Event } from 'h3';
 export default async function ogImageErrorHandler(error: H3Error, event: H3Event) {
   if (!event?.path?.startsWith('/_og/')) return;
 
-  // Detect timeout errors
   const isTimeout =
     error instanceof Error &&
     (error.message.includes('timeout') ||
@@ -36,8 +35,7 @@ export default async function ogImageErrorHandler(error: H3Error, event: H3Event
   }
 
   try {
-    // Try to send redirect response
-    // Use 302 (temporary) instead of 301 to signal this is a fallback
+    // 302 (temporary), not 301, to signal this is a fallback rather than a permanent redirect
     await sendRedirect(event, '/og-image.png', 302);
   } catch (redirectError) {
     // Response may already be committed; log and continue
