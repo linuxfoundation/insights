@@ -5,8 +5,7 @@ title: Authentication
 # Authentication
 
 The Insights API authenticates every request using a Personal Access Token (PAT) issued
-from LFX Self-Serve. There is no separate API key format, no client secret, and no
-OAuth2 dance you need to implement yourself.
+from LFX Self-Serve. The PAT is the only credential you need.
 
 ## Creating a PAT
 
@@ -28,8 +27,8 @@ Send the PAT as a bearer token on the `Authorization` header of every request:
 Authorization: Bearer lfi_your_token_here
 ```
 
-There is no exchange step on your side: you send the same PAT on every request, and it
-keeps working until it expires or you rotate or revoke it.
+You send the same PAT on every request; it keeps working until it expires or you rotate
+or revoke it.
 
 ## Rotating and revoking
 

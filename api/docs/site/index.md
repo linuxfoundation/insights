@@ -20,7 +20,7 @@ issued for other LFX products at a glance.
 
 The PAT is shown once at creation time. Store it the way you would any other long-lived
 secret (a secrets manager, CI secret store, or local `.env` file that is not committed).
-There is no client-side token-swap step: you send the PAT itself on every call.
+You send the PAT itself on every call.
 
 ## 2. Make your first request {#make-your-first-request}
 

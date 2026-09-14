@@ -4,8 +4,8 @@ title: Pagination
 
 # Pagination
 
-List endpoints in the Insights API use cursor-based pagination. There is no page number
-and no `total` field: you follow a cursor forward through the result set until it runs out.
+List endpoints in the Insights API use cursor-based pagination: you follow a cursor
+forward through the result set until it runs out.
 
 ## Request parameters
 
