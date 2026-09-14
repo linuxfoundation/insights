@@ -15,18 +15,25 @@ describe('paginationTotal', () => {
     expect(paginationTotal({ rows: 7 }, 2, 20)).toBe(47);
   });
 
-  it('leaves the total undefined when the field is missing and the page is exactly full', () => {
-    expect(paginationTotal({ rows: 20 }, 0, 20)).toBeUndefined();
-    expect(paginationTotal({ rows: 20 }, 3, 20)).toBeUndefined();
-  });
-
   it('reports 0 for a genuinely empty result set on the first page', () => {
     expect(paginationTotal({ rows: 0 }, 0, 20)).toBe(0);
   });
 
-  it('leaves the total undefined for an out-of-range page rather than reporting page * pageSize', () => {
-    // A request for page 3 of a 47-row result (pageSize 20) legitimately returns 0 rows;
-    // page * pageSize would wrongly report 60 instead of leaving the true total unknown.
-    expect(paginationTotal({ rows: 0 }, 3, 20)).toBeUndefined();
+  it('treats a later zero-row page as the exact end (page * pageSize)', () => {
+    expect(paginationTotal({ rows: 0 }, 3, 20)).toBe(60);
+  });
+
+  it('on an exactly-full page with the field missing, reports a total that guarantees the caller fetches at least one more page', () => {
+    // Callers derive nextPage from Math.ceil(total / pageSize); the value returned here
+    // must make that exceed the page already fetched, or pagination would stop early.
+    for (const [page, pageSize] of [
+      [0, 20],
+      [3, 20],
+      [5, 50],
+    ] as const) {
+      const total = paginationTotal({ rows: pageSize }, page, pageSize);
+      const totalPages = Math.ceil(total / pageSize);
+      expect(page + 1).toBeLessThan(totalPages);
+    }
   });
 });
