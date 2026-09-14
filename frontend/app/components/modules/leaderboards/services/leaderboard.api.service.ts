@@ -60,9 +60,6 @@ class LeaderboardApiService {
       nextPage = Number(lastPage.pageSize) / DEFAULT_PAGE_SIZE + 1;
     }
 
-    // hasMore is resolved server-side against the pageSize actually requested, unlike
-    // the total/DEFAULT_PAGE_SIZE math below - which breaks for a request whose
-    // initialPageSize differs from DEFAULT_PAGE_SIZE (e.g. fetchLeaderboardDetailSearch's 15).
     if (typeof lastPage.hasMore === 'boolean') {
       return lastPage.hasMore ? nextPage : null;
     }
