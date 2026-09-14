@@ -112,6 +112,8 @@ export default {
       : {}),
   },
   nitro: {
+    // Nuxt aliases nitro's `~/` to `app/`, not `server/` — use the rootDir-relative alias instead.
+    errorHandler: '~~/server/utils/og-image-error-handler.ts',
     externals,
     rollupConfig: { external: manuallyTracedPackages },
     storage: {
