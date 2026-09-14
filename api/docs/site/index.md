@@ -50,7 +50,7 @@ Every error response uses one consistent shape, regardless of which endpoint pro
   "error": {
     "code": "invalid_sort",
     "message": "Unsupported sort value 'foo' for this endpoint.",
-    "requestId": "4e1f9c2a-2b7e-4d3b-9a7a-4a1e9e2b6f10",
+    "requestId": "4e1f9c2a2b7e4d3b9a7a4a1e9e2b6f10",
     "docsUrl": "https://api.insights.linuxfoundation.org/docs/errors#invalid_sort"
   }
 }
