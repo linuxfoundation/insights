@@ -36,4 +36,12 @@ describe('paginationTotal', () => {
       expect(page + 1).toBeLessThan(totalPages);
     }
   });
+
+  it('coerces string page/pageSize so arithmetic never falls back to concatenation', () => {
+    // getQuery() values are only type-asserted to number by some callers, so they can
+    // still be strings at runtime (e.g. page: '1'); '1' + 2 would concatenate to '12'.
+    expect(paginationTotal({ rows: 20 }, '1' as unknown as number, 20)).toBe(60);
+    expect(paginationTotal({ rows: 20 }, 1, '20' as unknown as number)).toBe(60);
+    expect(paginationTotal({ rows: 7 }, '2' as unknown as number, 20)).toBe(47);
+  });
 });

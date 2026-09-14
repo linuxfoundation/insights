@@ -28,8 +28,15 @@ export function paginationTotal(
   if (response.rows_before_limit_at_least !== undefined) {
     return response.rows_before_limit_at_least;
   }
+  // Some callers only type-assert page/pageSize from getQuery() rather than converting
+  // them, so they can still be strings at runtime - coerce here so the arithmetic below
+  // can't silently fall back to string concatenation.
+  const pageNum = Number(page);
+  const pageSizeNum = Number(pageSize);
   if (response.rows === 0) {
-    return page * pageSize;
+    return pageNum * pageSizeNum;
   }
-  return response.rows < pageSize ? page * pageSize + response.rows : (page + 2) * pageSize;
+  return response.rows < pageSizeNum
+    ? pageNum * pageSizeNum + response.rows
+    : (pageNum + 2) * pageSizeNum;
 }
