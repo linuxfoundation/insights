@@ -26,7 +26,17 @@ export function paginationTotal(
   // Some callers only type-assert page/pageSize from getQuery() rather than converting
   // them, so they can still be strings at runtime - coerce here so the arithmetic below
   // can't silently fall back to string concatenation.
-  return Number(page) * Number(pageSize) + response.rows;
+  const pageNum = Number(page);
+  const pageSizeNum = Number(pageSize);
+  if (pageNum > 0 && response.rows === 0) {
+    // An empty non-first page proves nothing on its own: it's indistinguishable from a
+    // request for a page past the real last one, where pageNum * pageSizeNum would
+    // overstate the true total. Reporting 0 here keeps the "never overstate" contract;
+    // paginationHasMore (not this value) is what callers should use to decide whether
+    // more pages exist.
+    return 0;
+  }
+  return pageNum * pageSizeNum + response.rows;
 }
 
 /**

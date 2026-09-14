@@ -31,6 +31,12 @@ describe('paginationTotal', () => {
     expect(paginationTotal({ rows: 7 }, '2' as unknown as number, 20)).toBe(47);
     expect(paginationTotal({ rows: 20 }, 1, '20' as unknown as number)).toBe(40);
   });
+
+  it('reports 0 rather than fabricating a boundary for an empty out-of-range page', () => {
+    // 47 real rows exist; requesting page 3 at pageSize 20 is out of range and returns
+    // 0 rows. page * pageSize (60) would overstate the true total, so 0 is reported instead.
+    expect(paginationTotal({ rows: 0 }, 3, 20)).toBe(0);
+  });
 });
 
 describe('paginationHasMore', () => {
