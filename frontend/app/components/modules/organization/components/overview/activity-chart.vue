@@ -26,6 +26,12 @@ SPDX-License-Identifier: MIT
         <lfx-skeleton height="100%" />
       </div>
       <div
+        v-else-if="isError"
+        class="org-chart-area org-chart-empty"
+      >
+        No contribution data available.
+      </div>
+      <div
         v-else-if="chartConfig"
         class="org-chart-area"
       >
@@ -71,7 +77,7 @@ const currentYear = new Date().getFullYear().toString();
 
 const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_ACTIVITY, orgSlug]);
 
-const { data, isLoading } = useQuery<OrgActivityTimeseries[]>({
+const { data, isLoading, isError } = useQuery<OrgActivityTimeseries[]>({
   queryKey,
   queryFn: ORGANIZATION_PAGE_API_SERVICE.fetchActivityTimeseries(orgSlug),
 });
