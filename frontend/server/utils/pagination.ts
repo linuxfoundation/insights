@@ -7,18 +7,13 @@ interface RowCountedResponse {
 }
 
 /**
- * Total row count for a paginated Tinybird response. rows_before_limit_at_least is
- * occasionally omitted by the pipe; rows alone is only this page's row count, not the
- * grand total, so a value is derived without ever understating the true total (which
- * would make a caller computing Math.ceil(total / pageSize) stop before the real end):
- * - rows === 0 means nothing exists at or past this offset, so page * pageSize (the
- *   count of everything before it) is the exact total - 0 on page 0 for a genuinely
- *   empty result set.
- * - 0 < rows < pageSize proves this is the last page with data (total = page * pageSize
- *   + rows), since a non-final page is always full.
- * - rows === pageSize is ambiguous - there may be more pages - so (page + 2) * pageSize
- *   is reported: enough to guarantee at least one more page is fetched. That next
- *   response resolves the real total via one of the cases above.
+ * Best-effort total row count for a paginated Tinybird response. rows_before_limit_at_least
+ * is occasionally omitted by the pipe; when it is, page * pageSize + rows (everything
+ * fetched up to and including this page) is reported instead - exact when this is
+ * genuinely the last page, an underestimate otherwise. This value is for display only;
+ * callers deciding whether to fetch another page should use paginationHasMore instead
+ * of dividing this by pageSize, since an underestimate here would otherwise look like
+ * the end of the results.
  */
 export function paginationTotal(
   response: RowCountedResponse,
@@ -31,12 +26,24 @@ export function paginationTotal(
   // Some callers only type-assert page/pageSize from getQuery() rather than converting
   // them, so they can still be strings at runtime - coerce here so the arithmetic below
   // can't silently fall back to string concatenation.
-  const pageNum = Number(page);
+  return Number(page) * Number(pageSize) + response.rows;
+}
+
+/**
+ * Whether another page exists, resolved independently of paginationTotal's accuracy.
+ * When rows_before_limit_at_least is known, this is exact. Otherwise a page returning
+ * as many rows as requested might not be the last one, so true is reported to guarantee
+ * the next page is fetched rather than risk stopping early - at worst one extra request
+ * comes back empty.
+ */
+export function paginationHasMore(
+  response: RowCountedResponse,
+  page: number,
+  pageSize: number,
+): boolean {
   const pageSizeNum = Number(pageSize);
-  if (response.rows === 0) {
-    return pageNum * pageSizeNum;
+  if (response.rows_before_limit_at_least !== undefined) {
+    return (Number(page) + 1) * pageSizeNum < response.rows_before_limit_at_least;
   }
-  return response.rows < pageSizeNum
-    ? pageNum * pageSizeNum + response.rows
-    : (pageNum + 2) * pageSizeNum;
+  return response.rows >= pageSizeNum;
 }

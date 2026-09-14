@@ -6,7 +6,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { postToTinybird } from '~~/server/data/tinybird/tinybird';
 import { getOptionalUser } from '~~/server/utils/jwt';
-import { paginationTotal } from '~~/server/utils/pagination';
+import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 
 /**
  * API Endpoint: /api/collection/:slug/projects
@@ -100,6 +100,7 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
       page,
       pageSize,
       total: paginationTotal(response, page, pageSize),
+      hasMore: paginationHasMore(response, page, pageSize),
       data,
     };
   } catch (error: unknown) {

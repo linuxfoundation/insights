@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { describe, it, expect } from 'vitest';
-import { paginationTotal } from './pagination';
+import { paginationTotal, paginationHasMore } from './pagination';
 
 describe('paginationTotal', () => {
   it('uses rows_before_limit_at_least when present, even when it is 0', () => {
@@ -19,29 +19,38 @@ describe('paginationTotal', () => {
     expect(paginationTotal({ rows: 0 }, 0, 20)).toBe(0);
   });
 
-  it('treats a later zero-row page as the exact end (page * pageSize)', () => {
-    expect(paginationTotal({ rows: 0 }, 3, 20)).toBe(60);
-  });
-
-  it('on an exactly-full page with the field missing, reports a total that guarantees the caller fetches at least one more page', () => {
-    // Callers derive nextPage from Math.ceil(total / pageSize); the value returned here
-    // must make that exceed the page already fetched, or pagination would stop early.
-    for (const [page, pageSize] of [
-      [0, 20],
-      [3, 20],
-      [5, 50],
-    ] as const) {
-      const total = paginationTotal({ rows: pageSize }, page, pageSize);
-      const totalPages = Math.ceil(total / pageSize);
-      expect(page + 1).toBeLessThan(totalPages);
-    }
+  it('understates rather than overstates on an exactly-full page with the field missing', () => {
+    // 40 is a lower bound (there may be more); it must never exceed the true total.
+    expect(paginationTotal({ rows: 20 }, 0, 20)).toBe(20);
+    expect(paginationTotal({ rows: 20 }, 1, 20)).toBe(40);
   });
 
   it('coerces string page/pageSize so arithmetic never falls back to concatenation', () => {
     // getQuery() values are only type-asserted to number by some callers, so they can
     // still be strings at runtime (e.g. page: '1'); '1' + 2 would concatenate to '12'.
-    expect(paginationTotal({ rows: 20 }, '1' as unknown as number, 20)).toBe(60);
-    expect(paginationTotal({ rows: 20 }, 1, '20' as unknown as number)).toBe(60);
     expect(paginationTotal({ rows: 7 }, '2' as unknown as number, 20)).toBe(47);
+    expect(paginationTotal({ rows: 20 }, 1, '20' as unknown as number)).toBe(40);
+  });
+});
+
+describe('paginationHasMore', () => {
+  it('is exact when rows_before_limit_at_least is known', () => {
+    expect(paginationHasMore({ rows: 20, rows_before_limit_at_least: 40 }, 0, 20)).toBe(true);
+    expect(paginationHasMore({ rows: 20, rows_before_limit_at_least: 40 }, 1, 20)).toBe(false);
+  });
+
+  it('is false for a short or empty page with the field missing', () => {
+    expect(paginationHasMore({ rows: 15 }, 0, 20)).toBe(false);
+    expect(paginationHasMore({ rows: 0 }, 3, 20)).toBe(false);
+  });
+
+  it('is true for an exactly-full page with the field missing, to guarantee the next page is fetched', () => {
+    expect(paginationHasMore({ rows: 20 }, 0, 20)).toBe(true);
+  });
+
+  it('coerces string page/pageSize inputs', () => {
+    expect(
+      paginationHasMore({ rows: 20 }, '0' as unknown as number, '20' as unknown as number),
+    ).toBe(true);
   });
 });

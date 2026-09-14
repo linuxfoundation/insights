@@ -3,7 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { Pagination } from '~~/types/shared/pagination';
 import { CommunityMentions } from '~~/types/community/community';
-import { paginationTotal } from '~~/server/utils/pagination';
+import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 
 export default defineEventHandler(async (event): Promise<Pagination<CommunityMentions>> => {
   const query = getQuery(event);
@@ -55,6 +55,7 @@ export default defineEventHandler(async (event): Promise<Pagination<CommunityMen
       page: page,
       pageSize: pageSize,
       total: paginationTotal(response, page, pageSize),
+      hasMore: paginationHasMore(response, page, pageSize),
     };
   } catch (error) {
     console.error('Error fetching mentions list:', error);
