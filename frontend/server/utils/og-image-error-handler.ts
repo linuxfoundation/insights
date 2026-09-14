@@ -7,7 +7,7 @@ import type { H3Error, H3Event } from 'h3';
 // (resvg crash, font issue, timeout, etc.), redirect to the default static image
 // instead of returning a 500 to crawlers.
 //
-// Wired as a Nitro `errorHandler` (see setup/caching.ts), not a nitroApp 'error' hook: Nitro's
+// Wired as a Nitro `errorHandler` (see setup/hooks.ts), not a nitroApp 'error' hook: Nitro's
 // onError fires the 'error' hook without awaiting it and sends its own JSON 500 immediately
 // after, so an async redirect from a hook can never win the race. errorHandler modules are
 // awaited before Nitro sends its own response.
