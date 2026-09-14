@@ -17,9 +17,9 @@ There are two candidate clusters: the Insights cluster (Cloudflare-fronted, no p
 
 ## Decision
 
-The PAT service is a new standalone service (working name `lfx-v2-pat-service`) in its own repository with its own Postgres database, deployed on the LFX platform cluster. The user-facing CRUD surface (create, list, rename, revoke) sits behind the Heimdall gateway and is authorized by the caller's verified user JWT, owner-scoped by the username claim. The validation endpoint for the Auth0 CTE action is authenticated machine-to-machine (shared secret or M2M token, confirmed at T-015). lfx-one integrates over HTTP through its `MicroserviceProxyService` with a new `LFX_V2_PAT_SERVICE` registry key that defaults to the gateway URL, the same pattern as member-service. lfx-v2-auth-service is not changed.
+The PAT service is a new standalone service named `lfx-v2-insights-api-pat-service`, in its own repository with its own Postgres database, deployed on the LFX platform cluster. The user-facing CRUD surface (create, list, rename, revoke) sits behind the Heimdall gateway and is authorized by the caller's verified user JWT, owner-scoped by the username claim. The validation endpoint for the Auth0 CTE action is authenticated machine-to-machine (shared secret or M2M token, confirmed at T-015). lfx-one integrates over HTTP through its `MicroserviceProxyService` with a new `LFX_V2_PAT_SERVICE` registry key that defaults to the gateway URL, the same pattern as member-service. lfx-v2-auth-service is not changed.
 
-Insights owns delivery of the service per ADR-0006. The service is audience-generic per ADR-0015: tokens carry an `aud` and the `lfi_` prefix identifies the Insights audience, so future audiences reuse the same store.
+Insights owns delivery of the service per ADR-0006, and the name is deliberately scoped to the Insights API: it is the only audience in v1 and the name makes ownership unambiguous. The token model itself stays audience-generic per ADR-0015 (tokens carry an `aud`, and the `lfi_` prefix identifies the Insights audience), so if LFX later wants a shared PAT store the token format carries over; the service would be generalized or superseded at that point.
 
 ## Alternatives Considered
 
