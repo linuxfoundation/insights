@@ -14,7 +14,8 @@ making a first request, and handling the responses the API sends back.
 ## 1. Get a Personal Access Token
 
 Every request must carry a credential. Credentials are Personal Access Tokens (PATs) that
-you create yourself in LFX Self-Serve Developer Settings, scoped to the Insights audience.
+you create yourself in [LFX Self-Serve Developer Settings](https://app.lfx.dev/settings),
+scoped to the Insights audience.
 Insights-audience PATs are always prefixed `lfi_`, so you can tell them apart from tokens
 issued for other LFX products at a glance.
 
@@ -36,9 +37,10 @@ A successful response is plain JSON with camelCase field names (see
 non-2xx status code and a JSON error body, described below.
 
 Every response, success or failure, also carries `Cache-Control: private, max-age=0`.
-That tells your HTTP client, and any proxy in between, not to cache the response, so
-every request you make returns current data. See [Pagination](/pagination) for how this
-interacts with list endpoints.
+That tells shared caches and proxies not to store the response on your behalf; your own
+client may still cache it privately but must revalidate before reusing it. Treat the data
+as near real-time rather than guaranteed instantaneous. See [Pagination](/pagination) for
+how this interacts with list endpoints.
 
 ## 3. Understand the error envelope
 

@@ -5,16 +5,23 @@ title: Authentication
 # Authentication
 
 The Insights API authenticates every request using a Personal Access Token (PAT) issued
-from LFX Self-Serve. The PAT is the only credential you need.
+from [LFX Self-Serve](https://app.lfx.dev/). The PAT is the only credential you need.
+
+## Who can create a PAT
+
+Creating a PAT requires being a Key Contact for an organization with active LFX
+membership. If you are not a Key Contact, ask one on your team to create tokens for your
+integrations, or to grant you Key Contact status.
 
 ## Creating a PAT
 
-1. Sign in to LFX Self-Serve.
-2. Open Developer Settings and create a new token scoped to the **Insights** audience.
+1. Sign in to [LFX](https://app.lfx.dev/).
+2. Open [Developer Settings](https://app.lfx.dev/settings) and create a new token scoped
+   to the **Insights** audience.
 3. Give it a name that tells you where it is used (for example, `ci-nightly-export`).
 4. Choose an expiration: 30, 60, or 90 days, 1 year, or no expiration.
-5. Copy the token when it is shown. It is not shown again; if you lose it, revoke it and
-   create a new one.
+5. Copy the token when it is shown. This token will not be shown again; if you lose it,
+   revoke it and create a new one.
 
 Insights-audience PATs always carry the `lfi_` prefix, so they are easy to distinguish
 from tokens issued for other LFX products.
@@ -27,8 +34,9 @@ Send the PAT as a bearer token on the `Authorization` header of every request:
 Authorization: Bearer lfi_your_token_here
 ```
 
-You send the same PAT on every request; it keeps working until it expires or you rotate
-or revoke it.
+You send the same PAT on every request; it keeps working until it's expired, rotated, or
+revoked. It can also stop working if your organization's LFX membership ends or your Key
+Contact status changes.
 
 ## Rotating and revoking
 
@@ -40,12 +48,13 @@ straightforward:
 2. Switch your integration over to it.
 3. Revoke the old PAT once you have confirmed the new one works.
 
-Revocation is not instant: it can take a few minutes to propagate. Plan for that short
-window if a token may have been compromised.
+Revocation is not instant: it can take up to about 10 minutes to take effect. Plan for
+that window if a token may have been compromised.
 
 ## What determines your rate limit
 
-Your organization's LFX membership tier determines your rate limit. See the quickstart's
+Your organization's LFX membership tier determines your rate limit, and that limit is
+shared across everyone in your organization using the API. See the quickstart's
 [rate limit section](/#watch-your-rate-limit) for how limits are enforced and reported.
 
 ## Common mistakes
