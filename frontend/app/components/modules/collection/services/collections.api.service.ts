@@ -106,6 +106,9 @@ class CollectionsApiService {
 
   getNextPageCollectionsParam(lastPage: Pagination<Collection>) {
     const nextPage = lastPage.page + 1;
+    if (typeof lastPage.hasMore === 'boolean') {
+      return lastPage.hasMore ? nextPage : null;
+    }
     const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
     return nextPage < totalPages ? nextPage : null;
   }
@@ -434,6 +437,9 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
+        if (typeof lastPage.hasMore === 'boolean') {
+          return lastPage.hasMore ? nextPage : null;
+        }
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },
@@ -515,6 +521,9 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
+        if (typeof lastPage.hasMore === 'boolean') {
+          return lastPage.hasMore ? nextPage : null;
+        }
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },
@@ -572,6 +581,9 @@ class CollectionsApiService {
       initialPageParam: 0,
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
+        if (typeof lastPage.hasMore === 'boolean') {
+          return lastPage.hasMore ? nextPage : null;
+        }
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },

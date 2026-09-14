@@ -60,6 +60,10 @@ class LeaderboardApiService {
       nextPage = Number(lastPage.pageSize) / DEFAULT_PAGE_SIZE + 1;
     }
 
+    if (typeof lastPage.hasMore === 'boolean') {
+      return lastPage.hasMore ? nextPage : null;
+    }
+
     const totalPages = Math.ceil(lastPage.total / DEFAULT_PAGE_SIZE);
     return nextPage < totalPages ? nextPage : null;
   }
