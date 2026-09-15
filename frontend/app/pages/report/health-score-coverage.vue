@@ -11,9 +11,9 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxHealthScoreCoverageReport from '~/components/modules/report/health-score-coverage/views/health-score-coverage-report.vue';
 
-const title = 'Health Score Coverage | LFX Insights';
+const title = 'Open Source Health Score | LFX Insights';
 const description =
-  'Where every project tracked in LFX Insights lands on the health score, and how much of the underlying data we can actually see.';
+  'Where every open source project tracked in LFX Insights lands on the health score, and how much of the underlying data we can actually see.';
 
 useSeoMeta({
   title,
