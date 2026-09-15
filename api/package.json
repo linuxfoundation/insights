@@ -21,8 +21,10 @@
   "dependencies": {
     "@lfx-insights/tinybird-client": "workspace:*",
     "@lfx-insights/types": "workspace:*",
+    "@fastify/static": "^8.0.0",
     "@fastify/swagger": "^9.0.0",
     "@fastify/type-provider-typebox": "^5.0.0",
+    "@scalar/api-reference": "^1.68.0",
     "@sinclair/typebox": "^0.34.0",
     "fastify": "^5.0.0"
   },
