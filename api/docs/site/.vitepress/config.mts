@@ -15,6 +15,7 @@ const navItems = [
 export default defineConfig({
   title: 'LFX Insights API',
   description: 'Reference documentation for the LFX Insights public API.',
+  base: '/docs/',
   head: [
     ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }],
   ],
