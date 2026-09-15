@@ -7,6 +7,7 @@ const navItems = [
   { text: 'Authentication', link: '/authentication' },
   { text: 'Pagination', link: '/pagination' },
   { text: 'Errors', link: '/errors' },
+  { text: 'Lifecycle', link: '/lifecycle' },
   { text: 'Changelog', link: '/changelog' },
 ];
 
