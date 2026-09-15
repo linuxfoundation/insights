@@ -9,6 +9,7 @@ export interface OrganizationProfile {
   domain?: string;
   employeeCount?: string;
   industry?: string[];
+  membership?: string;
   website?: string;
 }
 
