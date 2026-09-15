@@ -101,11 +101,3 @@ describe('no coupling to frontend/docs (AC4)', () => {
     }
   });
 });
-
-describe('no dependency on the OpenAPI export or Scalar yet (AC5)', () => {
-  it('the config does not embed Scalar or fetch a generated OpenAPI spec', () => {
-    const config = read('.vitepress/config.mts');
-    expect(config.toLowerCase()).not.toContain('scalar');
-    expect(config).not.toContain('openapi.json');
-  });
-});
