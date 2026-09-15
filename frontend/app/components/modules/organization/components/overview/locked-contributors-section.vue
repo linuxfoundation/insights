@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex items-center gap-6 py-8">
+  <div
+    v-if="organization?.membership"
+    class="flex items-center gap-6 py-8"
+  >
     <div class="flex-1 h-px bg-neutral-200" />
 
     <div class="flex flex-col items-center text-center gap-1.5 max-w-lg">

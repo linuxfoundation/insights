@@ -12,6 +12,7 @@ interface TinybirdOrgProfile {
   description: string;
   website: string;
   domain: string;
+  membership: string | null;
 }
 
 export default defineEventHandler(async (event): Promise<OrganizationProfile> => {
@@ -43,6 +44,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProfile> =>
             .map((s) => s.trim())
             .filter(Boolean)
         : undefined,
+      membership: raw.membership || undefined,
       website: raw.website || undefined,
       domain: raw.domain || undefined,
     };

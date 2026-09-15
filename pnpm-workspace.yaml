@@ -9,6 +9,17 @@ packages:
   - 'api'
   - 'libs/*'
 
+supportedArchitectures:
+  os:
+    - current
+    - linux
+  cpu:
+    - current
+    - x64
+  libc:
+    - glibc
+    - musl
+
 overrides:
   eslint-plugin-vue: ^10.2.0
   h3@1: '>=1.15.11 <2' # floor only; nuxt 4.5 pulls the latest 1.x itself
