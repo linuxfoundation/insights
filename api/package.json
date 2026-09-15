@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && vitepress build docs/site",
     "lint": "eslint src tests scripts --max-warnings=0",
     "lint:fix": "eslint src tests scripts --fix",
     "format": "prettier --write \"{src,tests,scripts}/**/*.ts\"",

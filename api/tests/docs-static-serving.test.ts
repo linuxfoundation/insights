@@ -47,6 +47,7 @@ describe('static serving of the built docs site under /docs (AC1, AC4)', () => {
 
   it('falls through to the VitePress 404 page for an unknown docs path, not a raw Fastify 404', async () => {
     const res = await app.inject({ method: 'GET', url: '/docs/nonexistent-page' });
+    expect(res.statusCode).toBe(404);
     expect(res.headers['content-type']).toMatch(/text\/html/);
     expect(res.body).not.toContain('"error"');
   });
