@@ -1,0 +1,49 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { sendRedirect } from 'h3';
+import type { H3Error, H3Event } from 'h3';
+
+// Safety net: if OG image generation fails for any unexpected reason
+// (resvg crash, font issue, timeout, etc.), redirect to the default static image
+// instead of returning a 500 to crawlers.
+//
+// Wired as a Nitro `errorHandler` (see setup/hooks.ts), not a nitroApp 'error' hook: Nitro's
+// onError fires the 'error' hook without awaiting it and sends its own JSON 500 immediately
+// after, so an async redirect from a hook can never win the race. errorHandler modules are
+// awaited before Nitro sends its own response.
+export default async function ogImageErrorHandler(error: H3Error, event: H3Event) {
+  if (!event?.path?.startsWith('/_og/')) return;
+
+  const isTimeout =
+    error instanceof Error &&
+    (error.message.includes('timeout') ||
+      error.message.includes('Timeout') ||
+      error.message.includes('AbortError'));
+
+  const logData = {
+    type: isTimeout ? 'og-image-render-timeout' : 'og-image-render-error',
+    path: event.path,
+    error: error instanceof Error ? error.message : String(error),
+    errorStack: error instanceof Error ? error.stack : undefined,
+    message: isTimeout ? 'OG image rendering timed out' : 'OG image rendering failed',
+  };
+
+  if (isTimeout) {
+    console.warn(logData);
+  } else {
+    console.error(logData);
+  }
+
+  try {
+    // 302 (temporary), not 301, to signal this is a fallback rather than a permanent redirect
+    await sendRedirect(event, '/og-image.png', 302);
+  } catch (redirectError) {
+    // Response may already be committed; log and continue
+    console.warn({
+      type: 'og-image-fallback-redirect-error',
+      path: event.path,
+      error: redirectError instanceof Error ? redirectError.message : String(redirectError),
+      message: 'Could not redirect to fallback image',
+    });
+  }
+}
