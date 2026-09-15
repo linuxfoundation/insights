@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
 
       <div
         v-else
-        class="h-[280px] sm:h-[350px]"
+        class="h-[320px] sm:h-[380px]"
       >
         <client-only>
           <lfx-chart
@@ -61,7 +61,7 @@ import { fetchHealthScoreCoverageCategoryCoverageQuery } from '../services/categ
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { getHorizontalBarChartConfig, type HorizontalBarData } from '~/components/uikit/chart/configs/bar.chart';
+import { getDonutChartConfig, type DonutChartData } from '~/components/uikit/chart/configs/pie.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageCategoryCount } from '~~/types/report/health-score-coverage-category-coverage.types';
@@ -76,6 +76,16 @@ const CATEGORY_LABELS: Record<HealthScoreCoverageCategoryCount['categoryKey'], s
   securitySupplyChain: 'Security & supply chain',
 };
 
+// Category-color scheme for this widget's donut slices. signal-scores.vue now uses a continuous
+// heatmap value-scale and signal-availability-lf.vue now uses the LF/non-LF blue-purple
+// convention, so this is no longer shared with either — kept here as this widget's own category
+// identity coloring, distinct from the report-wide LF-vs-other convention used elsewhere.
+const CATEGORY_COLORS: Record<HealthScoreCoverageCategoryCount['categoryKey'], string> = {
+  maintainerHealth: lfxColors.brand[500],
+  securitySupplyChain: lfxColors.violet[500],
+  developmentActivity: lfxColors.positive[500],
+};
+
 const { data, isLoading, suspense } = fetchHealthScoreCoverageCategoryCoverageQuery();
 
 onServerPrefetch(async () => {
@@ -87,55 +97,44 @@ const reposTracked = computed(() => data.value?.reposTracked ?? 0);
 
 const isEmpty = computed(() => !isLoading.value && reposTracked.value === 0);
 
-const round1 = (value: number): number => Math.round(value * 10) / 10;
-
-const percentOf = (count: number, total: number): number => (total > 0 ? round1((count / total) * 100) : 0);
-
-interface CategoryCoverageTooltipParam {
-  dataIndex: number;
-}
-
-// Single-series horizontal bar chart, bars as raw scored-repo counts against an axis capped at
-// the tracked-repo total (not a 0-100% axis) - per the ticket's own spec, which calls out "axis
-// max = repos tracked" and a "n · pct%" label on each bar, distinct from the generic percent-axis
-// pattern used by some sibling widgets.
+// Donut chart, one slice per category. Donuts read most naturally as proportions, so the slice
+// label shows percentage of repos tracked (ECharts pie default), with the raw scored count added
+// alongside it in the tooltip - consistent with how sibling widgets in this report pair a percent
+// with its underlying count.
 const chartConfig = computed<ECOption>(() => {
   const rows: HealthScoreCoverageCategoryCount[] = categories.value;
   const total = reposTracked.value;
 
-  const barData: HorizontalBarData[] = rows.map((row) => ({
-    category: CATEGORY_LABELS[row.categoryKey] ?? row.categoryKey,
+  const donutData: DonutChartData[] = rows.map((row) => ({
+    name: CATEGORY_LABELS[row.categoryKey] ?? row.categoryKey,
     value: row.scored,
+    color: CATEGORY_COLORS[row.categoryKey] ?? lfxColors.brand[500],
   }));
 
-  return getHorizontalBarChartConfig(barData, lfxColors.brand[500], {
-    xAxis: { max: total },
+  return getDonutChartConfig(donutData, {
     tooltip: {
       formatter: (params: unknown) => {
-        const paramArray = params as CategoryCoverageTooltipParam[];
-        const item = paramArray?.[0];
-        if (!item) return '';
-        const row = rows[item.dataIndex];
-        if (!row) return '';
-        return `${CATEGORY_LABELS[row.categoryKey] ?? row.categoryKey}: ${formatNumber(row.scored)} (${percentOf(row.scored, total)}%)`;
+        const { name, value, percent, color } = params as {
+          name: string;
+          value: number;
+          percent: number;
+          color: string;
+        };
+        return `
+          <div style="display: flex; flex-direction: row; align-items: center;
+            justify-content: space-between; min-width: 200px; font-weight: 400;
+            font-size: 12px; color: ${lfxColors.neutral[900]};">
+            <span style="font-weight: 400; font-size: 12px; margin-right: 10px;">
+              <span style="background-color: ${color}; display: inline-block;
+                border-radius: 100%; height: 8px; width: 8px; margin-right: 4px;"></span>
+              ${name}
+            </span>
+            <span style="font-weight: 500; font-size: 12px;">
+              ${percent}% (${formatNumber(value)} of ${formatNumber(total)})
+            </span>
+          </div>`;
       },
     },
-    series: [
-      {
-        label: {
-          show: true,
-          position: 'right',
-          color: lfxColors.neutral[900],
-          fontSize: 12,
-          fontWeight: 600,
-          formatter: (params: { dataIndex: number }) => {
-            const row = rows[params.dataIndex];
-            if (!row) return '';
-            return `${percentOf(row.scored, total)}%`;
-          },
-        },
-      },
-    ],
   });
 });
 </script>

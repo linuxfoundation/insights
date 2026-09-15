@@ -18,13 +18,13 @@ SPDX-License-Identifier: MIT
 
       <p class="text-body-2 text-neutral-500">
         Each signal awards a fixed number of points, shown here as a share of that maximum. Every row compares the
-        strongest fifth of repositories against the median one. Bars close together mean the signal barely distinguishes
-        anyone. Bars far apart mean it is doing real work separating strong repositories from the rest. Repositories
-        count only where the signal can be measured.
+        strongest fifth of repositories against the median one. Cells close in color mean the signal barely
+        distinguishes anyone. Cells far apart in color mean it is doing real work separating strong repositories from
+        the rest. Repositories count only where the signal can be measured. Hover a cell for the exact percentage.
       </p>
 
       <div v-if="isLoading">
-        <div class="h-[420px]">
+        <div class="h-[560px]">
           <lfx-skeleton
             height="100%"
             width="100%"
@@ -34,47 +34,21 @@ SPDX-License-Identifier: MIT
 
       <div
         v-else-if="isEmpty"
-        class="flex items-center justify-center h-[420px]"
+        class="flex items-center justify-center h-[560px]"
       >
         <p class="text-neutral-500">No signal score data available.</p>
       </div>
 
       <div
         v-else
-        class="flex flex-col gap-4"
+        :style="{ height: `${signals.length * 32 + 80}px` }"
       >
-        <div
-          v-for="group in categoryGroups"
-          :key="group.categoryKey"
-          class="flex flex-col gap-1"
-        >
-          <p class="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-            <i
-              class="inline-block w-2 h-2 rounded-full"
-              :style="{ background: group.color }"
-            />
-            {{ group.label }}
-          </p>
-          <div :style="{ height: `${group.signals.length * 64 + 24}px` }">
-            <client-only>
-              <lfx-chart
-                :config="group.chartConfig"
-                :animation="true"
-              />
-            </client-only>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-x-6 gap-y-1 text-body-2 text-neutral-500">
-          <span class="flex items-center gap-2"> Top 20% of repositories &mdash; colored by category above </span>
-          <span class="flex items-center gap-2">
-            <i
-              class="inline-block w-3 h-3 rounded-sm"
-              :style="{ background: lfxColors.neutral[400] }"
-            />
-            Typical repository, the median
-          </span>
-        </div>
+        <client-only>
+          <lfx-chart
+            :config="chartConfig"
+            :animation="true"
+          />
+        </client-only>
       </div>
 
       <p class="text-xs text-neutral-400">Signal scores · repositories where the signal can be measured</p>
@@ -117,14 +91,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   securitySupplyChain: 'Security & supply chain',
   developmentActivity: 'Development activity',
 };
-// One distinct color per category for the "Top 20%" series - matches widget 06's
-// (signal-availability-lf.vue) per-category coloring pattern. "Typical repository, the median"
-// stays neutral[400] across all three, unchanged.
-const CATEGORY_COLORS: Record<string, string> = {
-  maintainerHealth: lfxColors.brand[500],
-  securitySupplyChain: lfxColors.violet[500],
-  developmentActivity: lfxColors.positive[500],
-};
 const CATEGORY_ORDER = ['maintainerHealth', 'securitySupplyChain', 'developmentActivity'];
 
 const { data, isLoading, suspense } = fetchHealthScoreCoverageSignalScoresQuery();
@@ -133,120 +99,124 @@ onServerPrefetch(async () => {
   await suspense();
 });
 
-const signals = computed<HealthScoreCoverageSignalScore[]>(() => data.value?.signals ?? []);
+// Signals grouped by category (fixed category order), flattened into one list for the heatmap's
+// y-axis - the row label carries both the category and signal name so category grouping stays
+// legible without a chart-per-category split.
+const signals = computed<HealthScoreCoverageSignalScore[]>(() =>
+  CATEGORY_ORDER.flatMap(
+    (categoryKey) => data.value?.signals.filter((signal) => signal.categoryKey === categoryKey) ?? [],
+  ),
+);
 
 const isEmpty = computed(() => !isLoading.value && signals.value.length === 0);
 
 const round1 = (value: number): number => Math.round(value * 10) / 10;
 
-interface CategoryGroup {
-  categoryKey: string;
-  label: string;
-  color: string;
-  signals: HealthScoreCoverageSignalScore[];
-  chartConfig: ECOption;
-}
+const rowLabel = (signal: HealthScoreCoverageSignalScore): string =>
+  `${CATEGORY_LABELS[signal.categoryKey] ?? signal.categoryKey} · ${displayLabel(signal.signalKey)}`;
 
-// Three grouped horizontal bar charts in one card, one per category, each with two series (top
-// 20% vs median). Inline here rather than a separate chart-config module - `pnpm tsc-check`
-// doesn't parse `.vue` files, which broke a prior widget's standalone module that imported a type
-// re-exported only from a `.vue` file.
-const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalScore[], p80Color: string): ECOption => {
-  const categories = categorySignals.map((signal) => displayLabel(signal.signalKey));
-  const p80Values = categorySignals.map((signal) => round1(signal.p80Pct));
-  const medianValues = categorySignals.map((signal) => round1(signal.medianPct));
+// Heatmap by percentile: one row per signal (grouped by category, in fixed category order), two
+// columns - "Top 20%" and "Median". Color intensity encodes the percentage value on one shared
+// scale, replacing the prior per-category bar coloring (which read as inconsistent, since only the
+// Top-20% series carried category color and the median series was always gray). Built inline
+// against ECharts' categorical-axis heatmap rather than heat-map.chart.ts's getHeatMapChartConfig,
+// which is shaped for numeric day/hour punch-card coordinates and doesn't fit two named columns.
+const chartConfig = computed<ECOption>(() => {
+  const rows = signals.value;
+  const columns = ['Top 20% of repositories', 'Typical repository, the median'];
+
+  const heatmapData: Array<[number, number, number]> = rows.flatMap((signal, rowIndex) => [
+    [0, rowIndex, round1(signal.p80Pct)],
+    [1, rowIndex, round1(signal.medianPct)],
+  ]);
+
+  const maxValue = Math.max(...heatmapData.map((point) => point[2]), 1);
 
   return {
     grid: {
-      left: 170,
+      left: 320,
       right: '5%',
-      top: 4,
-      bottom: 4,
+      top: 24,
+      bottom: 56,
       containLabel: false,
     },
     xAxis: {
-      type: 'value',
-      max: 100,
+      type: 'category',
+      data: columns,
+      splitArea: { show: true },
       axisLabel: {
-        fontSize: 10,
-        fontWeight: 'normal',
-        color: lfxColors.neutral[400],
-        formatter: '{value}%',
+        fontSize: 12,
+        fontWeight: 500,
+        color: lfxColors.neutral[900],
       },
       axisLine: { show: false },
-      splitLine: {
-        lineStyle: {
-          type: 'solid',
-          color: lfxColors.neutral[200],
-        },
-      },
       axisTick: { show: false },
     },
     yAxis: {
       type: 'category',
-      data: categories,
+      data: rows.map((signal) => rowLabel(signal)),
       inverse: true,
+      splitArea: { show: true },
       axisLabel: {
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: 500,
         color: lfxColors.neutral[900],
         align: 'left',
-        width: 150,
-        margin: 150,
+        width: 300,
+        margin: 300,
         overflow: 'truncate',
       },
       axisLine: { show: false },
       axisTick: { show: false },
     },
-    legend: { show: false },
+    visualMap: {
+      type: 'continuous',
+      min: 0,
+      max: maxValue,
+      orient: 'horizontal',
+      left: 'center',
+      bottom: 0,
+      itemWidth: 12,
+      itemHeight: 120,
+      inRange: {
+        color: [lfxColors.neutral[200], lfxColors.brand[200], lfxColors.brand[500], lfxColors.brand[700]],
+      },
+      text: ['Distinguishes strongly', 'Barely distinguishes'],
+      textStyle: {
+        fontSize: 11,
+        color: lfxColors.neutral[500],
+      },
+    },
     tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
+      trigger: 'item',
       formatter: (params: unknown) => {
-        const paramArray = params as Array<{ seriesName: string; value: number }>;
-        if (!paramArray || paramArray.length === 0) return '';
-        return paramArray.map((param) => `${param.seriesName}: ${param.value}%`).join('<br/>');
+        const { value } = params as { value: [number, number, number] };
+        const [columnIndex, rowIndex, percent] = value;
+        const signal = rows[rowIndex];
+        const column = columns[columnIndex];
+        if (!signal || !column) return '';
+        return `${rowLabel(signal)}<br/>${column}: ${percent}%`;
       },
     },
     series: [
       {
-        name: 'Top 20% of repositories',
-        type: 'bar',
-        data: p80Values,
-        barMaxWidth: 8,
+        type: 'heatmap',
+        data: heatmapData,
         itemStyle: {
-          color: p80Color,
-          borderRadius: [10, 10, 10, 10],
+          borderRadius: 4,
+          borderWidth: 4,
+          borderColor: lfxColors.white,
         },
-      },
-      {
-        name: 'Typical repository, the median',
-        type: 'bar',
-        data: medianValues,
-        barMaxWidth: 8,
-        itemStyle: {
-          color: lfxColors.neutral[400],
-          borderRadius: [10, 10, 10, 10],
+        emphasis: {
+          itemStyle: {
+            borderColor: lfxColors.neutral[900],
+            borderWidth: 1,
+          },
         },
       },
     ],
   };
-};
-
-const categoryGroups = computed(() =>
-  CATEGORY_ORDER.map((categoryKey) => {
-    const categorySignals = signals.value.filter((signal) => signal.categoryKey === categoryKey);
-    const color = CATEGORY_COLORS[categoryKey] ?? lfxColors.brand[500];
-
-    return {
-      categoryKey,
-      label: CATEGORY_LABELS[categoryKey] ?? categoryKey,
-      color,
-      signals: categorySignals,
-      chartConfig: buildCategoryChartConfig(categorySignals, color),
-    } satisfies CategoryGroup;
-  }).filter((group) => group.signals.length > 0),
-);
+});
 </script>
 
 <script lang="ts">
