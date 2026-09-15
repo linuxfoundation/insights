@@ -1,6 +1,7 @@
 dist/
 node_modules/
 coverage/
+openapi/
 .env
 .env.*
 !.env.example
