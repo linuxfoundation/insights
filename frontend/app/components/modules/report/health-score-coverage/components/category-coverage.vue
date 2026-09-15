@@ -76,8 +76,10 @@ const CATEGORY_LABELS: Record<HealthScoreCoverageCategoryCount['categoryKey'], s
   securitySupplyChain: 'Security & supply chain',
 };
 
-// Same category-color scheme as signal-scores.vue/signal-availability-lf.vue, reused here for
-// consistency across the report's category-keyed widgets.
+// Category-color scheme for this widget's donut slices. signal-scores.vue now uses a continuous
+// heatmap value-scale and signal-availability-lf.vue now uses the LF/non-LF blue-purple
+// convention, so this is no longer shared with either — kept here as this widget's own category
+// identity coloring, distinct from the report-wide LF-vs-other convention used elsewhere.
 const CATEGORY_COLORS: Record<HealthScoreCoverageCategoryCount['categoryKey'], string> = {
   maintainerHealth: lfxColors.brand[500],
   securitySupplyChain: lfxColors.violet[500],
