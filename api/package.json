@@ -13,7 +13,10 @@
     "format": "prettier --write \"{src,tests}/**/*.ts\"",
     "format:check": "prettier --check \"{src,tests}/**/*.ts\"",
     "tsc-check": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "docs:dev": "vitepress dev docs/site",
+    "docs:build": "vitepress build docs/site",
+    "docs:preview": "vitepress preview docs/site"
   },
   "dependencies": {
     "@lfx-insights/tinybird-client": "workspace:*",
@@ -34,6 +37,7 @@
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.0.0",
+    "vitepress": "^1.6.4",
     "vitest": "^3.0.0"
   }
 }
