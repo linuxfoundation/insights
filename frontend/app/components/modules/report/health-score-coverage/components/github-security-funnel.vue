@@ -98,7 +98,11 @@ interface GithubSecurityTooltipParam {
 // bar.chart.ts's date-oriented helpers, same reasoning as the other categorical-axis widgets in
 // this report.
 const chartConfig = computed<ECOption>(() => {
-  const rows = stages.value;
+  // Design feedback: the "Tracked in Insights" stage is always 100% by definition (it's the
+  // funnel's own denominator), so it added a flat, uninformative bar pair - drop it from the
+  // chart only, keeping the full 4-stage funnel in `stages`/`isEmpty` for the data layer and the
+  // footnote below.
+  const rows = stages.value.filter((stage) => stage.stage !== 'tracked');
 
   return {
     grid: {
