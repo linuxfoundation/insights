@@ -19,7 +19,12 @@ for (const version of API_VERSIONS) {
   // Fetch the served document (rather than app.swagger() directly) so the export
   // is byte-for-byte identical to what /<version>/openapi.json actually serves.
   const res = await app.inject({ method: 'GET', url: `/${version}/openapi.json` });
-  await writeFile(resolve(outDir, `${version}.json`), JSON.stringify(res.json(), null, 2) + '\n');
+  if (res.statusCode !== 200) {
+    throw new Error(
+      `Failed to fetch openapi document for version ${version}: status ${res.statusCode}`,
+    );
+  }
+  await writeFile(resolve(outDir, `${version}.json`), res.rawPayload);
 }
 
 await app.close();
