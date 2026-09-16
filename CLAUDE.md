@@ -155,3 +155,13 @@ frontend/
 - License headers automatically added via lint-staged
 - whenever you generate html/vue code make sure to use ui components from the ui kit in the project `frontend/app/components/uikit/`
 - make sure to always consider tailwind config file to see correct classes names
+
+### Code Comments
+- Comment the why, not the what. A comment earns its place by stating a constraint, workaround, external quirk, or tradeoff the code cannot show.
+- Keep comments terse: at most 2 sentences or 35 words. If it needs more, restructure the code or move the explanation to a doc.
+- Skip narration comments that restate the next line, and change-log comments ("moved from X", "fixed in this PR"); git history covers those.
+- Keep ticket numbers out of comments; they belong in PRs and branch names. Describe the cause itself instead.
+- Never use em dashes in comments.
+- Negation chains ("no X, no Y, no Z") are banned; say what the thing is or does instead.
+- When behavior is defined elsewhere, point to it ("see setup/caching.ts") instead of duplicating the explanation.
+- Match the comment density of the surrounding file; write plain English and drop filler like "Note that".
