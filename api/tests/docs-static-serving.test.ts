@@ -39,6 +39,13 @@ describe('static serving of the built docs site under /docs (AC1, AC4)', () => {
     expect(res.statusCode).toBe(200);
   });
 
+  it('serves the reference page for the extensionless nav link via the .html fallback (AC1)', async () => {
+    const res = await app.inject({ method: 'GET', url: '/docs/reference' });
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['content-type']).toMatch(/text\/html/);
+    expect(res.body).toContain('API Reference');
+  });
+
   it('redirects /docs (no trailing slash) to /docs/', async () => {
     const res = await app.inject({ method: 'GET', url: '/docs' });
     expect(res.statusCode).toBe(301);
@@ -49,7 +56,14 @@ describe('static serving of the built docs site under /docs (AC1, AC4)', () => {
     const res = await app.inject({ method: 'GET', url: '/docs/nonexistent-page' });
     expect(res.statusCode).toBe(404);
     expect(res.headers['content-type']).toMatch(/text\/html/);
-    expect(res.body).not.toContain('"error"');
+    expect(res.body).toContain('<title>404 | LFX Insights API</title>');
+  });
+
+  it('falls through to the VitePress 404 page for an unknown docs path with an extension', async () => {
+    const res = await app.inject({ method: 'GET', url: '/docs/nope.html' });
+    expect(res.statusCode).toBe(404);
+    expect(res.headers['content-type']).toMatch(/text\/html/);
+    expect(res.body).toContain('<title>404 | LFX Insights API</title>');
   });
 
   it('does not shadow /v1/openapi.json (AC5)', async () => {

@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
@@ -53,26 +53,25 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
         });
       }
 
-      // Extensionless docs paths (e.g. /docs/reference) must resolve to the
-      // VitePress-emitted `<path>.html` file, since cleanUrls is off. We try
-      // that once per request via sendFile, which sanitizes the path itself;
-      // if the file does not exist, sendFile calls reply.callNotFound()
-      // again, and htmlFallbackAttempted (already true by then) routes us to
-      // the plain 404 page instead of retrying forever.
-      const htmlFallbackAttempted = new WeakSet<object>();
-
+      // cleanUrls is off in VitePress, so an extensionless path (e.g. /docs/reference)
+      // is only servable from its `<path>.html` file on disk.
       docsScope.setNotFoundHandler((request, reply) => {
         const pathname = request.url.split('?')[0]?.slice(docsScope.prefix.length) ?? '';
         const hasExtension = /\.[^/]+$/.test(pathname);
 
-        if (docsRootExists && !hasExtension && !htmlFallbackAttempted.has(request)) {
-          htmlFallbackAttempted.add(request);
-          reply.type('text/html').sendFile(`${pathname}.html`);
-          return;
+        if (docsRootExists && !hasExtension) {
+          const candidatePath = join(docsRoot, `${decodeURIComponent(pathname)}.html`);
+          if (
+            (candidatePath === docsRoot || candidatePath.startsWith(docsRoot + sep)) &&
+            existsSync(candidatePath)
+          ) {
+            reply.type('text/html').sendFile(`${pathname}.html`);
+            return;
+          }
         }
 
         if (docsNotFoundHtml) {
-          reply.code(404).type('text/html').send(docsNotFoundHtml);
+          reply.code(404).type('text/html; charset=utf-8').send(docsNotFoundHtml);
           return;
         }
         reply.code(404).send({ error: 'Not Found' });
