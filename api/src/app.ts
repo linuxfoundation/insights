@@ -3,6 +3,7 @@
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
+import { versionRegistry } from './versions/registry.js';
 
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({
@@ -23,7 +24,9 @@ export async function buildApp(): Promise<FastifyInstance> {
     },
   });
 
-  app.get('/v1/openapi.json', async () => app.swagger());
+  for (const entry of versionRegistry) {
+    await app.register(entry.plugin, { prefix: entry.prefix });
+  }
 
   return app;
 }
