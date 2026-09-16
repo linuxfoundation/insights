@@ -17,8 +17,8 @@ SPDX-License-Identifier: MIT
       </div>
 
       <p class="text-body-2 text-neutral-500">
-        Each signal awards a fixed number of points, shown here as a share of that maximum. Every row compares the
-        strongest fifth of repositories against the median one. Cells close in color mean the signal barely
+        Each signal awards a fixed number of points, shown here as a share of that maximum. Every row shows the full
+        spread of repository scores from the 10th to the 100th percentile. Cells close in color mean the signal barely
         distinguishes anyone. Cells far apart in color mean it is doing real work separating strong repositories from
         the rest. Repositories count only where the signal can be measured. Hover a cell for the exact percentage.
       </p>
@@ -63,6 +63,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
+import { SIGNAL_SCORE_PERCENTILES } from '~~/types/report/health-score-coverage-signal-scores.types';
 import type { HealthScoreCoverageSignalScore } from '~~/types/report/health-score-coverage-signal-scores.types';
 
 // Display names per the design copy, keyed by the pipe's `signal_key`. Duplicated here rather than
@@ -115,20 +116,26 @@ const round1 = (value: number): number => Math.round(value * 10) / 10;
 const rowLabel = (signal: HealthScoreCoverageSignalScore): string =>
   `${CATEGORY_LABELS[signal.categoryKey] ?? signal.categoryKey} · ${displayLabel(signal.signalKey)}`;
 
-// Heatmap by percentile: one row per signal (grouped by category, in fixed category order), two
-// columns - "Top 20%" and "Median". Color intensity encodes the percentage value on one shared
-// scale, replacing the prior per-category bar coloring (which read as inconsistent, since only the
-// Top-20% series carried category color and the median series was always gray). Built inline
-// against ECharts' categorical-axis heatmap rather than heat-map.chart.ts's getHeatMapChartConfig,
-// which is shaped for numeric day/hour punch-card coordinates and doesn't fit two named columns.
+// Heatmap by percentile band: one row per signal (grouped by category, in fixed category order),
+// one column per percentile band from p10 to p100. Color intensity encodes the percentage value on
+// one shared scale, replacing the prior per-category bar coloring (which read as inconsistent,
+// since only the Top-20% series carried category color and the median series was always gray).
+// Built inline against ECharts' categorical-axis heatmap rather than heat-map.chart.ts's
+// getHeatMapChartConfig, which is shaped for numeric day/hour punch-card coordinates and doesn't
+// fit named percentile-band columns.
+const percentileLabel = (p: (typeof SIGNAL_SCORE_PERCENTILES)[number]): string => (p === 100 ? 'Max' : `${p}th`);
+const columns = SIGNAL_SCORE_PERCENTILES.map(percentileLabel);
+
 const chartConfig = computed<ECOption>(() => {
   const rows = signals.value;
-  const columns = ['Top 20% of repositories', 'Typical repository, the median'];
 
-  const heatmapData: Array<[number, number, number]> = rows.flatMap((signal, rowIndex) => [
-    [0, rowIndex, round1(signal.p80Pct)],
-    [1, rowIndex, round1(signal.medianPct)],
-  ]);
+  const heatmapData: Array<[number, number, number]> = rows.flatMap((signal, rowIndex) =>
+    SIGNAL_SCORE_PERCENTILES.map((p, columnIndex): [number, number, number] => [
+      columnIndex,
+      rowIndex,
+      round1(signal.percentiles[p]),
+    ]),
+  );
 
   const maxValue = Math.max(...heatmapData.map((point) => point[2]), 1);
 
@@ -193,9 +200,10 @@ const chartConfig = computed<ECOption>(() => {
         const { value } = params as { value: [number, number, number] };
         const [columnIndex, rowIndex, percent] = value;
         const signal = rows[rowIndex];
-        const column = columns[columnIndex];
-        if (!signal || !column) return '';
-        return `${rowLabel(signal)}<br/>${column}: ${percent}%`;
+        const percentile = SIGNAL_SCORE_PERCENTILES[columnIndex];
+        if (!signal || percentile === undefined) return '';
+        const columnLabel = percentile === 100 ? 'Highest scoring repositories' : `${percentile}th percentile`;
+        return `${rowLabel(signal)}<br/>${columnLabel}: ${percent}%`;
       },
     },
     series: [
