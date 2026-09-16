@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { logError } from '~~/server/utils/log';
 import type { OrganizationProject, OrganizationProjectsPage } from '~~/types/organization-page';
 
 interface TinybirdOrgPageProject {
@@ -52,6 +53,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProjectsPag
     return { data, hasMore };
   } catch (error: any) {
     if (error?.statusCode) throw error;
+    logError('organization-page/projects', 'Failed to fetch organization projects', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });
