@@ -29,11 +29,11 @@ describe('Reference page wiring (AC1, AC3)', () => {
     expect(component).toContain('/v1/openapi.json');
   });
 
-  it('declares @scalar/api-reference as an api dependency', () => {
+  it('declares @scalar/api-reference as an api devDependency', () => {
     const pkg = JSON.parse(readFileSync(`${apiRoot}package.json`, 'utf-8')) as {
-      dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
     };
-    expect(pkg.dependencies?.['@scalar/api-reference']).toBeTruthy();
+    expect(pkg.devDependencies?.['@scalar/api-reference']).toBeTruthy();
   });
 });
 

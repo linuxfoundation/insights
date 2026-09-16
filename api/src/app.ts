@@ -44,7 +44,8 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
 
   await app.register(
     async (docsScope) => {
-      if (existsSync(docsRoot)) {
+      const docsRootExists = existsSync(docsRoot);
+      if (docsRootExists) {
         await docsScope.register(fastifyStatic, {
           root: docsRoot,
           prefix: '',
@@ -52,7 +53,24 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
         });
       }
 
-      docsScope.setNotFoundHandler((_request, reply) => {
+      // Extensionless docs paths (e.g. /docs/reference) must resolve to the
+      // VitePress-emitted `<path>.html` file, since cleanUrls is off. We try
+      // that once per request via sendFile, which sanitizes the path itself;
+      // if the file does not exist, sendFile calls reply.callNotFound()
+      // again, and htmlFallbackAttempted (already true by then) routes us to
+      // the plain 404 page instead of retrying forever.
+      const htmlFallbackAttempted = new WeakSet<object>();
+
+      docsScope.setNotFoundHandler((request, reply) => {
+        const pathname = request.url.split('?')[0]?.slice(docsScope.prefix.length) ?? '';
+        const hasExtension = /\.[^/]+$/.test(pathname);
+
+        if (docsRootExists && !hasExtension && !htmlFallbackAttempted.has(request)) {
+          htmlFallbackAttempted.add(request);
+          reply.type('text/html').sendFile(`${pathname}.html`);
+          return;
+        }
+
         if (docsNotFoundHtml) {
           reply.code(404).type('text/html').send(docsNotFoundHtml);
           return;
