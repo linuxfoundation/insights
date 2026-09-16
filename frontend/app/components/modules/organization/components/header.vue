@@ -154,6 +154,7 @@ SPDX-License-Identifier: MIT
                   Share
                 </lfx-button>
                 <lfx-tooltip
+                  v-if="props.organization?.membership"
                   placement="top"
                   :allow-pass-through="true"
                 >

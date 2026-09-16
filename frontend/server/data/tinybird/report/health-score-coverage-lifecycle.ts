@@ -6,6 +6,7 @@
 // as the types file next to it - see health-score-coverage-lifecycle.types.ts.
 
 import { fetchFromTinybird } from '../tinybird';
+import { healthScoreLifecycleLabels } from '~/components/modules/report/health-score-coverage/config/lifecycle';
 import type {
   HealthScoreCoverageLifecycleCount,
   HealthScoreCoverageLifecycleData,
@@ -15,14 +16,17 @@ import type {
 
 /**
  * Maps the raw `health_score_report_lifecycle` rows into the shape the chart consumes: the NULL
- * label becomes 'unavailable', and rows are sorted by project count descending.
+ * label becomes 'unavailable', and rows are sorted into the fixed lifecycle-stage order (active ->
+ * stable -> declining -> inert -> abandoned -> archived -> unavailable) rather than by project
+ * count, so the stage order doesn't jump around as counts change.
  */
 export function mapHealthScoreCoverageLifecycleRows(
   rows: HealthScoreCoverageLifecycleRow[],
 ): HealthScoreCoverageLifecycleData {
+  const stageOrder = healthScoreLifecycleLabels.map((stage) => stage.key);
   const counts: HealthScoreCoverageLifecycleCount[] = rows
     .map((row) => ({ label: row.label ?? 'unavailable', projects: row.projects }))
-    .sort((a, b) => b.projects - a.projects);
+    .sort((a, b) => stageOrder.indexOf(a.label) - stageOrder.indexOf(b.label));
 
   return {
     rows: counts,
