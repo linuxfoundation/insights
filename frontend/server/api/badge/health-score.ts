@@ -3,6 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectInsightsTinybird } from '~~/types/project';
 import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);
@@ -34,7 +35,7 @@ export default defineEventHandler(async (event): Promise<void> => {
     ) {
       throw error;
     }
-    console.error('Error fetching badge', error);
+    logError('badge/health-score', 'Failed to fetch health score badge', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });

@@ -3,6 +3,7 @@
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import type { ProjectTinybird } from '~~/types/project';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);
@@ -30,7 +31,7 @@ export default defineEventHandler(async (event): Promise<void> => {
     ) {
       throw error;
     }
-    console.error('Error fetching badge', error);
+    logError('badge/contributors', 'Failed to fetch contributors badge', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });
