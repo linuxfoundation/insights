@@ -31,19 +31,25 @@ describe('docs:dev / docs:build scripts (AC1)', () => {
 });
 
 describe('docs/site page structure (AC2)', () => {
-  it('has the five required pages', () => {
+  it('has the six required pages', () => {
     expect(() => read('index.md')).not.toThrow();
     expect(() => read('authentication.md')).not.toThrow();
     expect(() => read('pagination.md')).not.toThrow();
     expect(() => read('errors.md')).not.toThrow();
+    expect(() => read('lifecycle.md')).not.toThrow();
     expect(() => read('changelog.md')).not.toThrow();
   });
 
   it('links every required page from the VitePress nav/sidebar config', () => {
     const config = read('.vitepress/config.mts');
-    for (const link of ['/authentication', '/pagination', '/errors', '/changelog']) {
+    for (const link of ['/authentication', '/pagination', '/errors', '/lifecycle', '/changelog']) {
       expect(config).toContain(link);
     }
+  });
+
+  it('labels the lifecycle nav entry (AC3)', () => {
+    const config = read('.vitepress/config.mts');
+    expect(config).toContain("{ text: 'Lifecycle', link: '/lifecycle' }");
   });
 });
 
@@ -75,11 +81,6 @@ describe('docs content reflects existing ADRs (AC3)', () => {
     const combined = read('index.md') + read('pagination.md');
     expect(combined).toContain('Cache-Control: private, max-age=0');
   });
-
-  it('changelog is a stub reserved for IN-1135', () => {
-    const changelog = read('changelog.md');
-    expect(changelog.toLowerCase()).toContain('changelog');
-  });
 });
 
 describe('no coupling to frontend/docs (AC4)', () => {
@@ -95,6 +96,7 @@ describe('no coupling to frontend/docs (AC4)', () => {
       'authentication.md',
       'pagination.md',
       'errors.md',
+      'lifecycle.md',
       'changelog.md',
     ]) {
       expect(read(page)).not.toContain('frontend/docs');
