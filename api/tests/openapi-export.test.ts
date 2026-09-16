@@ -1,12 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 import { buildApp } from '../src/app.js';
+import { API_VERSIONS, specVersionFor } from '../src/versions.js';
 
 const apiRoot = fileURLToPath(new URL('..', import.meta.url));
 const tsxBin = join(apiRoot, 'node_modules/.bin/tsx');
@@ -30,64 +31,75 @@ describe('openapi:export wiring (AC1, AC5)', () => {
     expect(pkg.scripts['openapi:export']).toBe('tsx scripts/export-openapi.ts');
   });
 
-  it('gitignores the openapi/ output directory (AC5)', () => {
+  it('gitignores the openapi/ output directory', () => {
     const gitignore = readFileSync(join(apiRoot, '.gitignore'), 'utf-8');
     expect(gitignore.split('\n')).toContain('openapi/');
   });
 });
 
-describe('export output (AC1, AC3)', () => {
-  it('writes openapi/v1.json by default, creating the directory (AC1)', () => {
+describe('per-version export output (AC5)', () => {
+  it('writes exactly one artifact per registered version to openapi/ by default', () => {
     rmSync(join(apiRoot, 'openapi'), { recursive: true, force: true });
     runExport([]);
-    expect(existsSync(join(apiRoot, 'openapi/v1.json'))).toBe(true);
+    const files = readdirSync(join(apiRoot, 'openapi')).sort();
+    expect(files).toEqual([...API_VERSIONS].map((version) => `${version}.json`).sort());
   });
 
-  it('writes to the path given as CLI arg, creating parent directories (AC1)', () => {
-    const outPath = join(tmpRoot, 'nested/dir/spec.json');
-    runExport([outPath]);
-    expect(existsSync(outPath)).toBe(true);
+  it('writes into the directory given as CLI arg, creating parent directories', () => {
+    const outDir = join(tmpRoot, 'nested/dir');
+    runExport([outDir]);
+    for (const version of API_VERSIONS) {
+      expect(existsSync(join(outDir, `${version}.json`))).toBe(true);
+    }
   });
 
-  it('exports a structurally valid OpenAPI 3.x document (AC3)', () => {
-    const outPath = join(tmpRoot, 'valid.json');
-    runExport([outPath]);
-    const spec = JSON.parse(readFileSync(outPath, 'utf-8')) as {
-      openapi: string;
-      info: { title: string; version: string };
-      paths: Record<string, unknown>;
-    };
-    expect(spec.openapi).toMatch(/^3\./);
-    expect(spec.info.title).toBeTruthy();
-    expect(spec.info.version).toBeTruthy();
-    expect(typeof spec.paths).toBe('object');
-    expect(spec.paths).not.toBeNull();
+  it('exports structurally valid per-version OpenAPI 3.x documents', () => {
+    const outDir = join(tmpRoot, 'valid');
+    runExport([outDir]);
+    for (const version of API_VERSIONS) {
+      const spec = JSON.parse(readFileSync(join(outDir, `${version}.json`), 'utf-8')) as {
+        openapi: string;
+        info: { title: string; version: string };
+        paths: Record<string, unknown>;
+      };
+      expect(spec.openapi).toMatch(/^3\./);
+      expect(spec.info.title).toBeTruthy();
+      expect(spec.info.version).toBe(specVersionFor(version));
+      expect(typeof spec.paths).toBe('object');
+      expect(spec.paths).not.toBeNull();
+    }
   });
 });
 
-describe('exported spec matches the live endpoint (AC2)', () => {
-  it('equals the document served at /v1/openapi.json', async () => {
-    const outPath = join(tmpRoot, 'parity.json');
-    runExport([outPath]);
-    const exported: unknown = JSON.parse(readFileSync(outPath, 'utf-8'));
+describe('exported specs match the live endpoints (AC5)', () => {
+  it('each artifact equals the document served at its /<version>/openapi.json', async () => {
+    const outDir = join(tmpRoot, 'parity');
+    runExport([outDir]);
 
     const app = await buildApp();
     await app.ready();
-    const res = await app.inject({ method: 'GET', url: '/v1/openapi.json' });
-    await app.close();
-
-    expect(res.statusCode).toBe(200);
-    expect(exported).toEqual(res.json());
+    try {
+      for (const version of API_VERSIONS) {
+        const exported: unknown = JSON.parse(
+          readFileSync(join(outDir, `${version}.json`), 'utf-8'),
+        );
+        const res = await app.inject({ method: 'GET', url: `/${version}/openapi.json` });
+        expect(res.statusCode).toBe(200);
+        expect(exported).toEqual(res.json());
+      }
+    } finally {
+      await app.close();
+    }
   });
 });
 
-describe('failure handling (AC4)', () => {
-  it('exits non-zero when the output path cannot be written', () => {
+describe('failure handling', () => {
+  it('exits non-zero when the output directory cannot be created', () => {
     const blocker = join(tmpRoot, 'blocker');
     writeFileSync(blocker, 'a file, not a directory');
     let error: (Error & { status?: number | null; stderr?: Buffer }) | undefined;
     try {
-      runExport([join(blocker, 'spec.json')]);
+      runExport([join(blocker, 'out')]);
     } catch (err) {
       error = err as Error & { status?: number | null; stderr?: Buffer };
     }

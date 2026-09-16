@@ -7,9 +7,11 @@ import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
+import { API_VERSIONS, specVersionFor } from './versions.js';
 
 export interface BuildAppOptions {
   docsRoot?: string;
+  versions?: readonly string[];
 }
 
 const defaultDocsRoot = fileURLToPath(new URL('../docs/site/.vitepress/dist', import.meta.url));
@@ -21,6 +23,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
   }).withTypeProvider<TypeBoxTypeProvider>();
 
   const publicUrl = process.env.API_PUBLIC_URL ?? 'http://localhost:4000';
+  const versions = options.versions ?? API_VERSIONS;
 
   await app.register(fastifySwagger, {
     openapi: {
@@ -33,7 +36,28 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     },
   });
 
-  app.get('/v1/openapi.json', async () => app.swagger());
+  const versionedDoc = (version: string) => {
+    const source = app.swagger();
+    // Exact prefix with trailing slash so e.g. /v1-alpha/ routes never leak into /v1's spec.
+    const pathPrefix = `/${version}/`;
+    return {
+      ...source,
+      info: { ...source.info, version: specVersionFor(version) },
+      paths: Object.fromEntries(
+        Object.entries(source.paths ?? {}).filter(([path]) => path.startsWith(pathPrefix)),
+      ),
+    };
+  };
+
+  for (const version of versions) {
+    // The route set is fixed once the app is ready, so the document is derived once per version.
+    let cached: ReturnType<typeof versionedDoc> | undefined;
+    app.get(
+      `/${version}/openapi.json`,
+      { schema: { hide: true } },
+      async () => (cached ??= versionedDoc(version)),
+    );
+  }
 
   const docsRoot = options.docsRoot ?? defaultDocsRoot;
   const docsNotFoundPage = existsSync(docsRoot) ? join(docsRoot, '404.html') : undefined;

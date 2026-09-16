@@ -1,17 +1,25 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildApp } from '../src/app.js';
+import { API_VERSIONS } from '../src/versions.js';
 
-const outPath = process.argv[2]
+const outDir = process.argv[2]
   ? resolve(process.argv[2])
-  : fileURLToPath(new URL('../openapi/v1.json', import.meta.url));
+  : fileURLToPath(new URL('../openapi/', import.meta.url));
 
 const app = await buildApp();
 await app.ready();
-await mkdir(dirname(outPath), { recursive: true });
-await writeFile(outPath, JSON.stringify(app.swagger(), null, 2) + '\n');
+await mkdir(outDir, { recursive: true });
+
+for (const version of API_VERSIONS) {
+  // Fetch the served document (rather than app.swagger() directly) so the export
+  // is byte-for-byte identical to what /<version>/openapi.json actually serves.
+  const res = await app.inject({ method: 'GET', url: `/${version}/openapi.json` });
+  await writeFile(resolve(outDir, `${version}.json`), JSON.stringify(res.json(), null, 2) + '\n');
+}
+
 await app.close();
