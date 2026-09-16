@@ -7,6 +7,7 @@
 // health-score-coverage-signal-scores.types.ts.
 
 import { fetchFromTinybird } from '../tinybird';
+import { SIGNAL_SCORE_PERCENTILES } from '~~/types/report/health-score-coverage-signal-scores.types';
 import type {
   HealthScoreCoverageSignalScore,
   HealthScoreCoverageSignalScoreRow,
@@ -25,8 +26,12 @@ export function mapHealthScoreCoverageSignalScoreRows(
   const signals: HealthScoreCoverageSignalScore[] = rows.map((row) => ({
     signalKey: row.signal_key,
     categoryKey: row.category_key,
-    p80Pct: row.p80_pct,
-    medianPct: row.median_pct,
+    percentiles: Object.fromEntries(
+      SIGNAL_SCORE_PERCENTILES.map((p) => [
+        p,
+        row[`p${p}_pct` as keyof HealthScoreCoverageSignalScoreRow] as number,
+      ]),
+    ) as HealthScoreCoverageSignalScore['percentiles'],
     repos: row.repos,
   }));
 

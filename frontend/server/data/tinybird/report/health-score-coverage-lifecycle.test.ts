@@ -5,7 +5,7 @@ import { mapHealthScoreCoverageLifecycleRows } from './health-score-coverage-lif
 import type { HealthScoreCoverageLifecycleRow } from '~~/types/report/health-score-coverage-lifecycle.types';
 
 describe('mapHealthScoreCoverageLifecycleRows', () => {
-  test('maps the NULL label to "unavailable" and sorts by project count descending', () => {
+  test('maps the NULL label to "unavailable" and sorts into the fixed lifecycle-stage order', () => {
     const rows: HealthScoreCoverageLifecycleRow[] = [
       { label: 'stable', projects: 306 },
       { label: 'active', projects: 9758 },
@@ -17,9 +17,9 @@ describe('mapHealthScoreCoverageLifecycleRows', () => {
 
     expect(result.rows).toEqual([
       { label: 'active', projects: 9758 },
+      { label: 'stable', projects: 306 },
       { label: 'declining', projects: 488 },
       { label: 'unavailable', projects: 366 },
-      { label: 'stable', projects: 306 },
     ]);
     expect(result.total).toBe(10918);
   });

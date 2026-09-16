@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <!-- Header -->
     <div>
       <h1 class="text-heading-3 md:text-heading-1 font-secondary font-bold text-neutral-900 mb-2">
-        Health Score Coverage
+        Open Source Health Score
       </h1>
       <p class="text-body-2 md:text-body-1 text-neutral-600">
         Where every project tracked in LFX Insights lands on the health score, and how much of the underlying data we
@@ -44,10 +44,13 @@ SPDX-License-Identifier: MIT
       :is-error="isError"
     />
 
-    <!-- How projects score -->
+    <!-- How healthy are open source projects? -->
     <div class="flex flex-col gap-6">
       <div>
-        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">How projects score</h2>
+        <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">health score distribution</p>
+        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">
+          How healthy are open source projects?
+        </h2>
         <p class="text-body-2 text-neutral-500 mt-1">
           How projects score today: the distribution of health bands, how projects are maintained, and where the
           strongest repositories pull ahead on each signal.
@@ -60,10 +63,11 @@ SPDX-License-Identifier: MIT
       <signal-scores />
     </div>
 
-    <!-- What we can see -->
+    <!-- Which signals are available? -->
     <div class="flex flex-col gap-6">
       <div>
-        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">What we can see</h2>
+        <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">health score availability</p>
+        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">Which signals are available?</h2>
         <p class="text-body-2 text-neutral-500 mt-1">
           A health score needs two of the three categories, and a category needs enough of its own signals. Some
           projects score lower simply because less of their data reaches us.

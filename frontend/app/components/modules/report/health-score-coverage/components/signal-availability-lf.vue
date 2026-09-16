@@ -50,13 +50,7 @@ SPDX-License-Identifier: MIT
           :key="group.categoryKey"
           class="flex flex-col gap-1"
         >
-          <p class="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-            <i
-              class="inline-block w-2 h-2 rounded-full"
-              :style="{ background: group.color }"
-            />
-            {{ group.label }}
-          </p>
+          <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">{{ group.label }}</p>
           <div :style="{ height: `${group.signals.length * 64 + 24}px` }">
             <client-only>
               <lfx-chart
@@ -69,13 +63,16 @@ SPDX-License-Identifier: MIT
 
         <div class="flex flex-wrap gap-x-6 gap-y-1 text-body-2 text-neutral-500">
           <span class="flex items-center gap-2">
-            Linux Foundation projects ({{ formatNumber(lfReposTracked) }} repositories) &mdash; colored by category
-            above
+            <i
+              class="inline-block w-3 h-3 rounded-sm"
+              :style="{ background: lfxColors.brand[500] }"
+            />
+            Linux Foundation projects ({{ formatNumber(lfReposTracked) }} repositories)
           </span>
           <span class="flex items-center gap-2">
             <i
               class="inline-block w-3 h-3 rounded-sm"
-              :style="{ background: lfxColors.neutral[400] }"
+              :style="{ background: lfxColors.violet[500] }"
             />
             Other tracked projects ({{ formatNumber(otherReposTracked) }} repositories)
           </span>
@@ -124,14 +121,13 @@ const CATEGORY_LABELS: Record<string, string> = {
   securitySupplyChain: 'Security & supply chain',
   developmentActivity: 'Development activity',
 };
-// One distinct color per category for the "Linux Foundation projects" bars (IN-1304 item 11) -
-// "Other tracked projects" stays neutral[400] across all three, unchanged.
-const CATEGORY_COLORS: Record<string, string> = {
-  maintainerHealth: lfxColors.brand[500],
-  securitySupplyChain: lfxColors.violet[500],
-  developmentActivity: lfxColors.positive[500],
-};
 const CATEGORY_ORDER = ['maintainerHealth', 'securitySupplyChain', 'developmentActivity'];
+
+// Report-wide LF-vs-non-LF color convention: Linux Foundation projects always blue, other tracked
+// projects always purple, consistent across every category group (this widget IS an LF-vs-other
+// comparison, unlike widget 03's Top-20%-vs-median comparison, which keeps its own category colors).
+const LF_COLOR = lfxColors.brand[500];
+const OTHER_COLOR = lfxColors.violet[500];
 
 const { data, isLoading, suspense } = fetchHealthScoreCoverageSignalAvailabilityLfQuery();
 
@@ -150,7 +146,6 @@ const round1 = (value: number): number => Math.round(value * 10) / 10;
 interface CategoryGroup {
   categoryKey: string;
   label: string;
-  color: string;
   signals: HealthScoreCoverageSignalAvailabilityLfSignal[];
   chartConfig: ECOption;
 }
@@ -160,10 +155,7 @@ interface CategoryGroup {
 // categories and inline group headers echarts has no native support for. Inline here rather than
 // a separate chart-config module - `pnpm tsc-check` doesn't parse `.vue` files, which broke a
 // prior widget's standalone module that imported a type re-exported only from a `.vue` file.
-const buildCategoryChartConfig = (
-  categorySignals: HealthScoreCoverageSignalAvailabilityLfSignal[],
-  lfColor: string,
-): ECOption => {
+const buildCategoryChartConfig = (categorySignals: HealthScoreCoverageSignalAvailabilityLfSignal[]): ECOption => {
   const categories = categorySignals.map((signal) => displayLabel(signal.signalKey));
   const lfValues = categorySignals.map((signal) => round1(signal.lf.availablePct));
   const otherValues = categorySignals.map((signal) => round1(signal.other.availablePct));
@@ -227,7 +219,7 @@ const buildCategoryChartConfig = (
         data: lfValues,
         barMaxWidth: 8,
         itemStyle: {
-          color: lfColor,
+          color: LF_COLOR,
           borderRadius: [10, 10, 10, 10],
         },
       },
@@ -237,7 +229,7 @@ const buildCategoryChartConfig = (
         data: otherValues,
         barMaxWidth: 8,
         itemStyle: {
-          color: lfxColors.neutral[400],
+          color: OTHER_COLOR,
           borderRadius: [10, 10, 10, 10],
         },
       },
@@ -250,14 +242,12 @@ const categoryGroups = computed(() =>
     const categorySignals = signals.value
       .filter((signal) => signal.categoryKey === categoryKey)
       .sort((a, b) => b.lf.availablePct - a.lf.availablePct);
-    const color = CATEGORY_COLORS[categoryKey] ?? lfxColors.brand[500];
 
     return {
       categoryKey,
       label: CATEGORY_LABELS[categoryKey] ?? categoryKey,
-      color,
       signals: categorySignals,
-      chartConfig: buildCategoryChartConfig(categorySignals, color),
+      chartConfig: buildCategoryChartConfig(categorySignals),
     } satisfies CategoryGroup;
   }).filter((group) => group.signals.length > 0),
 );

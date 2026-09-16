@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
 
       <div
         v-else
-        class="h-[280px] sm:h-[350px]"
+        class="h-[320px] sm:h-[380px]"
       >
         <client-only>
           <lfx-chart
@@ -66,13 +66,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref } from 'vue';
-import { merge } from 'lodash-es';
 import { fetchHealthScoreCoverageLifecycleQuery } from '../services/lifecycle-distribution.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { getHorizontalBarChartConfig, type HorizontalBarData } from '~/components/uikit/chart/configs/bar.chart';
+import { getDonutChartConfig, type DonutChartData } from '~/components/uikit/chart/configs/pie.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
@@ -102,6 +101,23 @@ const LABEL_DISPLAY_OVERRIDES: Record<string, string> = {
 const displayLabel = (label: string): string =>
   LABEL_DISPLAY_OVERRIDES[label] ?? label.charAt(0).toUpperCase() + label.slice(1);
 
+// Figma-exact lifecycle-stage colors, reused from collection-lifecycle-badge.vue's dotClass map
+// (the canonical mapping already shown on the projects/collection page) rather than the
+// differently-ordered/keyed lifecycleLabelConfig in config/trust-score.ts. That badge component has
+// no 'unavailable' entry since it only renders known stages - unavailable falls back to
+// neutral[400] here since the donut must render all 7 stages.
+const LIFECYCLE_COLORS: Record<string, string> = {
+  active: '#009966',
+  stable: '#009aff',
+  declining: '#e17100',
+  inert: '#d97706',
+  abandoned: '#e7000b',
+  archived: '#45556c',
+  unavailable: lfxColors.neutral[400],
+};
+
+const colorFor = (label: string): string => LIFECYCLE_COLORS[label] ?? lfxColors.neutral[400];
+
 const scope = ref<HealthScoreCoverageScope>('all');
 
 const { data, isLoading, suspense } = fetchHealthScoreCoverageLifecycleQuery(computed(() => scope.value));
@@ -115,48 +131,22 @@ const total = computed(() => data.value?.total ?? 0);
 
 const isEmpty = computed(() => !isLoading.value && total.value === 0);
 
-const round1 = (value: number): number => Math.round(value * 10) / 10;
-
-const percentOf = (count: number, totalCount: number): number =>
-  totalCount > 0 ? round1((count / totalCount) * 100) : 0;
-
 const captionText = computed(
   () => `Project lifecycle · ${SCOPE_CAPTION_WORDING[scope.value]} (${formatNumber(total.value)})`,
 );
 
-interface LifecycleTooltipParam {
-  dataIndex: number;
-  value: number;
-}
-
-// Single-series horizontal bar chart, built on top of the shared getHorizontalBarChartConfig
-// helper per the report's chart-config conventions - matches how
-// report/agentic-ai-momentum/components/research-chart.vue builds its own chart config inline
-// rather than in a separate .ts module.
+// Donut chart, one slice per lifecycle stage. `rows` already arrives in the fixed lifecycle-stage
+// order from the server mapper (active -> stable -> declining -> inert -> abandoned -> archived ->
+// unavailable), so slices render in that same order without re-sorting here. Tooltip/label
+// percent-on-hover comes from getDonutChartConfig's ECharts pie defaults.
 const chartConfig = computed<ECOption>(() => {
-  const chartData: HorizontalBarData[] = rows.value.map((row) => ({
-    category: displayLabel(row.label),
-    value: percentOf(row.projects, total.value),
+  const donutData: DonutChartData[] = rows.value.map((row) => ({
+    name: displayLabel(row.label),
+    value: row.projects,
+    color: colorFor(row.label),
   }));
 
-  const baseConfig = getHorizontalBarChartConfig(chartData, lfxColors.brand[500]);
-
-  return merge({}, baseConfig, {
-    xAxis: {
-      max: 100,
-      axisLabel: { formatter: '{value}%' },
-    },
-    tooltip: {
-      formatter: (params: unknown) => {
-        const paramArray = params as LifecycleTooltipParam[];
-        if (!paramArray || paramArray.length === 0) return '';
-        const param = paramArray[0];
-        const row = rows.value[param.dataIndex];
-        if (!row) return '';
-        return `${displayLabel(row.label)}: ${param.value}% (${formatNumber(row.projects)})`;
-      },
-    },
-  });
+  return getDonutChartConfig(donutData);
 });
 </script>
 
