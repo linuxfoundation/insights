@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { logError } from '~~/server/utils/log';
 import type { OrganizationProfile } from '~~/types/organization-page';
 
 interface TinybirdOrgProfile {
@@ -50,6 +51,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProfile> =>
     };
   } catch (error: any) {
     if (error?.statusCode) throw error;
+    logError('organization-page/[orgSlug]', 'Failed to fetch organization profile', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });
