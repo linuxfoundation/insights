@@ -5,7 +5,7 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
 ## Layout
 
 - `src/` — Fastify service.
-- `docs/site/` — customer-facing VitePress + Scalar docs (T-029, not yet built). Served at `api.insights.linuxfoundation.org/docs`.
+- `docs/site/` — customer-facing VitePress + Scalar docs, built by `pnpm build` and served by the API at `/docs`.
 - `docs/arch/` — engineering planning: `PUBLIC_API_PLAN.md`, `CONTEXT.md`, ADRs, architecture review. Not part of the published site.
 
 ## Development
@@ -24,7 +24,7 @@ pnpm --filter @lfx-insights/api dev
 |---|---|
 | `pnpm dev` | Start with hot reload via `tsx watch` |
 | `pnpm start` | Run compiled output |
-| `pnpm build` | Compile TypeScript to `dist/` |
+| `pnpm build` | Compile TypeScript to `dist/` and build the VitePress docs site (`docs/site`) |
 | `pnpm lint` | ESLint (no warnings allowed) |
 | `pnpm tsc-check` | Type check without emit |
 | `pnpm test` | Run Vitest tests |

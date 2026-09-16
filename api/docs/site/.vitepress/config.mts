@@ -9,13 +9,14 @@ const navItems = [
   { text: 'Errors', link: '/errors' },
   { text: 'Lifecycle', link: '/lifecycle' },
   { text: 'Changelog', link: '/changelog' },
+  { text: 'Reference', link: '/reference' },
 ];
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'LFX Insights API',
-  description: 'Reference documentation for the LFX Insights public API.',
   base: '/docs/',
+  description: 'Reference documentation for the LFX Insights public API.',
   head: [
     ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }],
   ],
