@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { mkdir, readdir, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,13 +30,27 @@ for (const entry of versionRegistry) {
   await writeFile(resolve(outDir, `${entry.prefix.slice(1)}.json`), res.rawPayload);
 }
 
-// A version that was renamed or removed would otherwise leave its old artifact
-// behind, publishing a spec the registry no longer supports. Only files shaped
-// like version artifacts are touched; the output dir may hold unrelated files.
+// Drop artifacts of versions the registry dropped. The name alone is ambiguous
+// (a caller's v1-release-notes.json), so require a string openapi property too.
 const expected = new Set(versionRegistry.map((entry) => `${entry.prefix.slice(1)}.json`));
 for (const file of await readdir(outDir)) {
-  if (/^v\d[\w.-]*\.json$/.test(file) && !expected.has(file)) {
-    await unlink(resolve(outDir, file));
+  if (!/^v\d[\w.-]*\.json$/.test(file) || expected.has(file)) {
+    continue;
+  }
+  const filePath = resolve(outDir, file);
+  let isExporterArtifact = false;
+  try {
+    const parsed: unknown = JSON.parse(await readFile(filePath, 'utf8'));
+    isExporterArtifact =
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      !Array.isArray(parsed) &&
+      typeof (parsed as { openapi?: unknown }).openapi === 'string';
+  } catch {
+    // Unreadable or unparseable means it is not an exporter artifact.
+  }
+  if (isExporterArtifact) {
+    await unlink(filePath);
   }
 }
 

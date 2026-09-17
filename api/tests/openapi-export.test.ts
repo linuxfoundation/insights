@@ -16,7 +16,13 @@ const scriptPath = join(apiRoot, 'scripts/export-openapi.ts');
 const tmpRoot = mkdtempSync(join(tmpdir(), 'openapi-export-'));
 
 function runExport(args: string[]): void {
-  execFileSync(tsxBin, [scriptPath, ...args], { cwd: apiRoot, stdio: 'pipe' });
+  // Pin API_PUBLIC_URL so a developer's local .env can't make the child's export
+  // diverge from the in-process buildApp() used by the parity test below.
+  execFileSync(tsxBin, [scriptPath, ...args], {
+    cwd: apiRoot,
+    stdio: 'pipe',
+    env: { ...process.env, API_PUBLIC_URL: process.env.API_PUBLIC_URL ?? '' },
+  });
 }
 
 afterAll(() => {
@@ -57,13 +63,17 @@ describe('per-version export output (AC5)', () => {
   it('removes stale artifacts for versions that are no longer registered', () => {
     const outDir = join(tmpRoot, 'stale');
     runExport([outDir]);
-    writeFileSync(join(outDir, 'v9.json'), '{}');
+    writeFileSync(join(outDir, 'v9.json'), '{"openapi":"3.1.0"}');
     writeFileSync(join(outDir, 'notes.txt'), 'kept');
     writeFileSync(join(outDir, 'manifest.json'), '{}');
+    writeFileSync(join(outDir, 'v1-release-notes.json'), '{"notes":[]}');
+    writeFileSync(join(outDir, 'v8.json'), 'not json at all');
     runExport([outDir]);
     expect(existsSync(join(outDir, 'v9.json'))).toBe(false);
     expect(existsSync(join(outDir, 'notes.txt'))).toBe(true);
     expect(existsSync(join(outDir, 'manifest.json'))).toBe(true);
+    expect(existsSync(join(outDir, 'v1-release-notes.json'))).toBe(true);
+    expect(existsSync(join(outDir, 'v8.json'))).toBe(true);
     for (const prefix of registeredPrefixes) {
       expect(existsSync(join(outDir, `${prefix.slice(1)}.json`))).toBe(true);
     }
