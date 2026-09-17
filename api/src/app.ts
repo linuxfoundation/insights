@@ -7,6 +7,7 @@ import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
+import { versionRegistry } from './versions/registry.js';
 
 export interface BuildAppOptions {
   docsRoot?: string;
@@ -33,7 +34,9 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     },
   });
 
-  app.get('/v1/openapi.json', async () => app.swagger());
+  for (const entry of versionRegistry) {
+    await app.register(entry.plugin, { prefix: entry.prefix });
+  }
 
   const docsRoot = options.docsRoot ?? defaultDocsRoot;
   const docsNotFoundPage = existsSync(docsRoot) ? join(docsRoot, '404.html') : undefined;
