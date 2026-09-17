@@ -1,0 +1,59 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import type { FastifyInstance } from 'fastify';
+import type { VersionLifecycle } from './registry.js';
+
+function parseDateOrThrow(value: string, field: string): number {
+  const ms = Date.parse(value);
+  if (Number.isNaN(ms)) {
+    throw new Error(`lifecycle ${field} is not a parseable date: "${value}"`);
+  }
+  return ms;
+}
+
+// Lifecycle dates are fixed for the life of the process, so header values are
+// computed once at build time and invalid metadata fails the build.
+function lifecycleHeaders(lifecycle: VersionLifecycle): Record<string, string> {
+  const deprecatedMs = parseDateOrThrow(lifecycle.deprecatedAt, 'deprecatedAt');
+
+  const headers: Record<string, string> = {
+    // RFC 9745: '@' plus unix seconds of the deprecation date.
+    deprecation: `@${Math.trunc(deprecatedMs / 1000)}`,
+  };
+
+  if (lifecycle.sunsetAt !== undefined) {
+    const sunsetMs = parseDateOrThrow(lifecycle.sunsetAt, 'sunsetAt');
+    if (sunsetMs < deprecatedMs) {
+      throw new Error(
+        `lifecycle sunset date "${lifecycle.sunsetAt}" is earlier than deprecatedAt "${lifecycle.deprecatedAt}"`,
+      );
+    }
+    // RFC 8594 wants an IMF-fixdate, which toUTCString produces.
+    headers.sunset = new Date(sunsetMs).toUTCString();
+  }
+
+  const linkParts: string[] = [];
+  if (lifecycle.successorPrefix) {
+    linkParts.push(`<${lifecycle.successorPrefix}>; rel="successor-version"`);
+  }
+  if (lifecycle.deprecationDocsUrl) {
+    linkParts.push(`<${lifecycle.deprecationDocsUrl}>; rel="deprecation"`);
+  }
+  if (linkParts.length > 0) {
+    headers.link = linkParts.join(', ');
+  }
+
+  return headers;
+}
+
+// onSend also runs while serializing errors, so failed replies carry the headers too.
+export function applyLifecycle(scope: FastifyInstance, lifecycle?: VersionLifecycle): void {
+  if (!lifecycle) {
+    return;
+  }
+  const headers = lifecycleHeaders(lifecycle);
+  scope.addHook('onSend', (_request, reply, payload, done) => {
+    reply.headers(headers);
+    done(null, payload);
+  });
+}
