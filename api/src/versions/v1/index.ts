@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
-// Owns everything under /v1; inherits the root swagger decoration.
-const v1Routes: FastifyPluginAsyncTypebox = async (app) => {
-  app.get('/openapi.json', async () => app.swagger());
-};
+// Owns everything under /v1; the spec route is mounted by the registry loop in app.ts.
+const v1Routes: FastifyPluginAsyncTypebox = async () => {};
 
 export default v1Routes;
