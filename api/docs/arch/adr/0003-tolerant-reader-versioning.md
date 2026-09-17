@@ -31,7 +31,7 @@ An endpoint can be promoted when all of the following are true:
 
 ## Deprecation process
 
-> Superseded in part by [ADR-0020](./0020-rfc-deprecation-sunset-header-formats.md): the header wire formats in step 2 below are outdated.
+> Superseded in part by [ADR-0021](./0021-rfc-deprecation-sunset-header-formats.md): the header wire formats in step 2 below are outdated.
 
 When a field, parameter, or endpoint needs to be removed, the process is:
 

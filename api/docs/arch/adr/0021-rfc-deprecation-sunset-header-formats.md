@@ -1,4 +1,4 @@
-# ADR-0020: Deprecation and Sunset headers use the RFC 9745 and RFC 8594 wire formats
+# ADR-0021: Deprecation and Sunset headers use the RFC 9745 and RFC 8594 wire formats
 
 **Date**: 2026-09-17
 **Status**: accepted
