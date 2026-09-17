@@ -4,8 +4,10 @@ import type { FastifyInstance } from 'fastify';
 import type { VersionLifecycle } from './registry.js';
 
 function parseDateOrThrow(value: string, field: string): number {
+  // The round-trip enforces the YYYY-MM-DD registry format and catches calendar-invalid
+  // values that Date.parse silently normalizes (e.g. "2026-02-30").
   const ms = Date.parse(value);
-  if (Number.isNaN(ms)) {
+  if (Number.isNaN(ms) || new Date(ms).toISOString().slice(0, 10) !== value) {
     throw new Error(`lifecycle ${field} must be a valid YYYY-MM-DD date: "${value}"`);
   }
   return ms;
@@ -61,5 +63,14 @@ export function applyLifecycle(scope: FastifyInstance, lifecycle?: VersionLifecy
       reply.header('link', existingJoined ? `${existingJoined}, ${link}` : link);
     }
     done(null, payload);
+  });
+  // Fastify's default 404 handler runs in the root context, outside this scope's onSend
+  // hook, so deprecated versions answer 404s themselves to stamp unmatched paths too.
+  scope.setNotFoundHandler((request, reply) => {
+    reply.code(404).send({
+      message: `Route ${request.method}:${request.url} not found`,
+      error: 'Not Found',
+      statusCode: 404,
+    });
   });
 }

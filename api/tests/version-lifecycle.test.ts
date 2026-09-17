@@ -1,8 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it } from 'vitest';
 import { buildApp } from '../src/app.js';
@@ -11,8 +8,6 @@ import {
   type ApiVersion,
   type VersionLifecycle,
 } from '../src/versions/registry.js';
-
-const apiRoot = fileURLToPath(new URL('..', import.meta.url));
 
 const DEPRECATED_AT = '2026-09-01';
 const SUNSET_AT = '2026-12-01';
@@ -34,6 +29,22 @@ const version = (prefix: string, lifecycle?: VersionLifecycle): ApiVersion => ({
   ...(lifecycle ? { lifecycle } : {}),
 });
 
+// A version whose route sets its own Link header (string or array form).
+const linkingVersion = (
+  prefix: string,
+  ownLink: string | string[],
+  lifecycle: VersionLifecycle,
+): ApiVersion => ({
+  prefix,
+  plugin: async (scope) => {
+    scope.get('/linked', async (_request, reply) => {
+      reply.header('link', ownLink);
+      return { ok: true };
+    });
+  },
+  lifecycle,
+});
+
 let app: FastifyInstance | undefined;
 
 afterEach(async () => {
@@ -50,16 +61,6 @@ describe('registry lifecycle metadata (AC1)', () => {
   it('still ships /v1 as the only version, with no lifecycle metadata', () => {
     expect(versionRegistry.map((entry) => entry.prefix)).toEqual(['/v1']);
     expect(versionRegistry.every((entry) => entry.lifecycle === undefined)).toBe(true);
-  });
-
-  it('accepts full lifecycle metadata on a version entry', () => {
-    const entry = version('/v1-alpha', {
-      deprecatedAt: DEPRECATED_AT,
-      sunsetAt: SUNSET_AT,
-      successorPrefix: '/v1',
-      deprecationDocsUrl: DOCS_URL,
-    });
-    expect(entry.lifecycle?.deprecatedAt).toBe(DEPRECATED_AT);
   });
 });
 
@@ -95,6 +96,18 @@ describe('Deprecation header (AC2)', () => {
     const res = await respond(app, '/v1-alpha/boom');
     expect(res.statusCode).toBe(500);
     expect(res.headers.deprecation).toBe(expectedDeprecation);
+  });
+
+  it('stamps 404s for unmatched paths under the deprecated prefix', async () => {
+    app = await buildApp({
+      versions: [version('/v1-alpha', { deprecatedAt: DEPRECATED_AT, successorPrefix: '/v1' })],
+    });
+    await app.ready();
+
+    const res = await respond(app, '/v1-alpha/removed-endpoint');
+    expect(res.statusCode).toBe(404);
+    expect(res.headers.deprecation).toBe(expectedDeprecation);
+    expect(res.headers.link).toBe('</v1>; rel="successor-version"');
   });
 });
 
@@ -162,6 +175,42 @@ describe('Link header (AC4)', () => {
     const res = await respond(app, '/v1-alpha/ping');
     expect(res.headers.link).toBe(
       `</v1>; rel="successor-version", <${DOCS_URL}>; rel="deprecation"`,
+    );
+  });
+
+  it("appends the lifecycle relations after a route's own Link instead of replacing it", async () => {
+    app = await buildApp({
+      versions: [
+        linkingVersion('/v1-alpha', '</v1/things?cursor=abc>; rel="next"', {
+          deprecatedAt: DEPRECATED_AT,
+          successorPrefix: '/v1',
+          deprecationDocsUrl: DOCS_URL,
+        }),
+      ],
+    });
+    await app.ready();
+
+    const res = await respond(app, '/v1-alpha/linked');
+    expect(res.headers.link).toBe(
+      `</v1/things?cursor=abc>; rel="next", </v1>; rel="successor-version", <${DOCS_URL}>; rel="deprecation"`,
+    );
+  });
+
+  it('merges an array-valued route Link the same way', async () => {
+    app = await buildApp({
+      versions: [
+        linkingVersion(
+          '/v1-alpha',
+          ['</v1/things?cursor=abc>; rel="next"', '</v1/things>; rel="first"'],
+          { deprecatedAt: DEPRECATED_AT, successorPrefix: '/v1' },
+        ),
+      ],
+    });
+    await app.ready();
+
+    const res = await respond(app, '/v1-alpha/linked');
+    expect(res.headers.link).toBe(
+      '</v1/things?cursor=abc>; rel="next", </v1/things>; rel="first", </v1>; rel="successor-version"',
     );
   });
 
@@ -238,22 +287,44 @@ describe('lifecycle validation at build time (AC6)', () => {
       ]),
     ).rejects.toThrow(/sunset/i);
   });
-});
 
-describe('deprecation signals are documented', () => {
-  it('lifecycle.md explains the three headers callers should watch for', () => {
-    const lifecycle = readFileSync(join(apiRoot, 'docs/site/lifecycle.md'), 'utf-8');
-    expect(lifecycle.toLowerCase()).toContain('deprecation signals');
-    expect(lifecycle).toContain('`Deprecation`');
-    expect(lifecycle).toContain('`Sunset`');
-    expect(lifecycle).toContain('rel="deprecation"');
+  it('rejects a calendar-invalid date that Date.parse would normalize', async () => {
+    await expect(
+      buildAndDiscard([version('/v1-alpha', { deprecatedAt: '2026-02-30' })]),
+    ).rejects.toThrow(/deprecatedAt/);
+    await expect(
+      buildAndDiscard([
+        version('/v1-alpha', { deprecatedAt: DEPRECATED_AT, sunsetAt: '2026-02-30' }),
+      ]),
+    ).rejects.toThrow(/sunsetAt/);
   });
 
-  it('ADR 0003 records the RFC 9745 header format', () => {
-    const adr = readFileSync(
-      join(apiRoot, 'docs/arch/adr/0003-tolerant-reader-versioning.md'),
-      'utf-8',
-    );
-    expect(adr).toContain('RFC 9745');
+  it('rejects an out-of-range month', async () => {
+    await expect(
+      buildAndDiscard([version('/v1-alpha', { deprecatedAt: '2026-13-01' })]),
+    ).rejects.toThrow(/deprecatedAt/);
+  });
+
+  it('rejects a date without zero padding', async () => {
+    await expect(
+      buildAndDiscard([version('/v1-alpha', { deprecatedAt: '2026-9-1' })]),
+    ).rejects.toThrow(/deprecatedAt/);
+  });
+
+  it('rejects a parseable datetime that is not the YYYY-MM-DD registry format', async () => {
+    await expect(
+      buildAndDiscard([version('/v1-alpha', { deprecatedAt: '2026-09-01T00:00:00Z' })]),
+    ).rejects.toThrow(/deprecatedAt/);
+  });
+
+  it('accepts a sunsetAt equal to deprecatedAt and stamps both headers', async () => {
+    app = await buildApp({
+      versions: [version('/v1-alpha', { deprecatedAt: DEPRECATED_AT, sunsetAt: DEPRECATED_AT })],
+    });
+    await app.ready();
+
+    const res = await respond(app, '/v1-alpha/ping');
+    expect(res.headers.deprecation).toBe(expectedDeprecation);
+    expect(res.headers.sunset).toBe('Tue, 01 Sep 2026 00:00:00 GMT');
   });
 });

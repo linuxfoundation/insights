@@ -16,7 +16,7 @@ Code to record a new decision interactively.
 |---|---|---|---|
 | [ADR-0001](./0001-fastify-over-nestjs.md) | Fastify over NestJS for the public API service | | |
 | [ADR-0002](./0002-api-at-repo-root.md) | Public API service lives at `/api` (repo root), not inside `workers/` | | |
-| [ADR-0003](./0003-tolerant-reader-versioning.md) | v1 contract: tolerant-reader / additive-only changes within a version | | |
+| [ADR-0003](./0003-tolerant-reader-versioning.md) | v1 contract: tolerant-reader / additive-only changes within a version | superseded in part by ADR-0020 | |
 | [ADR-0004](./0004-server-to-server-cors-deny.md) | v1 is server-to-server only; CORS denies all browser origins | | |
 | [ADR-0005](./0005-tiers-control-rate-limits-only.md) | Tiers control rate limits only in v1; no per-endpoint feature gating | | |
 | [ADR-0006](./0006-pat-token-exchange-for-api-credentials.md) | API credentials are PATs exchanged for short-lived JWTs via Auth0 Custom Token Exchange | accepted | 2026-08-05 |
@@ -33,3 +33,4 @@ Code to record a new decision interactively.
 | [ADR-0017](./0017-collections-queries-not-shared.md) | Collections Postgres queries are written fresh in `/api`, not shared with the frontend | | |
 | [ADR-0018](./0018-structured-json-logging.md) | Structured JSON logging via pino; log levels follow LFX-0002 | | |
 | [ADR-0019](./0019-opentelemetry-instrumentation.md) | OpenTelemetry instrumentation; OTel trace ID is the request ID | | |
+| [ADR-0020](./0020-rfc-deprecation-sunset-header-formats.md) | Deprecation and Sunset headers use the RFC 9745 and RFC 8594 wire formats | accepted | 2026-09-17 |
