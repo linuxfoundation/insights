@@ -7,14 +7,69 @@ import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
-import { API_VERSIONS, specVersionFor } from './versions.js';
+import { specVersionFor, versionRegistry, type ApiVersion } from './versions/registry.js';
 
 export interface BuildAppOptions {
   docsRoot?: string;
-  versions?: readonly string[];
+  versions?: readonly ApiVersion[];
 }
 
 const defaultDocsRoot = fileURLToPath(new URL('../docs/site/.vitepress/dist', import.meta.url));
+
+type ComponentSections = Record<string, Record<string, unknown>>;
+
+function collectRefs(node: unknown, into: Set<string>): void {
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      collectRefs(item, into);
+    }
+    return;
+  }
+  if (node && typeof node === 'object') {
+    for (const [key, value] of Object.entries(node)) {
+      if (key === '$ref' && typeof value === 'string') {
+        into.add(value);
+      } else {
+        collectRefs(value, into);
+      }
+    }
+  }
+}
+
+// Swagger hoists every scope's shared schemas into one root components block, so a
+// version's document must keep only the definitions its own paths reach via $ref.
+function prunedComponents(components: ComponentSections, paths: unknown): ComponentSections {
+  const kept = new Set<string>();
+  let frontier = new Set<string>();
+  collectRefs(paths, frontier);
+  while (frontier.size > 0) {
+    const next = new Set<string>();
+    for (const ref of frontier) {
+      const match = /^#\/components\/([^/]+)\/(.+)$/.exec(ref);
+      if (!match) {
+        continue;
+      }
+      const key = `${match[1]}/${match[2]}`;
+      if (kept.has(key)) {
+        continue;
+      }
+      kept.add(key);
+      collectRefs(components[match[1]]?.[match[2]], next);
+    }
+    frontier = next;
+  }
+  return Object.fromEntries(
+    Object.entries(components).map(([section, defs]) => [
+      section,
+      // Security schemes are referenced by name from `security`, never by $ref.
+      section === 'securitySchemes'
+        ? defs
+        : Object.fromEntries(
+            Object.entries(defs).filter(([name]) => kept.has(`${section}/${name}`)),
+          ),
+    ]),
+  );
+}
 
 export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyInstance> {
   const app = Fastify({
@@ -23,7 +78,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
   }).withTypeProvider<TypeBoxTypeProvider>();
 
   const publicUrl = process.env.API_PUBLIC_URL ?? 'http://localhost:4000';
-  const versions = options.versions ?? API_VERSIONS;
+  const versions = options.versions ?? versionRegistry;
 
   await app.register(fastifySwagger, {
     openapi: {
@@ -36,26 +91,33 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     },
   });
 
-  const versionedDoc = (version: string) => {
+  const versionedDoc = (prefix: string) => {
     const source = app.swagger();
     // Exact prefix with trailing slash so e.g. /v1-alpha/ routes never leak into /v1's spec.
-    const pathPrefix = `/${version}/`;
+    const pathPrefix = `${prefix}/`;
+    const paths = Object.fromEntries(
+      Object.entries(source.paths ?? {}).filter(([path]) => path.startsWith(pathPrefix)),
+    );
+    const components =
+      'components' in source && source.components
+        ? prunedComponents(source.components as ComponentSections, paths)
+        : undefined;
     return {
       ...source,
-      info: { ...source.info, version: specVersionFor(version) },
-      paths: Object.fromEntries(
-        Object.entries(source.paths ?? {}).filter(([path]) => path.startsWith(pathPrefix)),
-      ),
+      info: { ...source.info, version: specVersionFor(prefix) },
+      paths,
+      ...(components ? { components } : {}),
     };
   };
 
-  for (const version of versions) {
+  for (const entry of versions) {
+    await app.register(entry.plugin, { prefix: entry.prefix });
     // The route set is fixed once the app is ready, so the document is derived once per version.
     let cached: ReturnType<typeof versionedDoc> | undefined;
     app.get(
-      `/${version}/openapi.json`,
+      `${entry.prefix}/openapi.json`,
       { schema: { hide: true } },
-      async () => (cached ??= versionedDoc(version)),
+      async () => (cached ??= versionedDoc(entry.prefix)),
     );
   }
 

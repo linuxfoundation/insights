@@ -51,7 +51,7 @@ SPDX-License-Identifier: MIT
           class="flex flex-col gap-1"
         >
           <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">{{ group.label }}</p>
-          <div :style="{ height: `${group.signals.length * 64 + 24}px` }">
+          <div :style="{ height: `${group.signals.length * SIGNAL_ROW_HEIGHT + 16}px` }">
             <client-only>
               <lfx-chart
                 :config="group.chartConfig"
@@ -142,6 +142,10 @@ const otherReposTracked = computed(() => data.value?.otherReposTracked ?? 0);
 const isEmpty = computed(() => !isLoading.value && signals.value.length === 0);
 
 const round1 = (value: number): number => Math.round(value * 10) / 10;
+
+// Design feedback: 64px/row left too much whitespace between each signal's bar pair. Each row
+// only needs enough height for its two 8px bars plus breathing room, not a fixed 64px band.
+const SIGNAL_ROW_HEIGHT = 40;
 
 interface CategoryGroup {
   categoryKey: string;

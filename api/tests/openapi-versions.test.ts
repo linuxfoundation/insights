@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it } from 'vitest';
 import { buildApp } from '../src/app.js';
-import { API_VERSIONS, specVersionFor } from '../src/versions.js';
+import { specVersionFor, versionRegistry, type ApiVersion } from '../src/versions/registry.js';
 
 const apiRoot = fileURLToPath(new URL('..', import.meta.url));
 
@@ -14,7 +14,35 @@ interface OpenApiDoc {
   openapi: string;
   info: { version: string };
   paths: Record<string, unknown>;
+  components?: { schemas?: Record<string, { title?: string }> };
 }
+
+const pingVersion = (prefix: string): ApiVersion => ({
+  prefix,
+  plugin: async (scope) => {
+    scope.get('/ping', async () => ({ ok: true }));
+  },
+});
+
+const emptyVersion = (prefix: string): ApiVersion => ({
+  prefix,
+  plugin: async () => {},
+});
+
+const schemaVersion = (prefix: string, title: string): ApiVersion => ({
+  prefix,
+  plugin: async (scope) => {
+    scope.addSchema({
+      $id: title,
+      title,
+      type: 'object',
+      properties: { name: { type: 'string' } },
+    });
+    scope.get('/thing', { schema: { response: { 200: { $ref: `${title}#` } } } }, async () => ({
+      name: 'thing',
+    }));
+  },
+});
 
 let app: FastifyInstance | undefined;
 
@@ -30,28 +58,29 @@ async function getSpec(instance: FastifyInstance, url: string): Promise<OpenApiD
 }
 
 describe('version registry (AC1)', () => {
-  it('lists v1 as the only supported version', () => {
-    expect(API_VERSIONS).toEqual(['v1']);
+  it('lists /v1 as the only supported version', () => {
+    expect(versionRegistry.map((entry) => entry.prefix)).toEqual(['/v1']);
   });
 
-  it('maps version ids to spec info.version values', () => {
-    expect(specVersionFor('v1')).toBe('1.0.0');
-    expect(specVersionFor('v2')).toBe('2.0.0');
-    expect(specVersionFor('v1-alpha')).toBe('1.0.0-alpha');
+  it('maps version prefixes to spec info.version values', () => {
+    expect(specVersionFor('/v1')).toBe('1.0.0');
+    expect(specVersionFor('/v2')).toBe('2.0.0');
+    expect(specVersionFor('/v1-alpha')).toBe('1.0.0-alpha');
   });
 
   it('is the single source of the version list for the app and the export script', () => {
-    expect(readFileSync(join(apiRoot, 'src/app.ts'), 'utf-8')).toContain("from './versions.js'");
+    expect(readFileSync(join(apiRoot, 'src/app.ts'), 'utf-8')).toContain(
+      "from './versions/registry.js'",
+    );
     expect(readFileSync(join(apiRoot, 'scripts/export-openapi.ts'), 'utf-8')).toContain(
-      "from '../src/versions.js'",
+      "from '../src/versions/registry.js'",
     );
   });
 });
 
 describe('served per-version spec (AC2)', () => {
   it('serves a valid v1 document with info.version 1.0.0 and only /v1/ paths', async () => {
-    app = await buildApp();
-    app.get('/v1/ping', async () => ({ ok: true }));
+    app = await buildApp({ versions: [pingVersion('/v1')] });
     await app.ready();
 
     const spec = await getSpec(app, '/v1/openapi.json');
@@ -63,9 +92,7 @@ describe('served per-version spec (AC2)', () => {
 
 describe('cross-version isolation (AC3)', () => {
   it('serves one spec per registered version, each containing only its own routes', async () => {
-    app = await buildApp({ versions: ['v1', 'v2'] });
-    app.get('/v1/ping', async () => ({ ok: true }));
-    app.get('/v2/ping', async () => ({ ok: true }));
+    app = await buildApp({ versions: [pingVersion('/v1'), pingVersion('/v2')] });
     await app.ready();
 
     const v1 = await getSpec(app, '/v1/openapi.json');
@@ -77,9 +104,7 @@ describe('cross-version isolation (AC3)', () => {
   });
 
   it('does not leak /v1-alpha/ routes into the /v1 spec despite the shared prefix', async () => {
-    app = await buildApp({ versions: ['v1', 'v1-alpha'] });
-    app.get('/v1/ping', async () => ({ ok: true }));
-    app.get('/v1-alpha/ping', async () => ({ ok: true }));
+    app = await buildApp({ versions: [pingVersion('/v1'), pingVersion('/v1-alpha')] });
     await app.ready();
 
     const v1 = await getSpec(app, '/v1/openapi.json');
@@ -87,6 +112,20 @@ describe('cross-version isolation (AC3)', () => {
     expect(alpha.info.version).toBe('1.0.0-alpha');
     expect(Object.keys(v1.paths)).toEqual(['/v1/ping']);
     expect(Object.keys(alpha.paths)).toEqual(['/v1-alpha/ping']);
+  });
+
+  it('keeps only the schemas referenced by the version own routes', async () => {
+    app = await buildApp({
+      versions: [schemaVersion('/v1', 'V1Thing'), schemaVersion('/v2', 'V2Thing')],
+    });
+    await app.ready();
+
+    const v1 = await getSpec(app, '/v1/openapi.json');
+    const v2 = await getSpec(app, '/v2/openapi.json');
+    const titles = (spec: OpenApiDoc) =>
+      Object.values(spec.components?.schemas ?? {}).map((schema) => schema.title);
+    expect(titles(v1)).toEqual(['V1Thing']);
+    expect(titles(v2)).toEqual(['V2Thing']);
   });
 
   it('does not serve a spec for an unregistered version', async () => {
@@ -100,7 +139,7 @@ describe('cross-version isolation (AC3)', () => {
 
 describe('spec routes are hidden (AC4)', () => {
   it('omits the openapi.json routes from every spec', async () => {
-    app = await buildApp({ versions: ['v1', 'v2'] });
+    app = await buildApp({ versions: [emptyVersion('/v1'), emptyVersion('/v2')] });
     await app.ready();
 
     const v1 = await getSpec(app, '/v1/openapi.json');
