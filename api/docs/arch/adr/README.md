@@ -33,3 +33,4 @@ Code to record a new decision interactively.
 | [ADR-0017](./0017-collections-queries-not-shared.md) | Collections Postgres queries are written fresh in `/api`, not shared with the frontend | | |
 | [ADR-0018](./0018-structured-json-logging.md) | Structured JSON logging via pino; log levels follow LFX-0002 | | |
 | [ADR-0019](./0019-opentelemetry-instrumentation.md) | OpenTelemetry instrumentation; OTel trace ID is the request ID | | |
+| [ADR-0020](./0020-standalone-pat-service-on-platform-cluster.md) | The PAT service is a standalone service on the LFX platform cluster | accepted | 2026-09-14 |
