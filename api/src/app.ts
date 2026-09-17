@@ -79,7 +79,8 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     disableRequestLogging: true,
   }).withTypeProvider<TypeBoxTypeProvider>();
 
-  const publicUrl = process.env.API_PUBLIC_URL ?? 'http://localhost:4000';
+  // The local default lives in .env.example, not here; see src/env.ts.
+  const publicUrl = process.env.API_PUBLIC_URL;
   const versions = options.versions ?? versionRegistry;
 
   await app.register(fastifySwagger, {
@@ -89,7 +90,8 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
         version: '0.1.0',
         description: 'Public API for LFX Insights.',
       },
-      servers: [{ url: publicUrl }],
+      // Omitted servers means same-origin per the OpenAPI spec.
+      ...(publicUrl ? { servers: [{ url: publicUrl }] } : {}),
     },
   });
 

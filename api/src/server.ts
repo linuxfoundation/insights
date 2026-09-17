@@ -1,6 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { buildApp } from './app.js';
+import { loadLocalEnv } from './env.js';
+
+loadLocalEnv();
 
 function parsePort(value: string | undefined): number {
   if (value === undefined) return 4000;

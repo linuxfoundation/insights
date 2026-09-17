@@ -14,9 +14,14 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
 # from repo root
 pnpm install --filter @lfx-insights/api
 
-# start with hot reload (uses PORT env var or defaults to 4000)
+# local config: defaults live in the env file, not in code
+cp api/.env.example api/.env
+
+# start with hot reload
 pnpm --filter @lfx-insights/api dev
 ```
+
+`src/env.ts` loads `api/.env` at startup; variables already set in the environment take precedence, so deployments keep using real env vars.
 
 ## Scripts
 

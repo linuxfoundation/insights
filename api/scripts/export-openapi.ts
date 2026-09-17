@@ -5,7 +5,10 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildApp } from '../src/app.js';
+import { loadLocalEnv } from '../src/env.js';
 import { versionRegistry } from '../src/versions/registry.js';
+
+loadLocalEnv();
 
 const outDir = process.argv[2]
   ? resolve(process.argv[2])
