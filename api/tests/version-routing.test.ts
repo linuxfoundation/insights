@@ -1,13 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { buildApp } from '../src/app.js';
 import { versionRegistry } from '../src/versions/registry.js';
-
-const apiRoot = fileURLToPath(new URL('..', import.meta.url));
 
 describe('version registry (AC1, AC4)', () => {
   it('exports a non-empty ordered list of version entries', () => {
@@ -32,20 +28,7 @@ describe('version registry (AC1, AC4)', () => {
   });
 });
 
-describe('app wiring (AC1, AC4)', () => {
-  const appSource = readFileSync(`${apiRoot}src/app.ts`, 'utf-8');
-
-  it('app.ts registers versions from the registry, not inline', () => {
-    expect(appSource).toContain('versionRegistry');
-  });
-
-  it('app.ts defines no per-version routes itself', () => {
-    // No hardcoded version-prefixed paths like '/v1/...' outside the registry.
-    expect(appSource).not.toMatch(/['"`]\/v\d/);
-  });
-});
-
-describe('version-scoped routes (AC2, AC3)', () => {
+describe('version-scoped routes (AC1, AC2, AC3, AC4)', () => {
   let app: FastifyInstance;
 
   beforeAll(async () => {
@@ -55,6 +38,19 @@ describe('version-scoped routes (AC2, AC3)', () => {
 
   afterAll(async () => {
     await app.close();
+  });
+
+  it('mounts every route under a registry prefix (AC1, AC4)', () => {
+    const printed = app.printRoutes({ commonPrefix: false });
+    const paths = [...printed.matchAll(/(\/[^\s(]*) \(/g)].map((match) => match[1]);
+    expect(paths.length).toBeGreaterThan(0);
+    const prefixes = versionRegistry.map((entry) => entry.prefix);
+    for (const path of paths) {
+      expect(
+        prefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`)),
+        `route ${path} is outside every registered version prefix`,
+      ).toBe(true);
+    }
   });
 
   it('serves a valid OpenAPI 3 spec at /v1/openapi.json (AC2)', async () => {
