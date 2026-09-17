@@ -15,10 +15,11 @@ export function getTinybirdClient(): TinybirdClient {
     if (!token) {
       throw new Error('API_TB_TOKEN environment variable is required');
     }
-    client = createTinybirdClient({
-      baseUrl: process.env.API_TB_HOST ?? 'https://api.us-west-2.aws.tinybird.co',
-      token,
-    });
+    const baseUrl = process.env.API_TB_HOST;
+    if (!baseUrl) {
+      throw new Error('API_TB_HOST environment variable is required');
+    }
+    client = createTinybirdClient({ baseUrl, token });
   }
   return client;
 }
