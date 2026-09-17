@@ -58,6 +58,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
+import { useMediaQuery } from '@vueuse/core';
 import { fetchHealthScoreCoverageSignalScoresQuery } from '../services/signal-scores.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -65,6 +66,11 @@ import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { SIGNAL_SCORE_PERCENTILES } from '~~/types/report/health-score-coverage-signal-scores.types';
 import type { HealthScoreCoverageSignalScore } from '~~/types/report/health-score-coverage-signal-scores.types';
+
+// Matches the `md` breakpoint in tailwind.config.js - below it, row labels switch from full text to
+// a fixed left gutter, otherwise the hardcoded 320px label column leaves almost no room for the
+// heatmap itself on a phone-width card.
+const isMobile = useMediaQuery('(max-width: 767px)');
 
 // Display names per the design copy, keyed by the pipe's `signal_key`. Duplicated here rather than
 // imported from config/signals.ts because that shared file is created by IN-1285 and isn't ready
@@ -116,6 +122,10 @@ const round1 = (value: number): number => Math.round(value * 10) / 10;
 const rowLabel = (signal: HealthScoreCoverageSignalScore): string =>
   `${CATEGORY_LABELS[signal.categoryKey] ?? signal.categoryKey} · ${displayLabel(signal.signalKey)}`;
 
+// On mobile there's no room for the category prefix alongside 10 percentile columns, so the row
+// label falls back to the signal name alone.
+const mobileRowLabel = (signal: HealthScoreCoverageSignalScore): string => displayLabel(signal.signalKey);
+
 // Heatmap by percentile band: one row per signal (grouped by category, in fixed category order),
 // one column per percentile band from p10 to p100. Color intensity encodes the percentage value on
 // one shared scale, replacing the prior per-category bar coloring (which read as inconsistent,
@@ -139,9 +149,14 @@ const chartConfig = computed<ECOption>(() => {
 
   const maxValue = Math.max(...heatmapData.map((point) => point[2]), 1);
 
+  // Below md, the full "category · signal" label plus 10 percentile columns can't fit a phone-width
+  // card - shrink the label gutter and drop to the signal name alone so the heatmap itself stays
+  // legible instead of being squeezed to a sliver.
+  const labelWidth = isMobile.value ? 110 : 300;
+
   return {
     grid: {
-      left: 320,
+      left: isMobile.value ? 116 : 320,
       right: '5%',
       top: 24,
       bottom: 56,
@@ -161,7 +176,7 @@ const chartConfig = computed<ECOption>(() => {
     },
     yAxis: {
       type: 'category',
-      data: rows.map((signal) => rowLabel(signal)),
+      data: rows.map((signal) => (isMobile.value ? mobileRowLabel(signal) : rowLabel(signal))),
       inverse: true,
       splitArea: { show: true },
       axisLabel: {
@@ -169,8 +184,8 @@ const chartConfig = computed<ECOption>(() => {
         fontWeight: 500,
         color: lfxColors.neutral[900],
         align: 'left',
-        width: 300,
-        margin: 300,
+        width: labelWidth,
+        margin: labelWidth,
         overflow: 'truncate',
       },
       axisLine: { show: false },
@@ -184,11 +199,11 @@ const chartConfig = computed<ECOption>(() => {
       left: 'center',
       bottom: 0,
       itemWidth: 12,
-      itemHeight: 120,
+      itemHeight: isMobile.value ? 60 : 120,
       inRange: {
         color: [lfxColors.neutral[200], lfxColors.brand[200], lfxColors.brand[500], lfxColors.brand[700]],
       },
-      text: ['Distinguishes strongly', 'Barely distinguishes'],
+      text: isMobile.value ? ['Strong', 'Weak'] : ['Distinguishes strongly', 'Barely distinguishes'],
       textStyle: {
         fontSize: 11,
         color: lfxColors.neutral[500],
