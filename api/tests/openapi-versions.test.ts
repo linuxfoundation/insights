@@ -29,6 +29,29 @@ const emptyVersion = (prefix: string): ApiVersion => ({
   plugin: async () => {},
 });
 
+const nestedRefVersion = (prefix: string, title: string): ApiVersion => ({
+  prefix,
+  plugin: async (scope) => {
+    scope.addSchema({
+      $id: title,
+      title,
+      type: 'object',
+      properties: { name: { type: 'string' } },
+    });
+    scope.get(
+      '/part',
+      {
+        schema: {
+          response: {
+            200: { type: 'object', properties: { part: { $ref: `${title}#/properties/name` } } },
+          },
+        },
+      },
+      async () => ({ part: 'thing' }),
+    );
+  },
+});
+
 const schemaVersion = (prefix: string, title: string): ApiVersion => ({
   prefix,
   plugin: async (scope) => {
@@ -114,7 +137,7 @@ describe('cross-version isolation (AC3)', () => {
     expect(Object.keys(alpha.paths)).toEqual(['/v1-alpha/ping']);
   });
 
-  it('keeps only the schemas referenced by the version own routes', async () => {
+  it("keeps only the schemas referenced by the version's own routes", async () => {
     app = await buildApp({
       versions: [schemaVersion('/v1', 'V1Thing'), schemaVersion('/v2', 'V2Thing')],
     });
@@ -126,6 +149,15 @@ describe('cross-version isolation (AC3)', () => {
       Object.values(spec.components?.schemas ?? {}).map((schema) => schema.title);
     expect(titles(v1)).toEqual(['V1Thing']);
     expect(titles(v2)).toEqual(['V2Thing']);
+  });
+
+  it('keeps a schema reached only through a nested pointer ref', async () => {
+    app = await buildApp({ versions: [nestedRefVersion('/v1', 'V1Deep')] });
+    await app.ready();
+
+    const v1 = await getSpec(app, '/v1/openapi.json');
+    const titles = Object.values(v1.components?.schemas ?? {}).map((schema) => schema.title);
+    expect(titles).toEqual(['V1Deep']);
   });
 
   it('does not serve a spec for an unregistered version', async () => {

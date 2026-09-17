@@ -45,7 +45,9 @@ function prunedComponents(components: ComponentSections, paths: unknown): Compon
   while (frontier.size > 0) {
     const next = new Set<string>();
     for (const ref of frontier) {
-      const match = /^#\/components\/([^/]+)\/(.+)$/.exec(ref);
+      // A ref may point inside a definition (.../User/properties/id), so only the
+      // first two segments name the component to keep.
+      const match = /^#\/components\/([^/]+)\/([^/]+)/.exec(ref);
       if (!match) {
         continue;
       }

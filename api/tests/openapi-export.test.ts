@@ -54,6 +54,21 @@ describe('per-version export output (AC5)', () => {
     }
   });
 
+  it('removes stale artifacts for versions that are no longer registered', () => {
+    const outDir = join(tmpRoot, 'stale');
+    runExport([outDir]);
+    writeFileSync(join(outDir, 'v9.json'), '{}');
+    writeFileSync(join(outDir, 'notes.txt'), 'kept');
+    writeFileSync(join(outDir, 'manifest.json'), '{}');
+    runExport([outDir]);
+    expect(existsSync(join(outDir, 'v9.json'))).toBe(false);
+    expect(existsSync(join(outDir, 'notes.txt'))).toBe(true);
+    expect(existsSync(join(outDir, 'manifest.json'))).toBe(true);
+    for (const prefix of registeredPrefixes) {
+      expect(existsSync(join(outDir, `${prefix.slice(1)}.json`))).toBe(true);
+    }
+  });
+
   it('exports structurally valid per-version OpenAPI 3.x documents', () => {
     const outDir = join(tmpRoot, 'valid');
     runExport([outDir]);
