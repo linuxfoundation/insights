@@ -6,7 +6,7 @@ import type { VersionLifecycle } from './registry.js';
 function parseDateOrThrow(value: string, field: string): number {
   const ms = Date.parse(value);
   if (Number.isNaN(ms)) {
-    throw new Error(`lifecycle ${field} is not a parseable date: "${value}"`);
+    throw new Error(`lifecycle ${field} must be a valid YYYY-MM-DD date: "${value}"`);
   }
   return ms;
 }
@@ -51,9 +51,15 @@ export function applyLifecycle(scope: FastifyInstance, lifecycle?: VersionLifecy
   if (!lifecycle) {
     return;
   }
-  const headers = lifecycleHeaders(lifecycle);
+  const { link, ...rest } = lifecycleHeaders(lifecycle);
   scope.addHook('onSend', (_request, reply, payload, done) => {
-    reply.headers(headers);
+    reply.headers(rest);
+    if (link) {
+      // Merge rather than replace: a route may already set its own Link relations (e.g. pagination).
+      const existing = reply.getHeader('link');
+      const existingJoined = Array.isArray(existing) ? existing.join(', ') : String(existing ?? '');
+      reply.header('link', existingJoined ? `${existingJoined}, ${link}` : link);
+    }
     done(null, payload);
   });
 }

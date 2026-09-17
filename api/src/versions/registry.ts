@@ -4,6 +4,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import v1Routes from './v1/index.js';
 
 export interface VersionLifecycle {
+  // deprecatedAt/sunsetAt are YYYY-MM-DD dates (UTC).
   deprecatedAt: string;
   sunsetAt?: string;
   successorPrefix?: string;
