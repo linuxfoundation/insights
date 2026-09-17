@@ -15,7 +15,7 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
 pnpm install --filter @lfx-insights/api
 
 # local config: defaults live in the env file, not in code
-cp api/.env.example api/.env
+cp api/.env.dist api/.env
 
 # start with hot reload
 pnpm --filter @lfx-insights/api dev
