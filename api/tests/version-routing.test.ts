@@ -40,12 +40,17 @@ describe('version-scoped routes (AC1, AC2, AC3, AC4)', () => {
     await app.close();
   });
 
-  it('mounts every route under a registry prefix (AC1, AC4)', () => {
+  it('mounts every route under a registry prefix, except ADR 0009 surfaces (AC1, AC4)', () => {
+    // ADR 0009 reserves these unversioned surfaces; everything else must be version-scoped.
+    const unversioned = ['/health/live', '/health/ready', '/docs'];
     const printed = app.printRoutes({ commonPrefix: false });
     const paths = [...printed.matchAll(/(\/[^\s(]*) \(/g)].map((match) => match[1]);
-    expect(paths.length).toBeGreaterThan(0);
+    const scoped = paths.filter(
+      (path) => !unversioned.some((u) => path === u || path.startsWith(`${u}/`)),
+    );
+    expect(scoped.length).toBeGreaterThan(0);
     const prefixes = versionRegistry.map((entry) => entry.prefix);
-    for (const path of paths) {
+    for (const path of scoped) {
       expect(
         prefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`)),
         `route ${path} is outside every registered version prefix`,
