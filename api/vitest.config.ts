@@ -6,5 +6,6 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    globalSetup: ['tests/setup/build-docs-fixture.ts'],
   },
 });

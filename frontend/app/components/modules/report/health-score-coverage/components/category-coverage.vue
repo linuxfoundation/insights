@@ -18,8 +18,8 @@ SPDX-License-Identifier: MIT
       </div>
 
       <p class="text-body-2 text-neutral-500">
-        Maintainer health and development activity are measurable for roughly two thirds of repositories. Security
-        reaches the fewest, because several of its signals only exist for repositories hosted on GitHub.
+        Each category is its own ring, not slices of one pie, since the three percentages don't sum to a whole - every
+        repo can count toward more than one category.
       </p>
 
       <div v-if="isLoading">
@@ -40,14 +40,27 @@ SPDX-License-Identifier: MIT
 
       <div
         v-else
-        class="h-[280px] sm:h-[350px]"
+        class="flex flex-wrap items-center justify-center gap-8 sm:gap-12 py-4"
       >
-        <client-only>
-          <lfx-chart
-            :config="chartConfig"
-            :animation="true"
-          />
-        </client-only>
+        <div
+          v-for="ring in rings"
+          :key="ring.categoryKey"
+          class="flex flex-col items-center gap-2"
+          :title="`${formatNumber(ring.scored)} of ${formatNumber(reposTracked)} repositories`"
+        >
+          <div class="relative h-28 w-28 sm:h-32 sm:w-32">
+            <client-only>
+              <lfx-chart
+                :config="ring.chartConfig"
+                :animation="true"
+              />
+            </client-only>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span class="text-heading-4 font-secondary font-semibold text-neutral-900">{{ ring.percent }}%</span>
+            </div>
+          </div>
+          <p class="text-body-2 text-neutral-600 text-center">{{ ring.label }}</p>
+        </div>
       </div>
 
       <p class="text-xs text-neutral-400">Category scores · all tracked repositories</p>
@@ -61,7 +74,7 @@ import { fetchHealthScoreCoverageCategoryCoverageQuery } from '../services/categ
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { getHorizontalBarChartConfig, type HorizontalBarData } from '~/components/uikit/chart/configs/bar.chart';
+import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageCategoryCount } from '~~/types/report/health-score-coverage-category-coverage.types';
@@ -76,6 +89,16 @@ const CATEGORY_LABELS: Record<HealthScoreCoverageCategoryCount['categoryKey'], s
   securitySupplyChain: 'Security & supply chain',
 };
 
+// Category-color scheme for this widget's rings. signal-scores.vue now uses a continuous heatmap
+// value-scale and signal-availability-lf.vue now uses the LF/non-LF blue-purple convention, so
+// this is no longer shared with either — kept here as this widget's own category identity
+// coloring, distinct from the report-wide LF-vs-other convention used elsewhere.
+const CATEGORY_COLORS: Record<HealthScoreCoverageCategoryCount['categoryKey'], string> = {
+  maintainerHealth: lfxColors.brand[500],
+  securitySupplyChain: lfxColors.violet[500],
+  developmentActivity: lfxColors.positive[500],
+};
+
 const { data, isLoading, suspense } = fetchHealthScoreCoverageCategoryCoverageQuery();
 
 onServerPrefetch(async () => {
@@ -87,55 +110,39 @@ const reposTracked = computed(() => data.value?.reposTracked ?? 0);
 
 const isEmpty = computed(() => !isLoading.value && reposTracked.value === 0);
 
-const round1 = (value: number): number => Math.round(value * 10) / 10;
-
-const percentOf = (count: number, total: number): number => (total > 0 ? round1((count / total) * 100) : 0);
-
-interface CategoryCoverageTooltipParam {
-  dataIndex: number;
+interface CategoryRing {
+  categoryKey: HealthScoreCoverageCategoryCount['categoryKey'];
+  label: string;
+  percent: number;
+  scored: number;
+  chartConfig: ECOption;
 }
 
-// Single-series horizontal bar chart, bars as raw scored-repo counts against an axis capped at
-// the tracked-repo total (not a 0-100% axis) - per the ticket's own spec, which calls out "axis
-// max = repos tracked" and a "n · pct%" label on each bar, distinct from the generic percent-axis
-// pattern used by some sibling widgets.
-const chartConfig = computed<ECOption>(() => {
-  const rows: HealthScoreCoverageCategoryCount[] = categories.value;
+// Design feedback: the three category percentages don't sum to a whole (a repo can count toward
+// every category at once), so a single sliced donut misrepresented them as parts of one pie. Each
+// category now gets its own progress ring instead, reusing the same full-gauge pattern as the
+// project overview's health-score-ring.vue rather than inventing a new chart type.
+const rings = computed<CategoryRing[]>(() => {
   const total = reposTracked.value;
 
-  const barData: HorizontalBarData[] = rows.map((row) => ({
-    category: CATEGORY_LABELS[row.categoryKey] ?? row.categoryKey,
-    value: row.scored,
-  }));
+  return categories.value.map((row) => {
+    const percent = total === 0 ? 0 : Math.round((row.scored / total) * 1000) / 10;
 
-  return getHorizontalBarChartConfig(barData, lfxColors.brand[500], {
-    xAxis: { max: total },
-    tooltip: {
-      formatter: (params: unknown) => {
-        const paramArray = params as CategoryCoverageTooltipParam[];
-        const item = paramArray?.[0];
-        if (!item) return '';
-        const row = rows[item.dataIndex];
-        if (!row) return '';
-        return `${CATEGORY_LABELS[row.categoryKey] ?? row.categoryKey}: ${formatNumber(row.scored)} (${percentOf(row.scored, total)}%)`;
-      },
-    },
-    series: [
-      {
-        label: {
-          show: true,
-          position: 'right',
-          color: lfxColors.neutral[900],
-          fontSize: 12,
-          fontWeight: 600,
-          formatter: (params: { dataIndex: number }) => {
-            const row = rows[params.dataIndex];
-            if (!row) return '';
-            return `${percentOf(row.scored, total)}%`;
-          },
-        },
-      },
-    ],
+    return {
+      categoryKey: row.categoryKey,
+      label: CATEGORY_LABELS[row.categoryKey] ?? row.categoryKey,
+      percent,
+      scored: row.scored,
+      chartConfig: getGaugeChartConfig({
+        value: percent,
+        maxValue: 100,
+        gaugeType: 'full',
+        name: '',
+        graphOnly: true,
+        lineColor: CATEGORY_COLORS[row.categoryKey] ?? lfxColors.brand[500],
+        lineWidth: 10,
+      }),
+    };
   });
 });
 </script>

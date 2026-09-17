@@ -2,6 +2,13 @@ set -e
 
 ROOT="$(git rev-parse --show-toplevel)"
 
+# Unset git's own worktree env vars: git sets these to an absolute path when
+# invoking hooks, which makes `git diff --relative` below resolve relative to
+# the wrong directory after `cd frontend` in a linked worktree (a plain clone
+# has no such vars, so the bug never showed up there). Unsetting forces git to
+# re-derive them from cwd instead.
+unset GIT_DIR GIT_WORK_TREE
+
 #run husky pre-commit hook only if frontend changed
 if git diff --name-only --cached | grep '^frontend/';
   then

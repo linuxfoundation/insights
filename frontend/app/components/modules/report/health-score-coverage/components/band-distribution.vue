@@ -62,13 +62,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref } from 'vue';
-import { merge } from 'lodash-es';
 import { fetchHealthScoreCoverageBandsQuery } from '../services/band-distribution.query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { getHorizontalBarChartConfig, type HorizontalBarData } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
@@ -116,32 +114,56 @@ interface BandDistributionTooltipParam {
   value: number;
 }
 
-// Grouped two-series horizontal bar chart (full vs. partial scoring), built on top of the shared
-// getHorizontalBarChartConfig helper per the report's chart-config conventions - matches how
-// report/agentic-ai-momentum/components/research-chart.vue builds its own chart config inline
-// rather than in a separate .ts module.
+// Grouped two-series vertical bar chart (full vs. partial scoring). Built inline rather than
+// through bar.chart.ts's getBarChartConfig/getBarChartConfigCustom - those helpers parse each
+// x-axis key as an ISO date (via convertDateData), which doesn't fit categorical band labels like
+// "Excellent"/"Healthy". Same inline-config approach signal-scores.vue and signal-availability-lf.vue
+// already use for the same reason. Colors, tooltip content and percent-of-own-group math are
+// unchanged from the prior horizontal version - only the axis orientation flips.
 const chartConfig = computed<ECOption>(() => {
   const bands: HealthScoreCoverageBandCount[] = data.value?.bands ?? [];
   const fullTotal = data.value?.fullTotal ?? 0;
   const partialTotal = data.value?.partialTotal ?? 0;
 
-  const baseData: HorizontalBarData[] = bandLabels.value.map((category) => ({ category, value: 0 }));
-  const baseConfig = getHorizontalBarChartConfig(baseData, lfxColors.brand[500]);
-
   const fullLegendLabel = `Scored in full, three categories (${formatNumber(fullTotal)})`;
   const partialLegendLabel = `Partially scored, two categories (${formatNumber(partialTotal)})`;
 
-  return merge({}, baseConfig, {
-    xAxis: {
-      max: 100,
-      axisLabel: { formatter: '{value}%' },
-    },
-    // Reserve room below the plot for the x-axis labels plus the legend row(s) - the shared
-    // getHorizontalBarChartConfig grid defaults to bottom: 0, which otherwise puts the legend
-    // directly on top of the x-axis at every viewport width, worsening as the legend text wraps
-    // to two lines on narrower containers.
+  return {
     grid: {
+      left: 48,
+      right: '5%',
+      top: 16,
       bottom: 72,
+      containLabel: false,
+    },
+    xAxis: {
+      type: 'category',
+      data: bandLabels.value,
+      axisLabel: {
+        fontSize: 12,
+        fontWeight: 500,
+        color: lfxColors.neutral[900],
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
+    yAxis: {
+      type: 'value',
+      max: 100,
+      axisLabel: {
+        fontSize: 10,
+        fontWeight: 'normal',
+        color: lfxColors.neutral[400],
+        formatter: '{value}%',
+      },
+      axisLine: { show: false },
+      splitLine: {
+        lineStyle: {
+          type: 'solid',
+          color: lfxColors.neutral[200],
+        },
+      },
+      axisTick: { show: false },
     },
     legend: {
       bottom: 0,
@@ -166,19 +188,19 @@ const chartConfig = computed<ECOption>(() => {
       {
         name: fullLegendLabel,
         type: 'bar',
-        barMaxWidth: 8,
+        barMaxWidth: 32,
         data: bands.map((band) => percentOf(band.full, fullTotal)),
-        itemStyle: { color: lfxColors.brand[500], borderRadius: [10, 10, 10, 10] },
+        itemStyle: { color: lfxColors.brand[500], borderRadius: [10, 10, 0, 0] },
       },
       {
         name: partialLegendLabel,
         type: 'bar',
-        barMaxWidth: 8,
+        barMaxWidth: 32,
         data: bands.map((band) => percentOf(band.partial, partialTotal)),
-        itemStyle: { color: lfxColors.neutral[400], borderRadius: [10, 10, 10, 10] },
+        itemStyle: { color: lfxColors.neutral[400], borderRadius: [10, 10, 0, 0] },
       },
     ],
-  });
+  };
 });
 </script>
 

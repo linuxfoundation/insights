@@ -35,7 +35,7 @@ If you find a typo or want to add something to our documentation, please check o
 
 ## Requirements
 
-- Node 20+
+- Node 24+
 - pnpm 9+
 - Husky 9+
 - Nuxt 3+

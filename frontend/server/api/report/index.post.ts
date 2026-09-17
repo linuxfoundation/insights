@@ -5,6 +5,7 @@ import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { createGitHubIssue } from '~~/server/data/github/github.api';
 import { createJiraIssue } from '~~/server/data/jira/jira.api';
 import { getAuthUsername } from '~~/server/utils/common';
+import { logError } from '~~/server/utils/log';
 import { buildIssueTitle, buildIssueBody, buildJiraDescription } from '~~/server/utils/report';
 
 export default defineEventHandler(async (event): Promise<string> => {
@@ -18,7 +19,13 @@ export default defineEventHandler(async (event): Promise<string> => {
   const title = buildIssueTitle(body);
   const issueBody = buildIssueBody(body);
 
-  const issueData = await createGitHubIssue(title, issueBody, ['needs-triage']);
+  let issueData: Awaited<ReturnType<typeof createGitHubIssue>>;
+  try {
+    issueData = await createGitHubIssue(title, issueBody, ['needs-triage']);
+  } catch (error) {
+    logError('report', 'Failed to create GitHub issue', error);
+    throw createError({ statusCode: 502, statusMessage: 'Failed to create GitHub issue' });
+  }
 
   // Jira mirror is best-effort: the report must succeed even if Jira is down
   // or the DE project/service account isn't configured yet.

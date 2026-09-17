@@ -15,6 +15,20 @@ export function normalizePrivateKey(rawKey: string): string {
   return createPrivateKey(pem).export({ type: 'pkcs8', format: 'pem' }).toString();
 }
 
+// githubAppId can arrive as a number from runtime config; jose requires a string "iss".
+export async function signAppJwt(githubAppId: unknown, privateKeyPem: string): Promise<string> {
+  const pkcs8Pem = normalizePrivateKey(privateKeyPem);
+  const key = await importPKCS8(pkcs8Pem, 'RS256');
+  const now = Math.floor(Date.now() / 1000);
+
+  return new SignJWT({})
+    .setProtectedHeader({ alg: 'RS256' })
+    .setIssuedAt(now - 60) // clock-skew slack
+    .setExpirationTime(now + 540) // GitHub App JWTs max out at 10 minutes
+    .setIssuer(String(githubAppId))
+    .sign(key);
+}
+
 // ponytail: no installation-token caching - minted per request. Installation tokens
 // are valid ~1h; add an in-memory cache keyed by expiry if report volume hits rate limits.
 async function getInstallationToken(): Promise<string> {
@@ -24,16 +38,7 @@ async function getInstallationToken(): Promise<string> {
     throw new Error('GitHub App credentials are not configured');
   }
 
-  const pkcs8Pem = normalizePrivateKey(githubAppPrivateKey);
-  const key = await importPKCS8(pkcs8Pem, 'RS256');
-  const now = Math.floor(Date.now() / 1000);
-
-  const appJwt = await new SignJWT({})
-    .setProtectedHeader({ alg: 'RS256' })
-    .setIssuedAt(now - 60) // clock-skew slack
-    .setExpirationTime(now + 540) // GitHub App JWTs max out at 10 minutes
-    .setIssuer(githubAppId)
-    .sign(key);
+  const appJwt = await signAppJwt(githubAppId, githubAppPrivateKey);
 
   const { token } = await $fetch<{ token: string }>(
     `https://api.github.com/app/installations/${githubAppInstallationId}/access_tokens`,

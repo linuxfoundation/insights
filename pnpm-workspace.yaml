@@ -9,6 +9,22 @@ packages:
   - 'api'
   - 'libs/*'
 
+supportedArchitectures:
+  os:
+    - current
+    - linux
+  cpu:
+    - current
+    - x64
+  libc:
+    - glibc
+    - musl
+
+packageExtensions:
+  '@scalar/schemas@0.9.0':
+    dependencies:
+      '@scalar/types': '0.19.0' # upstream declares this as a devDependency only, but dist/api-reference/api-reference-configuration.js imports it at runtime
+
 overrides:
   eslint-plugin-vue: ^10.2.0
   h3@1: '>=1.15.11 <2' # floor only; nuxt 4.5 pulls the latest 1.x itself

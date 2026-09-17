@@ -125,7 +125,7 @@ git submodule update --init --recursive
 ##### 2. Install Node.js and pnpm
 
 You'll need:
-- Node.js v20+
+- Node.js v24+
 - pnpm v9+
 
 ```bash
@@ -133,12 +133,12 @@ You'll need:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 # Restart your terminal, then:
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 
 # Verify installation
-node -v      # Should return v20.x.x
-nvm current  # Should return v20.x.x
+node -v      # Should return v24.x.x
+nvm current  # Should return v24.x.x
 
 # Install pnpm globally
 npm install -g pnpm@latest-9

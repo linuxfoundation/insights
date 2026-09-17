@@ -5,7 +5,7 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
 ## Layout
 
 - `src/` — Fastify service.
-- `docs/site/` — customer-facing VitePress + Scalar docs (T-029, not yet built). Served at `api.insights.linuxfoundation.org/docs`.
+- `docs/site/` — customer-facing VitePress + Scalar docs, built by `pnpm build` and served by the API at `/docs`.
 - `docs/arch/` — engineering planning: `PUBLIC_API_PLAN.md`, `CONTEXT.md`, ADRs, architecture review. Not part of the published site.
 
 ## Development
@@ -14,9 +14,14 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
 # from repo root
 pnpm install --filter @lfx-insights/api
 
-# start with hot reload (uses PORT env var or defaults to 4000)
+# local config: loaded by src/env.ts at startup
+cp api/.env.dist api/.env
+
+# start with hot reload
 pnpm --filter @lfx-insights/api dev
 ```
+
+`src/env.ts` loads `api/.env` at startup; variables already set in the environment take precedence, so deployments keep using real env vars.
 
 ## Scripts
 
@@ -24,7 +29,7 @@ pnpm --filter @lfx-insights/api dev
 |---|---|
 | `pnpm dev` | Start with hot reload via `tsx watch` |
 | `pnpm start` | Run compiled output |
-| `pnpm build` | Compile TypeScript to `dist/` |
+| `pnpm build` | Compile TypeScript to `dist/` and build the VitePress docs site (`docs/site`) |
 | `pnpm lint` | ESLint (no warnings allowed) |
 | `pnpm tsc-check` | Type check without emit |
 | `pnpm test` | Run Vitest tests |

@@ -1,6 +1,8 @@
 dist/
 node_modules/
 coverage/
+.vitepress/cache/
+openapi/
 .env
 .env.*
-!.env.example
+!.env.dist
