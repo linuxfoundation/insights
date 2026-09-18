@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import type { LatencyMonitorOptions } from './latency-monitor.js';
 
 export interface TinybirdResponse<T> {
   data: T;
@@ -37,6 +38,16 @@ export interface BucketCacheStorage {
   getKeys(prefix: string): Promise<string[]>;
 }
 
+export interface LatencyBackoffOptions extends Partial<LatencyMonitorOptions> {
+  /** Shrink the concurrency limit while smoothed p90 exceeds baseline p90 by this factor. */
+  backoffRatio?: number;
+  /** Grow the limit back one slot per window while the factor stays below this. */
+  recoveryRatio?: number;
+  decreaseFactor?: number;
+  /** Lowest limit latency backoff can reach. Defaults to half of maxConcurrent. */
+  floor?: number;
+}
+
 export interface TinybirdClientConfig {
   /** Defaults to https://api.us-west-2.aws.tinybird.co */
   baseUrl?: string;
@@ -45,6 +56,8 @@ export interface TinybirdClientConfig {
   maxQueueSize?: number;
   queueTimeoutMs?: number;
   slowRequestThresholdMs?: number;
+  /** Pass false to cap concurrency at maxConcurrent only. */
+  latencyBackoff?: LatencyBackoffOptions | false;
   /** Optional persistent cache for project → bucketId lookups. Omit to always fetch fresh. */
   bucketCache?: BucketCacheStorage;
   /** Defaults to console */

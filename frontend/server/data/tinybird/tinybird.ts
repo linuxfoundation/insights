@@ -39,6 +39,7 @@ export const client = createTinybirdClient({
     process.env.NUXT_TINYBIRD_SLOW_REQUEST_THRESHOLD_MS ?? '5000',
     10,
   ),
+  latencyBackoff: process.env.NUXT_TINYBIRD_LATENCY_BACKOFF === 'false' ? false : {},
   bucketCache: createNitroRedisAdapter(),
 });
 
