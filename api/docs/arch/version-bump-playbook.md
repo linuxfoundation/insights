@@ -1,9 +1,9 @@
 # Version-bump playbook
 
 How to introduce `/v2` of an endpoint while `/v1` stays stable. The registry, routing,
-per-version OpenAPI documents, and deprecation headers are already built (IN-1137,
-IN-1138, IN-1139); this playbook is the procedure for using them. "v1 to v2" is used
-throughout, and the same steps apply to any major bump.
+per-version OpenAPI documents, and deprecation headers are already built; this playbook
+is the procedure for using them. "v1 to v2" is used throughout, and the same steps
+apply to any major bump.
 
 ## When a bump is required
 
