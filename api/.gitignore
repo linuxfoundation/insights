@@ -5,4 +5,4 @@ coverage/
 openapi/
 .env
 .env.*
-!.env.example
+!.env.dist
