@@ -1,0 +1,18 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+// Fastify's default error handler uses statusCode as the HTTP status and puts code in the body.
+export class NotFoundError extends Error {
+  readonly statusCode = 404;
+  readonly code = 'not_found';
+}
+
+// The message is fixed so an upstream's own error text or status never reaches the caller.
+export class UpstreamUnavailableError extends Error {
+  readonly statusCode = 503;
+  readonly code = 'upstream_unavailable';
+
+  constructor() {
+    super('An upstream data source is unavailable');
+  }
+}
