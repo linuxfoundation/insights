@@ -23,11 +23,18 @@ const parseDay = (day: string) => new Date(utcMidnight(day));
 const formatDay = (date: Date) => date.toISOString().slice(0, 10);
 const addDays = (date: Date, days: number) => new Date(date.getTime() + days * dayMs);
 
+// Date.UTC remaps years 0 to 99 onto 1900 to 1999; setUTCFullYear keeps the year as given.
+function utcDate(year: number, month: number, day: number): Date {
+  const date = new Date(0);
+  date.setUTCFullYear(year, month, day);
+  return date;
+}
+
 function addMonthsClamped(date: Date, months: number): Date {
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth() + months;
-  const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-  return new Date(Date.UTC(year, month, Math.min(date.getUTCDate(), lastDay)));
+  const lastDay = utcDate(year, month + 1, 0).getUTCDate();
+  return utcDate(year, month, Math.min(date.getUTCDate(), lastDay));
 }
 
 // Ports Luxon's end.diff(start, ['months', 'days']) and minus() from frontend/server/data/util.ts,
@@ -55,6 +62,10 @@ export function getPreviousDates(
 
   const previousEnd = addDays(start, -1);
   const previousStart = addDays(addMonthsClamped(previousEnd, -months), -days);
+  // toISOString writes years below 0 as a signed six-digit year, which is not a YYYY-MM-DD day.
+  if (previousStart.getUTCFullYear() < 0) {
+    throw new InvalidDateRangeError('startDate is too early to compute a previous period');
+  }
   return {
     current,
     previous: { startDate: formatDay(previousStart), endDate: formatDay(previousEnd) },

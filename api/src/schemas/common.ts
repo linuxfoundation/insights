@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Type, type Static } from '@sinclair/typebox';
+import { Granularity as SharedGranularity } from '@lfx-insights/types';
 
 // Any non-empty slug passes, so an unknown project reaches the handler and returns empty data.
 export const ProjectSlugParams = Type.Object({
@@ -25,9 +26,16 @@ export const DateRangeQuery = Type.Object({
 });
 
 // Type.Unsafe shows up in OpenAPI as a plain enum, where a literal union becomes anyOf of consts.
-export const Granularity = Type.Unsafe<'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly'>({
+// The template literal derives the API's five values from the shared enum, omitting hourly.
+export const Granularity = Type.Unsafe<`${Exclude<SharedGranularity, SharedGranularity.HOURLY>}`>({
   type: 'string',
-  enum: ['daily', 'weekly', 'monthly', 'quarterly', 'yearly'],
+  enum: [
+    SharedGranularity.DAILY,
+    SharedGranularity.WEEKLY,
+    SharedGranularity.MONTHLY,
+    SharedGranularity.QUARTERLY,
+    SharedGranularity.YEARLY,
+  ],
 });
 
 export const PeriodSummary = Type.Object(
