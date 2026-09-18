@@ -58,6 +58,16 @@ describe('LatencyMonitor', () => {
     expect(monitor.record(300)).toBeCloseTo(1);
   });
 
+  it('takes the nearest-rank p90, so 10% slow queries leave the ratio unchanged', () => {
+    runWindows(40, 300);
+    for (let w = 0; w < 20; w++) {
+      for (let i = 0; i < 60; i++) monitor.record(i < 6 ? 5_000 : 300);
+      now += WINDOW_MS;
+    }
+
+    expect(monitor.record(300)).toBeCloseTo(1);
+  });
+
   it('reports rising pressure within a few minutes of a sustained slowdown', () => {
     runWindows(360, 300);
     const ratios = runWindows(20, 480);

@@ -56,7 +56,7 @@ export interface TinybirdClientConfig {
   maxQueueSize?: number;
   queueTimeoutMs?: number;
   slowRequestThresholdMs?: number;
-  /** Pass false to cap concurrency at maxConcurrent only. */
+  /** Pass false to turn off latency backoff; the 429 backoff stays active either way. */
   latencyBackoff?: LatencyBackoffOptions | false;
   /** Optional persistent cache for project → bucketId lookups. Omit to always fetch fresh. */
   bucketCache?: BucketCacheStorage;

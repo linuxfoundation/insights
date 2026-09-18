@@ -62,10 +62,7 @@ export class AdaptiveSemaphore {
       ? new LatencyMonitor({ ...DEFAULT_LATENCY_MONITOR_OPTIONS, ...latencyBackoff })
       : null;
     const options = latencyBackoff || {};
-    this.latencyFloor = Math.max(
-      1,
-      Math.min(limit, options.floor ?? Math.max(this.minLimit, Math.floor(limit / 2))),
-    );
+    this.latencyFloor = Math.max(1, Math.min(limit, options.floor ?? Math.floor(limit / 2)));
     this.latencyBackoffRatio = options.backoffRatio ?? DEFAULT_LATENCY_BACKOFF_RATIO;
     this.latencyRecoveryRatio = options.recoveryRatio ?? DEFAULT_LATENCY_RECOVERY_RATIO;
     this.latencyDecreaseFactor = options.decreaseFactor ?? DEFAULT_LATENCY_DECREASE_FACTOR;

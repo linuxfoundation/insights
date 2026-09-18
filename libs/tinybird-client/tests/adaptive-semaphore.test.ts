@@ -233,5 +233,12 @@ describe('AdaptiveSemaphore', () => {
 
       expect(sem.getEffectiveLimit()).toBe(20);
     });
+
+    it('defaults the floor to half the limit below the 429 minimum', () => {
+      const sem = new AdaptiveSemaphore(8, 10, console, FAST_LATENCY_BACKOFF);
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 5);
+      expect(sem.getEffectiveLimit()).toBe(4);
+    });
   });
 });

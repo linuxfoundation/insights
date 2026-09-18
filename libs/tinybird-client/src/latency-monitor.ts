@@ -22,7 +22,7 @@ const MAX_SAMPLES_PER_WINDOW = 10_000;
 
 function percentile(values: number[], p: number): number {
   const sorted = [...values].sort((a, b) => a - b);
-  return sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
+  return sorted[Math.max(0, Math.ceil(p * sorted.length) - 1)];
 }
 
 function decayWeight(elapsedMs: number, timeConstantMs: number): number {
@@ -54,9 +54,8 @@ export class LatencyMonitor {
   }
 
   /**
-   * Returns smoothed p90 divided by baseline p90 whenever a window closes after warm-up, else null.
-   * Callers pass learnBaseline=false while they are backing off, so a long overload cannot
-   * become the new baseline and switch off its own protection.
+   * Returns the smoothed-to-baseline p90 ratio when a window closes after warm-up, else null.
+   * Pass learnBaseline=false while backing off so a long overload cannot become the new baseline.
    */
   record(latencyMs: number, learnBaseline = true): number | null {
     const now = this.now();
