@@ -233,7 +233,7 @@ Implements URL-prefix versioning (`/v1`, `/v2`).
 - **T-035** ADR: URL-prefix versioning. Why URL over headers: discoverability, easier caching, simpler customer code samples.
 - **T-036** Version routing structure in Fastify: separate router trees per version, not flag-based branching inside handlers.
 - **T-037** Per-version OpenAPI artifact (one spec per version, served at `/v1/openapi.json`).
-- **T-038** Deprecation/Sunset header support (`Deprecation: true`, `Sunset: <date>`, `Link: <docs>; rel="deprecation"`).
+- **T-038** Deprecation/Sunset header support (`Deprecation: @<unix-timestamp>` per RFC 9745, `Sunset: <HTTP-date>` per RFC 8594, `Link: <docs>; rel="deprecation"`).
 - **T-039** Version-bumping playbook: introducing v2 of an endpoint while keeping v1 stable. Shared upstream code where possible (handler imports a `v1Mapper` / `v2Mapper`).
 
 ### Epic E7: Endpoint Migration Phase 1: Development

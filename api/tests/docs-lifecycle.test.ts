@@ -39,6 +39,14 @@ describe('lifecycle page (AC2, AC3)', () => {
     expect(lifecycle.toLowerCase()).toMatch(/410[^.]*two weeks|two weeks[^.]*410/);
     expect(lifecycle).toContain('rel="successor-version"');
   });
+
+  it('documents the deprecation signal headers for retiring versions', () => {
+    const lifecycle = read('lifecycle.md');
+    expect(lifecycle.toLowerCase()).toContain('deprecation signals');
+    expect(lifecycle).toContain('`Deprecation`');
+    expect(lifecycle).toContain('`Sunset`');
+    expect(lifecycle).toContain('rel="deprecation"');
+  });
 });
 
 describe('changelog entry format (AC1, AC4)', () => {
