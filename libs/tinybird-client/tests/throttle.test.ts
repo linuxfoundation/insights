@@ -9,12 +9,14 @@ vi.stubGlobal('fetch', mockFetch);
 const mockAcquire = vi.fn().mockResolvedValue(false);
 const mockRelease = vi.fn();
 const mockReportRateLimit = vi.fn();
+const mockReportLatency = vi.fn();
 
 vi.mock('../src/adaptive-semaphore.js', () => ({
   AdaptiveSemaphore: class {
     acquire = mockAcquire;
     release = mockRelease;
     reportTinybirdRateLimit = mockReportRateLimit;
+    reportTinybirdLatency = mockReportLatency;
     getActive = vi.fn().mockReturnValue(0);
     getQueueLength = vi.fn().mockReturnValue(0);
   },
@@ -42,6 +44,7 @@ describe('fetchFromTinybird throttle behavior', () => {
     mockAcquire.mockReset().mockResolvedValue(false);
     mockRelease.mockReset();
     mockReportRateLimit.mockReset();
+    mockReportLatency.mockReset();
     vi.spyOn(console, 'warn').mockImplementation(() => {});
     vi.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -141,5 +144,31 @@ describe('fetchFromTinybird throttle behavior', () => {
     await client.fetch('/v0/pipes/project_buckets.json', {});
     expect(mockAcquire).not.toHaveBeenCalled();
     expect(mockRelease).not.toHaveBeenCalled();
+  });
+
+  it('reports the Tinybird query time of a successful request in milliseconds', async () => {
+    const { createTinybirdClient } = await import('../src/client.js');
+    const client = createTinybirdClient({ baseUrl: 'https://tb.test', token: 'tok' });
+
+    await client.fetch('/v0/pipes/test.json', { key: 'value' });
+
+    expect(mockReportLatency).toHaveBeenCalledExactlyOnceWith(100);
+  });
+
+  it('does not report latency for failed or unthrottled requests', async () => {
+    const { createTinybirdClient } = await import('../src/client.js');
+    const client = createTinybirdClient({ baseUrl: 'https://tb.test', token: 'tok' });
+
+    await client.fetch('/v0/pipes/ping.json', {});
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: 'Server Error',
+      text: () => Promise.resolve(''),
+      json: () => Promise.resolve({}),
+    } as unknown as Response);
+    await expect(client.fetch('/v0/pipes/test.json', { key: 'value' })).rejects.toBeDefined();
+
+    expect(mockReportLatency).not.toHaveBeenCalled();
   });
 });
