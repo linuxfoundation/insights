@@ -99,11 +99,15 @@ endpoint, deprecate v1 by adding lifecycle metadata to its registry entry:
 }
 ```
 
-Setting `lifecycle` moves a pin, so update it in the same commit. The registry guard
-in `tests/version-lifecycle.test.ts` asserts
+Setting `lifecycle` moves two pins in `tests/version-lifecycle.test.ts`, so update
+them in the same commit. The registry guard asserts
 `versionRegistry.every((entry) => entry.lifecycle === undefined)`; deprecating v1
 retires that assertion, so replace it with one that checks the `/v1` entry's actual
-`lifecycle` values.
+`lifecycle` values. The shipped-registry case `emits none of the three headers with
+the shipped registry` asserts `/v1/openapi.json` answers without the lifecycle
+headers; update it to expect the headers `/v1` now carries, moving it in with the
+deprecated-version cases so the unstamped block keeps its meaning and the shipped
+registry keeps real coverage.
 
 Every `/v1` response then carries `Deprecation`, `Sunset`, and `Link` headers in the
 [ADR-0021](adr/0021-rfc-deprecation-sunset-header-formats.md) wire formats. Headers
@@ -115,8 +119,11 @@ startup, so a bad `lifecycle` entry cannot reach production silently.
 
 - Add a [changelog](../site/changelog.md) entry announcing `/v2` and what changed.
 - Publish the migration guide at the `deprecationDocsUrl` before setting `lifecycle`.
-- State the sunset window in both; give callers at least the window promised in
-  [Endpoint lifecycle](../site/lifecycle.md).
+- State the sunset window in both. ADR-0003 gates the sunset itself: `/v1` is removed
+  only after `/v2` has been stable for a publicly announced minimum period, which the
+  ADR leaves TBD and calls at least six months conventional. Settle both numbers, the
+  caller notice window and that `/v2` stability period, and record them in
+  [Endpoint lifecycle](../site/lifecycle.md) before scheduling the deprecation.
 
 ## Retiring the old version
 
