@@ -430,8 +430,8 @@ describe('repos filter (AC4)', () => {
 describe('defaults (AC5)', () => {
   const today = new Date().toISOString().slice(0, 10);
 
-  it('defaults granularity to weekly and the range to 2010-01-01 through today', async () => {
-    const res = await get(route);
+  it('defaults the range to 2010-01-01 through today', async () => {
+    const res = await get(`${route}?granularity=weekly`);
     expect(res.statusCode).toBe(200);
 
     const series = pipeCalls().filter((url) => url.searchParams.has('granularity'));
@@ -504,20 +504,22 @@ describe('unknown slug and empty data (AC6, AC7)', () => {
 
 describe('request validation (AC8)', () => {
   it('returns 400 invalid_request for an inverted range without calling Tinybird', async () => {
-    const res = await get(`${route}?startDate=2025-03-31&endDate=2025-01-01`);
+    const res = await get(`${route}?granularity=weekly&startDate=2025-03-31&endDate=2025-01-01`);
     expect(res.statusCode).toBe(400);
     expect(res.json().code).toBe('invalid_request');
     expect(mockFetch).not.toHaveBeenCalled();
   });
 
-  it.each([['granularity=hourly'], ['startDate=2025-01-01T00%3A00%3A00Z'], ['endDate=yesterday']])(
-    'rejects %s with 400',
-    async (query) => {
-      const res = await get(`${route}?${query}`);
-      expect(res.statusCode).toBe(400);
-      expect(mockFetch).not.toHaveBeenCalled();
-    },
-  );
+  it.each([
+    ['startDate=2025-01-01&endDate=2025-03-31'],
+    ['granularity=hourly'],
+    ['startDate=2025-01-01T00%3A00%3A00Z'],
+    ['endDate=yesterday'],
+  ])('rejects %s with 400', async (query) => {
+    const res = await get(`${route}?${query}`);
+    expect(res.statusCode).toBe(400);
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
 });
 
 describe('Tinybird failures (AC9)', () => {
@@ -618,13 +620,13 @@ describe('OpenAPI spec (AC11)', () => {
     expect(operation.description).toMatch(/11 Tinybird calls/);
   });
 
-  it('shows granularity as an optional enum query parameter that defaults to weekly', async () => {
+  it('shows granularity as a required enum query parameter', async () => {
     const operation = await getOperation();
     const param = operation.parameters?.find((p) => p.name === 'granularity');
     expect(param?.in).toBe('query');
-    expect(param?.required).toBeFalsy();
+    expect(param?.required).toBe(true);
     expect(param?.schema.enum).toEqual(['daily', 'weekly', 'monthly', 'quarterly', 'yearly']);
-    expect(param?.schema.default).toBe('weekly');
+    expect(param?.schema).not.toHaveProperty('default');
   });
 
   it('documents every field this route defines, with the resolve time nullable', async () => {

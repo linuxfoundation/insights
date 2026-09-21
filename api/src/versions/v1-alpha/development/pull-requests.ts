@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type, type Static } from '@sinclair/typebox';
 import type { TinybirdClient } from '@lfx-insights/tinybird-client';
-import { ActivityTypes, Granularity as SharedGranularity } from '@lfx-insights/types';
+import { ActivityTypes } from '@lfx-insights/types';
 import { getTinybirdClient } from '../../../clients/tinybird.js';
 import { UpstreamUnavailableError } from '../../../lib/errors.js';
 import { getPreviousDates, toPeriodSummary, type DateRange } from '../../../lib/period.js';
@@ -60,19 +60,16 @@ const closedTypes = [
   ActivityTypes.CHANGESET_ABANDONED,
 ];
 
-const defaultGranularity = SharedGranularity.WEEKLY;
-
 // Type.Unsafe keeps the Kind symbol and merges its options, so spreading the shared schema adds
-// a default and a description without redefining the enum.
+// a description without redefining the enum.
 const GranularityQuery = Type.Unsafe<Static<typeof Granularity>>({
   ...Granularity,
-  default: defaultGranularity,
-  description: 'Bucket size of the series. Defaults to weekly.',
+  description: 'Bucket size of the series.',
 });
 
 const PullRequestsQuery = Type.Object({
   ...DateRangeQuery.properties,
-  granularity: Type.Optional(GranularityQuery),
+  granularity: GranularityQuery,
 });
 
 const summaryOf = (description: string): typeof PeriodSummary => ({
@@ -275,8 +272,7 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     },
     async (request) => {
       const { slug } = request.params;
-      // Ajv fills the schema default; the fallback only narrows the type for TypeScript.
-      const { startDate, endDate, repos, granularity = defaultGranularity } = request.query;
+      const { startDate, endDate, repos, granularity } = request.query;
       // A bad range is a 400, so it is checked before the 503 mapping below can catch it.
       const { current, previous } = getPreviousDates(startDate, endDate);
       const client = getTinybirdClient();
