@@ -35,6 +35,10 @@ interface SeriesRow extends SummaryRow {
   endDate: string | null;
 }
 
+// fetchPipe's default validator accepts a null element. Without this guard a null series row makes
+// hasBucketBounds throw outside the 503 mapping, and a null summary row reads as zero counts.
+const isRow = (row: SummaryRow) => typeof row === 'object' && row !== null;
+
 // Type.Unsafe shows up in OpenAPI as a plain enum, for the same reason Granularity in common.ts
 // uses it.
 const Platform =
@@ -42,7 +46,7 @@ const Platform =
     type: 'string',
     enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
     description:
-      'Platform to count pull requests from: one of the values the project endpoint returns in `connectedPlatforms`. Without it the counts cover every platform the project has data for, as the Insights widget does.',
+      'Platform to count pull requests from: `github`, `gitlab` or `gerrit`. Without it the counts cover every platform the project has data for, as the Insights widget does. `connectedPlatforms` on the project endpoint can list other platforms, such as `git`; those get a 400 here.',
   });
 
 const Query = Type.Object({
@@ -158,7 +162,7 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         summary: 'Review efficiency',
         description:
           'Returns closed pull requests as a percentage of opened pull requests (`efficiencyPercentage`) for the period against the comparison period before it, the opened and closed counts as their own summaries, and the pull requests opened and closed in each bucket. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and it exceeds 100 when more pull requests were closed than opened. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null. ' +
-          'Pull requests here covers GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them, using the values the project endpoint returns in `connectedPlatforms`; without it the pipe is called with no platform filter and covers every platform the project has data for, as the Insights widget does. `granularity` has no default and must be sent. ' +
+          'Pull requests here cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without it the pipe is called with no platform filter and covers every platform the project has data for, as the Insights widget does. `granularity` has no default and must be sent. ' +
           'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. ' +
           'An unknown project returns a null efficiency, zero counts and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
         params: ProjectSlugParams,
@@ -183,9 +187,19 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         const currentRange = toTinybirdRange(current);
 
         return Promise.all([
-          fetchPipe<SummaryRow>(request, pipePath, { ...shared, ...currentRange }),
-          fetchPipe<SummaryRow>(request, pipePath, { ...shared, ...toTinybirdRange(previous) }),
-          fetchPipe<SeriesRow>(request, pipePath, { ...shared, ...currentRange, granularity }),
+          fetchPipe<SummaryRow>(request, pipePath, { ...shared, ...currentRange }, isRow),
+          fetchPipe<SummaryRow>(
+            request,
+            pipePath,
+            { ...shared, ...toTinybirdRange(previous) },
+            isRow,
+          ),
+          fetchPipe<SeriesRow>(
+            request,
+            pipePath,
+            { ...shared, ...currentRange, granularity },
+            isRow,
+          ),
         ]);
       });
 

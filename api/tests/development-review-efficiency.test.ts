@@ -643,6 +643,20 @@ describe('Tinybird failures (AC8)', () => {
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain('oops');
   });
+
+  // fetchPipe's default validator accepts a null element. Unguarded, a null series row makes
+  // hasBucketBounds throw outside the 503 mapping and a null summary row reads as zero counts.
+  it.each([
+    ['series', { series: [null] }],
+    ['current summary', { current: [null] }],
+    ['previous summary', { previous: [null] }],
+  ])('maps a null %s row to 503 upstream_unavailable', async (_kind, rows) => {
+    mockFetch.mockImplementation(routeTinybird(rows as unknown as PipeRows));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain('startDate');
+  });
 });
 
 describe('caching headers (AC9)', () => {
