@@ -7,7 +7,7 @@ import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
-import { notFoundHandler } from './errors/not-found.js';
+import { notFoundHandler } from './lib/errors.js';
 import { applyLifecycle } from './versions/lifecycle.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from './versions/registry.js';
 
@@ -179,7 +179,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
   );
 
   // Deprecated version scopes register this same handler, so the two 404 bodies can't drift
-  // (see src/errors/not-found.ts).
+  // (see src/lib/errors.ts).
   app.setNotFoundHandler(notFoundHandler);
 
   return app;
