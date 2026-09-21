@@ -58,8 +58,8 @@ async function respond(instance: FastifyInstance, url: string) {
 }
 
 describe('registry lifecycle metadata (AC1)', () => {
-  it('still ships /v1 as the only version, with no lifecycle metadata', () => {
-    expect(versionRegistry.map((entry) => entry.prefix)).toEqual(['/v1']);
+  it('ships /v1 and /v1-alpha, neither with lifecycle metadata', () => {
+    expect(versionRegistry.map((entry) => entry.prefix)).toEqual(['/v1', '/v1-alpha']);
     expect(versionRegistry.every((entry) => entry.lifecycle === undefined)).toBe(true);
   });
 });

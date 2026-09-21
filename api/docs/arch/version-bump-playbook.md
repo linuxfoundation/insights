@@ -184,9 +184,9 @@ const projectRoutes: FastifyPluginAsyncTypebox = async (scope) => {
 - Throwing sends the `410` down the path every other error takes, so the body follows
   the [error envelope](../site/errors.md) once it lands, and headers set before the throw
   are kept. The first promotion adds a `GoneError` class (`statusCode = 410`,
-  `code = 'gone'`) under `src/errors/`, and a `410` / `gone` row to the codes table in
-  `errors.md`. Fastify's default error handler uses `statusCode` as the HTTP status and
-  puts `code` in the body.
+  `code = 'gone'`) in `src/lib/errors.ts`, next to `NotFoundError`, and a `410` / `gone`
+  row to the codes table in `errors.md`. Fastify's default error handler uses `statusCode`
+  as the HTTP status and puts `code` in the body.
 
 ### Step 4: add the new test cases
 

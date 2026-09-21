@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyInstance } from 'fastify';
-import { notFoundHandler } from '../errors/not-found.js';
+import { notFoundHandler } from '../lib/errors.js';
 import type { VersionLifecycle } from './registry.js';
 
 function parseDateOrThrow(value: string, field: string): number {

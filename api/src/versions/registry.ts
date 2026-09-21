@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+import v1AlphaRoutes from './v1-alpha/index.js';
 import v1Routes from './v1/index.js';
 
 export interface VersionLifecycle {
@@ -17,7 +18,10 @@ export interface ApiVersion {
   lifecycle?: VersionLifecycle;
 }
 
-export const versionRegistry: ApiVersion[] = [{ prefix: '/v1', plugin: v1Routes }];
+export const versionRegistry: ApiVersion[] = [
+  { prefix: '/v1', plugin: v1Routes },
+  { prefix: '/v1-alpha', plugin: v1AlphaRoutes },
+];
 
 const prefixPattern = /^\/v(\d+)(?:-(.+))?$/;
 
