@@ -433,6 +433,28 @@ describe('Tinybird failures (AC8)', () => {
     });
     await expectUpstreamUnavailable();
   });
+
+  // The Tinybird client only checks that `data` is present, so these two bodies reach the route.
+  it('maps a 200 whose data is not an array to 503 upstream_unavailable', async () => {
+    stubTinybird({
+      [activitiesCount]: async () =>
+        new Response(JSON.stringify({ data: { detail: upstreamDetail }, meta: [], rows: 0 }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        }),
+    });
+    await expectUpstreamUnavailable();
+  });
+
+  it('maps a series row without bucket dates to 503 upstream_unavailable', async () => {
+    stubTinybird({
+      [activitiesCount]: (url) =>
+        isSeries(url)
+          ? jsonResponse([{ activityCount: 5, detail: upstreamDetail }])
+          : defaultPipes[activitiesCount]!(url),
+    });
+    await expectUpstreamUnavailable();
+  });
 });
 
 describe('caching headers (AC9)', () => {

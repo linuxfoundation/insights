@@ -3,6 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type, type Static } from '@sinclair/typebox';
 import { ActivityTypes } from '@lfx-insights/types';
+import { TinybirdInvalidResponseError, type TinybirdResponse } from '@lfx-insights/tinybird-client';
 import { getTinybirdClient } from '../../../clients/tinybird.js';
 import { UpstreamUnavailableError } from '../../../lib/errors.js';
 import { getPreviousDates, toPeriodSummary } from '../../../lib/period.js';
@@ -77,6 +78,18 @@ const tinybirdDay = (day: string) => `${day} 00:00:00`;
 const toUtcDateTime = (value: string) =>
   value.includes(' ') ? `${value.replace(' ', 'T')}Z` : `${value}T00:00:00Z`;
 
+// The client only checks that `data` is present, so a pipe answering outside its contract is
+// rejected here and maps to 503 with the other upstream faults.
+function rowsOf<T>(response: TinybirdResponse<T[]>, isRow: (row: T) => boolean = () => true): T[] {
+  if (!Array.isArray(response.data) || !response.data.every(isRow)) {
+    throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
+  }
+  return response.data;
+}
+
+const hasBucketDates = (row: SeriesRow) =>
+  typeof row.startDate === 'string' && typeof row.endDate === 'string';
+
 const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
     '/projects/:slug/development/commit-activities',
@@ -125,30 +138,36 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const isCumulative = countType === 'cumulative';
       const seriesPipe = isCumulative ? 'activities_cumulative_count' : 'activities_count';
 
-      const [currentSummary, previousSummary, series] = await Promise.all([
-        client.fetch<SummaryRow[]>('/v0/pipes/activities_count.json', {
-          ...common,
-          ...currentRange,
-        }),
-        client.fetch<SummaryRow[]>('/v0/pipes/activities_count.json', {
-          ...common,
-          startDate: tinybirdDay(previous.startDate),
-          endDate: tinybirdDay(previous.endDate),
-        }),
-        client.fetch<SeriesRow[]>(`/v0/pipes/${seriesPipe}.json`, {
-          ...common,
-          ...currentRange,
-          granularity,
-        }),
+      const [currentRows, previousRows, seriesRows] = await Promise.all([
+        client
+          .fetch<SummaryRow[]>('/v0/pipes/activities_count.json', {
+            ...common,
+            ...currentRange,
+          })
+          .then((response) => rowsOf(response)),
+        client
+          .fetch<SummaryRow[]>('/v0/pipes/activities_count.json', {
+            ...common,
+            startDate: tinybirdDay(previous.startDate),
+            endDate: tinybirdDay(previous.endDate),
+          })
+          .then((response) => rowsOf(response)),
+        client
+          .fetch<SeriesRow[]>(`/v0/pipes/${seriesPipe}.json`, {
+            ...common,
+            ...currentRange,
+            granularity,
+          })
+          .then((response) => rowsOf(response, hasBucketDates)),
       ]).catch(upstreamUnavailable);
 
       return {
         summary: toPeriodSummary(
-          currentSummary.data[0]?.activityCount ?? 0,
-          previousSummary.data[0]?.activityCount ?? 0,
+          currentRows[0]?.activityCount ?? 0,
+          previousRows[0]?.activityCount ?? 0,
           current,
         ),
-        data: series.data.map((row) => ({
+        data: seriesRows.map((row) => ({
           startDate: toUtcDateTime(row.startDate),
           endDate: toUtcDateTime(row.endDate),
           commits: (isCumulative ? row.cumulativeActivityCount : row.activityCount) ?? 0,
