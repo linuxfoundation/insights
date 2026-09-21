@@ -406,41 +406,56 @@ describe('periodSummary factory (AC6)', () => {
   });
 });
 
+// Route lists come from the served spec, so a new development module is checked here without
+// anyone adding it to a list; tests/v1-alpha-autoload.test.ts pins the module side.
+const alphaApp = await buildApp();
+await alphaApp.ready();
+const alphaSpec = (
+  await alphaApp.inject({ method: 'GET', url: '/v1-alpha/openapi.json' })
+).json<OpenApiDoc>();
+await alphaApp.close();
+
+const developmentPrefix = '/v1-alpha/projects/{slug}/development/';
+const developmentRoutes = Object.keys(alphaSpec.paths)
+  .filter((path) => path.startsWith(developmentPrefix))
+  .map((path) => path.slice(developmentPrefix.length))
+  .sort();
+
 describe('the v1-alpha routes serve the shared wording and types (AC8, decision 4)', () => {
-  const developmentPath = (name: string) => `/v1-alpha/projects/{slug}/development/${name}`;
-  const seriesRoutes = ['issues-resolution', 'commit-activities', 'pull-requests', 'active-days'];
-  const rangeRoutes = [...seriesRoutes, 'contributions-outside-work-hours'];
-
-  let alpha: FastifyInstance;
-  let spec: OpenApiDoc;
-
-  beforeAll(async () => {
-    alpha = await buildApp();
-    await alpha.ready();
-    const res = await alpha.inject({ method: 'GET', url: '/v1-alpha/openapi.json' });
-    expect(res.statusCode).toBe(200);
-    spec = res.json<OpenApiDoc>();
-  });
-
-  afterAll(async () => {
-    await alpha.close();
-  });
-
-  const operation = (name: string) => {
-    const op = spec.paths[developmentPath(name)]?.get;
-    expect(op, `${name} is missing from the spec`).toBeDefined();
-    return op as OpenApiOperation;
-  };
+  const operation = (name: string) =>
+    alphaSpec.paths[`${developmentPrefix}${name}`]?.get as OpenApiOperation;
   const parameter = (name: string, param: string) =>
     operation(name).parameters?.find((p) => p.name === param);
   const responseSchema = (name: string) =>
     operation(name).responses['200']?.content['application/json']?.schema;
 
-  it.each(rangeRoutes)('%s documents the inclusive start and exclusive end', (name) => {
-    expect(operation(name).description).toMatch(/00:00 UTC/);
-    expect(parameterDescription(parameter(name, 'startDate'))).toMatch(/inclusive/i);
-    expect(parameterDescription(parameter(name, 'endDate'))).toMatch(/exclusive/i);
+  // Any response property carrying the four PeriodSummary fields is a summary, whatever its name,
+  // so routes with several summaries and nullable variants are all covered.
+  const summaryFields = ['current', 'previous', 'percentageChange', 'changeValue'];
+  const summariesOf = (name: string) =>
+    Object.entries(responseSchema(name)?.properties ?? {}).filter(([, schema]) =>
+      summaryFields.every((field) => schema.properties?.[field] !== undefined),
+    );
+
+  const seriesRoutes = developmentRoutes.filter((name) => parameter(name, 'granularity'));
+  const summaryCases = developmentRoutes.flatMap((name) =>
+    summariesOf(name).map(([field, schema]) => [name, field, schema] as const),
+  );
+
+  it('discovers the development routes from the spec', () => {
+    expect(developmentRoutes.length).toBeGreaterThanOrEqual(5);
+    expect(seriesRoutes.length).toBeGreaterThan(0);
+    expect(summaryCases.length).toBeGreaterThan(0);
   });
+
+  it.each(developmentRoutes)(
+    '%s takes the common range and documents the inclusive start and exclusive end',
+    (name) => {
+      expect(operation(name).description).toMatch(/00:00 UTC/);
+      expect(parameterDescription(parameter(name, 'startDate'))).toMatch(/inclusive/i);
+      expect(parameterDescription(parameter(name, 'endDate'))).toMatch(/exclusive/i);
+    },
+  );
 
   it.each(seriesRoutes)('%s describes granularity with the shared wording', (name) => {
     const param = parameter(name, 'granularity');
@@ -449,29 +464,22 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     expect(parameterDescription(param)).toBe(Granularity.description);
   });
 
-  it.each([
-    ['issues-resolution', 'summary'],
-    ['commit-activities', 'summary'],
-    ['pull-requests', 'openedSummary'],
-    ['pull-requests', 'mergedSummary'],
-    ['pull-requests', 'closedSummary'],
-    ['active-days', 'summary'],
-  ])('%s %s counts are integers with a described unit', (name, field) => {
-    const summary = responseSchema(name)?.properties?.[field];
-    for (const count of ['current', 'previous', 'changeValue']) {
-      expect(summary?.properties?.[count]?.type, `${name}.${field}.${count}`).toBe('integer');
-      expect(summary?.properties?.[count]?.description).toMatch(/\(count( of days)?\)\.$/);
-    }
-    expect(summary?.properties?.percentageChange).toMatchObject({ type: 'number', nullable: true });
-  });
-
-  it('contributions-outside-work-hours keeps the percent share as a number', () => {
-    const summary = responseSchema('contributions-outside-work-hours')?.properties?.summary;
-    for (const count of ['current', 'previous']) {
-      expect(summary?.properties?.[count]?.type).toBe('number');
-      expect(summary?.properties?.[count]?.description).toMatch(/\(percent\)\.$/);
-    }
-    expect(summary?.properties?.changeValue?.type).toBe('number');
-    expect(summary?.properties?.changeValue?.description).toMatch(/\(percentage points\)\.$/);
-  });
+  it.each(summaryCases)(
+    '%s %s states a unit on every value and keeps percentageChange nullable',
+    (name, field, summary) => {
+      const kind = summary.properties?.current?.type;
+      expect(['integer', 'number'], `${name}.${field}.current`).toContain(kind);
+      const unit =
+        kind === 'integer' ? /\(count[^)]*\)\./ : /\((seconds|percent|percentage points)\)\./;
+      for (const value of ['current', 'previous', 'changeValue']) {
+        const prop = summary.properties?.[value];
+        expect(prop?.type, `${name}.${field}.${value}`).toBe(kind);
+        expect(prop?.description, `${name}.${field}.${value}`).toMatch(unit);
+      }
+      expect(summary.properties?.percentageChange).toMatchObject({
+        type: 'number',
+        nullable: true,
+      });
+    },
+  );
 });
