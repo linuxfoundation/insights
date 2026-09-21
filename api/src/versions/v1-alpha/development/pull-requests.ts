@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
-import { Type, type Static } from '@sinclair/typebox';
+import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import type { TinybirdClient } from '@lfx-insights/tinybird-client';
 import { ActivityTypes } from '@lfx-insights/types';
 import { getTinybirdClient } from '../../../clients/tinybird.js';
@@ -60,33 +60,45 @@ const closedTypes = [
   ActivityTypes.CHANGESET_ABANDONED,
 ];
 
-// Type.Unsafe keeps the Kind symbol and merges its options, so spreading the shared schema adds
-// a description without redefining the enum.
-const GranularityQuery = Type.Unsafe<Static<typeof Granularity>>({
-  ...Granularity,
-  description: 'Bucket size of the series.',
+// Keeps the shared schema as the source of the field's type and adds the endpoint's wording.
+const describe = <T extends TSchema>(schema: T, description: string): T => ({
+  ...schema,
+  description,
 });
 
 const PullRequestsQuery = Type.Object({
   ...DateRangeQuery.properties,
-  granularity: GranularityQuery,
+  granularity: describe(Granularity, 'Bucket size of the series.'),
 });
 
-const summaryOf = (description: string): typeof PeriodSummary => ({
-  ...PeriodSummary,
-  description,
-});
+// PeriodSummary leaves its count fields undescribed, so each summary says what it counts.
+const pullRequestSummary = (title: string, verb: string) =>
+  Type.Object(
+    {
+      ...PeriodSummary.properties,
+      current: describe(
+        PeriodSummary.properties.current,
+        `Pull requests ${verb} in the current period (count).`,
+      ),
+      previous: describe(
+        PeriodSummary.properties.previous,
+        `Pull requests ${verb} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (count).`,
+      ),
+      changeValue: describe(
+        PeriodSummary.properties.changeValue,
+        '`current` minus `previous` (count).',
+      ),
+    },
+    {
+      title,
+      description: `Pull requests ${verb} in the current period against the comparison period before it.`,
+    },
+  );
 
 const PullRequests = Type.Object({
-  openedSummary: summaryOf(
-    'Pull requests opened in the current period (count), against the previous period of the same length.',
-  ),
-  mergedSummary: summaryOf(
-    'Pull requests merged in the current period (count), against the previous period of the same length.',
-  ),
-  closedSummary: summaryOf(
-    'Pull requests closed in the current period (count), against the previous period of the same length.',
-  ),
+  openedSummary: pullRequestSummary('PullRequestsOpenedSummary', 'opened'),
+  mergedSummary: pullRequestSummary('PullRequestsMergedSummary', 'merged'),
+  closedSummary: pullRequestSummary('PullRequestsClosedSummary', 'closed'),
   avgResolveTimeSeconds: Type.Unsafe<number | null>({
     type: 'number',
     nullable: true,
@@ -101,7 +113,10 @@ const PullRequests = Type.Object({
       merged: Type.Integer({ description: 'Pull requests merged in the bucket (count).' }),
       closed: Type.Integer({ description: 'Pull requests closed in the bucket (count).' }),
     }),
-    { description: 'One entry per granularity bucket of the current period.' },
+    {
+      description:
+        'One entry per bucket the pipes report, ascending by `startDate`. A bucket with no reported activity may be omitted.',
+    },
   ),
 });
 type PullRequests = Static<typeof PullRequests>;
@@ -264,7 +279,7 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         tags: ['Development'],
         summary: 'Get pull request activity',
         description:
-          'Returns how many pull requests were opened, merged and closed in the period against the previous period of the same length, the average time to resolve one, and the opened, merged and closed counts per granularity bucket. Each request makes 11 Tinybird calls: one project lookup and ten concurrent pipe queries.',
+          'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list after the project lookup alone; a known project makes 11 Tinybird calls: one project lookup and ten concurrent pipe queries.',
         params: ProjectSlugParams,
         querystring: PullRequestsQuery,
         response: { 200: PullRequests },

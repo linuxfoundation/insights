@@ -428,10 +428,13 @@ describe('repos filter (AC4)', () => {
 });
 
 describe('defaults (AC5)', () => {
-  const today = new Date().toISOString().slice(0, 10);
-
   it('defaults the range to 2010-01-01 through today', async () => {
+    // The handler derives "today" at request time, so a run crossing UTC midnight
+    // may see either the day before or after this call; accept both.
+    const before = new Date().toISOString().slice(0, 10);
     const res = await get(`${route}?granularity=weekly`);
+    const after = new Date().toISOString().slice(0, 10);
+    const days = [before, after];
     expect(res.statusCode).toBe(200);
 
     const series = pipeCalls().filter((url) => url.searchParams.has('granularity'));
@@ -445,15 +448,13 @@ describe('defaults (AC5)', () => {
     );
     expect(current).toHaveLength(7);
     for (const url of current) {
-      expect(url.searchParams.get('endDate')).toBe(`${today} 00:00:00`);
+      expect(days.map((d) => `${d} 00:00:00`)).toContain(url.searchParams.get('endDate'));
     }
 
     const body = res.json();
     for (const key of ['openedSummary', 'mergedSummary', 'closedSummary']) {
-      expect(body[key]).toMatchObject({
-        periodFrom: '2010-01-01T00:00:00Z',
-        periodTo: `${today}T00:00:00Z`,
-      });
+      expect(body[key].periodFrom).toBe('2010-01-01T00:00:00Z');
+      expect(days.map((d) => `${d}T00:00:00Z`)).toContain(body[key].periodTo);
     }
   });
 });
@@ -499,6 +500,21 @@ describe('unknown slug and empty data (AC6, AC7)', () => {
       openedSummary: { current: 100 },
     });
     expect(res.json().data).toHaveLength(3);
+  });
+
+  it('reports percentageChange null when the previous period has no rows', async () => {
+    mockFetch.mockImplementation(
+      tinybird((url) =>
+        url.searchParams.get('startDate') === previousRange.startDate ? [] : defaultRows(url),
+      ),
+    );
+    const res = await get(`${route}?${rangeQuery}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.json().openedSummary).toMatchObject({
+      current: 100,
+      previous: 0,
+      percentageChange: null,
+    });
   });
 });
 
@@ -647,6 +663,27 @@ describe('OpenAPI spec (AC11)', () => {
       type: 'number',
       nullable: true,
     });
+
+    const summaryFields = [
+      'current',
+      'previous',
+      'percentageChange',
+      'changeValue',
+      'periodFrom',
+      'periodTo',
+    ];
+    for (const key of ['openedSummary', 'mergedSummary', 'closedSummary']) {
+      const summary = schema?.properties?.[key];
+      expect(summary?.required).toEqual(expect.arrayContaining(summaryFields));
+      for (const field of summaryFields) {
+        expect(
+          summary?.properties?.[field]?.description,
+          `${key}.${field} has no description`,
+        ).toBeTruthy();
+      }
+      expect(summary?.properties?.percentageChange?.nullable).toBe(true);
+      expect(summary?.properties?.periodFrom?.format).toBe('date-time');
+    }
 
     const bucket = schema?.properties?.data?.items;
     const bucketFields = ['startDate', 'endDate', 'open', 'merged', 'closed'];
