@@ -42,9 +42,8 @@ interface ParticipantRow {
   contributionPercentage?: number;
 }
 
-// The pipes declare these columns String, UInt64 and Float64, so a fractional percentage is valid
-// and a fractional count is not. A value outside that would reach the response serializer and
-// answer 500 with its own message instead of the 503 for upstream faults.
+// The pipes declare these columns String, UInt64 and Float64: a fractional percentage is valid, a
+// fractional count is not. Anything else would reach the serializer and answer 500 instead of 503.
 const isOptionalInteger = (value: unknown) => value === undefined || Number.isInteger(value);
 const isOptionalNumber = (value: unknown) => value === undefined || typeof value === 'number';
 const isSummaryRow = (row: SummaryRow) => isOptionalInteger(row.contributorCount);
