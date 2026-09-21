@@ -630,6 +630,44 @@ describe('Tinybird failures (AC9)', () => {
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain('oops');
   });
+
+  // fetchPipe only checks that `data` is an array; the row guards are what turn a row outside the
+  // pipe contract into the documented 503 instead of a serializer 500.
+  it.each<[string, PipeRows]>([
+    [
+      'a string median in the current summary',
+      { current: [{ medianTimeToReviewSeconds: 'fast' }] },
+    ],
+    [
+      'a string median in the previous summary',
+      { previous: [{ medianTimeToReviewSeconds: 'fast' }] },
+    ],
+    ['a null current summary row', { current: [null as unknown as object] }],
+    [
+      'a string median in a bucket',
+      {
+        series: [
+          { startDate: '2025-01-01', endDate: '2025-01-31', medianTimeToReviewSeconds: 'fast' },
+        ],
+      },
+    ],
+    [
+      'a numeric bucket bound',
+      {
+        series: [{ startDate: 20250101, endDate: '2025-01-31', medianTimeToReviewSeconds: 72000 }],
+      },
+    ],
+    [
+      'a bucket row without a start bound',
+      { series: [{ endDate: '2025-01-31', medianTimeToReviewSeconds: 72000 }] },
+    ],
+  ])('maps %s to 503 upstream_unavailable', async (_case, rows) => {
+    mockFetch.mockImplementation(routeTinybird(rows));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain('fast');
+  });
 });
 
 describe('caching headers (AC10)', () => {
