@@ -18,4 +18,5 @@ export type {
   TinybirdQuery,
   BucketCacheStorage,
   TinybirdLogger,
+  LatencyBackoffOptions,
 } from './types.js';
