@@ -115,8 +115,7 @@ async function fromTinybird<T>(
   }
 }
 
-// Ports mergeRanges from the Nuxt data layer: a bucket seen in either series gets an entry, with 0
-// for the series it is missing from.
+// A bucket seen in either series gets an entry, with 0 for the series it is missing from.
 function mergeBuckets(
   opened: ActivityCountBucketRow[],
   closed: ActivityCountBucketRow[],
