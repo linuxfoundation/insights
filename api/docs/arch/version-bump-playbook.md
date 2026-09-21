@@ -151,15 +151,15 @@ before promoting; each shape change restarts the week of stable use ADR-0003 req
 
 ### Step 2: move the route to `/v1`
 
-Move the route module from `src/versions/v1-alpha/` to `src/versions/v1/` and register it
-in the `/v1` plugin, with its schemas and handler unchanged. The prefix filter in the
-registry loop in `src/app.ts` then lists the path in `/v1/openapi.json` and drops it
-from `/v1-alpha/openapi.json`.
+Move the route from the `/v1-alpha` plugin to the `/v1` plugin
+(`src/versions/v1/index.ts`), with its schemas and handler unchanged. The prefix filter
+in the registry loop in `src/app.ts` then lists the path in `/v1/openapi.json` and drops
+it from `/v1-alpha/openapi.json`.
 
-The `/v1-alpha` plugin sets `Cache-Control: private, max-age=0` in an `onRequest` hook,
-which [ADR-0013](adr/0013-origin-cache-only-private-cache-control.md) requires on every
-response. The `/v1` plugin has no hook until its first route arrives, so the first
-promotion adds the same hook there.
+[ADR-0013](adr/0013-origin-cache-only-private-cache-control.md) requires
+`Cache-Control: private, max-age=0` on every response. The `/v1` plugin has no routes
+yet, so the first promotion also adds an `onRequest` hook to it that sets the header;
+setting it before the handler runs means error replies carry it too.
 
 ### Step 3: answer `410 Gone` on the alpha path
 
@@ -183,9 +183,10 @@ const projectRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   loop hides each version's own `openapi.json` route.
 - Throwing sends the `410` down the path every other error takes, so the body follows
   the [error envelope](../site/errors.md) once it lands, and headers set before the throw
-  are kept. The first promotion adds `GoneError` (`statusCode = 410`, `code = 'gone'`)
-  next to `NotFoundError` in `src/lib/errors.ts`, and a `410` / `gone` row to the codes
-  table in `errors.md`.
+  are kept. The first promotion adds a `GoneError` class (`statusCode = 410`,
+  `code = 'gone'`) under `src/errors/`, and a `410` / `gone` row to the codes table in
+  `errors.md`. Fastify's default error handler uses `statusCode` as the HTTP status and
+  puts `code` in the body.
 
 ### Step 4: add the new test cases
 
