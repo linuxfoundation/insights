@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
-import { TinybirdProjectNotFoundError, type TinybirdQuery } from '@lfx-insights/tinybird-client';
+import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { Type } from '@sinclair/typebox';
-import type { FastifyRequest } from 'fastify';
+import type { FastifyBaseLogger } from 'fastify';
 import { getTinybirdClient } from '../../../clients/tinybird.js';
 import { UpstreamUnavailableError } from '../../../lib/errors.js';
 import { getPreviousDates, toPeriodSummary, type DateRange } from '../../../lib/period.js';
@@ -85,7 +85,7 @@ const ContributionsOutsideWorkHours = Type.Object({
   }),
   data: Type.Array(HeatmapCell, {
     description:
-      'Heatmap of the current period: one cell per weekday and 2-hour block, ordered by weekday then hour. Empty when the project has no contributions in the period.',
+      'Heatmap of the current period: the full grid of 7 weekdays by 12 two-hour blocks, ordered by weekday then hour, with `contributions: 0` for a block with no activity. An unknown project gets an empty list.',
   }),
 });
 
@@ -103,18 +103,16 @@ const sum = (rows: HeatmapRow[]) => rows.reduce((total, row) => total + row.acti
 // A period with no contributions has a zero share, as the Nuxt widget reports.
 const share = (part: number, total: number) => (total === 0 ? 0 : (part / total) * 100);
 
-async function fetchHeatmap(request: FastifyRequest, params: TinybirdQuery): Promise<HeatmapRow[]> {
-  const client = getTinybirdClient();
+// Every Tinybird failure becomes a 503, so Tinybird's own status never reaches the caller.
+async function fromTinybird<T>(
+  log: FastifyBaseLogger,
+  pipe: string,
+  call: () => Promise<T>,
+): Promise<T> {
   try {
-    const { data } = await client.fetch<HeatmapRow[]>(pipePath, params);
-    return data;
+    return await call();
   } catch (err: unknown) {
-    // The client's bucket lookup has no row for an unknown slug; a metric endpoint answers that
-    // with empty data rather than 404.
-    if (err instanceof TinybirdProjectNotFoundError) {
-      return [];
-    }
-    request.log.error({ err }, `Tinybird ${pipePath} request failed`);
+    log.error({ err }, `Tinybird ${pipe} request failed`);
     throw new UpstreamUnavailableError();
   }
 }
@@ -142,10 +140,37 @@ const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (sc
       const { repos, startDate, endDate, includeCollaborations, includeCodeContributions } =
         request.query;
       const dates = getPreviousDates(startDate, endDate);
-      const filter = { project: slug, repos, includeCodeContributions, includeCollaborations };
+      const client = getTinybirdClient();
+      const log = request.log;
+
+      // Resolving the bucket here saves the client one lookup per pipe call. A project without a
+      // bucket is unknown to Tinybird, which metric endpoints answer with empty data.
+      const bucketId = await fromTinybird(log, 'project_buckets', () =>
+        client.getBucketIdForProject(slug),
+      );
+      if (bucketId === null) {
+        return {
+          summary: toPeriodSummary(0, 0, dates.current),
+          weekdayOutsideHoursPercentage: 0,
+          weekendOutsideHoursPercentage: 0,
+          data: [],
+        };
+      }
+
+      const filter: TinybirdQuery = {
+        project: slug,
+        bucketId,
+        repos,
+        includeCodeContributions,
+        includeCollaborations,
+      };
+      const fetchHeatmap = (range: DateRange) =>
+        fromTinybird(log, 'activity_heatmap_by_weekday_and_2hours_blocks', () =>
+          client.fetch<HeatmapRow[]>(pipePath, { ...filter, ...tinybirdRange(range) }),
+        ).then(({ data }) => data);
       const [current, previous] = await Promise.all([
-        fetchHeatmap(request, { ...filter, ...tinybirdRange(dates.current) }),
-        fetchHeatmap(request, { ...filter, ...tinybirdRange(dates.previous) }),
+        fetchHeatmap(dates.current),
+        fetchHeatmap(dates.previous),
       ]);
 
       const total = sum(current);

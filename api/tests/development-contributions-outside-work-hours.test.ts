@@ -86,10 +86,9 @@ function stubTinybird({
   });
 }
 
-const pipeCalls = () =>
-  mockFetch.mock.calls
-    .map((call) => new URL(String(call[0])))
-    .filter((url) => url.pathname === pipePath);
+const calledUrls = () => mockFetch.mock.calls.map((call) => new URL(String(call[0])));
+const callsTo = (path: string) => calledUrls().filter((url) => url.pathname === path);
+const pipeCalls = () => callsTo(pipePath);
 
 interface OpenApiSchema {
   $ref?: string;
@@ -189,11 +188,13 @@ describe('Tinybird calls (AC2)', () => {
     const res = await get(`${route}${currentRange}${repos}`);
     expect(res.statusCode).toBe(200);
 
+    expect(callsTo(bucketsPath)).toHaveLength(1);
     const calls = pipeCalls();
     expect(calls).toHaveLength(2);
     for (const url of calls) {
       expect(url.origin).toBe(tinybirdHost);
       expect(url.searchParams.get('project')).toBe('kubernetes');
+      expect(url.searchParams.get('bucketId')).toBe('1');
       expect(url.searchParams.get('repos')).toBe(`${k8sRepo},${websiteRepo}`);
     }
     const ranges = calls.map((url) => [
@@ -419,6 +420,8 @@ describe('unknown slug (AC7)', () => {
       weekendOutsideHoursPercentage: 0,
       data: [],
     });
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(callsTo(bucketsPath)[0]?.searchParams.get('project')).toBe('no-such-project');
     expect(pipeCalls()).toHaveLength(0);
   });
 });
@@ -438,16 +441,21 @@ describe('date validation and defaults (AC8)', () => {
   });
 
   it('defaults the period to 2010-01-01 through today when both dates are omitted', async () => {
-    const today = new Date().toISOString().slice(0, 10);
+    const before = new Date().toISOString().slice(0, 10);
     stubTinybird({ current: currentRows, previous: previousRows, start: '2010-01-01 00:00:00' });
     const res = await get(route);
+    const after = new Date().toISOString().slice(0, 10);
     expect(res.statusCode).toBe(200);
-    expect(res.json<Body>().summary).toMatchObject({
+    const { summary } = res.json<Body>();
+    expect(summary).toMatchObject({
       current: 50,
       previous: 40,
       periodFrom: '2010-01-01T00:00:00Z',
-      periodTo: `${today}T00:00:00Z`,
     });
+    // The handler reads the clock after this request starts, so a run that crosses UTC
+    // midnight can land on either day.
+    expect([before, after].map((d) => `${d}T00:00:00Z`)).toContain(summary.periodTo);
+    const today = summary.periodTo.slice(0, 10);
     const ranges = pipeCalls().map((url) => [
       url.searchParams.get('startDate'),
       url.searchParams.get('endDate'),
