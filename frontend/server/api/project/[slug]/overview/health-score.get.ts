@@ -13,6 +13,7 @@ import {
   fetchHealthScoreMetrics,
   HealthScoreFilters,
 } from '~~/server/helpers/health-score.helpers';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -40,7 +41,7 @@ export default defineEventHandler(async (event) => {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
       throw error;
     }
-    console.error('Error fetching active contributors:', error);
+    logError('project/overview/health-score', 'Failed to fetch health score', error);
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch health score',

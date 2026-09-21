@@ -3,6 +3,22 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AdaptiveSemaphore } from '../src/adaptive-semaphore.js';
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '../src/errors.js';
+import type { LatencyBackoffOptions } from '../src/types.js';
+
+const FAST_LATENCY_BACKOFF: LatencyBackoffOptions = {
+  windowMs: 1_000,
+  minSamplesPerWindow: 1,
+  warmupWindows: 1,
+  smoothingTimeConstantMs: 1,
+};
+
+/** Reports one latency sample per window; a window's effect lands when the next one opens. */
+function latencyWindows(sem: AdaptiveSemaphore, latencyMs: number, windows: number) {
+  for (let i = 0; i < windows; i++) {
+    sem.reportTinybirdLatency(latencyMs);
+    vi.advanceTimersByTime(1_000);
+  }
+}
 
 describe('AdaptiveSemaphore', () => {
   beforeEach(() => {
@@ -136,6 +152,93 @@ describe('AdaptiveSemaphore', () => {
 
       vi.advanceTimersByTime(30_000);
       expect(sem.getEffectiveLimit()).toBe(20);
+    });
+  });
+
+  describe('reportTinybirdLatency()', () => {
+    it('shrinks the limit by a quarter per slow window, down to half the configured limit', () => {
+      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      latencyWindows(sem, 100, 5);
+
+      latencyWindows(sem, 300, 2);
+      expect(sem.getEffectiveLimit()).toBe(15);
+
+      latencyWindows(sem, 300, 5);
+      expect(sem.getEffectiveLimit()).toBe(10);
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"latency_backoff"'));
+    });
+
+    it('grows the limit back one slot per healthy window', () => {
+      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 6);
+
+      latencyWindows(sem, 100, 2);
+      expect(sem.getEffectiveLimit()).toBe(11);
+
+      latencyWindows(sem, 100, 9);
+      expect(sem.getEffectiveLimit()).toBe(20);
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"latency_recovery"'));
+    });
+
+    it('holds the limit while latency sits between the recovery and backoff ratios', () => {
+      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 2);
+      latencyWindows(sem, 170, 1);
+      const backedOffLimit = sem.getEffectiveLimit();
+
+      latencyWindows(sem, 170, 4);
+      expect(sem.getEffectiveLimit()).toBe(backedOffLimit);
+    });
+
+    it('serves queued requests as soon as the limit grows back', async () => {
+      const sem = new AdaptiveSemaphore(4, 10, console, { ...FAST_LATENCY_BACKOFF, floor: 2 });
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 4);
+      expect(sem.getEffectiveLimit()).toBe(2);
+
+      await sem.acquire(60_000);
+      await sem.acquire(60_000);
+      let queuedResolved = false;
+      const queuedPromise = sem.acquire(60_000).then(() => {
+        queuedResolved = true;
+      });
+      await vi.advanceTimersByTimeAsync(0);
+      expect(queuedResolved).toBe(false);
+
+      latencyWindows(sem, 100, 2);
+      await queuedPromise;
+      expect(queuedResolved).toBe(true);
+      expect(sem.getActive()).toBe(3);
+    });
+
+    it('applies the lower of the latency and rate-limit ceilings', () => {
+      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 2);
+      expect(sem.getEffectiveLimit()).toBe(15);
+
+      sem.reportTinybirdRateLimit();
+      expect(sem.getEffectiveLimit()).toBe(10);
+
+      vi.advanceTimersByTime(30_000);
+      expect(sem.getEffectiveLimit()).toBe(15);
+    });
+
+    it('keeps the configured limit when latency backoff is disabled', () => {
+      const sem = new AdaptiveSemaphore(20, 10, console, false);
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 10);
+
+      expect(sem.getEffectiveLimit()).toBe(20);
+    });
+
+    it('defaults the floor to half the limit below the 429 minimum', () => {
+      const sem = new AdaptiveSemaphore(8, 10, console, FAST_LATENCY_BACKOFF);
+      latencyWindows(sem, 100, 5);
+      latencyWindows(sem, 300, 5);
+      expect(sem.getEffectiveLimit()).toBe(4);
     });
   });
 });
