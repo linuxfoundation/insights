@@ -5,7 +5,7 @@
 
 ## Context
 
-[ADR-0003](./0003-tolerant-reader-versioning.md) records the deprecation process, and its step 2 shows the header wire formats as `Deprecation: true` with an ISO-8601 `Sunset` date. That `true` form comes from the IETF draft that predates standardization. RFC 9745 (published March 2025, after ADR-0003 was written) defines the `Deprecation` header as a Structured Fields Date, `@<unix-timestamp>`, and a bare boolean is not a valid value under it. RFC 8594 defines `Sunset` as an HTTP-date (IMF-fixdate), the same format as `Expires`.
+[ADR-0003](./0003-tolerant-reader-versioning.md) records the deprecation process, and its step 2 shows the header wire formats as `Deprecation: true` with an ISO-8601 `Sunset` date. That `true` form comes from the IETF draft that predates standardization. RFC 9745 (published March 2025) defines the `Deprecation` header as a Structured Fields Date, `@<unix-timestamp>`, and a bare boolean is not a valid value under it. RFC 8594 defines `Sunset` as an HTTP-date (IMF-fixdate), the same format as `Expires`.
 
 ## Decision
 
