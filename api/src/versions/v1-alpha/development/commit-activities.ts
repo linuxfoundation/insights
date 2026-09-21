@@ -6,7 +6,7 @@ import { ActivityTypes } from '@lfx-insights/types';
 import { TinybirdInvalidResponseError, type TinybirdResponse } from '@lfx-insights/tinybird-client';
 import { getTinybirdClient } from '../../../clients/tinybird.js';
 import { UpstreamUnavailableError } from '../../../lib/errors.js';
-import { getPreviousDates, toPeriodSummary } from '../../../lib/period.js';
+import { getPreviousDates, toPeriodSummary, type DateRange } from '../../../lib/period.js';
 import {
   DateRangeQuery,
   Granularity,
@@ -46,7 +46,8 @@ const CommitSummary = Type.Object(
   {
     current: Type.Integer({ description: 'Commits in the current period (count).' }),
     previous: Type.Integer({
-      description: 'Commits in the previous period of the same length (count).',
+      description:
+        'Commits in the comparison period, which ends the day before `periodFrom`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (count).',
     }),
     percentageChange: PeriodSummary.properties.percentageChange,
     changeValue: Type.Integer({ description: 'current minus previous (count of commits).' }),
@@ -71,8 +72,11 @@ const CommitActivities = Type.Object({
   ),
 });
 
-// Tinybird DateTime parameters are written with a space between the day and the time.
-const tinybirdDay = (day: string) => `${day} 00:00:00`;
+// The pipes take DateTime parameters, so each calendar day is sent as its UTC midnight.
+const toTinybirdRange = (range: DateRange): DateRange => ({
+  startDate: `${range.startDate} 00:00:00`,
+  endDate: `${range.endDate} 00:00:00`,
+});
 
 // Tinybird returns Date columns as YYYY-MM-DD and DateTime columns as YYYY-MM-DD HH:mm:ss, both UTC.
 const toUtcDateTime = (value: string) =>
@@ -98,7 +102,7 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         tags: ['Development'],
         summary: 'Get commit activities',
         description:
-          'Returns commit counts per time bucket of the requested granularity, as new commits in each bucket or as a cumulative total, plus a summary comparing the current period with the previous period of the same length. The previous period ends the day before `startDate`.',
+          'Returns commit counts per time bucket of the requested granularity, as new commits in each bucket or as a cumulative total, plus a summary comparing the current period with the comparison period before it. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list.',
         params: ProjectSlugParams,
         querystring: CommitActivitiesQuery,
         response: { 200: CommitActivities },
@@ -130,11 +134,8 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         includeCodeContributions: true,
         includeCollaborations: false,
       };
-      // The pipes apply their own defaults when a date is absent, so the caller's omission is forwarded as is.
-      const currentRange = {
-        startDate: startDate && tinybirdDay(startDate),
-        endDate: endDate && tinybirdDay(endDate),
-      };
+      // The resolved range goes to the pipes so what they count matches periodFrom/periodTo.
+      const currentRange = toTinybirdRange(current);
       const isCumulative = countType === 'cumulative';
       const seriesPipe = isCumulative ? 'activities_cumulative_count' : 'activities_count';
 
@@ -148,8 +149,7 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         client
           .fetch<SummaryRow[]>('/v0/pipes/activities_count.json', {
             ...common,
-            startDate: tinybirdDay(previous.startDate),
-            endDate: tinybirdDay(previous.endDate),
+            ...toTinybirdRange(previous),
           })
           .then((response) => rowsOf(response)),
         client

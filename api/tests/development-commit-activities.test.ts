@@ -275,7 +275,15 @@ describe('countType (AC4)', () => {
 
     const series = callsTo(cumulativeCount);
     expect(series).toHaveLength(1);
-    expect(params(series[0] as URL)).toMatchObject({ granularity: 'monthly', bucketId: '7' });
+    expect(params(series[0] as URL)).toMatchObject({
+      granularity: 'monthly',
+      bucketId: '7',
+      activity_type: 'authored-commit',
+      repos: `${k8sRepo},${websiteRepo}`,
+      startDate: currentStart,
+      endDate: '2025-03-31 00:00:00',
+    });
+    expect(series[0]?.searchParams.has('countType')).toBe(false);
   });
 
   it('accepts countType=new explicitly', async () => {
@@ -318,7 +326,7 @@ describe('date range (AC6)', () => {
     vi.useRealTimers();
   });
 
-  it('forwards no dates for the current range when the caller omits them', async () => {
+  it('sends the resolved 2010-01-01..today range to the pipes when the caller omits dates', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2025-03-31T12:00:00Z'));
 
@@ -329,15 +337,16 @@ describe('date range (AC6)', () => {
       periodTo: '2025-03-31T00:00:00Z',
     });
 
+    // The pipes count exactly the range the summary reports, so no pre-2010 commit slips in.
     const pipeCalls = callsTo(activitiesCount);
-    const undated = pipeCalls.filter((url) => !url.searchParams.has('startDate'));
-    expect(undated).toHaveLength(2);
-    for (const url of undated) {
-      expect(url.searchParams.has('endDate')).toBe(false);
+    const current = pipeCalls.filter((url) => params(url).startDate === '2010-01-01 00:00:00');
+    expect(current).toHaveLength(2);
+    for (const url of current) {
+      expect(params(url).endDate).toBe('2025-03-31 00:00:00');
     }
-    expect(undated.filter(isSeries)).toHaveLength(1);
+    expect(current.filter(isSeries)).toHaveLength(1);
 
-    const previous = pipeCalls.filter((url) => url.searchParams.has('startDate'));
+    const previous = pipeCalls.filter((url) => !current.includes(url));
     expect(previous.map(params)).toEqual([
       expect.objectContaining({
         startDate: '1994-10-01 00:00:00',
