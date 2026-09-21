@@ -55,7 +55,7 @@ const OutsideWorkHoursSummary = Type.Object(
   {
     title: 'OutsideWorkHoursSummary',
     description:
-      'Share of contributions made outside work hours, in percent, for the current period and the previous period of the same length.',
+      'Share of contributions made outside work hours, in percent, for the current period and the period immediately before it.',
   },
 );
 
