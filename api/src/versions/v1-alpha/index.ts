@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { fileURLToPath } from 'node:url';
+import autoload from '@fastify/autoload';
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import projectRoutes from './projects.js';
-import issuesResolutionRoutes from './development/issues-resolution.js';
 
 // Owns everything under /v1-alpha; the spec route is mounted by the registry loop in app.ts.
 const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
@@ -12,7 +13,11 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   });
 
   await scope.register(projectRoutes);
-  await scope.register(issuesResolutionRoutes);
+  await scope.register(autoload, {
+    dir: fileURLToPath(new URL('./development', import.meta.url)),
+    dirNameRoutePrefix: false,
+    forceESM: true,
+  });
 };
 
 export default v1AlphaRoutes;
