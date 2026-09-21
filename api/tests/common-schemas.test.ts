@@ -44,7 +44,7 @@ interface OpenApiOperation {
 
 interface OpenApiDoc {
   components?: { schemas?: Record<string, OpenApiSchema> };
-  paths: Record<string, { get: OpenApiOperation }>;
+  paths: Record<string, { get?: OpenApiOperation }>;
 }
 
 const granularities = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly'];
@@ -412,20 +412,36 @@ describe('periodSummary factory (AC6)', () => {
 // anyone adding it to a list; tests/v1-alpha-autoload.test.ts pins the module side.
 const alphaApp = await buildApp();
 await alphaApp.ready();
-const alphaSpec = (
-  await alphaApp.inject({ method: 'GET', url: '/v1-alpha/openapi.json' })
-).json<OpenApiDoc>();
+const specResponse = await alphaApp.inject({ method: 'GET', url: '/v1-alpha/openapi.json' });
 await alphaApp.close();
+if (specResponse.statusCode !== 200) {
+  throw new Error(
+    `/v1-alpha/openapi.json answered ${specResponse.statusCode}: ${specResponse.body}`,
+  );
+}
+const alphaSpec = specResponse.json<OpenApiDoc>();
 
+// Only GET operations carry these conventions; a later POST under the prefix is left alone here.
 const developmentPrefix = '/v1-alpha/projects/{slug}/development/';
-const developmentRoutes = Object.keys(alphaSpec.paths)
+const developmentOperations = new Map(
+  Object.entries(alphaSpec.paths).flatMap(([path, item]) =>
+    path.startsWith(developmentPrefix) && item.get
+      ? [[path.slice(developmentPrefix.length), item.get] as const]
+      : [],
+  ),
+);
+const developmentRoutes = [...developmentOperations.keys()].sort();
+const developmentPaths = Object.keys(alphaSpec.paths)
   .filter((path) => path.startsWith(developmentPrefix))
   .map((path) => path.slice(developmentPrefix.length))
   .sort();
 
 describe('the v1-alpha routes serve the shared wording and types (AC8, decision 4)', () => {
-  const operation = (name: string) =>
-    alphaSpec.paths[`${developmentPrefix}${name}`]?.get as OpenApiOperation;
+  const operation = (name: string) => {
+    const op = developmentOperations.get(name);
+    if (!op) throw new Error(`${name} has no GET operation in the spec`);
+    return op;
+  };
   const parameter = (name: string, param: string) =>
     operation(name).parameters?.find((p) => p.name === param);
   // Swagger may hoist a schema into components and leave a $ref behind; read through it so a
@@ -459,6 +475,8 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
 
   it('discovers the development routes from the spec', () => {
     expect(developmentRoutes.length).toBeGreaterThanOrEqual(5);
+    // Every path under the prefix is a GET today; a path without one would otherwise skip silently.
+    expect(developmentRoutes).toEqual(developmentPaths);
     expect(seriesRoutes.length).toBeGreaterThan(0);
     expect(summaryCases.length).toBeGreaterThan(0);
   });
@@ -494,13 +512,20 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     (name, field, summary) => {
       const kind = summary.properties?.current?.type;
       expect(['integer', 'number'], `${name}.${field}.current`).toContain(kind);
-      const unit =
-        kind === 'integer' ? /\(count[^)]*\)\./ : /\((seconds|percent|percentage points)\)\./;
-      for (const value of ['current', 'previous', 'changeValue']) {
-        const prop = summary.properties?.[value];
-        expect(prop?.type, `${name}.${field}.${value}`).toBe(kind);
-        expect(prop?.description, `${name}.${field}.${value}`).toMatch(unit);
+      // The unit sits in parentheses before a period so a nullable note can follow it.
+      const unitOf = (value: string) =>
+        summary.properties?.[value]?.description?.match(/\(([a-z ]+)\)\./)?.[1];
+      const unit = unitOf('current');
+      expect(unit ?? '', `${name}.${field}.current`).toMatch(
+        kind === 'integer' ? /^count( of [a-z]+)?$/ : /^(seconds|percent)$/,
+      );
+      for (const value of ['previous', 'changeValue']) {
+        expect(summary.properties?.[value]?.type, `${name}.${field}.${value}`).toBe(kind);
       }
+      expect(unitOf('previous'), `${name}.${field}.previous`).toBe(unit);
+      expect(unitOf('changeValue'), `${name}.${field}.changeValue`).toBe(
+        unit === 'percent' ? 'percentage points' : unit,
+      );
       expect(summary.properties?.percentageChange).toMatchObject({
         type: 'number',
         nullable: true,
