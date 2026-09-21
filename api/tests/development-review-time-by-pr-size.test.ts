@@ -56,7 +56,6 @@ interface PipeRows {
   rows?: object[];
 }
 
-// The handler resolves the slug to a bucket once, then makes the single pipe call.
 const routeTinybird =
   ({ bucket = [{ bucketId: 7 }], rows = pipeRows }: PipeRows = {}) =>
   async (input: unknown) => {
@@ -366,6 +365,31 @@ describe('Tinybird failures (AC7)', () => {
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain('oops');
+  });
+
+  // fetchPipe only checks that `data` is an array; the row guard is what turns a row outside the
+  // pipe contract into the documented 503 instead of a serializer 500.
+  it.each([
+    ['without the size label', { reviewedInSecondsAvg: 34017, pullRequestCount: 5 }],
+    [
+      'without the pull request count',
+      { gitChangedLinesBucket: '1-9', reviewedInSecondsAvg: 34017 },
+    ],
+    [
+      'with a numeric size label',
+      { gitChangedLinesBucket: 9, reviewedInSecondsAvg: 1, pullRequestCount: 5 },
+    ],
+    [
+      'with a string average',
+      { gitChangedLinesBucket: '1-9', reviewedInSecondsAvg: 'fast', pullRequestCount: 5 },
+    ],
+    ['without the average', { gitChangedLinesBucket: '1-9', pullRequestCount: 5 }],
+  ])('maps a pipe row %s to 503 upstream_unavailable', async (_case, row) => {
+    mockFetch.mockImplementation(routeTinybird({ rows: [...pipeRows, row] }));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain('fast');
   });
 });
 

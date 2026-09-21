@@ -11,9 +11,15 @@ const pipePath = '/v0/pipes/pull_requests_review_time_by_size.json';
 // The pipe declares reviewedInSecondsAvg Nullable(Float64).
 interface ReviewTimeRow {
   gitChangedLinesBucket: string;
-  reviewedInSecondsAvg?: number | null;
+  reviewedInSecondsAvg: number | null;
   pullRequestCount: number;
 }
+
+// Rows the guard rejects become the documented 503 in fetchPipe, see clients/tinybird.ts.
+const isReviewTimeRow = (row: ReviewTimeRow) =>
+  typeof row.gitChangedLinesBucket === 'string' &&
+  typeof row.pullRequestCount === 'number' &&
+  (row.reviewedInSecondsAvg === null || typeof row.reviewedInSecondsAvg === 'number');
 
 const ReviewTimeBucket = Type.Object({
   lines: Type.String({
@@ -66,18 +72,23 @@ const reviewTimeByPrSizeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { current } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) =>
-        fetchPipe<ReviewTimeRow>(request, pipePath, {
-          project: slug,
-          bucketId,
-          repos: repoFilter(repos),
-          ...toTinybirdRange(current),
-        }),
+        fetchPipe<ReviewTimeRow>(
+          request,
+          pipePath,
+          {
+            project: slug,
+            bucketId,
+            repos: repoFilter(repos),
+            ...toTinybirdRange(current),
+          },
+          isReviewTimeRow,
+        ),
       );
       return {
         data: (rows ?? []).map((row) => ({
           lines: row.gitChangedLinesBucket,
           prCount: row.pullRequestCount,
-          averageReviewTimeSeconds: row.reviewedInSecondsAvg ?? null,
+          averageReviewTimeSeconds: row.reviewedInSecondsAvg,
         })),
       };
     },
