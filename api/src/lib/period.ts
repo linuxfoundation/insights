@@ -11,6 +11,11 @@ export interface DateRange {
 export class InvalidDateRangeError extends Error {
   readonly statusCode = 400;
   readonly code = 'invalid_request';
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'InvalidDateRangeError';
+  }
 }
 
 // Same default as earliestPossibleStartDate in frontend/server/data/util.ts.
@@ -18,10 +23,30 @@ const earliestStartDate = '2010-01-01';
 const dayMs = 86_400_000;
 
 // Dates are UTC midnights read with UTC getters, so the host time zone never shifts a calendar day.
-const utcMidnight = (day: string) => `${day}T00:00:00Z`;
+export const utcMidnight = (day: string) => `${day}T00:00:00Z`;
 const parseDay = (day: string) => new Date(utcMidnight(day));
 const formatDay = (date: Date) => date.toISOString().slice(0, 10);
 const addDays = (date: Date, days: number) => new Date(date.getTime() + days * dayMs);
+
+// Tinybird returns Date columns as YYYY-MM-DD and DateTime columns as YYYY-MM-DD HH:mm:ss, both
+// UTC. Both land in the T..Z shape toPeriodSummary writes, so every date in a body has one format.
+export function toIsoUtc(value: string): string {
+  const [day, time] = value.split(' ');
+  return time ? `${day}T${time}Z` : utcMidnight(day);
+}
+
+// Some pipes declare bucket bounds Nullable(Date). A row without both has no place on the time
+// axis; whether a route drops it or answers 503 is the route's call.
+export const hasBucketBounds = <T extends { startDate: string | null; endDate: string | null }>(
+  row: T,
+): row is T & DateRange => typeof row.startDate === 'string' && typeof row.endDate === 'string';
+
+// The pipes take DateTime parameters where the Nuxt data layer sends Luxon's 'yyyy-MM-dd 00:00:00'.
+// A bound left undefined stays undefined, which the client drops from the query string.
+export function toTinybirdRange(range: Partial<DateRange>): Partial<DateRange> {
+  const day = (value?: string) => (value === undefined ? undefined : `${value} 00:00:00`);
+  return { startDate: day(range.startDate), endDate: day(range.endDate) };
+}
 
 // Date.UTC remaps years 0 to 99 onto 1900 to 1999; setUTCFullYear keeps the year as given.
 function utcDate(year: number, month: number, day: number): Date {

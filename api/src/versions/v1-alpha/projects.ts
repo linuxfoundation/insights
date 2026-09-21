@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
-import { getTinybirdClient } from '../../clients/tinybird.js';
-import { NotFoundError, UpstreamUnavailableError } from '../../lib/errors.js';
+import { fetchPipe } from '../../clients/tinybird.js';
+import { NotFoundError } from '../../lib/errors.js';
 import { ProjectSlugParams } from '../../schemas/common.js';
 
 interface ProjectRow {
@@ -45,14 +45,10 @@ const projectRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     },
     async (request) => {
       const { slug } = request.params;
-      const { data } = await getTinybirdClient()
-        .fetch<ProjectRow[]>('/v0/pipes/projects_list.json', { slug, details: true })
-        .catch((err: unknown) => {
-          request.log.error({ err }, 'Tinybird projects_list request failed');
-          throw new UpstreamUnavailableError();
-        });
-
-      const [row] = data;
+      const [row] = await fetchPipe<ProjectRow>(request, '/v0/pipes/projects_list.json', {
+        slug,
+        details: true,
+      });
       if (!row) {
         throw new NotFoundError('Project not found');
       }

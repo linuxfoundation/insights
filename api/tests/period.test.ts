@@ -5,7 +5,10 @@ import {
   calculatePercentageChange,
   getPreviousDates,
   InvalidDateRangeError,
+  toIsoUtc,
   toPeriodSummary,
+  toTinybirdRange,
+  utcMidnight,
 } from '../src/lib/period.js';
 
 // Expected ranges were computed with the frontend's Luxon 3.7.2 getPreviousDates
@@ -179,6 +182,55 @@ describe('getPreviousDates rejects an inverted range (AC5)', () => {
   it('compares against the defaulted endDate too', () => {
     const now = new Date('2025-09-18T12:00:00Z');
     expect(() => getPreviousDates('2025-09-19', undefined, now)).toThrow(InvalidDateRangeError);
+  });
+});
+
+describe('InvalidDateRangeError (AC9)', () => {
+  it('is named after its class and keeps the 400 invalid_request mapping', () => {
+    const error = new InvalidDateRangeError('startDate must be on or before endDate');
+    expect(error.name).toBe('InvalidDateRangeError');
+    expect(error.message).toBe('startDate must be on or before endDate');
+    expect(error).toMatchObject({ statusCode: 400, code: 'invalid_request' });
+    expect(error).toBeInstanceOf(Error);
+  });
+});
+
+describe('toTinybirdRange (AC1)', () => {
+  it('writes both bounds as Tinybird DateTime text at UTC midnight', () => {
+    expect(toTinybirdRange({ startDate: '2025-06-20', endDate: '2025-09-18' })).toEqual({
+      startDate: '2025-06-20 00:00:00',
+      endDate: '2025-09-18 00:00:00',
+    });
+  });
+
+  it('leaves a missing bound undefined so the client omits it from the query', () => {
+    expect(toTinybirdRange({ startDate: '2025-06-20' })).toEqual({
+      startDate: '2025-06-20 00:00:00',
+      endDate: undefined,
+    });
+    expect(toTinybirdRange({})).toEqual({ startDate: undefined, endDate: undefined });
+  });
+});
+
+describe('toIsoUtc and utcMidnight (AC2)', () => {
+  it.each([
+    ['2025-01-05', '2025-01-05T00:00:00Z'],
+    ['2025-01-05 23:59:59', '2025-01-05T23:59:59Z'],
+    ['2025-12-31 00:00:00', '2025-12-31T00:00:00Z'],
+  ])('toIsoUtc(%s) is %s', (value, expected) => {
+    expect(toIsoUtc(value)).toBe(expected);
+  });
+
+  it('utcMidnight writes a calendar day at 00:00:00Z', () => {
+    expect(utcMidnight('2025-01-05')).toBe('2025-01-05T00:00:00Z');
+  });
+
+  it('agrees with toPeriodSummary on the period bounds', () => {
+    const range = { startDate: '2025-06-20', endDate: '2025-09-18' };
+    expect(toPeriodSummary(1, 1, range)).toMatchObject({
+      periodFrom: utcMidnight(range.startDate),
+      periodTo: toIsoUtc(range.endDate),
+    });
   });
 });
 

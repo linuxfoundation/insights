@@ -3,6 +3,7 @@
 import type { FastifyInstance } from 'fastify';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildApp } from '../src/app.js';
+import { getTinybirdClient } from '../src/clients/tinybird.js';
 import { getPreviousDates } from '../src/lib/period.js';
 
 const tinybirdHost = 'https://tinybird.test';
@@ -174,7 +175,9 @@ afterAll(async () => {
   vi.unstubAllEnvs();
 });
 
-beforeEach(() => {
+beforeEach(async () => {
+  // The client remembers a slug's bucket for the whole process; each test counts its own lookup.
+  await getTinybirdClient().clearAllBucketCaches();
   mockFetch.mockReset();
   serveTinybird();
 });

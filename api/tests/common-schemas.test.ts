@@ -7,9 +7,12 @@ import { buildApp } from '../src/app.js';
 import { getPreviousDates, toPeriodSummary } from '../src/lib/period.js';
 import {
   DateRangeQuery,
+  describe as describeField,
   Granularity,
   PeriodSummary,
+  periodSummary,
   ProjectSlugParams,
+  SeriesQuery,
 } from '../src/schemas/common.js';
 import type { ApiVersion } from '../src/versions/registry.js';
 
@@ -19,12 +22,22 @@ interface OpenApiSchema {
   format?: string;
   nullable?: boolean;
   title?: string;
+  description?: string;
   required?: string[];
   properties?: Record<string, OpenApiSchema>;
 }
 
+interface OpenApiParameter {
+  name: string;
+  in: string;
+  required?: boolean;
+  description?: string;
+  schema: OpenApiSchema;
+}
+
 interface OpenApiOperation {
-  parameters?: { name: string; in: string; schema: OpenApiSchema }[];
+  description?: string;
+  parameters?: OpenApiParameter[];
   responses: Record<string, { content: Record<string, { schema: OpenApiSchema }> }>;
 }
 
@@ -33,6 +46,10 @@ interface OpenApiDoc {
 }
 
 const granularities = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly'];
+
+// Swagger writes a query property's description on the parameter; older output kept it on the schema.
+const parameterDescription = (param?: OpenApiParameter) =>
+  param?.description ?? param?.schema.description;
 
 // A throwaway version that wires the shared pieces together the way an endpoint will.
 const testVersion: ApiVersion = {
@@ -64,6 +81,11 @@ const testVersion: ApiVersion = {
         const { current } = getPreviousDates(request.query.startDate, request.query.endDate);
         return { summary: toPeriodSummary(5, 0, current) };
       },
+    );
+    scope.get(
+      '/projects/:slug/series',
+      { schema: { params: ProjectSlugParams, querystring: SeriesQuery } },
+      async (request) => ({ query: request.query }),
     );
   },
 };
@@ -214,5 +236,242 @@ describe('an inverted date range through a route (AC5)', () => {
     );
     expect(res.statusCode).toBe(400);
     expect(res.json()).toMatchObject({ code: 'invalid_request' });
+  });
+});
+
+describe('DateRangeQuery descriptions state the bound semantics (AC8)', () => {
+  it('documents startDate as inclusive from 00:00 UTC and endDate as exclusive at 00:00 UTC', async () => {
+    const operation = await getOperation('/v1/projects/{slug}/echo');
+    const byName = Object.fromEntries(
+      (operation.parameters ?? []).map((param) => [param.name, param]),
+    );
+    expect(parameterDescription(byName['startDate'])).toMatch(/inclusive/i);
+    expect(parameterDescription(byName['startDate'])).toMatch(/00:00(:00)? UTC/);
+    expect(parameterDescription(byName['endDate'])).toMatch(/exclusive/i);
+    expect(parameterDescription(byName['endDate'])).toMatch(/00:00(:00)? UTC/);
+  });
+
+  it('keeps the schema-level descriptions in step with the served ones', () => {
+    expect(DateRangeQuery.properties.startDate.description).toMatch(/inclusive/i);
+    expect(DateRangeQuery.properties.endDate.description).toMatch(/exclusive/i);
+  });
+});
+
+describe('describe() (AC6)', () => {
+  it('returns the schema with only the description replaced', () => {
+    const described = describeField(Granularity, 'Bucket width for this endpoint.');
+    expect(described).toEqual({ ...Granularity, description: 'Bucket width for this endpoint.' });
+    expect(described.enum).toBe(Granularity.enum);
+    expect(described).not.toBe(Granularity);
+  });
+
+  it('leaves the source schema untouched', () => {
+    const before = { ...Granularity };
+    describeField(Granularity, 'Something else.');
+    expect(Granularity).toEqual(before);
+  });
+});
+
+describe('Granularity and SeriesQuery (AC7)', () => {
+  it('carries a description on the shared schema', () => {
+    expect(Granularity.description).toBe('Width of each bucket in `data`.');
+  });
+
+  it('SeriesQuery is DateRangeQuery plus a required granularity', () => {
+    expect(Object.keys(SeriesQuery.properties)).toEqual([
+      ...Object.keys(DateRangeQuery.properties),
+      'granularity',
+    ]);
+    expect(SeriesQuery.properties.granularity).toBe(Granularity);
+    expect(SeriesQuery.required).toEqual(['granularity']);
+  });
+
+  it('rejects a request without granularity', async () => {
+    const res = await get('/v1/projects/kubernetes/series?startDate=2025-06-20');
+    expect(res.statusCode).toBe(400);
+  });
+
+  it.each(granularities)('accepts granularity=%s with the date range', async (granularity) => {
+    const res = await get(
+      `/v1/projects/kubernetes/series?startDate=2025-06-20&endDate=2025-09-18&granularity=${granularity}`,
+    );
+    expect(res.statusCode).toBe(200);
+    expect(res.json().query).toEqual({
+      startDate: '2025-06-20',
+      endDate: '2025-09-18',
+      granularity,
+    });
+  });
+
+  it('shows granularity as a required, described enum in OpenAPI', async () => {
+    const operation = await getOperation('/v1/projects/{slug}/series');
+    const param = operation.parameters?.find((p) => p.name === 'granularity');
+    expect(param?.required).toBe(true);
+    expect(param?.schema.enum).toEqual(granularities);
+    expect(parameterDescription(param)).toBe(Granularity.description);
+  });
+});
+
+describe('periodSummary factory (AC6)', () => {
+  const counts = periodSummary({
+    measure: 'Commits',
+    unit: 'count',
+    kind: 'integer',
+    title: 'CommitSummary',
+    description: 'Commit totals for the current period against the previous one.',
+  });
+  const share = periodSummary({
+    measure: 'Share of contributions made outside work hours',
+    unit: 'percent',
+    changeUnit: 'percentage points',
+    kind: 'number',
+  });
+
+  it('keeps the six PeriodSummary fields in the same order, all required', () => {
+    const fields = [
+      'current',
+      'previous',
+      'percentageChange',
+      'changeValue',
+      'periodFrom',
+      'periodTo',
+    ];
+    expect(Object.keys(counts.properties)).toEqual(fields);
+    expect(counts.required).toEqual(fields);
+    expect(Object.keys(share.properties)).toEqual(fields);
+  });
+
+  it('types the three count fields as integer for kind integer', () => {
+    expect(counts.properties.current.type).toBe('integer');
+    expect(counts.properties.previous.type).toBe('integer');
+    expect(counts.properties.changeValue.type).toBe('integer');
+  });
+
+  it('types the three fields as number for kind number', () => {
+    expect(share.properties.current.type).toBe('number');
+    expect(share.properties.previous.type).toBe('number');
+    expect(share.properties.changeValue.type).toBe('number');
+  });
+
+  it('describes current, previous and changeValue from the measure and unit', () => {
+    expect(counts.properties.current.description).toBe('Commits in the current period (count).');
+    expect(counts.properties.previous.description).toBe(
+      'Commits in the comparison period, which ends the day before `periodFrom`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (count).',
+    );
+    expect(counts.properties.changeValue.description).toBe('`current` minus `previous` (count).');
+  });
+
+  it('uses changeUnit for changeValue when given', () => {
+    expect(share.properties.current.description).toBe(
+      'Share of contributions made outside work hours in the current period (percent).',
+    );
+    expect(share.properties.previous.description).toMatch(/\(percent\)\.$/);
+    expect(share.properties.changeValue.description).toBe(
+      '`current` minus `previous` (percentage points).',
+    );
+  });
+
+  it('reuses the shared percentageChange, periodFrom and periodTo schemas', () => {
+    for (const summary of [counts, share]) {
+      expect(summary.properties.percentageChange).toBe(PeriodSummary.properties.percentageChange);
+      expect(summary.properties.periodFrom).toBe(PeriodSummary.properties.periodFrom);
+      expect(summary.properties.periodTo).toBe(PeriodSummary.properties.periodTo);
+    }
+  });
+
+  it('writes title and description only when given', () => {
+    expect(counts.title).toBe('CommitSummary');
+    expect(counts.description).toBe(
+      'Commit totals for the current period against the previous one.',
+    );
+    expect(share).not.toHaveProperty('title');
+    expect(share).not.toHaveProperty('description');
+  });
+
+  it('spreads into a wider object without losing the field schemas', () => {
+    const widened = Type.Object(
+      { ...counts.properties, extra: Type.Number() },
+      { title: 'Widened' },
+    );
+    expect(Object.keys(widened.properties)).toEqual([
+      'current',
+      'previous',
+      'percentageChange',
+      'changeValue',
+      'periodFrom',
+      'periodTo',
+      'extra',
+    ]);
+    expect(widened.properties.current).toBe(counts.properties.current);
+  });
+});
+
+describe('the v1-alpha routes serve the shared wording and types (AC8, decision 4)', () => {
+  const developmentPath = (name: string) => `/v1-alpha/projects/{slug}/development/${name}`;
+  const seriesRoutes = ['issues-resolution', 'commit-activities', 'pull-requests', 'active-days'];
+  const rangeRoutes = [...seriesRoutes, 'contributions-outside-work-hours'];
+
+  let alpha: FastifyInstance;
+  let spec: OpenApiDoc;
+
+  beforeAll(async () => {
+    alpha = await buildApp();
+    await alpha.ready();
+    const res = await alpha.inject({ method: 'GET', url: '/v1-alpha/openapi.json' });
+    expect(res.statusCode).toBe(200);
+    spec = res.json<OpenApiDoc>();
+  });
+
+  afterAll(async () => {
+    await alpha.close();
+  });
+
+  const operation = (name: string) => {
+    const op = spec.paths[developmentPath(name)]?.get;
+    expect(op, `${name} is missing from the spec`).toBeDefined();
+    return op as OpenApiOperation;
+  };
+  const parameter = (name: string, param: string) =>
+    operation(name).parameters?.find((p) => p.name === param);
+  const responseSchema = (name: string) =>
+    operation(name).responses['200']?.content['application/json']?.schema;
+
+  it.each(rangeRoutes)('%s documents the inclusive start and exclusive end', (name) => {
+    expect(operation(name).description).toMatch(/00:00 UTC/);
+    expect(parameterDescription(parameter(name, 'startDate'))).toMatch(/inclusive/i);
+    expect(parameterDescription(parameter(name, 'endDate'))).toMatch(/exclusive/i);
+  });
+
+  it.each(seriesRoutes)('%s describes granularity with the shared wording', (name) => {
+    const param = parameter(name, 'granularity');
+    expect(param?.required).toBe(true);
+    expect(param?.schema.enum).toEqual(granularities);
+    expect(parameterDescription(param)).toBe(Granularity.description);
+  });
+
+  it.each([
+    ['issues-resolution', 'summary'],
+    ['commit-activities', 'summary'],
+    ['pull-requests', 'openedSummary'],
+    ['pull-requests', 'mergedSummary'],
+    ['pull-requests', 'closedSummary'],
+    ['active-days', 'summary'],
+  ])('%s %s counts are integers with a described unit', (name, field) => {
+    const summary = responseSchema(name)?.properties?.[field];
+    for (const count of ['current', 'previous', 'changeValue']) {
+      expect(summary?.properties?.[count]?.type, `${name}.${field}.${count}`).toBe('integer');
+      expect(summary?.properties?.[count]?.description).toMatch(/\(count( of days)?\)\.$/);
+    }
+    expect(summary?.properties?.percentageChange).toMatchObject({ type: 'number', nullable: true });
+  });
+
+  it('contributions-outside-work-hours keeps the percent share as a number', () => {
+    const summary = responseSchema('contributions-outside-work-hours')?.properties?.summary;
+    for (const count of ['current', 'previous']) {
+      expect(summary?.properties?.[count]?.type).toBe('number');
+      expect(summary?.properties?.[count]?.description).toMatch(/\(percent\)\.$/);
+    }
+    expect(summary?.properties?.changeValue?.type).toBe('number');
+    expect(summary?.properties?.changeValue?.description).toMatch(/\(percentage points\)\.$/);
   });
 });
