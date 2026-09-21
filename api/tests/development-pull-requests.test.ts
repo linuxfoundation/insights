@@ -34,7 +34,7 @@ const summaryCounts: Record<string, { current: number; previous: number }> = {
   [closedTypes]: { current: 10, previous: 5 },
 };
 
-// The pipe returns bucket bounds as ClickHouse Date values; the three series align by index.
+// The pipe returns bucket bounds as ClickHouse Date values; the three series share their bounds.
 const bucketBounds = [
   ['2025-01-01', '2025-01-05'],
   ['2025-01-06', '2025-01-12'],
@@ -231,6 +231,29 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
     const res = await get(`${route}?${rangeQuery}`);
     expect(res.statusCode).toBe(200);
     expect(res.json().data.map((bucket: { merged: number }) => bucket.merged)).toEqual([8, 1, 0]);
+  });
+
+  it('keeps merged and closed counts with their bucket when a middle bucket is missing', async () => {
+    mockFetch.mockImplementation(
+      tinybird((url) => {
+        const rows = defaultRows(url);
+        const isOpenedSeries = url.searchParams.get('activity_types') === openedTypes;
+        return url.searchParams.has('granularity') && !isOpenedSeries
+          ? rows.filter((_, index) => index !== 1)
+          : rows;
+      }),
+    );
+    const res = await get(`${route}?${rangeQuery}`);
+    expect(res.statusCode).toBe(200);
+    expect(
+      res
+        .json()
+        .data.map((bucket: { merged: number; closed: number }) => [bucket.merged, bucket.closed]),
+    ).toEqual([
+      [8, 2],
+      [0, 0],
+      [6, 3],
+    ]);
   });
 
   it('sizes the series by the opened series, dropping extra merged and closed buckets', async () => {

@@ -228,20 +228,28 @@ function toPullRequests(rows: PipeRows | null, current: DateRange): PullRequests
       current,
     );
 
+  // Whether the pipe emits a row for an empty bucket is undocumented, so merged and closed are
+  // looked up by bucket start instead of by position. The output keeps one entry per opened row.
+  const countsByBucket = (series: SeriesRow[]) =>
+    new Map(series.map((row) => [toIsoUtc(row.startDate), row.activityCount ?? 0]));
+  const mergedByBucket = countsByBucket(rows.mergedSeries);
+  const closedByBucket = countsByBucket(rows.closedSeries);
+
   return {
     openedSummary: summarize(rows.openedCurrent, rows.openedPrevious),
     mergedSummary: summarize(rows.mergedCurrent, rows.mergedPrevious),
     closedSummary: summarize(rows.closedCurrent, rows.closedPrevious),
     avgResolveTimeSeconds: rows.velocity[0]?.averagePullRequestResolveVelocitySeconds ?? null,
-    // The three series share their bucket bounds, so they join by index
-    // (see frontend/server/data/tinybird/development/pull-requests.ts).
-    data: rows.openedSeries.map((row, index) => ({
-      startDate: toIsoUtc(row.startDate),
-      endDate: toIsoUtc(row.endDate),
-      open: row.activityCount ?? 0,
-      merged: rows.mergedSeries[index]?.activityCount ?? 0,
-      closed: rows.closedSeries[index]?.activityCount ?? 0,
-    })),
+    data: rows.openedSeries.map((row) => {
+      const startDate = toIsoUtc(row.startDate);
+      return {
+        startDate,
+        endDate: toIsoUtc(row.endDate),
+        open: row.activityCount ?? 0,
+        merged: mergedByBucket.get(startDate) ?? 0,
+        closed: closedByBucket.get(startDate) ?? 0,
+      };
+    }),
   };
 }
 
