@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { Type } from '@sinclair/typebox';
-import { fetchPipe, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   toPeriodSummary,
@@ -113,7 +113,7 @@ const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (sc
         const filter: TinybirdQuery = {
           project: slug,
           bucketId,
-          repos,
+          repos: repoFilter(repos),
           includeCodeContributions,
           includeCollaborations,
         };

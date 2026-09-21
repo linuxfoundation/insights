@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 import { ActivityTypes } from '@lfx-insights/types';
-import { fetchPipe, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   hasBucketBounds,
@@ -86,7 +86,7 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         const common = {
           project: slug,
           bucketId,
-          repos,
+          repos: repoFilter(repos),
           activity_type: ActivityTypes.AUTHORED_COMMIT,
           onlyContributions: true,
           includeCodeContributions: true,

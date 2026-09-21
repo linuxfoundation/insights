@@ -561,3 +561,25 @@ describe('OpenAPI (AC10)', () => {
     expect(res.statusCode).toBe(404);
   });
 });
+
+describe('repos filter', () => {
+  const query = `${range}&granularity=monthly`;
+  const pipes = () => calls().filter((url) => url.pathname !== '/v0/pipes/project_buckets.json');
+
+  it('drops an empty repos value instead of sending a filter that matches nothing', async () => {
+    const res = await get(`${route}?${query}&repos=`);
+    expect(res.statusCode).toBe(200);
+    expect(pipes()).toHaveLength(3);
+    for (const url of pipes()) {
+      expect(url.searchParams.has('repos')).toBe(false);
+    }
+  });
+
+  it('keeps the other repos values when one of them is empty', async () => {
+    await get(`${route}?${query}&repos=&repos=${encodeURIComponent(k8sRepo)}`);
+    expect(pipes()).toHaveLength(3);
+    for (const url of pipes()) {
+      expect(url.searchParams.get('repos')).toBe(k8sRepo);
+    }
+  });
+});

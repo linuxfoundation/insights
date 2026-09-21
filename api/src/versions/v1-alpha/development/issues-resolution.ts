@@ -4,7 +4,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type, type Static } from '@sinclair/typebox';
 import { ActivityTypes } from '@lfx-insights/types';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-import { fetchPipe, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   hasBucketBounds,
@@ -119,7 +119,7 @@ const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         const filter: TinybirdQuery = {
           project: slug,
           bucketId,
-          repos,
+          repos: repoFilter(repos),
           countType: 'new',
           onlyContributions: false,
           includeCodeContributions: true,

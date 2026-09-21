@@ -625,3 +625,22 @@ describe('/v1-alpha registration and spec (AC11)', () => {
     expect(res.statusCode).toBe(404);
   });
 });
+
+describe('repos filter', () => {
+  it('drops an empty repos value instead of sending a filter that matches nothing', async () => {
+    const res = await get(`${route}${currentRange}&repos=`);
+    expect(res.statusCode).toBe(200);
+    expect(pipeCalls()).toHaveLength(2);
+    for (const url of pipeCalls()) {
+      expect(url.searchParams.has('repos')).toBe(false);
+    }
+  });
+
+  it('keeps the other repos values when one of them is empty', async () => {
+    await get(`${route}${currentRange}&repos=&repos=${encodeURIComponent(k8sRepo)}`);
+    expect(pipeCalls()).toHaveLength(2);
+    for (const url of pipeCalls()) {
+      expect(url.searchParams.get('repos')).toBe(k8sRepo);
+    }
+  });
+});
