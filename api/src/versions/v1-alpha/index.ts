@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import projectRoutes from './projects.js';
+import issuesResolutionRoutes from './development/issues-resolution.js';
 
 // Owns everything under /v1-alpha; the spec route is mounted by the registry loop in app.ts.
 const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
@@ -11,6 +12,7 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   });
 
   await scope.register(projectRoutes);
+  await scope.register(issuesResolutionRoutes);
 };
 
 export default v1AlphaRoutes;
