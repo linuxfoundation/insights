@@ -384,6 +384,22 @@ describe('Tinybird failures (AC7)', () => {
       { gitChangedLinesBucket: '1-9', reviewedInSecondsAvg: 'fast', pullRequestCount: 5 },
     ],
     ['without the average', { gitChangedLinesBucket: '1-9', pullRequestCount: 5 }],
+    [
+      'with a fractional pull request count',
+      { gitChangedLinesBucket: '1-9', reviewedInSecondsAvg: 1, pullRequestCount: 2.5 },
+    ],
+    [
+      'with a negative pull request count',
+      { gitChangedLinesBucket: '1-9', reviewedInSecondsAvg: 1, pullRequestCount: -1 },
+    ],
+    [
+      'with a pull request count above the safe integer range',
+      {
+        gitChangedLinesBucket: '1-9',
+        reviewedInSecondsAvg: 1,
+        pullRequestCount: Number.MAX_SAFE_INTEGER + 1,
+      },
+    ],
   ])('maps a pipe row %s to 503 upstream_unavailable', async (_case, row) => {
     mockFetch.mockImplementation(routeTinybird({ rows: [...pipeRows, row] }));
     const res = await get(url());

@@ -18,7 +18,8 @@ interface ReviewTimeRow {
 // Rows the guard rejects become the documented 503 in fetchPipe, see clients/tinybird.ts.
 const isReviewTimeRow = (row: ReviewTimeRow) =>
   typeof row.gitChangedLinesBucket === 'string' &&
-  typeof row.pullRequestCount === 'number' &&
+  Number.isSafeInteger(row.pullRequestCount) &&
+  row.pullRequestCount >= 0 &&
   (row.reviewedInSecondsAvg === null || typeof row.reviewedInSecondsAvg === 'number');
 
 const ReviewTimeBucket = Type.Object({
