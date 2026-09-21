@@ -109,6 +109,23 @@ describe('Deprecation header (AC2)', () => {
     expect(res.headers.deprecation).toBe(expectedDeprecation);
     expect(res.headers.link).toBe('</v1>; rel="successor-version"');
   });
+
+  it('gives deprecated prefixes the same 404 body as the root, aside from the URL', async () => {
+    app = await buildApp({
+      versions: [version('/v1'), version('/v1-alpha', { deprecatedAt: DEPRECATED_AT })],
+    });
+    await app.ready();
+
+    const root = await respond(app, '/removed-endpoint');
+    const scoped = await respond(app, '/v1-alpha/removed-endpoint');
+
+    expect(root.statusCode).toBe(404);
+    expect(scoped.statusCode).toBe(404);
+    expect(scoped.json()).toEqual({
+      ...root.json(),
+      message: 'Route GET:/v1-alpha/removed-endpoint not found',
+    });
+  });
 });
 
 describe('Sunset header (AC3)', () => {

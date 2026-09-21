@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyInstance } from 'fastify';
+import { notFoundHandler } from '../errors/not-found.js';
 import type { VersionLifecycle } from './registry.js';
 
 function parseDateOrThrow(value: string, field: string): number {
@@ -65,12 +66,6 @@ export function applyLifecycle(scope: FastifyInstance, lifecycle?: VersionLifecy
     done(null, payload);
   });
   // Fastify's default 404 handler runs in the root context, outside this scope's onSend
-  // hook, so deprecated versions answer 404s themselves to stamp unmatched paths too.
-  scope.setNotFoundHandler((request, reply) => {
-    reply.code(404).send({
-      message: `Route ${request.method}:${request.url} not found`,
-      error: 'Not Found',
-      statusCode: 404,
-    });
-  });
+  // hook, so the scope registers the shared handler itself to stamp unmatched paths too.
+  scope.setNotFoundHandler(notFoundHandler);
 }
