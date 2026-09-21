@@ -56,12 +56,23 @@ const ActiveDaysBucket = Type.Object({
   contributions: Type.Integer({ description: 'Number of contributions in the bucket (count).' }),
 });
 
-const ActiveDays = Type.Object({
-  summary: {
-    ...PeriodSummary,
-    description:
-      'Active days in the current period against the previous one. current, previous and changeValue are counts of days.',
+// The shared PeriodSummary leaves current, previous and changeValue undescribed; the unit is
+// per metric, so it is stated here.
+const ActiveDaysSummary = Type.Object(
+  {
+    ...PeriodSummary.properties,
+    current: Type.Number({ description: 'Active days in the current period (count of days).' }),
+    previous: Type.Number({ description: 'Active days in the previous period (count of days).' }),
+    changeValue: Type.Number({ description: 'current minus previous (count of days).' }),
   },
+  {
+    title: 'PeriodSummary',
+    description: 'Active days in the current period against the previous one.',
+  },
+);
+
+const ActiveDays = Type.Object({
+  summary: ActiveDaysSummary,
   avgContributionsPerDay: Type.Number({
     description:
       'Average number of contributions per active day in the current period (count per day). 0 when there are no active days.',
@@ -100,7 +111,7 @@ const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         tags: ['Development'],
         summary: 'Get active days',
         description:
-          'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period has the same length and ends the day before `startDate`.',
+          'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends the day before `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends.',
         params: ProjectSlugParams,
         querystring: ActiveDaysQuery,
         response: { 200: ActiveDays },

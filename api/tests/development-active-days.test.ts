@@ -14,7 +14,8 @@ const specPath = '/v1-alpha/projects/{slug}/development/active-days';
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-// getPreviousDates gives the previous period the same length, ending the day before startDate.
+// getPreviousDates shifts the range back by its calendar span (2 months 30 days here), ending
+// the day before startDate.
 const previousStart = '2024-10-01';
 const previousEnd = '2024-12-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
@@ -367,16 +368,23 @@ describe('request validation (AC7)', () => {
   });
 
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    const today = new Date().toISOString().slice(0, 10);
-    const res = await get(url({ startDate: undefined, endDate: undefined }));
-    expect(res.statusCode).toBe(200);
-    expect(res.json().summary).toMatchObject({
-      periodFrom: isoDay('2010-01-01'),
-      periodTo: isoDay(today),
-    });
-    const series = pipeCalls().find((call) => call.searchParams.has('granularity'));
-    expect(series?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
-    expect(series?.searchParams.get('endDate')).toBe(atMidnight(today));
+    // Only Date is faked, so the Tinybird client's real timers keep running and the request
+    // cannot straddle a UTC midnight between the handler and the assertion.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
+    try {
+      const res = await get(url({ startDate: undefined, endDate: undefined }));
+      expect(res.statusCode).toBe(200);
+      expect(res.json().summary).toMatchObject({
+        periodFrom: isoDay('2010-01-01'),
+        periodTo: isoDay('2025-09-21'),
+      });
+      const series = pipeCalls().find((call) => call.searchParams.has('granularity'));
+      expect(series?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
+      expect(series?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 
@@ -481,6 +489,22 @@ describe('OpenAPI (AC10)', () => {
     expect(bucket?.required).toEqual(expect.arrayContaining(bucketFields));
     for (const field of bucketFields) {
       expect(bucket?.properties?.[field]?.description, `${field} has no description`).toBeTruthy();
+    }
+    const summary = schema?.properties?.summary;
+    const summaryFields = [
+      'current',
+      'previous',
+      'percentageChange',
+      'changeValue',
+      'periodFrom',
+      'periodTo',
+    ];
+    expect(summary?.required).toEqual(expect.arrayContaining(summaryFields));
+    for (const field of summaryFields) {
+      expect(
+        summary?.properties?.[field]?.description,
+        `summary.${field} has no description`,
+      ).toBeTruthy();
     }
   });
 
