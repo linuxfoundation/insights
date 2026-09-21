@@ -643,6 +643,8 @@ describe('Tinybird failures (AC9)', () => {
       { previous: [{ medianTimeToReviewSeconds: 'fast' }] },
     ],
     ['a null current summary row', { current: [null as unknown as object] }],
+    ['a scalar current summary row', { current: ['fast' as unknown as object] }],
+    ['an array current summary row', { current: [[] as unknown as object] }],
     [
       'a string median in a bucket',
       {

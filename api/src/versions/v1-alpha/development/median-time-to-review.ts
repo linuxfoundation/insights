@@ -31,12 +31,15 @@ interface SeriesRow extends SummaryRow {
 
 // Rows the guards reject become the documented 503 in fetchPipe, see clients/tinybird.ts. A null
 // bound is in contract and dropped later by hasBucketBounds; a missing median reads 0 or null.
+const isPlainObject = (row: unknown) =>
+  typeof row === 'object' && row !== null && !Array.isArray(row);
 const isMedian = (value: unknown) =>
   value === undefined || value === null || typeof value === 'number';
 const isBound = (value: unknown) => typeof value === 'string' || value === null;
-const isSummaryRow = (row: SummaryRow) => isMedian(row.medianTimeToReviewSeconds);
+const isSummaryRow = (row: SummaryRow) =>
+  isPlainObject(row) && isMedian(row.medianTimeToReviewSeconds);
 const isSeriesRow = (row: SeriesRow) =>
-  isBound(row.startDate) && isBound(row.endDate) && isSummaryRow(row);
+  isSummaryRow(row) && isBound(row.startDate) && isBound(row.endDate);
 
 const pipePath = '/v0/pipes/median_time_to_review.json';
 
