@@ -17,6 +17,7 @@ import {
 import type { ApiVersion } from '../src/versions/registry.js';
 
 interface OpenApiSchema {
+  $ref?: string;
   type?: string;
   enum?: string[];
   format?: string;
@@ -42,6 +43,7 @@ interface OpenApiOperation {
 }
 
 interface OpenApiDoc {
+  components?: { schemas?: Record<string, OpenApiSchema> };
   paths: Record<string, { get: OpenApiOperation }>;
 }
 
@@ -426,16 +428,29 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     alphaSpec.paths[`${developmentPrefix}${name}`]?.get as OpenApiOperation;
   const parameter = (name: string, param: string) =>
     operation(name).parameters?.find((p) => p.name === param);
+  // Swagger may hoist a schema into components and leave a $ref behind; read through it so a
+  // route never drops out of the checks unnoticed.
+  const resolve = (schema?: OpenApiSchema): OpenApiSchema | undefined => {
+    if (!schema?.$ref) return schema;
+    const prefix = '#/components/schemas/';
+    return schema.$ref.startsWith(prefix)
+      ? alphaSpec.components?.schemas?.[schema.$ref.slice(prefix.length)]
+      : undefined;
+  };
   const responseSchema = (name: string) =>
-    operation(name).responses['200']?.content['application/json']?.schema;
+    resolve(operation(name).responses['200']?.content['application/json']?.schema);
 
   // Any response property carrying the four PeriodSummary fields is a summary, whatever its name,
   // so routes with several summaries and nullable variants are all covered.
   const summaryFields = ['current', 'previous', 'percentageChange', 'changeValue'];
-  const summariesOf = (name: string) =>
-    Object.entries(responseSchema(name)?.properties ?? {}).filter(([, schema]) =>
-      summaryFields.every((field) => schema.properties?.[field] !== undefined),
-    );
+  const summariesOf = (name: string) => {
+    const properties = responseSchema(name)?.properties ?? {};
+    return Object.entries(properties)
+      .map(([field, schema]) => [field, resolve(schema)] as const)
+      .filter((entry): entry is readonly [string, OpenApiSchema] =>
+        summaryFields.every((field) => entry[1]?.properties?.[field] !== undefined),
+      );
+  };
 
   const seriesRoutes = developmentRoutes.filter((name) => parameter(name, 'granularity'));
   const summaryCases = developmentRoutes.flatMap((name) =>
@@ -446,6 +461,16 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     expect(developmentRoutes.length).toBeGreaterThanOrEqual(5);
     expect(seriesRoutes.length).toBeGreaterThan(0);
     expect(summaryCases.length).toBeGreaterThan(0);
+  });
+
+  it.each(developmentRoutes)('%s serves an object response the checks below can read', (name) => {
+    const schema = responseSchema(name);
+    expect(schema?.type).toBe('object');
+    const properties = Object.entries(schema?.properties ?? {});
+    expect(properties.length).toBeGreaterThan(0);
+    for (const [field, property] of properties) {
+      expect(resolve(property), `${name}.${field} does not resolve`).toBeDefined();
+    }
   });
 
   it.each(developmentRoutes)(
