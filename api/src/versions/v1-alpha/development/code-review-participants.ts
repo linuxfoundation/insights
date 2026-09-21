@@ -42,6 +42,18 @@ interface ParticipantRow {
   contributionPercentage?: number;
 }
 
+// The pipes declare these columns String, UInt64 and Float64, so a fractional percentage is valid
+// and a fractional count is not. A value outside that would reach the response serializer and
+// answer 500 with its own message instead of the 503 for upstream faults.
+const isOptionalInteger = (value: unknown) => value === undefined || Number.isInteger(value);
+const isOptionalNumber = (value: unknown) => value === undefined || typeof value === 'number';
+const isSummaryRow = (row: SummaryRow) => isOptionalInteger(row.contributorCount);
+const isParticipantRow = (row: ParticipantRow) =>
+  typeof row.displayName === 'string' &&
+  typeof row.avatar === 'string' &&
+  isOptionalInteger(row.contributionCount) &&
+  isOptionalNumber(row.contributionPercentage);
+
 const Query = Type.Object({
   ...DateRangeQuery.properties,
   limit: Type.Optional(
@@ -60,18 +72,19 @@ const ParticipantsSummary = periodSummary({
   kind: 'integer',
   title: 'CodeReviewParticipantsSummary',
   description:
-    'Contributors with at least one code review activity in the current period against the comparison period before it.',
+    'Contributors with at least one code review activity attributed to them in the current period, against the comparison period before it.',
 });
 
 const Participant = Type.Object({
   name: Type.String({ description: "The participant's display name." }),
   avatar: Type.String({ description: "URL of the participant's avatar image." }),
   activityCount: Type.Integer({
-    description: 'Code review activities by the participant in the current period (count).',
+    description:
+      'Code review activities attributed to the participant in the current period (count).',
   }),
   activityPercentage: Type.Number({
     description:
-      "Share of the current period's code review activities made by the participant, in percent.",
+      "Share of the current period's code review activities attributed to the participant, in percent.",
   }),
 });
 
@@ -91,7 +104,7 @@ const codeReviewParticipantsRoutes: FastifyPluginAsyncTypebox = async (scope) =>
         tags: ['Development'],
         summary: 'Get code review participants',
         description:
-          'Returns the number of contributors who took part in code review in the period against the comparison period before it, and the participants with the most review activity. A participant is a contributor with at least one review activity on GitHub, GitLab or Gerrit: opening, being assigned to or asked to review a pull request, merge request or changeset, reviewing or approving one, or commenting on one. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list. Participant identity fields are provisional in /v1-alpha.',
+          'Returns the number of contributors who took part in code review in the period against the comparison period before it, and the participants with the most review activity. A participant is a contributor with at least one review activity attributed to them. On GitHub and GitLab that is opening a pull or merge request, being assigned to it or asked to review it, reviewing it (including approving it or requesting changes), or commenting on it. On Gerrit it is creating a changeset, commenting on a changeset or patchset, or approving a patchset. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list. Participant identity fields are provisional in /v1-alpha.',
         params: ProjectSlugParams,
         querystring: Query,
         response: { 200: CodeReviewParticipants },
@@ -113,16 +126,24 @@ const codeReviewParticipantsRoutes: FastifyPluginAsyncTypebox = async (scope) =>
         const currentRange = toTinybirdRange(dates.current);
 
         return Promise.all([
-          fetchPipe<SummaryRow>(request, activeContributorsPath, { ...shared, ...currentRange }),
-          fetchPipe<SummaryRow>(request, activeContributorsPath, {
-            ...shared,
-            ...toTinybirdRange(dates.previous),
-          }),
-          fetchPipe<ParticipantRow>(request, leaderboardPath, {
-            ...shared,
-            ...currentRange,
-            limit,
-          }),
+          fetchPipe<SummaryRow>(
+            request,
+            activeContributorsPath,
+            { ...shared, ...currentRange },
+            isSummaryRow,
+          ),
+          fetchPipe<SummaryRow>(
+            request,
+            activeContributorsPath,
+            { ...shared, ...toTinybirdRange(dates.previous) },
+            isSummaryRow,
+          ),
+          fetchPipe<ParticipantRow>(
+            request,
+            leaderboardPath,
+            { ...shared, ...currentRange, limit },
+            isParticipantRow,
+          ),
         ]);
       });
       if (!rows) {

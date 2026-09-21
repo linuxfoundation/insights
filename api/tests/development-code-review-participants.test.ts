@@ -694,3 +694,53 @@ describe('OpenAPI (AC10)', () => {
     expect(res.statusCode).toBe(404);
   });
 });
+
+describe('malformed pipe rows (AC11)', () => {
+  const avatar = 'https://avatars.githubusercontent.com/u/1?v=4';
+
+  it.each([
+    ['a string contributorCount', { contributorCount: 'many' }],
+    ['a fractional contributorCount', { contributorCount: 12.5 }],
+    ['a null contributorCount', { contributorCount: null }],
+  ])('maps a summary row with %s to 503 upstream_unavailable', async (_, row) => {
+    mockFetch.mockImplementation(routeTinybird({ current: [row] }));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain('many');
+  });
+
+  it('counts 0 participants for a summary row without a contributorCount', async () => {
+    mockFetch.mockImplementation(routeTinybird({ current: [{}], previous: [{}] }));
+    const res = await get(url());
+    expect(res.statusCode).toBe(200);
+    expect(res.json().summary).toMatchObject({ current: 0, previous: 0, changeValue: 0 });
+  });
+
+  // The serializer would otherwise answer 500 with its own message, or write null as "".
+  it.each([
+    ['without a displayName', { avatar, contributionCount: 5, contributionPercentage: 10 }],
+    ['with a null displayName', { displayName: null, avatar, contributionCount: 5 }],
+    [
+      'without an avatar',
+      { displayName: 'octocat', contributionCount: 5, contributionPercentage: 10 },
+    ],
+    ['with a null avatar', { displayName: 'octocat', avatar: null, contributionCount: 5 }],
+    ['with a string contributionCount', { displayName: 'octocat', avatar, contributionCount: '5' }],
+    [
+      'with a fractional contributionCount',
+      { displayName: 'octocat', avatar, contributionCount: 5.5 },
+    ],
+    [
+      'with a string contributionPercentage',
+      { displayName: 'octocat', avatar, contributionPercentage: '10' },
+    ],
+  ])('maps a participant row %s to 503 upstream_unavailable', async (_, row) => {
+    mockFetch.mockImplementation(routeTinybird({ leaderboard: [row] }));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain('is required');
+    expect(res.body).not.toContain('octocat');
+  });
+});
