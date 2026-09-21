@@ -3,9 +3,18 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import v1Routes from './v1/index.js';
 
+export interface VersionLifecycle {
+  // deprecatedAt/sunsetAt are YYYY-MM-DD dates (UTC).
+  deprecatedAt: string;
+  sunsetAt?: string;
+  successorPrefix?: string;
+  deprecationDocsUrl?: string;
+}
+
 export interface ApiVersion {
   prefix: string;
   plugin: FastifyPluginAsyncTypebox;
+  lifecycle?: VersionLifecycle;
 }
 
 export const versionRegistry: ApiVersion[] = [{ prefix: '/v1', plugin: v1Routes }];
