@@ -121,6 +121,7 @@ describe('Deprecation header (AC2)', () => {
 
     expect(root.statusCode).toBe(404);
     expect(scoped.statusCode).toBe(404);
+    expect(scoped.headers['content-type']).toBe(root.headers['content-type']);
     expect(scoped.json()).toEqual({
       ...root.json(),
       message: 'Route GET:/v1-alpha/removed-endpoint not found',
