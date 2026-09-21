@@ -13,8 +13,6 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   });
 
   await scope.register(projectRoutes);
-  // Each module under development/ registers its own route, so an endpoint PR adds one file and
-  // never edits this list. Route paths are absolute, hence no directory prefix.
   await scope.register(autoload, {
     dir: fileURLToPath(new URL('./development', import.meta.url)),
     dirNameRoutePrefix: false,

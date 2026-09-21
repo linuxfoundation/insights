@@ -6,8 +6,6 @@ import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { buildApp } from '../src/app.js';
 
-// Modules under development/ register themselves, so one that fails to load or registers a path
-// outside the group would drop out of the spec without anyone editing a list. Filename = path leaf.
 describe('v1-alpha development route autoload', () => {
   let app: FastifyInstance;
 
