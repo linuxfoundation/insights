@@ -80,8 +80,8 @@ interface PipeRows {
   series?: object[];
 }
 
-// The client resolves the slug to a bucket before every pipe call. The series call is the one
-// that carries granularity; the two summary calls differ by their startDate.
+// The handler resolves the slug to a bucket once, then makes the three pipe calls. The series
+// call is the one that carries granularity; the two summary calls differ by their startDate.
 const routeTinybird =
   ({
     bucket = [{ bucketId: 7 }],
@@ -101,10 +101,11 @@ const routeTinybird =
     return tinybirdResponse(isPrevious ? previous : current);
   };
 
-const pipeCalls = () =>
+const callsTo = (path: string) =>
   mockFetch.mock.calls
     .map((call) => new URL(String(call[0])))
-    .filter((url) => url.pathname === pipePath);
+    .filter((url) => url.pathname === path);
+const pipeCalls = () => callsTo(pipePath);
 
 const defaultQuery = { startDate, endDate, granularity: 'monthly' };
 
@@ -203,6 +204,30 @@ describe('Tinybird calls (AC2)', () => {
       expect(call.searchParams.get('repos')).toBe(`${k8sRepo},${websiteRepo}`);
       expect(call.searchParams.get('includeCodeContributions')).toBe('true');
       expect(call.searchParams.get('includeCollaborations')).toBe('false');
+    }
+  });
+
+  it('resolves the project bucket once and sends its id on every pipe call', async () => {
+    await get(url());
+    const lookups = callsTo(bucketPath);
+    expect(lookups).toHaveLength(1);
+    expect(lookups[0]?.searchParams.get('project')).toBe('kubernetes');
+    const calls = pipeCalls();
+    expect(calls).toHaveLength(3);
+    for (const call of calls) {
+      expect(call.searchParams.get('bucketId')).toBe('7');
+    }
+  });
+
+  it('treats bucket id 0 as a real bucket and forwards it', async () => {
+    mockFetch.mockImplementation(routeTinybird({ bucket: [{ bucketId: 0 }] }));
+    const res = await get(url());
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual(expectedBody);
+    const calls = pipeCalls();
+    expect(calls).toHaveLength(3);
+    for (const call of calls) {
+      expect(call.searchParams.get('bucketId')).toBe('0');
     }
   });
 
@@ -323,6 +348,37 @@ describe('empty results (AC5)', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json().avgContributionsPerDay).toBe(0);
   });
+
+  // The pipe types both bucket bounds Nullable(Date); a null must never reach the formatter.
+  it('drops a series row with a null bucket bound instead of formatting it', async () => {
+    mockFetch.mockImplementation(
+      routeTinybird({
+        series: [
+          { startDate: null, endDate: null, activityCount: 5 },
+          { startDate: '2025-01-01', endDate: '2025-01-31', activityCount: 698 },
+          { startDate: '2025-02-01', endDate: null, activityCount: 9 },
+          { startDate: null, endDate: '2025-03-31', activityCount: 4 },
+        ],
+      }),
+    );
+    const res = await get(url());
+    expect(res.statusCode).toBe(200);
+    expect(res.json().data).toEqual([
+      { startDate: isoDay('2025-01-01'), endDate: isoDay('2025-01-31'), contributions: 698 },
+    ]);
+    expect(res.body).not.toContain('nullT00:00:00Z');
+  });
+
+  it('reports 0 contributions for a bucket row without an activityCount', async () => {
+    mockFetch.mockImplementation(
+      routeTinybird({ series: [{ startDate: '2025-01-01', endDate: '2025-01-31' }] }),
+    );
+    const res = await get(url());
+    expect(res.statusCode).toBe(200);
+    expect(res.json().data).toEqual([
+      { startDate: isoDay('2025-01-01'), endDate: isoDay('2025-01-31'), contributions: 0 },
+    ]);
+  });
 });
 
 describe('unknown slug (AC6)', () => {
@@ -335,11 +391,14 @@ describe('unknown slug (AC6)', () => {
     vi.restoreAllMocks();
   });
 
-  it('returns 200 with zeros when the bucket lookup has no row for the slug', async () => {
+  it('returns 200 with zeros after only the bucket lookup when the slug has no bucket', async () => {
     mockFetch.mockImplementation(routeTinybird({ bucket: [] }));
     const res = await get(url({}, 'no-such-project'));
     expect(res.statusCode).toBe(200);
     expect(res.json()).toEqual(zeroBody);
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(callsTo(bucketPath)[0]?.searchParams.get('project')).toBe('no-such-project');
+    expect(pipeCalls()).toHaveLength(0);
   });
 });
 
@@ -390,13 +449,15 @@ describe('request validation (AC7)', () => {
 
 describe('Tinybird failures (AC8)', () => {
   const upstreamDetail = 'tinybird internal detail';
-  const failing = (status: number, statusText: string, path = pipePath) => {
+  // Fails only the calls to `path`; every other Tinybird call answers normally.
+  const failing = (respondWith: () => Response | Promise<Response>, path = pipePath) => {
     const respond = routeTinybird();
     return async (input: unknown) =>
-      new URL(String(input)).pathname === path
-        ? new Response(upstreamDetail, { status, statusText })
-        : respond(input);
+      new URL(String(input)).pathname === path ? respondWith() : respond(input);
   };
+  const httpError = (status: number, statusText: string) => () =>
+    new Response(upstreamDetail, { status, statusText });
+  const networkError = () => Promise.reject(new TypeError(`fetch failed: ${upstreamDetail}`));
 
   beforeEach(() => {
     // The Tinybird client logs every failed request; keep the test output readable.
@@ -408,42 +469,56 @@ describe('Tinybird failures (AC8)', () => {
     vi.restoreAllMocks();
   });
 
-  // 404 is in the table because only the client's bucket miss may read as empty data; a 404
-  // from the pipe itself is an outage.
+  // 404 is in the table because the empty-data answer comes from the handler's null bucket id;
+  // a 404 from the pipe itself is an outage.
   it.each([
     [500, 'Internal Server Error'],
     [404, 'Not Found'],
     [401, 'Unauthorized'],
     [429, 'Too Many Requests'],
   ])('maps a pipe %i to 503 upstream_unavailable', async (status, statusText) => {
-    mockFetch.mockImplementation(failing(status, statusText));
+    mockFetch.mockImplementation(failing(httpError(status, statusText)));
     const res = await get(url());
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain(upstreamDetail);
   });
 
-  it('maps a failing bucket lookup to 503 upstream_unavailable', async () => {
-    mockFetch.mockImplementation(failing(500, 'Internal Server Error', bucketPath));
+  it('maps a failing bucket lookup to 503 upstream_unavailable without calling the pipe', async () => {
+    mockFetch.mockImplementation(failing(httpError(500, 'Internal Server Error'), bucketPath));
     const res = await get(url());
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain(upstreamDetail);
+    expect(pipeCalls()).toHaveLength(0);
   });
 
-  it('maps a network error to 503 upstream_unavailable', async () => {
-    mockFetch.mockRejectedValue(new TypeError(`fetch failed: ${upstreamDetail}`));
+  it('maps a pipe network error to 503 upstream_unavailable', async () => {
+    mockFetch.mockImplementation(failing(networkError));
     const res = await get(url());
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain(upstreamDetail);
+    // The client retries a network error, so only the path matters: the lookup succeeded and
+    // the failure came from the pipe.
+    expect(pipeCalls()).not.toHaveLength(0);
   });
 
-  it('maps a response that is not JSON to 503 upstream_unavailable', async () => {
-    mockFetch.mockImplementation(async () => new Response('<html>oops</html>', { status: 200 }));
+  it('maps a bucket lookup network error to 503 upstream_unavailable', async () => {
+    mockFetch.mockImplementation(failing(networkError, bucketPath));
     const res = await get(url());
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain(upstreamDetail);
+    expect(pipeCalls()).toHaveLength(0);
+  });
+
+  it('maps a pipe response that is not JSON to 503 upstream_unavailable', async () => {
+    mockFetch.mockImplementation(failing(() => new Response('<html>oops</html>', { status: 200 })));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    expect(res.body).not.toContain('oops');
   });
 });
 
@@ -533,7 +608,9 @@ describe('OpenAPI (AC10)', () => {
 
   it('keeps the route out of /v1', async () => {
     const spec = await get('/v1/openapi.json');
-    expect(Object.keys(spec.json<OpenApiDoc>().paths)).not.toContain(specPath);
+    expect(Object.keys(spec.json<OpenApiDoc>().paths)).not.toContain(
+      '/v1/projects/{slug}/development/active-days',
+    );
     const res = await get('/v1/projects/kubernetes/development/active-days?granularity=monthly');
     expect(res.statusCode).toBe(404);
   });
