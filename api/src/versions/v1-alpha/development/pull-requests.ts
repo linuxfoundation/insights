@@ -108,6 +108,7 @@ const PullRequests = Type.Object({
   ),
 });
 type PullRequests = Static<typeof PullRequests>;
+type Bucket = PullRequests['data'][number];
 
 interface PullRequestsRequest {
   slug: string;
@@ -228,28 +229,33 @@ function toPullRequests(rows: PipeRows | null, current: DateRange): PullRequests
       current,
     );
 
-  // Whether the pipe emits a row for an empty bucket is undocumented, so merged and closed are
-  // looked up by bucket start instead of by position. The output keeps one entry per opened row.
-  const countsByBucket = (series: SeriesRow[]) =>
-    new Map(series.map((row) => [toIsoUtc(row.startDate), row.activityCount ?? 0]));
-  const mergedByBucket = countsByBucket(rows.mergedSeries);
-  const closedByBucket = countsByBucket(rows.closedSeries);
+  // Whether the pipe emits a row for an empty bucket is undocumented, so the output covers every
+  // bucket start any series reports, keyed by its normalised value, and a missing count is 0.
+  const buckets = new Map<string, Bucket>();
+  const merge = (series: SeriesRow[], count: 'open' | 'merged' | 'closed') => {
+    for (const row of series) {
+      const startDate = toIsoUtc(row.startDate);
+      const bucket = buckets.get(startDate) ?? {
+        startDate,
+        endDate: toIsoUtc(row.endDate),
+        open: 0,
+        merged: 0,
+        closed: 0,
+      };
+      bucket[count] = row.activityCount ?? 0;
+      buckets.set(startDate, bucket);
+    }
+  };
+  merge(rows.openedSeries, 'open');
+  merge(rows.mergedSeries, 'merged');
+  merge(rows.closedSeries, 'closed');
 
   return {
     openedSummary: summarize(rows.openedCurrent, rows.openedPrevious),
     mergedSummary: summarize(rows.mergedCurrent, rows.mergedPrevious),
     closedSummary: summarize(rows.closedCurrent, rows.closedPrevious),
     avgResolveTimeSeconds: rows.velocity[0]?.averagePullRequestResolveVelocitySeconds ?? null,
-    data: rows.openedSeries.map((row) => {
-      const startDate = toIsoUtc(row.startDate);
-      return {
-        startDate,
-        endDate: toIsoUtc(row.endDate),
-        open: row.activityCount ?? 0,
-        merged: mergedByBucket.get(startDate) ?? 0,
-        closed: closedByBucket.get(startDate) ?? 0,
-      };
-    }),
+    data: [...buckets.values()].sort((a, b) => a.startDate.localeCompare(b.startDate)),
   };
 }
 

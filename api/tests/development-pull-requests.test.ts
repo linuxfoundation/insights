@@ -256,14 +256,14 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
     ]);
   });
 
-  it('sizes the series by the opened series, dropping extra merged and closed buckets', async () => {
+  it('keeps a bucket only the merged and closed series report, in date order', async () => {
     mockFetch.mockImplementation(
       tinybird((url) => {
         const rows = defaultRows(url);
         const isOpenedSeries =
           url.searchParams.has('granularity') &&
           url.searchParams.get('activity_types') === openedTypes;
-        return isOpenedSeries ? rows.slice(0, 1) : rows;
+        return isOpenedSeries ? rows.filter((_, index) => index !== 1) : rows;
       }),
     );
     const res = await get(`${route}?${rangeQuery}`);
@@ -275,6 +275,20 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
         open: 11,
         merged: 8,
         closed: 2,
+      },
+      {
+        startDate: '2025-01-06T00:00:00Z',
+        endDate: '2025-01-12T00:00:00Z',
+        open: 0,
+        merged: 1,
+        closed: 1,
+      },
+      {
+        startDate: '2025-01-13T00:00:00Z',
+        endDate: '2025-01-19T00:00:00Z',
+        open: 7,
+        merged: 6,
+        closed: 3,
       },
     ]);
   });
@@ -298,15 +312,15 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
     );
     const res = await get(`${route}?${rangeQuery}`);
     expect(res.statusCode).toBe(200);
-    expect(res.json().data).toEqual([
-      {
-        startDate: '2025-01-01T00:00:00Z',
-        endDate: '2025-01-05T23:59:59Z',
-        open: 11,
-        merged: 8,
-        closed: 2,
-      },
-    ]);
+    const [first, ...rest] = res.json().data;
+    expect(first).toEqual({
+      startDate: '2025-01-01T00:00:00Z',
+      endDate: '2025-01-05T23:59:59Z',
+      open: 11,
+      merged: 8,
+      closed: 2,
+    });
+    expect(rest.map((bucket: { open: number }) => bucket.open)).toEqual([0, 0]);
   });
 });
 
