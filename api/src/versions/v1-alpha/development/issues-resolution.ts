@@ -53,7 +53,7 @@ const IssuesResolutionSummary = Type.Object(
     ),
     previous: describe(
       PeriodSummary.properties.previous,
-      'Issues closed in the previous period, which has the same length and ends the day before `periodFrom` (count).',
+      'Issues closed in the previous period, which ends the day before `periodFrom` and spans the same number of months and days (count).',
     ),
     changeValue: describe(
       PeriodSummary.properties.changeValue,
@@ -148,7 +148,7 @@ const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         tags: ['Development'],
         summary: 'Get issue resolution',
         description:
-          'Returns the issues closed in the period against the previous period of the same length, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The previous period ends the day before `startDate`. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list.',
+          'Returns the issues closed in the period against the previous period, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The previous period ends the day before `startDate` and spans the same number of months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list.',
         params: ProjectSlugParams,
         querystring: IssuesResolutionQuery,
         response: { 200: IssuesResolution },
