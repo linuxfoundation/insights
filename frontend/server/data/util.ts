@@ -31,7 +31,10 @@ export function getPreviousDates(
   const safeEndDate = currentEndDate || DateTime.utc();
 
   if (safeStartDate > safeEndDate) {
-    throw new Error('From date must be before or equal to the to date');
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'From date must be before or equal to the to date',
+    });
   }
 
   const dateDiff = safeEndDate.diff(safeStartDate, ['months', 'days']);
