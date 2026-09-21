@@ -3,6 +3,7 @@
 import type { FastifyInstance } from 'fastify';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildApp } from '../src/app.js';
+import { getTinybirdClient } from '../src/clients/tinybird.js';
 
 const tinybirdHost = 'https://tinybird.test';
 const mockFetch = vi.fn();
@@ -149,7 +150,9 @@ afterAll(async () => {
   vi.unstubAllEnvs();
 });
 
-beforeEach(() => {
+beforeEach(async () => {
+  // The client remembers a slug's bucket for the whole process; each test counts its own lookup.
+  await getTinybirdClient().clearAllBucketCaches();
   mockFetch.mockReset();
   stubTinybird();
 });
@@ -556,5 +559,27 @@ describe('OpenAPI (AC10)', () => {
     );
     const res = await get('/v1/projects/kubernetes/development/commit-activities');
     expect(res.statusCode).toBe(404);
+  });
+});
+
+describe('repos filter', () => {
+  const query = `${range}&granularity=monthly`;
+  const pipes = () => calls().filter((url) => url.pathname !== '/v0/pipes/project_buckets.json');
+
+  it('drops an empty repos value instead of sending a filter that matches nothing', async () => {
+    const res = await get(`${route}?${query}&repos=`);
+    expect(res.statusCode).toBe(200);
+    expect(pipes()).toHaveLength(3);
+    for (const url of pipes()) {
+      expect(url.searchParams.has('repos')).toBe(false);
+    }
+  });
+
+  it('keeps the other repos values when one of them is empty', async () => {
+    await get(`${route}?${query}&repos=&repos=${encodeURIComponent(k8sRepo)}`);
+    expect(pipes()).toHaveLength(3);
+    for (const url of pipes()) {
+      expect(url.searchParams.get('repos')).toBe(k8sRepo);
+    }
   });
 });

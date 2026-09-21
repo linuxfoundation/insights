@@ -3,6 +3,7 @@
 import type { FastifyInstance } from 'fastify';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildApp } from '../src/app.js';
+import { getTinybirdClient } from '../src/clients/tinybird.js';
 import { getPreviousDates } from '../src/lib/period.js';
 
 const tinybirdHost = 'https://tinybird.test';
@@ -174,7 +175,9 @@ afterAll(async () => {
   vi.unstubAllEnvs();
 });
 
-beforeEach(() => {
+beforeEach(async () => {
+  // The client remembers a slug's bucket for the whole process; each test counts its own lookup.
+  await getTinybirdClient().clearAllBucketCaches();
   mockFetch.mockReset();
   serveTinybird();
 });
@@ -664,5 +667,28 @@ describe('/v1-alpha spec (AC9)', () => {
       withQuery(defaultQuery, '/v1/projects/kubernetes/development/issues-resolution'),
     );
     expect(v1.statusCode).toBe(404);
+  });
+});
+
+describe('repos filter', () => {
+  const query = `granularity=monthly&startDate=${range.startDate}&endDate=${range.endDate}`;
+  const pipes = () =>
+    calledUrls().filter((url) => url.pathname !== '/v0/pipes/project_buckets.json');
+
+  it('drops an empty repos value instead of sending a filter that matches nothing', async () => {
+    const res = await get(`${route}?${query}&repos=`);
+    expect(res.statusCode).toBe(200);
+    expect(pipes()).toHaveLength(5);
+    for (const url of pipes()) {
+      expect(url.searchParams.has('repos')).toBe(false);
+    }
+  });
+
+  it('keeps the other repos values when one of them is empty', async () => {
+    await get(`${route}?${query}&repos=&repos=${encodeURIComponent(k8sRepo)}`);
+    expect(pipes()).toHaveLength(5);
+    for (const url of pipes()) {
+      expect(url.searchParams.get('repos')).toBe(k8sRepo);
+    }
   });
 });
