@@ -421,7 +421,8 @@ if (specResponse.statusCode !== 200) {
 }
 const alphaSpec = specResponse.json<OpenApiDoc>();
 
-// Only GET operations carry these conventions; a later POST under the prefix is left alone here.
+// Development routes are all GETs. A path without one fails the coverage check below by name
+// instead of skipping, which is where this suite gets extended when another method arrives.
 const developmentPrefix = '/v1-alpha/projects/{slug}/development/';
 const developmentOperations = new Map(
   Object.entries(alphaSpec.paths).flatMap(([path, item]) =>
@@ -475,7 +476,6 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
 
   it('discovers the development routes from the spec', () => {
     expect(developmentRoutes.length).toBeGreaterThanOrEqual(5);
-    // Every path under the prefix is a GET today; a path without one would otherwise skip silently.
     expect(developmentRoutes).toEqual(developmentPaths);
     expect(seriesRoutes.length).toBeGreaterThan(0);
     expect(summaryCases.length).toBeGreaterThan(0);
@@ -517,7 +517,7 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
         summary.properties?.[value]?.description?.match(/\(([a-z ]+)\)\./)?.[1];
       const unit = unitOf('current');
       expect(unit ?? '', `${name}.${field}.current`).toMatch(
-        kind === 'integer' ? /^count( of [a-z]+)?$/ : /^(seconds|percent)$/,
+        kind === 'integer' ? /^count( of [a-z]+)?$/ : /^(seconds|percent|percentage points)$/,
       );
       for (const value of ['previous', 'changeValue']) {
         expect(summary.properties?.[value]?.type, `${name}.${field}.${value}`).toBe(kind);
