@@ -8,8 +8,8 @@ export const ProjectSlugParams = Type.Object({
   slug: Type.String({ minLength: 1 }),
 });
 
-// Both bounds go to Tinybird at 00:00 UTC and the pipes compare with > and <, so the descriptions
-// spell out the inclusive start and exclusive end.
+// Both bounds reach Tinybird as 00:00:00 on the given day, so the descriptions spell out the
+// half-open range the Insights widgets use: inclusive start, exclusive end.
 export const DateRangeQuery = Type.Object({
   // Fastify's default Ajv coerces a single repos=x to ['x'] (coerceTypes: 'array').
   repos: Type.Optional(Type.Array(Type.String(), { description: 'Repository URLs to filter by.' })),

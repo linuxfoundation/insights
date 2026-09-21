@@ -142,7 +142,7 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         tags: ['Development'],
         summary: 'Get pull request activity',
         description:
-          'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list after the project lookup alone; a known project makes 11 Tinybird calls: one project lookup and ten concurrent pipe queries.',
+          'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list after the project lookup alone; a known project makes up to 11 Tinybird calls: ten concurrent pipe queries, plus one project lookup when the process has no cached bucket for the slug.',
         params: ProjectSlugParams,
         querystring: SeriesQuery,
         response: { 200: PullRequests },
