@@ -106,8 +106,8 @@ function toPullRequests(rows: PipeRows, current: DateRange): PullRequests {
       current,
     );
 
-  // Whether the pipe emits a row for an empty bucket is undocumented, so the output covers every
-  // bucket start any series reports, keyed by its normalised value, and a missing count is 0.
+  // A series may leave out empty buckets, so every bucket start any series reports gets an entry,
+  // with 0 for a missing count.
   const buckets = new Map<string, Bucket>();
   const merge = (series: SeriesRow[], count: 'open' | 'merged' | 'closed') => {
     for (const row of series) {
@@ -153,7 +153,6 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { startDate, endDate, repos, granularity } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const { current, previous } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, async (bucketId): Promise<PipeRows> => {

@@ -16,7 +16,6 @@ import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/
 
 const pipePath = '/v0/pipes/activities_count.json';
 
-// The Nuxt reviewCommentsActivityTypes list in its order, so both send the pipe the same value.
 const reviewCommentTypes = [
   ActivityTypes.PULL_REQUEST_COMMENT,
   ActivityTypes.PULL_REQUEST_REVIEW_THREAD_COMMENT,
@@ -70,7 +69,6 @@ const reviewCommentsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, granularity } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const { current, previous } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {

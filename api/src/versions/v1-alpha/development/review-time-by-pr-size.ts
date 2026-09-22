@@ -8,14 +8,12 @@ import { DateRangeQuery, nullableNumber, ProjectSlugParams } from '../../../sche
 
 const pipePath = '/v0/pipes/pull_requests_review_time_by_size.json';
 
-// The pipe declares reviewedInSecondsAvg Nullable(Float64).
 interface ReviewTimeRow {
   gitChangedLinesBucket: string;
   reviewedInSecondsAvg: number | null;
   pullRequestCount: number;
 }
 
-// Rows the guard rejects become the documented 503 in fetchPipe, see clients/tinybird.ts.
 const isReviewTimeRow = (row: ReviewTimeRow) =>
   typeof row.gitChangedLinesBucket === 'string' &&
   Number.isSafeInteger(row.pullRequestCount) &&
@@ -65,8 +63,7 @@ const reviewTimeByPrSizeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate } = request.query;
-      // This metric has no comparison period; the call still fills the default range and
-      // rejects an inverted one with a 400 before any Tinybird request.
+      // No comparison period: this only fills the default range and rejects an inverted one.
       const { current } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) =>

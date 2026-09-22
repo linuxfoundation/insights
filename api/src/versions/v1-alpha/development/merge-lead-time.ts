@@ -81,7 +81,6 @@ const mergeLeadTimeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const dates = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {

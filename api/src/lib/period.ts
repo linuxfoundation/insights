@@ -7,7 +7,6 @@ export interface DateRange {
   endDate: string;
 }
 
-// Fastify's default error handler uses statusCode as the HTTP status and puts code in the body.
 export class InvalidDateRangeError extends Error {
   readonly statusCode = 400;
   readonly code = 'invalid_request';
@@ -42,7 +41,6 @@ export const hasBucketBounds = <T extends { startDate: string | null; endDate: s
 ): row is T & DateRange => typeof row.startDate === 'string' && typeof row.endDate === 'string';
 
 // The pipes take DateTime parameters where the Nuxt data layer sends Luxon's 'yyyy-MM-dd 00:00:00'.
-// A bound left undefined stays undefined, which the client drops from the query string.
 export function toTinybirdRange(range: Partial<DateRange>): Partial<DateRange> {
   const day = (value?: string) => (value === undefined ? undefined : `${value} 00:00:00`);
   return { startDate: day(range.startDate), endDate: day(range.endDate) };

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   developmentPath,
   mockFetch,
   pipeCalls,
@@ -15,8 +16,6 @@ import {
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-// getPreviousDates shifts the range back by its calendar span (2 months 30 days here), ending
-// the day before startDate.
 const previousStart = '2024-10-01';
 const previousEnd = '2024-12-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
@@ -112,7 +111,6 @@ interface PipeRows {
   previous?: object[];
 }
 
-// The two pipe calls differ only by their date range.
 const routeTinybird = ({
   bucket,
   current = [currentRow],
@@ -338,11 +336,7 @@ describe('percentageChange (AC4)', () => {
 
 describe('request validation (AC6)', () => {
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    // Only Date is faked, so the Tinybird client's real timers keep running and the request
-    // cannot straddle a UTC midnight between the handler and the assertion.
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
-    try {
+    await atDate('2025-09-21T12:00:00Z', async () => {
       const res = await get(url({ startDate: undefined, endDate: undefined }));
       expect(res.statusCode).toBe(200);
       expect(res.json().summary).toMatchObject({
@@ -353,9 +347,7 @@ describe('request validation (AC6)', () => {
         (call) => call.searchParams.get('startDate') === atMidnight('2010-01-01'),
       );
       expect(current?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
-    } finally {
-      vi.useRealTimers();
-    }
+    });
   });
 
   it('accepts and ignores unknown query keys, granularity included', async () => {

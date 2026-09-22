@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   developmentPath,
   mockFetch,
   parameterDescription,
@@ -17,8 +18,6 @@ import {
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-// getPreviousDates shifts the range back by its calendar span (2 months 30 days here), ending
-// the day before startDate.
 const previousStart = '2024-10-01';
 const previousEnd = '2024-12-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
@@ -26,8 +25,6 @@ const isoDay = (day: string) => `${day}T00:00:00Z`;
 
 const platforms = ['github', 'gitlab', 'gerrit'];
 
-// The Nuxt data layer reads openedCount and resolvedCount from both the summary and the series
-// rows; its stale series type says mergedCount, which the mapping never touches.
 const currentRow = { openedCount: 80, resolvedCount: 60 };
 const previousRow = { openedCount: 50, resolvedCount: 40 };
 const seriesRows = [
@@ -88,8 +85,6 @@ interface PipeRows {
   series?: object[];
 }
 
-// The series call is the one that carries granularity; the two summary calls differ by their
-// startDate.
 const routeTinybird = ({
   bucket,
   current = [currentRow],
@@ -218,7 +213,6 @@ describe('efficiency percentage (AC4)', () => {
     });
   });
 
-  // The pipe counts closed as a subset of opened, so this only pins the arithmetic as unclamped.
   it('passes the ratio through unclamped when a row reports more closed than opened', async () => {
     mockFetch.mockImplementation(
       routeTinybird({ current: [{ openedCount: 40, resolvedCount: 50 }] }),
@@ -386,11 +380,7 @@ describe('request validation (AC7)', () => {
   });
 
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    // Only Date is faked, so the Tinybird client's real timers keep running and the request
-    // cannot straddle a UTC midnight between the handler and the assertion.
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
-    try {
+    await atDate('2025-09-21T12:00:00Z', async () => {
       const res = await get(url({ startDate: undefined, endDate: undefined }));
       expect(res.statusCode).toBe(200);
       expect(res.json().efficiencyPercentage).toMatchObject({
@@ -400,15 +390,11 @@ describe('request validation (AC7)', () => {
       const series = pipeCalls().find((call) => call.searchParams.has('granularity'));
       expect(series?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
       expect(series?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
-    } finally {
-      vi.useRealTimers();
-    }
+    });
   });
 });
 
 describe('Tinybird failures (AC8)', () => {
-  // fetchPipe's default validator accepts a null element. Unguarded, a null series row makes
-  // hasBucketBounds throw outside the 503 mapping and a null summary row reads as zero counts.
   it.each([
     ['series', { series: [null] }],
     ['current summary', { current: [null] }],
@@ -421,8 +407,6 @@ describe('Tinybird failures (AC8)', () => {
     expect(res.body).not.toContain('startDate');
   });
 
-  // The pipe's counts are count() results, so a present count that is not a nonnegative safe
-  // integer, or an array in place of a row, is a malformed body.
   it.each([
     ['an array in place of a row', { current: [[]] }],
     ['a string count', { current: [{ openedCount: '80', resolvedCount: 60 }] }],
@@ -487,7 +471,6 @@ describe('OpenAPI (AC10)', () => {
 
   it('documents the query params, with platform an optional enum', async () => {
     const operation = await getOperation();
-    // The operation also lists the slug path parameter; only the query params are under test.
     const params = new Map(
       operation?.parameters
         ?.filter((param) => param.in === 'query')
@@ -506,8 +489,6 @@ describe('OpenAPI (AC10)', () => {
     expect(parameterDescription(platform)).toMatch(/connectedPlatforms/);
   });
 
-  // The ticket asks for the percent reshape and the platform coverage to be documented; the
-  // operation description is the docs entry.
   it('states the ratio-to-percent reshape, the null rule and what an omitted platform covers', async () => {
     const operation = await getOperation();
     expect(operation?.description).toMatch(/percent/);

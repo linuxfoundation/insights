@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   developmentPath,
   mockFetch,
   pipeCalls,
@@ -13,7 +14,6 @@ import {
   type OpenApiOperation,
 } from './helpers/tinybird.js';
 
-// The Nuxt reviewCommentsActivityTypes list, in its order; the client joins arrays with commas.
 const reviewCommentTypes = [
   'pull_request-comment',
   'pull_request-review-thread-comment',
@@ -24,8 +24,6 @@ const reviewCommentTypes = [
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-// getPreviousDates shifts the range back by its calendar span (2 months 30 days here), ending
-// the day before startDate.
 const previousStart = '2024-10-01';
 const previousEnd = '2024-12-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
@@ -77,8 +75,6 @@ interface PipeRows {
   series?: object[];
 }
 
-// The series call is the one that carries granularity; the two summary calls differ by their
-// startDate.
 const routeTinybird = ({
   bucket,
   current = [currentRow],
@@ -191,11 +187,7 @@ describe('Tinybird calls (AC2)', () => {
   });
 
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    // Only Date is faked, so the Tinybird client's real timers keep running and the request
-    // cannot straddle a UTC midnight between the handler and the assertion.
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
-    try {
+    await atDate('2025-09-21T12:00:00Z', async () => {
       const res = await get(url({ startDate: undefined, endDate: undefined }));
       expect(res.statusCode).toBe(200);
       expect(res.json().summary).toMatchObject({
@@ -205,9 +197,7 @@ describe('Tinybird calls (AC2)', () => {
       const series = pipeCalls().find((call) => call.searchParams.has('granularity'));
       expect(series?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
       expect(series?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
-    } finally {
-      vi.useRealTimers();
-    }
+    });
   });
 });
 
@@ -261,8 +251,6 @@ describe('empty results (AC4)', () => {
     ]);
   });
 
-  // A bucket row without both bounds has no place on the time axis; like the other routes on
-  // this pipe, the handler treats it as an answer outside the pipe's contract.
   it('maps a series row without both bucket bounds to 503 upstream_unavailable', async () => {
     mockFetch.mockImplementation(
       routeTinybird({

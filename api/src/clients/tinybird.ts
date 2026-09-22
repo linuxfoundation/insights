@@ -12,16 +12,11 @@ import { createInMemoryBucketCache } from './bucket-cache.js';
 
 const bucketsPath = '/v0/pipes/project_buckets.json';
 
-// Only the logger is used, so a route's typed request and a test double both fit.
 type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
 
-/**
- * Lazily constructs the Tinybird client on first use so importing this module
- * never fails (e.g. in tests or tooling that don't touch Tinybird); env
- * validation only happens once the client is actually needed.
- */
+// Built on first use, so importing this module never needs the API_TB_* variables.
 export function getTinybirdClient(): TinybirdClient {
   if (!client) {
     const token = process.env.API_TB_TOKEN;
@@ -72,14 +67,14 @@ export function fetchPipe<T>(
 }
 
 // Ajv coerces a bare `repos=` into [''] and the client sends an empty array as `repos=`, which a
-// pipe would apply as a filter matching nothing. The Nuxt handlers drop the empty value too.
+// pipe would apply as a filter matching nothing.
 export function repoFilter(repos?: string[]): string[] | undefined {
   const kept = repos?.filter(Boolean);
   return kept?.length ? kept : undefined;
 }
 
 // Null means Tinybird has no bucket for the slug: metric routes answer zeros without a pipe call,
-// where the client alone would throw its own 404. Resolving here also spares it a lookup per call.
+// where the client alone would throw its own 404.
 export async function withBucket<T>(
   request: RequestLog,
   slug: string,

@@ -11,7 +11,6 @@ import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schem
 const activeContributorsPath = '/v0/pipes/active_contributors.json';
 const leaderboardPath = '/v0/pipes/contributors_leaderboard.json';
 
-// Same list, in the same order, as the Insights widget's pr-participants metric.
 const participantActivityTypes = [
   ActivityTypes.PULL_REQUEST_REVIEWED,
   ActivityTypes.PULL_REQUEST_ASSIGNED,
@@ -42,8 +41,6 @@ interface ParticipantRow {
   contributionPercentage?: number;
 }
 
-// The pipes declare these columns String, UInt64 and Float64: a fractional percentage is valid, a
-// fractional count is not. Anything else would reach the serializer and answer 500 instead of 503.
 const isOptionalInteger = (value: unknown) => value === undefined || Number.isInteger(value);
 const isOptionalNumber = (value: unknown) => value === undefined || typeof value === 'number';
 const isSummaryRow = (row: SummaryRow) => isOptionalInteger(row.contributorCount);
@@ -112,7 +109,6 @@ const codeReviewParticipantsRoutes: FastifyPluginAsyncTypebox = async (scope) =>
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, limit = 5 } = request.query;
-      // Throws a 400 on an inverted range, so it runs before any Tinybird call.
       const dates = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {

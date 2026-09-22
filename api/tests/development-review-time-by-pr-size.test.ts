@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   developmentPath,
   mockFetch,
   pipeCalls,
@@ -101,19 +102,13 @@ describe('Tinybird calls (AC2)', () => {
   });
 
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    // Only Date is faked, so the Tinybird client's real timers keep running and the request
-    // cannot straddle a UTC midnight between the handler and the assertion.
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
-    try {
+    await atDate('2025-09-21T12:00:00Z', async () => {
       const res = await get(url({ startDate: undefined, endDate: undefined }));
       expect(res.statusCode).toBe(200);
       const call = pipeCalls()[0];
       expect(call?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
       expect(call?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
-    } finally {
-      vi.useRealTimers();
-    }
+    });
   });
 });
 
@@ -164,8 +159,6 @@ describe('empty results (AC4)', () => {
 });
 
 describe('Tinybird failures (AC7)', () => {
-  // fetchPipe only checks that `data` is an array; the row guard is what turns a row outside the
-  // pipe contract into the documented 503 instead of a serializer 500.
   it.each([
     ['without the size label', { reviewedInSecondsAvg: 34017, pullRequestCount: 5 }],
     [

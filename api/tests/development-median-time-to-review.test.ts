@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   developmentPath,
   mockFetch,
   pipeCalls,
@@ -15,8 +16,6 @@ import {
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-// getPreviousDates shifts the range back by its calendar span (2 months 30 days here), ending
-// the day before startDate.
 const previousStart = '2024-10-01';
 const previousEnd = '2024-12-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
@@ -87,8 +86,6 @@ interface PipeRows {
   series?: object[];
 }
 
-// The series call is the one that carries granularity; the two summary calls differ by their
-// startDate.
 const routeTinybird = ({
   bucket,
   current = [currentRow],
@@ -369,11 +366,7 @@ describe('series buckets (AC6)', () => {
 
 describe('request validation (AC8)', () => {
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    // Only Date is faked, so the Tinybird client's real timers keep running and the request
-    // cannot straddle a UTC midnight between the handler and the assertion.
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
-    try {
+    await atDate('2025-09-21T12:00:00Z', async () => {
       const res = await get(url({ startDate: undefined, endDate: undefined }));
       expect(res.statusCode).toBe(200);
       expect(res.json().summary).toMatchObject({
@@ -383,9 +376,7 @@ describe('request validation (AC8)', () => {
       const series = pipeCalls().find((call) => call.searchParams.has('granularity'));
       expect(series?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
       expect(series?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
-    } finally {
-      vi.useRealTimers();
-    }
+    });
   });
 
   it('accepts and ignores unknown query keys', async () => {
@@ -399,8 +390,6 @@ describe('request validation (AC8)', () => {
 });
 
 describe('Tinybird failures (AC9)', () => {
-  // fetchPipe only checks that `data` is an array; the row guards are what turn a row outside the
-  // pipe contract into the documented 503 instead of a serializer 500.
   it.each<[string, PipeRows]>([
     [
       'a string median in the current summary',
