@@ -56,7 +56,7 @@ const githubRepoName = computed(() => {
   }
   // Attempt to match GitHub repo URLs, extracting "owner/repo"
   // e.g., "https://github.com/org/repo/issues/123..." => "org/repo"
-  const githubUrlRegex = /^https?:\/\/github\.com\/([^\/]+\/[^\/]+)/i;
+  const githubUrlRegex = /^https?:\/\/github\.com\/([^/]+\/[^/]+)/i;
   const match = props.mention.url.match(githubUrlRegex);
   return match ? match[1] : props.mention.url;
 });

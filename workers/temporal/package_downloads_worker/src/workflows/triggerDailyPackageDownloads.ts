@@ -67,7 +67,7 @@ export async function triggerDailyPackageDownloads(
       if (!result) {
         failedRepoUrls.push(repo.repoUrl);
       }
-    } catch (err) {
+    } catch {
       // Child workflow crashed after all retries — track it and move on
       crashedReposCount++;
 

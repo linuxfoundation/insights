@@ -17,8 +17,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm tsc-check` - Run TypeScript type checking
 
 ### Code Quality
-- `pnpm lint` - Run ESLint
-- `pnpm lint:fix` - Fix ESLint issues automatically
+- `pnpm lint` - Run oxlint from the repo root (covers every package)
+- `pnpm lint:fix` - Fix oxlint issues automatically
 - `pnpm format` - Format code with Prettier
 - `pnpm format:check` - Check code formatting
 
@@ -149,7 +149,7 @@ frontend/
 - Use `pnpm test` to run tests during development
 
 ### Code Quality
-- ESLint with TypeScript and Vue-specific rules
+- oxlint (`pnpm lint` from the repo root) with TypeScript and Vue script-block rules
 - Prettier for code formatting
 - Husky git hooks for pre-commit checks
 - License headers automatically added via lint-staged
