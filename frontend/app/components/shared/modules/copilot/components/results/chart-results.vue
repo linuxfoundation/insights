@@ -52,21 +52,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
 import { DateTime } from 'luxon';
-import type { ChartErrorType, MessageData } from '../../types/copilot.types';
-import { copilotApiService } from '../../store/copilot.api.service';
-import LfxCopilotLoadingState from '../shared/loading-state.vue';
-import LfxCopilotErrorState from '../shared/error-state.vue';
-import type { Config, DataMapping } from '~~/lib/chat/chart/types';
-import LfxChart from '~/components/uikit/chart/chart.vue';
+import { ref, watch, computed } from 'vue';
+
 import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
 import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxChart from '~/components/uikit/chart/chart.vue';
 import { defaultSeriesBarStyle } from '~/components/uikit/chart/configs/bar.chart';
 import { defaultSeriesLineStyle } from '~/components/uikit/chart/configs/line.area.chart';
 import { convertToGradientColor } from '~/components/uikit/chart/helpers/chart-helpers';
 import { hexToRgba } from '~/components/uikit/chart/helpers/chart-helpers';
 import { lfxColors } from '~/config/styles/colors';
+import type { Config, DataMapping } from '~~/lib/chat/chart/types';
+
+import { copilotApiService } from '../../store/copilot.api.service';
+import type { ChartErrorType, MessageData } from '../../types/copilot.types';
+import LfxCopilotErrorState from '../shared/error-state.vue';
+import LfxCopilotLoadingState from '../shared/loading-state.vue';
 
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null, chartErrorType?: ChartErrorType): void;

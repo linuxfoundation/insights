@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="c-benchmarks-icon"
-    :class="`c-benchmarks-icon--${props.type}`"
+    :class="[`c-benchmarks-icon--${props.type}`, { 'c-benchmarks-icon--circle': props.circle }]"
   >
     <lfx-icon
       v-if="props.type === 'positive'"
@@ -25,6 +25,12 @@ SPDX-License-Identifier: MIT
       type="solid"
       :size="props.size"
     />
+    <lfx-icon
+      v-else-if="props.type === 'no-data'"
+      name="minus"
+      type="solid"
+      :size="props.size"
+    />
   </div>
 </template>
 
@@ -36,10 +42,12 @@ const props = withDefaults(
     type: string;
     useTriangle?: boolean;
     size?: number;
+    circle?: boolean;
   }>(),
   {
     useTriangle: false,
     size: 16,
+    circle: false,
   },
 );
 </script>

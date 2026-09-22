@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { QueryFunction } from '@tanstack/vue-query';
-import { type ComputedRef, computed } from 'vue';
 import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
+import { type ComputedRef, computed } from 'vue';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   ContributorLeaderboard,
@@ -15,7 +16,8 @@ import type {
 } from '~~/types/contributors/responses.types';
 
 export interface ContributorQueryParams {
-  projectSlug: string;
+  projectSlug?: string;
+  collectionSlug?: string;
   platform?: string;
   repos?: string[];
   startDate?: string | null;
@@ -43,6 +45,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.CONTRIBUTORS_LEADERBOARD,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.platform,
       params.value.activityType,
       params.value.repos,
@@ -53,6 +56,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<ContributorLeaderboard>>(() =>
       this.contributorLeaderboardQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         platform: params.value.platform,
         activityType: params.value.activityType,
         repos: params.value.repos,
@@ -79,6 +83,7 @@ class ContributorsApiService {
   ): QueryFunction<ContributorLeaderboard> {
     const {
       projectSlug,
+      collectionSlug,
       platform,
       activityType,
       repos,
@@ -89,8 +94,10 @@ class ContributorsApiService {
     return async (context) => {
       const pageParam = (context.pageParam || 0) as number;
 
-      return await $fetch(`/api/project/${projectSlug}/contributors/contributor-leaderboard`, {
+      return await $fetch(`/api/widget/contributors/contributor-leaderboard`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           platform,
           activityType,
           repos,
@@ -108,6 +115,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.ORGANIZATIONS_LEADERBOARD,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.platform,
       params.value.activityType,
       params.value.repos,
@@ -118,6 +126,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<OrganizationLeaderboard>>(() =>
       this.organizationLeaderboardQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         platform: params.value.platform,
         activityType: params.value.activityType,
         repos: params.value.repos,
@@ -144,6 +153,7 @@ class ContributorsApiService {
   ): QueryFunction<OrganizationLeaderboard> {
     const {
       projectSlug,
+      collectionSlug,
       platform,
       activityType,
       repos,
@@ -154,8 +164,10 @@ class ContributorsApiService {
     return async (context) => {
       const pageParam = (context.pageParam || 0) as number;
 
-      return await $fetch(`/api/project/${projectSlug}/contributors/organization-leaderboard`, {
+      return await $fetch(`/api/widget/contributors/organization-leaderboard`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           platform,
           activityType,
           repos,
@@ -173,6 +185,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.ACTIVE_CONTRIBUTORS,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
@@ -182,6 +195,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<ActiveContributors>>(() =>
       this.activeContributorsQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         repos: params.value.repos,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
@@ -199,10 +213,20 @@ class ContributorsApiService {
   activeContributorsQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ActiveContributors> {
-    const { projectSlug, repos, startDate, endDate, granularity, includeCollaborations } = query();
+    const {
+      projectSlug,
+      collectionSlug,
+      repos,
+      startDate,
+      endDate,
+      granularity,
+      includeCollaborations,
+    } = query();
     return async () => {
-      return await $fetch(`/api/project/${projectSlug}/contributors/active-contributors`, {
+      return await $fetch(`/api/widget/contributors/active-contributors`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           granularity,
           repos,
           startDate,
@@ -217,6 +241,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.ACTIVE_ORGANIZATIONS,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
@@ -226,6 +251,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<ActiveOrganizations>>(() =>
       this.activeOrganizationsQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         repos: params.value.repos,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
@@ -243,10 +269,20 @@ class ContributorsApiService {
   activeOrganizationsQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ActiveOrganizations> {
-    const { projectSlug, repos, startDate, endDate, granularity, includeCollaborations } = query();
+    const {
+      projectSlug,
+      collectionSlug,
+      repos,
+      startDate,
+      endDate,
+      granularity,
+      includeCollaborations,
+    } = query();
     return async () => {
-      return await $fetch(`/api/project/${projectSlug}/contributors/active-organizations`, {
+      return await $fetch(`/api/widget/contributors/active-organizations`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           granularity,
           repos,
           startDate,
@@ -261,6 +297,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.CONTRIBUTOR_DEPENDENCY,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.platform,
       params.value.activityType,
       params.value.repos,
@@ -271,6 +308,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<ContributorDependency>>(() =>
       this.contributorDependencyQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         platform: params.value.platform,
         activityType: params.value.activityType,
         repos: params.value.repos,
@@ -291,6 +329,7 @@ class ContributorsApiService {
   ): QueryFunction<ContributorDependency> {
     const {
       projectSlug,
+      collectionSlug,
       platform,
       activityType,
       repos,
@@ -299,8 +338,10 @@ class ContributorsApiService {
       includeCollaborations,
     } = query();
     return async () => {
-      return await $fetch(`/api/project/${projectSlug}/contributors/contributor-dependency`, {
+      return await $fetch(`/api/widget/contributors/contributor-dependency`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           platform,
           activityType,
           repos,
@@ -316,6 +357,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.ORGANIZATION_DEPENDENCY,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.platform,
       params.value.activityType,
       params.value.repos,
@@ -326,6 +368,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<OrganizationDependency>>(() =>
       this.organizationDependencyQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         platform: params.value.platform,
         activityType: params.value.activityType,
         repos: params.value.repos,
@@ -346,6 +389,7 @@ class ContributorsApiService {
   ): QueryFunction<OrganizationDependency> {
     const {
       projectSlug,
+      collectionSlug,
       platform,
       activityType,
       repos,
@@ -354,8 +398,10 @@ class ContributorsApiService {
       includeCollaborations,
     } = query();
     return async () => {
-      return await $fetch(`/api/project/${projectSlug}/contributors/organization-dependency`, {
+      return await $fetch(`/api/widget/contributors/organization-dependency`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           platform,
           activityType,
           repos,
@@ -371,6 +417,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.RETENTION,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.granularity,
       params.value.type,
       params.value.repos,
@@ -381,6 +428,7 @@ class ContributorsApiService {
     const queryFn = computed<QueryFunction<Retention[]>>(() =>
       this.retentionQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         granularity: params.value.granularity,
         type: params.value.type,
         repos: params.value.repos,
@@ -399,11 +447,21 @@ class ContributorsApiService {
   retentionQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<Retention[]> {
-    const { projectSlug, granularity, type, repos, startDate, endDate, includeCollaborations } =
-      query();
+    const {
+      projectSlug,
+      collectionSlug,
+      granularity,
+      type,
+      repos,
+      startDate,
+      endDate,
+      includeCollaborations,
+    } = query();
     return async () => {
-      return await $fetch(`/api/project/${projectSlug}/contributors/retention`, {
+      return await $fetch(`/api/widget/contributors/retention`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           granularity,
           type,
           repos,
@@ -419,6 +477,7 @@ class ContributorsApiService {
     const queryKey = computed(() => [
       TanstackKey.GEOGRAPHICAL_DISTRIBUTION,
       params.value.projectSlug,
+      params.value.collectionSlug,
       params.value.type,
       params.value.platform,
       params.value.activityType,
@@ -430,6 +489,7 @@ class ContributorsApiService {
     const queryFn = computed(() =>
       this.geographicalDistributionQueryFn(() => ({
         projectSlug: params.value.projectSlug,
+        collectionSlug: params.value.collectionSlug,
         type: params.value.type,
         platform: params.value.platform,
         activityType: params.value.activityType,
@@ -451,6 +511,7 @@ class ContributorsApiService {
   ) {
     const {
       projectSlug,
+      collectionSlug,
       type,
       platform,
       activityType,
@@ -460,8 +521,10 @@ class ContributorsApiService {
       includeCollaborations,
     } = query();
     return async () => {
-      return await $fetch(`/api/project/${projectSlug}/contributors/geographical-distribution`, {
+      return await $fetch(`/api/widget/contributors/geographical-distribution`, {
         params: {
+          project: projectSlug,
+          collectionSlug,
           type,
           platform,
           activityType,

@@ -27,11 +27,14 @@ SPDX-License-Identifier: MIT
       class="overflow-x-auto"
     >
       <div class="flex items-center justify-end mb-3 gap-3">
-        <div class="flex items-center gap-2">
+        <div
+          class="flex items-center gap-2"
+          :class="!(sortColumn in DELTA_FIELD) ? 'opacity-40 pointer-events-none' : ''"
+        >
           <span class="text-xs text-neutral-500 whitespace-nowrap">Sort by</span>
           <lfx-tabs
             v-model="sortMode"
-            :tabs="SORT_MODE_TABS"
+            :tabs="sortModeOptions"
             width-type="inline"
           />
         </div>
@@ -97,19 +100,6 @@ SPDX-License-Identifier: MIT
         <thead>
           <tr class="border-b border-neutral-200">
             <th
-              class="text-left py-3 px-2 font-semibold text-neutral-700 w-12 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('rank')"
-            >
-              <div class="flex items-center gap-1">
-                #
-                <lfx-icon
-                  v-if="sortColumn === 'rank'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
               class="text-left py-3 px-2 font-semibold text-neutral-700 min-w-[180px] cursor-pointer hover:bg-neutral-50"
               @click="sortBy('name')"
             >
@@ -125,6 +115,7 @@ SPDX-License-Identifier: MIT
             <th class="text-left py-3 px-2 font-semibold text-neutral-700 min-w-[140px]">Layer</th>
             <th
               v-if="activeColumns.includes('stars')"
+              key="col-stars"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('stars')"
             >
@@ -139,6 +130,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('forks')"
+              key="col-forks"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('forks')"
             >
@@ -152,21 +144,8 @@ SPDX-License-Identifier: MIT
               </div>
             </th>
             <th
-              v-if="activeColumns.includes('downloads')"
-              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('downloads')"
-            >
-              <div class="flex items-center justify-end gap-1">
-                Downloads
-                <lfx-icon
-                  v-if="sortColumn === 'downloads'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
               v-if="activeColumns.includes('dockerHubPulls')"
+              key="col-dockerHubPulls"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('dockerHubPulls')"
             >
@@ -181,6 +160,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('dependentRepositories')"
+              key="col-dependentRepositories"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('dependentRepositories')"
             >
@@ -195,6 +175,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('dependentPackages')"
+              key="col-dependentPackages"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('dependentPackages')"
             >
@@ -209,6 +190,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('commits')"
+              key="col-commits"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('commits')"
             >
@@ -223,6 +205,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('contributors')"
+              key="col-contributors"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('contributors')"
             >
@@ -237,6 +220,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('newContributors')"
+              key="col-newContributors"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('newContributors')"
             >
@@ -251,6 +235,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('githubReleases')"
+              key="col-githubReleases"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('githubReleases')"
             >
@@ -265,6 +250,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('mergeRate')"
+              key="col-mergeRate"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('mergeRate')"
             >
@@ -279,6 +265,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('prTimeToResolve')"
+              key="col-prTimeToResolve"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('prTimeToResolve')"
             >
@@ -293,6 +280,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('timeToClose')"
+              key="col-timeToClose"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('timeToClose')"
             >
@@ -307,6 +295,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('issueResponseTime')"
+              key="col-issueResponseTime"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('issueResponseTime')"
             >
@@ -321,6 +310,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('noResponseIssues')"
+              key="col-noResponseIssues"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('noResponseIssues')"
             >
@@ -335,6 +325,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('totalVulnerabilities')"
+              key="col-totalVulnerabilities"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('totalVulnerabilities')"
             >
@@ -349,6 +340,7 @@ SPDX-License-Identifier: MIT
             </th>
             <th
               v-if="activeColumns.includes('cocomoValue')"
+              key="col-cocomoValue"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('cocomoValue')"
             >
@@ -366,12 +358,9 @@ SPDX-License-Identifier: MIT
         <tbody>
           <tr
             v-for="row in sortedData"
-            :key="row.rank"
+            :key="row.slug"
             class="border-b border-neutral-100 hover:bg-neutral-50"
           >
-            <td class="py-3 px-2 text-neutral-500">
-              {{ row.rank }}
-            </td>
             <td class="py-3 px-2">
               <div class="flex items-center gap-2">
                 <span class="font-medium text-neutral-900">{{ row.name }}</span>
@@ -394,6 +383,7 @@ SPDX-License-Identifier: MIT
             </td>
             <td class="py-3 px-2">
               <span
+                v-if="row.layer"
                 class="inline-flex px-2 py-1 rounded text-xs font-medium border"
                 :style="getLayerBadgeStyle(row.layer)"
               >
@@ -403,13 +393,14 @@ SPDX-License-Identifier: MIT
             <!-- Growth columns -->
             <td
               v-if="activeColumns.includes('stars')"
+              key="col-stars"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.stars !== null ? formatNumberShort(row.stars) : '-' }}</span>
+                <span>{{ hasData(row.stars) ? formatNumberShort(row.stars) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.starsDelta !== null && row.starsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.starsDelta" />
                 </lfx-tooltip>
@@ -417,33 +408,29 @@ SPDX-License-Identifier: MIT
             </td>
             <td
               v-if="activeColumns.includes('forks')"
+              key="col-forks"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.forks !== null ? formatNumberShort(row.forks) : '-' }}</span>
+                <span>{{ hasData(row.forks) ? formatNumberShort(row.forks) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.forksDelta !== null && row.forksDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.forksDelta" />
                 </lfx-tooltip>
               </div>
             </td>
             <td
-              v-if="activeColumns.includes('downloads')"
-              class="py-3 px-2 text-right"
-            >
-              {{ row.downloads !== null ? formatNumberShort(row.downloads) : '-' }}
-            </td>
-            <td
               v-if="activeColumns.includes('dockerHubPulls')"
+              key="col-dockerHubPulls"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.dockerHubPulls !== null ? formatNumberShort(row.dockerHubPulls) : '-' }}</span>
+                <span>{{ hasData(row.dockerHubPulls) ? formatNumberShort(row.dockerHubPulls) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.dockerHubPullsDelta !== null && row.dockerHubPullsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.dockerHubPullsDelta" />
                 </lfx-tooltip>
@@ -451,15 +438,16 @@ SPDX-License-Identifier: MIT
             </td>
             <td
               v-if="activeColumns.includes('dependentRepositories')"
+              key="col-dependentRepositories"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
                 <span>{{
-                  row.dependentRepositories !== null ? formatNumberShort(row.dependentRepositories) : '-'
+                  hasData(row.dependentRepositories) ? formatNumberShort(row.dependentRepositories) : '-'
                 }}</span>
                 <lfx-tooltip
                   v-if="row.dependentRepositoriesDelta !== null && row.dependentRepositoriesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.dependentRepositoriesDelta" />
                 </lfx-tooltip>
@@ -467,13 +455,14 @@ SPDX-License-Identifier: MIT
             </td>
             <td
               v-if="activeColumns.includes('dependentPackages')"
+              key="col-dependentPackages"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.dependentPackages !== null ? formatNumberShort(row.dependentPackages) : '-' }}</span>
+                <span>{{ hasData(row.dependentPackages) ? formatNumberShort(row.dependentPackages) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.dependentPackagesDelta !== null && row.dependentPackagesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.dependentPackagesDelta" />
                 </lfx-tooltip>
@@ -482,13 +471,14 @@ SPDX-License-Identifier: MIT
             <!-- Community columns -->
             <td
               v-if="activeColumns.includes('commits')"
+              key="col-commits"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.commits !== null ? formatNumberShort(row.commits) : '-' }}</span>
+                <span>{{ hasData(row.commits) ? formatNumberShort(row.commits) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.commitsDelta !== null && row.commitsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.commitsDelta" />
                 </lfx-tooltip>
@@ -496,13 +486,14 @@ SPDX-License-Identifier: MIT
             </td>
             <td
               v-if="activeColumns.includes('contributors')"
+              key="col-contributors"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.contributors !== null ? formatNumberShort(row.contributors) : '-' }}</span>
+                <span>{{ hasData(row.contributors) ? formatNumberShort(row.contributors) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.contributorsDelta !== null && row.contributorsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.contributorsDelta" />
                 </lfx-tooltip>
@@ -510,13 +501,14 @@ SPDX-License-Identifier: MIT
             </td>
             <td
               v-if="activeColumns.includes('newContributors')"
+              key="col-newContributors"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.newContributors !== null ? formatNumberShort(row.newContributors) : '-' }}</span>
+                <span>{{ hasData(row.newContributors) ? formatNumberShort(row.newContributors) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.newContributorsDelta !== null && row.newContributorsDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.newContributorsDelta" />
                 </lfx-tooltip>
@@ -524,13 +516,14 @@ SPDX-License-Identifier: MIT
             </td>
             <td
               v-if="activeColumns.includes('githubReleases')"
+              key="col-githubReleases"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.githubReleases !== null ? formatNumberShort(row.githubReleases) : '-' }}</span>
+                <span>{{ hasData(row.githubReleases) ? formatNumberShort(row.githubReleases) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.githubReleasesDelta !== null && row.githubReleasesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <delta-indicator :value="row.githubReleasesDelta" />
                 </lfx-tooltip>
@@ -539,102 +532,89 @@ SPDX-License-Identifier: MIT
             <!-- Health columns -->
             <td
               v-if="activeColumns.includes('mergeRate')"
+              key="col-mergeRate"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.mergeRate !== null ? formatPercent(row.mergeRate) : '-' }}</span>
+                <span>{{ hasData(row.mergeRate) ? formatPercent(row.mergeRate) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.mergeRateDelta !== null && row.mergeRateDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.mergeRateDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.mergeRateDelta"
-                    format="percent"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatPercent(row.mergeRateDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
             <td
               v-if="activeColumns.includes('prTimeToResolve')"
+              key="col-prTimeToResolve"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.prTimeToResolve !== null ? formatDays(row.prTimeToResolve) : '-' }}</span>
+                <span>{{ hasData(row.prTimeToResolve) ? formatDays(row.prTimeToResolve) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.prTimeToResolveDelta !== null && row.prTimeToResolveDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.prTimeToResolveDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.prTimeToResolveDelta"
-                    format="days"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatDays(row.prTimeToResolveDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
             <td
               v-if="activeColumns.includes('timeToClose')"
+              key="col-timeToClose"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.timeToClose !== null ? formatDays(row.timeToClose) : '-' }}</span>
+                <span>{{ hasData(row.timeToClose) ? formatDays(row.timeToClose) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.timeToCloseDelta !== null && row.timeToCloseDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.timeToCloseDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.timeToCloseDelta"
-                    format="days"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatDays(row.timeToCloseDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
             <td
               v-if="activeColumns.includes('issueResponseTime')"
+              key="col-issueResponseTime"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.issueResponseTime !== null ? formatDays(row.issueResponseTime) : '-' }}</span>
+                <span>{{ hasData(row.issueResponseTime) ? formatDays(row.issueResponseTime) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.issueResponseTimeDelta !== null && row.issueResponseTimeDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.issueResponseTimeDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.issueResponseTimeDelta"
-                    format="days"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatDays(row.issueResponseTimeDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
             <td
               v-if="activeColumns.includes('noResponseIssues')"
+              key="col-noResponseIssues"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.noResponseIssues !== null ? formatPercent(row.noResponseIssues) : '-' }}</span>
+                <span>{{ hasData(row.noResponseIssues) ? formatNumberShort(row.noResponseIssues) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.noResponseIssuesDelta !== null && row.noResponseIssuesDelta !== 0"
-                  content="vs. previous 30d"
+                  v-if="row.noResponseIssuesDelta !== null"
+                  content="last 30 days"
                 >
-                  <delta-indicator
-                    :value="row.noResponseIssuesDelta"
-                    format="percent"
-                    :invert="true"
-                  />
+                  <span class="text-neutral-400 text-xs">{{ formatNumberShort(row.noResponseIssuesDelta) }}</span>
                 </lfx-tooltip>
               </div>
             </td>
             <td
               v-if="activeColumns.includes('totalVulnerabilities')"
+              key="col-totalVulnerabilities"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.totalVulnerabilities !== null ? formatNumberShort(row.totalVulnerabilities) : '-' }}</span>
+                <span>{{ hasData(row.totalVulnerabilities) ? formatNumberShort(row.totalVulnerabilities) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.totalVulnerabilitiesDelta !== null && row.totalVulnerabilitiesDelta !== 0"
-                  content="vs. previous 30d"
+                  content="last 30 days"
                 >
                   <vuln-delta-indicator :value="row.totalVulnerabilitiesDelta" />
                 </lfx-tooltip>
@@ -643,9 +623,10 @@ SPDX-License-Identifier: MIT
             <!-- Value columns -->
             <td
               v-if="activeColumns.includes('cocomoValue')"
+              key="col-cocomoValue"
               class="py-3 px-2 text-right"
             >
-              {{ row.cocomoValue !== null ? formatNumberCurrency(row.cocomoValue, 'USD') : '-' }}
+              {{ hasData(row.cocomoValue) ? formatNumberCurrency(row.cocomoValue, 'USD') : '-' }}
             </td>
           </tr>
         </tbody>
@@ -655,56 +636,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, h, type FunctionalComponent } from 'vue';
-import { getLayerBadgeStyle } from '../config/layer-colors';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import { computed, ref, watch, h, type FunctionalComponent } from 'vue';
+
+import { formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
-import { formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
-import type {
-  AgenticProject,
-  StargazersData,
-  ForkData,
-  CommitCountData,
-  ContributorData,
-  NewContributors90dData,
-  PullRequestMergeRateData,
-  IssueTimeToCloseData,
-  IssueTimeToFirstResponseData,
-  IssueNoResponseShareData,
-  PackageDownloadsData,
-  CocomoValueData,
-  PullRequestTimeToResolveData,
-  VulnerabilitiesData,
-  GitHubReleasesData,
-  DockerHubPullsData,
-  DependentReposData,
-  DependentPackagesData,
-  ProjectLeaderboardRow,
-} from '~~/types/report/agentic-ai-momentum.types';
+import type { AgenticEnrichedProject, ProjectLeaderboardRow } from '~~/types/report/agentic-ai-momentum.types';
+
+import { getLayerBadgeStyle } from '../config/layer-colors';
 
 const props = defineProps<{
-  projectsData: AgenticProject[];
-  stargazersData: StargazersData[];
-  forksData: ForkData[];
-  commitsData: CommitCountData[];
-  contributorsData: ContributorData[];
-  newContributors90dData: NewContributors90dData[];
-  mergeRateData: PullRequestMergeRateData[];
-  timeToCloseData: IssueTimeToCloseData[];
-  issueResponseTimeData: IssueTimeToFirstResponseData[];
-  noResponseShareData: IssueNoResponseShareData[];
-  downloadsData: PackageDownloadsData[];
-  cocomoData: CocomoValueData[];
-  prTimeToResolveData: PullRequestTimeToResolveData[];
-  vulnerabilitiesData: VulnerabilitiesData[];
-  githubReleasesData: GitHubReleasesData[];
-  dockerPullsData: DockerHubPullsData[];
-  dependentReposData: DependentReposData[];
-  dependentPackagesData: DependentPackagesData[];
+  tbProjects: AgenticEnrichedProject[];
   isLoading: boolean;
 }>();
 
@@ -715,7 +661,6 @@ type ColumnGroup = (typeof COLUMN_GROUPS)[number];
 const COLUMN_CONFIG = [
   { key: 'stars', label: 'Stars', defaultOn: true, group: 'Growth' as ColumnGroup },
   { key: 'forks', label: 'Forks', defaultOn: false, group: 'Growth' as ColumnGroup },
-  { key: 'downloads', label: 'Downloads', defaultOn: true, group: 'Growth' as ColumnGroup },
   { key: 'dockerHubPulls', label: 'Docker Pulls', defaultOn: false, group: 'Growth' as ColumnGroup },
   { key: 'dependentRepositories', label: 'Dependent Repos', defaultOn: false, group: 'Growth' as ColumnGroup },
   { key: 'dependentPackages', label: 'Dependent Pkgs', defaultOn: false, group: 'Growth' as ColumnGroup },
@@ -742,10 +687,6 @@ function columnsByGroup(group: ColumnGroup) {
 }
 
 // Sort mode toggle
-const SORT_MODE_TABS = [
-  { value: 'level', label: 'Level' },
-  { value: 'delta', label: 'Change' },
-];
 const sortMode = ref<'level' | 'delta'>('level');
 
 function toggleColumn(key: ColumnKey) {
@@ -789,7 +730,6 @@ const VulnDeltaIndicator: FunctionalComponent<{ value: number }> = (componentPro
 VulnDeltaIndicator.props = ['value'];
 
 type SortColumn =
-  | 'rank'
   | 'name'
   | 'stars'
   | 'forks'
@@ -801,7 +741,6 @@ type SortColumn =
   | 'timeToClose'
   | 'issueResponseTime'
   | 'noResponseIssues'
-  | 'downloads'
   | 'dockerHubPulls'
   | 'dependentRepositories'
   | 'dependentPackages'
@@ -809,190 +748,57 @@ type SortColumn =
   | 'prTimeToResolve'
   | 'totalVulnerabilities';
 
-const sortColumn = ref<SortColumn>('rank');
-const sortDirection = ref<'asc' | 'desc'>('asc');
+const sortColumn = ref<SortColumn>('contributors');
+const sortDirection = ref<'asc' | 'desc'>('desc');
 
 function sortBy(column: SortColumn) {
   if (sortColumn.value === column) {
     sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
   } else {
     sortColumn.value = column;
-    sortDirection.value = column === 'rank' || column === 'name' ? 'asc' : 'desc';
+    sortDirection.value = column === 'name' ? 'asc' : 'desc';
   }
 }
 
-// Helper to get latest value and delta from time series data
-function getLatestValue<T extends { month: string }>(
-  data: T[],
-  repo: string,
-  valueKey: keyof T,
-): { value: number | null; delta: number | null } {
-  const repoData = data.filter((d) => d.repo === repo).sort((a, b) => b.month.localeCompare(a.month));
-
-  if (repoData.length === 0) {
-    return { value: null, delta: null };
-  }
-
-  const latest = repoData[0];
-  const previous = repoData[1];
-
-  const value = latest[valueKey] as number;
-  const delta = previous ? value - (previous[valueKey] as number) : null;
-
-  return { value, delta };
-}
-
-// Build leaderboard data
+// Build leaderboard rows directly from flat TB data
 const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
-  return props.projectsData.map((project) => {
-    const githubUrl = project.github_url;
-
-    const stars = getLatestValue(props.stargazersData, githubUrl ?? '', 'cumulative_stars');
-    const forks = getLatestValue(props.forksData, githubUrl ?? '', 'cumulative_forks');
-    const commits = getLatestValue(props.commitsData, githubUrl ?? '', 'cumulative_commits');
-    const contributors = getLatestValue(props.contributorsData, githubUrl ?? '', 'cumulative_contributors');
-    const newContributors = getLatestValue(props.newContributors90dData, githubUrl ?? '', 'new_contributors_90d_count');
-    const githubReleases = getLatestValue(props.githubReleasesData, githubUrl ?? '', 'cumulative_release_count');
-    const dockerHubPulls = getLatestValue(props.dockerPullsData, githubUrl ?? '', 'pull_count');
-
-    // Dependent repos — aggregate across ecosystems per month
-    const depReposFiltered = props.dependentReposData.filter((d) => d.repo === githubUrl);
-    const depReposMonths = [...new Set(depReposFiltered.map((d) => d.month))].sort().reverse();
-    const depReposLatestMonth = depReposMonths[0] ?? null;
-    const depReposPrevMonth = depReposMonths[1] ?? null;
-    const depReposLatest = depReposLatestMonth
-      ? depReposFiltered.filter((d) => d.month === depReposLatestMonth).reduce((s, d) => s + d.dependent_repo_count, 0)
-      : null;
-    const depReposPrev = depReposPrevMonth
-      ? depReposFiltered.filter((d) => d.month === depReposPrevMonth).reduce((s, d) => s + d.dependent_repo_count, 0)
-      : null;
-    const dependentRepositories = {
-      value: depReposLatest,
-      delta: depReposLatest !== null && depReposPrev !== null ? depReposLatest - depReposPrev : null,
-    };
-
-    // Dependent packages — aggregate across ecosystems per month
-    const depPkgsFiltered = props.dependentPackagesData.filter((d) => d.repo === githubUrl);
-    const depPkgsMonths = [...new Set(depPkgsFiltered.map((d) => d.month))].sort().reverse();
-    const depPkgsLatestMonth = depPkgsMonths[0] ?? null;
-    const depPkgsPrevMonth = depPkgsMonths[1] ?? null;
-    const depPkgsLatest = depPkgsLatestMonth
-      ? depPkgsFiltered.filter((d) => d.month === depPkgsLatestMonth).reduce((s, d) => s + d.dependent_package_count, 0)
-      : null;
-    const depPkgsPrev = depPkgsPrevMonth
-      ? depPkgsFiltered.filter((d) => d.month === depPkgsPrevMonth).reduce((s, d) => s + d.dependent_package_count, 0)
-      : null;
-    const dependentPackages = {
-      value: depPkgsLatest,
-      delta: depPkgsLatest !== null && depPkgsPrev !== null ? depPkgsLatest - depPkgsPrev : null,
-    };
-
-    // Merge rate with delta
-    const mergeRateFiltered = props.mergeRateData
-      .filter((d) => d.repo === githubUrl)
-      .sort((a, b) => b.month.localeCompare(a.month));
-    const mergeRate = mergeRateFiltered[0]?.pr_merge_rate ?? null;
-    const mergeRateDelta =
-      mergeRate !== null && mergeRateFiltered[1] !== undefined ? mergeRate - mergeRateFiltered[1].pr_merge_rate : null;
-
-    // Time to close with delta
-    const timeToCloseFiltered = props.timeToCloseData
-      .filter((d) => d.repo === githubUrl)
-      .sort((a, b) => b.month.localeCompare(a.month));
-    const timeToClose = timeToCloseFiltered[0]?.median_time_to_close_days ?? null;
-    const timeToCloseDelta =
-      timeToClose !== null && timeToCloseFiltered[1] !== undefined
-        ? timeToClose - timeToCloseFiltered[1].median_time_to_close_days
-        : null;
-
-    // Issue response time with delta
-    const issueResponseFiltered = props.issueResponseTimeData
-      .filter((d) => d.repo === githubUrl)
-      .sort((a, b) => b.month.localeCompare(a.month));
-    const issueResponseTimeRaw = issueResponseFiltered[0]?.median_time_to_first_response_hours ?? null;
-    const issueResponseTime = issueResponseTimeRaw !== null ? issueResponseTimeRaw / 24 : null;
-    const issueResponseTimeDelta =
-      issueResponseTime !== null && issueResponseFiltered[1] !== undefined
-        ? issueResponseTime - issueResponseFiltered[1].median_time_to_first_response_hours / 24
-        : null;
-
-    // No-response share with delta
-    const noResponseFiltered = props.noResponseShareData
-      .filter((d) => d.repo === githubUrl)
-      .sort((a, b) => b.month.localeCompare(a.month));
-    const noResponseIssues = noResponseFiltered[0]?.issues_no_response_pct_30d ?? null;
-    const noResponseIssuesDelta =
-      noResponseIssues !== null && noResponseFiltered[1] !== undefined
-        ? noResponseIssues - noResponseFiltered[1].issues_no_response_pct_30d
-        : null;
-
-    // Downloads (no delta per plan)
-    const downloadsFiltered = props.downloadsData.filter((d) => d.repo === githubUrl);
-    const latestMonth =
-      downloadsFiltered.length > 0 ? downloadsFiltered.sort((a, b) => b.month.localeCompare(a.month))[0]?.month : null;
-    const latestDownloads = latestMonth
-      ? downloadsFiltered.filter((d) => d.month === latestMonth).reduce((sum, d) => sum + d.download_counts, 0)
-      : null;
-
-    // Previous month downloads delta
-    const months = [...new Set(downloadsFiltered.map((d) => d.month))].sort().reverse();
-    const previousMonth = months[1];
-    const previousDownloads = previousMonth
-      ? downloadsFiltered.filter((d) => d.month === previousMonth).reduce((sum, d) => sum + d.download_counts, 0)
-      : null;
-    const downloadsDelta =
-      latestDownloads !== null && previousDownloads !== null ? latestDownloads - previousDownloads : null;
-
-    // COCOMO value (no delta)
-    const cocomoValue = getLatestValue(props.cocomoData, githubUrl ?? '', 'estimated_cost_usd').value;
-
-    // PR time to resolve with delta
-    const prTimeToResolve = getLatestValue(props.prTimeToResolveData, githubUrl ?? '', 'median_time_to_resolve_days');
-
-    // Total vulnerabilities with delta
-    const totalVulnerabilities = getLatestValue(props.vulnerabilitiesData, githubUrl ?? '', 'vulnerabilities_count');
-
-    return {
-      rank: project.rank,
-      name: project.name,
-      layer: project.layer,
-      license: project.license,
-      githubUrl,
-      stars: stars.value,
-      starsDelta: stars.delta,
-      forks: forks.value,
-      forksDelta: forks.delta,
-      commits: commits.value,
-      commitsDelta: commits.delta,
-      contributors: contributors.value,
-      contributorsDelta: contributors.delta,
-      newContributors: newContributors.value,
-      newContributorsDelta: newContributors.delta,
-      githubReleases: githubReleases.value,
-      githubReleasesDelta: githubReleases.delta,
-      dockerHubPulls: dockerHubPulls.value,
-      dockerHubPullsDelta: dockerHubPulls.delta,
-      dependentRepositories: dependentRepositories.value,
-      dependentRepositoriesDelta: dependentRepositories.delta,
-      dependentPackages: dependentPackages.value,
-      dependentPackagesDelta: dependentPackages.delta,
-      mergeRate,
-      mergeRateDelta,
-      timeToClose,
-      timeToCloseDelta,
-      issueResponseTime,
-      issueResponseTimeDelta,
-      noResponseIssues,
-      noResponseIssuesDelta,
-      downloads: latestDownloads,
-      downloadsDelta,
-      cocomoValue,
-      prTimeToResolve: prTimeToResolve.value,
-      prTimeToResolveDelta: prTimeToResolve.delta,
-      totalVulnerabilities: totalVulnerabilities.value,
-      totalVulnerabilitiesDelta: totalVulnerabilities.delta,
-    };
-  });
+  return props.tbProjects.map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    layer: p.layer,
+    githubUrl: p.githubRepoLink,
+    stars: p.stars,
+    starsDelta: p.stars30d,
+    forks: p.forks,
+    forksDelta: p.forks30d,
+    commits: p.commits,
+    commitsDelta: p.commits30d,
+    contributors: p.contributors,
+    contributorsDelta: p.contributors30d,
+    newContributors: p.newContributors30d,
+    newContributorsDelta: null,
+    githubReleases: p.githubReleases,
+    githubReleasesDelta: p.githubReleases30d,
+    dockerHubPulls: p.dockerPulls,
+    dockerHubPullsDelta: p.dockerPulls30d,
+    dependentRepositories: p.dependentRepos,
+    dependentRepositoriesDelta: null,
+    dependentPackages: p.dependentPackages,
+    dependentPackagesDelta: null,
+    mergeRate: p.mergeRate,
+    mergeRateDelta: p.mergeRate30d,
+    timeToClose: p.issueCloseTimeDays,
+    timeToCloseDelta: p.issueCloseTimeDays30d,
+    issueResponseTime: p.issueResponseTimeDays,
+    issueResponseTimeDelta: p.issueResponseTimeDays30d,
+    noResponseIssues: p.noResponseIssues,
+    noResponseIssuesDelta: p.noResponseIssues30d,
+    cocomoValue: p.cocomoValue,
+    prTimeToResolve: p.prResolveTimeDays,
+    prTimeToResolveDelta: p.prResolveTimeDays30d,
+    totalVulnerabilities: p.vulnerabilities,
+    totalVulnerabilitiesDelta: p.vulnerabilities30d,
+  }));
 });
 
 // Map column keys to their delta fields (null = no delta available)
@@ -1001,11 +807,8 @@ const DELTA_FIELD: Partial<Record<SortColumn, keyof ProjectLeaderboardRow>> = {
   forks: 'forksDelta',
   commits: 'commitsDelta',
   contributors: 'contributorsDelta',
-  newContributors: 'newContributorsDelta',
   githubReleases: 'githubReleasesDelta',
   dockerHubPulls: 'dockerHubPullsDelta',
-  dependentRepositories: 'dependentRepositoriesDelta',
-  dependentPackages: 'dependentPackagesDelta',
   mergeRate: 'mergeRateDelta',
   timeToClose: 'timeToCloseDelta',
   issueResponseTime: 'issueResponseTimeDelta',
@@ -1013,6 +816,18 @@ const DELTA_FIELD: Partial<Record<SortColumn, keyof ProjectLeaderboardRow>> = {
   prTimeToResolve: 'prTimeToResolveDelta',
   totalVulnerabilities: 'totalVulnerabilitiesDelta',
 };
+
+const sortModeOptions = [
+  { value: 'level', label: 'Level' },
+  { value: 'delta', label: 'Change' },
+];
+
+// Reset to Level when switching to a column with no delta
+watch(sortColumn, (col) => {
+  if (!(col in DELTA_FIELD)) {
+    sortMode.value = 'level';
+  }
+});
 
 // Null-last numeric comparator: nulls always sort after non-null values, regardless of direction
 function cmpNullLast(av: number | null, bv: number | null, dir: 'asc' | 'desc'): number {
@@ -1036,8 +851,6 @@ const sortedData = computed(() => {
     }
 
     switch (col) {
-      case 'rank':
-        return dir === 'asc' ? a.rank - b.rank : b.rank - a.rank;
       case 'name':
         return dir === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
       case 'stars':
@@ -1060,8 +873,6 @@ const sortedData = computed(() => {
         return cmpNullLast(a.issueResponseTime, b.issueResponseTime, dir);
       case 'noResponseIssues':
         return cmpNullLast(a.noResponseIssues, b.noResponseIssues, dir);
-      case 'downloads':
-        return cmpNullLast(a.downloads, b.downloads, dir);
       case 'dockerHubPulls':
         return cmpNullLast(a.dockerHubPulls, b.dockerHubPulls, dir);
       case 'dependentRepositories':
@@ -1079,6 +890,11 @@ const sortedData = computed(() => {
     }
   });
 });
+
+// Returns true when a metric has data (not null/undefined)
+function hasData(value: number | null | undefined): value is number {
+  return value != null;
+}
 
 // Format helpers
 function formatPercent(value: number): string {

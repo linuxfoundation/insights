@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { OrganizationDependencyFilter, OrganizationsLeaderboardFilter } from '../../types';
-import { fetchFromTinybird } from '../tinybird';
 import { fetchOrganizationsLeaderboard } from '~~/server/data/tinybird/contributors/organizations-leaderboard';
 import type { Organization } from '~~/types/contributors/responses.types';
+
+import type { OrganizationDependencyFilter, OrganizationsLeaderboardFilter } from '../../types';
+import { fetchFromTinybird } from '../tinybird';
 
 export type OrganizationDependencyResponse = {
   topOrganizations: {
@@ -54,6 +55,8 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
       percentage: 100 - topOrganizationsPercentage,
     },
     list: tinybirdLeaderboardResponse.data.map((item) => ({
+      id: item.id,
+      slug: item.slug,
       logo: item.logo,
       name: item.name,
       contributions: item.contributions,

@@ -106,11 +106,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { nextTick } from 'vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+
+import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { lfxFooterMenu } from '~/config/menu/footer';
-import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 
 if (import.meta.client) {
   await import('@linuxfoundation/lfx-ui-core');

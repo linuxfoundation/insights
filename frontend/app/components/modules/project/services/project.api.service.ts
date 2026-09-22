@@ -7,9 +7,10 @@ import {
   useQueryClient,
 } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Project } from '~~/types/project';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { Project } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export interface ProjectCollectionItem {
   name: string;
@@ -107,11 +108,12 @@ class ProjectApiService {
   }
 
   fetchProjectCollections(slug: string) {
-    const queryKey = computed(() => [TanstackKey.PROJECT_COLLECTIONS, slug]);
+    const queryKey = [TanstackKey.PROJECT_COLLECTIONS, slug];
 
-    const queryFn = computed<QueryFunction<ProjectCollectionsResponse>>(() =>
-      this.projectCollectionsQueryFn(slug),
-    );
+    const queryFn = async (): Promise<ProjectCollectionsResponse> =>
+      await $fetch('/api/project/collections', {
+        query: { slug },
+      });
 
     return useQuery<ProjectCollectionsResponse>({
       queryKey,
@@ -119,8 +121,19 @@ class ProjectApiService {
     });
   }
 
-  projectCollectionsQueryFn(slug: string): QueryFunction<ProjectCollectionsResponse> {
-    return async () => await $fetch(`/api/project/${slug}/collections`);
+  fetchRepositoryCollections(url: ComputedRef<string>) {
+    const queryKey = computed(() => [TanstackKey.REPOSITORY_COLLECTIONS, url.value]);
+
+    const queryFn = async (): Promise<ProjectCollectionsResponse> =>
+      await $fetch('/api/repository/collections', {
+        query: { url: url.value },
+      });
+
+    return useQuery<ProjectCollectionsResponse>({
+      queryKey,
+      queryFn,
+      enabled: computed(() => !!url.value),
+    });
   }
 }
 

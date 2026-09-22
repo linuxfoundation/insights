@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
+import { ActivityPlatforms } from '@lfx-insights/types';
 import type { PlatformConfig } from '~~/types/shared/platforms.types';
 
 export const gerrit: PlatformConfig = {

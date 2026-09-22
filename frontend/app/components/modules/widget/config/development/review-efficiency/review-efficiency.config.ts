@@ -1,12 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import ReviewEfficiency from './review-efficiency.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
 import ReviewEfficiencyFilters from './review-efficiency-filters.vue';
 import ReviewEfficiencySnapshotHeader from './review-efficiency-snapshot-header.vue';
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import ReviewEfficiency from './review-efficiency.vue';
 
 const reviewEfficiency: WidgetConfig = {
   key: 'reviewEfficiency',
+  availableInCollection: true,
   name: 'Review efficiency',
   description: () =>
     'Closed-to-opened pull requests ratio and activity trend during the selected period.',

@@ -69,15 +69,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxChatResultLabel from '../shared/result-label.vue';
-import { useCopilotStore } from '../../store/copilot.store';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import { computed } from 'vue';
+
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+
+import { useCopilotStore } from '../../store/copilot.store';
+import LfxChatResultLabel from '../shared/result-label.vue';
 
 const emit = defineEmits<{
   (e: 'close'): void;

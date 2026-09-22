@@ -111,4 +111,12 @@ export const lfxColors = {
   },
   // TODO: Verify with Nuno what color alias we should use
   yellow: '#FFD6A7',
+  // Health-score tier colors — Figma-exact hexes, distinct from the generic positive/warning/negative
+  health: {
+    excellent: '#00bc7d',
+    healthy: '#00bc7d',
+    fair: '#009AFF',
+    concerning: '#F59E0B',
+    critical: '#fb2c36',
+  },
 };

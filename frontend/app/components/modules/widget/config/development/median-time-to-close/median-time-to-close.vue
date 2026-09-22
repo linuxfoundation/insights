@@ -48,32 +48,33 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { MedianTimeToClose } from '~~/types/development/responses.types';
-import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
-import { lfxColors } from '~/config/styles/colors';
-import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { barGranularities } from '~/components/shared/types/granularity';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { ref, computed, watch } from 'vue';
+
+import { Granularity } from '@lfx-insights/types';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import {
   DEVELOPMENT_API_SERVICE,
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { barGranularities } from '~/components/shared/types/granularity';
+import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
 import { maxHours, minHours } from '~/components/uikit/chart/configs/defaults.chart';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import { customTooltipFormatter } from '~/components/uikit/chart/helpers/formatters';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { MedianTimeToClose } from '~~/types/development/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 interface MedianTimeToCloseModel extends WidgetModel {
   granularity: Granularity;
@@ -93,7 +94,7 @@ const emit = defineEmits<{
 
 const platform = computed(() => props.modelValue?.platform || '');
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -105,7 +106,8 @@ const granularity = computed(() =>
 );
 
 const params = computed<QueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

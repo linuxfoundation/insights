@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { watch } from 'vue';
 import type { NuxtApp } from 'nuxt/app';
 import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app';
+import { watch } from 'vue';
+
 import { useAuth } from '~~/composables/useAuth';
 
 export default defineNuxtPlugin((nuxtApp: NuxtApp) => {

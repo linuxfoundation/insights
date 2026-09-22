@@ -62,7 +62,7 @@ The entire system is orchestrated through **`frontend/lib/chat/data-copilot.ts`*
 3. **Router Execution**: Runs the Router Agent to analyze user intent
 4. **Agent Selection**: Based on routing decision, executes the appropriate specialized agent
 5. **Instruction Execution**: Executes generated instructions to fetch data
-6. **Response Streaming**: Streams results back to client using `createDataStreamResponse`
+6. **Response Streaming**: Streams results back to client using `createUIMessageStreamResponse`
 
 ### Multi-Agent System
 

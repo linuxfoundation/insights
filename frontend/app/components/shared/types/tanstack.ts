@@ -8,10 +8,15 @@ export enum TanstackKey {
   LIKED_COLLECTIONS = 'liked-collections',
   LIKE_COUNTS = 'like-counts',
   COLLECTION_PROJECTS = 'collection-projects',
+  COLLECTION_METRICS = 'collection-metrics',
+  COLLECTION_CONTRIBUTORS = 'collection-contributors',
+  COLLECTION_POPULARITY = 'collection-popularity',
+  COLLECTION_DEVELOPMENT = 'collection-development',
   CATEGORY_GROUPS = 'category-groups',
   PROJECTS = 'projects',
   PROJECT = 'project',
   PROJECT_COLLECTIONS = 'project-collections',
+  REPOSITORY_COLLECTIONS = 'repository-collections',
 
   // Contributors
   ACTIVE_CONTRIBUTORS = 'active-contributors',
@@ -53,6 +58,9 @@ export enum TanstackKey {
   // Overview
   HEALTH_SCORE = 'health-score',
   HEALTH_SCORE_OVERVIEW = 'health-score-overview',
+  HEALTH_SCORE_V2 = 'health-score-v2',
+  HEALTH_SCORE_IMPACT_BREAKDOWN = 'health-score-impact-breakdown',
+  HEALTH_SCORE_BREAKDOWN = 'health-score-breakdown',
   TRUST_SCORE_SUMMARY = 'trust-score-summary',
   SCORE_DATA = 'score-data',
   ASSOCIATED_ORGANIZATION = 'associated-organization',
@@ -92,24 +100,19 @@ export enum TanstackKey {
   AI_CODE_TRACKER = 'ai-code-tracker',
 
   // Agentic AI Momentum
-  AGENTIC_AI_PROJECTS = 'agentic-ai-projects',
-  AGENTIC_AI_STARGAZERS = 'agentic-ai-stargazers',
-  AGENTIC_AI_FORKS = 'agentic-ai-forks',
-  AGENTIC_AI_CONTRIBUTORS = 'agentic-ai-contributors',
-  AGENTIC_AI_NEW_CONTRIBUTORS = 'agentic-ai-new-contributors',
-  AGENTIC_AI_PR_MERGE_RATE = 'agentic-ai-pr-merge-rate',
-  AGENTIC_AI_DOWNLOADS = 'agentic-ai-downloads',
   AGENTIC_AI_RESEARCH_PAPERS = 'agentic-ai-research-papers',
   AGENTIC_AI_GITHUB_BREADTH = 'agentic-ai-github-breadth',
-  AGENTIC_AI_COMMITS = 'agentic-ai-commits',
-  AGENTIC_AI_TIME_TO_CLOSE = 'agentic-ai-time-to-close',
-  AGENTIC_AI_COCOMO = 'agentic-ai-cocomo',
-  AGENTIC_AI_DOCKER_PULLS = 'agentic-ai-docker-pulls',
-  AGENTIC_AI_DEPENDENT_REPOS = 'agentic-ai-dependent-repos',
-  AGENTIC_AI_DEPENDENT_PACKAGES = 'agentic-ai-dependent-packages',
-  AGENTIC_AI_GITHUB_RELEASES = 'agentic-ai-github-releases',
-  AGENTIC_AI_TIME_TO_FIRST_RESPONSE = 'agentic-ai-time-to-first-response',
-  AGENTIC_AI_NO_RESPONSE_SHARE = 'agentic-ai-no-response-share',
-  AGENTIC_AI_PR_TIME_TO_RESOLVE = 'agentic-ai-pr-time-to-resolve',
-  AGENTIC_AI_TOTAL_VULNERABILITIES = 'agentic-ai-total-vulnerabilities',
+  AGENTIC_AI_GLANCE = 'agentic-ai-glance',
+  AGENTIC_AI_TB_PROJECTS = 'agentic-ai-tb-projects',
+
+  // Health Score Coverage
+  HEALTH_SCORE_COVERAGE_GLANCE = 'health-score-coverage-glance',
+
+  // Organization Page
+  ORGANIZATION_PAGE = 'organization-page',
+  ORGANIZATION_PAGE_KPIS = 'organization-page-kpis',
+  ORGANIZATION_PAGE_PROJECTS = 'organization-page-projects',
+  ORGANIZATION_PAGE_ACTIVITY = 'organization-page-activity',
+  ORGANIZATION_PAGE_CONTRIBUTORS_TIMESERIES = 'organization-page-contributors-timeseries',
+  ORGANIZATION_PAGE_CONTRIBUTORS = 'organization-page-contributors',
 }

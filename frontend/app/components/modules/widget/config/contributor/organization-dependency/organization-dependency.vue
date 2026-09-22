@@ -51,24 +51,25 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import type { OrganizationDependency } from '~~/types/contributors/responses.types';
-import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import { computed, watch } from 'vue';
+
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
 import LfxDependencyDisplay from '~/components/modules/widget/components/contributors/fragments/dependency-display.vue';
 import LfxOrganizationsTable from '~/components/modules/widget/components/contributors/fragments/organizations-table.vue';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import { Widget } from '~/components/modules/widget/types/widget';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import {
   CONTRIBUTORS_API_SERVICE,
   type LeaderboardQueryParams,
 } from '~~/app/components/modules/widget/services/contributors.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type { OrganizationDependency } from '~~/types/contributors/responses.types';
 
 interface OrganizationDependencyModel extends WidgetModel {
   metric: string;
@@ -90,14 +91,15 @@ const model = computed<OrganizationDependencyModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
 
 const params = computed<LeaderboardQueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,

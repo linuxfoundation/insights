@@ -1,0 +1,47 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+// Standalone data-fetcher for the "How projects are maintained" widget (IN-1287). Kept out of the
+// shared server/data/tinybird/report/health-score-coverage.ts file for the same merge-order reason
+// as the types file next to it - see health-score-coverage-lifecycle.types.ts.
+
+import { healthScoreLifecycleLabels } from '~/components/modules/report/health-score-coverage/config/lifecycle';
+import type {
+  HealthScoreCoverageLifecycleCount,
+  HealthScoreCoverageLifecycleData,
+  HealthScoreCoverageLifecycleRow,
+  HealthScoreCoverageScope,
+} from '~~/types/report/health-score-coverage-lifecycle.types';
+
+import { fetchFromTinybird } from '../tinybird';
+
+/**
+ * Maps the raw `health_score_report_lifecycle` rows into the shape the chart consumes: the NULL
+ * label becomes 'unavailable', and rows are sorted into the fixed lifecycle-stage order (active ->
+ * stable -> declining -> inert -> abandoned -> archived -> unavailable) rather than by project
+ * count, so the stage order doesn't jump around as counts change.
+ */
+export function mapHealthScoreCoverageLifecycleRows(
+  rows: HealthScoreCoverageLifecycleRow[],
+): HealthScoreCoverageLifecycleData {
+  const stageOrder = healthScoreLifecycleLabels.map((stage) => stage.key);
+  const counts: HealthScoreCoverageLifecycleCount[] = rows
+    .map((row) => ({ label: row.label ?? 'unavailable', projects: row.projects }))
+    .sort((a, b) => stageOrder.indexOf(a.label) - stageOrder.indexOf(b.label));
+
+  return {
+    rows: counts,
+    total: counts.reduce((sum, row) => sum + row.projects, 0),
+  };
+}
+
+export async function fetchHealthScoreCoverageLifecycle(
+  scope: HealthScoreCoverageScope = 'all',
+): Promise<HealthScoreCoverageLifecycleData> {
+  const result = await fetchFromTinybird<HealthScoreCoverageLifecycleRow[]>(
+    '/v0/pipes/health_score_report_lifecycle.json',
+    { scope },
+  );
+
+  return mapHealthScoreCoverageLifecycleRows(result.data);
+}

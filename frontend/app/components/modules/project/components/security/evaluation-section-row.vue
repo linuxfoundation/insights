@@ -3,13 +3,15 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200 flex gap-10 items-center">
+  <div
+    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200 flex flex-col md:flex-row gap-4 md:gap-10 md:items-center"
+  >
     <lfx-project-security-evaluation-section
       :checks="checks"
       :tooltip="tooltip"
     />
 
-    <div>
+    <div class="pl-16 md:pl-0">
       <lfx-button
         type="tertiary"
         button-style="pill"
@@ -24,9 +26,10 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
-import type { SecurityData } from '~~/types/security/responses.types';
 import LfxButton from '~/components/uikit/button/button.vue';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 const emit = defineEmits<{ (e: 'openReposEvalModal', category: string | undefined): void }>();
 

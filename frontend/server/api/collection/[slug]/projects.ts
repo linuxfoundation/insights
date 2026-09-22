@@ -1,10 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
+
+import { postToTinybird } from '~~/server/data/tinybird/tinybird';
+import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import { getOptionalUser } from '~~/server/utils/jwt';
+import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 import type { ProjectInsightsTinybird } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
-import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
-import { postToTinybird } from '~~/server/data/tinybird/tinybird';
 
 /**
  * API Endpoint: /api/collection/:slug/projects
@@ -53,7 +56,8 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
 
   try {
     const repo = new CommunityCollectionRepository(cmDbPool);
-    const result = await repo.findProjectIdsBySlug(slug);
+    const user = getOptionalUser(event);
+    const result = await repo.findProjectIdsBySlug(slug, user?.sub ?? null);
 
     if (!result) {
       throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
@@ -96,7 +100,8 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
     return {
       page,
       pageSize,
-      total: response.rows_before_limit_at_least,
+      total: paginationTotal(response, page, pageSize),
+      hasMore: paginationHasMore(response, page, pageSize),
       data,
     };
   } catch (error: unknown) {

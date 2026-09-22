@@ -68,24 +68,25 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import { computed } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import { lfProjectLinks } from '~/components/modules/project/config/links';
-import type { Project } from '~~/types/project';
-import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
+import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
 import { lfxWidgetArea } from '~/components/modules/widget/config/widget-area.config';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { VULNERABILITY_API_SERVICE } from '~/components/modules/project/services/vulnerability.api.service';
+import type { Project } from '~~/types/project';
 
 const props = defineProps<{
   project?: Project;
@@ -94,16 +95,20 @@ const props = defineProps<{
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
 
-const { selectedRepositoryGroup, selectedReposValues } = storeToRefs(useProjectStore());
+const { selectedRepositoryGroup, selectedReposValues, startDate, endDate } = storeToRefs(useProjectStore());
 const { user } = storeToRefs(useAuthStore());
 
-const queryParams = computed(() => ({
-  projectSlug: props.project?.slug as string,
-  repos: selectedReposValues.value || undefined,
-}));
-const { data, refetch } = VULNERABILITY_API_SERVICE.checkVulnerabilitySummary(queryParams, user.value);
+const projectSlug = computed(() => route.params.slug as string);
+const projectWidgets = computed(() => props.project?.widgets || []);
+const { excludedWidgets: popularityExcludedWidgets } = usePopularityExcludedWidgets({
+  projectSlug,
+  repos: selectedReposValues,
+  startDate,
+  endDate,
+  projectWidgets,
+});
 
-const hasVulnerabilitiesData = computed(() => (data.value ? data.value.lastScanStatus === 'success' : false));
+const hasVulnerabilitiesData = computed(() => props.project?.lastVulnerabilityScanStatus === 'success' || false);
 
 const activeLink = computed(() =>
   lfProjectLinks.find((link) => {
@@ -129,6 +134,11 @@ const isAreaEnabled = (area: WidgetArea) => {
       props.project?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github')) ||
       hasVulnerabilitiesData.value
     );
+  }
+
+  if (area === WidgetArea.POPULARITY) {
+    const availableWidgets = widgets.filter((w) => !popularityExcludedWidgets.value.includes(w));
+    return availableWidgets.some((widget) => props.project?.widgets?.includes(lfxWidgets[widget]?.key));
   }
 
   return widgets.length === 0 || widgets.some((widget) => props.project?.widgets?.includes(lfxWidgets[widget]?.key));
@@ -157,10 +167,6 @@ const linkUrl = (link: (typeof lfProjectLinks)[number]) => {
     query,
   };
 };
-
-watch(user, () => {
-  refetch();
-});
 </script>
 
 <script lang="ts">

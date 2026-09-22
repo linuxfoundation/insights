@@ -51,9 +51,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = withDefaults(
   defineProps<{

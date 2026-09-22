@@ -8,16 +8,15 @@ import {
   executeChild,
   proxyActivities,
   workflowInfo,
-} from "@temporalio/workflow";
+} from '@temporalio/workflow';
 
-import * as activities from "../activities";
-
-import { getYesterdayDate } from "../util";
-import { ITriggerPackageDownloadsCheckForReposParams } from "../types";
-import { savePackageDownloads } from "./savePackageDownloads";
+import * as activities from '../activities';
+import { ITriggerPackageDownloadsCheckForReposParams } from '../types';
+import { getYesterdayDate } from '../util';
+import { savePackageDownloads } from './savePackageDownloads';
 
 const { fetchUnprocessedReposForDate } = proxyActivities<typeof activities>({
-  startToCloseTimeout: "5 minutes",
+  startToCloseTimeout: '5 minutes',
   retry: { maximumAttempts: 3, backoffCoefficient: 3 },
 });
 
@@ -67,7 +66,7 @@ export async function triggerDailyPackageDownloads(
       if (!result) {
         failedRepoUrls.push(repo.repoUrl);
       }
-    } catch (err) {
+    } catch {
       // Child workflow crashed after all retries — track it and move on
       crashedReposCount++;
 
@@ -83,9 +82,7 @@ export async function triggerDailyPackageDownloads(
     }
 
     // wait for a short time to avoid overwhelming the API
-    await new Promise((resolve) =>
-      setTimeout(resolve, WAIT_BETWEEN_PROCESSING_REPOS_MS),
-    );
+    await new Promise((resolve) => setTimeout(resolve, WAIT_BETWEEN_PROCESSING_REPOS_MS));
   }
 
   if (!args.testRun) {

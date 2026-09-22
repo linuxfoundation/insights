@@ -4,11 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-button
-    v-if="canCreateCollection"
     :type="type"
     button-style="pill"
     :class="type === 'ghost' ? '!text-accent-500' : ''"
-    @click="isCreateCollectionModalOpen = true"
+    v-bind="$attrs"
+    @click="handleClick"
   >
     <lfx-icon name="rectangle-history-circle-plus" />
     Create collection
@@ -19,17 +19,25 @@ SPDX-License-Identifier: MIT
     v-model="isCreateCollectionModalOpen"
     @created="handleCreated"
   />
+
+  <lfx-collection-auth-wall
+    v-if="isAuthWallOpen"
+    v-model="isAuthWallOpen"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfCreateCollectionModal from './create-collection-modal.vue';
+import { ref } from 'vue';
+
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import LfxButton from '~/components/uikit/button/button.vue';
+import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import LfCreateCollectionModal from './create-collection-modal.vue';
 
 withDefaults(
   defineProps<{
@@ -45,12 +53,17 @@ const emit = defineEmits<{
 }>();
 
 const isCreateCollectionModalOpen = ref(false);
+const isAuthWallOpen = ref(false);
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
-const canCreateCollection = computed(() => {
-  return !!user.value;
-});
+const handleClick = () => {
+  if (user.value) {
+    isCreateCollectionModalOpen.value = true;
+  } else {
+    isAuthWallOpen.value = true;
+  }
+};
 
 const handleCreated = (form: CreateCollectionForm) => {
   emit('created', form);

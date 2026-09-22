@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import CommitActivities from './commit-activities.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import CommitActivities from './commit-activities.vue';
 
 const commitActivities: WidgetConfig = {
   key: 'commitActivities',
+  availableInCollection: true,
   name: 'Commit Activities',
   description: () => 'Number of commits performed during the selected period.',
   learnMoreLink: `/docs/metrics/development#commit-activities`,

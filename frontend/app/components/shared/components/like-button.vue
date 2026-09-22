@@ -41,45 +41,56 @@ SPDX-License-Identifier: MIT
           :type="isLiked ? 'solid' : 'light'"
         />
       </div>
-      <lfx-spinner
-        v-if="likeCountLoading"
-        :size="12"
-      />
-      <span
-        v-else-if="likeCount !== undefined || isLiked"
-        class="text-xs leading-4 text-neutral-900 font-medium"
-      >
-        {{ formatNumberShort(isLiked && (!likeCount || likeCount === 0) ? 1 : (likeCount ?? 0)) }}
-      </span>
+      <template v-if="!hideCount">
+        <lfx-spinner
+          v-if="likeCountLoading"
+          :size="12"
+        />
+        <span
+          v-else-if="likeCount !== undefined || isLiked"
+          class="text-xs leading-4 text-neutral-900 font-medium"
+        >
+          {{ formatNumberShort(isLiked && (!likeCount || likeCount === 0) ? 1 : (likeCount ?? 0)) }}
+        </span>
+      </template>
     </lfx-button>
   </lfx-tooltip>
+
+  <lfx-collection-auth-wall
+    v-if="isAuthWallOpen"
+    v-model="isAuthWallOpen"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import type { Collection, CollectionType } from '~~/types/collection';
-import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { computed, ref } from 'vue';
+
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxButton from '~/components/uikit/button/button.vue';
+import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import type { ButtonType } from '~/components/uikit/button/types/button.types';
-import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { useAuth } from '~~/composables/useAuth';
 import { useTrackEvent } from '~~/composables/useTrackEvent';
-import { CollectionsEventKey } from '~/components/shared/types/events/collections';
-// import { useAuth } from '~~/composables/useAuth';
+import type { Collection, CollectionType } from '~~/types/collection';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
 const { showToast } = useToastService();
 const { trackEvent } = useTrackEvent();
+const { isAuthenticated } = useAuth();
+const isAuthWallOpen = ref(false);
 
 const props = withDefaults(
   defineProps<{
@@ -88,6 +99,7 @@ const props = withDefaults(
     variant?: CollectionType;
     showUnlikeIcon?: boolean;
     showAsDropdown?: boolean;
+    hideCount?: boolean;
   }>(),
   {
     buttonType: 'ghost',
@@ -95,6 +107,7 @@ const props = withDefaults(
     size: 'medium',
     showUnlikeIcon: false,
     showAsDropdown: false,
+    hideCount: false,
   },
 );
 
@@ -115,6 +128,11 @@ const invalidateCollectionQueries = () => {
 };
 
 const handleLike = async () => {
+  if (!isAuthenticated.value) {
+    isAuthWallOpen.value = true;
+    return;
+  }
+
   const wasLiked = isLiked.value;
 
   try {

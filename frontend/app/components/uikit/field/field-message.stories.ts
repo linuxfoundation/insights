@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import LfInput from '../input/input.vue';
-import LfField from './field.vue';
 import LfFieldMessage from './field-message.vue';
+import LfField from './field.vue';
 import { fieldMessageTypes } from './types/FieldMessageType';
 
 export default {

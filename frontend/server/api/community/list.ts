@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import { Pagination } from '~~/types/shared/pagination';
+import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 import { CommunityMentions } from '~~/types/community/community';
+import { Pagination } from '~~/types/shared/pagination';
 
 export default defineEventHandler(async (event): Promise<Pagination<CommunityMentions>> => {
   const query = getQuery(event);
@@ -53,7 +54,8 @@ export default defineEventHandler(async (event): Promise<Pagination<CommunityMen
       data: response.data,
       page: page,
       pageSize: pageSize,
-      total: response.rows_before_limit_at_least,
+      total: paginationTotal(response, page, pageSize),
+      hasMore: paginationHasMore(response, page, pageSize),
     };
   } catch (error) {
     console.error('Error fetching mentions list:', error);

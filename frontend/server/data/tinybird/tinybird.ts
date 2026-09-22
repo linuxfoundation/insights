@@ -1,73 +1,86 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import { ofetch } from 'ofetch';
+
+import {
+  createTinybirdClient,
+  TinybirdClientError,
+  type TinybirdResponse,
+  BucketCacheStorage,
+} from '@lfx-insights/tinybird-client';
+
 import { getBucketIdForProject } from './bucket-cache';
 
-/**
- * Represents the structure of a response from the Tinybird API.
- *
- * @template T The type of the data returned in the response.
- *
- * @property {T} data The data returned by the query.
- * @property {Object[]} meta Metadata about the returned data fields.
- * @property {string} meta[].name The name of the field in the response.
- * @property {string} meta[].type The data type of the field in the response.
- * @property {number} rows The number of rows in the data response.
- * @property {number} rows_before_limit_at_least The number of rows available before any query limit was applied.
- * @property {Object} statistics Performance statistics for the query.
- * @property {number} statistics.elapsed Time in seconds it took to execute the query.
- * @property {number} statistics.rows_read Number of rows read during the query execution.
- * @property {number} statistics.bytes_read Number of bytes read during the query execution.
- */
-export interface TinybirdResponse<T> {
-  data: T;
-  meta: {
-    name: string;
-    type: string;
-  }[];
-  rows: number;
-  rows_before_limit_at_least: number;
-  statistics: {
-    elapsed: number;
-    rows_read: number;
-    bytes_read: number;
+export type { TinybirdResponse };
+
+function createNitroRedisAdapter(): BucketCacheStorage | undefined {
+  if (!process.env.NUXT_REDIS_URL) return undefined;
+  return {
+    async getItem(key: string) {
+      return useStorage('redis').getItem<number>(key);
+    },
+    async setItem(key: string, value: number, options?: { ttl?: number }) {
+      await useStorage('redis').setItem(key, value, options);
+    },
+    async removeItem(key: string) {
+      await useStorage('redis').removeItem(key);
+    },
+    async getKeys(prefix: string) {
+      return useStorage('redis').getKeys(prefix);
+    },
   };
 }
 
-// TinyBird requires dates to be in a specific format, otherwise it returns an error.
-/**
- * Formats a given DateTime object into a string compatible with TinyBird's expected date format.
- *
- * @param {DateTime} date - The DateTime object to be formatted.
- * @return {string} A string representing the formatted date in 'yyyy-MM-dd 00:00:00' format or an empty string if formatting fails.
- */
-function formatDateForTinyBird(date: DateTime): string {
-  return date.toFormat('yyyy-MM-dd 00:00:00') ?? '';
+export const client = createTinybirdClient({
+  baseUrl: process.env.NUXT_TINYBIRD_BASE_URL ?? 'https://api.us-west-2.aws.tinybird.co',
+  token: process.env.NUXT_TINYBIRD_TOKEN!,
+  maxConcurrent: parseInt(process.env.NUXT_TINYBIRD_MAX_CONCURRENT ?? '35', 10),
+  maxQueueSize: parseInt(process.env.NUXT_TINYBIRD_MAX_QUEUE_SIZE ?? '500', 10),
+  queueTimeoutMs: parseInt(process.env.NUXT_TINYBIRD_QUEUE_TIMEOUT_MS ?? '10000', 10),
+  slowRequestThresholdMs: parseInt(
+    process.env.NUXT_TINYBIRD_SLOW_REQUEST_THRESHOLD_MS ?? '5000',
+    10,
+  ),
+  latencyBackoff: process.env.NUXT_TINYBIRD_LATENCY_BACKOFF === 'false' ? false : {},
+  bucketCache: createNitroRedisAdapter(),
+});
+
+type DateTimeOrPrimitive =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | DateTime
+  | undefined
+  | null;
+
+function serializeQuery(
+  query: Record<string, DateTimeOrPrimitive>,
+): Record<string, string | number | boolean | string[] | number[] | undefined | null> {
+  return Object.fromEntries(
+    Object.entries(query).map(([k, v]) => [
+      k,
+      v instanceof DateTime ? (v.toFormat('yyyy-MM-dd 00:00:00') ?? '') : v,
+    ]),
+  );
 }
 
-/**
- * Fetches data from Tinybird using the specified path and query parameters.
- *
- * @param {string} path - The API endpoint path to fetch data from.
- * @param {Record<string, string | number | boolean | string[] | DateTime | undefined | null>} query - The query parameters to be sent in the request. Values that are undefined, null, or empty are omitted. DateTime objects are formatted to a compatible string.
- * @return {Promise<TinybirdResponse<T>>} A promise that resolves to the response from Tinybird, containing the requested data.
- */
+function toH3Error(err: unknown): never {
+  if (err instanceof TinybirdClientError) {
+    // err.message can include up to 300 chars of the upstream response body - log it
+    // server-side only, and send clients a fixed message so Tinybird diagnostics/query
+    // details are never exposed through public endpoints that rethrow this error.
+    console.error(`Tinybird request failed (${err.statusCode}): ${err.message}`);
+    throw createError({ statusCode: err.statusCode, statusMessage: 'Tinybird request failed' });
+  }
+  throw err;
+}
+
 export async function fetchFromTinybird<T>(
   path: string,
-  query: Record<string, string | number | boolean | string[] | DateTime | undefined | null>,
+  query: Record<string, DateTimeOrPrimitive>,
 ): Promise<TinybirdResponse<T>> {
-  const tinybirdBaseUrl =
-    process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
-  const tinybirdToken = process.env.NUXT_TINYBIRD_TOKEN;
-
-  if (!tinybirdBaseUrl) {
-    throw new Error('Tinybird base URL is not defined');
-  }
-  if (!tinybirdToken) {
-    throw new Error('Tinybird token is not defined');
-  }
-
   // Fetch and add bucketId if query contains a project parameter
   // Tinybird will route the request to the correct bucket that contains the data for that project
   if (
@@ -87,148 +100,45 @@ export async function fetchFromTinybird<T>(
         });
       }
     } catch (error: unknown) {
-      // Re-throw 404 errors
-      if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
+      // Re-throw all classified Tinybird errors (401/403/404/429/5xx) instead of
+      // masking auth/permission failures as a missing project.
+      if (error && typeof error === 'object' && 'statusCode' in error) {
         throw error;
       }
-      console.error(`Failed to fetch bucketId for project ${query.project}:`, error);
+      console.warn(`Failed to fetch bucketId for project ${query.project}:`, error);
       // Continue without bucketId for other errors
     }
   }
 
-  // We don't want to send undefined, null, or empty values to TinyBird, so we remove those from the query.
-  // We also format DateTime objects so that TinyBird understands them.
-  const processedQuery = Object.fromEntries(
-    Object.entries(query)
-      .filter(
-        ([_, value]) =>
-          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
-      )
-      .map(([key, value]) => [
-        key,
-        value instanceof DateTime ? formatDateForTinyBird(value) : value,
-      ]),
-  );
+  // Collection bucket routing is handled internally by client.fetch (via the
+  // bucketCache adapter passed into createTinybirdClient) - no local pre-resolution
+  // needed here, unlike the project case above which chart.ts also depends on directly.
 
-  const paramParts: string[] = [];
-  for (const [key, value] of Object.entries(processedQuery)) {
-    // Arrays need raw commas (not URL-encoded) for Tinybird Array() parameters
-    if (Array.isArray(value)) {
-      paramParts.push(
-        `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`,
-      );
-    } else {
-      paramParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-    }
+  try {
+    return await client.fetch<T>(path, serializeQuery(query));
+  } catch (e) {
+    toH3Error(e);
   }
-  const params = paramParts.join('&');
-  const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-  const data: TinybirdResponse<T> = await ofetch(url, {
-    headers: {
-      Authorization: `Bearer ${tinybirdToken}`,
-    },
-  });
-  if (!data || !data.data) {
-    throw new Error('Invalid response from Tinybird');
-  }
-  return data;
 }
 
-/**
- * Fetches data from Tinybird using a POST request, sending parameters in the request body.
- * Use this instead of fetchFromTinybird when query parameters would make the URL too long
- * (e.g., when passing large arrays of IDs).
- *
- * @param {string} path - The API endpoint path to fetch data from.
- * @param {Record<string, string | number | boolean | string[] | DateTime | undefined | null>} params - The parameters to be sent in the request body.
- * @return {Promise<TinybirdResponse<T>>} A promise that resolves to the response from Tinybird.
- */
 export async function postToTinybird<T>(
   path: string,
-  params: Record<string, string | number | boolean | string[] | DateTime | undefined | null>,
+  params: Record<string, DateTimeOrPrimitive>,
 ): Promise<TinybirdResponse<T>> {
-  const tinybirdBaseUrl =
-    process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
-  const tinybirdToken = process.env.NUXT_TINYBIRD_TOKEN;
-
-  if (!tinybirdBaseUrl) {
-    throw new Error('Tinybird base URL is not defined');
+  try {
+    return await client.post<T>(path, serializeQuery(params));
+  } catch (e) {
+    toH3Error(e);
   }
-  if (!tinybirdToken) {
-    throw new Error('Tinybird token is not defined');
-  }
-
-  // Process params: remove undefined/null/empty values and format DateTime objects
-  const processedParams = Object.fromEntries(
-    Object.entries(params)
-      .filter(
-        ([_, value]) =>
-          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
-      )
-      .map(([key, value]) => [
-        key,
-        value instanceof DateTime ? formatDateForTinyBird(value) : value,
-      ]),
-  );
-
-  // Build URL-encoded body (Tinybird POST expects form-urlencoded params)
-  const bodyParts: string[] = [];
-  for (const [key, value] of Object.entries(processedParams)) {
-    if (Array.isArray(value)) {
-      bodyParts.push(
-        `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`,
-      );
-    } else {
-      bodyParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-    }
-  }
-
-  const url = `${tinybirdBaseUrl}${path}`;
-
-  const data: TinybirdResponse<T> = await ofetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${tinybirdToken}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: bodyParts.join('&'),
-  });
-  if (!data || !data.data) {
-    throw new Error('Invalid response from Tinybird');
-  }
-  return data;
 }
 
-/**
- * Adds data to the specified Tinybird datasource.
- *
- * @param {string} datasource - The name of the Tinybird datasource where the data will be added.
- * @param {Record<string, string | number | boolean | string[] | DateTime | undefined | null>} data - The data to be added to the Tinybird datasource.
- * @return {Promise<boolean>} A promise that resolves to true if the data was successfully added.
- */
 export async function addDataToTinybirdDatasource(
   datasource: string,
   data: object,
 ): Promise<boolean> {
-  const tinybirdBaseUrl =
-    process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
-  const tinybirdToken = process.env.NUXT_TINYBIRD_TOKEN;
-
-  if (!tinybirdBaseUrl) {
-    throw new Error('Tinybird base URL is not defined');
+  try {
+    return await client.ingest(datasource, data);
+  } catch (e) {
+    toH3Error(e);
   }
-  if (!tinybirdToken) {
-    throw new Error('Tinybird token is not defined');
-  }
-
-  const url = `${tinybirdBaseUrl}/v0/events?name=${datasource}`;
-
-  await ofetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${tinybirdToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-  return true;
 }

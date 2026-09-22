@@ -96,3 +96,12 @@ export const Transparent = {
     type: 'transparent',
   },
 };
+
+export const Dashed = {
+  args: {
+    default: 'Pending',
+    variation: 'default',
+    size: 'medium',
+    type: 'dashed',
+  },
+};

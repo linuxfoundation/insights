@@ -1,22 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import type { CodeReviewEngagement } from '~~/types/development/responses.types';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import { ActivityTypes } from '@lfx-insights/types';
+import {
+  ActiveContributorsTinybirdQuery,
+  ActivitiesCountTinybirdQuery,
+  ContributorsLeaderboardTinybirdQuery,
+} from '~~/server/data/tinybird/requests.types';
 import {
   TinybirdActiveContributorsSummary,
   TinyBirdActivitiesCountDataItem,
   TinyBirdActivitiesCountSummaryData,
   TinybirdContributorsLeaderboardData,
 } from '~~/server/data/tinybird/responses.types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { CodeReviewEngagementFilter } from '~~/types/development/requests.types';
 import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
-import {
-  ActiveContributorsTinybirdQuery,
-  ActivitiesCountTinybirdQuery,
-  ContributorsLeaderboardTinybirdQuery,
-} from '~~/server/data/tinybird/requests.types';
+import type { CodeReviewEngagement } from '~~/types/development/responses.types';
 
 const prParticipantsActivityTypes = [
   ActivityTypes.PULL_REQUEST_REVIEWED,
@@ -75,6 +75,7 @@ async function getParticipantsData(
 
   const currentSummaryQuery: ActiveContributorsTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: prParticipantsActivityTypes,
     startDate: filter.startDate,
@@ -85,11 +86,6 @@ async function getParticipantsData(
     ...currentSummaryQuery,
     startDate: dates.previous.from,
     endDate: dates.previous.to,
-  };
-
-  const dataQuery: ContributorsLeaderboardTinybirdQuery = {
-    ...currentSummaryQuery,
-    limit: 5,
   };
 
   const [currentSummary, previousSummary, codeReviewEngagementData] = await Promise.all([
@@ -103,7 +99,10 @@ async function getParticipantsData(
     ),
     fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
       '/v0/pipes/contributors_leaderboard.json',
-      dataQuery,
+      {
+        ...currentSummaryQuery,
+        limit: 5,
+      } satisfies ContributorsLeaderboardTinybirdQuery,
     ),
   ]);
 
@@ -134,6 +133,7 @@ async function getCommentsData(filter: CodeReviewEngagementFilter): Promise<Code
 
   const currentSummaryQuery: ActivitiesCountTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: reviewCommentsActivityTypes,
     startDate: filter.startDate,
@@ -192,6 +192,7 @@ async function getReviewsData(filter: CodeReviewEngagementFilter): Promise<CodeR
 
   const currentSummaryQuery: ActivitiesCountTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     activity_types: codeReviewsActivityTypes,
     startDate: filter.startDate,

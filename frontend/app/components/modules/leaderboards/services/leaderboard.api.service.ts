@@ -7,10 +7,12 @@ import {
   useQueryClient,
 } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
-import type { LeaderboardLandingResponse } from '../config/types/leaderboard.types';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import type { Pagination } from '~~/types/shared/pagination';
+
+import type { LeaderboardLandingResponse } from '../config/types/leaderboard.types';
 
 export interface LeaderboardDetailQueryParams {
   leaderboardType: string;
@@ -58,6 +60,10 @@ class LeaderboardApiService {
     // Handle the case where initialPageSize is greater than DEFAULT_PAGE_SIZE
     if (lastPage.pageSize > DEFAULT_PAGE_SIZE) {
       nextPage = Number(lastPage.pageSize) / DEFAULT_PAGE_SIZE + 1;
+    }
+
+    if (typeof lastPage.hasMore === 'boolean') {
+      return lastPage.hasMore ? nextPage : null;
     }
 
     const totalPages = Math.ceil(lastPage.total / DEFAULT_PAGE_SIZE);

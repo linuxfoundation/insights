@@ -68,12 +68,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import NumericTrends from '../trends/numeric-trends.vue';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   item: Leaderboard;

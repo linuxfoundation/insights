@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Component } from 'vue';
+
 import StepDetails from '../components/create-modal/steps/step-details.vue';
 import StepProjects from '../components/create-modal/steps/step-projects.vue';
 import StepVisibility from '../components/create-modal/steps/step-visibility.vue';
@@ -17,10 +18,17 @@ export interface CollectionProject {
   logo: string | null;
 }
 
+export interface CollectionRepository {
+  name: string;
+  slug: string;
+  url: string;
+}
+
 export interface CreateCollectionForm {
   name: string;
   description: string;
   projects: CollectionProject[];
+  repositories: CollectionRepository[];
   visibility: 'private' | 'public';
 }
 
@@ -43,5 +51,6 @@ export const createCollectionTemplate: CreateCollectionForm = {
   name: '',
   description: '',
   projects: [],
+  repositories: [],
   visibility: 'private',
 };

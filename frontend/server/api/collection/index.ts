@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Collection } from '~~/types/collection';
+
 import { useRuntimeConfig } from '#imports';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import type { Collection } from '~~/types/collection';
+import type { Pagination } from '~~/types/shared/pagination';
 
 /**
  * API Endpoint: /api/collection

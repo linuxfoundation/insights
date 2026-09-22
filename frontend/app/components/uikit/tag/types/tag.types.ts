@@ -4,6 +4,7 @@ export const tagStyles = [
   'default',
   'neutral',
   'info',
+  'accent',
   'positive',
   'warning',
   'negative',
@@ -12,7 +13,7 @@ export const tagStyles = [
   'negative-solid',
 ] as const;
 export const tagSizes = ['small', 'medium'] as const;
-export const tagTypes = ['solid', 'transparent', 'outline'] as const;
+export const tagTypes = ['solid', 'transparent', 'outline', 'dashed'] as const;
 
 export type TagStyle = (typeof tagStyles)[number];
 export type TagSize = (typeof tagSizes)[number];

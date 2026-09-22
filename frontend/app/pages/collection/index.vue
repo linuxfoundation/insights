@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20 flex-grow">
+  <div class="bg-white pb-30 -mb-30 flex-grow">
     <lfx-collection-discover />
   </div>
 </template>
@@ -11,9 +11,10 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useSeoMeta } from 'nuxt/app';
 import { onMounted } from 'vue';
+
 import LfxCollectionDiscover from '~/components/modules/collection/views/collection-discover.vue';
-import { useTrackEvent } from '~~/composables/useTrackEvent';
 import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 
 const { trackEvent } = useTrackEvent();
 

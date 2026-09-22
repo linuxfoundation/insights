@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="w-full h-full flex flex-col justify-between">
     <VChart
       id="chart"
+      style="width: 100%; height: 100%"
       :option="{
         ...props.config,
         animation: props.animation,
@@ -19,11 +20,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted } from 'vue';
 import { registerMap } from 'echarts';
 import * as echarts from 'echarts';
-import world from './configs/world.json';
+import { onBeforeMount, onMounted } from 'vue';
+
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
+
+import world from './configs/world.json';
 
 const props = withDefaults(
   defineProps<{

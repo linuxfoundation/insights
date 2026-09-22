@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400 font-normal"
         :size="14"
       />
-      <p class="text-body-1 text-neutral-400 truncate">Search projects, repositories, or collections</p>
+      <p class="text-body-1 text-neutral-400 truncate">Search projects, repositories, collections, or organizations</p>
       <div class="flex-grow" />
       <lfx-chip
         v-if="!isMobile"
@@ -45,10 +45,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { watch } from 'vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+
 import LfxSearchModal from '~/components/shared/layout/search/search-modal.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 
 const route = useRoute();
 

@@ -55,19 +55,20 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { OrganizationLeaderboard, Organization } from '~~/types/contributors/responses.types';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import { ref, computed, watch } from 'vue';
+
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
 import LfxOrganizationsTable from '~/components/modules/widget/components/contributors/fragments/organizations-table.vue';
 import organizationsLeaderboard from '~/components/modules/widget/config/contributor/organizations-leaderboard/organizations-leaderboard.config';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { OrganizationLeaderboard, Organization } from '~~/types/contributors/responses.types';
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const props = withDefaults(
   defineProps<{
@@ -97,7 +98,8 @@ const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
 
 const params = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,

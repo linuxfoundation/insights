@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import http from 'k6/http';
 import { sleep, check } from 'k6';
+import http from 'k6/http';
 
 const baseUrl = 'https://insights.linuxfoundation.org';
 const topProjectsCount = 200;
@@ -86,8 +86,8 @@ export function setup() {
 
 export const options = {
   stages: [
-    { duration: '10s', target: 500 },
-    { duration: '20s', target: 500 },
+    { duration: '10s', target: 100 },
+    { duration: '20s', target: 100 },
     { duration: '20s', target: 0 },
   ],
 };

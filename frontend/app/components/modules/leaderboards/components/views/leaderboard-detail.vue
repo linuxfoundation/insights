@@ -81,23 +81,25 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useUrlSearchParams } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
+import pluralize from 'pluralize';
 import { computed, onServerPrefetch, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
-import { useUrlSearchParams } from '@vueuse/core';
-import pluralize from 'pluralize';
-import { storeToRefs } from 'pinia';
-import leaderboardConfigs from '../../config/index.config';
-import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
-import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import LfxLeaderboardSidebar from '../sections/leaderboard-sidebar.vue';
-import LfxLeaderboardDetailHeader from '../sections/leaderboard-detail-header.vue';
-import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
-import LfxTableHeader from '../sections/table-header.vue';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { Pagination } from '~~/types/shared/pagination';
-import { LfxRoutes } from '~/components/shared/types/routes';
+
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+import type { Pagination } from '~~/types/shared/pagination';
+
+import leaderboardConfigs from '../../config/index.config';
+import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
+import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
+import LfxLeaderboardDetailHeader from '../sections/leaderboard-detail-header.vue';
+import LfxLeaderboardSidebar from '../sections/leaderboard-sidebar.vue';
+import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
+import LfxTableHeader from '../sections/table-header.vue';
 
 const route = useRoute();
 

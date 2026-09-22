@@ -1,10 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { Context } from '@temporalio/activity'
-import { ActivityExecuteInput, ActivityInboundCallsInterceptor, Next } from '@temporalio/worker'
-
-import { getServiceChildLogger } from '@crowd/logging'
-import telemetry from '@crowd/telemetry'
+import { getServiceChildLogger } from '@crowd/logging';
+import telemetry from '@crowd/telemetry';
+import { Context } from '@temporalio/activity';
+import { ActivityExecuteInput, ActivityInboundCallsInterceptor, Next } from '@temporalio/worker';
 
 export class ActivityMonitoringInterceptor implements ActivityInboundCallsInterceptor {
   public constructor(private readonly ctx: Context) {}
@@ -18,13 +17,13 @@ export class ActivityMonitoringInterceptor implements ActivityInboundCallsInterc
       workflow_type: this.ctx.info.workflowType,
       task_queue: this.ctx.info.taskQueue,
       activity_type: this.ctx.info.activityType,
-    }
+    };
 
-    const start = new Date()
+    const start = new Date();
 
     try {
-      const res = await next(input)
-      return res
+      const res = await next(input);
+      return res;
     } catch (err) {
       const log = getServiceChildLogger('activity-interceptor', {
         activityType: this.ctx.info.activityType,
@@ -33,17 +32,17 @@ export class ActivityMonitoringInterceptor implements ActivityInboundCallsInterc
         taskQueue: this.ctx.info.taskQueue,
         workflowId: this.ctx.info.workflowExecution.workflowId,
         runId: this.ctx.info.workflowExecution.runId,
-      })
+      });
 
-      log.error(err, 'Error while processing an activity!')
-      throw err
+      log.error(err, 'Error while processing an activity!');
+      throw err;
     } finally {
-      const end = new Date()
-      const duration = end.getTime() - start.getTime()
+      const end = new Date();
+      const duration = end.getTime() - start.getTime();
 
       // Only send telemetry if duration is more than 2 hours
       if (duration > 2 * 60 * 60 * 1000) {
-        telemetry.distribution('temporal.activity_execution_duration', duration, tags)
+        telemetry.distribution('temporal.activity_execution_duration', duration, tags);
       }
     }
   }

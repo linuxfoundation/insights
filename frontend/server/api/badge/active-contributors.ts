@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { HealthScoreTinybird } from '~~/types/overview/responses.types';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { logError } from '~~/server/utils/log';
+import type { HealthScoreTinybird } from '~~/types/overview/responses.types';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);
@@ -35,7 +36,7 @@ export default defineEventHandler(async (event): Promise<void> => {
     ) {
       throw error;
     }
-    console.error('Error fetching badge', error);
+    logError('badge/active-contributors', 'Failed to fetch active contributors badge', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });

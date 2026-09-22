@@ -6,7 +6,7 @@ const path = require('path');
 const extensionsToCheck = ['.js', '.ts', '.jsx', '.tsx', '.vue'];
 const headerMap = {
   '.vue': path.join(__dirname, '..', 'COPYRIGHT_HEADER_vue.txt'),
-  'default': path.join(__dirname, '..', 'COPYRIGHT_HEADER.txt'),
+  default: path.join(__dirname, '..', 'COPYRIGHT_HEADER.txt'),
 };
 
 function getAllFiles(dir, fileList = []) {
@@ -16,10 +16,7 @@ function getAllFiles(dir, fileList = []) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory() && !['node_modules', '.git', 'dist'].includes(entry.name)) {
       getAllFiles(fullPath, fileList);
-    } else if (
-      entry.isFile() &&
-      extensionsToCheck.some((ext) => entry.name.endsWith(ext))
-    ) {
+    } else if (entry.isFile() && extensionsToCheck.some((ext) => entry.name.endsWith(ext))) {
       fileList.push(fullPath);
     }
   }

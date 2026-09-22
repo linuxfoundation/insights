@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+import type { OrganizationDependencyResponse } from '~~/server/data/tinybird/contributors/organizations-dependency';
+
 import { mockTimeseries } from '../../../mocks/tinybird-organizations-dependency-response.mock';
 import { mockTimeseries as mockLeaderboardTimeseries } from '../../../mocks/tinybird-organizations-leaderboard-response.mock';
-import type { OrganizationDependencyResponse } from '~~/server/data/tinybird/contributors/organizations-dependency';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -72,6 +74,8 @@ describe('Organizations Dependency Data Source', () => {
         percentage: 100 - topOrganizationsPercentage,
       },
       list: mockLeaderboardTimeseries.data.map((item) => ({
+        id: item.id,
+        slug: item.slug,
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,

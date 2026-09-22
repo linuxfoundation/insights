@@ -97,27 +97,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, type Component } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxWidgetMenuPopover from './widget-menu-popover.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxWidgetMenuItem from '~/components/modules/widget/components/shared/widget-menu-item.vue';
-import { useReportStore } from '~/components/shared/modules/report/store/report.store';
-import type { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgetArea } from '~/components/modules/widget/config/widget-area.config';
-import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { computed, ref, type Component } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxWidgetEmbedModal from '~/components/modules/widget/components/shared/embed/embed-modal.vue';
+import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
+import LfxWidgetMenuItem from '~/components/modules/widget/components/shared/widget-menu-item.vue';
+import { lfxWidgetArea } from '~/components/modules/widget/config/widget-area.config';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import LfxCopilotWidgetModal from '~/components/shared/modules/copilot/components/copilot-widget-modal.vue';
+import { useReportStore } from '~/components/shared/modules/report/store/report.store';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
-import LfxWidgetEmbedModal from '~/components/modules/widget/components/shared/embed/embed-modal.vue';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import LfxCopilotWidgetModal from '~/components/shared/modules/copilot/components/copilot-widget-modal.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+
+import LfxWidgetMenuPopover from './widget-menu-popover.vue';
 
 export interface MenuItem {
   label: string;
@@ -154,7 +156,7 @@ const isEmbedModalOpen = ref(false);
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 
-const { project, selectedRepositories } = storeToRefs(useProjectStore());
+const { project, selectedRepositories, isCollectionScope } = storeToRefs(useProjectStore());
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 const isCopilotEnabled = computed(() => !!config.value.copilot && hasLfxInsightsPermission.value);
 
@@ -200,7 +202,9 @@ const menu = computed<MenuItem[]>(() => [
     action: () => {
       isEmbedModalOpen.value = true;
     },
-    enabled: config.value.embed,
+    // The repository has no collection embed route yet - the embed URL is always built from
+    // project.value?.slug, which is undefined in collection scope.
+    enabled: config.value.embed && !isCollectionScope.value,
     isSeparator: false,
   },
   {

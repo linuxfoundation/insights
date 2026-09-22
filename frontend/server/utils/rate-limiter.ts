@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 import { createHash, randomUUID } from 'crypto';
-import { type H3Event, getHeaders } from 'h3';
+
 import { RedisClientType } from '@redis/client';
+import { type H3Event, getHeaders } from 'h3';
+
 import {
   RateLimitRule,
   RateLimitResult,
@@ -59,6 +61,23 @@ function getClientIp(event: H3Event): string {
   }
 
   return 'unknown';
+}
+
+/**
+ * Extracts the /24 subnet prefix from an IPv4 address.
+ * Returns null for IPv6 or unrecognized formats.
+ *
+ * @param ip - The client IP address
+ * @returns The subnet prefix (e.g. "1.2.3" for "1.2.3.4") or null
+ */
+export function getSubnet(ip: string): string | null {
+  // Strip IPv4-mapped IPv6 prefix if present (::ffff:1.2.3.4 → 1.2.3.4)
+  const cleaned = ip.replace(/^::ffff:/, '');
+  const parts = cleaned.split('.');
+  if (parts.length === 4 && parts.every((p) => p !== '')) {
+    return parts.slice(0, 3).join('.');
+  }
+  return null;
 }
 
 /**
@@ -171,6 +190,21 @@ function isExcluded(event: H3Event, exclusions: RateLimitExclusion[]): boolean {
 }
 
 /**
+ * Hashes the /24 subnet of the client IP, salted with a secret.
+ * Returns null if the IP is not IPv4 (subnet limiting is skipped).
+ *
+ * @param event - The H3 event object
+ * @param secret - Secret to salt the hash
+ * @returns The hashed subnet or null
+ */
+function getHashedSubnet(event: H3Event, secret: string): string | null {
+  const ip = getClientIp(event);
+  const subnet = getSubnet(ip);
+  if (!subnet) return null;
+  return createHash('sha256').update(`${subnet}:${secret}`).digest('hex');
+}
+
+/**
  * checkRateLimitInRedis talks to Redis and does the math to check the rate limit for a request.
  * If we ever want to swap out Redis for another store, we can create a different
  * "checkRateLimitInX" function that implements the same logic using a different backend.
@@ -275,5 +309,23 @@ export async function checkRateLimit(
   const method = event.method.toUpperCase();
   const key = `${method}:${path}`;
 
-  return await checkRateLimitInRedis(hashedIp, key, maxRequests, windowSeconds, redisClient);
+  // Subnet check first — rejects coordinated bot traffic before touching per-IP counters
+  if (rateLimiterConfig.subnetLimit) {
+    const hashedSubnet = getHashedSubnet(event, rateLimiterConfig.secret);
+    if (hashedSubnet) {
+      const subnetResult = await checkRateLimitInRedis(
+        hashedSubnet,
+        `subnet:${key}`,
+        rateLimiterConfig.subnetLimit.maxRequests,
+        rateLimiterConfig.subnetLimit.windowSeconds,
+        redisClient,
+      );
+      if (!subnetResult.allowed) {
+        return subnetResult;
+      }
+    }
+  }
+
+  // Per-IP check
+  return checkRateLimitInRedis(hashedIp, key, maxRequests, windowSeconds, redisClient);
 }

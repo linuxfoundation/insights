@@ -4,6 +4,20 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
+    <div
+      v-if="hasGitHub"
+      class="flex gap-1 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mb-5"
+    >
+      <lfx-icon
+        class="pt-0.5"
+        aria-hidden="true"
+        name="info-circle"
+        :size="14"
+      />
+      <span class="text-xs text-neutral-600">
+        Star data may be incomplete due to a recent change in GitHub's API. We're working to restore full accuracy.
+      </span>
+    </div>
     <div class="mb-6">
       <lfx-skeleton-state
         :status="status"
@@ -54,28 +68,30 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { StarsData } from '~~/types/popularity/responses.types';
+import { computed, watch } from 'vue';
+
+import type { Granularity } from '@lfx-insights/types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
-import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
-import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import type { StarsData } from '~~/types/popularity/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 interface StarsModel {
   activeTab: string;
@@ -97,8 +113,19 @@ const model = computed<StarsModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
-  storeToRefs(useProjectStore());
+const {
+  isCollectionScope,
+  startDate,
+  endDate,
+  selectedReposValues,
+  selectedTimeRangeKey,
+  customRangeGranularity,
+  project,
+} = storeToRefs(useProjectStore());
+
+const hasGitHub = computed(
+  () => project.value?.connectedPlatforms?.some((p) => p.toLowerCase().includes('github')) ?? false,
+);
 
 const route = useRoute();
 
@@ -114,7 +141,8 @@ const lineGranularity = computed(() =>
 );
 
 const queryParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

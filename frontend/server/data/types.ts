@@ -1,20 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { DateTime } from 'luxon';
-import type { ActivityPlatforms } from '~~/types/shared/activity-platforms';
-import type { ActivityTypes } from '~~/types/shared/activity-types';
-import { Granularity } from '~~/types/shared/granularity';
+
+import { Granularity } from '@lfx-insights/types';
+import type { ActivityPlatforms, ActivityTypes } from '@lfx-insights/types';
 
 export type FetchFunction = typeof $fetch;
 
+// Exactly one of project/collectionSlug is set by the caller - project scopes to a single
+// project's segment, collectionSlug scopes to every project in a collection (see
+// segments_filtered / segments_filtered_by_collection on the Tinybird side).
 export type DefaultFilter = {
-  project: string;
+  project?: string;
+  collectionSlug?: string;
   repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
-// TODO: refactor all filter types to "inherit" from DefaultFilter
 export type ActiveContributorsFilter = DefaultFilter & {
   activity_types?: ActivityTypes[];
   includeCodeContributions?: boolean;
@@ -107,19 +110,9 @@ export type PatchSetsFilter = DefaultFilter & {
   dataType?: string;
 };
 
-export type ReviewTimeByPRSizeFilter = {
-  project: string;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
+export type ReviewTimeByPRSizeFilter = DefaultFilter;
 
-export type MergeLeadTimeFilter = {
-  project: string;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
+export type MergeLeadTimeFilter = DefaultFilter;
 
 export type ActiveDaysFilter = DefaultFilter & {
   granularity?: Granularity;
@@ -127,51 +120,29 @@ export type ActiveDaysFilter = DefaultFilter & {
   includeCollaborations?: boolean;
 };
 
-export type MedianTimeToCloseFilter = {
-  project: string;
+export type MedianTimeToCloseFilter = DefaultFilter & {
   granularity?: Granularity;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
   platform?: string;
 };
 
-export type MedianTimeToReviewFilter = {
-  project: string;
+export type MedianTimeToReviewFilter = DefaultFilter & {
   granularity?: Granularity;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
   platform?: string;
 };
 
-export type ReviewEfficiencyFilter = {
-  project: string;
+export type ReviewEfficiencyFilter = DefaultFilter & {
   granularity?: Granularity;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
   platform?: string;
 };
 
-export type PackageFilter = {
-  project: string;
-  repos?: string[];
+export type PackageFilter = DefaultFilter & {
   search?: string;
 };
 
-export type PackageMetricsFilter = {
-  project: string;
+export type PackageMetricsFilter = DefaultFilter & {
   granularity?: Granularity;
-  repos?: string[];
   ecosystem?: string;
   name?: string;
-  startDate?: DateTime;
-  endDate?: DateTime;
 };
 
-export type SearchVolumeFilter = {
-  project: string;
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
+export type SearchVolumeFilter = DefaultFilter;

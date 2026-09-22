@@ -9,41 +9,40 @@ SPDX-License-Identifier: MIT
     content-class="!overflow-hidden"
     :close-function="handleCloseAttempt"
   >
-    <div class="flex flex-col bg-white rounded-xl shadow-xl">
-      <!-- Header and content -->
-      <div class="flex flex-col gap-6 p-6">
-        <!-- Header -->
-        <div class="flex flex-col gap-4">
-          <div class="flex items-center justify-between">
-            <h2 class="font-secondary font-bold text-xl leading-7 text-neutral-900">Edit collection</h2>
-            <lfx-icon-button
-              icon="xmark"
-              type="default"
-              size="small"
-              :icon-size="12"
-              @click="closeModal"
-            />
-          </div>
-
-          <!-- Tabs -->
-          <lfx-tabs
-            v-model="activeTab"
-            :tabs="tabs"
-            tab-style="pill"
-          >
-            <template #slotItem="{ option }">
-              <div class="flex items-center gap-1.5 -mx-1">
-                <lfx-icon
-                  :name="option.icon"
-                  :size="16"
-                />
-                {{ option.label }}
-              </div>
-            </template>
-          </lfx-tabs>
+    <div class="flex flex-col bg-white rounded-xl shadow-xl min-h-[60vh] max-h-[75vh]">
+      <!-- Header -->
+      <div class="flex flex-col gap-4 p-6 pb-0">
+        <div class="flex items-center justify-between">
+          <h2 class="font-secondary font-bold text-xl leading-7 text-neutral-900">Edit collection</h2>
+          <lfx-icon-button
+            icon="xmark"
+            type="default"
+            size="small"
+            :icon-size="12"
+            @click="closeModal"
+          />
         </div>
 
-        <!-- Tab content -->
+        <!-- Tabs -->
+        <lfx-tabs
+          v-model="activeTab"
+          :tabs="tabs"
+          tab-style="pill"
+        >
+          <template #slotItem="{ option }">
+            <div class="flex items-center gap-1.5 -mx-1">
+              <lfx-icon
+                :name="option.icon"
+                :size="16"
+              />
+              {{ option.label }}
+            </div>
+          </template>
+        </lfx-tabs>
+      </div>
+
+      <!-- Tab content (scrollable) -->
+      <div class="flex-1 min-h-0 overflow-y-auto p-6">
         <lf-edit-modal-settings
           v-if="activeTab === 'settings'"
           v-model="form"
@@ -56,7 +55,7 @@ SPDX-License-Identifier: MIT
       </div>
 
       <!-- Footer -->
-      <div class="flex items-center justify-end gap-4 p-6 border-t border-neutral-200">
+      <div class="flex items-center justify-end gap-4 p-6 border-t border-neutral-200 shrink-0">
         <lfx-button
           type="tertiary"
           button-style="pill"
@@ -83,26 +82,31 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useQueryClient } from '@tanstack/vue-query';
 import { computed, ref, watch } from 'vue';
-import LfEditModalSettings from './edit-modal-settings.vue';
-import LfEditModalProjects from './edit-modal-projects.vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import type { Collection } from '~~/types/collection';
-import type { ProjectInsights } from '~~/types/project';
-import type { Pagination } from '~~/types/shared/pagination';
+
 import type {
   CreateCollectionForm,
   CollectionProject,
+  CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
-import { useTrackEvent } from '~~/composables/useTrackEvent';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
+import type { Collection } from '~~/types/collection';
+import type { ProjectInsights } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
+
+import LfEditModalProjects from './edit-modal-projects.vue';
+import LfEditModalSettings from './edit-modal-settings.vue';
 
 interface Tab {
   value: 'settings' | 'projects';
@@ -112,7 +116,7 @@ interface Tab {
 
 const tabs: Tab[] = [
   { value: 'settings', label: 'Settings', icon: 'sliders-simple' },
-  { value: 'projects', label: 'Projects', icon: 'grid-round-2' },
+  { value: 'projects', label: 'Projects & Repositories', icon: 'grid-round-2' },
 ];
 
 const props = defineProps<{
@@ -145,6 +149,7 @@ const collectionProjects = computed<ProjectInsights[]>(
 
 const { showToast } = useToastService();
 const { trackEvent } = useTrackEvent();
+const queryClient = useQueryClient();
 
 const activeTab = ref<'settings' | 'projects'>('settings');
 const isUpdating = ref(false);
@@ -153,13 +158,16 @@ const form = ref<CreateCollectionForm>({
   name: '',
   description: '',
   projects: [],
+  repositories: [],
   visibility: 'private',
 });
 const originalForm = ref<CreateCollectionForm | null>(null);
 
 const isFormValid = computed(() => {
   return (
-    form.value.name.trim().length > 0 && form.value.description.trim().length > 0 && form.value.projects.length > 0
+    form.value.name.trim().length > 0 &&
+    form.value.description.trim().length > 0 &&
+    (form.value.projects.length > 0 || form.value.repositories.length > 0)
   );
 });
 
@@ -169,11 +177,15 @@ const hasUnsavedChanges = computed(() => {
   const projectIds = form.value.projects.map((p) => p.id).sort();
   const originalProjectIds = originalForm.value.projects.map((p) => p.id).sort();
 
+  const repositoryUrls = form.value.repositories.map((r) => r.url).sort();
+  const originalRepositoryUrls = originalForm.value.repositories.map((r) => r.url).sort();
+
   return (
     form.value.name !== originalForm.value.name ||
     form.value.description !== originalForm.value.description ||
     form.value.visibility !== originalForm.value.visibility ||
-    JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds)
+    JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds) ||
+    JSON.stringify(repositoryUrls) !== JSON.stringify(originalRepositoryUrls)
   );
 });
 
@@ -193,14 +205,21 @@ const initializeForm = () => {
     const formData: CreateCollectionForm = {
       name: props.collection.name,
       description: props.collection.description,
-      projects: collectionProjects.value.map(
-        (p: ProjectInsights): CollectionProject => ({
+      projects: collectionProjects.value
+        .filter((p: ProjectInsights) => p.type === 'project')
+        .map((p: ProjectInsights): CollectionProject => ({
           id: p.id,
           name: p.name,
           slug: p.slug,
           logo: p.logoUrl,
-        }),
-      ),
+        })),
+      repositories: collectionProjects.value
+        .filter((p: ProjectInsights) => p.type === 'repo')
+        .map((p: ProjectInsights): CollectionRepository => ({
+          name: p.name,
+          slug: p.slug,
+          url: p.repoUrl,
+        })),
       visibility: props.collection.isPrivate ? 'private' : 'public',
     };
     form.value = formData;
@@ -218,6 +237,7 @@ const updateCollection = async () => {
     description: form.value.description,
     isPrivate: form.value.visibility === 'private',
     projects: form.value.projects.map((project) => project.id),
+    repositoryUrls: form.value.repositories.map((repository) => repository.url),
   };
 
   isUpdating.value = true;
@@ -249,6 +269,10 @@ const updateCollection = async () => {
         changedFields,
       },
     });
+
+    queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTIONS] });
+    queryClient.invalidateQueries({ queryKey: [TanstackKey.MY_COLLECTIONS] });
+    queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTION_PROJECTS] });
     showToast('Collection updated successfully', ToastTypesEnum.positive);
     emit('updated', updated);
     isModalOpen.value = false;

@@ -3,8 +3,8 @@
 
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { MenuItem } from '~/config/menu';
-import type { CollectionType } from '~~/types/collection';
 import type { User } from '~~/types/auth/auth-user.types';
+import type { CollectionType } from '~~/types/collection';
 
 export enum CollectionTypeEnum {
   CURATED = 'curated',
@@ -17,7 +17,7 @@ export interface CollectionTypesTabs extends MenuItem {
   description: string;
   detailsLabel: string;
 }
-export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
+export const collectionTabs = (_user?: User | null): CollectionTypesTabs[] => {
   const tabs: CollectionTypesTabs[] = [
     {
       label: 'Curated',
@@ -42,24 +42,29 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
     description: 'Discover collections from the open source community.',
   });
 
-  if (user) {
-    tabs.push({
-      label: 'My Collections',
-      detailsLabel: 'My Collections',
-      icon: 'folder-heart',
-      route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
-      activeClass: '!bg-discovery-200',
-      iconHighlightClass: '!bg-discovery-500',
-      type: CollectionTypeEnum.MY_COLLECTIONS,
-      description: "Collections you've created or liked.",
-    });
-  }
+  tabs.push({
+    label: 'My Collections',
+    detailsLabel: 'My Collections',
+    icon: 'folder-heart',
+    route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
+    activeClass: '!bg-discovery-200',
+    iconHighlightClass: '!bg-discovery-500',
+    type: CollectionTypeEnum.MY_COLLECTIONS,
+    description: "Collections you've created or liked.",
+  });
 
   return tabs;
 };
 
-// This only applies to the collection details page header
-export const headerBackground = (type?: CollectionType, curatedColor?: string | null) => {
+// This only applies to the collection details page header.
+// Collections v2 (IN-1194): headers use a plain, consistent background — no gradient — on every collection type.
+export const headerBackground = () => ({
+  background: 'var(--White, #FFF)',
+});
+
+// Collection list page headers keep the original type-aware gradient — IN-1194's gradient
+// removal is scoped to detail pages only (see headerBackground above).
+export const listHeaderBackground = (type?: CollectionType, curatedColor?: string | null) => {
   switch (type) {
     case CollectionTypeEnum.CURATED:
       return {

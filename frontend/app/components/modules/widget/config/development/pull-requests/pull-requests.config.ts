@@ -1,11 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import PullRequests from './pull-requests.vue';
-import { Granularity } from '~~/types/shared/granularity';
+import { Granularity } from '@lfx-insights/types';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+import PullRequests from './pull-requests.vue';
 
 const pullRequests: WidgetConfig = {
   key: 'pullRequests',
+  availableInCollection: true,
   name: 'Pull requests',
   description: () =>
     'Comparison between opened and merged (or closed) pull requests during the selected period.',

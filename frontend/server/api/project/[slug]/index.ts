@@ -1,13 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 import type {
   Project,
   ProjectRepository,
   ProjectRepositoryGroup,
   ProjectTinybird,
 } from '~~/types/project';
-import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 
 /**
  * API Endpoint: /api/projects/{slug}
@@ -51,7 +51,8 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const project: ProjectTinybird = res.data[0];
+    const project: ProjectTinybird = res.data[0]!;
+
     const repoData: Record<string, Partial<ProjectRepository>> = project.repoData.reduce(
       (acc, repo) => {
         const [url, score, rank] = repo;
@@ -64,6 +65,12 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       {} as Record<string, Partial<ProjectRepository>>,
     );
 
+    const licensesByUrl: Record<string, string[]> = {};
+    for (const [url, license] of project.repoLicenses || []) {
+      if (!licensesByUrl[url]) licensesByUrl[url] = [];
+      licensesByUrl[url].push(license);
+    }
+
     const repositories = project.repositories.map((repoUrl) => {
       const name = getRepoNameFromUrl(repoUrl);
       const slug = getRepoSlugFromName(name);
@@ -74,6 +81,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
         slug,
         score: details.score || 0,
         rank: details.rank || 0,
+        licenses: licensesByUrl[repoUrl] || [],
       };
     });
     const projectLinks = [
@@ -92,10 +100,19 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       projectLinks,
       repoData: undefined,
       tags: project?.keywords || [],
+      maturityStatus: project?.maturity || undefined,
     };
   } catch (err: unknown) {
-    if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
-      throw err;
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      const status = (err as { statusCode: number }).statusCode;
+      // Re-throw 404 and 429 as-is without logging as error
+      if (status === 404) {
+        throw err;
+      }
+      if (status === 429) {
+        console.warn(`Rate limited fetching project ${slug}`);
+        throw err;
+      }
     }
     console.error('Error fetching project:', err);
     throw createError({ statusCode: 500, statusMessage: 'Internal server error' });

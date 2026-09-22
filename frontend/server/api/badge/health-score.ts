@@ -1,23 +1,25 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { HealthScoreTinybird } from '~~/types/overview/responses.types';
-import { getHealthScoreConfig } from '~~/config/trust-score';
+import { logError } from '~~/server/utils/log';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);
   const project: string = query?.project as string;
 
   try {
-    const res = await fetchFromTinybird<HealthScoreTinybird[]>(
-      '/v0/pipes/health_score_overview.json',
-      { project },
+    const res = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+      '/v0/pipes/project_insights.json',
+      { slug: project },
     );
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const healthScore = res.data[0].overallScore;
-    const config = getHealthScoreConfig(healthScore);
+    const healthLabel = res.data[0].healthLabel;
+    const healthMaxScore = res.data[0].healthMaxScore;
+    const config = getHealthScoreV2Config(healthLabel, isPartialHealthScore(healthMaxScore));
     const message = encodeURIComponent(config.label);
     const label = encodeURIComponent('Health Score');
     const color = config.ghBadgeColor.replace('#', '');
@@ -33,7 +35,7 @@ export default defineEventHandler(async (event): Promise<void> => {
     ) {
       throw error;
     }
-    console.error('Error fetching badge', error);
+    logError('badge/health-score', 'Failed to fetch health score badge', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });

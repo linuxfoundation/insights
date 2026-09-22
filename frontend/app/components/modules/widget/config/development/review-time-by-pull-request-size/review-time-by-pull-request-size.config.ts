@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import ReviewTimeByPullRequestSize from './review-time-by-pull-request-size.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import ReviewTimeByPullRequestSize from './review-time-by-pull-request-size.vue';
 
 const reviewTimeByPullRequestSize: WidgetConfig = {
   key: 'reviewTimeByPullRequestSize',
+  availableInCollection: true,
   name: 'Review time by pull request size',
   description: () =>
     'Average time taken to review pull requests, sorted by number of code line changes' +

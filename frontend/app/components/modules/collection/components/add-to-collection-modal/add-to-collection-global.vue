@@ -7,14 +7,17 @@ SPDX-License-Identifier: MIT
     v-if="isModalOpen && modalData?.project"
     v-model="isModalOpen"
     :project="modalData.project"
+    :repositories="modalData.repositories"
     @added="handleAdded"
   />
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import LfxAddToCollectionModal from './add-to-collection-modal.vue';
+
 import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
+
+import LfxAddToCollectionModal from './add-to-collection-modal.vue';
 
 const addToCollectionStore = useAddToCollectionStore();
 const { isModalOpen, modalData } = storeToRefs(addToCollectionStore);

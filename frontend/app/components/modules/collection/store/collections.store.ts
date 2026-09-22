@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+
 import { useAuth } from '~~/composables/useAuth';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -22,10 +23,9 @@ export const useCollectionsStore = defineStore('collections', () => {
   };
 
   const addLikedCollection = (collectionId: string): boolean => {
-    const { isAuthenticated, login } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated.value) {
-      login(window.location.pathname + window.location.search + window.location.hash);
       return false;
     }
 

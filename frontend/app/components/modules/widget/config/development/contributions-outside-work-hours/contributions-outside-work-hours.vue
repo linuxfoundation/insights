@@ -79,7 +79,7 @@ SPDX-License-Identifier: MIT
         />
       </div>
       <div class="text-neutral-400 text-xs text-center italic">
-        Only considering contributions from contributors with known timezones
+        This project has a diverse, globally active contributor base.
       </div>
     </lfx-project-load-state>
   </section>
@@ -87,28 +87,29 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { ContributionOutsideHours } from '~~/types/development/responses.types';
-import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { lfxColors } from '~/config/styles/colors';
-import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { ref, computed, watch } from 'vue';
+
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import {
   DEVELOPMENT_API_SERVICE,
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
+import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { ContributionOutsideHours } from '~~/types/development/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 const props = defineProps<{
   modelValue?: WidgetModel;
@@ -120,12 +121,14 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
 const params = computed<QueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: '', // Not needed for contributions outside work hours
   repos: selectedReposValues.value,
   startDate: startDate.value,

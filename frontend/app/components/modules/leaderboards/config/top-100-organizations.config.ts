@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import LfxOrganizationRowDisplay from '../components/row-displays/organization-row.vue';
 import LfxOrganizationMinimizedRowDisplay from '../components/minimize-row-displays/organization-row.vue';
+import LfxOrganizationRowDisplay from '../components/row-displays/organization-row.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const top100OrganizationsConfig: LeaderboardConfig = {

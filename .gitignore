@@ -8,12 +8,12 @@ scripts/services
 scripts/scaffold.yaml
 
 node_modules
+libs/*/dist
 .prettierrc
 **/.env*
 !.env.dist
 database/Dockerfile.flyway
 database/flyway_migrate.sh
 
-**/AGENTS.md
-
 CLAUDE.local.md
+.playwright-mcp

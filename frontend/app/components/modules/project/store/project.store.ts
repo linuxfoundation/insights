@@ -1,21 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { useRoute } from 'nuxt/app';
 import { DateTime } from 'luxon';
+import { useRouter } from 'nuxt/app';
+import { defineStore } from 'pinia';
 import pluralize from 'pluralize';
+import { ref, computed, watch } from 'vue';
+
+import { Granularity } from '@lfx-insights/types';
 import {
   dateOptKeys,
   lfxProjectDateOptions,
 } from '~/components/modules/project/config/date-options';
-import type { Project, ProjectRepository, ProjectRepositoryGroup } from '~~/types/project';
-import { Granularity } from '~~/types/shared/granularity';
-import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
   processProjectParams,
   projectParamsSetter,
 } from '~/components/modules/project/services/project.query.service';
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import type { Project, ProjectRepository, ProjectRepositoryGroup } from '~~/types/project';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
@@ -48,7 +49,20 @@ export const defaultDateOption = lfxProjectDateOptions.find(
 );
 
 export const useProjectStore = defineStore('project', () => {
-  const route = useRoute();
+  // `useRoute()` inside a Pinia store setup can resolve to a snapshot that stops
+  // tracking client-side navigations (observed: store's route stayed pinned to the
+  // route active when the store was first instantiated). `router.currentRoute` is the
+  // literal ref vue-router mutates on every navigation, so reading it here guarantees
+  // this store always sees the current route.
+  const route = useRouter().currentRoute;
+
+  // Collection detail pages (/collection/details/[slug]/...) reuse this store for the
+  // date-range/granularity state widgets share, but have no single project's repos,
+  // repo groups, or widgets array to filter by - there's no per-project concept at all
+  // when scope is a whole collection. Every repo/archived-repo-dependent computed below
+  // short-circuits to a safe empty/false value in that case instead of trying to derive
+  // "the collection's repos" from a null project.
+  const isCollectionScope = computed(() => route.value.path.startsWith('/collection/details/'));
 
   const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
   const { timeRange, start, end } = queryParams.value;
@@ -59,6 +73,23 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const collaborationSet = ref<string[]>([]); // stores the widget names that have includeCollaborations set to true
+
+  // pages/project/[slug].vue never clears `project`/`collaborationSet` on unmount, so a
+  // client-side SPA navigation from a project page straight into collection scope would
+  // otherwise leave the previous project's data in the store. Every collection-derived
+  // computed below already short-circuits via isCollectionScope, but consumers that read
+  // `project`/`collaborationSet` directly (widget descriptions, defaultValue, embed/share)
+  // don't go through those guards - reset the raw refs at the scope boundary instead.
+  watch(
+    isCollectionScope,
+    (value) => {
+      if (value) {
+        project.value = null;
+        collaborationSet.value = [];
+      }
+    },
+    { immediate: true },
+  );
 
   // List of all project repositories
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
@@ -72,16 +103,23 @@ export const useProjectStore = defineStore('project', () => {
   // List of excluded repositories
   const excludedRepos = computed<string[]>(() => project.value?.excludedRepositories || []);
 
-  // Selected repositories from URL param 'repos' or single repo from route param 'name'
-  const selectedRepoSlugs = computed(() =>
-    route.params.name
-      ? [route.params.name as string]
-      : (route.query.repos as string)?.split(',') || [],
-  );
+  // Selected repositories from URL param 'repos' or single repo from route param 'name'.
+  const selectedRepoSlugs = computed<string[]>(() => {
+    if (isCollectionScope.value) {
+      return [];
+    }
+    return route.value.params.name
+      ? [route.value.params.name as string]
+      : (route.value.query.repos as string)?.split(',') || [];
+  });
 
   // Selected repository Group
   const selectedRepositoryGroup = computed<ProjectRepositoryGroup | null>(() => {
-    const groupSlug = (route.params.groupSlug as string | undefined) || route.query.repositoryGroup;
+    if (isCollectionScope.value) {
+      return null;
+    }
+    const groupSlug =
+      (route.value.params.groupSlug as string | undefined) || route.value.query.repositoryGroup;
     if (!groupSlug || !projectRepositoryGroups.value.length) {
       return null;
     }
@@ -90,6 +128,9 @@ export const useProjectStore = defineStore('project', () => {
 
   // If a repository group is selected, filter repos by that group, otherwise use selectedRepoSlugs
   const selectedRepositories = computed<ProjectRepository[]>(() => {
+    if (isCollectionScope.value) {
+      return [];
+    }
     if (selectedRepositoryGroup.value) {
       return projectRepos.value.filter((repo) =>
         selectedRepositoryGroup.value?.repositories.includes(repo.url),
@@ -97,7 +138,7 @@ export const useProjectStore = defineStore('project', () => {
     }
     return projectRepos.value.filter(
       (repo: ProjectRepository) =>
-        selectedRepoSlugs.value.includes(repo.slug) || route.params.name === repo.slug,
+        selectedRepoSlugs.value.includes(repo.slug) || route.value.params.name === repo.slug,
     );
   });
 
@@ -113,17 +154,30 @@ export const useProjectStore = defineStore('project', () => {
       : calculateGranularity(startDate.value, endDate.value),
   );
 
-  // If all repos are archived or all selected repos are archived
+  // If all repos are archived or all selected repos are archived. Collections have no
+  // archived-repo concept, so this is always false there (guards the empty/empty edge
+  // case that would otherwise read as "all archived" when project is null).
   const allArchived = computed(
     () =>
-      archivedRepos.value.length === projectRepos.value.length ||
-      (!!selectedReposValues.value.length &&
-        selectedReposValues.value.every((repo) => archivedRepos.value.includes(repo))),
+      !isCollectionScope.value &&
+      (archivedRepos.value.length === projectRepos.value.length ||
+        (!!selectedReposValues.value.length &&
+          selectedReposValues.value.every((repo) => archivedRepos.value.includes(repo)))),
   );
 
   const isProjectArchived = computed(() => project.value?.status === 'archived');
   // If all repos are archived or the project is archived
   const isArchived = computed(() => allArchived.value || isProjectArchived.value);
+
+  // Unlike `isArchived`, this excludes the "current selection happens to be all archived"
+  // case - it's true only for genuine whole-project archival, not a selection-driven one.
+  const isEntireProjectArchived = computed(
+    () =>
+      isProjectArchived.value ||
+      (!isCollectionScope.value &&
+        !!projectRepos.value.length &&
+        archivedRepos.value.length === projectRepos.value.length),
+  );
 
   const emptyStateTitle = computed(() => {
     if (isProjectArchived.value) {
@@ -145,7 +199,18 @@ export const useProjectStore = defineStore('project', () => {
       selectedReposValues.value.some((repo) => archivedRepos.value.includes(repo)),
   );
 
+  // True only when there IS an explicit repo selection and every selected repo is archived
+  // or excluded. Separate from `allArchived`, which only accounts for `archivedRepos`.
+  const selectedReposAllArchivedOrExcluded = computed(
+    () =>
+      !!selectedReposValues.value.length &&
+      selectedReposValues.value.every(
+        (repo) => archivedRepos.value.includes(repo) || excludedRepos.value.includes(repo),
+      ),
+  );
+
   return {
+    isCollectionScope,
     selectedTimeRangeKey,
     startDate,
     endDate,
@@ -162,9 +227,11 @@ export const useProjectStore = defineStore('project', () => {
     selectedReposValues,
     allArchived,
     hasSelectedArchivedRepos,
+    selectedReposAllArchivedOrExcluded,
     collaborationSet,
     isProjectArchived,
     isArchived,
+    isEntireProjectArchived,
     emptyStateTitle,
     emptyStateDescription,
   };

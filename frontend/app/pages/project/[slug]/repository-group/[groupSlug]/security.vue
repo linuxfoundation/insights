@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxProjectSecurityView from '~/components/modules/project/views/security.vue';
 
@@ -32,7 +33,7 @@ const projectDescription = computed(
 const repositoryName = computed(() => selectedRepositoryGroup.value?.name || '');
 const projectLogo = computed(() => project.value?.logo || '');
 
-defineOgImageComponent('project', {
+defineOgImage('Project', {
   projectName,
   projectDescription,
   repositoryName,

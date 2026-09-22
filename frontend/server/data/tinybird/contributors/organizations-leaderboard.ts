@@ -1,19 +1,20 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { OrganizationsLeaderboardFilter } from '~~/server/data/types';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { OrganizationsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 import type {
   TinybirdCountData,
   TinybirdOrganizationsLeaderboardData,
 } from '~~/server/data/tinybird/responses.types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { OrganizationsLeaderboardFilter } from '~~/server/data/types';
 import type { Organization, OrganizationLeaderboard } from '~~/types/contributors/responses.types';
-import type { OrganizationsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 export async function fetchOrganizationsLeaderboard(
   filter: OrganizationsLeaderboardFilter,
 ): Promise<OrganizationLeaderboard> {
   const dataQuery: OrganizationsLeaderboardTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     platform: filter.platform,
     activity_type: filter.activity_type,
     includeCodeContributions: filter.includeCodeContributions,
@@ -32,8 +33,8 @@ export async function fetchOrganizationsLeaderboard(
 
   const path = '/v0/pipes/organizations_leaderboard.json';
   const [dataResponse, countResponse] = await Promise.all([
-    await fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(path, dataQuery),
-    await fetchFromTinybird<TinybirdCountData[]>(path, countQuery),
+    fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(path, dataQuery),
+    fetchFromTinybird<TinybirdCountData[]>(path, countQuery),
   ]);
 
   return {
@@ -42,14 +43,14 @@ export async function fetchOrganizationsLeaderboard(
       limit: filter.limit || 10,
       total: countResponse?.data[0].count || 0,
     },
-    data: dataResponse.data.map(
-      (item): Organization => ({
-        logo: item.logo,
-        name: item.displayName,
-        contributions: item.contributionCount,
-        percentage: item.contributionPercentage,
-        website: '', // We don't seem to have this at the moment
-      }),
-    ),
+    data: dataResponse.data.map((item): Organization => ({
+      id: item.id,
+      slug: item.slug,
+      logo: item.logo,
+      name: item.displayName,
+      contributions: item.contributionCount,
+      percentage: item.contributionPercentage,
+      website: '', // We don't seem to have this at the moment
+    })),
   };
 }

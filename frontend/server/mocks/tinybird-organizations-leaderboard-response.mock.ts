@@ -8,6 +8,10 @@ export const mockTimeseries = {
       type: 'String',
     },
     {
+      name: 'slug',
+      type: 'String',
+    },
+    {
       name: 'logo',
       type: 'String',
     },
@@ -27,6 +31,7 @@ export const mockTimeseries = {
   data: [
     {
       id: 'd7bf07d9-780b-4279-bfbc-d83f85950353',
+      slug: 'red-hat-inc',
       logo: 'https://lf-master-organization-logos-prod.s3.us-east-2.amazonaws.com/red-hat,-inc..svg',
       displayName: 'Red Hat, Inc.',
       contributionCount: 16593,
@@ -34,6 +39,7 @@ export const mockTimeseries = {
     },
     {
       id: '9f7f73b0-95d6-49c2-bffe-8300c03852ef',
+      slug: 'linaro-limited',
       logo: 'https://lf-platform-documents-prod.s3.amazonaws.com/linaro_limited_1716406752779_0014100000Te22QAAR.svg',
       displayName: 'Linaro Limited',
       contributionCount: 13560,
@@ -41,6 +47,7 @@ export const mockTimeseries = {
     },
     {
       id: '0c562f29-ab29-4383-b4ca-85457367ee39',
+      slug: 'arm-limited',
       logo: 'https://lf-master-organization-logos-prod.s3.us-east-2.amazonaws.com/arm-limited.svg',
       displayName: 'Arm Limited',
       contributionCount: 9996,
@@ -48,6 +55,7 @@ export const mockTimeseries = {
     },
     {
       id: '987a49ec-31c9-4611-a5f0-a0ce52a999b2',
+      slug: 'suse',
       logo: 'https://lf-platform-documents-prod.s3.amazonaws.com/SUSE_Logo-hor_L_Green-pos_sRGB.svg',
       displayName: 'SUSE',
       contributionCount: 9168,
@@ -55,6 +63,7 @@ export const mockTimeseries = {
     },
     {
       id: '543dd100-3a92-4a9d-ba5a-d629f452681a',
+      slug: 'advanced-micro-devices',
       logo: 'https://lf-master-organization-logos-prod.s3.us-east-2.amazonaws.com/advanced-micro-devices,-inc..svg',
       displayName: 'Advanced Micro Devices (AMD)',
       contributionCount: 8484,
@@ -62,6 +71,7 @@ export const mockTimeseries = {
     },
     {
       id: '51fde723-67df-4e0e-91c6-936d01d59559',
+      slug: 'the-linux-foundation',
       logo: 'https://avatars.githubusercontent.com/u/38015056?v=4',
       displayName: 'The Linux Foundation',
       contributionCount: 7308,
@@ -69,6 +79,7 @@ export const mockTimeseries = {
     },
     {
       id: '522278e4-d0dc-4ddb-a7bc-739253b760cf',
+      slug: 'qualcomm-inc',
       logo: 'https://lf-master-organization-logos-prod.s3.us-east-2.amazonaws.com/qualcomm-inc.svg',
       displayName: 'Qualcomm, Inc.',
       contributionCount: 4061,
@@ -76,6 +87,7 @@ export const mockTimeseries = {
     },
     {
       id: 'f4c82974-4298-496d-8d69-bbc3761f97c6',
+      slug: 'huawei-technologies',
       logo: 'https://lf-master-organization-logos-prod.s3.us-east-2.amazonaws.com/huawei-technologies-co-ltd.svg',
       displayName: 'Huawei Technologies Co., Ltd',
       contributionCount: 3004,
@@ -83,6 +95,7 @@ export const mockTimeseries = {
     },
     {
       id: '5264d0aa-93d5-4899-a22b-c00085ee41a5',
+      slug: 'individual-no-account',
       logo: '',
       displayName: 'Individual - No Account',
       contributionCount: 2709,
@@ -90,6 +103,7 @@ export const mockTimeseries = {
     },
     {
       id: '3e9107f1-26dc-4159-bae5-b08d4854ee66',
+      slug: 'self-employed',
       logo: 'https://avatars.githubusercontent.com/u/8340675?v=4',
       displayName: 'self-employed',
       contributionCount: 2666,

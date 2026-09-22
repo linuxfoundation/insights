@@ -85,13 +85,14 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import useScroll from '~/components/shared/utils/scroll';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+
 import useResponsive from '~/components/shared/utils/responsive';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
 const props = defineProps<{
   sort: string;

@@ -77,20 +77,25 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useVirtualList } from '@vueuse/core';
 import { useRoute, useRouter } from 'nuxt/app';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import type { ProjectRepository } from '~~/types/project';
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, ref } from 'vue';
+
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
-import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { ProjectRepository } from '~~/types/project';
 
 const props = defineProps<{
   link: ProjectLinkConfig;
+}>();
+
+const emit = defineEmits<{
+  (e: 'close'): void;
 }>();
 
 const route = useRoute();
@@ -149,6 +154,7 @@ const handleReposChange = (repo: RepositoryItem) => {
       params: { name: repos[0] },
       query: { ...routeQuery, repos: undefined },
     });
+    emit('close');
   } else {
     router.push({
       name: props.link.projectRouteName,

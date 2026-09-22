@@ -84,6 +84,7 @@ Each Markdown file within this directory corresponds to a public documentation p
 ```bash
 /frontend/docs/introduction/data-quality/index.md
 ```
+
 …is available at:
 ➡️ https://insights.linuxfoundation.org/docs/introduction/data-quality/
 
@@ -104,22 +105,29 @@ Here’s a quick overview of how our documentation is organized:
 | `theme/index.ts`                       | Imports and exports for theme customization                                                                              |
 | `frontend/docs/images/`                | Image assets used across the documentation                                                                               |
 
-
 #### 🛠️ Running the Docs Locally
 
 ##### 1. Clone the repository
+
 Make sure you have Git installed. If not, follow this [installation guide](https://git-scm.com/downloads).
 
 ```bash
 git --version        # Verify Git installation
-git clone https://github.com/linuxfoundation/insights.git
+git clone --recursive https://github.com/linuxfoundation/insights.git
 cd insights
+```
+
+If you already cloned the repo without the `--recursive` flag, you should manually update submodules.
+
+```bash
+git submodule update --init --recursive
 ```
 
 ##### 2. Install Node.js and pnpm
 
 You'll need:
-- Node.js v20+
+
+- Node.js v24+
 - pnpm v9+
 
 ```bash
@@ -127,12 +135,12 @@ You'll need:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 # Restart your terminal, then:
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 
 # Verify installation
-node -v      # Should return v20.x.x
-nvm current  # Should return v20.x.x
+node -v      # Should return v24.x.x
+nvm current  # Should return v24.x.x
 
 # Install pnpm globally
 npm install -g pnpm@latest-9
@@ -158,8 +166,8 @@ Your local documentation will be available at:
 
 Changes you make to Markdown files will update live in your browser.
 
-
 #### ✍️ How to Contribute
+
 Once you’ve made your edits in frontend/docs and confirmed everything looks good locally:
 
 ```bash
@@ -187,4 +195,5 @@ Then:
 - In the PR description, briefly explain the changes you’ve made.
 
 ## 🙏 Thank You!
+
 We appreciate your contribution to making LFX Insights better. If you have any questions, don’t hesitate to reach out or open an issue.

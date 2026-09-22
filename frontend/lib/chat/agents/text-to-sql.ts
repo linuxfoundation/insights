@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod';
-import { textToSqlInstructionsSchema, type SqlErrorContext } from '../types';
+
 import { textToSqlPrompt } from '../prompts/text-to-sql';
+import { textToSqlInstructionsSchema, type SqlErrorContext } from '../types';
 import { BaseAgent } from './base-agent';
 
 // Output schema for SQL agent
@@ -37,7 +38,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     input: TextToSqlAgentInput & { messages: any[] },
   ): Promise<SqlOutput & { usage?: any }> {
     try {
-      const { generateText } = await import('ai');
+      const { generateText, isStepCount } = await import('ai');
       const systemPrompt = this.getSystemPrompt(input);
       const tools = this.getTools(input);
       const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input.messages);
@@ -62,7 +63,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
         model: this.getModel(input),
         system: fullSystemPrompt,
         tools: workingTools,
-        maxSteps: this.maxSteps,
+        stopWhen: isStepCount(this.maxSteps),
         temperature: this.temperature,
       };
 

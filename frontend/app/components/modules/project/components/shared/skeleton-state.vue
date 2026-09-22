@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import type { AsyncDataRequestStatus } from 'nuxt/app';
+
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
 const props = withDefaults(

@@ -59,12 +59,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { communityConfigs } from '../config';
-import type { CommunityMentions } from '~~/types/community/community';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { links } from '~/config/links';
+import type { CommunityMentions } from '~~/types/community/community';
+
+import { communityConfigs } from '../config';
 
 defineProps<{
   mentions: CommunityMentions[];

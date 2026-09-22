@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { defineNuxtRouteMiddleware, navigateTo } from 'nuxt/app';
+
 import redirectMap from '../../config/collection-redirects.json';
 
 const COLLECTION_DETAILS_PREFIX = '/collection/details/';

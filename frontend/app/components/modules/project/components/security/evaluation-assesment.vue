@@ -45,8 +45,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type SecurityAssessmentData, SecurityDataResult } from '~~/types/security/responses.types';
+
 import LfxProjectSecurityEvaluationResultTag from '~/components/modules/project/components/security/evaluation-result-tag.vue';
+import { type SecurityAssessmentData, SecurityDataResult } from '~~/types/security/responses.types';
 
 const props = defineProps<{
   assessment: SecurityAssessmentData;

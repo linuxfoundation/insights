@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <lfx-project-header :project="data" />
   <div>
     <div v-if="isLoading || projectIsOnboarded">
-      <nuxt-page />
+      <nuxt-page :page-key="route.fullPath" />
     </div>
     <div
       v-else-if="!isLoading && !projectIsOnboarded"
@@ -18,22 +18,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query';
 import { createError, showError, useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, onServerPrefetch, watch } from 'vue';
-import { useQuery } from '@tanstack/vue-query';
-import type { Project } from '~~/types/project';
+
 import LfxProjectHeader from '~/components/modules/project/components/shared/header.vue';
+import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import {
   useProjectStore,
   defaultTimeRangeKey,
   defaultDateOption,
 } from '~/components/modules/project/store/project.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
 import { useQueryParam } from '~/components/shared/utils/query-param';
-import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import { useRichSchema } from '~~/composables/useRichSchema';
+import type { Project } from '~~/types/project';
 
 const route = useRoute();
 const { slug } = route.params;
@@ -56,6 +57,12 @@ const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !
 onServerPrefetch(async () => {
   await suspense();
   if (isError.value) {
+    // On rate limit, don't throw — let SWR serve stale cached content
+    const statusCode = (error.value as { statusCode?: number })?.statusCode;
+    if (statusCode === 429) {
+      return;
+    }
+
     const statusMessage = error.value?.message || 'Project Not Found';
 
     if (import.meta.server) {

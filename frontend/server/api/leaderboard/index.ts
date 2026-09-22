@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 import { Leaderboard, LeaderboardTinybird } from '~~/types/leaderboard/leaderboard';
 import { Pagination } from '~~/types/shared/pagination';
 
@@ -31,7 +32,8 @@ export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>
       })),
       page: page,
       pageSize: pageSize,
-      total: response.rows_before_limit_at_least,
+      total: paginationTotal(response, page, pageSize),
+      hasMore: paginationHasMore(response, page, pageSize),
     };
   } catch (error) {
     console.error('Error fetching leaderboard list:', error);

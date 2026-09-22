@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import SocialMentions from './social-mentions.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import SocialMentions from './social-mentions.vue';
 
 const socialMentions: WidgetConfig = {
   key: 'socialMentions',
+  availableInCollection: false,
   name: 'Social mentions',
   description: (project) =>
     `Number of times that ${project.name} was mentioned on social platforms during` +

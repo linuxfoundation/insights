@@ -1,21 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 import type {
   TinybirdContributorsLeaderboardData,
   TinybirdCountData,
 } from '~~/server/data/tinybird/responses.types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
 import type { Contributor, ContributorLeaderboard } from '~~/types/contributors/responses.types';
-import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 export async function fetchContributorsLeaderboard(
   filter: ContributorsLeaderboardFilter,
 ): Promise<ContributorLeaderboard> {
   const dataQuery: ContributorsLeaderboardTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     platform: filter.platform,
     activity_type: filter.activity_type,
+    activity_types: filter.activity_types,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     repos: filter.repos,
@@ -27,8 +29,10 @@ export async function fetchContributorsLeaderboard(
 
   const countQuery: ContributorsLeaderboardTinybirdQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     platform: filter.platform,
     activity_type: filter.activity_type,
+    activity_types: filter.activity_types,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     repos: filter.repos,
@@ -51,15 +55,13 @@ export async function fetchContributorsLeaderboard(
       limit: filter.limit || 10,
       total: countResponse?.data?.[0]?.count || 0,
     },
-    data: dataResponse.data.map(
-      (item): Contributor => ({
-        avatar: item.avatar,
-        name: item.displayName,
-        contributions: item.contributionCount,
-        percentage: item.contributionPercentage,
-        roles: item.roles || [],
-        githubHandleArray: item.githubHandleArray,
-      }),
-    ),
+    data: dataResponse.data.map((item): Contributor => ({
+      avatar: item.avatar,
+      name: item.displayName,
+      contributions: item.contributionCount,
+      percentage: item.contributionPercentage,
+      roles: item.roles || [],
+      githubHandleArray: item.githubHandleArray,
+    })),
   };
 }

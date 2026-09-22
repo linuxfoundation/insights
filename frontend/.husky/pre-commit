@@ -1,12 +1,51 @@
-#run husky pre-commit hook only if frontend changed
-if git diff --diff-filter=d --name-only --cached | grep 'frontend/';
-  then
-    echo "FRONTEND FOLDER CHANGED --> starting husky..."
-    cd frontend && \
-    pnpm exec eslint --fix $(git diff --diff-filter=d --name-only --cached --relative) && \
-    pnpm tsc-check
-    git add -u $(git diff --diff-filter=d --name-only --cached --relative)
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+
+# git sets these to absolute paths when invoking hooks, which breaks path resolution in linked worktrees
+unset GIT_DIR GIT_WORK_TREE
+
+# oxlint runs from the repo root and covers every package, so only the staged files need checking
+LINT_FILES=$(git diff --name-only --diff-filter=d --cached | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$' | tr '\n' ' ')
+if [ -n "$LINT_FILES" ]; then
+  pnpm exec oxlint --fix --no-error-on-unmatched-pattern $LINT_FILES
+  git add $LINT_FILES
+fi
+
+# oxfmt also covers json, markdown, yaml, styles, html and toml, so its staged-file list is wider
+FORMAT_FILES=$(git diff --name-only --diff-filter=d --cached | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue|json|jsonc|md|yml|yaml|css|scss|html|toml)$' | tr '\n' ' ')
+if [ -n "$FORMAT_FILES" ]; then
+  pnpm exec oxfmt --no-error-on-unmatched-pattern $FORMAT_FILES
+  # only re-stage when lintable files are also staged, see the GPG index race note below
+  if [ -n "$LINT_FILES" ]; then
+    git add $FORMAT_FILES
+  fi
+fi
+
+if git diff --name-only --cached | grep -q '^frontend/'; then
+  echo "FRONTEND FOLDER CHANGED --> running tsc-check..."
+  cd frontend
+  pnpm tsc-check
+  cd "$ROOT"
+fi
+
+if git diff --name-only --cached | grep -q '^api/'; then
+  echo "API FOLDER CHANGED --> running tsc-check..."
+  cd api
+  pnpm tsc-check
+  cd "$ROOT"
 fi
 
 #run lint-staged to add copyright license on top of all new files
-npx lint-staged
+#
+# Guard: only run when JS/TS/Vue files are staged. When only non-lintable
+# files (e.g. .md) are staged, `npx lint-staged --no-stash` races with the
+# GPG signing transaction and silently turns commits into pure deletions of
+# every staged file (disk content intact). Skipping it when there is no
+# matching work eliminates that race.
+#
+# Similarly, both `git add` calls above only run when lintable files are present,
+# removing the other vector for the same GPG index race.
+if git diff --name-only --cached | grep -qE '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$'; then
+  pnpm exec lint-staged --no-stash
+fi

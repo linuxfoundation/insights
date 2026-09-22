@@ -21,8 +21,8 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
-import type { SecurityData } from '~~/types/security/responses.types';
 import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 defineProps<{
   checks: SecurityData[];

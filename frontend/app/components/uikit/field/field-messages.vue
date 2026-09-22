@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxFieldMessage from '~/components/uikit/field/field-message.vue';
 
 const props = withDefaults(

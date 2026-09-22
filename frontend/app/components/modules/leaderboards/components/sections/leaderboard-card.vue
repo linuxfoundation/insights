@@ -90,18 +90,20 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 // import LfxTableRow from './table-row.vue';
-import LfxTableHeader from './table-header.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+
+import LfxTableHeader from './table-header.vue';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
@@ -121,7 +123,7 @@ const handleCardClick = (event: MouseEvent) => {
   if (window.innerWidth >= 640) {
     // Don't navigate if clicking on the share button
     const target = event.target as HTMLElement;
-    if (target.closest('button')) {
+    if (target.closest('button') || target.closest('a')) {
       return;
     }
     navigateToLeaderboard();

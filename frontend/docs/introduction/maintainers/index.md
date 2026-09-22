@@ -12,7 +12,7 @@ Maintainer data is extracted from governance-related files found anywhere in a r
 
 | File pattern | Examples |
 |---|---|
-| Maintainer lists | `MAINTAINERS`, `MAINTAINERS.md`, `MAINTAINER.md` |
+| Maintainer lists | `MAINTAINERS`, `MAINTAINERS.md`, `MAINTAINER.md`, `MAINTAINERS.yml`, `MAINTAINERS.yaml` |
 | Owner files | `OWNERS`, `CODEOWNERS`, `CODEOWNERS.md` |
 | Contributor lists | `CONTRIBUTORS`, `CONTRIBUTORS.md` |
 | Governance docs | `GOVERNANCE.md`, `GOVERNANCE.yaml`, `GOVERNANCE.toml` |
@@ -31,7 +31,7 @@ Our automated system scans the full repository tree recursively — not just the
 Once a file is identified, an AI model extracts structured maintainer information from it:
 
 - **Full coverage** — every person listed in the extracted maintainer-related sections of the file is captured, regardless of role.
-- **YAML and TOML support** — for structured files, top-level keys matching governance terms are extracted.
+- **YAML and TOML support** — `MAINTAINERS.yml` and `MAINTAINERS.yaml` files are analyzed in full. For other structured governance files (e.g. `GOVERNANCE.yaml`, `GOVERNANCE.toml`), top-level keys matching governance terms are extracted.
 - **Role normalization** — each person is assigned a standardized role. Reviewers and designated reviewers are normalized to "maintainer".
 
 ### Data Points Collected

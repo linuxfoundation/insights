@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { graphic } from 'echarts';
 import { DateTime, Interval } from 'luxon';
+
+import { Granularity } from '@lfx-insights/types';
+
 import type {
   ChartData,
   ChartSeries,
@@ -9,7 +12,6 @@ import type {
   SeriesTypes,
   CategoryData,
 } from '../types/ChartTypes';
-import { Granularity } from '~~/types/shared/granularity';
 
 /**
  * Convert raw data to chart data. Since data coming from the backend is not in

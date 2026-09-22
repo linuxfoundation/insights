@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool, PoolClient } from 'pg';
+
 import { generateSlug } from '~~/server/utils/common';
 
 export interface CommunityCollection {
@@ -327,7 +328,7 @@ export class CommunityCollectionRepository {
         `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
-         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
          WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
         [collectionIds],
       ),
@@ -412,7 +413,10 @@ export class CommunityCollectionRepository {
     };
   }
 
-  async findBySlug(slug: string): Promise<
+  async findBySlug(
+    slug: string,
+    ssoUserId?: string | null,
+  ): Promise<
     | (CommunityCollection & {
         projectCount: number;
         featuredProjects: { name: string; slug: string; logo: string }[];
@@ -423,8 +427,9 @@ export class CommunityCollectionRepository {
       `SELECT c.*, u."displayName" AS "ownerName", u."avatarUrl" AS "ownerLogo"
        FROM collections c
        LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
-      [slug],
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL
+         AND (c."isPrivate" = false OR c."ssoUserId" = $2)`,
+      [slug, ssoUserId ?? null],
     );
 
     if (collectionResult.rows.length === 0) {
@@ -438,7 +443,7 @@ export class CommunityCollectionRepository {
         `SELECT cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
-         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
          WHERE cip."collectionId" = $1 AND cip."deletedAt" IS NULL`,
         [collection.id],
       ),
@@ -519,7 +524,7 @@ export class CommunityCollectionRepository {
         `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
-         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
          WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
         [collectionIds],
       ),
@@ -583,11 +588,13 @@ export class CommunityCollectionRepository {
 
   async findProjectIdsBySlug(
     slug: string,
+    ssoUserId?: string | null,
   ): Promise<{ collectionId: string; projectIds: string[]; repositoryUrls: string[] } | null> {
     const collectionResult = await this.pool.query(
       `SELECT c.id FROM collections c
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
-      [slug],
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL
+         AND (c."isPrivate" = false OR c."ssoUserId" = $2)`,
+      [slug, ssoUserId ?? null],
     );
 
     if (collectionResult.rows.length === 0) {
@@ -598,8 +605,9 @@ export class CommunityCollectionRepository {
 
     const [projectsResult, reposResult] = await Promise.all([
       this.pool.query(
-        `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
-         WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+        `SELECT cip."insightsProjectId" FROM "collectionsInsightsProjects" cip
+         JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip.enabled = true
+         WHERE cip."collectionId" = $1 AND cip."deletedAt" IS NULL`,
         [collectionId],
       ),
       this.pool.query(
@@ -646,6 +654,32 @@ export class CommunityCollectionRepository {
     // Deduplicate project IDs to avoid unique constraint violations
     const uniqueIds = [...new Set(insightsProjectIds)];
     if (uniqueIds.length === 0) return;
+
+    // Validate that all project IDs exist in the insightsProjects table
+    const projectResult = await client.query(
+      `SELECT id FROM "insightsProjects" WHERE id = ANY($1) AND "deletedAt" IS NULL`,
+      [uniqueIds],
+    );
+
+    const foundIds = new Set(projectResult.rows.map((r: { id: string }) => r.id));
+    if (foundIds.size === 0) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'None of the provided project IDs were found',
+      });
+    }
+
+    const notFound = uniqueIds.filter((id) => !foundIds.has(id));
+    if (notFound.length > 0) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Some project IDs were not found',
+        data: {
+          notFoundIds: notFound,
+          notFoundCount: notFound.length,
+        },
+      });
+    }
 
     const values = uniqueIds.map((_, i) => `($1, $${i + 2}, false)`).join(', ');
 

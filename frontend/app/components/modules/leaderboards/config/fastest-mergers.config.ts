@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import LfxProjectDurationRowDisplay from '../components/row-displays/project-duration.vue';
 import LfxProjectDurationMinimizedRowDisplay from '../components/minimize-row-displays/project-duration.vue';
+import LfxProjectDurationRowDisplay from '../components/row-displays/project-duration.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const fastestMergersConfig: LeaderboardConfig = {

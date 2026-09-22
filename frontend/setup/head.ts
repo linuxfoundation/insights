@@ -40,8 +40,9 @@ export default {
       content: shortDescription,
     },
     { hid: 'og:type', property: 'og:type', content: 'website' },
-    { hid: 'og:image', property: 'og:image', content: '/og-image.png' },
-    { hid: 'og:url', property: 'og:url', content: 'https://insights.lfx.org' },
+    // Static fallback; pages calling defineOgImage() override it (nuxt-og-image injects with high priority)
+    { hid: 'og:image', property: 'og:image', content: '/og-image.png', tagPriority: 'low' },
+    // og:url is set per-page by plugins/canonical.ts so it always matches the canonical URL
     { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
     {
       hid: 'twitter:title',
@@ -53,7 +54,7 @@ export default {
       name: 'twitter:description',
       content: shortDescription,
     },
-    { hid: 'twitter:image', name: 'twitter:image', content: '/og-image.png' },
+    { hid: 'twitter:image', name: 'twitter:image', content: '/og-image.png', tagPriority: 'low' },
   ],
   link: [
     {
@@ -65,6 +66,9 @@ export default {
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
     { rel: 'preconnect', href: 'https://cdn.platform.linuxfoundation.org' },
+    // Project and collection hero logos are usually served from these origins.
+    { rel: 'preconnect', href: 'https://avatars.githubusercontent.com', crossorigin: 'anonymous' },
+    { rel: 'preconnect', href: 'https://raw.githubusercontent.com', crossorigin: 'anonymous' },
     { rel: 'dns-prefetch', href: 'https://kit.fontawesome.com' },
     // Async load fonts (non-blocking)
     {

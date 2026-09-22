@@ -5,9 +5,6 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="displayArchivedReposNote"
-    :class="{
-      'w-full bg-neutral-50 py-3 px-2 rounded-b-lg': pageContent === 'health-score',
-    }"
     class="text-center flex items-center justify-center gap-1.5"
   >
     <lfx-icon
@@ -17,16 +14,17 @@ SPDX-License-Identifier: MIT
     />
     <span class="text-neutral-500 text-xs">
       <span class="font-semibold">Archived repositories</span> are excluded from
-      {{ pageContent === 'health-score' ? 'Health Score and Security & Best practices' : 'Security & Best practices' }}.
+      {{ pageContent === 'health-score' ? 'Health Score' : 'Security & Best practices' }}.
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed } from 'vue';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   pageContent: 'health-score' | 'security';

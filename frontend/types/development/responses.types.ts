@@ -57,7 +57,8 @@ export interface ContributionOutsideHours {
 }
 
 export interface IssuesResolutionSummary extends Summary {
-  avgVelocityInDays: number;
+  // Nullable: Tinybird returns no velocity row when there are no resolved issues in scope.
+  avgVelocityInDays: number | null;
 }
 
 export interface IssuesResolutionData {
@@ -94,7 +95,8 @@ export interface PullRequests {
   openedSummary: Summary;
   mergedSummary: Summary;
   closedSummary: Summary;
-  avgVelocityInDays: number;
+  // Nullable: Tinybird returns no velocity row when there are no resolved PRs in scope.
+  avgVelocityInDays: number | null;
   data: {
     startDate: string;
     endDate: string;

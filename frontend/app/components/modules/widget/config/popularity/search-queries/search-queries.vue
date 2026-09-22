@@ -35,24 +35,26 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import searchQueriesConfig from './search-queries.config';
-import type { SearchQueries } from '~~/types/popularity/responses.types';
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
+import { Granularity } from '@lfx-insights/types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { lfxColors } from '~/config/styles/colors';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import { Granularity } from '~~/types/shared/granularity';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { lfxColors } from '~/config/styles/colors';
+import type { SearchQueries } from '~~/types/popularity/responses.types';
+
+import searchQueriesConfig from './search-queries.config';
 
 const props = defineProps<{
   snapshot?: boolean;
@@ -63,14 +65,15 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const { startDate, endDate, selectedReposValues, project } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues, project } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 
 const granularity = computed(() => Granularity.MONTHLY);
 
 const queryParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

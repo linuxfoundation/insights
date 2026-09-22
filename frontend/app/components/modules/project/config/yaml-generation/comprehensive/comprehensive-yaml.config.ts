@@ -1,21 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import YamlComprehensiveRepositoryRelease from './yaml-comprehensive-repository-release.vue';
-import YamlComprehensiveRepositorySecurity from './yaml-comprehensive-repository-security.vue';
-import YamlComprehensiveRepositorySecurityChampions from './yaml-comprehensive-repository-security-champions.vue';
-import YamlComprehensiveRepositorySecurityTools from './yaml-comprehensive-repository-security-tools.vue';
-import YamlComprehensiveProject from './yaml-comprehensive-project.vue';
-import YamlComprehensiveProjectSteward from './yaml-comprehensive-project-steward.vue';
+
+import YamlHeaderInformation from '~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue';
+import type { YamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
+
 import YamlComprehensiveProjectAdministrators from './yaml-comprehensive-project-administrators.vue';
 import YamlComprehensiveProjectDocumentation from './yaml-comprehensive-project-documentation.vue';
 import YamlComprehensiveProjectRepositories from './yaml-comprehensive-project-repositories.vue';
+import YamlComprehensiveProjectSteward from './yaml-comprehensive-project-steward.vue';
 import YamlComprehensiveProjectVulnerability from './yaml-comprehensive-project-vulnerability.vue';
-import YamlComprehensiveRepository from './yaml-comprehensive-repository.vue';
-import YamlComprehensiveRepositoryMembers from './yaml-comprehensive-repository-members.vue';
+import YamlComprehensiveProject from './yaml-comprehensive-project.vue';
 import YamlComprehensiveRepositoryDocumentation from './yaml-comprehensive-repository-documentation.vue';
-import YamlHeaderInformation from '~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue';
-import type { YamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
+import YamlComprehensiveRepositoryMembers from './yaml-comprehensive-repository-members.vue';
+import YamlComprehensiveRepositoryRelease from './yaml-comprehensive-repository-release.vue';
+import YamlComprehensiveRepositorySecurityChampions from './yaml-comprehensive-repository-security-champions.vue';
+import YamlComprehensiveRepositorySecurityTools from './yaml-comprehensive-repository-security-tools.vue';
+import YamlComprehensiveRepositorySecurity from './yaml-comprehensive-repository-security.vue';
+import YamlComprehensiveRepository from './yaml-comprehensive-repository.vue';
 
 const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Comprehensive',

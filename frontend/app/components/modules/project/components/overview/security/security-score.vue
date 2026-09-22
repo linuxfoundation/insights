@@ -68,20 +68,21 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { useRoute } from 'nuxt/app';
-import type { SecurityDataCategory } from '~~/types/security/responses.types';
-import { lfxColors } from '~/config/styles/colors';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
-import { links } from '~/config/links';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxButton from '~/components/uikit/button/button.vue';
+
 import {
   lfxSecurityCategories,
   type SecurityCategoryConfig,
 } from '~/components/modules/project/config/security-category';
-import type { SecurityScore } from '~~/types/overview/responses.types';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import { links } from '~/config/links';
+import { lfxColors } from '~/config/styles/colors';
+import type { SecurityScore } from '~~/types/overview/responses.types';
+import type { SecurityDataCategory } from '~~/types/security/responses.types';
 
 const route = useRoute();
 const { name } = route.params;

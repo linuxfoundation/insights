@@ -1,14 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import ActiveContributors from './active-contributors.vue';
-import LfxShareActiveContributors from './share-active-contributors.vue';
+import { Granularity } from '@lfx-insights/types';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
-import { Granularity } from '~~/types/shared/granularity';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
+
+import ActiveContributors from './active-contributors.vue';
+import LfxShareActiveContributors from './share-active-contributors.vue';
 
 const activeContributors: WidgetConfig = {
   key: 'activeContributors',
+  availableInCollection: true,
   name: 'Active contributors',
   description: () =>
     'Active contributor is an individual who performed activities such as commits, issues,' +

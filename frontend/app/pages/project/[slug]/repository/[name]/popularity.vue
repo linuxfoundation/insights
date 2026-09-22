@@ -9,11 +9,12 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { WidgetArea } from '~/components/modules/widget/types/widget-area';
 import LfxWidgetArea from '~/components/modules/widget/components/shared/widget-area.vue';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
 
 const route = useRoute();
 const config = useRuntimeConfig();
@@ -47,7 +48,7 @@ const projectDescription = computed(
 const repositoryName = computed(() => repoName.value || '');
 const projectLogo = computed(() => project.value?.logo || '');
 
-defineOgImageComponent('project', {
+defineOgImage('Project', {
   projectName,
   projectDescription,
   repositoryName,

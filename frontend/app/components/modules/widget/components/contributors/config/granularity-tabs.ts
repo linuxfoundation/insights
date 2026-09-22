@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { GranularityTabs } from '../types/contributors.types';
+import { Granularity } from '@lfx-insights/types';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { Granularity } from '~~/types/shared/granularity';
+
+import type { GranularityTabs } from '../types/contributors.types';
 
 export const granularityTabs: GranularityTabs[] = [
   {

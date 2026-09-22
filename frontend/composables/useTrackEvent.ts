@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { useNuxtApp } from 'nuxt/app';
+
 import { EVENT_DEFINITIONS, type EventKey } from '~/components/shared/types/events';
 import { useAuth } from '~~/composables/useAuth';
 

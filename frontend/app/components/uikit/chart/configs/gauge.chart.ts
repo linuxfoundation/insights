@@ -1,9 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { GaugeSeriesOption } from 'echarts';
+
+import { lfxColors } from '~/config/styles/colors';
+
 import type { GaugeData } from '../types/ChartTypes';
 import { defaultGaugeSeriesStyle } from './defaults.chart';
-import { lfxColors } from '~/config/styles/colors';
 // Not inheriting the default chart options here
 const halfSeriesStyle: GaugeSeriesOption = {
   ...defaultGaugeSeriesStyle,
@@ -114,6 +116,16 @@ const fullDataOpts = {
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   const gaugeSeries = { ...(data.gaugeType === 'half' ? halfSeriesStyle : fullSeriesStyle) };
+  gaugeSeries.max = data.maxValue || 100;
+  if (data.lineWidth !== undefined) {
+    gaugeSeries.axisLine = {
+      ...gaugeSeries.axisLine,
+      lineStyle: {
+        ...gaugeSeries.axisLine?.lineStyle,
+        width: data.lineWidth,
+      },
+    };
+  }
   gaugeSeries.detail = {
     ...(data.gaugeType === 'half' ? halfDetail : fullDetail),
     formatter:

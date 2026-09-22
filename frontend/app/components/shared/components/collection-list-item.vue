@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     class="flex items-center justify-between py-4 px-2 hover:bg-neutral-50 transition border-b border-neutral-100"
   >
     <div
-      class="flex items-center w-1/2 min-w-0"
+      class="flex items-center w-1/2 md:w-1/2 min-w-0 flex-1 md:flex-none"
       :class="{ 'gap-3': isSingleLogo, 'gap-4': !isSingleLogo }"
     >
       <!-- Collection Avatar -->
@@ -44,18 +44,44 @@ SPDX-License-Identifier: MIT
         </lfx-avatar-group>
       </template>
       <!-- Collection Info -->
-      <div class="flex flex-col min-w-0 flex-1 pr-4">
+      <div class="flex flex-col min-w-0 flex-1 pr-2 md:pr-4">
         <h4 class="text-sm font-semibold text-neutral-900 truncate">
           {{ props.collection.name }}
         </h4>
         <p class="text-xs text-neutral-500 truncate">
           {{ props.collection.description }}
         </p>
+        <!-- Mobile: inline meta (hidden for liked-collections per design) -->
+        <div
+          v-if="props.variant !== 'liked-collections'"
+          class="flex items-center gap-1.5 mt-1 md:hidden"
+        >
+          <span
+            v-if="props.variant !== 'my-collections'"
+            class="text-xs text-neutral-500 truncate max-w-[20ch]"
+          >
+            {{ ownerName }}
+          </span>
+          <span
+            v-if="props.variant !== 'my-collections'"
+            class="text-neutral-400 text-xs"
+          >
+            ・
+          </span>
+          <lfx-icon
+            name="laptop-code"
+            :size="12"
+            class="text-neutral-500"
+          />
+          <span class="text-xs text-neutral-500">
+            {{ pluralize('project', projectCount, true) }}
+          </span>
+        </div>
       </div>
     </div>
 
-    <!-- Right side info -->
-    <div class="flex items-center gap-4 shrink-0">
+    <!-- Right side info (desktop) -->
+    <div class="hidden md:flex items-center gap-4 shrink-0">
       <!-- Owner info -->
       <div class="flex items-center gap-2">
         <template v-if="props.variant !== 'my-collections'">
@@ -75,7 +101,7 @@ SPDX-License-Identifier: MIT
             class="text-neutral-500"
           />
           <span class="text-sm text-neutral-500">
-            {{ props.collection.projectCount }} projects ・ Updated
+            {{ pluralize('project', projectCount, true) }} ・ Updated
             {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
           </span>
         </div>
@@ -148,35 +174,94 @@ SPDX-License-Identifier: MIT
         </lfx-dropdown>
       </div>
     </div>
+
+    <!-- Mobile: three-dot menu only -->
+    <div class="md:hidden shrink-0">
+      <lfx-dropdown placement="bottom-end">
+        <template #trigger>
+          <lfx-icon-button
+            icon="ellipsis"
+            size="small"
+            type="transparent"
+            class="!p-1"
+          />
+        </template>
+        <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS && !!user">
+          <lfx-dropdown-item @click="handleEditCollection()">
+            <lfx-icon
+              name="pencil"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Edit collection
+          </lfx-dropdown-item>
+        </template>
+        <lfx-dropdown-item @click="handleShare()">
+          <lfx-icon
+            name="share-nodes"
+            :size="16"
+            class="text-neutral-600"
+          />
+          Share collection
+        </lfx-dropdown-item>
+        <lfx-dropdown-item @click="handleClone()">
+          <lfx-icon
+            name="clone"
+            :size="16"
+            class="text-neutral-600"
+          />
+          Duplicate collection
+        </lfx-dropdown-item>
+        <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS && !!user">
+          <lfx-dropdown-item @click="handleDeleteCollection()">
+            <lfx-icon
+              name="trash"
+              :size="16"
+              class="!text-negative-500"
+            />
+            <span class="text-negative-500">Delete collection</span>
+          </lfx-dropdown-item>
+        </template>
+        <like-button
+          v-if="showLikeCount && !!user"
+          :collection="props.collection"
+          :variant="props.variant"
+          :show-as-dropdown="true"
+          @updated="handleLikeUpdated"
+        />
+      </lfx-dropdown>
+    </div>
   </nuxt-link>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import type { Collection, CollectionFeaturedProject } from '~~/types/collection';
-import { formatDate } from '~/components/shared/utils/formatter';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LikeButton from '~/components/shared/components/like-button.vue';
-import CollectionOwner from '~/components/shared/components/collection-owner.vue';
-import type { CollectionType } from '~~/types/collection';
-import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import pluralize from 'pluralize';
+import { computed } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatDate } from '~/components/shared/utils/formatter';
+import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { useTrackEvent } from '~~/composables/useTrackEvent';
-import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import type { Collection, CollectionFeaturedProject } from '~~/types/collection';
+import type { CollectionType } from '~~/types/collection';
 
 const router = useRouter();
 const { user } = storeToRefs(useAuthStore());
@@ -206,7 +291,16 @@ const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
 
 const showLikeCount = computed(() => props.variant !== 'my-collections');
 
+const ownerName = computed(() => {
+  if (props.collection.owner?.name) {
+    return `by ${props.collection.owner.name}`;
+  }
+  return 'by The Linux Foundation';
+});
+
 const isSingleLogo = computed(() => props.variant === 'liked-collections' || props.variant === 'curated');
+
+const projectCount = computed(() => (props.collection.projectCount || 0) + (props.collection.repositoryCount || 0));
 
 const handleShare = () => {
   trackEvent({

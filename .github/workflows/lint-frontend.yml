@@ -1,9 +1,12 @@
-name: Lint & Format & Typescript Check
+name: Typescript Check
 
 on:
   pull_request:
     paths:
-      - 'frontend/**'
+      - "frontend/**"
+
+permissions:
+  contents: read
 
 jobs:
   lint-frontend:
@@ -15,11 +18,14 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.18.2
 
       - name: Install dependencies
-        run: pnpm install --filter lfx-insights...
+        run: pnpm install --filter lfx-insights... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
 
-      - name: Lint code
-        run: pnpm format:check && pnpm lint && pnpm tsc-check
+      - name: Build workspace libs
+        run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
+
+      - name: Type check
+        run: pnpm tsc-check
         working-directory: frontend

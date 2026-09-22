@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20">
+  <div class="bg-white lg:!pb-30 pb-20 !-mb-30">
     <div class="container overflow-hidden flex flex-col gap-10">
       <lfx-explore-header />
       <lfx-explore-top-section />
@@ -15,9 +15,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import LfxExploreHeader from '~/components/modules/explore/components/explore-header.vue';
-import LfxExploreTopSection from '~/components/modules/explore/components/top-section.vue';
-import LfxExploreSourceIndexSection from '~/components/modules/explore/components/source-index-section.vue';
 import LfxExploreFeaturedCollection from '~/components/modules/explore/components/featured-collection.vue';
+import LfxExploreSourceIndexSection from '~/components/modules/explore/components/source-index-section.vue';
+import LfxExploreTopSection from '~/components/modules/explore/components/top-section.vue';
 </script>
 
 <script lang="ts">

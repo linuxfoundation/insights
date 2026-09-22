@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Collection } from '~~/types/collection';
+
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 import { useAuth } from '~~/composables/useAuth';
+import type { Collection } from '~~/types/collection';
 
 export interface DuplicateCollectionData {
   collection: Collection;
@@ -15,11 +16,13 @@ export const useDuplicateCollectionStore = defineStore('duplicateCollection', ()
   const isDuplicateModalOpen = ref(false);
   const duplicateData = ref<DuplicateCollectionData | null>(null);
 
+  const isAuthWallOpen = ref(false);
+
   const openDuplicateModal = (data: DuplicateCollectionData) => {
-    const { isAuthenticated, login } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated.value) {
-      login(window.location.pathname + window.location.search + window.location.hash);
+      isAuthWallOpen.value = true;
       return;
     }
     duplicateData.value = data;
@@ -40,6 +43,7 @@ export const useDuplicateCollectionStore = defineStore('duplicateCollection', ()
 
   return {
     isDuplicateModalOpen,
+    isAuthWallOpen,
     duplicateData,
     openDuplicateModal,
     closeDuplicateModal,

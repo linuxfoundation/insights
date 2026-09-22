@@ -1,13 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import ActiveDays from './active-days.vue';
+
+import { Granularity } from '@lfx-insights/types';
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
-import { Granularity } from '~~/types/shared/granularity';
+
+import ActiveDays from './active-days.vue';
 
 const activeDays: WidgetConfig = {
   key: 'activeDays',
+  availableInCollection: true,
   name: 'Active days',
   description: () =>
     'Number of days contributors were actively involved in the project' +

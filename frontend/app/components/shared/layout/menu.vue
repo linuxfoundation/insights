@@ -10,14 +10,17 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="border-r border-neutral-200 h-6" />
   </div>
-  <client-only>
-    <lfx-login />
-  </client-only>
+  <!-- Fixed-width wrapper keeps the search bar layout stable between SSR (empty) and hydrated (button/avatar). -->
+  <div class="h-9 flex items-center justify-end shrink-0">
+    <client-only>
+      <lfx-login />
+    </client-only>
+  </div>
 </template>
 
 <script setup lang="ts">
-import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
 import LfxLogin from '~/components/modules/auth/components/login.vue';
+import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
 </script>
 
 <script lang="ts">

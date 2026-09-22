@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { ref } from 'vue';
+
 import LfxInput from '../input/input.vue';
-import LfxTextarea from '../textarea/textarea.vue';
-import LfxSelect from '../select/select.vue';
 import LfxOption from '../select/option.vue';
+import LfxSelect from '../select/select.vue';
+import LfxTextarea from '../textarea/textarea.vue';
 import LfxFieldMessage from './field-message.vue';
 import LfxField from './field.vue';
 

@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from '../../types';
-import { fetchFromTinybird } from '../tinybird';
-import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityTypes } from '@lfx-insights/types';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { PullRequests } from '~~/types/development/responses.types';
+
+import type { ActivityCountFilter } from '../../types';
+import { fetchFromTinybird } from '../tinybird';
 
 // This is the data part of the response from Tinybird
 type TinybirdActivityCountData = {
@@ -195,7 +196,10 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
       periodFrom: filter.startDate?.toISO() || '',
       periodTo: filter.endDate?.toISO() || '',
     },
-    avgVelocityInDays: prResolutionVelocity.data[0].averagePullRequestResolveVelocitySeconds,
+    // Guard the [0] access (see issues-resolution): empty data / null avg degrades to null,
+    // rendered as "-", instead of throwing and dropping the whole widget response.
+    avgVelocityInDays:
+      prResolutionVelocity.data[0]?.averagePullRequestResolveVelocitySeconds ?? null,
     data: openedPRs.data.map((item, index) => ({
       startDate: item.startDate,
       endDate: item.endDate,

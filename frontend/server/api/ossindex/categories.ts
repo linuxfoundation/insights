@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { OSSIndexCategoryTinybird } from '~~/types/ossindex/category';
 import type { CategoryGroup } from '~~/types/category/category-group';
+import type { OSSIndexCategoryTinybird } from '~~/types/ossindex/category';
 import type { OSSIndexCategoryGroupDetails } from '~~/types/ossindex/category-group';
 
 /**
@@ -72,6 +72,9 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroupDe
       categories,
     };
   } catch (error) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error;
+    }
     console.error('Error fetching oss index category list from TinyBird:', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }

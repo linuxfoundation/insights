@@ -31,6 +31,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
+
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 
 const props = withDefaults(

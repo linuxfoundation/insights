@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActiveDaysFilter } from '../../types';
-import { fetchFromTinybird } from '../tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { ActiveDays } from '~~/types/development/responses.types';
+
+import type { ActiveDaysFilter } from '../../types';
+import { fetchFromTinybird } from '../tinybird';
 
 // This is the data part of the response from Tinybird
 type TinybirdActiveDaysSummary = {
@@ -23,12 +24,14 @@ function getTinybirdQueries(filter: ActiveDaysFilter) {
   return {
     currentSummaryQuery: {
       project: filter.project,
+      collectionSlug: filter.collectionSlug,
       repos: filter.repos,
       startDate: filter.startDate,
       endDate: filter.endDate,
     },
     previousSummaryQuery: {
       project: filter.project,
+      collectionSlug: filter.collectionSlug,
       repos: filter.repos,
       startDate: dates.previous.from,
       endDate: dates.previous.to,

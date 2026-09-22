@@ -1,14 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { WorkflowExecutionAlreadyStartedError } from '@temporalio/client';
+
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { ProjectTinybird } from '~~/types/project';
 import {
   getTemporalClient,
   SECURITY_BEST_PRACTICES_TASK_QUEUE,
   UPSERT_OSPS_BASELINE_WORKFLOW,
   type IUpsertOSPSBaselineSecurityInsightsParams,
 } from '~~/server/utils/temporal';
+import type { ProjectTinybird } from '~~/types/project';
 
 interface SecurityUpdateRequest {
   slug: string;
@@ -39,7 +40,7 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
   const body: SecurityUpdateRequest = await readBody(event);
 
   // Validate request body
-  if (!body.slug) {
+  if (!body?.slug) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Missing required field: slug is required',
@@ -63,6 +64,10 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
   }
 
   const { slug } = body;
+  // Sanitize repoUrl for use in workflowId (replace non-alphanumeric chars with dashes).
+  // Computed before the try so it's available to the catch block's error log.
+  const sanitizedRepo = body.repoUrl.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
+  const workflowId = `security-update-${slug}-${sanitizedRepo}`;
 
   try {
     // Fetch project details to get the project ID
@@ -95,16 +100,14 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       token,
     };
 
-    // Use static workflowId per repo to prevent duplicate workflows for the same repo
-    // WorkflowIdReusePolicy.REJECT_DUPLICATE will reject if workflow is already running
-    // Sanitize repoUrl for use in workflowId (replace non-alphanumeric chars with dashes)
-    const sanitizedRepo = body.repoUrl.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
-    const workflowId = `security-update-${slug}-${sanitizedRepo}`;
-
+    // Use static workflowId per repo so concurrent triggers for the same repo collide.
+    // workflowIdConflictPolicy: 'FAIL' rejects only when a workflow with this ID is currently
+    // running; once the previous run has closed, the ID can be reused for a fresh update.
     await client.workflow.start(UPSERT_OSPS_BASELINE_WORKFLOW, {
       taskQueue: SECURITY_BEST_PRACTICES_TASK_QUEUE,
       workflowId,
-      workflowIdReusePolicy: 'REJECT_DUPLICATE',
+      workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+      workflowIdConflictPolicy: 'FAIL',
       args: [workflowParams],
     });
 
@@ -123,7 +126,13 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       });
     }
 
-    console.error('Error triggering security update:', err);
+    // Re-throw errors already thrown above (404 project not found, 400 repo mismatch) instead
+    // of masking them as a generic 500 below.
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      throw err;
+    }
+
+    console.error(`Error triggering security update (workflowId: ${workflowId}):`, err);
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to trigger security update',

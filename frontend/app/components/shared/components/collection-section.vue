@@ -21,7 +21,11 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
 
-      <div v-if="viewAllRoute && status === 'success' && !props.isEmpty">
+      <!-- Desktop: View all in header -->
+      <div
+        v-if="viewAllRoute && status === 'success' && !props.isEmpty"
+        class="hidden md:block"
+      >
         <nuxt-link :to="{ name: viewAllRoute }">
           <lfx-button
             type="transparent"
@@ -55,21 +59,41 @@ SPDX-License-Identifier: MIT
         <lfx-collections-empty @created="handleCreated" />
       </template>
     </div>
+
+    <!-- Mobile: View all at end of list, centered -->
+    <div
+      v-if="viewAllRoute && status === 'success' && !props.isEmpty"
+      class="mt-6 flex justify-center md:hidden"
+    >
+      <nuxt-link :to="{ name: viewAllRoute }">
+        <lfx-button
+          type="transparent"
+          button-style="pill"
+        >
+          <lfx-icon
+            name="rectangle-history"
+            :size="16"
+          />
+          <span class="text-sm text-nowrap">View all</span>
+        </lfx-button>
+      </nuxt-link>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { collectionTabs } from '~/components/modules/collection/config/collection-type-config';
+import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
+import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { collectionTabs } from '~/components/modules/collection/config/collection-type-config';
 import type { CollectionType } from '~~/types/collection';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
-import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -82,12 +106,14 @@ const props = withDefaults(
     error?: Error | null;
     errorMessage?: string;
     isEmpty?: boolean;
+    mobileLayout?: 'cards' | 'list';
   }>(),
   {
     status: 'success',
     error: null,
     errorMessage: 'Error fetching collections',
     isEmpty: false,
+    mobileLayout: 'cards',
   },
 );
 
@@ -104,10 +130,11 @@ const iconBackground = computed(() => currentTab.value?.iconHighlightClass || ''
 const viewAllRoute = computed(() => currentTab.value?.route || '');
 
 const gridClasses = computed(() => {
-  if (props.isEmpty && props.status === 'success') {
+  if ((props.isEmpty && props.status === 'success') || props.status === 'error') {
     return 'mt-8';
   }
-  return 'mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+  const mobileGap = props.mobileLayout === 'cards' ? 'gap-6' : '';
+  return `mt-8 flex flex-col ${mobileGap} md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6`;
 });
 
 const handleCreated = () => {

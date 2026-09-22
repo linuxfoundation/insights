@@ -130,14 +130,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfSecurityGenerateYamlSidebar from '~/components/modules/project/components/security/yaml/generate-yaml-sidebar.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed, onMounted, watch } from 'vue';
+
 import LfSecurityGenerateYamlPreview from '~/components/modules/project/components/security/yaml/generate-yaml-preview.vue';
+import LfSecurityGenerateYamlSidebar from '~/components/modules/project/components/security/yaml/generate-yaml-sidebar.vue';
 import LfxSecurityGenerateYamlType from '~/components/modules/project/components/security/yaml/generate-yaml-type.vue';
 import {
   type YamlGenerationConfig,
@@ -145,10 +142,14 @@ import {
   type YamlGenerationStep,
 } from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
 import { getYaml } from '~/components/modules/project/services/js-yaml';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -222,7 +223,7 @@ const currentStep = computed<YamlGenerationStep | null>(() => {
 });
 
 watch(type, (newType: string) => {
-  form.value = { ...(yamlGenerationConfig[newType]?.template || {}) };
+  form.value = { ...yamlGenerationConfig[newType]?.template };
 });
 
 onMounted(() => {

@@ -56,15 +56,17 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { useRouter } from 'vue-router';
-import { formatNumber } from '../../../shared/utils/formatter';
+
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Project } from '~~/types/project';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Project } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
+
+import { formatNumber } from '../../../shared/utils/formatter';
 
 const router = useRouter();
 

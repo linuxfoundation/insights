@@ -46,8 +46,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxRadio from '~/components/uikit/radio/radio.vue';
+
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import LfxRadio from '~/components/uikit/radio/radio.vue';
 
 const props = defineProps<{
   modelValue: CreateCollectionForm;

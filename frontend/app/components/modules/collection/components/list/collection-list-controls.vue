@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
       />
     </lfx-dropdown-select>
 
-    <div>
+    <div class="hidden md:block">
       <lfx-tabs
         :tabs="viewTabs"
         tab-style="pill"
@@ -57,10 +57,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
 const props = defineProps<{

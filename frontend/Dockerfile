@@ -7,7 +7,7 @@ ARG NODE_VERSION=24
 FROM node:$NODE_VERSION-slim AS base
 
 # Enable corepack and install pnpm (faster than npm install -g pnpm)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
 
 WORKDIR /app
 
@@ -20,12 +20,13 @@ WORKDIR /app
 
 # Copy workspace configuration files first (better cache)
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
-COPY patches ./patches
 COPY frontend/package.json ./frontend/
+COPY libs/tinybird-client/package.json ./libs/tinybird-client/
+COPY libs/types/package.json ./libs/types/
 
 # Install dependencies with BuildKit cache mount for pnpm store
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install --filter lfx-insights... --frozen-lockfile
+    pnpm install --filter lfx-insights... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types --frozen-lockfile
 
 # ============================================
 # Builder stage: Build the application
@@ -41,13 +42,21 @@ ENV NODE_OPTIONS=--max-old-space-size=4096
 
 WORKDIR /app
 
-# Copy frontend source
+# Copy frontend source and its workspace-linked lib dependencies
 COPY frontend ./frontend
+COPY libs/tinybird-client ./libs/tinybird-client
+COPY libs/types ./libs/types
+
+# Build the workspace libs before the frontend consumes their dist/ output
+RUN pnpm --filter @lfx-insights/types build && \
+    pnpm --filter @lfx-insights/tinybird-client build
 
 WORKDIR /app/frontend
 
-# Build docs and blog in parallel using shell background processes
-RUN pnpm docs:build & pnpm blog:build & wait && \
+# Build docs and blog in parallel; use ; not && so PID assignments run in main shell
+RUN pnpm docs:build & DOCS_PID=$! ; \
+    pnpm blog:build & BLOG_PID=$! ; \
+    wait $DOCS_PID && wait $BLOG_PID && \
     mkdir -p public/docs public/blog && \
     cp -r docs/.vitepress/dist/* public/docs/ && \
     cp -r blog/.vitepress/dist/* public/blog/
@@ -81,11 +90,19 @@ RUN groupadd --gid 1001 nodejs && \
     useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nuxt && \
     chown -R nuxt:nodejs /app
 
+RUN mkdir -p /app/heapdumps && chown nuxt:nodejs /app/heapdumps
+
 USER nuxt
 
 EXPOSE 3000
 
-ENV NODE_OPTIONS=--max-old-space-size=1536
+ENV NODE_OPTIONS=--max-old-space-size=3072
 
-# Use exec form for proper signal handling
-CMD ["node", ".output/server/index.mjs"]
+# Heap profiling is opt-in: set HEAP_SNAPSHOT_ENABLED=1 to activate.
+# When enabled, cd into the heapdumps volume mount so snapshots land there,
+# take snapshots on demand via SIGUSR2, and log GC activity (--trace-gc is
+# not permitted in NODE_OPTIONS, so it must live here). No
+# --heapsnapshot-near-heap-limit: serializing a full heap at the limit
+# needs more memory than is left, so it only hastens the OOM kill.
+# exec replaces sh with node for proper signal handling.
+CMD ["/bin/sh", "-c", "if [ \"$HEAP_SNAPSHOT_ENABLED\" = \"1\" ] || [ \"$HEAP_SNAPSHOT_ENABLED\" = \"true\" ]; then cd /app/heapdumps && exec node --trace-gc --heapsnapshot-signal=SIGUSR2 /app/.output/server/index.mjs; else exec node /app/.output/server/index.mjs; fi"]

@@ -19,8 +19,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { CommunityMentions } from '~~/types/community/community';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { CommunityMentions } from '~~/types/community/community';
 
 defineProps<{
   mention: CommunityMentions;

@@ -54,17 +54,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
+import html2canvas from 'html2canvas';
 import { storeToRefs } from 'pinia';
 import { computed, nextTick } from 'vue';
-import html2canvas from 'html2canvas';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import type { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxSnapshotPreview from '~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxSnapshotPreview from '~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
@@ -93,11 +94,53 @@ const repoName = computed(
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
+const shouldProxy = (src: string): boolean => {
+  if (!src) return false;
+  if (src.startsWith('data:') || src.startsWith('blob:')) return false;
+  try {
+    const parsed = new URL(src, window.location.href);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+    return parsed.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+};
+
+const rewriteImagesThroughProxy = async (root: HTMLElement): Promise<() => void> => {
+  const imgs = Array.from(root.querySelectorAll('img')).filter((img) => shouldProxy(img.src));
+  const originals = imgs.map((img) => img.src);
+  imgs.forEach((img) => {
+    img.src = `/api/image-proxy?url=${encodeURIComponent(img.src)}`;
+  });
+  await Promise.all(
+    imgs.map(
+      (img) =>
+        new Promise<void>((resolve) => {
+          if (img.complete && img.naturalWidth > 0) return resolve();
+          const done = () => {
+            img.removeEventListener('load', done);
+            img.removeEventListener('error', done);
+            resolve();
+          };
+          img.addEventListener('load', done);
+          img.addEventListener('error', done);
+        }),
+    ),
+  );
+  return () => {
+    imgs.forEach((img, i) => {
+      img.src = originals[i]!;
+    });
+  };
+};
+
 const download = async () => {
   if (!snapshot.value) return;
+  let restoreImages: (() => void) | undefined;
   try {
     await document?.fonts.ready;
     await nextTick();
+    restoreImages = await rewriteImagesThroughProxy(snapshot.value);
     const canvas = await html2canvas(snapshot.value, {
       useCORS: true,
       allowTaint: false,
@@ -116,6 +159,8 @@ const download = async () => {
     document.body.removeChild(link);
   } catch (e) {
     showToast('Failed to download snapshot', ToastTypesEnum.negative);
+  } finally {
+    restoreImages?.();
   }
   isModalOpen.value = false;
 };

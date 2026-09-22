@@ -1,17 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
-import {
-  mockContributorRetentionData,
-  mockOrganizationRetentionData,
-} from '../../../mocks/tinybird-retention-response.mock';
-import { DemographicType } from '~~/server/data/types';
-import { Granularity } from '~~/types/shared/granularity';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+import { Granularity } from '@lfx-insights/types';
 import type {
   RetentionDataPoint,
   RetentionResponse,
 } from '~~/server/data/tinybird/contributors/retention';
+import { DemographicType } from '~~/server/data/types';
+
+import {
+  mockContributorRetentionData,
+  mockOrganizationRetentionData,
+} from '../../../mocks/tinybird-retention-response.mock';
 
 const mockFetchFromTinybird = vi.fn();
 

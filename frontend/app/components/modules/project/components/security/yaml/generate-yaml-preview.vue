@@ -24,13 +24,13 @@ SPDX-License-Identifier: MIT
     <pre
       lang="yaml"
       class="mt-6 p-4 bg-white border border-neutral-200 rounded-xl overflow-auto text-sm font-mono flex-grow"
-      >{{ yaml }}</pre
-    >
+      >{{ yaml }}</pre>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+
 import { getYaml } from '~/components/modules/project/services/js-yaml';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 

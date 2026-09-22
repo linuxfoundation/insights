@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DateTime } from 'luxon';
+
 import type { Result } from './types';
 interface RecommendedVisualization {
   type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'leaderboard' | 'standard';

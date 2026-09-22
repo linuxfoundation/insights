@@ -1,12 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import IssuesResolution from './issues-resolution.vue';
+
+import { Granularity } from '@lfx-insights/types';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
-import { Granularity } from '~~/types/shared/granularity';
+
+import IssuesResolution from './issues-resolution.vue';
 
 const issuesResolution: WidgetConfig = {
   key: 'issuesResolution',
+  availableInCollection: true,
   name: 'Issues resolution',
   description: () =>
     'Comparison between total number of issues vs. closed issues during the selected time period.',

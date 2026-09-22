@@ -1,22 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { github } from './configs/github.platform';
-import { git } from './configs/git.platform';
-import { gerrit } from './configs/gerrit.platform';
-import { gitlab } from './configs/gitlab.platform';
-import { groupsio } from './configs/groupsio.platform';
+import type { PlatformConfig } from '~~/types/shared/platforms.types';
+
 import { confluence } from './configs/confluence.platform';
-import { jira } from './configs/jira.platform';
 import { devto } from './configs/devto.platform';
 import { discord } from './configs/discord.platform';
 import { discourse } from './configs/discourse.platform';
+import { gerrit } from './configs/gerrit.platform';
+import { git } from './configs/git.platform';
+import { github } from './configs/github.platform';
+import { gitlab } from './configs/gitlab.platform';
+import { groupsio } from './configs/groupsio.platform';
 import { hackernews } from './configs/hackernews.platform';
+import { jira } from './configs/jira.platform';
 import { linkedin } from './configs/linkedin.platform';
 import { reddit } from './configs/reddit.platform';
 import { slack } from './configs/slack.platform';
 import { stackoverflow } from './configs/stackoverflow.platform';
 import { twitter } from './configs/twitter.platform';
-import type { PlatformConfig } from '~~/types/shared/platforms.types';
 
 export const platforms: Record<string, PlatformConfig> = {
   github,

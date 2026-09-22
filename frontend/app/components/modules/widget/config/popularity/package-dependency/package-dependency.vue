@@ -47,28 +47,30 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.vue';
-import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
-import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
-import type { Summary } from '~~/types/shared/summary.types';
-import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import { computed, watch } from 'vue';
+
+import type { Granularity } from '@lfx-insights/types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { barGranularities } from '~/components/shared/types/granularity';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
-import { lfxColors } from '~/config/styles/colors';
-import { formatNumberShort } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { barGranularities } from '~/components/shared/types/granularity';
-import type { Granularity } from '~~/types/shared/granularity';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
-import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
-import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
+import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
+import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
+import type { Summary } from '~~/types/shared/summary.types';
+
+import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.vue';
+import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 
 interface PackageDownloadsModel {
   package: string;
@@ -105,7 +107,7 @@ const selectedEcosystem = computed<string | undefined>(() => {
   return ecosystem && ecosystem !== 'all' ? ecosystem : undefined;
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -117,7 +119,8 @@ const granularity = computed(() =>
 );
 
 const downloadsParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   repos: selectedReposValues.value,
   granularity: granularity.value,
   startDate: startDate.value,
@@ -127,7 +130,8 @@ const downloadsParams = computed(() => ({
 }));
 
 const packagesParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   repos: selectedReposValues.value,
   search: '',
 }));

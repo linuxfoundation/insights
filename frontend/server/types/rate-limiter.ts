@@ -86,6 +86,17 @@ export interface RateLimiterConfig {
    * If a request matches an exclusion, it bypasses rate limiting entirely.
    */
   exclusions?: RateLimitExclusion[];
+
+  /**
+   * Rate limit for /24 subnets. All IPs sharing the same /24 prefix
+   * (first 3 octets) are counted together. Catches coordinated bot attacks
+   * from multiple IPs in the same subnet.
+   * If not set, subnet-level rate limiting is disabled.
+   */
+  subnetLimit?: {
+    maxRequests: number;
+    windowSeconds: number;
+  };
 }
 
 /**

@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { useReportStore } from '~/components/shared/modules/report/store/report.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import crowdfunding from '~/config/menu/tools/crowdfunding';
 import individualDashboard from '~/config/menu/tools/individual-dashboard';
+import mentorship from '~/config/menu/tools/mentorship';
 import organizationDashboard from '~/config/menu/tools/organization-dashboard';
 import projectControlCenter from '~/config/menu/tools/project-control-center';
-import mentorship from '~/config/menu/tools/mentorship';
-import crowdfunding from '~/config/menu/tools/crowdfunding';
-import { useReportStore } from '~/components/shared/modules/report/store/report.store';
 
 export interface FooterMenuLink {
   link?: string;
@@ -39,6 +39,14 @@ export const lfxFooterMenu: FooterMenuSection[] = [
       {
         name: 'Docs',
         link: '/docs/introduction/what-is-insights/',
+      },
+      {
+        name: 'Changelog',
+        link: 'https://changelog.lfx.dev/?product=insights',
+      },
+      {
+        name: 'Roadmap',
+        link: 'https://changelog.lfx.dev/roadmap?product=insights',
       },
       {
         name: 'Report issue',

@@ -80,19 +80,21 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { getRepoNameFromUrl } from '../../../repository/utils/repository.helpers';
+
+import LfxProjectSecurityEvaluationResultTag from '~/components/modules/project/components/security/evaluation-result-tag.vue';
 import LfxProjectSecurityEvaluationResult from '~/components/modules/project/components/security/evaluation-result.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
-import { lfxColors } from '~/config/styles/colors';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxButton from '~/components/uikit/button/button.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxProjectSecurityEvaluationResultTag from '~/components/modules/project/components/security/evaluation-result-tag.vue';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
+
+import { getRepoNameFromUrl } from '../../../repository/utils/repository.helpers';
 
 const props = defineProps<{
   repository: string;

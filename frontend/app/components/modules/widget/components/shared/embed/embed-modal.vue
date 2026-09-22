@@ -45,8 +45,7 @@ SPDX-License-Identifier: MIT
           <pre
             v-else
             class="bg-neutral-50 border border-neutral-200 rounded-md py-2 px-2.5 overflow-auto"
-            >{{ iframe }}</pre
-          >
+            >{{ iframe }}</pre>
         </div>
         <lfx-button
           type="tertiary"
@@ -96,17 +95,18 @@ SPDX-License-Identifier: MIT
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import type { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import useToastService from '~/components/uikit/toast/toast.service';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = defineProps<{
   modelValue: boolean;

@@ -72,14 +72,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxLeaderboardCard from '../../leaderboards/components/sections/leaderboard-card.vue';
-import { LEADERBOARD_API_SERVICE } from '../../leaderboards/services/leaderboard.api.service';
-import leaderboardConfigs from '../../leaderboards/config/index.config';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+
+import LfxLeaderboardCard from '../../leaderboards/components/sections/leaderboard-card.vue';
+import leaderboardConfigs from '../../leaderboards/config/index.config';
+import { LEADERBOARD_API_SERVICE } from '../../leaderboards/services/leaderboard.api.service';
 
 // Fetch leaderboard data
 const { data: leaderboardData, isPending } = LEADERBOARD_API_SERVICE.fetchLeaderboardLanding();

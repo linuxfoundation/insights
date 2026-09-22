@@ -45,27 +45,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onServerPrefetch, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useRoute } from 'nuxt/app';
-import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
-import { POPULARITY_API_SERVICE } from '../../services/popularity.api.service';
-import { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
-import { WidgetArea } from '~/components/modules/widget/types/widget-area';
-import { lfxWidgetArea, type WidgetAreaConfig } from '~/components/modules/widget/config/widget-area.config';
-import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
-import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
-import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import LfxWidget from '~/components/modules/widget/components/shared/widget.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { useQueryParam } from '~/components/shared/utils/query-param';
+import { storeToRefs } from 'pinia';
+import { computed, ref, onServerPrefetch, watch } from 'vue';
+
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxWidget from '~/components/modules/widget/components/shared/widget.vue';
+import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
+import { lfxWidgetArea, type WidgetAreaConfig } from '~/components/modules/widget/config/widget-area.config';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
+import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
+import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { Granularity } from '~~/types/shared/granularity';
-import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
+
+import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
 
 const props = defineProps<{
   name: WidgetArea;
@@ -82,8 +83,16 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues, allArchived, hasSelectedArchivedRepos } =
-  storeToRefs(useProjectStore());
+const {
+  isCollectionScope,
+  project,
+  selectedRepoSlugs,
+  startDate,
+  endDate,
+  selectedReposValues,
+  allArchived,
+  hasSelectedArchivedRepos,
+} = storeToRefs(useProjectStore());
 const isFirstLoad = ref(true);
 
 /**
@@ -93,87 +102,26 @@ const isFirstLoad = ref(true);
  * This is a workaround to show/hide widgets in the popularity for projects that have no data.
  * ===============================
  */
-const popularityParams = computed(() => ({
-  projectSlug: route.params.slug as string,
-  repos: selectedReposValues.value,
-  granularity: Granularity.MONTHLY,
-  startDate: startDate.value,
-  endDate: endDate.value,
-}));
+const projectSlug = computed(() => (isCollectionScope.value ? undefined : (route.params.slug as string)));
+const collectionSlug = computed(() => (isCollectionScope.value ? (route.params.slug as string) : undefined));
 
-const downloadsParams = computed(() => ({
-  ...popularityParams.value,
-  ecosystem: undefined,
-  name: undefined,
-}));
+const projectWidgets = computed(() => project.value?.widgets || []);
 
-const mailingListMessagesParams = computed(() => ({
-  ...popularityParams.value,
-  type: 'new',
-  countType: 'new',
-}));
-
-// package downloads and dependency share the same endpoint
 const {
-  data: downloadsData,
-  status: downloadsStatus,
-  suspense: downloadsSuspense,
-} = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
-
-const isPackageDownloadsEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isPackageDownloadsEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined),
-);
-
-const isPackageDependencyEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isPackageDependencyEmpty(
-    downloadsStatus.value === 'success' ? downloadsData.value : undefined,
-  ),
-);
-
-// search queries
-const {
-  data: searchQueriesData,
-  status: searchQueriesStatus,
-  suspense: searchQueriesSuspense,
-} = POPULARITY_API_SERVICE.fetchSearchQueries(popularityParams);
-
-const isSearchQueriesEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isSearchQueriesEmpty(
-    searchQueriesStatus.value === 'success' ? searchQueriesData.value : undefined,
-  ),
-);
-
-// mailing list messages
-const {
-  data: mailingListMessagesData,
-  status: mailingListMessagesStatus,
-  suspense: mailingListMessagesSuspense,
-} = POPULARITY_API_SERVICE.fetchMailingListsMessages(mailingListMessagesParams);
-
-const isMailingListMessagesEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isMailingListMessagesEmpty(
-    mailingListMessagesStatus.value === 'success' ? mailingListMessagesData.value : undefined,
-  ),
-);
-
-const excludedWidgets = computed(() => {
-  const excludedWidgets = [];
-  if (props.name === WidgetArea.POPULARITY) {
-    if (isPackageDownloadsEmpty.value) {
-      excludedWidgets.push(Widget.PACKAGE_DOWNLOADS);
-    }
-    if (isPackageDependencyEmpty.value) {
-      excludedWidgets.push(Widget.PACKAGE_DEPENDENCY);
-    }
-    if (isSearchQueriesEmpty.value) {
-      excludedWidgets.push(Widget.SEARCH_QUERIES);
-    }
-    if (isMailingListMessagesEmpty.value) {
-      excludedWidgets.push(Widget.MAILING_LISTS_MESSAGES);
-    }
-  }
-  return excludedWidgets;
+  excludedWidgets: popularityExcludedWidgets,
+  downloadsSuspense,
+  searchQueriesSuspense,
+  mailingListMessagesSuspense,
+} = usePopularityExcludedWidgets({
+  projectSlug,
+  collectionSlug,
+  repos: selectedReposValues,
+  startDate,
+  endDate,
+  projectWidgets,
 });
+
+const excludedWidgets = computed(() => (props.name === WidgetArea.POPULARITY ? popularityExcludedWidgets.value : []));
 
 /**
  * ===============================
@@ -186,14 +134,25 @@ const params = computed(() => ({
   endDate: endDate.value,
 }));
 
-const { data, error, suspense } = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
+// Benchmarks are a per-project health-score concept (backed by /api/project/[slug]/overview/
+// health-score) with no collection equivalent, so this query is skipped entirely on Collection
+// pages rather than firing with a collection slug the endpoint doesn't understand.
+const { data, error, suspense } = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(
+  params,
+  computed(() => !isCollectionScope.value),
+);
 
 const widgets = computed(() =>
   (config.value.widgets || []).filter((widget) => {
     const key = lfxWidgets[widget as Widget]?.key;
     const widgetConfig = lfxWidgets[widget as Widget];
+    // Collections have no per-project `widgets` array to check against - availableInCollection
+    // is an explicit opt-in per widget instead (see widget.config.ts).
+    const isWidgetShown = isCollectionScope.value
+      ? !!widgetConfig?.availableInCollection
+      : !!project.value?.widgets.includes(key);
     return (
-      project.value?.widgets.includes(key) &&
+      isWidgetShown &&
       (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length) &&
       !excludedWidgets.value.includes(widget as Widget)
     );
@@ -270,7 +229,12 @@ const navigateToWidget = () => {
 };
 
 onServerPrefetch(async () => {
-  await suspense();
+  // TanStack Query's suspense() hangs forever on a disabled query (status stays 'pending'),
+  // which would deadlock SSR here since benchmarks are disabled entirely in collection mode
+  // (see the enabled: !isCollectionScope passed to fetchWidgetBenchmarks above).
+  if (!isCollectionScope.value) {
+    await suspense();
+  }
 
   await downloadsSuspense();
   await searchQueriesSuspense();

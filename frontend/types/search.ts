@@ -19,10 +19,18 @@ export interface SearchRepository {
   projectSlug: string;
   archived: boolean;
   excluded: boolean;
+  url: string;
+}
+
+export interface SearchOrganization {
+  name: string;
+  slug: string;
+  logo: string | null;
 }
 
 export interface SearchResults {
   projects: SearchProject[];
   repositories: SearchRepository[];
   collections: SearchCollection[];
+  organizations: SearchOrganization[];
 }

@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { TinybirdInvalidResponseError } from '@lfx-insights/tinybird-client';
+
 import type { TinybirdResponse } from './tinybird';
 
 /**
@@ -10,6 +12,48 @@ import type { TinybirdResponse } from './tinybird';
  */
 const inFlightRequests = new Map<string, Promise<number | null>>();
 
+/** Per-key invalidation counters so a stale in-flight write can't repopulate a just-cleared cache entry. */
+const invalidationGenerations = new Map<string, number>();
+let globalInvalidationGeneration = 0;
+
+/**
+ * Tracks the in-flight Redis write for each cache key. A clear must await the matching
+ * entry (if any) before it removes the key, so a write that was already underway when
+ * the clear started cannot land afterward and outlive it — closing the window where a
+ * reader could observe a stale value after invalidation.
+ */
+const pendingWrites = new Map<string, Promise<void>>();
+
+function currentGeneration(cacheKey: string): number {
+  return (invalidationGenerations.get(cacheKey) ?? 0) + globalInvalidationGeneration;
+}
+
+async function writeToCache(cacheKey: string, bucketId: number, label: string): Promise<void> {
+  const writePromise = (async () => {
+    try {
+      const storage = useStorage('redis');
+      await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
+    } catch (cacheError) {
+      console.error(`Failed to cache bucketId for ${label}:`, cacheError);
+    }
+  })();
+  pendingWrites.set(cacheKey, writePromise);
+  try {
+    await writePromise;
+  } finally {
+    if (pendingWrites.get(cacheKey) === writePromise) {
+      pendingWrites.delete(cacheKey);
+    }
+  }
+}
+
+async function waitForPendingWrite(cacheKey: string): Promise<void> {
+  const pending = pendingWrites.get(cacheKey);
+  if (pending) {
+    await pending.catch(() => {});
+  }
+}
+
 /**
  * Response type from the project_buckets Tinybird pipe
  */
@@ -17,9 +61,6 @@ interface ProjectBucketResponse {
   bucketId: number;
 }
 
-/**
- * Check if Redis caching is enabled
- */
 function isRedisEnabled(): boolean {
   return !!process.env.NUXT_REDIS_URL && process.env.NUXT_REDIS_URL.length > 0;
 }
@@ -49,7 +90,12 @@ export async function getBucketIdForProject(
   // Validate input
   const projectValue = project?.toString().trim();
   if (!projectValue || projectValue.length === 0) {
-    console.warn('getBucketIdForProject: Invalid project value provided');
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_invalid_project',
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return null;
   }
 
@@ -71,6 +117,7 @@ export async function getBucketIdForProject(
   }
 
   const cacheKey = `project_bucket:${projectValue}`;
+  const generation = currentGeneration(cacheKey);
 
   // Create and store the fetch promise immediately to prevent race conditions
   const fetchPromise = (async () => {
@@ -93,16 +140,18 @@ export async function getBucketIdForProject(
         return null;
       }
 
-      try {
-        const storage = useStorage('redis');
-        await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
-      } catch (cacheError) {
-        console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
+      if (currentGeneration(cacheKey) === generation) {
+        await writeToCache(cacheKey, bucketId, `project ${projectValue}`);
       }
 
       return bucketId;
-    } catch (error) {
-      console.error(`Failed to fetch bucketId for project ${projectValue}:`, error);
+    } catch (error: unknown) {
+      // Propagate all classified Tinybird errors (401/403/404/429/5xx) instead of
+      // masking auth/permission failures as a false "project not found".
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        throw error;
+      }
+      console.warn(`Failed to fetch bucketId for project ${projectValue}:`, error);
       return null;
     } finally {
       // Clean up in-flight request tracker
@@ -130,17 +179,31 @@ async function fetchBucketIdFromTinybird(
     project: projectValue,
   });
 
-  // Validate response structure
-  if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
-    console.warn(`No bucketId found for project: ${projectValue}`);
+  // A missing or non-array `data` is a malformed upstream response, not "not found" -
+  // throw so it isn't masked as a 404 by callers.
+  if (!response?.data || !Array.isArray(response.data)) {
+    throw new TinybirdInvalidResponseError(
+      `Malformed project_buckets response for project ${projectValue}`,
+    );
+  }
+
+  if (response.data.length === 0) {
+    console.warn(
+      JSON.stringify({
+        message: 'tinybird_bucket_not_found',
+        project: projectValue,
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return null;
   }
 
   const bucketId = response.data[0]?.bucketId;
 
   if (typeof bucketId !== 'number') {
-    console.warn(`Invalid bucketId type for project ${projectValue}:`, typeof bucketId);
-    return null;
+    throw new TinybirdInvalidResponseError(
+      `Malformed bucketId (type ${typeof bucketId}) for project ${projectValue}`,
+    );
   }
 
   return bucketId;
@@ -166,6 +229,11 @@ export async function clearBucketCache(project: string): Promise<void> {
   }
 
   const cacheKey = `project_bucket:${projectValue}`;
+  invalidationGenerations.set(cacheKey, (invalidationGenerations.get(cacheKey) ?? 0) + 1);
+
+  // Wait for any write already underway for this key before clearing it, so that
+  // write cannot land after we've cleared and leave a stale value behind.
+  await waitForPendingWrite(cacheKey);
 
   try {
     const storage = useStorage('redis');
@@ -191,11 +259,17 @@ export async function clearAllBucketCaches(): Promise<void> {
     return;
   }
 
+  globalInvalidationGeneration += 1;
+
+  // Wait for every write already underway before clearing, for the same reason as above.
+  await Promise.all([...pendingWrites.values()].map((p) => p.catch(() => {})));
+
   try {
     const storage = useStorage('redis');
     const keys = await storage.getKeys('project_bucket:');
+    const collectionKeys = await storage.getKeys('collection_bucket:');
 
-    await Promise.all(keys.map((key) => storage.removeItem(key)));
+    await Promise.all([...keys, ...collectionKeys].map((key) => storage.removeItem(key)));
   } catch (error) {
     console.error('Failed to clear all bucket caches:', error);
   }

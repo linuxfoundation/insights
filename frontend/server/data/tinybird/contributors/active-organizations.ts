@@ -9,6 +9,7 @@ let's refactor it to return the data in a more generic format.
  */
 
 import type { DateTime } from 'luxon';
+
 import type { ActiveOrganizationsFilter } from '../../types';
 import { getPreviousDates } from '../../util';
 import type { TinybirdResponse } from '../tinybird';
@@ -47,6 +48,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
 
   const currentSummaryQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
@@ -56,6 +58,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
 
   const previousSummaryQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
@@ -65,6 +68,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
 
   const dataQuery = {
     project: filter.project,
+    collectionSlug: filter.collectionSlug,
     granularity: filter.granularity,
     repos: filter.repos,
     includeCodeContributions: filter.includeCodeContributions,

@@ -4,7 +4,6 @@
 export default [
   '@nuxtjs/tailwindcss',
   '@pinia/nuxt',
-  '@nuxt/eslint',
   '@primevue/nuxt-module',
   'nuxt-echarts',
   'nuxt-gtag',

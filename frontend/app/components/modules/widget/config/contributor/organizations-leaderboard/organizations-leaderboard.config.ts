@@ -1,11 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import OrganizationsLeaderboard from './organizations-leaderboard.vue';
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
+import OrganizationsLeaderboard from './organizations-leaderboard.vue';
+
 const organizationsLeaderboard: WidgetConfig = {
   key: 'organizationsLeaderboard',
+  availableInCollection: true,
   name: 'Organizations leaderboard',
   description: () =>
     'Organizations ranked by the number of contribution activities' +

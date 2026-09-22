@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { PatchSetsFilter } from '../types';
-import { fetchFromTinybird } from '../tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { PatchsetsPerReview } from '~~/types/development/responses.types';
+
+import { fetchFromTinybird } from '../tinybird';
+import { PatchSetsFilter } from '../types';
 
 type TinybirdPatchsetsPerReviewData = {
   startDate: string;

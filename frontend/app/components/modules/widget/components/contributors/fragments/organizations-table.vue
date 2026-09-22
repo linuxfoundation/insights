@@ -28,6 +28,7 @@ SPDX-License-Identifier: MIT
         v-for="(organization, index) in props.organizations"
         :key="`${organization.name}-${index}`"
         class="lfx-table-row"
+        :class="organization.slug ? 'cursor-pointer' : ''"
       >
         <div class="name-col">
           <div
@@ -36,16 +37,38 @@ SPDX-License-Identifier: MIT
           >
             {{ index + 1 }}
           </div>
-          <lfx-avatar
-            :src="organization.logo"
-            type="organization"
-            :aria-label="organization.logo && organization.name"
-          />
-          <div
-            class="text-ellipsis overflow-hidden"
-            :title="organization.name"
+          <nuxt-link
+            v-if="organization.slug"
+            :to="`/organization/${organization.slug}`"
+            class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit cursor-pointer"
           >
-            {{ organization.name }}
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden hover:underline"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
+          </nuxt-link>
+          <div
+            v-else
+            class="flex items-center gap-2 min-w-0 overflow-hidden"
+          >
+            <lfx-avatar
+              :src="organization.logo"
+              type="organization"
+              :aria-label="organization.logo && organization.name"
+            />
+            <div
+              class="text-ellipsis overflow-hidden"
+              :title="organization.name"
+            >
+              {{ organization.name }}
+            </div>
           </div>
         </div>
         <div class="value-col">
@@ -79,12 +102,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue';
-import type { Organization } from '~~/types/contributors/responses.types';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import { isElementVisible } from '~/components/shared/utils/helper';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { isElementVisible } from '~/components/shared/utils/helper';
+import type { Organization } from '~~/types/contributors/responses.types';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);

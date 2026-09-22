@@ -45,8 +45,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+
 import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import type { CodeReviewEngagementPRParticipantsItem } from '~~/types/development/responses.types';
 

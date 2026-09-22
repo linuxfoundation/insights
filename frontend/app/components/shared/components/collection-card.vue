@@ -27,43 +27,59 @@ SPDX-License-Identifier: MIT
             :aria-label="project.logo && project.name"
           />
         </lfx-avatar-group>
-        <lfx-dropdown
+        <div
           v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
-          placement="bottom-end"
+          class="flex items-center gap-2"
         >
-          <template #trigger>
-            <lfx-icon-button
-              icon="ellipsis"
-              size="small"
-              type="transparent"
-              class="!text-neutral-900"
-            />
-          </template>
-          <lfx-dropdown-item @click.stop.prevent="handleEdit">
+          <!-- Mobile only: visibility badge in header -->
+          <span class="flex md:hidden items-center gap-1.5">
             <lfx-icon
-              name="pen"
-              :size="16"
-              class="text-neutral-600"
+              :name="props.collection.isPrivate ? 'lock' : 'globe'"
+              :size="12"
+              :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
             />
-            Edit
-          </lfx-dropdown-item>
-          <lfx-dropdown-item @click.stop.prevent="handleShare">
-            <lfx-icon
-              name="share-nodes"
-              :size="16"
-              class="text-neutral-600"
-            />
-            Share
-          </lfx-dropdown-item>
-          <lfx-dropdown-item @click.stop.prevent="handleDelete">
-            <lfx-icon
-              name="trash"
-              :size="16"
-              class="!text-negative-500"
-            />
-            <span class="text-negative-500">Delete</span>
-          </lfx-dropdown-item>
-        </lfx-dropdown>
+            <span
+              class="text-xs leading-4 font-medium"
+              :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
+            >
+              {{ props.collection.isPrivate ? 'Private' : 'Public' }}
+            </span>
+          </span>
+          <lfx-dropdown placement="bottom-end">
+            <template #trigger>
+              <lfx-icon-button
+                icon="ellipsis"
+                size="small"
+                type="transparent"
+                class="!text-neutral-900"
+              />
+            </template>
+            <lfx-dropdown-item @click.stop.prevent="handleEdit">
+              <lfx-icon
+                name="pen"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Edit
+            </lfx-dropdown-item>
+            <lfx-dropdown-item @click.stop.prevent="handleShare">
+              <lfx-icon
+                name="share-nodes"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Share
+            </lfx-dropdown-item>
+            <lfx-dropdown-item @click.stop.prevent="handleDelete">
+              <lfx-icon
+                name="trash"
+                :size="16"
+                class="!text-negative-500"
+              />
+              <span class="text-negative-500">Delete</span>
+            </lfx-dropdown-item>
+          </lfx-dropdown>
+        </div>
       </div>
 
       <!-- content -->
@@ -87,8 +103,11 @@ SPDX-License-Identifier: MIT
             />
           </div>
 
-          <!-- project count and updated date -->
-          <div class="flex items-center gap-1.5">
+          <!-- project count and updated date (hidden on mobile for my-collections per design) -->
+          <div
+            class="flex items-center gap-1.5"
+            :class="{ 'hidden md:flex': props.variant === CollectionTypeEnum.MY_COLLECTIONS }"
+          >
             <lfx-icon
               name="laptop-code"
               :size="12"
@@ -98,16 +117,21 @@ SPDX-License-Identifier: MIT
               v-if="props.collection"
               class="text-xs leading-4 text-neutral-500"
             >
-              {{ props.collection.projectCount }} projects
+              {{ pluralize('project', projectCount, true) }}
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>
-              <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"> ・ </template>
+              <span
+                v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
+                class="hidden md:inline"
+              >
+                ・
+              </span>
             </p>
-            <!-- visibility badge for my-collections -->
+            <!-- visibility badge for my-collections (desktop only - mobile shows in header) -->
             <span
               v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
-              class="flex items-center gap-1.5"
+              class="hidden md:flex items-center gap-1.5"
             >
               <lfx-icon
                 :name="props.collection.isPrivate ? 'lock' : 'globe'"
@@ -178,32 +202,34 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import type { Collection, CollectionType } from '~~/types/collection';
-import { formatDate } from '~/components/shared/utils/formatter';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import LfxCard from '~/components/uikit/card/card.vue';
-import type { CollectionFeaturedProject } from '~~/types/collection';
+import pluralize from 'pluralize';
+import { computed } from 'vue';
+
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
-import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
-import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatDate } from '~/components/shared/utils/formatter';
+import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { useTrackEvent } from '~~/composables/useTrackEvent';
-import { CollectionsEventKey } from '~/components/shared/types/events/collections';
+import type { Collection, CollectionType } from '~~/types/collection';
+import type { CollectionFeaturedProject } from '~~/types/collection';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
@@ -253,6 +279,8 @@ const headerBackground = computed(() => {
 const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
   return props.collection.featuredProjects.slice(0, 5);
 });
+
+const projectCount = computed(() => (props.collection.projectCount || 0) + (props.collection.repositoryCount || 0));
 
 const handleShare = () => {
   trackEvent({

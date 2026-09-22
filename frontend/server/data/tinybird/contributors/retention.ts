@@ -34,13 +34,11 @@ export async function fetchRetention(filter: RetentionFilter) {
 
   const processedData: RetentionDataPoint[] = (
     data as TinybirdResponse<TinybirdRetentionData>
-  )?.data.map(
-    (item): RetentionDataPoint => ({
-      startDate: item.startDate,
-      endDate: item.endDate,
-      percentage: item.retentionRate,
-    }),
-  );
+  )?.data.map((item): RetentionDataPoint => ({
+    startDate: item.startDate,
+    endDate: item.endDate,
+    percentage: item.retentionRate,
+  }));
 
   const response: RetentionResponse = processedData;
 

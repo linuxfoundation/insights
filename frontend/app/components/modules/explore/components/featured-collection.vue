@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
     />
   </lfx-collection-section>
 
-  <div class="pt-10 border-t border-neutral-200">
+  <div class="pt-10 border-t border-neutral-200 pb-1">
     <lfx-collection-section
       type="community"
       :status="communityStatus"
@@ -37,12 +37,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const { user } = storeToRefs(useAuthStore());
 

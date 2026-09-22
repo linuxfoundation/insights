@@ -54,28 +54,29 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { GithubMentions } from '~~/types/popularity/responses.types';
-import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { computed, watch } from 'vue';
+
+import type { Granularity } from '@lfx-insights/types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
-import type { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
-import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import type { GithubMentions } from '~~/types/popularity/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 interface GithubMentionsModel {
   activeTab: string;
@@ -96,7 +97,7 @@ const model = computed<GithubMentionsModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+const { isCollectionScope, startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -116,7 +117,8 @@ const granularity = computed(() =>
 );
 
 const queryParams = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,

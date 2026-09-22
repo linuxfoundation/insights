@@ -46,27 +46,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { DateTime } from 'luxon';
+import { storeToRefs } from 'pinia';
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import { DateTime } from 'luxon';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+
+import { Granularity } from '@lfx-insights/types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import type { Retention } from '~~/types/contributors/responses.types';
-import { Granularity } from '~~/types/shared/granularity';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
 import {
   CONTRIBUTORS_API_SERVICE,
   type RetentionQueryParams,
 } from '~~/app/components/modules/widget/services/contributors.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type { Retention } from '~~/types/contributors/responses.types';
 
 interface RetentionModel extends WidgetModel {
   activeTab: string;
@@ -88,7 +89,7 @@ const model = computed<RetentionModel>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
+const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 /**
@@ -105,7 +106,8 @@ const isBelowThreshold = computed(() => {
 const granularity = Granularity.QUARTERLY;
 
 const params = computed<RetentionQueryParams>(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: isCollectionScope.value ? undefined : (route.params.slug as string),
+  collectionSlug: isCollectionScope.value ? (route.params.slug as string) : undefined,
   granularity,
   type: model.value.activeTab,
   repos: selectedReposValues.value,

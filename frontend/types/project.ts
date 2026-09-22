@@ -6,6 +6,7 @@ export interface ProjectRepository {
   slug: string;
   score: number;
   rank: number;
+  licenses: string[];
 }
 
 export interface ProjectRepositoryGroup {
@@ -43,6 +44,7 @@ export interface Project {
   communityKeywords: string[];
   communityLanguages: string[];
   status: string;
+  lastVulnerabilityScanStatus: string;
 }
 
 export interface ProjectLanguage {
@@ -93,6 +95,10 @@ export interface ProjectTinybird {
   firstCommitUrl?: string;
   connectedPlatforms: string[];
   repoData: ProjectRepoData[];
+  repoLicenses: [string, string][];
+  status: string;
+  lastVulnerabilityScanStatus: string;
+  maturity?: string;
 }
 
 export interface ProjectInsightsAchievement {
@@ -110,6 +116,7 @@ export interface ProjectInsightsTinybird {
   logoUrl: string;
   isLF: number;
   status: string;
+  maturity?: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -123,6 +130,16 @@ export interface ProjectInsightsTinybird {
   popularityHealthScore: number;
   developmentHealthScore: number;
   securityHealthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
+  maintainerHealthScoreV2: number | null;
+  securitySupplyChainScoreV2: number | null;
+  developmentActivityScoreV2: number | null;
+  coveredCategoryCount: number | null;
+  healthMaxScore: number | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;
@@ -143,6 +160,7 @@ export interface ProjectInsights {
   logoUrl: string;
   isLF: boolean;
   status: string;
+  maturity?: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -156,6 +174,16 @@ export interface ProjectInsights {
   popularityHealthScore: number;
   developmentHealthScore: number;
   securityHealthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+  lifecycleLabel: string | null;
+  impactScore: number | null;
+  impactLabel: string | null;
+  maintainerHealthScoreV2: number | null;
+  securitySupplyChainScoreV2: number | null;
+  developmentActivityScoreV2: number | null;
+  coveredCategoryCount: number | null;
+  healthMaxScore: number | null;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;

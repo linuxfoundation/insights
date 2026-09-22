@@ -1,11 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import ContributorDependency from './contributor-dependency.vue';
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
+import ContributorDependency from './contributor-dependency.vue';
+
 const contributorDependency: WidgetConfig = {
   key: 'contributorDependency',
+  availableInCollection: true,
   name: 'Contributor dependency',
   description: () =>
     'Distribution of contributions across individuals, highlighting the group of ' +

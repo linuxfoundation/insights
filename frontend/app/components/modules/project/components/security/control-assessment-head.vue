@@ -56,23 +56,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
+import { useQueryClient } from '@tanstack/vue-query';
 import { useRoute } from 'nuxt/app';
-import { links } from '~/config/links';
+import { storeToRefs } from 'pinia';
+import { ref, computed } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { links } from '~/config/links';
 
 const { selectedReposValues } = storeToRefs(useProjectStore());
 const { isAuthenticated } = storeToRefs(useAuthStore());
 const { showToast } = useToastService();
+const queryClient = useQueryClient();
 const route = useRoute();
 const { name } = route.params;
 
@@ -95,6 +99,9 @@ const handleUpdateResultsClick = async () => {
       slug: route.params.slug as string,
       repoUrl: currentRepoUrl.value || '',
     });
+    queryClient.invalidateQueries({
+      queryKey: [TanstackKey.SECURITY_ASSESSMENT, route.params.slug, selectedReposValues.value || undefined],
+    });
     showToast(
       '<span class="text-neutral-300">Repository updates can’t be processed immediately.<br>Assessment results will be updated within an hour.</span>',
       ToastTypesEnum.positive,
@@ -106,9 +113,19 @@ const handleUpdateResultsClick = async () => {
     );
   } catch (error) {
     console.error('Failed to trigger security update:', error);
-    showToast('An error occurred while triggering the update', ToastTypesEnum.negative, 'circle-exclamation', 5000, {
-      summary: 'Failed to update results',
-    });
+    const statusCode = (error as { statusCode?: number })?.statusCode;
+    const isAlreadyRunning = statusCode === 429;
+    showToast(
+      isAlreadyRunning
+        ? 'A security update is already running for this repository. Please wait for it to finish before triggering another one.'
+        : 'An error occurred while triggering the update',
+      ToastTypesEnum.negative,
+      'circle-exclamation',
+      5000,
+      {
+        summary: isAlreadyRunning ? 'Update already in progress' : 'Failed to update results',
+      },
+    );
   } finally {
     isUpdatingResults.value = false;
   }

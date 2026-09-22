@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <lfx-button
       v-if="!isAuthenticated"
       type="transparent"
-      class="!rounded-full text-nowrap !text-brand-500"
+      class="!rounded-full text-nowrap !text-brand-500 min-w-24"
       :disabled="isLoading"
       @click="loginHandler()"
     >
@@ -65,16 +65,18 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useAuthStore } from '../store/auth.store';
-import { useAuth } from '~~/composables/useAuth';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { links } from '~/config/links';
 
-const { isAuthenticated, user, token, isLoading, login, logout } = useAuth();
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import { links } from '~/config/links';
+import { useAuth } from '~~/composables/useAuth';
+
+import { useAuthStore } from '../store/auth.store';
+
+const { isAuthenticated, user, isLoading, login, logout } = useAuth();
 const authStore = useAuthStore();
 
 const isOpen = ref(false);
@@ -85,17 +87,16 @@ const loginHandler = async () => {
 };
 
 const logoutHandler = async () => {
-  document.cookie = 'auth_oidc_token=; Path=/; Max-Age=0; SameSite=None; Secure';
+  document.cookie = 'insights_oidc_token=; Path=/; Max-Age=0; SameSite=None; Secure';
   await logout();
 };
 
 // Update auth store when authentication state changes
 watch(
-  [isAuthenticated, token],
-  ([newAuthVal, newToken]) => {
+  [isAuthenticated, user],
+  ([newAuthVal, newUser]) => {
     authStore.isAuthenticated = newAuthVal;
-    authStore.token = newToken || '';
-    authStore.user = user.value;
+    authStore.user = newUser;
   },
   { immediate: true },
 );

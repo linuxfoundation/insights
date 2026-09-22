@@ -6,16 +6,17 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/vue-query';
-import { type ComputedRef, type Ref, computed } from 'vue';
 import { isArray } from 'lodash-es';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Collection, CollectionType } from '~~/types/collection';
-import type { Category, CategoryGroup } from '~~/types/category';
-import type { ProjectInsights } from '~~/types/project';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { SearchProject, SearchResults } from '~~/types/search';
-import { type User } from '~~/types/auth/auth-user.types';
+import { type ComputedRef, type Ref, computed } from 'vue';
+
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { type User } from '~~/types/auth/auth-user.types';
+import type { Category, CategoryGroup } from '~~/types/category';
+import type { Collection, CollectionMetrics, CollectionType } from '~~/types/collection';
+import type { ProjectInsights } from '~~/types/project';
+import type { SearchResults } from '~~/types/search';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export interface CategoryGroupOptions {
   value: string;
@@ -43,6 +44,7 @@ export interface CollectionPayload {
   description?: string;
   isPrivate?: boolean;
   projects?: string[];
+  repositoryUrls?: string[];
 }
 
 export interface CollectionProjectsQueryParams {
@@ -105,6 +107,9 @@ class CollectionsApiService {
 
   getNextPageCollectionsParam(lastPage: Pagination<Collection>) {
     const nextPage = lastPage.page + 1;
+    if (typeof lastPage.hasMore === 'boolean') {
+      return lastPage.hasMore ? nextPage : null;
+    }
     const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
     return nextPage < totalPages ? nextPage : null;
   }
@@ -166,8 +171,15 @@ class CollectionsApiService {
       });
   }
 
-  fetchCollection(slug: string): QueryFunction<Collection> {
-    return () => $fetch(`/api/collection/${slug}`);
+  fetchCollection(slug: string, fetchFn: typeof $fetch = $fetch): QueryFunction<Collection> {
+    return () => fetchFn(`/api/collection/${slug}`);
+  }
+
+  fetchCollectionMetrics(
+    slug: string,
+    fetchFn: typeof $fetch = $fetch,
+  ): QueryFunction<CollectionMetrics> {
+    return () => fetchFn(`/api/collection/${slug}/metrics`);
   }
 
   fetchCategoryGroups(params: ComputedRef<CategoryGroupsQueryParams>) {
@@ -198,17 +210,17 @@ class CollectionsApiService {
       });
   }
 
-  async searchProjects(query: string): Promise<SearchProject[]> {
+  async searchProjectsAndRepositories(query: string): Promise<SearchResults> {
     const sanitizedQuery = sanitizeSearchQuery(query);
     if (!sanitizedQuery) {
-      return [];
+      return { projects: [], repositories: [], collections: [], organizations: [] };
     }
 
     const res = await $fetch<SearchResults>('/api/search', {
       query: { query: sanitizedQuery },
     });
 
-    return res.projects || [];
+    return res;
   }
 
   discoveryParams(type: CollectionType) {
@@ -348,6 +360,8 @@ class CollectionsApiService {
       ...params.value,
     }));
 
+    const isEnabled = computed(() => !!user.value);
+
     return useInfiniteQuery<
       Pagination<Collection>,
       Error,
@@ -359,7 +373,7 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
-      enabled: !!user,
+      enabled: isEnabled,
     });
   }
 
@@ -424,6 +438,9 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
+        if (typeof lastPage.hasMore === 'boolean') {
+          return lastPage.hasMore ? nextPage : null;
+        }
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },
@@ -474,7 +491,10 @@ class CollectionsApiService {
     });
   }
 
-  fetchCollectionProjects(params: ComputedRef<CollectionProjectsQueryParams>) {
+  fetchCollectionProjects(
+    params: ComputedRef<CollectionProjectsQueryParams>,
+    fetchFn: typeof $fetch = $fetch,
+  ) {
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_PROJECTS,
       params.value.slug,
@@ -484,9 +504,12 @@ class CollectionsApiService {
       params.value.pageSize,
     ]);
 
-    const queryFn = this.fetchCollectionProjectsQueryFn(() => ({
-      ...params.value,
-    }));
+    const queryFn = this.fetchCollectionProjectsQueryFn(
+      () => ({
+        ...params.value,
+      }),
+      fetchFn,
+    );
 
     return useInfiniteQuery<
       Pagination<ProjectInsights>,
@@ -499,6 +522,9 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
+        if (typeof lastPage.hasMore === 'boolean') {
+          return lastPage.hasMore ? nextPage : null;
+        }
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },
@@ -509,10 +535,11 @@ class CollectionsApiService {
 
   fetchCollectionProjectsQueryFn(
     query: () => CollectionProjectsQueryParams,
+    fetchFn: typeof $fetch = $fetch,
   ): QueryFunction<Pagination<ProjectInsights>, readonly unknown[], number> {
     return async ({ pageParam = 0 }) => {
       const { slug, isLF, ...rest } = query();
-      return await $fetch(`/api/collection/${slug}/projects`, {
+      return await fetchFn(`/api/collection/${slug}/project-repos`, {
         params: {
           page: pageParam,
           ...rest,
@@ -522,7 +549,10 @@ class CollectionsApiService {
     };
   }
 
-  async prefetchCollectionProjects(params: ComputedRef<CollectionProjectsQueryParams>) {
+  async prefetchCollectionProjects(
+    params: ComputedRef<CollectionProjectsQueryParams>,
+    fetchFn: typeof $fetch = $fetch,
+  ) {
     const queryClient = useQueryClient();
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_PROJECTS,
@@ -533,9 +563,12 @@ class CollectionsApiService {
       params.value.pageSize,
     ]);
 
-    const queryFn = this.fetchCollectionProjectsQueryFn(() => ({
-      ...params.value,
-    }));
+    const queryFn = this.fetchCollectionProjectsQueryFn(
+      () => ({
+        ...params.value,
+      }),
+      fetchFn,
+    );
 
     return await queryClient.prefetchInfiniteQuery<
       Pagination<ProjectInsights>,
@@ -549,6 +582,9 @@ class CollectionsApiService {
       initialPageParam: 0,
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
+        if (typeof lastPage.hasMore === 'boolean') {
+          return lastPage.hasMore ? nextPage : null;
+        }
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : null;
       },

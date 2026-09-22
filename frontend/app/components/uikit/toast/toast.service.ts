@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { useToast } from 'primevue/usetoast';
+
 import type { ToastOptions, ToastSeverity, ToastType } from './types/toast.types';
 
 const useToastService = () => {

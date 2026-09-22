@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import type { RadioSize } from './types/radio.types';
 
 const props = withDefaults(

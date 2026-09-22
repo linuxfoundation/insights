@@ -91,11 +91,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
-import LfxRadio from '~/components/uikit/radio/radio.vue';
+
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxRadio from '~/components/uikit/radio/radio.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 
 const NAME_MAX_LENGTH = 50;
 const DESCRIPTION_MAX_LENGTH = 200;
