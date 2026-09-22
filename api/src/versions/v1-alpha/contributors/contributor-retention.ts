@@ -29,7 +29,7 @@ const contributorRetentionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
           'Activity here includes forks and stars along with everything the contribution flags select, since the underlying widget always counts them. ' +
           'The comparison is bucket over bucket, not against the whole period. `repos` narrows it to those repositories. ' +
           'Without dates the period runs from 2010-01-01 to today, and it runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. ' +
-          'An unknown project returns an empty `data` list. Contributor identity fields are provisional in /v1-alpha.',
+          'An unknown project returns an empty `data` list.',
         params: ProjectSlugParams,
         querystring: RetentionQuery,
         response: { 200: ContributorRetention },

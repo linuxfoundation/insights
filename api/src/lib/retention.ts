@@ -43,7 +43,7 @@ export function retentionBucket(noun: string): TSchema {
     retentionPercentage: Type.Number({
       description:
         `Share of the ${noun}s active in the previous bucket who were active again in this one, in percent (0 to 100), rounded to two decimals. ` +
-        'The first bucket and any bucket after one with no previous activity report 0, not null, since there is nothing to compare against.',
+        'A bucket with no activity in the preceding one, which can include the first bucket when there is no prior data, reports 0, not null.',
     }),
   });
 }
