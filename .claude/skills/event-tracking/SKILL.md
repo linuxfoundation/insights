@@ -28,12 +28,13 @@ frontend/composables/useTrackEvent.ts   # just the tracking function
 **Adding events for a new feature:** create `events/<feature>.ts`, define its `<Feature>EventKey` enum and `<FEATURE>_EVENT_DEFINITIONS` record, then re-export both from `index.ts`.
 
 **`index.ts` shape:**
+
 ```ts
-export type EventKey = CollectionsEventKey // | FutureFeatureEventKey | ...
+export type EventKey = CollectionsEventKey; // | FutureFeatureEventKey | ...
 export const EVENT_DEFINITIONS: Record<EventKey, EventDefinition> = {
   ...COLLECTIONS_EVENT_DEFINITIONS,
   // ...FUTURE_FEATURE_EVENT_DEFINITIONS,
-}
+};
 ```
 
 ## How to use
@@ -44,12 +45,12 @@ Always use the **feature-specific key enum** (e.g. `CollectionsEventKey`), not t
 import { useTrackEvent } from '~~/composables/useTrackEvent';
 import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 
-const { trackEvent } = useTrackEvent()
+const { trackEvent } = useTrackEvent();
 
 trackEvent({
   key: CollectionsEventKey.CREATE_COLLECTION,
-  properties: { collectionId, isPrivate },  // catalog-defined fields only — optional
-})
+  properties: { collectionId, isPrivate }, // catalog-defined fields only — optional
+});
 ```
 
 `name`, `type`, `description`, and `feature` are looked up automatically from `EVENT_DEFINITIONS` — **never pass them in the call**.
@@ -70,12 +71,13 @@ If no catalog entry matches, note this to the developer and suggest the closest 
 
 Infer the feature from context (e.g. "track when the user creates a collection" → Community Collections). This tells you which key enum to import:
 
-| Feature | Key enum | Import path |
-|---------|----------|-------------|
+| Feature               | Key enum              | Import path                                    |
+| --------------------- | --------------------- | ---------------------------------------------- |
 | Community Collections | `CollectionsEventKey` | `~/components/shared/types/events/collections` |
-| (future features) | `<Feature>EventKey` | `~/components/shared/types/events/<feature>` |
+| (future features)     | `<Feature>EventKey`   | `~/components/shared/types/events/<feature>`   |
 
 Read the target component or page file before making any changes. You need to understand:
+
 - Whether `useTrackEvent` is already imported
 - For **feature** events: which function handles the user action
 - For **page** events: whether `onMounted` already exists
@@ -105,8 +107,8 @@ Place inside `onMounted()`. Add to an existing `onMounted` if one already exists
 
 ```ts
 onMounted(() => {
-  trackEvent({ key: CollectionsEventKey.VIEW_DISCOVER_COLLECTIONS })
-})
+  trackEvent({ key: CollectionsEventKey.VIEW_DISCOVER_COLLECTIONS });
+});
 ```
 
 #### Events that need async data (e.g. `viewerType`)
@@ -114,16 +116,21 @@ onMounted(() => {
 If the event requires data that loads asynchronously (e.g. collection details needed to determine `viewerType`), use `watch` with `{ once: true }` instead of `onMounted`:
 
 ```ts
-watch(data, (collection) => {
-  if (!collection) return
-  trackEvent({
-    key: CollectionsEventKey.VIEW_COLLECTION,
-    properties: {
-      collectionId: collection.id,
-      viewerType: collection.ssoUserId && user.value?.sub === collection.ssoUserId ? 'owner' : 'guest',
-    },
-  })
-}, { once: true })
+watch(
+  data,
+  (collection) => {
+    if (!collection) return;
+    trackEvent({
+      key: CollectionsEventKey.VIEW_COLLECTION,
+      properties: {
+        collectionId: collection.id,
+        viewerType:
+          collection.ssoUserId && user.value?.sub === collection.ssoUserId ? 'owner' : 'guest',
+      },
+    });
+  },
+  { once: true },
+);
 ```
 
 ### 4. Add the imports (if missing)
@@ -136,7 +143,7 @@ import { CollectionsEventKey } from '~/components/shared/types/events/collection
 Then destructure at the top level of `<script setup>`:
 
 ```ts
-const { trackEvent } = useTrackEvent()
+const { trackEvent } = useTrackEvent();
 ```
 
 The `~~` alias points to `frontend/`, `~` points to `frontend/app/`. Neither is auto-imported.
@@ -164,8 +171,11 @@ properties: { collectionId: 'collectionId', isPrivate: 'isPrivate' }
 Place after the `await` so it only fires on success:
 
 ```ts
-await updateCollection(payload)
-trackEvent({ key: CollectionsEventKey.UPDATE_COLLECTION, properties: { collectionId, changedFields } })
+await updateCollection(payload);
+trackEvent({
+  key: CollectionsEventKey.UPDATE_COLLECTION,
+  properties: { collectionId, changedFields },
+});
 ```
 
 ### Multiple events in one handler
@@ -175,6 +185,7 @@ Track each separately in the right order.
 ## Adding events for a new feature
 
 1. Create `frontend/app/components/shared/types/events/<feature>.ts`:
+
    ```ts
    import { EventFeature, EventType, type EventDefinition } from '.';
 
@@ -193,12 +204,13 @@ Track each separately in the right order.
    ```
 
 2. In `index.ts`, extend the union and spread into `EVENT_DEFINITIONS`:
+
    ```ts
-   export type EventKey = CollectionsEventKey | MyFeatureEventKey
+   export type EventKey = CollectionsEventKey | MyFeatureEventKey;
    export const EVENT_DEFINITIONS = {
      ...COLLECTIONS_EVENT_DEFINITIONS,
      ...MY_FEATURE_EVENT_DEFINITIONS,
-   }
+   };
    ```
 
 3. Add `EventFeature.MY_FEATURE` to the `EventFeature` enum in `index.ts`.
