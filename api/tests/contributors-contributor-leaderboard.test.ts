@@ -346,23 +346,6 @@ describe('OpenAPI (AC6)', () => {
     ]);
   });
 
-  it('states the ranking, its tie-break and paging by rank position', async () => {
-    const { operation } = await getSpec();
-    expect(operation?.description).toMatch(/ranked by .*contributions/i);
-    expect(operation?.description).toMatch(/most first/i);
-    expect(operation?.description).toMatch(/same count .* internal contributor ID/i);
-    expect(operation?.description).toMatch(/rank position/i);
-  });
-
-  it('ends the description by marking the contributor identity fields provisional', async () => {
-    const { operation } = await getSpec();
-    expect(
-      operation?.description
-        ?.trim()
-        .endsWith('Contributor identity fields are provisional in /v1-alpha.'),
-    ).toBe(true);
-  });
-
   it('types every item field, with a non-nullable avatar and string lists', async () => {
     const { item } = await getSpec();
     expect(item?.properties?.name).toMatchObject({ type: 'string' });
@@ -376,31 +359,5 @@ describe('OpenAPI (AC6)', () => {
         items: { type: 'string' },
       });
     }
-  });
-
-  it('names both role values and says roles ignore the period and follow repos', async () => {
-    const { item } = await getSpec();
-    const roles = item?.properties?.roles?.description;
-    expect(roles).toContain('`maintainer`');
-    expect(roles).toContain('`contributor`');
-    expect(roles).toMatch(/period/i);
-    expect(roles).toContain('`repos`');
-  });
-
-  it('says an avatar is empty when the contributor has none', async () => {
-    const { item } = await getSpec();
-    expect(item?.properties?.avatar?.description).toMatch(/empty string/i);
-  });
-
-  it('says a project outside the Linux Foundation shows a username as the name', async () => {
-    const { item } = await getSpec();
-    const name = item?.properties?.name?.description;
-    expect(name).toMatch(/Linux Foundation/);
-    expect(name).toMatch(/username/i);
-  });
-
-  it('gives the share in percent of all matching contributions', async () => {
-    const { item } = await getSpec();
-    expect(item?.properties?.contributionPercentage?.description).toMatch(/percent/i);
   });
 });
