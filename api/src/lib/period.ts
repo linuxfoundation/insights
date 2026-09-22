@@ -17,9 +17,11 @@ export class InvalidDateRangeError extends Error {
   }
 }
 
-// earliestPossibleStartDate in frontend/server/data/util.ts; the Insights date picker stops at today.
-// Bounding every range this way also keeps its previous period in positive years.
-const earliestStartDate = '2010-01-01';
+// Same default as earliestPossibleStartDate in frontend/server/data/util.ts.
+const defaultStartDate = '2010-01-01';
+// The oldest start a caller may ask for. With the end capped at today, as in the Insights date picker,
+// every previous period stays in positive years.
+const earliestStartDate = '2000-01-01';
 const dayMs = 86_400_000;
 
 // Dates are UTC midnights read with UTC getters, so the host time zone never shifts a calendar day.
@@ -64,7 +66,7 @@ function addMonthsClamped(date: Date, months: number): Date {
 // Ports Luxon's end.diff(start, ['months', 'days']) and minus() from frontend/server/data/util.ts,
 // month-end clamping included, so previous periods match the UI's day for day.
 export function getPreviousDates(
-  startDate = earliestStartDate,
+  startDate = defaultStartDate,
   endDate?: string,
   now = new Date(),
 ): { current: DateRange; previous: DateRange } {

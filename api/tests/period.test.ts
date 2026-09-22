@@ -187,11 +187,11 @@ describe('getPreviousDates rejects an inverted range (AC5)', () => {
   });
 });
 
-describe('getPreviousDates takes dates from 2010-01-01 to today', () => {
+describe('getPreviousDates takes dates from 2000-01-01 to today', () => {
   const now = new Date('2025-09-18T12:00:00Z');
 
   it.each([
-    ['a startDate before 2010-01-01', '2009-12-31', '2025-01-01'],
+    ['a startDate before 2000-01-01', '1999-12-31', '2025-01-01'],
     ['a year-one startDate', '0001-01-01', undefined],
     ['an endDate after today', '2025-01-01', '2025-09-19'],
     ['a far-future endDate', undefined, '9999-12-31'],
@@ -201,9 +201,9 @@ describe('getPreviousDates takes dates from 2010-01-01 to today', () => {
     expect(error).toMatchObject({ statusCode: 400, code: 'invalid_request' });
   });
 
-  it('accepts 2010-01-01 and today as the bounds', () => {
-    expect(getPreviousDates('2010-01-01', '2025-09-18', now).current).toEqual({
-      startDate: '2010-01-01',
+  it('accepts 2000-01-01 and today as the bounds', () => {
+    expect(getPreviousDates('2000-01-01', '2025-09-18', now).current).toEqual({
+      startDate: '2000-01-01',
       endDate: '2025-09-18',
     });
   });

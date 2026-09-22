@@ -20,7 +20,7 @@ export const DateRangeQuery = Type.Object({
     Type.String({
       format: 'date',
       description:
-        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Inclusive: the period starts at 00:00 UTC on this day. The earliest accepted day is 2010-01-01.',
+        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Inclusive: the period starts at 00:00 UTC on this day. The earliest accepted day is 2000-01-01.',
     }),
   ),
   endDate: Type.Optional(
