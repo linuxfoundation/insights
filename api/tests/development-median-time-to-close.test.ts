@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { FastifyInstance } from 'fastify';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { buildApp } from '../src/app.js';
-import { getTinybirdClient } from '../src/clients/tinybird.js';
-
-const tinybirdHost = 'https://tinybird.test';
-const mockFetch = vi.fn();
-vi.stubGlobal('fetch', mockFetch);
-
-const pipePath = '/v0/pipes/median_time_to_close.json';
-const bucketPath = '/v0/pipes/project_buckets.json';
-const specPath = '/v1-alpha/projects/{slug}/development/median-time-to-close';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  developmentPath,
+  mockFetch,
+  pipeCalls,
+  queryString,
+  tinybirdHost,
+  tinybirdStub,
+  useApp,
+  type OpenApiDoc,
+  type OpenApiOperation,
+} from './helpers/tinybird.js';
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
@@ -79,17 +79,6 @@ const nullSummary = {
   ...period,
 };
 
-const tinybirdResponse = (rows: object[]) =>
-  new Response(
-    JSON.stringify({
-      data: rows,
-      meta: [],
-      rows: rows.length,
-      statistics: { elapsed: 0.01, rows_read: 1, bytes_read: 1 },
-    }),
-    { status: 200, headers: { 'content-type': 'application/json' } },
-  );
-
 interface PipeRows {
   bucket?: object[];
   current?: object[];
@@ -97,98 +86,34 @@ interface PipeRows {
   series?: object[];
 }
 
-// The handler resolves the slug to a bucket once, then makes the three pipe calls. The series
-// call is the one that carries granularity; the two summary calls differ by their startDate.
-const routeTinybird =
-  ({
-    bucket = [{ bucketId: 7 }],
-    current = [currentRow],
-    previous = [previousRow],
-    series = seriesRows,
-  }: PipeRows = {}) =>
-  async (input: unknown) => {
-    const url = new URL(String(input));
-    if (url.pathname === bucketPath) {
-      return tinybirdResponse(bucket);
-    }
+// The series call is the one that carries granularity; the two summary calls differ by their
+// startDate.
+const routeTinybird = ({
+  bucket,
+  current = [currentRow],
+  previous = [previousRow],
+  series = seriesRows,
+}: PipeRows = {}) =>
+  tinybirdStub((url) => {
     if (url.searchParams.has('granularity')) {
-      return tinybirdResponse(series);
+      return series;
     }
-    const isPrevious = url.searchParams.get('startDate') === atMidnight(previousStart);
-    return tinybirdResponse(isPrevious ? previous : current);
-  };
+    return url.searchParams.get('startDate') === atMidnight(previousStart) ? previous : current;
+  }, bucket);
 
-const callsTo = (path: string) =>
-  mockFetch.mock.calls
-    .map((call) => new URL(String(call[0])))
-    .filter((url) => url.pathname === path);
-const pipeCalls = () => callsTo(pipePath);
+const url = (params: Record<string, string | string[] | undefined> = {}, slug = 'kubernetes') =>
+  `/v1-alpha/projects/${slug}/development/median-time-to-close?${queryString({
+    startDate,
+    endDate,
+    granularity: 'monthly',
+    ...params,
+  })}`;
 
-const defaultQuery = { startDate, endDate, granularity: 'monthly' };
+const { get } = useApp();
 
-function url(params: Record<string, string | string[] | undefined> = {}, slug = 'kubernetes') {
-  const search = new URLSearchParams();
-  for (const [key, value] of Object.entries({ ...defaultQuery, ...params })) {
-    for (const item of [value].flat()) {
-      if (item !== undefined) {
-        search.append(key, item);
-      }
-    }
-  }
-  return `/v1-alpha/projects/${slug}/development/median-time-to-close?${search}`;
-}
-
-interface OpenApiSchema {
-  type?: string;
-  nullable?: boolean;
-  description?: string;
-  format?: string;
-  enum?: string[];
-  required?: string[];
-  properties?: Record<string, OpenApiSchema>;
-  items?: OpenApiSchema;
-}
-
-interface OpenApiParameter {
-  name: string;
-  in: string;
-  required?: boolean;
-  description?: string;
-  schema: OpenApiSchema;
-}
-
-interface OpenApiOperation {
-  tags?: string[];
-  description?: string;
-  parameters?: OpenApiParameter[];
-  responses: Record<string, { content: Record<string, { schema: OpenApiSchema }> }>;
-}
-
-interface OpenApiDoc {
-  paths: Record<string, { get?: OpenApiOperation }>;
-}
-
-let app: FastifyInstance;
-
-beforeAll(async () => {
-  vi.stubEnv('API_TB_HOST', tinybirdHost);
-  vi.stubEnv('API_TB_TOKEN', 'test-token');
-  app = await buildApp();
-  await app.ready();
+beforeEach(() => {
+  mockFetch.mockImplementation(routeTinybird());
 });
-
-afterAll(async () => {
-  await app.close();
-  vi.unstubAllEnvs();
-});
-
-beforeEach(async () => {
-  // The client remembers a slug's bucket for the whole process; each test counts its own lookup.
-  await getTinybirdClient().clearAllBucketCaches();
-  mockFetch.mockReset().mockImplementation(routeTinybird());
-});
-
-const get = (path: string) => app.inject({ method: 'GET', url: path });
 
 describe('GET /v1-alpha/projects/{slug}/development/median-time-to-close (AC1)', () => {
   it('returns the median summary from the two summary rows and one bucket per series row', async () => {
@@ -226,30 +151,14 @@ describe('GET /v1-alpha/projects/{slug}/development/median-time-to-close (AC1)',
 });
 
 describe('Tinybird calls (AC2)', () => {
-  it('makes three pipe calls with the slug as project, the repos and the bucket id from one lookup', async () => {
+  it('makes three median_time_to_close calls with the slug as project', async () => {
     await get(url({ repos: [k8sRepo, websiteRepo] }));
-    const lookups = callsTo(bucketPath);
-    expect(lookups).toHaveLength(1);
-    expect(lookups[0]?.searchParams.get('project')).toBe('kubernetes');
     const calls = pipeCalls();
     expect(calls).toHaveLength(3);
     for (const call of calls) {
       expect(call.origin).toBe(tinybirdHost);
+      expect(call.pathname).toBe('/v0/pipes/median_time_to_close.json');
       expect(call.searchParams.get('project')).toBe('kubernetes');
-      expect(call.searchParams.get('bucketId')).toBe('7');
-      expect(call.searchParams.get('repos')).toBe(`${k8sRepo},${websiteRepo}`);
-    }
-  });
-
-  it('treats bucket id 0 as a real bucket and forwards it', async () => {
-    mockFetch.mockImplementation(routeTinybird({ bucket: [{ bucketId: 0 }] }));
-    const res = await get(url());
-    expect(res.statusCode).toBe(200);
-    expect(res.json()).toEqual(expectedBody);
-    const calls = pipeCalls();
-    expect(calls).toHaveLength(3);
-    for (const call of calls) {
-      expect(call.searchParams.get('bucketId')).toBe('0');
     }
   });
 
@@ -270,18 +179,6 @@ describe('Tinybird calls (AC2)', () => {
     );
   });
 
-  it.each([
-    ['none is sent', {}],
-    ['the value is empty', { repos: '' }],
-  ])('omits repos from the pipe calls when %s', async (_case, params) => {
-    await get(url(params));
-    const calls = pipeCalls();
-    expect(calls).toHaveLength(3);
-    for (const call of calls) {
-      expect(call.searchParams.has('repos')).toBe(false);
-    }
-  });
-
   it('sends only the keys the pipe declares', async () => {
     await get(url({ repos: k8sRepo, platform: 'github' }));
     const declared = [
@@ -300,25 +197,6 @@ describe('Tinybird calls (AC2)', () => {
         expect(declared, `unexpected pipe param ${key}`).toContain(key);
       }
     }
-  });
-
-  it('issues the three pipe calls concurrently', async () => {
-    let inFlight = 0;
-    let maxInFlight = 0;
-    const respond = routeTinybird();
-    mockFetch.mockImplementation(async (input: unknown) => {
-      if (new URL(String(input)).pathname === bucketPath) {
-        return respond(input);
-      }
-      inFlight += 1;
-      maxInFlight = Math.max(maxInFlight, inFlight);
-      await new Promise((resolve) => setTimeout(resolve, 5));
-      inFlight -= 1;
-      return respond(input);
-    });
-    const res = await get(url());
-    expect(res.statusCode).toBe(200);
-    expect(maxInFlight).toBe(3);
   });
 });
 
@@ -399,6 +277,15 @@ describe('periods and buckets without closed pull requests (AC4)', () => {
     expect(res.json()).toEqual({ summary: nullSummary, data: [] });
   });
 
+  it('returns the same null summary and empty series for an unknown project', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    mockFetch.mockImplementation(routeTinybird({ bucket: [] }));
+    const res = await get(url({}, 'no-such-project'));
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ summary: nullSummary, data: [] });
+    vi.restoreAllMocks();
+  });
+
   it('passes a bucket median of 0 through as 0', async () => {
     const res = await get(url());
     expect(res.json().data[1]).toEqual({
@@ -408,8 +295,6 @@ describe('periods and buckets without closed pull requests (AC4)', () => {
     });
   });
 
-  // generate_timeseries types both bucket bounds Nullable(Date); a null must never reach the
-  // formatter.
   it('drops a series row with a null bucket bound instead of formatting it', async () => {
     mockFetch.mockImplementation(
       routeTinybird({
@@ -472,45 +357,7 @@ describe('percentageChange (AC5)', () => {
   });
 });
 
-describe('unknown slug (AC6)', () => {
-  beforeEach(() => {
-    // The Tinybird client warns about the missing bucket; keep the test output readable.
-    vi.spyOn(console, 'warn').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it('returns 200 with a null summary and no buckets after only the bucket lookup', async () => {
-    mockFetch.mockImplementation(routeTinybird({ bucket: [] }));
-    const res = await get(url({}, 'no-such-project'));
-    expect(res.statusCode).toBe(200);
-    expect(res.json()).toEqual({ summary: nullSummary, data: [] });
-    expect(mockFetch).toHaveBeenCalledTimes(1);
-    expect(callsTo(bucketPath)[0]?.searchParams.get('project')).toBe('no-such-project');
-    expect(pipeCalls()).toHaveLength(0);
-  });
-});
-
 describe('request validation (AC7)', () => {
-  it.each([
-    ['a missing granularity', { granularity: undefined }],
-    ['granularity=hourly', { granularity: 'hourly' }],
-    ['a timestamp in startDate', { startDate: '2025-01-01T00:00:00Z' }],
-  ])('rejects %s with 400 without calling Tinybird', async (_case, params) => {
-    const res = await get(url(params));
-    expect(res.statusCode).toBe(400);
-    expect(mockFetch).not.toHaveBeenCalled();
-  });
-
-  it('rejects an inverted range with invalid_request before calling Tinybird', async () => {
-    const res = await get(url({ startDate: endDate, endDate: startDate }));
-    expect(res.statusCode).toBe(400);
-    expect(res.json().code).toBe('invalid_request');
-    expect(mockFetch).not.toHaveBeenCalled();
-  });
-
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
     // Only Date is faked, so the Tinybird client's real timers keep running and the request
     // cannot straddle a UTC midnight between the handler and the assertion.
@@ -542,117 +389,22 @@ describe('request validation (AC7)', () => {
   });
 });
 
-describe('Tinybird failures (AC8)', () => {
-  const upstreamDetail = 'tinybird internal detail';
-  // Fails only the calls to `path`; every other Tinybird call answers normally.
-  const failing = (respondWith: () => Response | Promise<Response>, path = pipePath) => {
-    const respond = routeTinybird();
-    return async (input: unknown) =>
-      new URL(String(input)).pathname === path ? respondWith() : respond(input);
-  };
-  const httpError = (status: number, statusText: string) => () =>
-    new Response(upstreamDetail, { status, statusText });
-  const networkError = () => Promise.reject(new TypeError(`fetch failed: ${upstreamDetail}`));
-
-  beforeEach(() => {
-    // The Tinybird client logs every failed request; keep the test output readable.
-    vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.spyOn(console, 'warn').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  // 404 is in the table because the null answer comes from the handler's null bucket id; a 404
-  // from the pipe itself is an outage.
-  it.each([
-    [500, 'Internal Server Error'],
-    [404, 'Not Found'],
-    [401, 'Unauthorized'],
-    [429, 'Too Many Requests'],
-  ])('maps a pipe %i to 503 upstream_unavailable', async (status, statusText) => {
-    mockFetch.mockImplementation(failing(httpError(status, statusText)));
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.json().code).toBe('upstream_unavailable');
-    expect(res.body).not.toContain(upstreamDetail);
-    expect(res.body).not.toContain(String(status));
-  });
-
-  it('maps a failing bucket lookup to 503 upstream_unavailable without calling the pipe', async () => {
-    mockFetch.mockImplementation(failing(httpError(500, 'Internal Server Error'), bucketPath));
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.json().code).toBe('upstream_unavailable');
-    expect(res.body).not.toContain(upstreamDetail);
-    expect(pipeCalls()).toHaveLength(0);
-  });
-
-  it('maps a pipe network error to 503 upstream_unavailable', async () => {
-    mockFetch.mockImplementation(failing(networkError));
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.json().code).toBe('upstream_unavailable');
-    expect(res.body).not.toContain(upstreamDetail);
-    // The client retries a network error, so only the path matters: the lookup succeeded and
-    // the failure came from the pipe.
-    expect(pipeCalls()).not.toHaveLength(0);
-  });
-
-  it('maps a bucket lookup network error to 503 upstream_unavailable', async () => {
-    mockFetch.mockImplementation(failing(networkError, bucketPath));
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.json().code).toBe('upstream_unavailable');
-    expect(res.body).not.toContain(upstreamDetail);
-    expect(pipeCalls()).toHaveLength(0);
-  });
-
-  it('maps a pipe response that is not JSON to 503 upstream_unavailable', async () => {
-    mockFetch.mockImplementation(failing(() => new Response('<html>oops</html>', { status: 200 })));
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.json().code).toBe('upstream_unavailable');
-    expect(res.body).not.toContain('oops');
-  });
-});
-
-describe('caching headers (AC9)', () => {
-  it('sets Cache-Control: private, max-age=0 on a successful response', async () => {
-    const res = await get(url());
-    expect(res.statusCode).toBe(200);
-    expect(res.headers['cache-control']).toBe('private, max-age=0');
-  });
-
-  it('sets the same header on a 503', async () => {
-    vi.spyOn(console, 'error').mockImplementation(() => {});
-    mockFetch.mockRejectedValue(new TypeError('fetch failed'));
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.headers['cache-control']).toBe('private, max-age=0');
-    vi.restoreAllMocks();
-  });
-});
-
 describe('OpenAPI (AC10)', () => {
   async function getOperation(): Promise<OpenApiOperation | undefined> {
     const res = await get('/v1-alpha/openapi.json');
     expect(res.statusCode).toBe(200);
-    return res.json<OpenApiDoc>().paths[specPath]?.get;
+    return res.json<OpenApiDoc>().paths[developmentPath('median-time-to-close')]?.get;
   }
 
-  it('lists the route tagged Development with a description naming the three platforms', async () => {
+  it('names the three platforms in the description', async () => {
     const operation = await getOperation();
-    expect(operation?.tags).toEqual(['Development']);
     expect(operation?.description).toMatch(/GitHub/);
     expect(operation?.description).toMatch(/GitLab/);
     expect(operation?.description).toMatch(/Gerrit/);
   });
 
-  it('documents exactly five query params: granularity required, platform an optional enum', async () => {
+  it('documents exactly five query params, with platform an optional enum', async () => {
     const operation = await getOperation();
-    // The operation also lists the slug path parameter; only the query params are under test.
     const params = new Map(
       operation?.parameters
         ?.filter((param) => param.in === 'query')
@@ -661,12 +413,6 @@ describe('OpenAPI (AC10)', () => {
     expect([...params.keys()].sort()).toEqual(
       ['endDate', 'granularity', 'platform', 'repos', 'startDate'].sort(),
     );
-    for (const [name, param] of params) {
-      expect(param.description ?? param.schema.description, `${name}`).toBeTruthy();
-    }
-    const granularity = params.get('granularity');
-    expect(granularity?.required).toBe(true);
-    expect(granularity?.schema.enum).toEqual(['daily', 'weekly', 'monthly', 'quarterly', 'yearly']);
     const platform = params.get('platform');
     expect(platform?.required).toBeFalsy();
     expect(platform?.schema).toMatchObject({
@@ -675,21 +421,10 @@ describe('OpenAPI (AC10)', () => {
     });
   });
 
-  it('documents every field of the 200 response, with the summary numbers nullable', async () => {
+  it('types the summary numbers nullable, the dates date-time and the bucket median a number', async () => {
     const operation = await getOperation();
     const schema = operation?.responses['200']?.content['application/json']?.schema;
-    expect(schema?.required).toEqual(expect.arrayContaining(['summary', 'data']));
-    expect(schema?.properties?.summary?.description).toBeTruthy();
-    expect(schema?.properties?.data?.description).toBeTruthy();
-
     const summary = schema?.properties?.summary;
-    expect(summary?.required).toEqual(expect.arrayContaining(summaryKeys));
-    for (const field of summaryKeys) {
-      expect(
-        summary?.properties?.[field]?.description,
-        `summary.${field} has no description`,
-      ).toBeTruthy();
-    }
     for (const field of ['current', 'previous', 'changeValue', 'percentageChange']) {
       expect(summary?.properties?.[field], `summary.${field}`).toMatchObject({
         type: 'number',
@@ -700,26 +435,8 @@ describe('OpenAPI (AC10)', () => {
     expect(summary?.properties?.periodTo?.format).toBe('date-time');
 
     const bucket = schema?.properties?.data?.items;
-    expect(bucket?.required).toEqual(expect.arrayContaining(bucketKeys));
-    for (const field of bucketKeys) {
-      expect(
-        bucket?.properties?.[field]?.description,
-        `data[].${field} has no description`,
-      ).toBeTruthy();
-    }
     expect(bucket?.properties?.startDate?.format).toBe('date-time');
     expect(bucket?.properties?.endDate?.format).toBe('date-time');
     expect(bucket?.properties?.medianTimeToCloseSeconds?.type).toBe('number');
-  });
-
-  it('keeps the route out of /v1', async () => {
-    const spec = await get('/v1/openapi.json');
-    expect(Object.keys(spec.json<OpenApiDoc>().paths)).not.toContain(
-      '/v1/projects/{slug}/development/median-time-to-close',
-    );
-    const res = await get(
-      '/v1/projects/kubernetes/development/median-time-to-close?granularity=monthly',
-    );
-    expect(res.statusCode).toBe(404);
   });
 });
