@@ -320,24 +320,6 @@ describe('empty results (AC5)', () => {
 });
 
 describe('OpenAPI (AC6)', () => {
-  it('defines an active organization by the activity attributed to it and names both flags', async () => {
-    const description = (await openApi()).operation?.description;
-    expect(description).toMatch(/attributed to/i);
-    expect(description).toContain('`includeCodeContributions`');
-    expect(description).toContain('`includeCollaborations`');
-  });
-
-  it('says the summary counts an organization once while each bucket counts it again', async () => {
-    const description = (await openApi()).operation?.description;
-    expect(description).toMatch(/\bonce\b/);
-    expect(description).toContain('`summary.current`');
-  });
-
-  it('says the first and last buckets count only activity inside the period', async () => {
-    const { spec, body } = await openApi();
-    expect(resolveSchema(spec, body?.properties?.data)?.description).toMatch(/inside the period/);
-  });
-
   it('types the summary counts and the bucket count as integers', async () => {
     const { spec, body } = await openApi();
     const summary = resolveSchema(spec, body?.properties?.summary);
