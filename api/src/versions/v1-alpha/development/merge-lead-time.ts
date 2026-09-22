@@ -13,8 +13,6 @@ import {
 } from '../../../lib/period.js';
 import { DateRangeQuery, PeriodSummary, ProjectSlugParams } from '../../../schemas/common.js';
 
-// One row of Nullable(Float64) averages; a period without pull requests can also come back as
-// no row at all.
 interface LeadTimeRow {
   openedToMergedSeconds?: number | null;
   openedToReviewAssignedSeconds?: number | null;
