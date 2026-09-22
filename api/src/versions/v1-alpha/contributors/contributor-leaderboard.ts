@@ -38,6 +38,7 @@ const isContributorRow = (row: ContributorRow) =>
   typeof row.displayName === 'string' &&
   typeof row.avatar === 'string' &&
   Number.isSafeInteger(row.contributionCount) &&
+  row.contributionCount >= 0 &&
   typeof row.contributionPercentage === 'number' &&
   isOptionalStringList(row.roles) &&
   isOptionalStringList(row.githubHandleArray);
