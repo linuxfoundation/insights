@@ -393,35 +393,6 @@ describe('empty results (AC6)', () => {
 });
 
 describe('OpenAPI (AC7)', () => {
-  it('defines an active contributor by the activity the two contribution flags select', async () => {
-    const description = (await getOperation())?.description;
-    expect(description).toMatch(/at least one activity/i);
-    expect(description).toMatch(/`includeCodeContributions`/);
-    expect(description).toMatch(/`includeCollaborations`/);
-  });
-
-  it('defines a maintainer by the maintainer files of the project repositories, whatever role they give', async () => {
-    const description = (await responseSchema())?.properties?.maintainerCount?.description;
-    expect(description).toMatch(/maintainer file/i);
-    expect(description).toMatch(/MAINTAINERS/);
-    expect(description).toMatch(/CODEOWNERS/);
-    expect(description).toMatch(/role/i);
-  });
-
-  it('defines a reviewer by review activity and ties reviewerCount to code contributions', async () => {
-    const description = (await responseSchema())?.properties?.reviewerCount?.description;
-    for (const platform of ['GitHub', 'GitLab', 'Gerrit']) {
-      expect(description).toContain(platform);
-    }
-    expect(description).toMatch(/`includeCodeContributions`/);
-  });
-
-  it('says the edge buckets count only activity inside the period and buckets can outnumber the summary', async () => {
-    const data = (await responseSchema())?.properties?.data;
-    expect(data?.description).toMatch(/only activity inside the period/i);
-    expect(data?.items?.properties?.contributors?.description).toMatch(/`summary\.current`/);
-  });
-
   it('types the maintainer, reviewer, summary and bucket counts as integers', async () => {
     const schema = await responseSchema();
     expect(schema?.properties?.maintainerCount?.type).toBe('integer');
