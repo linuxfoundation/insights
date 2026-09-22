@@ -4,8 +4,6 @@
     "start": "INSIGHTS_TEMPORAL_TASKQUEUE=package-downloads SERVICE=package-downloads-worker tsx src/main.ts",
     "start:debug": "INSIGHTS_TEMPORAL_TASKQUEUE=package-downloads SERVICE=package-downloads-worker LOG_LEVEL=info tsx --inspect=0.0.0.0:9232 src/main.ts",
     "dev": "nodemon --watch src --watch ../../libs --ext ts --exec pnpm run start:debug",
-    "format": "npx prettier --write \"src/**/*.ts\"",
-    "format-check": "npx prettier --check .",
     "tsc-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -22,7 +20,6 @@
     "axios": "^1.20.0",
     "js-yaml": "^5.4.1",
     "moment": "~2.30.1",
-    "prettier": "^3.9.6",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3"
   },

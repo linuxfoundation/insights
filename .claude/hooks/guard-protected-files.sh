@@ -92,8 +92,8 @@ fi
 case "$FILE_PATH" in
   .oxlintrc*)
     warn "Oxlint configuration — changes affect code quality rules for the project." ;;
-  .prettierrc*|frontend/.prettierrc*)
-    warn "Prettier configuration — changes affect code formatting standards." ;;
+  .oxfmtrc*)
+    warn "Oxfmt configuration — changes affect code formatting standards." ;;
   CLAUDE.md)
     warn "Project instructions — changes affect AI assistant behavior for all users." ;;
   .claude/settings.json)
