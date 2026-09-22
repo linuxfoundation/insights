@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { isLocal } from '../utils/common';
 import { verifyOrRefreshOidcToken } from '../utils/auth-refresh';
+import { isLocal } from '../utils/common';
 
 export default defineEventHandler(async (event) => {
   const url = getRouterParam(event, '_') || event.node.req.url || '';

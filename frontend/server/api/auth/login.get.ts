@@ -9,8 +9,9 @@ import {
   buildAuthorizationUrl,
 } from 'openid-client';
 import { Pool } from 'pg';
-import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
+
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();

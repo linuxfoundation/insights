@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { generateKeyPairSync } from 'node:crypto';
-import { describe, test, expect } from 'vitest';
+
 import { decodeJwt } from 'jose';
+import { describe, test, expect } from 'vitest';
 
 import { normalizePrivateKey, signAppJwt } from './github.api';
 

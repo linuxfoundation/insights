@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { Collection } from '~~/types/collection';
+
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { getOptionalUser } from '~~/server/utils/jwt';
+import type { Collection } from '~~/types/collection';
 
 /**
  * API Endpoint: Fetch Collection Details by Slug

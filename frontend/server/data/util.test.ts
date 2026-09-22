@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DateTime } from 'luxon';
 import { describe, test, expect, vi } from 'vitest';
 
-import { DateTime } from 'luxon';
 import { calculatePercentageChange, earliestPossibleStartDate, getPreviousDates } from './util';
 
 describe('getPreviousDates', () => {

@@ -1,8 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import { ActivityTypes, Granularity } from '@lfx-insights/types';
+import type { ForksData } from '~~/types/popularity/responses.types';
+
 import {
   mockCurrentSummaryData,
   mockPreviousSummaryData,
@@ -10,7 +13,6 @@ import {
   mockCurrentNewTimeseries,
 } from '../../../mocks/tinybird-forks-response.mock';
 import { ActivityFilterCountType } from '../../types';
-import type { ForksData } from '~~/types/popularity/responses.types';
 
 const mockFetchFromTinybird = vi.fn();
 

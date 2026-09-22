@@ -1,11 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { useRuntimeConfig } from 'nuxt/app';
 import type { Ref } from 'vue';
 import { computed } from 'vue';
-import { useRuntimeConfig } from 'nuxt/app';
-import type { Project } from '../types/project';
+
 import type { Collection } from '../types/collection';
+import type { Project } from '../types/project';
 
 export function useRichSchema() {
   const config = useRuntimeConfig();

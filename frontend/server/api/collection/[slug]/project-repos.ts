@@ -1,12 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { ProjectInsightsTinybird } from '~~/types/project';
-import type { Pagination } from '~~/types/shared/pagination';
-import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+
 import { postToTinybird } from '~~/server/data/tinybird/tinybird';
+import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { getOptionalUser } from '~~/server/utils/jwt';
 import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
+import type { ProjectInsightsTinybird } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
 
 /**
  * API Endpoint: /api/collection/:slug/project-repos

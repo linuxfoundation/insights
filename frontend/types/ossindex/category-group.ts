@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { CategoryGroup } from '../category/category-group';
-import type { OSSIndexTopCollection, OSSIndexTopProject } from './common';
 import type { OSSIndexCategory } from './category';
+import type { OSSIndexTopCollection, OSSIndexTopProject } from './common';
 
 export interface OSSIndexCategoryGroupTinybird {
   id: string;

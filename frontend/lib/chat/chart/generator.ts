@@ -5,11 +5,13 @@
 
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { generateObject } from 'ai';
-import { outputSchema } from './types';
-import type { Config, DataMapping, Result } from './types';
+
+import { lfxColors } from '~/config/styles/colors';
+
 import { analyzeDataForChart, shouldStackBars, normalizeDataForChart } from './analysis';
 import sampleConfig from './base-config';
-import { lfxColors } from '~/config/styles/colors';
+import { outputSchema } from './types';
+import type { Config, DataMapping, Result } from './types';
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,

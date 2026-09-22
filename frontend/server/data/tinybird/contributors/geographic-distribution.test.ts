@@ -1,13 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+import type { GeographicDistributionResponse } from '~~/server/data/tinybird/contributors/geographic-distribution';
+import { DemographicType } from '~~/server/data/types';
+
 import {
   mockContributorsGeoDistTimeseries,
   mockOrganizationsGeoDistTimeseries,
 } from '../../../mocks/tinybird-geo-distribution-response.mock';
-import { DemographicType } from '~~/server/data/types';
-import type { GeographicDistributionResponse } from '~~/server/data/tinybird/contributors/geographic-distribution';
 
 const mockFetchFromTinybird = vi.fn();
 

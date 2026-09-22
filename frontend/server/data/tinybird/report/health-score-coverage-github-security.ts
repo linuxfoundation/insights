@@ -6,13 +6,14 @@
 // the same merge-order reason as the types file next to it - see
 // health-score-coverage-github-security.types.ts.
 
-import { fetchFromTinybird } from '../tinybird';
 import type {
   HealthScoreCoverageGithubSecurityData,
   HealthScoreCoverageGithubSecurityRow,
   HealthScoreCoverageGithubSecurityStageCount,
   HealthScoreCoverageGithubSecurityStageKey,
 } from '~~/types/report/health-score-coverage-github-security.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 const EMPTY_ROW: HealthScoreCoverageGithubSecurityRow = {
   isLF: 0,

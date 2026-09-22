@@ -7,11 +7,11 @@
  * - repos: string[]
  */
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { HealthScoreTinybird, HealthScoreResults } from '~~/types/overview/responses.types';
 import {
   createHealthScoreSchema,
   fetchHealthScoreMetrics,
 } from '~~/server/helpers/health-score.helpers';
+import type { HealthScoreTinybird, HealthScoreResults } from '~~/types/overview/responses.types';
 
 export default defineEventHandler(async (event): Promise<HealthScoreResults | unknown> => {
   const query = getQuery(event);

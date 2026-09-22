@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import { HealthScoreResults, HealthScoreTinybird } from '~~/types/overview/responses.types';
+
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { HealthScoreResults, HealthScoreTinybird } from '~~/types/overview/responses.types';
 
 export interface HealthScoreFilters {
   project: string;

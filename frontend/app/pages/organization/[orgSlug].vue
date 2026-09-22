@@ -18,15 +18,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query';
 import { createError, showError, useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, onServerPrefetch, watch } from 'vue';
-import { useQuery } from '@tanstack/vue-query';
-import type { OrganizationProfile } from '~~/types/organization-page';
+
 import LfxOrgHeader from '~/components/modules/organization/components/header.vue';
+import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
+import type { OrganizationProfile } from '~~/types/organization-page';
 
 const route = useRoute();
 const { orgSlug } = route.params;

@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 import { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import { Pagination } from '~~/types/shared/pagination';
-import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
 
 export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>> => {
   const { type } = event.context.params as Record<string, string>;

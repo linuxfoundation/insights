@@ -1,12 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Pool } from 'pg';
+
+import { PipeInstructions } from '~~/lib/chat/types';
+
 import { generateChartConfig, modifyChartConfig } from '../../../lib/chat/chart/generator';
-import { ChatRepository } from '../../repo/chat.repo';
 import { Result, Config, DataMapping } from '../../../lib/chat/chart/types';
 import { getBucketIdForProject } from '../../data/tinybird/bucket-cache';
 import { fetchFromTinybird } from '../../data/tinybird/tinybird';
-import { PipeInstructions } from '~~/lib/chat/types';
+import { ChatRepository } from '../../repo/chat.repo';
 
 export const maxDuration = 30;
 

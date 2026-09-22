@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { Config } from './types';
 import { lfxColors } from '~/config/styles/colors';
+
+import type { Config } from './types';
 
 const sampleConfig: Config = {
   title: {

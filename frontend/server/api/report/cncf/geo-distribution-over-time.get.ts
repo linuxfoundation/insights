@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
+
 import { fetchCollectionGeoDistributionOverTime } from '~~/server/data/tinybird/report/cncf-geo-distribution';
 import type { CncfGeoDistributionOverTimeResponse } from '~~/types/report/cncf.types';
 

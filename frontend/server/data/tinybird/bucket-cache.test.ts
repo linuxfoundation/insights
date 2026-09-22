@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import type { TinybirdResponse } from './tinybird';
 
 // `useStorage` is auto-imported by Nitro in real server code but isn't injected into test
