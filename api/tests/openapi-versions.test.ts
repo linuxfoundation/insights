@@ -3,8 +3,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
 import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it } from 'vitest';
+
 import { buildApp } from '../src/app.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from '../src/versions/registry.js';
 

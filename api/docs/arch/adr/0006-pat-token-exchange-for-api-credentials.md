@@ -32,14 +32,14 @@ Nothing else in the auth model changes: every request still requires a credentia
 
 Both variants of option 4 remain on the table. 4b is the suggested direction; 4a stays viable if the membership lookup turns out to be better placed inside the PAT service.
 
-| | 4b: tier resolved by the Worker (suggested) | 4a: tier enriched by the PAT service |
-|---|---|---|
-| Where tier comes from | LFX Tier endpoint, called by both the Self-Serve UI and the Worker | PAT service calls LFX Services, at issuance and at exchange |
-| How Insights receives tier | Trusted headers alongside the JWT | Claims inside the JWT |
-| PAT service scope | PATs only | PATs + membership lookup |
-| Rate limiting | Limiter keys straight off headers, no JWT parsing needed | Requires JWT parsing before the limiter can key on anything |
-| Cache control | Token TTL and tier TTL tunable independently | Single TTL, tied to the token |
-| Main drawback | One more service for us to build and operate (the Tier endpoint) | Couples the PAT service to membership data; enrichment work sits closer to the Auth0 extensibility environment, which has limited observability and a 10s total budget for all login-time rules |
+|                            | 4b: tier resolved by the Worker (suggested)                        | 4a: tier enriched by the PAT service                                                                                                                                                            |
+| -------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Where tier comes from      | LFX Tier endpoint, called by both the Self-Serve UI and the Worker | PAT service calls LFX Services, at issuance and at exchange                                                                                                                                     |
+| How Insights receives tier | Trusted headers alongside the JWT                                  | Claims inside the JWT                                                                                                                                                                           |
+| PAT service scope          | PATs only                                                          | PATs + membership lookup                                                                                                                                                                        |
+| Rate limiting              | Limiter keys straight off headers, no JWT parsing needed           | Requires JWT parsing before the limiter can key on anything                                                                                                                                     |
+| Cache control              | Token TTL and tier TTL tunable independently                       | Single TTL, tied to the token                                                                                                                                                                   |
+| Main drawback              | One more service for us to build and operate (the Tier endpoint)   | Couples the PAT service to membership data; enrichment work sits closer to the Auth0 extensibility environment, which has limited observability and a 10s total budget for all login-time rules |
 
 Picking 4a would require accepting that the PAT service becomes membership-aware, and confirming the enrichment call chain stays inside Auth0's extensibility limits. The Insights team owns building the PAT exchange service and stewards this call, coordinating with DevOps where components land outside the Insights stack.
 
@@ -52,26 +52,31 @@ This means phase 2 (MCP server) and phase 3 (CLI) of [IN-1084](https://linuxfoun
 ## Alternatives Considered
 
 ### Alternative 1: Non-expiring refresh tokens via Self-Serve (option 2)
+
 - **Pros**: Auth0-signed JWTs reach the API with no per-product permission lookup; immediate revocation through the Auth0 Management API; reduced-scope application limits blast radius.
 - **Cons**: The refresh token leaves the issuing application's security boundary; the exchange proxy re-injects client credentials, so any holder can act as that application; TTL is pinned to the access token's `exp`, with no independently enforceable shorter lifetime; users must implement a token-swap call themselves; capped at 200 tokens per user per application.
 - **Why not**: Rejected by the Ops/SSO team for using OAuth2 semantics to build something that is not an OAuth2 flow. It is also no simpler. The enrichment complexity is identical, it just moves; option 4 adds only PAT hash storage on top, which is not the hard part.
 
 ### Alternative 2: Per-product opaque API keys (option 1)
+
 - **Pros**: Lowest infrastructure cost; fully owned by Insights; immediate revocation.
 - **Cons**: Insights would own key storage, the signing/validation surface, and its own permission and entitlement lookups.
 - **Why not**: Duplicates platform auth and entitlement logic, which is the fastest route to asymmetries and drift between products. It also makes Insights an identity service, which it is not.
 
 ### Alternative 3: Device-flow credential CLI (option 3)
+
 - **Pros**: No long-lived secret at rest; hides the token-swap from the user; a natural fit for phase 3.
 - **Cons**: Needs an interactive browser step, so it does not cover unattended CI or bot use; an access token scraped from the keychain stays valid for its full lifetime.
 - **Why not**: Not rejected. Complementary. A CLI can wrap this flow later and emit tokens for other scripts; it is not a substitute for a credential that works headlessly today.
 
 ### Alternative 4: CIMD profiles for third-party applications (option 5)
+
 - **Pros**: Partners self-manage client metadata; well suited to third-party MCP clients; low LFX-side infrastructure.
 - **Cons**: Token security depends partly on the partner application; cached partner access tokens blunt revocation.
 - **Why not**: Solves third-party application onboarding, not first-party scripted access, which is what v1 needs. Worth revisiting for partner-built MCP clients.
 
 ### Alternative 5: Exposing temporary access tokens in the UI (option 6)
+
 - **Pros**: Zero implementation cost.
 - **Cons**: Not durable, not usable for machine-to-machine work, encourages copy-pasting credentials.
 - **Why not**: Does not meet the requirement for a long-lived credential.
@@ -82,19 +87,20 @@ The architecture is approved by the LFX architecture team (Eric Searcy, architec
 
 ## Coordination required
 
-| Team / owner | What we need |
-|---|---|
-| LFX architecture (Eric Searcy, architecture lead) | Architectural sign-off on the option-4 direction and on the 4a/4b shape |
-| LFX DevOps / Cloud Ops (Robert Detjens) | Cloudflare Worker on the Insights zone; Auth0 CTE grant and client configuration; token and tier cache TTLs |
-| SSO / Auth0 administration (Alan Sherman) | Auth0 tenant changes, CTE enablement, registration of the PAT service as the token validator |
-| LFX Platform / Self-Serve engineering (Jordan Evans) | PAT service: generation, salted-hash storage, rename and revoke, audience prefixing, and the Auth0 validation callback. Reusing the CTE path already live for Self-Serve impersonation tokens |
-| LFX v2 platform / member data | The membership source of truth behind the LFX Tier endpoint: how to resolve an Auth0 `sub` to an organization ID and member tier, plus where the endpoint is deployed and who operates it long-term. Multi-org responses must be returned in a **stable, deterministic order** (not set/map iteration), since the first org at the highest tier becomes the rate-limit pool key on ties. |
-| Product / Design (Jonathan Reimer, Nuno, Kieran) | Self-Serve Developer Settings UX; Key Contact gating rules; tier → rate-limit mapping, including the highest-tier-wins rule across multiple orgs and the first-returned-org tie-break on equal tiers |
-| Insights engineering | PAT exchange service build-out, the LFX Tier endpoint, Worker logic, API-side JWT and header verification, rate limiting, customer documentation |
+| Team / owner                                         | What we need                                                                                                                                                                                                                                                                                                                                                                             |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LFX architecture (Eric Searcy, architecture lead)    | Architectural sign-off on the option-4 direction and on the 4a/4b shape                                                                                                                                                                                                                                                                                                                  |
+| LFX DevOps / Cloud Ops (Robert Detjens)              | Cloudflare Worker on the Insights zone; Auth0 CTE grant and client configuration; token and tier cache TTLs                                                                                                                                                                                                                                                                              |
+| SSO / Auth0 administration (Alan Sherman)            | Auth0 tenant changes, CTE enablement, registration of the PAT service as the token validator                                                                                                                                                                                                                                                                                             |
+| LFX Platform / Self-Serve engineering (Jordan Evans) | PAT service: generation, salted-hash storage, rename and revoke, audience prefixing, and the Auth0 validation callback. Reusing the CTE path already live for Self-Serve impersonation tokens                                                                                                                                                                                            |
+| LFX v2 platform / member data                        | The membership source of truth behind the LFX Tier endpoint: how to resolve an Auth0 `sub` to an organization ID and member tier, plus where the endpoint is deployed and who operates it long-term. Multi-org responses must be returned in a **stable, deterministic order** (not set/map iteration), since the first org at the highest tier becomes the rate-limit pool key on ties. |
+| Product / Design (Jonathan Reimer, Nuno, Kieran)     | Self-Serve Developer Settings UX; Key Contact gating rules; tier → rate-limit mapping, including the highest-tier-wins rule across multiple orgs and the first-returned-org tie-break on equal tiers                                                                                                                                                                                     |
+| Insights engineering                                 | PAT exchange service build-out, the LFX Tier endpoint, Worker logic, API-side JWT and header verification, rate limiting, customer documentation                                                                                                                                                                                                                                         |
 
 ## Consequences
 
 ### Positive
+
 - Industry-standard PAT ergonomics: one credential, sent directly as `Authorization: Bearer`, with no client-side token-swap call.
 - The Insights API stays a verifier. No key storage, no key-management UI, no Auth0 Management API dependency.
 - Rate-limit inputs arrive as headers, so the limiter needs no JWT parsing.
@@ -104,11 +110,13 @@ The architecture is approved by the LFX architecture team (Eric Searcy, architec
 - No Insights-hosted token endpoint to build: the exchange is transparent to the customer, who configures a single host for API calls.
 
 ### Negative
+
 - Highest infrastructure complexity of the six options: a Worker, a PAT service, a Tier endpoint, and Auth0 tenant configuration, touching four teams.
 - Insights takes on delivery of two components that are not Insights-specific: the PAT exchange service and the Tier endpoint. It still depends on Platform and DevOps for the Auth0 and Cloudflare pieces it does not own.
 - Two extra hops per uncached request (exchange, tier lookup) on top of the API call.
 
 ### Risks
+
 - **4a vs 4b not finally settled.** Mitigation: the difference is confined to where tier resolution lives; the PAT, exchange, and verification path are identical, so the decision can be made without reworking the rest.
 - **Revocation is not immediate**: bounded by the Worker's token and tier cache TTL (~10 min). Mitigation: align the JWT `exp` requested from Auth0 with the Worker cache TTL so both expire together, keeping JWT semantics and cache lifetime in sync; keep the TTL short and document the window for customers.
 - **Header spoofing if the origin is directly reachable.** The org and tier headers are trusted, not signed. Mitigation: lock the origin to Worker-only access and strip client-supplied copies of those headers at the Worker; both are named requirements on T-015b and T-017, not assumptions.

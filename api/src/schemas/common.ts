@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
+
 import { ActivityPlatforms, Granularity as SharedGranularity } from '@lfx-insights/types';
 
 // The spec is OpenAPI 3.0.3, which has no type 'null'. Ajv and fast-json-stringify both honor

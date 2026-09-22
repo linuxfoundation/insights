@@ -1,9 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
-import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { Type } from '@sinclair/typebox';
+
+import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { ActivityTypes } from '@lfx-insights/types';
+
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import { getPreviousDates, toPeriodSummary, toTinybirdRange } from '../../../lib/period.js';
 import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schemas/common.js';

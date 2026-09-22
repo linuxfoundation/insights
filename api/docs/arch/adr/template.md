@@ -17,11 +17,13 @@ or "We chose…"]
 ## Alternatives Considered
 
 ### Alternative 1: [Name]
+
 - **Pros**: [benefits of this option]
 - **Cons**: [drawbacks of this option]
 - **Why not**: [specific reason this was rejected in favour of the chosen approach]
 
 ### Alternative 2: [Name]
+
 - **Pros**: [benefits of this option]
 - **Cons**: [drawbacks of this option]
 - **Why not**: [specific reason this was rejected]
@@ -29,12 +31,15 @@ or "We chose…"]
 ## Consequences
 
 ### Positive
+
 - [benefit 1]
 - [benefit 2]
 
 ### Negative
+
 - [trade-off 1]
 - [trade-off 2]
 
 ### Risks
+
 - [risk 1 and how it is mitigated]

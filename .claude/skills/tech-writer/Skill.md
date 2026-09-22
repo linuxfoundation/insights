@@ -5,6 +5,7 @@ Write public-facing documentation for new features, improvements, or changes in 
 ## When to Use
 
 Invoke `/tech-writer` when:
+
 - A new feature has been built and needs a doc page
 - An existing feature has changed and its doc needs updating
 - A new metric, concept, or configuration option needs to be explained publicly
@@ -20,12 +21,12 @@ Invoke `/tech-writer` when:
 
 ### Sidebar Sections
 
-| Section | Folder | Purpose |
-|---|---|---|
-| Introduction | `docs/introduction/` | What Insights is, data sources, contributions, maintainers |
-| Metrics | `docs/metrics/` | Health score, contributors, popularity, development, security |
-| Features | `docs/features/` | User-facing product features (Copilot, repo groups, collections) |
-| More | `docs/more/` | FAQ, glossary |
+| Section      | Folder               | Purpose                                                          |
+| ------------ | -------------------- | ---------------------------------------------------------------- |
+| Introduction | `docs/introduction/` | What Insights is, data sources, contributions, maintainers       |
+| Metrics      | `docs/metrics/`      | Health score, contributors, popularity, development, security    |
+| Features     | `docs/features/`     | User-facing product features (Copilot, repo groups, collections) |
+| More         | `docs/more/`         | FAQ, glossary                                                    |
 
 **Rule:** New feature docs go in `docs/features/`. New metric docs go in `docs/metrics/`. Clarifications or concept docs go in `docs/introduction/`.
 
@@ -38,11 +39,13 @@ frontend/docs/features/my-new-feature/index.md
 ```
 
 Images go in:
+
 ```
 frontend/docs/images/my-new-feature-screenshot.png
 ```
 
 Reference images with relative paths:
+
 ```markdown
 ![Alt text](../../images/my-new-feature-screenshot.png)
 ```
@@ -52,16 +55,23 @@ Reference images with relative paths:
 **No frontmatter for standard doc pages** — regular docs in `docs/features/`, `docs/metrics/`, and `docs/introduction/` start directly with the `#` heading (unlike blog posts which use YAML frontmatter). Special VitePress pages (such as `frontend/docs/index.md` with `layout: home`) may use YAML frontmatter when required by the framework.
 
 **Heading hierarchy:**
+
 ```markdown
-# Feature Name          ← page title, used in sidebar if not overridden
-## Overview             ← first section, always present
-## How It Works         ← or "Using X", "Key Concepts", etc.
-## Example              ← include screenshots when possible
-## Configuration        ← if applicable
-## FAQ                  ← if applicable
+# Feature Name ← page title, used in sidebar if not overridden
+
+## Overview ← first section, always present
+
+## How It Works ← or "Using X", "Key Concepts", etc.
+
+## Example ← include screenshots when possible
+
+## Configuration ← if applicable
+
+## FAQ ← if applicable
 ```
 
 **VitePress callout blocks:**
+
 ```markdown
 ::: warning ⚠️ Heads up
 Something the user should be aware of.
@@ -77,19 +87,22 @@ Helpful suggestion or shortcut.
 ```
 
 **Links — always use relative paths within docs:**
+
 ```markdown
 [Health Score](../../metrics/health-score/index.md)
 [Data Sources](../../introduction/data-sources/index.md)
 ```
 
 **Tables:**
+
 ```markdown
 | Column A | Column B |
-|---|---|
+| -------- | -------- |
 | Value    | Value    |
 ```
 
 **Images:**
+
 ```markdown
 ![Descriptive alt text](../../images/feature-name.png)
 ```
@@ -103,6 +116,7 @@ Helpful suggestion or shortcut.
 - **No jargon** without a definition or link to the glossary
 
 **Avoid:**
+
 - "Simply", "easily", "just" — don't minimize complexity
 - Passive voice where active is clearer
 - Repeating the page title verbatim in the first sentence
@@ -114,13 +128,15 @@ When `/tech-writer` is invoked, follow these steps:
 ### Step 1 — Understand the feature
 
 Before writing anything:
-1. Ask the user: *"What is the feature? What does it do for the end user?"* if not already described
+
+1. Ask the user: _"What is the feature? What does it do for the end user?"_ if not already described
 2. Read relevant source files to understand the implementation — check `frontend/app/pages/`, `frontend/app/components/modules/`, and `frontend/server/api/`
 3. Check if a doc already exists in `frontend/docs/` for this topic — if so, update rather than create
 
 ### Step 2 — Decide placement
 
 Based on what the feature is:
+
 - **New product feature** (UI, workflow, user action) → `docs/features/<slug>/index.md`
 - **New metric or data point** → `docs/metrics/<slug>/index.md`
 - **Concept, term, or data explanation** → `docs/introduction/<slug>/index.md` or add to `docs/more/glossary/index.md`
@@ -129,6 +145,7 @@ Based on what the feature is:
 ### Step 3 — Draft the doc
 
 Use the structure:
+
 ```markdown
 # <Feature Name>
 
@@ -161,6 +178,7 @@ Match the casing and style of surrounding entries.
 ### Step 5 — Confirm with user
 
 Present the draft and ask:
+
 - Does the description match how you'd explain this to a user?
 - Are there screenshots you want to include?
 - Should this link to or from any other doc page?

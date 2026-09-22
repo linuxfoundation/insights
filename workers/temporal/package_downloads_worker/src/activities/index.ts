@@ -1,16 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import axios from "axios";
-import { svc } from "../main";
+import axios from 'axios';
+
+import { svc } from '../main';
 import {
   findReposToProcessForDate,
   savePackageDownloadRun,
   savePackagesDownloadForRepo,
-} from "../repo";
-import {
-  IInsightsProjectRepo,
-  IPackageDownloadEcosystemsResponse,
-} from "../types";
+} from '../repo';
+import { IInsightsProjectRepo, IPackageDownloadEcosystemsResponse } from '../types';
 
 export async function fetchAndSavePackageDownloads(
   date: string,
@@ -23,8 +21,7 @@ export async function fetchAndSavePackageDownloads(
 
   try {
     data = await fetchPackageDownloads(repoUrl);
-    bytesReturned =
-      data.length > 0 ? Buffer.byteLength(JSON.stringify(data)) : 0;
+    bytesReturned = data.length > 0 ? Buffer.byteLength(JSON.stringify(data)) : 0;
   } catch (err) {
     errorMessage = err instanceof Error ? err.message : String(err);
   }
@@ -48,7 +45,7 @@ export async function fetchAndSavePackageDownloads(
   });
 
   console.info(
-    `[package_downloads_run] date=${date} repo=${repoUrl} bytes=${bytesReturned} hasData=${returnedAnyPackageData} error=${errorMessage ?? "none"}`,
+    `[package_downloads_run] date=${date} repo=${repoUrl} bytes=${bytesReturned} hasData=${returnedAnyPackageData} error=${errorMessage ?? 'none'}`,
   );
 
   if (errorMessage) {
@@ -76,9 +73,9 @@ async function fetchPackageDownloads(
 ): Promise<IPackageDownloadEcosystemsResponse[]> {
   const url = `https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=${repoUrl}&mailto=insights@linuxfoundation.org`;
   const requestOptions = {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 

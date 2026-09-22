@@ -18,6 +18,7 @@ File naming convention: `V<unix_timestamp>__<description>.sql`
 ## Apply Pending Migrations
 
 Run from the repo root:
+
 ```sh
 cd database && \
   PGHOST=host.docker.internal \
@@ -35,11 +36,13 @@ This runs `flyway migrate` with `-outOfOrder=true` and `-baselineOnMigrate=true`
 ## Create a New Migration File
 
 Run from the `database/` directory:
+
 ```sh
 cd database && bash create_migration.sh <migration_name>
 ```
 
 Example:
+
 ```sh
 cd database && bash create_migration.sh add_index_to_project_costs
 ```
@@ -49,6 +52,7 @@ This creates `database/migrations/V<timestamp>__<migration_name>.sql`. Open the 
 ## Check Migration Status
 
 To see which migrations have been applied:
+
 ```sh
 cd database && \
   PGHOST=host.docker.internal \

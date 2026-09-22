@@ -23,7 +23,7 @@ jobs:
           node-version: 24
 
       - name: Install dependencies (if needed)
-        run: npm ci || true  # Use this if your script requires deps, else skip
+        run: npm ci || true # Use this if your script requires deps, else skip
 
       - name: Run license check
         run: node scripts/check-license.js

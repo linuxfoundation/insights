@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DbStore } from '@crowd/database';
 import { DateTime } from 'luxon';
 
-import { getSearchVolume } from './keywords-everywhere.js';
 import { persistSearchVolume, SearchVolumeDBRecord } from './database.js';
+import { getSearchVolume } from './keywords-everywhere.js';
 import { fetchFromTinybird } from './tinybird.js';
-import { ISearchVolumeParams } from "./types";
-import { DbStore } from "@crowd/database";
+import { ISearchVolumeParams } from './types';
 
 interface Project {
   id: string;
@@ -61,11 +61,14 @@ async function getProjectsFromTinybird(page: number, pageSize: number): Promise<
  * If a keyword is provided, it filters projects by that keyword.
  * If a limit is provided, it filters N internal and the top N external projects by rank.
  */
-async function filterProjects(options: ISearchVolumeParams, projects: Project[]): Promise<Project[]> {
+async function filterProjects(
+  options: ISearchVolumeParams,
+  projects: Project[],
+): Promise<Project[]> {
   const { keyword, limit } = options;
 
   if (keyword) {
-    const filtered = projects.filter(p => p.slug === keyword);
+    const filtered = projects.filter((p) => p.slug === keyword);
 
     if (filtered.length === 0) {
       console.warn(`Warning: No projects found with slug '${keyword}'.`);
@@ -75,11 +78,9 @@ async function filterProjects(options: ISearchVolumeParams, projects: Project[])
   }
 
   if (limit) {
-    const internalProjects = projects
-      .filter(p => p.isLF)
-      .slice(0, limit);
+    const internalProjects = projects.filter((p) => p.isLF).slice(0, limit);
     const externalProjects = projects
-      .filter(p => !p.isLF)
+      .filter((p) => !p.isLF)
       .sort((a, b) => (a.rank || Infinity) - (b.rank || Infinity))
       .slice(0, limit);
 
@@ -112,12 +113,16 @@ function prepareKeywords(projects: Project[]): KeywordPreparationResult {
   return { keywordsToFetch, keywordToProjectMap };
 }
 
-async function getSearchVolumeFromKE(keywords: string[], keywordToProjectMap: { [keyword: string]: string[] }): Promise<KEResults> {
-
+async function getSearchVolumeFromKE(
+  keywords: string[],
+  keywordToProjectMap: { [keyword: string]: string[] },
+): Promise<KEResults> {
   const apiResponse = await getSearchVolume(keywords);
 
   if (!apiResponse || !apiResponse.data) {
-    console.log('Failed to get data from Keywords Everywhere API. Returning current results (mostly empty).');
+    console.log(
+      'Failed to get data from Keywords Everywhere API. Returning current results (mostly empty).',
+    );
     return {};
   }
 
@@ -145,17 +150,21 @@ async function getSearchVolumeFromKE(keywords: string[], keywordToProjectMap: { 
           return monthA - monthB;
         });
       } catch {
-        console.log(`Warning: Could not sort trend data for keyword '${keyword}'. Proceeding with original order.`);
+        console.log(
+          `Warning: Could not sort trend data for keyword '${keyword}'. Proceeding with original order.`,
+        );
       }
 
       for (const projectId of keywordToProjectMap[keyword]) {
         results[projectId] = {
           web_term: keyword,
-          search_volume_trend: trendData
+          search_volume_trend: trendData,
         };
       }
     } else {
-      console.log(`Warning: API returned data for keyword '${keyword}' which was not in our original request map.`);
+      console.log(
+        `Warning: API returned data for keyword '${keyword}' which was not in our original request map.`,
+      );
     }
   }
 
@@ -169,19 +178,22 @@ async function saveResultsToDatabase(db: DbStore, data: KEResults): Promise<void
     if (result.web_term && result.search_volume_trend.length > 0) {
       for (const trend of result.search_volume_trend) {
         // Convert month name and year to YYYY-MM-01 format, so that it can be used as a DateTime
-        const monthNumber = DateTime.fromFormat(`${trend.month} ${trend.year}`, 'LLLL yyyy').toFormat('MM');
+        const monthNumber = DateTime.fromFormat(
+          `${trend.month} ${trend.year}`,
+          'LLLL yyyy',
+        ).toFormat('MM');
         const dataTimestamp = `${trend.year}-${monthNumber}-01`;
 
         records.push({
           insights_project_id: projectId,
           project: result.web_term,
           data_timestamp: DateTime.fromISO(dataTimestamp, { zone: 'utc' }),
-          volume: trend.value
+          volume: trend.value,
         });
       }
     }
   }
-  
+
   if (records.length > 0) {
     await persistSearchVolume(db, records);
   } else {
@@ -209,7 +221,9 @@ export async function updateSearchVolume(db: DbStore, options: ISearchVolumePara
       console.warn(`No projects found for the given filtering options.`);
       break;
     }
-    console.log(`Batch ${page + 1}: Selected ${selectedProjects.length} projects for search volume analysis.`);
+    console.log(
+      `Batch ${page + 1}: Selected ${selectedProjects.length} projects for search volume analysis.`,
+    );
 
     const { keywordsToFetch, keywordToProjectMap } = prepareKeywords(selectedProjects);
     const results = await getSearchVolumeFromKE(keywordsToFetch, keywordToProjectMap);

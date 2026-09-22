@@ -14,6 +14,7 @@ Today, all `/api/*` endpoints live inside the Nuxt frontend (`frontend/server/ap
 We want to expose a **public API** to LFX customers. Rather than retrofit the Nuxt routes, we will build a **standalone API service** that ports endpoints over with proper API key auth, tier-based access, rate limits, versioning, observability, and SLAs.
 
 ### Goals
+
 - Standalone API app, independently deployable.
 - API key auth via LFX Self-Serve: customers receive Personal Access Tokens and send them directly as `Authorization: Bearer lfi_...`; a Cloudflare Worker exchanges each PAT for a short-lived Auth0-signed JWT via Auth0 Custom Token Exchange and attaches org/tier headers. Tier drives **rate limits** in v1; endpoint-level tier gating is a future capability. See [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 - URL-versioned (`/v1`, `/v2`); breaking changes only across versions.
@@ -110,52 +111,52 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 
 ### D1. Framework: NestJS vs Fastify vs Express vs Hono
 
-| Option | Pros | Cons |
-|---|---|---|
-| **NestJS** | Opinionated structure (modules, controllers, providers, DI); batteries-included validation/guards/interceptors/pipes; mature `@nestjs/swagger` for OpenAPI; great for large APIs; familiar to anyone from Angular/Spring/.NET; CLI generators; strong DI-based testing story. | Heavy footprint and slower cold start; opinionated to the point of friction if you fight it; requires `experimentalDecorators` + `reflect-metadata`; steep learning curve for the team if not already on Angular-style DI; overkill for a read-only API. |
-| **Fastify** ⭐ | ~2× throughput vs Express on Node; native JSON-Schema validation gives free serialization speedup; `@fastify/swagger` + `@fastify/type-provider-typebox` auto-generate OpenAPI from schemas with **zero spec drift**; mature plugin ecosystem; encapsulation via plugins; used under the hood by NestJS so we can wrap it later if we ever want Nest. | Less opinionated than Nest: team must enforce structure conventions; smaller community than Express; some plugins lag Express equivalents. |
-| **Express** | Ubiquitous, every dev knows it, every middleware exists, simplest to debug, lowest learning curve. | No built-in validation or OpenAPI; ~half the throughput of Fastify; no opinionated structure: every team builds it differently; Express 5 shipped in 2024 after years of stagnation and fixes async error handling, but adds no validation or OpenAPI story; least modern of the four. |
-| **Hono** | Edge-native (Workers, Vercel, Bun, Node), fastest of the four; modern ergonomic API; first-class TypeScript; built-in Zod/Valibot/TypeBox validators; tiny bundle; great OpenAPI middleware. | Newer ecosystem; smaller community than Fastify/Express; fewer pre-built middlewares; Node-at-scale story less battle-tested than Fastify (most case studies are edge); team would need to learn it. |
+| Option         | Pros                                                                                                                                                                                                                                                                                                                                                  | Cons                                                                                                                                                                                                                                                                                   |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **NestJS**     | Opinionated structure (modules, controllers, providers, DI); batteries-included validation/guards/interceptors/pipes; mature `@nestjs/swagger` for OpenAPI; great for large APIs; familiar to anyone from Angular/Spring/.NET; CLI generators; strong DI-based testing story.                                                                         | Heavy footprint and slower cold start; opinionated to the point of friction if you fight it; requires `experimentalDecorators` + `reflect-metadata`; steep learning curve for the team if not already on Angular-style DI; overkill for a read-only API.                               |
+| **Fastify** ⭐ | ~2× throughput vs Express on Node; native JSON-Schema validation gives free serialization speedup; `@fastify/swagger` + `@fastify/type-provider-typebox` auto-generate OpenAPI from schemas with **zero spec drift**; mature plugin ecosystem; encapsulation via plugins; used under the hood by NestJS so we can wrap it later if we ever want Nest. | Less opinionated than Nest: team must enforce structure conventions; smaller community than Express; some plugins lag Express equivalents.                                                                                                                                             |
+| **Express**    | Ubiquitous, every dev knows it, every middleware exists, simplest to debug, lowest learning curve.                                                                                                                                                                                                                                                    | No built-in validation or OpenAPI; ~half the throughput of Fastify; no opinionated structure: every team builds it differently; Express 5 shipped in 2024 after years of stagnation and fixes async error handling, but adds no validation or OpenAPI story; least modern of the four. |
+| **Hono**       | Edge-native (Workers, Vercel, Bun, Node), fastest of the four; modern ergonomic API; first-class TypeScript; built-in Zod/Valibot/TypeBox validators; tiny bundle; great OpenAPI middleware.                                                                                                                                                          | Newer ecosystem; smaller community than Fastify/Express; fewer pre-built middlewares; Node-at-scale story less battle-tested than Fastify (most case studies are edge); team would need to learn it.                                                                                   |
 
 **Recommendation: Fastify.** Code-first OpenAPI via TypeBox is essentially free, the schema-driven serializer is a real perf win, it's opinionated enough to give us structure without the Nest tax, and it's battle-tested on Node at scale. Hono is the runner-up if we ever want to deploy at the edge.
 
 ### D2. Docs Tool: Mintlify vs Scalar vs Stoplight Elements vs VitePress + Swagger UI
 
-| Option | Pros | Cons |
-|---|---|---|
-| **Mintlify** ⭐ (if budget approved) | Best-in-class hosted polish (Anthropic, Cursor, Cloudflare use it); MDX guides + auto-generated OpenAPI reference in one product; built-in search; AI assistant baked in (customers chat over docs); analytics + CDN included; great onboarding flows. | Paid (≈$150–$550/mo team tier; enterprise priced separately); content lives on their infra; customization constrained by their conventions. |
-| **Scalar** ⭐ (OSS fallback) | OSS, "Stripe-like" reference UI: easily the prettiest of the OSS options; embeddable into anything (Vue/VitePress/Next/Hono); best-in-class OpenAPI rendering; built-in "try it" client; fast; well-funded team behind it. | Just a reference renderer: you bring your own narrative/guide layer (we'd marry it with VitePress for guides); smaller team than Stoplight; theming is configurable but less plug-and-play than Mintlify. |
-| **Stoplight Elements** | OSS web component; drop-in API reference; mature (Stoplight has been doing this for years); high OpenAPI 3.x fidelity. | Looks dated next to Scalar/Mintlify; Stoplight's commercial focus is on Stoplight Platform: OSS Elements gets less love; weak narrative-doc story. |
-| **VitePress + Swagger UI** | VitePress already in repo (powering `/docs` and `/blog`); zero new tooling; full control; Swagger UI is the most universally-recognized OpenAPI viewer. | Swagger UI is ugly and dated; integration is DIY; "try it" UX is mediocre; reference + guides feel disjointed (two render styles). |
+| Option                               | Pros                                                                                                                                                                                                                                                   | Cons                                                                                                                                                                                                      |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Mintlify** ⭐ (if budget approved) | Best-in-class hosted polish (Anthropic, Cursor, Cloudflare use it); MDX guides + auto-generated OpenAPI reference in one product; built-in search; AI assistant baked in (customers chat over docs); analytics + CDN included; great onboarding flows. | Paid (≈$150–$550/mo team tier; enterprise priced separately); content lives on their infra; customization constrained by their conventions.                                                               |
+| **Scalar** ⭐ (OSS fallback)         | OSS, "Stripe-like" reference UI: easily the prettiest of the OSS options; embeddable into anything (Vue/VitePress/Next/Hono); best-in-class OpenAPI rendering; built-in "try it" client; fast; well-funded team behind it.                             | Just a reference renderer: you bring your own narrative/guide layer (we'd marry it with VitePress for guides); smaller team than Stoplight; theming is configurable but less plug-and-play than Mintlify. |
+| **Stoplight Elements**               | OSS web component; drop-in API reference; mature (Stoplight has been doing this for years); high OpenAPI 3.x fidelity.                                                                                                                                 | Looks dated next to Scalar/Mintlify; Stoplight's commercial focus is on Stoplight Platform: OSS Elements gets less love; weak narrative-doc story.                                                        |
+| **VitePress + Swagger UI**           | VitePress already in repo (powering `/docs` and `/blog`); zero new tooling; full control; Swagger UI is the most universally-recognized OpenAPI viewer.                                                                                                | Swagger UI is ugly and dated; integration is DIY; "try it" UX is mediocre; reference + guides feel disjointed (two render styles).                                                                        |
 
 **Decision: VitePress + Scalar under `api/docs/`.** Standalone VitePress site co-located with the API service. Scalar embedded for the OpenAPI reference, reading the generated spec: the reference cannot drift. Scalar's built-in "try it" client is disabled in v1: the docs share the API's origin, so same-origin requests would sidestep the ADR-0004 CORS boundary and invite pasting long-lived PATs into a browser (see ADR-0016). Deployed independently of the frontend, served at `/docs` on the API host (per ADR-0016).
 
 ### D3. OpenAPI Source: Code-first vs Spec-first
 
-| Option | Pros | Cons |
-|---|---|---|
-| **Code-first (TypeBox or Zod → OpenAPI)** ⭐ | Schema lives next to the handler: single source of truth; types derived automatically (`Static<typeof Schema>`); spec literally cannot drift from implementation; framework integrations (Fastify+TypeBox) are turnkey; validation + OpenAPI from one schema; refactors stay safe. | Spec is generated: pre-implementation contract review is awkward; harder for PMs/technical writers to propose changes via PR; design-first workflows feel inverted. |
-| **Spec-first (hand-written `openapi.yaml`)** | Contract exists before code; easy for non-engineers to review/comment; language-agnostic; can drive both server and client codegen; classic API-design discipline. | Drift is the #1 failure mode: handlers diverge from spec silently unless you wire heavy contract tests; two sources of truth; refactoring is painful; TS-side codegen tooling is mediocre. |
+| Option                                       | Pros                                                                                                                                                                                                                                                                               | Cons                                                                                                                                                                                       |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Code-first (TypeBox or Zod → OpenAPI)** ⭐ | Schema lives next to the handler: single source of truth; types derived automatically (`Static<typeof Schema>`); spec literally cannot drift from implementation; framework integrations (Fastify+TypeBox) are turnkey; validation + OpenAPI from one schema; refactors stay safe. | Spec is generated: pre-implementation contract review is awkward; harder for PMs/technical writers to propose changes via PR; design-first workflows feel inverted.                        |
+| **Spec-first (hand-written `openapi.yaml`)** | Contract exists before code; easy for non-engineers to review/comment; language-agnostic; can drive both server and client codegen; classic API-design discipline.                                                                                                                 | Drift is the #1 failure mode: handlers diverge from spec silently unless you wire heavy contract tests; two sources of truth; refactoring is painful; TS-side codegen tooling is mediocre. |
 
 **Recommendation: code-first via TypeBox** (paired with Fastify per D1). For a 100+ endpoint surface area, drift is a near-certainty in spec-first; code-first inverts the failure mode: handlers cannot lie about their schemas.
 
 ### D4. Endpoint Conversion Tooling: Claude Skill vs Codegen Script vs Manual
 
-| Option | Pros | Cons |
-|---|---|---|
-| **Claude Code skill** ⭐ (`.claude/skills/nuxt-to-api/`) | Handles variance in Nuxt route shapes (different validation styles, response patterns, error conventions); can update related artifacts (handler + TypeBox schema + integration test + OpenAPI tag + docs stub) in one pass; can ask follow-up questions when ambiguous; lives in-repo and improves iteratively; matches existing `.claude/rules/*` and `.claude/skills/*` workflows. | Non-deterministic: different runs may produce slightly different code (mitigated by mandatory PR review and tests); skill quality can drift over time without maintenance. |
-| **Codegen script (AST-based)** | Deterministic; reproducible; could run in CI to enforce conformance. | Nuxt handlers vary too much for clean AST transforms (H3 helpers, inline TB queries, custom middlewares); you spend more time building the codegen than the API; LLMs end up doing the last-mile cleanup anyway. |
-| **Manual port** | Maximum control; zero tooling overhead. | ~100 endpoints × 1–2 h each ≈ 100–200 h of repetitive work; high copy-paste error rate; pattern drift across endpoints. |
+| Option                                                   | Pros                                                                                                                                                                                                                                                                                                                                                                                  | Cons                                                                                                                                                                                                             |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code skill** ⭐ (`.claude/skills/nuxt-to-api/`) | Handles variance in Nuxt route shapes (different validation styles, response patterns, error conventions); can update related artifacts (handler + TypeBox schema + integration test + OpenAPI tag + docs stub) in one pass; can ask follow-up questions when ambiguous; lives in-repo and improves iteratively; matches existing `.claude/rules/*` and `.claude/skills/*` workflows. | Non-deterministic: different runs may produce slightly different code (mitigated by mandatory PR review and tests); skill quality can drift over time without maintenance.                                       |
+| **Codegen script (AST-based)**                           | Deterministic; reproducible; could run in CI to enforce conformance.                                                                                                                                                                                                                                                                                                                  | Nuxt handlers vary too much for clean AST transforms (H3 helpers, inline TB queries, custom middlewares); you spend more time building the codegen than the API; LLMs end up doing the last-mile cleanup anyway. |
+| **Manual port**                                          | Maximum control; zero tooling overhead.                                                                                                                                                                                                                                                                                                                                               | ~100 endpoints × 1–2 h each ≈ 100–200 h of repetitive work; high copy-paste error rate; pattern drift across endpoints.                                                                                          |
 
 **Recommendation: Claude skill.** This codebase already has `.claude/skills/` and `.claude/rules/` infrastructure, and this is exactly the kind of repetitive structured port the skill model was designed for. Every conversion lands in a PR with tests, so non-determinism is a non-issue.
 
 ### D5. Datadog Metrics Strategy: Custom Metrics vs APM Trace Metrics
 
-| Option | Pros | Cons |
-|---|---|---|
-| **Custom metrics** (DogStatsD / OTel metrics → DD custom metrics) | Explicit metric names; dashboards/monitors trivial to build; predictable aggregation semantics; fast queries. | Billed per unique tag-combination per metric (≈$0.05/series/month above quota); cardinality explosion is easy and expensive; high-cardinality dimensions (`enduser.id`, `api_key_id`) blow the budget fast. |
-| **APM trace metrics** (derived from span attributes) | Slicing by span attributes is not billed as custom metrics; can slice by `enduser.id` / `api_key_id` without cost spike; flame-graph + latency-breakdown per request; ingestion cost is per-span, not per-tag. | APM has its own ingestion cost; span sampling can drop rare events at scale; alerting ergonomics are slightly different; counters for rate-limit rejections still want every event. |
-| **Hybrid (both)** ⭐ | Low-cardinality custom metrics for SRE dashboards/alerting; high-cardinality slicing happens in APM; cost-controlled and complete. | Two systems to learn; need a clear rule for "what goes where" (covered in §6). |
+| Option                                                            | Pros                                                                                                                                                                                                           | Cons                                                                                                                                                                                                        |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Custom metrics** (DogStatsD / OTel metrics → DD custom metrics) | Explicit metric names; dashboards/monitors trivial to build; predictable aggregation semantics; fast queries.                                                                                                  | Billed per unique tag-combination per metric (≈$0.05/series/month above quota); cardinality explosion is easy and expensive; high-cardinality dimensions (`enduser.id`, `api_key_id`) blow the budget fast. |
+| **APM trace metrics** (derived from span attributes)              | Slicing by span attributes is not billed as custom metrics; can slice by `enduser.id` / `api_key_id` without cost spike; flame-graph + latency-breakdown per request; ingestion cost is per-span, not per-tag. | APM has its own ingestion cost; span sampling can drop rare events at scale; alerting ergonomics are slightly different; counters for rate-limit rejections still want every event.                         |
+| **Hybrid (both)** ⭐                                              | Low-cardinality custom metrics for SRE dashboards/alerting; high-cardinality slicing happens in APM; cost-controlled and complete.                                                                             | Two systems to learn; need a clear rule for "what goes where" (covered in §6).                                                                                                                              |
 
 **Recommendation: Hybrid.** A small set of low-cardinality custom metrics (tags: `endpoint`, `version`, `tier`, `status_class`) for dashboards and alerts, and APM trace metrics (span attributes: `enduser.id`, `api_key_id`, `bucket_id`, `pipe_id`, numeric `status_code`) for per-customer drilldowns. Catalog in §6.
 
@@ -244,28 +245,31 @@ One ticket per endpoint. Each ticket: port handler, define TypeBox schema, write
 - **T-041 .. T-04N** One task per endpoint (N tickets: fill in once T-040 is done). Each uses the `nuxt-to-api` skill (E14). Each endpoint goes live to production when its ticket completes. No batched "Phase 1 launch" event (per §9 #23 soft-launch model).
 
 ### Epic E8: Endpoint Migration Phase 2: Contributors
+
 - Inventory + one ticket per endpoint + launch.
 
 ### Epic E9: Endpoint Migration Phase 3: Popularity
+
 - Same shape.
 
 ### Epic E10: Endpoint Migration Phase 4: Security & Best Practices
+
 - Same shape.
 
 ### Epic E11: Endpoint Migration Phase 5: Overviews
+
 - Same shape.
 
 ### Epic E12: Endpoint Migration Phase 6: Collections
+
 - Same shape as earlier endpoint groups, plus:
 - **Collections Postgres queries:** `/api` writes its own minimal read-only SQL queries directly. No shared repo lib with the frontend. The frontend's `communityCollection.repo.ts` is write-heavy and Nuxt-coupled; the API only needs ~3 read queries (get by slug, list, permission check).
 
 ### Epic E13: Endpoint Migration Phase 7: Leaderboard
+
 - Same shape.
 
 ### Epic E14: Endpoint Conversion Tooling
-
-
-
 
 Implements §3 D4 (Claude skill).
 
@@ -317,17 +321,17 @@ Implements the hybrid strategy from §3 D5. **Tags = low cardinality** (billed a
 
 Cost reminder: Datadog bills custom metrics per unique tag-combination per metric (≈$0.05/series/month above the included quota); high-cardinality tags multiply fast. Span attributes do not count toward custom-metric billing.
 
-| Metric | Type | Tags (low-card) | Span attribute (high-card) | Why |
-|---|---|---|---|---|
-| `api.request.count` | Counter | `endpoint`, `version`, `status_class` (2xx/4xx/5xx), `tier` | `enduser.id`, `api_key_id`, `status_code` | Throughput by route/tier |
-| `api.request.duration` | Histogram | same as above | same | Latency p50/p95/p99 |
-| `api.tinybird.duration` | Histogram | `pipe`, `status_class` | `query_id`, `bucket_id` | Upstream latency |
-| `api.tinybird.errors` | Counter | `pipe`, `error_type` | `query_id`, `enduser.id` | Upstream reliability |
-| `api.postgres.duration` | Histogram | `query_name`, `status_class` | `enduser.id` | DB latency |
-| `api.ratelimit.rejections` | Counter | `tier`, `endpoint` | `enduser.id`, `api_key_id` | Customers hitting limits |
-| `api.auth.failures` | Counter | `reason` (invalid_jwt / expired / revoked / missing) | `api_key_id` (when known) | Auth bypass attempts |
-| `api.cache.hit_ratio` | Gauge | `cache_layer` | - | If we add response caching |
-| `api.concurrency` | Gauge | - | - | Adaptive semaphore depth |
+| Metric                     | Type      | Tags (low-card)                                             | Span attribute (high-card)                | Why                        |
+| -------------------------- | --------- | ----------------------------------------------------------- | ----------------------------------------- | -------------------------- |
+| `api.request.count`        | Counter   | `endpoint`, `version`, `status_class` (2xx/4xx/5xx), `tier` | `enduser.id`, `api_key_id`, `status_code` | Throughput by route/tier   |
+| `api.request.duration`     | Histogram | same as above                                               | same                                      | Latency p50/p95/p99        |
+| `api.tinybird.duration`    | Histogram | `pipe`, `status_class`                                      | `query_id`, `bucket_id`                   | Upstream latency           |
+| `api.tinybird.errors`      | Counter   | `pipe`, `error_type`                                        | `query_id`, `enduser.id`                  | Upstream reliability       |
+| `api.postgres.duration`    | Histogram | `query_name`, `status_class`                                | `enduser.id`                              | DB latency                 |
+| `api.ratelimit.rejections` | Counter   | `tier`, `endpoint`                                          | `enduser.id`, `api_key_id`                | Customers hitting limits   |
+| `api.auth.failures`        | Counter   | `reason` (invalid_jwt / expired / revoked / missing)        | `api_key_id` (when known)                 | Auth bypass attempts       |
+| `api.cache.hit_ratio`      | Gauge     | `cache_layer`                                               | -                                         | If we add response caching |
+| `api.concurrency`          | Gauge     | -                                                           | -                                         | Adaptive semaphore depth   |
 
 **Cardinality budget (initial):** roughly `~25 endpoints × 4 tiers × 3 status_class × 2 versions ≈ 600 timeseries per metric` × 9 metrics ≈ 5.4k custom timeseries. Well within reasonable cost.
 
@@ -397,6 +401,7 @@ Cost reminder: Datadog bills custom metrics per unique tag-combination per metri
 2. **Variant 4a vs 4b: where does tier resolution live?** 4b (suggested direction, per ADR-0006) has the Cloudflare Worker resolve org and tier from an LFX Tier endpoint and pass them as headers; 4a has the PAT service enrich them into the JWT. The PAT, exchange, and verification path are identical either way, so this can be settled without reworking the rest. Insights stewards the call, with DevOps input; confirmed at T-015. See [ADR-0006](adr/0006-pat-token-exchange-for-api-credentials.md).
 
 **Resolved:**
+
 - Deployed on the same Kubernetes cluster as frontend. ([T-002](#epic-e1-foundation--framework))
 - Using existing Datadog org and APM agent. ([T-025](#epic-e4-observability-opentelemetry--datadog))
 - `granularity` most granular option will be `daily`. No `hourly`. (E7–E11)

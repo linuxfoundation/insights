@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
+
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
 import { DateRangeQuery, nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
