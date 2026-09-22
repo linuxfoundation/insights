@@ -78,7 +78,6 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, granularity, countType = 'new' } = request.query;
-      // Throws a 400 on an inverted range, so it runs before any Tinybird call.
       const { current, previous } = getPreviousDates(startDate, endDate);
       const isCumulative = countType === 'cumulative';
 
@@ -92,7 +91,6 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
           includeCodeContributions: true,
           includeCollaborations: false,
         };
-        // The resolved range goes to the pipes so what they count matches periodFrom/periodTo.
         const currentRange = toTinybirdRange(current);
         const seriesPipe = isCumulative ? 'activities_cumulative_count' : 'activities_count';
 

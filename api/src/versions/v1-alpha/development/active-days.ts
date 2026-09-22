@@ -20,7 +20,6 @@ interface SummaryRow {
   avgContributionsPerDay: number | null;
 }
 
-// The pipe declares both bucket bounds as Nullable(Date).
 interface SeriesRow {
   startDate: string | null;
   endDate: string | null;

@@ -17,7 +17,6 @@ interface SummaryRow {
   patchsetsPerReview?: number | null;
 }
 
-// The pipe declares both bucket bounds as Nullable(Date).
 interface SeriesRow {
   startDate: string | null;
   endDate: string | null;
@@ -95,7 +94,6 @@ const patchsetsPerReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, granularity, stat = 'median' } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const dates = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {

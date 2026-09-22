@@ -24,8 +24,6 @@ interface SummaryRow {
   medianTimeToCloseSeconds?: number | null;
 }
 
-// With granularity the pipe fills empty buckets with 0, and generate_timeseries types both bucket
-// bounds Nullable(Date).
 interface SeriesRow extends SummaryRow {
   startDate: string | null;
   endDate: string | null;
@@ -71,15 +69,11 @@ const MedianTimeToClose = Type.Object({
   }),
 });
 
-// The pipe types the median Nullable(Float64); anything else would reach the serializer as a 500,
-// where fetchPipe turns a row outside the contract into a 503.
 const isNullableNumber = (value: unknown) =>
   value === null || value === undefined || typeof value === 'number';
 const isSummaryRow = (row: SummaryRow) => isNullableNumber(row.medianTimeToCloseSeconds);
 
 const medianTimeToCloseRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  // median_time_to_close compares openedAt <= endDate where the sibling pull request pipes use <,
-  // so the boundary sentence in the description differs from theirs on purpose.
   scope.get(
     '/projects/:slug/development/median-time-to-close',
     {
@@ -98,12 +92,9 @@ const medianTimeToCloseRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, granularity, platform } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const dates = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
-        // The client drops an undefined platform from the query string, so the pipe then applies
-        // no platform filter.
         const shared: TinybirdQuery = {
           project: slug,
           bucketId,
