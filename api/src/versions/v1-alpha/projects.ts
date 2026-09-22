@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
+
 import { fetchPipe } from '../../clients/tinybird.js';
 import { NotFoundError } from '../../lib/errors.js';
 import { ProjectSlugParams } from '../../schemas/common.js';

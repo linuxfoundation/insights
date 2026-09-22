@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { Config } from "@crowd/archetype-standard";
-import { InsightsServiceWorker, Options } from "@insights/temporal-worker";
-import { scheduleTriggerPackageDownloadsForRepos } from "./schedules/scheduleTriggeringDailyPackageDownloads";
+import { Config } from '@crowd/archetype-standard';
+import { InsightsServiceWorker, Options } from '@insights/temporal-worker';
+
+import { scheduleTriggerPackageDownloadsForRepos } from './schedules/scheduleTriggeringDailyPackageDownloads';
 
 const config: Config = {
   envvars: [],

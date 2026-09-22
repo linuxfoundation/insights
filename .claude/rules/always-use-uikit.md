@@ -8,22 +8,22 @@ When generating any Vue template in this repo, you MUST use components from `fro
 
 Never use these raw elements when a uikit equivalent is available:
 
-| Raw HTML | Use instead |
-|---|---|
-| `<button>` | `<lfx-button>` or `<lfx-icon-button>` |
-| `<input>` | `<lfx-input>` |
-| `<select>` | `<lfx-select>` |
-| `<textarea>` | `<lfx-textarea>` |
-| `<table>`, `<tr>`, `<td>` | `<lfx-table>` |
-| `<dialog>` / modal div | `<lfx-modal>` |
-| `<aside>` / side panel | `<lfx-drawer>` |
-| Loading spinner div | `<lfx-spinner>` |
-| Placeholder shimmer | `<lfx-skeleton>` |
-| Tab bar | `<lfx-tabs>` |
-| Tooltip wrapper | `<lfx-tooltip>` |
-| Checkbox input | `<lfx-checkbox>` |
-| Radio input | `<lfx-radio>` |
-| Toggle/switch | `<lfx-toggle>` |
+| Raw HTML                  | Use instead                           |
+| ------------------------- | ------------------------------------- |
+| `<button>`                | `<lfx-button>` or `<lfx-icon-button>` |
+| `<input>`                 | `<lfx-input>`                         |
+| `<select>`                | `<lfx-select>`                        |
+| `<textarea>`              | `<lfx-textarea>`                      |
+| `<table>`, `<tr>`, `<td>` | `<lfx-table>`                         |
+| `<dialog>` / modal div    | `<lfx-modal>`                         |
+| `<aside>` / side panel    | `<lfx-drawer>`                        |
+| Loading spinner div       | `<lfx-spinner>`                       |
+| Placeholder shimmer       | `<lfx-skeleton>`                      |
+| Tab bar                   | `<lfx-tabs>`                          |
+| Tooltip wrapper           | `<lfx-tooltip>`                       |
+| Checkbox input            | `<lfx-checkbox>`                      |
+| Radio input               | `<lfx-radio>`                         |
+| Toggle/switch             | `<lfx-toggle>`                        |
 
 ## How to Apply
 

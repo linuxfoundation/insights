@@ -1,8 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { LogLevel as TemporalLogLevel, Logger as TemporalLogger } from '@temporalio/worker'
-
-import { LogLevel, Logger } from '@crowd/logging'
+import { LogLevel, Logger } from '@crowd/logging';
+import { LogLevel as TemporalLogLevel, Logger as TemporalLogger } from '@temporalio/worker';
 
 export function createTemporalLogger(base: Logger): TemporalLogger {
   return {
@@ -13,54 +12,54 @@ export function createTemporalLogger(base: Logger): TemporalLogger {
         ['INFO']: 'info',
         ['WARN']: 'warn',
         ['ERROR']: 'error',
-      }[level] as LogLevel
+      }[level] as LogLevel;
 
       if (meta) {
-        base[bunyanLevel](meta, message)
+        base[bunyanLevel](meta, message);
       } else {
-        base[bunyanLevel](message)
+        base[bunyanLevel](message);
       }
     },
 
     // Map Temporal log levels to Bunyan levels
     trace(message: string, meta?: Record<string, unknown>) {
       if (meta) {
-        base.trace(meta, message)
+        base.trace(meta, message);
       } else {
-        base.trace(message)
+        base.trace(message);
       }
     },
 
     debug(message: string, meta?: Record<string, unknown>) {
       if (meta) {
-        base.debug(meta, message)
+        base.debug(meta, message);
       } else {
-        base.debug(message)
+        base.debug(message);
       }
     },
 
     info(message: string, meta?: Record<string, unknown>) {
       if (meta) {
-        base.info(meta, message)
+        base.info(meta, message);
       } else {
-        base.info(message)
+        base.info(message);
       }
     },
 
     warn(message: string, meta?: Record<string, unknown>) {
       if (meta) {
-        base.warn(meta, message)
+        base.warn(meta, message);
       } else {
-        base.warn(message)
+        base.warn(message);
       }
     },
 
     error(message: string, meta?: Record<string, unknown>) {
       if (meta) {
-        base.error(meta, message)
+        base.error(meta, message);
       } else {
-        base.error(message)
+        base.error(message);
       }
     },
-  }
+  };
 }

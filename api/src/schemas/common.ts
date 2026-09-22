@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
+
 import { Granularity as SharedGranularity } from '@lfx-insights/types';
 
 // Any non-empty slug passes, so an unknown project reaches the handler and returns empty data.

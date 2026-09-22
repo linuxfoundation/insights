@@ -1,50 +1,49 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import fs from 'fs';
+import path from 'path';
+
+import { Config, Service } from '@crowd/archetype-standard';
+import { DbStore, getDbConnection } from '@crowd/database';
+import { getServiceChildLogger } from '@crowd/logging';
+import { getDataConverter } from '@crowd/temporal';
 import {
   NativeConnection,
   Runtime,
   Worker as TemporalWorker,
   bundleWorkflowCode,
   makeTelemetryFilterString,
-} from "@temporalio/worker";
-import fs from "fs";
-import path from "path";
+} from '@temporalio/worker';
 
-import { Config, Service } from "@crowd/archetype-standard";
-import { DbStore, getDbConnection } from "@crowd/database";
-import { getServiceChildLogger } from "@crowd/logging";
-import { getDataConverter } from "@crowd/temporal";
-
-import * as metricActivities from "./activities";
-import { ActivityMonitoringInterceptor } from "./activities/activityInterceptor";
-
-import { createTemporalLogger } from "./logging";
+import * as metricActivities from './activities';
+import { ActivityMonitoringInterceptor } from './activities/activityInterceptor';
+import { createTemporalLogger } from './logging';
 
 // List all required environment variables, grouped per "component".
 // They are in addition to the ones required by the "standard" archetype.
 const envvars = {
   worker: [
-    "INSIGHTS_TEMPORAL_SERVER_URL",
-    "INSIGHTS_TEMPORAL_NAMESPACE",
-    "INSIGHTS_TEMPORAL_TASKQUEUE",
-    "INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID",
-    "INSIGHTS_TEMPORAL_ENCRYPTION_KEY",
+    'INSIGHTS_TEMPORAL_SERVER_URL',
+    'INSIGHTS_TEMPORAL_NAMESPACE',
+    'INSIGHTS_TEMPORAL_TASKQUEUE',
+    'INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID',
+    'INSIGHTS_TEMPORAL_ENCRYPTION_KEY',
   ],
   insightsPostgres: [
-    "INSIGHTS_DB_READ_HOST",
-    "INSIGHTS_DB_WRITE_HOST",
-    "INSIGHTS_DB_PORT",
-    "INSIGHTS_DB_USERNAME",
-    "INSIGHTS_DB_PASSWORD",
-    "INSIGHTS_DB_DATABASE",
+    'INSIGHTS_DB_READ_HOST',
+    'INSIGHTS_DB_WRITE_HOST',
+    'INSIGHTS_DB_PORT',
+    'INSIGHTS_DB_USERNAME',
+    'INSIGHTS_DB_PASSWORD',
+    'INSIGHTS_DB_DATABASE',
   ],
   cmPostgres: [
-    "CM_DB_READ_HOST",
-    "CM_DB_WRITE_HOST",
-    "CM_DB_PORT",
-    "CM_DB_USERNAME",
-    "CM_DB_PASSWORD",
-    "CM_DB_DATABASE",
+    'CM_DB_READ_HOST',
+    'CM_DB_WRITE_HOST',
+    'CM_DB_PORT',
+    'CM_DB_USERNAME',
+    'CM_DB_PASSWORD',
+    'CM_DB_DATABASE',
   ],
 };
 
@@ -105,7 +104,7 @@ export class InsightsServiceWorker extends Service {
   override async init(initWorker = true) {
     // Since we're using crowd libraries, environment variables should be backwards compatible
     // with the INSIGHTS_ prefixed envs.
-    this.setBackwardCompatibleEnvVars()
+    this.setBackwardCompatibleEnvVars();
 
     try {
       await super.init();
@@ -142,17 +141,17 @@ export class InsightsServiceWorker extends Service {
 
     // There's no point in continuing if a variable is missing.
     if (missing.length > 0) {
-      throw new Error(`Missing environment variables: ${missing.join(", ")}`);
+      throw new Error(`Missing environment variables: ${missing.join(', ')}`);
     }
 
     if (this.options.postgres?.cm.enabled) {
       try {
         const dbConnection = await getDbConnection({
-          host: process.env["CM_DB_READ_HOST"] as string,
-          port: Number(process.env["CM_DB_PORT"]),
-          user: process.env["CM_DB_USERNAME"] as string,
-          password: process.env["CM_DB_PASSWORD"] as string,
-          database: process.env["CM_DB_DATABASE"] as string,
+          host: process.env['CM_DB_READ_HOST'] as string,
+          port: Number(process.env['CM_DB_PORT']),
+          user: process.env['CM_DB_USERNAME'] as string,
+          password: process.env['CM_DB_PASSWORD'] as string,
+          database: process.env['CM_DB_DATABASE'] as string,
         });
 
         this._cmPostgresReader = new DbStore(this.log, dbConnection);
@@ -162,11 +161,11 @@ export class InsightsServiceWorker extends Service {
 
       try {
         const dbConnection = await getDbConnection({
-          host: process.env["CM_DB_WRITE_HOST"] as string,
-          port: Number(process.env["CM_DB_PORT"]),
-          user: process.env["CM_DB_USERNAME"] as string,
-          password: process.env["CM_DB_PASSWORD"] as string,
-          database: process.env["CM_DB_DATABASE"] as string,
+          host: process.env['CM_DB_WRITE_HOST'] as string,
+          port: Number(process.env['CM_DB_PORT']),
+          user: process.env['CM_DB_USERNAME'] as string,
+          password: process.env['CM_DB_PASSWORD'] as string,
+          database: process.env['CM_DB_DATABASE'] as string,
         });
 
         this._cmPostgresWriter = new DbStore(this.log, dbConnection);
@@ -178,11 +177,11 @@ export class InsightsServiceWorker extends Service {
     if (this.options.postgres?.insights.enabled) {
       try {
         const dbConnection = await getDbConnection({
-          host: process.env["INSIGHTS_DB_READ_HOST"] as string,
-          port: Number(process.env["INSIGHTS_DB_PORT"]),
-          user: process.env["INSIGHTS_DB_USERNAME"] as string,
-          password: process.env["INSIGHTS_DB_PASSWORD"] as string,
-          database: process.env["INSIGHTS_DB_DATABASE"] as string,
+          host: process.env['INSIGHTS_DB_READ_HOST'] as string,
+          port: Number(process.env['INSIGHTS_DB_PORT']),
+          user: process.env['INSIGHTS_DB_USERNAME'] as string,
+          password: process.env['INSIGHTS_DB_PASSWORD'] as string,
+          database: process.env['INSIGHTS_DB_DATABASE'] as string,
         });
 
         this._insightsPostgresReader = new DbStore(this.log, dbConnection);
@@ -192,11 +191,11 @@ export class InsightsServiceWorker extends Service {
 
       try {
         const dbConnection = await getDbConnection({
-          host: process.env["INSIGHTS_DB_WRITE_HOST"] as string,
-          port: Number(process.env["INSIGHTS_DB_PORT"]),
-          user: process.env["INSIGHTS_DB_USERNAME"] as string,
-          password: process.env["INSIGHTS_DB_PASSWORD"] as string,
-          database: process.env["INSIGHTS_DB_DATABASE"] as string,
+          host: process.env['INSIGHTS_DB_WRITE_HOST'] as string,
+          port: Number(process.env['INSIGHTS_DB_PORT']),
+          user: process.env['INSIGHTS_DB_USERNAME'] as string,
+          password: process.env['INSIGHTS_DB_PASSWORD'] as string,
+          database: process.env['INSIGHTS_DB_DATABASE'] as string,
         });
 
         this._insightsPostgresWriter = new DbStore(this.log, dbConnection);
@@ -208,33 +207,31 @@ export class InsightsServiceWorker extends Service {
     if (initWorker) {
       try {
         Runtime.install({
-          logger: createTemporalLogger(
-            getServiceChildLogger("temporal-worker")
-          ),
+          logger: createTemporalLogger(getServiceChildLogger('temporal-worker')),
           telemetryOptions: {
             logging: {
               forward: {},
-              filter: makeTelemetryFilterString({ core: "INFO" }),
+              filter: makeTelemetryFilterString({ core: 'INFO' }),
             },
           },
         });
 
-        const certificate = process.env["INSIGHTS_TEMPORAL_CERTIFICATE"];
-        const privateKey = process.env["INSIGHTS_TEMPORAL_PRIVATE_KEY"];
+        const certificate = process.env['INSIGHTS_TEMPORAL_CERTIFICATE'];
+        const privateKey = process.env['INSIGHTS_TEMPORAL_PRIVATE_KEY'];
 
-        const address = process.env["INSIGHTS_TEMPORAL_SERVER_URL"];
-        const taskQueue = process.env["INSIGHTS_TEMPORAL_TASKQUEUE"];
-        const namespace = process.env["INSIGHTS_TEMPORAL_NAMESPACE"];
+        const address = process.env['INSIGHTS_TEMPORAL_SERVER_URL'];
+        const taskQueue = process.env['INSIGHTS_TEMPORAL_TASKQUEUE'];
+        const namespace = process.env['INSIGHTS_TEMPORAL_NAMESPACE'];
 
         this.log.info(
           {
             address,
             namespace,
             taskQueue,
-            certificate: certificate ? "yes" : "no",
-            privateKey: privateKey ? "yes" : "no",
+            certificate: certificate ? 'yes' : 'no',
+            privateKey: privateKey ? 'yes' : 'no',
           },
-          "Connecting to Temporal server as a worker!"
+          'Connecting to Temporal server as a worker!',
         );
 
         const connection = await NativeConnection.connect({
@@ -243,25 +240,21 @@ export class InsightsServiceWorker extends Service {
             certificate && privateKey
               ? {
                   clientCertPair: {
-                    crt: Buffer.from(certificate, "base64"),
-                    key: Buffer.from(privateKey, "base64"),
+                    crt: Buffer.from(certificate, 'base64'),
+                    key: Buffer.from(privateKey, 'base64'),
                   },
                 }
               : undefined,
         });
 
-        const workflowInterceptorModules = [
-          path.join(__dirname, "workflowInterceptors"),
-        ];
-        const serviceInterceptorsPath = path.resolve(
-          "./src/workflows/interceptors"
-        );
+        const workflowInterceptorModules = [path.join(__dirname, 'workflowInterceptors')];
+        const serviceInterceptorsPath = path.resolve('./src/workflows/interceptors');
         if (fs.existsSync(serviceInterceptorsPath)) {
           workflowInterceptorModules.push(serviceInterceptorsPath);
         }
 
         const workflowBundle = await bundleWorkflowCode({
-          workflowsPath: path.resolve("./src/workflows"),
+          workflowsPath: path.resolve('./src/workflows'),
           workflowInterceptorModules,
         });
 
@@ -277,7 +270,7 @@ export class InsightsServiceWorker extends Service {
           workflowBundle,
           activities: {
             ...metricActivities,
-            ...require(path.resolve("./src/activities")),
+            ...require(path.resolve('./src/activities')),
           },
           interceptors: {
             activity: [
@@ -291,10 +284,8 @@ export class InsightsServiceWorker extends Service {
           dataConverter: {
             ...dataConverter,
           },
-          maxTaskQueueActivitiesPerSecond:
-            this.options.maxTaskQueueActivitiesPerSecond,
-          maxConcurrentActivityTaskExecutions:
-            this.options.maxConcurrentActivityTaskExecutions,
+          maxTaskQueueActivitiesPerSecond: this.options.maxTaskQueueActivitiesPerSecond,
+          maxConcurrentActivityTaskExecutions: this.options.maxConcurrentActivityTaskExecutions,
         });
       } catch (err) {
         throw new Error(err);
@@ -328,17 +319,14 @@ export class InsightsServiceWorker extends Service {
   }
 
   private setBackwardCompatibleEnvVars() {
-    process.env["CROWD_TEMPORAL_ENCRYPTION_KEY_ID"] =
-      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID"] || "";
-    process.env["CROWD_TEMPORAL_ENCRYPTION_KEY"] =
-      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY"] || "";
-    process.env["CROWD_TEMPORAL_NAMESPACE"] =
-      process.env["INSIGHTS_TEMPORAL_NAMESPACE"] || "default";
-    process.env["CROWD_TEMPORAL_SERVER_URL"] =
-      process.env["INSIGHTS_TEMPORAL_SERVER_URL"] || "";
-    process.env["CROWD_TEMPORAL_CERTIFICATE"] =
-      process.env["INSIGHTS_TEMPORAL_CERTIFICATE"] || "";
-    process.env["CROWD_TEMPORAL_PRIVATE_KEY"] =
-      process.env["INSIGHTS_TEMPORAL_PRIVATE_KEY"] || "";
+    process.env['CROWD_TEMPORAL_ENCRYPTION_KEY_ID'] =
+      process.env['INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID'] || '';
+    process.env['CROWD_TEMPORAL_ENCRYPTION_KEY'] =
+      process.env['INSIGHTS_TEMPORAL_ENCRYPTION_KEY'] || '';
+    process.env['CROWD_TEMPORAL_NAMESPACE'] =
+      process.env['INSIGHTS_TEMPORAL_NAMESPACE'] || 'default';
+    process.env['CROWD_TEMPORAL_SERVER_URL'] = process.env['INSIGHTS_TEMPORAL_SERVER_URL'] || '';
+    process.env['CROWD_TEMPORAL_CERTIFICATE'] = process.env['INSIGHTS_TEMPORAL_CERTIFICATE'] || '';
+    process.env['CROWD_TEMPORAL_PRIVATE_KEY'] = process.env['INSIGHTS_TEMPORAL_PRIVATE_KEY'] || '';
   }
 }

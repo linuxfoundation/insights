@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import { DEFAULT_LATENCY_MONITOR_OPTIONS, LatencyMonitor } from '../src/latency-monitor.js';
 
 const WINDOW_MS = DEFAULT_LATENCY_MONITOR_OPTIONS.windowMs;

@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+
 import v1AlphaRoutes from './v1-alpha/index.js';
 import v1Routes from './v1/index.js';
 

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
 import { buildApp } from '../src/app.js';
 
 describe('app', () => {

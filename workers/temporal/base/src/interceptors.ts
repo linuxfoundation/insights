@@ -8,43 +8,43 @@ import {
   WorkflowInboundCallsInterceptor,
   proxyActivities,
   workflowInfo,
-} from '@temporalio/workflow'
+} from '@temporalio/workflow';
 
-import * as activities from './activities'
+import * as activities from './activities';
 
 // Use string literal instead of enum to avoid bundling @slack/webhook in workflow code
 // The activity will handle the type conversion
-const SLACK_PERSONA_ERROR_REPORTER = 'ERROR_REPORTER' as const
+const SLACK_PERSONA_ERROR_REPORTER = 'ERROR_REPORTER' as const;
 
 const activity = proxyActivities<typeof activities>({
   startToCloseTimeout: '10 seconds',
-})
+});
 
 /**
  * Extract detailed error information when an activity reaches retry limit
  */
 function getActivityRetryLimitDetails(err: ActivityFailure): string {
-  let details = `*Activity:* \`${err.activityType}\`\n`
-  details += `*Activity ID:* \`${err.activityId || 'N/A'}\`\n`
-  details += `*Retry State:* ${err.retryState}\n\n`
+  let details = `*Activity:* \`${err.activityType}\`\n`;
+  details += `*Activity ID:* \`${err.activityId || 'N/A'}\`\n`;
+  details += `*Retry State:* ${err.retryState}\n\n`;
 
   // Get the root cause error message and type
   if (err.cause) {
-    details += `*Error:* ${err.cause.message}\n`
+    details += `*Error:* ${err.cause.message}\n`;
 
     // If it's an ApplicationFailure, get the type (e.g., AxiosError)
     if (err.cause instanceof ApplicationFailure && err.cause.type) {
-      details += `*Error Type:* ${err.cause.type}\n`
+      details += `*Error Type:* ${err.cause.type}\n`;
     }
 
     // Add stack trace (first 10 lines for context)
     if (err.cause.stack) {
-      const stackLines = err.cause.stack.split('\n').slice(0, 10)
-      details += `\n*Stack Trace (first 10 lines):*\n\`\`\`\n${stackLines.join('\n')}\n\`\`\``
+      const stackLines = err.cause.stack.split('\n').slice(0, 10);
+      details += `\n*Stack Trace (first 10 lines):*\n\`\`\`\n${stackLines.join('\n')}\n\`\`\``;
     }
   }
 
-  return details
+  return details;
 }
 
 export class WorkflowMonitoringInterceptor implements WorkflowInboundCallsInterceptor {
@@ -52,47 +52,51 @@ export class WorkflowMonitoringInterceptor implements WorkflowInboundCallsInterc
     input: WorkflowExecuteInput,
     next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
   ): Promise<unknown> {
-    const info = workflowInfo()
+    const info = workflowInfo();
 
     const tags = {
       workflow_run_id: info.runId,
       workflow_id: info.workflowId,
       workflow_type: info.workflowType,
       task_queue: info.taskQueue,
-    }
+    };
 
-    const start = new Date()
+    const start = new Date();
 
     try {
-      const result = await next(input)
-      return result
+      const result = await next(input);
+      return result;
     } catch (err) {
       // Type guard to ensure err is an Error object
-      const error = err instanceof Error ? err : new Error(String(err))
+      const error = err instanceof Error ? err : new Error(String(err));
 
       if (error.message !== 'Workflow continued as new') {
         // Only send detailed notification if it's an activity that reached retry limit
         if (err instanceof ActivityFailure && err.retryState === 'MAXIMUM_ATTEMPTS_REACHED') {
-          const errorDetails = getActivityRetryLimitDetails(err)
-          const message = `*Workflow Failed: Activity Retry Limit Reached*\n\n*Workflow:* \`${info.workflowType}\`\n*Workflow ID:* \`${info.workflowId}\`\n*Run ID:* \`${info.runId}\`\n\n${errorDetails}`
+          const errorDetails = getActivityRetryLimitDetails(err);
+          const message = `*Workflow Failed: Activity Retry Limit Reached*\n\n*Workflow:* \`${info.workflowType}\`\n*Workflow ID:* \`${info.workflowId}\`\n*Run ID:* \`${info.runId}\`\n\n${errorDetails}`;
 
-          await activity.slackNotify(message, SLACK_PERSONA_ERROR_REPORTER)
+          await activity.slackNotify(message, SLACK_PERSONA_ERROR_REPORTER);
         } else {
           // For other errors, send a simpler notification
-          const message = `*Workflow Failed*\n\n*Workflow:* \`${info.workflowType}\`\n*Workflow ID:* \`${info.workflowId}\`\n*Run ID:* \`${info.runId}\`\n*Error:* ${error.message}`
+          const message = `*Workflow Failed*\n\n*Workflow:* \`${info.workflowType}\`\n*Workflow ID:* \`${info.workflowId}\`\n*Run ID:* \`${info.runId}\`\n*Error:* ${error.message}`;
 
-          await activity.slackNotify(message, SLACK_PERSONA_ERROR_REPORTER)
+          await activity.slackNotify(message, SLACK_PERSONA_ERROR_REPORTER);
         }
       }
 
-      throw err
+      throw err;
     } finally {
-      const end = new Date()
-      const duration = end.getTime() - start.getTime()
+      const end = new Date();
+      const duration = end.getTime() - start.getTime();
 
       // Only send telemetry if duration is more than 2 hours
       if (duration > 3 * 60 * 60 * 1000) {
-        await activity.telemetryDistribution('temporal.workflow_execution_duration', duration, tags)
+        await activity.telemetryDistribution(
+          'temporal.workflow_execution_duration',
+          duration,
+          tags,
+        );
       }
     }
   }

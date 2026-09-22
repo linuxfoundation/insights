@@ -9,15 +9,15 @@ Vue 3 / Nuxt 4 frontend review standards for the Insights repo.
 Always use components from `frontend/app/components/uikit/` instead of raw HTML equivalents. Check `.claude/rules/always-use-uikit.md` for the full mapping.
 
 **Violation:**
+
 ```html
-<button @click="submit">Save</button>
-<input v-model="query" />
+<button @click="submit">Save</button> <input v-model="query" />
 ```
 
 **Fix:**
+
 ```html
-<lfx-button @click="submit">Save</lfx-button>
-<lfx-input v-model="query" />
+<lfx-button @click="submit">Save</lfx-button> <lfx-input v-model="query" />
 ```
 
 Common uikit components: `lfx-button`, `lfx-icon-button`, `lfx-input`, `lfx-select`, `lfx-table`, `lfx-modal`, `lfx-drawer`, `lfx-spinner`, `lfx-skeleton`, `lfx-tabs`, `lfx-tooltip`, `lfx-checkbox`, `lfx-radio`, `lfx-toggle`.
@@ -29,18 +29,22 @@ Common uikit components: `lfx-button`, `lfx-icon-button`, `lfx-input`, `lfx-sele
 Use `<script setup>` with Composition API. No Options API components.
 
 **Violation:**
+
 ```vue
 <script>
 export default {
-  data() { return { count: 0 } }
-}
+  data() {
+    return { count: 0 };
+  },
+};
 </script>
 ```
 
 **Fix:**
+
 ```vue
 <script setup lang="ts">
-const count = ref(0)
+const count = ref(0);
 </script>
 ```
 
@@ -53,19 +57,21 @@ Use `useQuery` / `useMutation` from TanStack Vue Query for client-side data fetc
 **Exception:** `useFetch` and `useAsyncData` are acceptable in **SSR-only contexts** (e.g. OG-image components, server-rendered metadata). Do not flag those uses.
 
 **Violation:**
+
 ```ts
-const data = ref(null)
+const data = ref(null);
 onMounted(async () => {
-  data.value = await $fetch('/api/projects')
-})
+  data.value = await $fetch('/api/projects');
+});
 ```
 
 **Fix:**
+
 ```ts
 const { data } = useQuery({
   queryKey: ['projects'],
   queryFn: () => $fetch('/api/projects'),
-})
+});
 ```
 
 ---
@@ -81,11 +87,13 @@ Use Pinia stores for shared client-side state. Do not pass deeply nested props o
 Avoid `any`. Use proper types, `unknown` with narrowing, or generics.
 
 **Violation:**
+
 ```ts
 const handleResponse = (data: any) => { ... }
 ```
 
 **Fix:**
+
 ```ts
 const handleResponse = (data: ProjectResponse) => { ... }
 ```
@@ -99,8 +107,9 @@ const handleResponse = (data: ProjectResponse) => { ... }
 - No hard-coded hex color values in templates — use Tailwind color tokens
 
 **Preferred:**
+
 ```html
-<div class="flex flex-col gap-4 text-blue-600">
+<div class="flex flex-col gap-4 text-blue-600"></div>
 ```
 
 ---
@@ -131,11 +140,13 @@ Data fetching logic should live in composables or TanStack Query `queryFn`, not 
 State that should trigger re-renders must use `ref()` or `computed()`.
 
 **Violation:**
+
 ```ts
-let isLoading = false // won't trigger re-render
+let isLoading = false; // won't trigger re-render
 ```
 
 **Fix:**
+
 ```ts
-const isLoading = ref(false)
+const isLoading = ref(false);
 ```
