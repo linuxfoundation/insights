@@ -31,13 +31,14 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxProjectSecurityEvaluationResult from '~/components/modules/project/components/security/evaluation-result.vue';
-import type { SecurityDataResult, SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
+import { lfxSecurityCategories } from '~/components/modules/project/config/security-category';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
-import { lfxColors } from '~/config/styles/colors';
-import { lfxSecurityCategories } from '~/components/modules/project/config/security-category';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { SecurityDataResult, SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
 
 const props = defineProps<{
   checks: SecurityData[];

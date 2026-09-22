@@ -119,8 +119,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
+
 import useScroll from '~/components/shared/utils/scroll';
+import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 
 const sideNavItems = [
   { label: 'Contributors Leaderboard', key: 'contributors-leaderboard' },

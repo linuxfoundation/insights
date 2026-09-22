@@ -49,19 +49,21 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxContributorLeaderboardDrawer from './fragments/contributor-leaderboard-drawer.vue';
-import type { ContributorLeaderboard } from '~~/types/contributors/responses.types';
+import { ref, computed, watch } from 'vue';
+
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import LfxContributorsTable from '~/components/modules/widget/components/contributors/fragments/contributors-table.vue';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import LfxContributorsTable from '~/components/modules/widget/components/contributors/fragments/contributors-table.vue';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
-import { Widget } from '~/components/modules/widget/types/widget';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type { ContributorLeaderboard } from '~~/types/contributors/responses.types';
+
+import LfxContributorLeaderboardDrawer from './fragments/contributor-leaderboard-drawer.vue';
 
 interface ContributorLeaderboardModel extends WidgetModel {
   metric: string;

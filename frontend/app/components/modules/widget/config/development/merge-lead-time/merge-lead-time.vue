@@ -73,23 +73,25 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
-import type { MergeLeadTime, MergeLeadTimeItem, MergeLeadTimeUnit } from '~~/types/development/responses.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import type { Summary } from '~~/types/shared/summary.types';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { computed, watch } from 'vue';
+
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import {
   DEVELOPMENT_API_SERVICE,
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import type { MergeLeadTime, MergeLeadTimeItem, MergeLeadTimeUnit } from '~~/types/development/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
+
+import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
 
 const props = defineProps<{
   modelValue?: WidgetModel;

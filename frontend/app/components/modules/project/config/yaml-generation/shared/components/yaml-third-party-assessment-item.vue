@@ -50,14 +50,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { url } from '@vuelidate/validators';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import { computed } from 'vue';
+
 import LfxYamlDatepicker from '~/components/modules/project/config/yaml-generation/shared/components/yaml-datepicker.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 
 const props = defineProps<{
   modelValue: object;

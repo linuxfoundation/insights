@@ -56,17 +56,18 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { ContributorLeaderboard, Contributor } from '~~/types/contributors/responses.types';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import { ref, computed, watch } from 'vue';
+
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
 import LfxContributorsTable from '~/components/modules/widget/components/contributors/fragments/contributors-table.vue';
 import contributorsLeaderboard from '~/components/modules/widget/config/contributor/contributors-leaderboard/contributors-leaderboard.config';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { ContributorLeaderboard, Contributor } from '~~/types/contributors/responses.types';
 
 const { isCollectionScope, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 

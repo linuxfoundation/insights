@@ -54,17 +54,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
+import html2canvas from 'html2canvas';
 import { storeToRefs } from 'pinia';
 import { computed, nextTick } from 'vue';
-import html2canvas from 'html2canvas';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import type { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxSnapshotPreview from '~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxSnapshotPreview from '~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 

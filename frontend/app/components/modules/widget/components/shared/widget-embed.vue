@@ -75,20 +75,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, onServerPrefetch } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { DateTime } from 'luxon';
 import { storeToRefs } from 'pinia';
+import { computed, onServerPrefetch } from 'vue';
+
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { Project } from '~~/types/project';
-import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Project } from '~~/types/project';
 
 const route = useRoute();
 const { slug } = route.params;

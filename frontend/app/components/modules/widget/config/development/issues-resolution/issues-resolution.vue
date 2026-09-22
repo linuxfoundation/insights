@@ -87,32 +87,33 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
 import { Granularity } from '@lfx-insights/types';
-import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
-import { lfxColors } from '~/config/styles/colors';
-import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { lineGranularities } from '~/components/shared/types/granularity';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import {
   DEVELOPMENT_API_SERVICE,
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { lineGranularities } from '~/components/shared/types/granularity';
+import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
+import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 
 interface IssuesResolutionModel extends WidgetModel {
   granularity: Granularity;

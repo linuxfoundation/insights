@@ -33,6 +33,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { DateTime } from 'luxon';
+
 import type { PressMention } from '~~/types/popularity/responses.types';
 
 defineProps<{

@@ -53,28 +53,29 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ref, computed, watch } from 'vue';
+
 import { Granularity } from '@lfx-insights/types';
-import type { ActiveOrganizations } from '~~/types/contributors/responses.types';
-import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, ChartSeries, RawChartData } from '~/components/uikit/chart/types/ChartTypes';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { granularityTabs } from '~/components/modules/widget/components/contributors/config/granularity-tabs';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, ChartSeries, RawChartData } from '~/components/uikit/chart/types/ChartTypes';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { granularityTabs } from '~/components/modules/widget/components/contributors/config/granularity-tabs';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type { ActiveOrganizations } from '~~/types/contributors/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 interface ActiveOrganizationsModel extends WidgetModel {
   activeTab: Granularity;

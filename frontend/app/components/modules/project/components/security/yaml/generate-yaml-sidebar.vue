@@ -78,8 +78,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 </script>
 
 <script lang="ts">

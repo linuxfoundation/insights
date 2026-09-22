@@ -68,15 +68,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import pluralize from 'pluralize';
-import { useRoute, useRouter } from 'nuxt/app';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import type { ProjectRepositoryGroup } from '~~/types/project';
+import { computed, onMounted, ref } from 'vue';
+
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { ProjectRepositoryGroup } from '~~/types/project';
 
 const props = defineProps<{
   link: ProjectLinkConfig;

@@ -119,10 +119,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
+
+import LfxProjectCustomDateRangePicker from '~/components/modules/project/components/shared/header/custom-date-range-picker.vue';
 import {
   type DateOptionConfig,
   lfxProjectDateOptions,
@@ -130,15 +131,15 @@ import {
   lfxProjectDateOptionsPast,
   lfxProjectDateOptionsPrevious,
 } from '~/components/modules/project/config/date-options';
-import { defaultTimeRangeKey, useProjectStore } from '~/components/modules/project/store/project.store';
-import LfxProjectCustomDateRangePicker from '~/components/modules/project/components/shared/header/custom-date-range-picker.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import { useQueryParam } from '~/components/shared/utils/query-param';
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
+import { defaultTimeRangeKey, useProjectStore } from '~/components/modules/project/store/project.store';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 import useResponsive from '~/components/shared/utils/responsive';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore());
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);

@@ -49,19 +49,21 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxOrganizationLeaderboardDrawer from './fragments/organization-leaderboard-drawer.vue';
-import type { OrganizationLeaderboard } from '~~/types/contributors/responses.types';
+import { ref, computed, watch } from 'vue';
+
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import LfxOrganizationsTable from '~/components/modules/widget/components/contributors/fragments/organizations-table.vue';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import LfxOrganizationsTable from '~/components/modules/widget/components/contributors/fragments/organizations-table.vue';
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
-import { Widget } from '~/components/modules/widget/types/widget';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type { OrganizationLeaderboard } from '~~/types/contributors/responses.types';
+
+import LfxOrganizationLeaderboardDrawer from './fragments/organization-leaderboard-drawer.vue';
 
 interface OrganizationsLeaderboardModel extends WidgetModel {
   metric: string;

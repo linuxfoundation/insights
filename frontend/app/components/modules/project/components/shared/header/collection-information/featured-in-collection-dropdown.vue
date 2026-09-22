@@ -60,12 +60,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
 import type { ProjectCollectionItem } from '~/components/modules/project/services/project.api.service';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   collections: ProjectCollectionItem[];

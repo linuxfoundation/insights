@@ -87,14 +87,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import LfxCommunitySelectedChips from './selected-chips.vue';
-import LfxCommunityFilterOption from './filter-option.vue';
-import LfxCommunityFilterSelectAll from './filter-select-all.vue';
-import type { SelectedChipItem } from './selected-chips.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { availableSentiments } from '~~/app/components/modules/project/config/sentiments';
+
+import LfxCommunityFilterOption from './filter-option.vue';
+import LfxCommunityFilterSelectAll from './filter-select-all.vue';
+import LfxCommunitySelectedChips from './selected-chips.vue';
+import type { SelectedChipItem } from './selected-chips.vue';
 
 const props = defineProps<{
   modelValue: string[];

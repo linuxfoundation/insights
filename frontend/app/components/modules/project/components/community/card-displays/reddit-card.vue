@@ -39,11 +39,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 // Default card display component for community mentions
-import LfxCommunityCardHeader from '../fragments/card-header.vue';
+import type { CommunityMentions } from '~~/types/community/community';
+
 import LfxCommunityCardContent from '../fragments/card-content.vue';
 import LfxCommunityCardFooter from '../fragments/card-footer.vue';
+import LfxCommunityCardHeader from '../fragments/card-header.vue';
 import LfxCommunityDefaultCard from './default-card.vue';
-import type { CommunityMentions } from '~~/types/community/community';
 
 defineProps<{
   mention: CommunityMentions;

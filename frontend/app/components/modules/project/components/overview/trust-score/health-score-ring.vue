@@ -27,6 +27,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
 import { lfxColors } from '~/config/styles/colors';
