@@ -16,8 +16,6 @@ import {
 } from '../../../lib/period.js';
 import { PeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
 
-// One row of a Nullable median; a period without a pull request with a positive time to review
-// can also come back as no row at all.
 interface SummaryRow {
   medianTimeToReviewSeconds?: number | null;
 }
