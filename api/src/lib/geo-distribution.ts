@@ -9,6 +9,12 @@ type GeoRow<N extends Noun> = { country: string; flag: string; country_code: str
   number
 >;
 
+const placement: Record<Noun, string> = {
+  contributor: 'Each contributor is placed by the country on their profile, else their location',
+  organization:
+    'Each organization is placed by the country on its record, inferred from its location, else by its headquarters location',
+};
+
 const field = <K extends string, V>(key: K, value: V) => ({ [key]: value }) as Record<K, V>;
 
 // The contributor and organization geo pipes differ only in the names of their count and share
@@ -48,7 +54,7 @@ export function geoDistribution<N extends Noun>(noun: N) {
     ...field(
       plural,
       Type.Integer({
-        description: `Active ${plural} in the period located in the country (count). The location is the country on their profile, else their location, matched to country names by containment, so one that names several countries, or a name inside another such as Niger in Nigeria, counts in each.`,
+        description: `Active ${plural} in the period located in the country (count). ${placement[noun]}, matched to country names by containment, so one that names several countries, or a name inside another such as Niger in Nigeria, counts in each.`,
       }),
     ),
     ...field(
