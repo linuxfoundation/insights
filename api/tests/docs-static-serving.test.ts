@@ -3,8 +3,10 @@
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
 import { buildApp } from '../src/app.js';
 import { docsFixtureDist } from './setup/build-docs-fixture.js';
 

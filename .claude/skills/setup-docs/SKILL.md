@@ -24,6 +24,7 @@ cd frontend && pnpm docs:dev
 ```
 
 Build and preview the production output:
+
 ```bash
 cd frontend && pnpm docs:build && pnpm docs:preview
 ```
@@ -39,6 +40,7 @@ cd frontend && pnpm blog:dev
 ```
 
 Build and preview:
+
 ```bash
 cd frontend && pnpm blog:build && pnpm blog:preview --port 5174
 ```
@@ -54,6 +56,7 @@ cd frontend && pnpm storybook
 ```
 
 Build static Storybook:
+
 ```bash
 cd frontend && pnpm storybook:build
 ```

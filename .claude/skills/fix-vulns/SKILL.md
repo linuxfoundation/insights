@@ -72,6 +72,7 @@ Fallback if the token lacks `security_events` scope: `pnpm audit --json` from th
      `gh api -X PATCH repos/linuxfoundation/insights/dependabot/alerts/<N> -f state=dismissed -f dismissed_reason=not_used -f dismissed_comment="Fix belongs in crowd.dev (CM-XXX)"`
    - **`dev-only`** — reachable only through devDependency chains (vitest, storybook, eslint, …). Fix, but note reduced urgency in the report.
    - **`runtime`** — reachable from production code. Fix with priority.
+
 3. Record for each package: current locked version(s) (`pnpm list <pkg> --depth Infinity` or lockfile grep), fix target (`patched` from the alert), and whether the target crosses a **semver major** boundary.
 
 Present a short triage table to the user before proceeding: package, severity, classification, current → target, major-hop yes/no.
@@ -81,6 +82,7 @@ Present a short triage table to the user before proceeding: package, severity, c
 For every fixable package (not `submodule-origin`), spawn **one agent per package**. When there are more than 3 packages, launch them **in parallel in a single message**. Include in each agent's prompt: the package name, current and target versions, GHSA/CVE ids, and the consumer chains from Phase 2 (the audit paths) — the agent must not re-derive them. Each agent's task — verbatim structure:
 
 > Determine whether updating `<pkg>` from `<current>` to `<target>` can break the Insights codebase. You must produce evidence, not judgment calls. Steps:
+>
 > 1. **Usage audit** — search `frontend/app/`, `frontend/server/`, `frontend/nuxt.config.ts`, `frontend/setup/`, and `workers/` for every import/require of `<pkg>`. List each file and the specific APIs/exports used. If nothing imports it directly, say so explicitly.
 > 2. **Consumer-range check** (critical for transitive deps) — do NOT use `pnpm why -r`; it crashes in this workspace. From the consumer chains you were given (audit paths), take each **direct parent** of `<pkg>` and read the version range it declares: `jq '.dependencies["<pkg>"] // .devDependencies["<pkg>"] // .optionalDependencies["<pkg>"]' node_modules/.pnpm/<parent>@<version>/node_modules/<parent>/package.json` (find the exact dir with `ls -d node_modules/.pnpm/<parent>@*`). Check whether `<target>` satisfies EVERY parent's range. Any violation → verdict is `risky`, no exceptions.
 > 3. **Changelog diff** — fetch the changelog/release notes between `<current>` and `<target>` (GitHub releases, CHANGELOG.md in the repo, or npm). List every breaking change and deprecation. Cross-check each against the APIs found in step 1 and the consumers found in step 2. A breaking change in an API nobody uses is noted but not blocking.

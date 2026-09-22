@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       type:
-        description: 'Flush by project slug or collection slug'
+        description: "Flush by project slug or collection slug"
         required: true
         type: choice
         options:
@@ -12,7 +12,7 @@ on:
           - collection
           - leaderboards
       slug:
-        description: 'The project or collection slug to flush (not required for leaderboards)'
+        description: "The project or collection slug to flush (not required for leaderboards)"
         required: false
         type: string
 
@@ -28,7 +28,7 @@ env:
   ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
   ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
   KUBECONFIG_PATH: /home/runner/.kube/config
-  SUPPRESS_LABEL_WARNING: 'True'
+  SUPPRESS_LABEL_WARNING: "True"
 
 jobs:
   flush-partial-cache:

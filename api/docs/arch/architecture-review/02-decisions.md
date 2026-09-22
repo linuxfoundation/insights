@@ -34,7 +34,7 @@ API docs live in `api/docs/` as a standalone VitePress site, served by Fastify u
 
 ### Every request requires a valid API key: [docs/adr/0009](../adr/0009-api-key-required-for-all-requests.md)
 
-All endpoints, including those serving public project data, require a valid API key. There is no unauthenticated path. A missing or invalid key returns 401 immediately. This is intentional: rate limiting requires a stable identity, and attribution data is essential for roadmap prioritization. 
+All endpoints, including those serving public project data, require a valid API key. There is no unauthenticated path. A missing or invalid key returns 401 immediately. This is intentional: rate limiting requires a stable identity, and attribution data is essential for roadmap prioritization.
 
 ### API credentials are PATs exchanged for short-lived JWTs: [docs/adr/0006](../adr/0006-pat-token-exchange-for-api-credentials.md)
 
@@ -92,7 +92,7 @@ The default is to port-as-is from Nuxt to `/v1/...` with light normalization (ke
 
 ### v1 is server-to-server only; CORS denies all browser origins: [docs/adr/0004](../adr/0004-server-to-server-cors-deny.md)
 
-`Access-Control-Allow-Origin` is absent for the API; this is intentional. Allowing browser origins in v1 would require a CORS policy, credential-safe key distribution, and potentially cookie-based auth; all out of scope. **Flagged for revisit before launch** Will we need browser-side access? 
+`Access-Control-Allow-Origin` is absent for the API; this is intentional. Allowing browser origins in v1 would require a CORS policy, credential-safe key distribution, and potentially cookie-based auth; all out of scope. **Flagged for revisit before launch** Will we need browser-side access?
 
 ---
 

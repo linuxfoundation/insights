@@ -15,7 +15,7 @@ inputs:
   build-args:
     description: Extra build args (newline-separated KEY=VALUE)
     required: false
-    default: ''
+    default: ""
 
 outputs:
   image:

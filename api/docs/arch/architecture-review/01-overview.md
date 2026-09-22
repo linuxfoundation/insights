@@ -27,20 +27,20 @@ A standalone HTTP API service (`/api`, sibling of `frontend/`) that ports existi
 
 ### Key characteristics
 
-| Property | Decision |
-|---|---|
-| Base URL | `https://api.insights.linuxfoundation.org/v1/...` |
-| Location | `/api` at monorepo root, added to `pnpm-workspace.yaml` |
-| Framework | Fastify + TypeScript + TypeBox |
-| Auth | Personal Access Tokens issued by LFX Self-Serve. A Cloudflare Worker exchanges the PAT for a short-lived Auth0-signed JWT via Auth0 Custom Token Exchange on a cache miss (~10 min) and adds org/tier headers. Insights JWKS-verifies the JWT on every request. |
-| Rate limiting | Redis sliding window, per-org pool, tier-driven |
-| Versioning | URL prefix (`/v1`, `/v2`); additive-only within a version |
-| Contract | Tolerant-reader; no breaking changes within a major version |
-| Docs | VitePress + Scalar at `api.insights.linuxfoundation.org/docs` (served by Fastify from `api/docs/`) |
-| Observability | OpenTelemetry → Datadog (hybrid custom metrics + APM) |
-| Callers | Server-to-server only in v1; CORS denies all browser origins |
-| Billing | Bundled with existing LFX membership tiers; no standalone billing |
-| SDKs | None in v1; OpenAPI spec + curl examples |
+| Property      | Decision                                                                                                                                                                                                                                                        |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Base URL      | `https://api.insights.linuxfoundation.org/v1/...`                                                                                                                                                                                                               |
+| Location      | `/api` at monorepo root, added to `pnpm-workspace.yaml`                                                                                                                                                                                                         |
+| Framework     | Fastify + TypeScript + TypeBox                                                                                                                                                                                                                                  |
+| Auth          | Personal Access Tokens issued by LFX Self-Serve. A Cloudflare Worker exchanges the PAT for a short-lived Auth0-signed JWT via Auth0 Custom Token Exchange on a cache miss (~10 min) and adds org/tier headers. Insights JWKS-verifies the JWT on every request. |
+| Rate limiting | Redis sliding window, per-org pool, tier-driven                                                                                                                                                                                                                 |
+| Versioning    | URL prefix (`/v1`, `/v2`); additive-only within a version                                                                                                                                                                                                       |
+| Contract      | Tolerant-reader; no breaking changes within a major version                                                                                                                                                                                                     |
+| Docs          | VitePress + Scalar at `api.insights.linuxfoundation.org/docs` (served by Fastify from `api/docs/`)                                                                                                                                                              |
+| Observability | OpenTelemetry → Datadog (hybrid custom metrics + APM)                                                                                                                                                                                                           |
+| Callers       | Server-to-server only in v1; CORS denies all browser origins                                                                                                                                                                                                    |
+| Billing       | Bundled with existing LFX membership tiers; no standalone billing                                                                                                                                                                                               |
+| SDKs          | None in v1; OpenAPI spec + curl examples                                                                                                                                                                                                                        |
 
 ---
 
@@ -147,15 +147,15 @@ Rather than duplicating Tinybird query logic, three workspace libraries are extr
 
 Endpoints are ported in seven groups, each mapped to a Jira epic. Each endpoint ships through two stability stages: `/v1-alpha` → `/v1` (see Endpoint Stability below).
 
-| Group | Content | Status |
-|---|---|---|
-| 1. Development | Commit activity, PR metrics, review turnaround | [E7](../PUBLIC_API_PLAN.md#epic-e7-endpoint-migration-phase-1-development) |
-| 2. Contributors | Contributor leaderboards, org breakdowns | [E8](../PUBLIC_API_PLAN.md#epic-e8-endpoint-migration-phase-2-contributors) |
-| 3. Popularity | Stars, forks, downloads, dependency counts | [E9](../PUBLIC_API_PLAN.md#epic-e9-endpoint-migration-phase-3-popularity) |
-| 4. Security & Best Practices | CVE counts, vulnerability summaries, scorecard | [E10](../PUBLIC_API_PLAN.md#epic-e10-endpoint-migration-phase-4-security--best-practices) |
-| 5. Overviews | Project health summaries and overview metrics | [E11](../PUBLIC_API_PLAN.md#epic-e11-endpoint-migration-phase-5-overviews) |
-| 6. Collections | User-curated project groups (requires permission check) | [E12](../PUBLIC_API_PLAN.md#epic-e12-endpoint-migration-phase-6-collections) |
-| 7. Leaderboard | Cross-project contributor and activity leaderboards | [E13](../PUBLIC_API_PLAN.md#epic-e13-endpoint-migration-phase-7-leaderboard) |
+| Group                        | Content                                                 | Status                                                                                    |
+| ---------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 1. Development               | Commit activity, PR metrics, review turnaround          | [E7](../PUBLIC_API_PLAN.md#epic-e7-endpoint-migration-phase-1-development)                |
+| 2. Contributors              | Contributor leaderboards, org breakdowns                | [E8](../PUBLIC_API_PLAN.md#epic-e8-endpoint-migration-phase-2-contributors)               |
+| 3. Popularity                | Stars, forks, downloads, dependency counts              | [E9](../PUBLIC_API_PLAN.md#epic-e9-endpoint-migration-phase-3-popularity)                 |
+| 4. Security & Best Practices | CVE counts, vulnerability summaries, scorecard          | [E10](../PUBLIC_API_PLAN.md#epic-e10-endpoint-migration-phase-4-security--best-practices) |
+| 5. Overviews                 | Project health summaries and overview metrics           | [E11](../PUBLIC_API_PLAN.md#epic-e11-endpoint-migration-phase-5-overviews)                |
+| 6. Collections               | User-curated project groups (requires permission check) | [E12](../PUBLIC_API_PLAN.md#epic-e12-endpoint-migration-phase-6-collections)              |
+| 7. Leaderboard               | Cross-project contributor and activity leaderboards     | [E13](../PUBLIC_API_PLAN.md#epic-e13-endpoint-migration-phase-7-leaderboard)              |
 
 ---
 
@@ -174,11 +174,11 @@ Promotion is per-endpoint. The `/v1-alpha` route returns `410 Gone` for two week
 
 The following items are unresolved and need input before or during implementation:
 
-| # | Question | Drives |
-|---|---|---|
-| 1 | The CTE / JWT / header contract: the `subject_token_type` URN and Worker client-auth method for the Auth0 exchange, the Auth0 `iss` and JWKS URL, the Insights `aud`, and the organization header name (unnamed in the 4b diagram). Self-Serve owner is named in ADR-0006; PATs are opaque, so there is no key-claims schema to agree. | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
-| 2 | Variant 4a vs 4b: is tier resolved by the Cloudflare Worker from the LFX Tier endpoint (4b, suggested) or enriched inside the PAT service (4a)? Insights stewards the call, with DevOps input. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md). | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
-**Notes:**
+| #          | Question                                                                                                                                                                                                                                                                                                                               | Drives                                                                                 |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1          | The CTE / JWT / header contract: the `subject_token_type` URN and Worker client-auth method for the Auth0 exchange, the Auth0 `iss` and JWKS URL, the Insights `aud`, and the organization header name (unnamed in the 4b diagram). Self-Serve owner is named in ADR-0006; PATs are opaque, so there is no key-claims schema to agree. | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| 2          | Variant 4a vs 4b: is tier resolved by the Cloudflare Worker from the LFX Tier endpoint (4b, suggested) or enriched inside the PAT service (4a)? Insights stewards the call, with DevOps input. See [ADR-0006](../adr/0006-pat-token-exchange-for-api-credentials.md).                                                                  | [T-015](../PUBLIC_API_PLAN.md#epic-e3-auth--rate-limiting-api-keys-via-lfx-self-serve) |
+| **Notes:** |
 
 - Deployed on the same Kubernetes cluster as `frontend/`. ([T-002](../PUBLIC_API_PLAN.md#epic-e1-foundation--framework))
 - Using the existing Datadog org and APM agent in the cluster. ([T-025](../PUBLIC_API_PLAN.md#epic-e4-observability-opentelemetry--datadog))
