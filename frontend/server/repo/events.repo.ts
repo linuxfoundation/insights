@@ -36,7 +36,7 @@ export class EventsRepository {
       input.type,
       input.name,
       input.userId ?? null,
-      input.properties ? JSON.stringify(input.properties) : null,
+      input.properties ?? null,
       input.feature ?? null,
       input.source ?? null,
       input.entrySource ?? null,

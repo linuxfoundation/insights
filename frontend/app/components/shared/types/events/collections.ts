@@ -92,7 +92,7 @@ export const COLLECTIONS_EVENT_DEFINITIONS: Record<CollectionsEventKey, EventDef
   [CollectionsEventKey.DUPLICATE_COLLECTION]: {
     key: CollectionsEventKey.DUPLICATE_COLLECTION,
     type: EventType.FEATURE,
-    name: 'Duplicate collections',
+    name: 'Duplicate collection',
     feature: EventFeature.COMMUNITY_COLLECTIONS,
   },
   [CollectionsEventKey.ADD_PROJECT_TO_COLLECTION]: {

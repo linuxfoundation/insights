@@ -57,6 +57,10 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     throw createError({ statusCode: 400, statusMessage: `Unknown event key: ${body.key}` });
   }
 
+  const MAX_URL_LENGTH = 2048;
+  const source = body.source?.trim().slice(0, MAX_URL_LENGTH);
+  const entrySource = body.entrySource?.trim().slice(0, MAX_URL_LENGTH);
+
   const repo = new EventsRepository(insightsDbPool);
 
   try {
@@ -67,8 +71,8 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
       feature: definition.feature,
       userId,
       properties: body.properties,
-      source: body.source?.trim(),
-      entrySource: body.entrySource?.trim(),
+      source,
+      entrySource,
     });
 
     return { success: true };

@@ -49,15 +49,15 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
       const { user, isAuthenticated } = useAuth();
 
       watch(
-        isAuthenticated,
-        (authenticated, wasAuthenticated) => {
-          if (authenticated && user.value) {
-            analytics.identify(user.value.sub, {
-              name: user.value.name,
-              email: user.value.email,
-              username: user.value.username,
+        [isAuthenticated, user],
+        ([authenticated, currentUser], [wasAuthenticated]) => {
+          if (authenticated && currentUser) {
+            analytics.identify(currentUser.sub, {
+              name: currentUser.name,
+              email: currentUser.email,
+              username: currentUser.username,
             });
-          } else if (wasAuthenticated) {
+          } else if (wasAuthenticated && !authenticated) {
             // Only reset on sign-out, not on initial unauthenticated page load.
             analytics.reset();
           }
