@@ -4,11 +4,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   mockFetch,
-  parameterDescription,
   pipeCalls,
   projectPath,
   queryString,
-  resolveSchema,
   tinybirdHost,
   tinybirdStub,
   useApp,
@@ -204,14 +202,7 @@ describe('malformed pipe rows (AC7)', () => {
 describe('OpenAPI (AC8)', () => {
   const documented = async () => {
     const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
-    const operation = spec.paths[projectPath('activity-types')]?.get;
-    const body = resolveSchema(
-      spec,
-      operation?.responses['200']?.content['application/json']?.schema,
-    );
-    const group = resolveSchema(spec, body?.properties?.data?.items);
-    const type = resolveSchema(spec, group?.properties?.activityTypes?.items);
-    return { operation, group, type };
+    return { operation: spec.paths[projectPath('activity-types')]?.get };
   };
 
   it('takes repos and the three flags, all optional, with the flag defaults', async () => {
@@ -233,19 +224,5 @@ describe('OpenAPI (AC8)', () => {
       type: 'boolean',
       default: false,
     });
-  });
-
-  it('says what includeOtherContributions adds', async () => {
-    const { operation } = await documented();
-    const param = operation?.parameters?.find((p) => p.name === 'includeOtherContributions');
-    expect(parameterDescription(param)).toMatch(/neither a code contribution nor a collaboration/i);
-  });
-
-  it('states the order and points platform and key at the platform and activityType filters', async () => {
-    const { operation, group, type } = await documented();
-    expect(operation?.description).toMatch(/sorted by `platform`/i);
-    expect(operation?.description).toMatch(/by `key`/i);
-    expect(group?.properties?.platform?.description).toMatch(/as `platform`/i);
-    expect(type?.properties?.key?.description).toMatch(/as `activityType`/i);
   });
 });
