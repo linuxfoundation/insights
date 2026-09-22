@@ -38,9 +38,11 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import type { MenuItem } from './widget-menu.vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
+
+import type { MenuItem } from './widget-menu.vue';
 
 const emit = defineEmits<{
   (e: 'update:isPopoverMenuClicked', value: boolean): void;

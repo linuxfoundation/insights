@@ -26,9 +26,10 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
-import type { SecurityData } from '~~/types/security/responses.types';
 import LfxButton from '~/components/uikit/button/button.vue';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 const emit = defineEmits<{ (e: 'openReposEvalModal', category: string | undefined): void }>();
 

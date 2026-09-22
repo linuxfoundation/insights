@@ -76,10 +76,11 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { url } from '@vuelidate/validators';
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
 
 const props = defineProps<{
   modelValue: object;

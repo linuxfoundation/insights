@@ -69,17 +69,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
-import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
-import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
+import { ref, computed } from 'vue';
+
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
+import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
+import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
 // import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
-import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
-import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
 
 const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages, isCommunityFilterOpen } =
   storeToRefs(useCommunityStore());

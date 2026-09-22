@@ -100,14 +100,15 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import type { Project } from '~~/types/project';
+
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
-import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import type { Project } from '~~/types/project';
 
 const props = defineProps<{
   project: Project;

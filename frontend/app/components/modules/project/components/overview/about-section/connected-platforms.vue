@@ -48,11 +48,12 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import { platforms } from '~/config/platforms';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { platforms } from '~/config/platforms';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const { project } = storeToRefs(useProjectStore());
 

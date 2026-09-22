@@ -47,9 +47,10 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { MergeLeadTimeItem } from '~~/types/development/responses.types';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { MergeLeadTimeItem } from '~~/types/development/responses.types';
 
 const props = withDefaults(
   defineProps<{

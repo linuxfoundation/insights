@@ -53,12 +53,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { url } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+import { url } from '@vuelidate/validators';
+import { computed } from 'vue';
+
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 
 const props = defineProps<{
   modelValue: object;

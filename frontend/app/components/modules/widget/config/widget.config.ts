@@ -1,38 +1,40 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Component } from 'vue';
-import contributorsLeaderboard from './contributor/contributors-leaderboard/contributors-leaderboard.config';
-import organizationsLeaderboard from './contributor/organizations-leaderboard/organizations-leaderboard.config';
+
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { Widget } from '~/components/modules/widget/types/widget';
+import type { Project } from '~~/types/project';
+
 import activeContributors from './contributor/active-contributors/active-contributors.config';
 import activeOrganizations from './contributor/active-organizations/active-organizations.config';
 import contributorDependency from './contributor/contributor-dependency/contributor-dependency.config';
-import organizationDependency from './contributor/organization-dependency/organization-dependency.config';
-import retention from './contributor/retention/retention.config';
+import contributorsLeaderboard from './contributor/contributors-leaderboard/contributors-leaderboard.config';
 import geographicalDistribution from './contributor/geographical-distribution/geographical-distribution.config';
-import stars from './popularity/stars/stars.config';
-import forks from './popularity/forks/forks.config';
-import githubMentions from './popularity/github-mentions/github-mentions.config';
-import socialMentions from './popularity/social-mentions/social-mentions.config';
-import pressMentions from './popularity/press-mentions/press-mentions.config';
-import searchQueries from './popularity/search-queries/search-queries.config';
-import packageDownloads from './popularity/package-downloads/package-downloads.config';
-import packageDependency from './popularity/package-dependency/package-dependency.config';
-import issuesResolution from './development/issues-resolution/issues-resolution.config';
-import pullRequests from './development/pull-requests/pull-requests.config';
+import organizationDependency from './contributor/organization-dependency/organization-dependency.config';
+import organizationsLeaderboard from './contributor/organizations-leaderboard/organizations-leaderboard.config';
+import retention from './contributor/retention/retention.config';
 import activeDays from './development/active-days/active-days.config';
+import codeReviewEngagement from './development/code-review-engagement/code-review-engagement.config';
+import commitActivities from './development/commit-activities/commit-activities.config';
 import contributionsOutsideWorkHours from './development/contributions-outside-work-hours/contributions-outside-work-hours.config';
-import mergeLeadTime from './development/merge-lead-time/merge-lead-time.config';
-import patchsetsPerReview from './development/patchsets-per-review/patchsets-per-review.config';
+import issuesResolution from './development/issues-resolution/issues-resolution.config';
 import medianTimeToClose from './development/median-time-to-close/median-time-to-close.config';
 import medianTimeToReview from './development/median-time-to-review/median-time-to-review.config';
+import mergeLeadTime from './development/merge-lead-time/merge-lead-time.config';
+import patchsetsPerReview from './development/patchsets-per-review/patchsets-per-review.config';
+import pullRequests from './development/pull-requests/pull-requests.config';
 import reviewEfficiency from './development/review-efficiency/review-efficiency.config';
-import codeReviewEngagement from './development/code-review-engagement/code-review-engagement.config';
 import reviewTimeByPullRequestSize from './development/review-time-by-pull-request-size/review-time-by-pull-request-size.config';
+import forks from './popularity/forks/forks.config';
+import githubMentions from './popularity/github-mentions/github-mentions.config';
 import mailingListMessages from './popularity/mailing-list-messages/mailing-list-messages.config';
-import commitActivities from './development/commit-activities/commit-activities.config';
-import { Widget } from '~/components/modules/widget/types/widget';
-import type { Project } from '~~/types/project';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import packageDependency from './popularity/package-dependency/package-dependency.config';
+import packageDownloads from './popularity/package-downloads/package-downloads.config';
+import pressMentions from './popularity/press-mentions/press-mentions.config';
+import searchQueries from './popularity/search-queries/search-queries.config';
+import socialMentions from './popularity/social-mentions/social-mentions.config';
+import stars from './popularity/stars/stars.config';
 
 export interface WidgetBenchmarkConfig {
   title: string;

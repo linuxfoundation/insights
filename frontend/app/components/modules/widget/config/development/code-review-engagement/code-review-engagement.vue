@@ -82,9 +82,35 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
 import type { Granularity } from '@lfx-insights/types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxCodeReviewTable from '~/components/modules/widget/components/development/fragments/code-review-table.vue';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import {
+  DEVELOPMENT_API_SERVICE,
+  type QueryParams,
+} from '~/components/modules/widget/services/development.api.service';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { barGranularities } from '~/components/shared/types/granularity';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { lfxColors } from '~/config/styles/colors';
+import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
 import type {
   CodeReviewEngagement,
   CodeReviewEngagementPRParticipantsItem,
@@ -92,31 +118,6 @@ import type {
   CodeReviewEngagementReviewsItem,
 } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
-import LfxCodeReviewTable from '~/components/modules/widget/components/development/fragments/code-review-table.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import { lfxColors } from '~/config/styles/colors';
-import { barGranularities } from '~/components/shared/types/granularity';
-import {
-  DEVELOPMENT_API_SERVICE,
-  type QueryParams,
-} from '~/components/modules/widget/services/development.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 interface CodeReviewEngagementModel extends WidgetModel {
   activeTab: string;

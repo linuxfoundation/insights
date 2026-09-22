@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import MedianTimeToReview from './median-time-to-review.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
 import MedianTimeToReviewFilters from './median-time-to-review-filters.vue';
 import MedianTimeToReviewSnapshotHeader from './median-time-to-review-snapshot-header.vue';
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import MedianTimeToReview from './median-time-to-review.vue';
 
 const medianTimeToReview: WidgetConfig = {
   key: 'medianTimeToReview',

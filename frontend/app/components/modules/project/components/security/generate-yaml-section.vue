@@ -38,13 +38,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useQueryParam } from '~/components/shared/utils/query-param';
+
+import LfSecurityGenerateYamlModal from '~/components/modules/project/components/security/yaml/generate-yaml-modal.vue';
 import {
   securityParamsGetter,
   securityParamsSetter,
 } from '~/components/modules/project/services/project.query.service';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfSecurityGenerateYamlModal from '~/components/modules/project/components/security/yaml/generate-yaml-modal.vue';
 
 const { queryParams } = useQueryParam(securityParamsGetter, securityParamsSetter);
 const { generateYaml } = queryParams.value;

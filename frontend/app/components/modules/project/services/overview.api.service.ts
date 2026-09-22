@@ -1,20 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { QueryFunction } from '@tanstack/vue-query';
-import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-import { lfxWidgetArea } from '../../widget/config/widget-area.config';
-import type { WidgetArea } from '../../widget/types/widget-area';
-import type { Widget } from '../../widget/types/widget';
-import type { WidgetConfig } from '../../widget/config/widget.config';
-import { lfxWidgets } from '../../widget/config/widget.config';
+import { type ComputedRef, computed } from 'vue';
+
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { Organization } from '~~/types/contributors/responses.types';
 import type {
   HealthScoreV2Results,
   ImpactBreakdownResults,
   HealthBreakdownResults,
 } from '~~/types/overview/responses.types';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { Organization } from '~~/types/contributors/responses.types';
+
+import { lfxWidgetArea } from '../../widget/config/widget-area.config';
+import type { WidgetConfig } from '../../widget/config/widget.config';
+import { lfxWidgets } from '../../widget/config/widget.config';
+import type { Widget } from '../../widget/types/widget';
+import type { WidgetArea } from '../../widget/types/widget-area';
 
 export interface OverviewQueryParams {
   projectSlug: string;

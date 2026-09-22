@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import MailingListMessages from './mailing-list-messages.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import MailingListMessages from './mailing-list-messages.vue';
 
 const mailingListMessages: WidgetConfig = {
   key: 'mailingListMessages',
