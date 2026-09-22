@@ -8,7 +8,9 @@ import { getTinybirdClient } from '../../src/clients/tinybird.js';
 
 export const tinybirdHost = 'https://tinybird.test';
 export const bucketsPath = '/v0/pipes/project_buckets.json';
-export const developmentPath = (name: string) => `/v1-alpha/projects/{slug}/development/${name}`;
+export const projectPath = (subpath: string) => `/v1-alpha/projects/{slug}/${subpath}`;
+export const developmentPath = (name: string) => projectPath(`development/${name}`);
+export const contributorsPath = (name: string) => projectPath(`contributors/${name}`);
 
 export const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -142,7 +144,6 @@ export interface ResponseField {
   described: boolean;
 }
 
-// Every property of a response schema, nested objects and array items included.
 export function responseFields(
   doc: OpenApiDoc,
   schema?: OpenApiSchema,

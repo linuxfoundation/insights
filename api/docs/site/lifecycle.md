@@ -15,6 +15,8 @@ page explains what each stage means for you as a caller.
   change at any time.
 - We allow **breaking changes** freely at this stage, since it exists to validate an
   endpoint's contract and performance before wider exposure.
+- **Identity fields**, such as display names, avatars, GitHub handles and logos, are
+  provisional: an endpoint can change or drop them before it moves to `/v1`.
 
 Do not build production integrations against `/v1-alpha`.
 
