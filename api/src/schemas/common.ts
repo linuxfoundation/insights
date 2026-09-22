@@ -1,7 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
-import { Granularity as SharedGranularity } from '@lfx-insights/types';
+import { ActivityPlatforms, Granularity as SharedGranularity } from '@lfx-insights/types';
+
+// The spec is OpenAPI 3.0.3, which has no type 'null'. Ajv and fast-json-stringify both honor
+// nullable.
+export const nullableNumber = (description: string) =>
+  Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
 
 // Any non-empty slug passes, so an unknown project reaches the handler and returns empty data.
 export const ProjectSlugParams = Type.Object({
@@ -49,6 +54,14 @@ export const Granularity = Type.Unsafe<`${Exclude<SharedGranularity, SharedGranu
   description: 'Width of each bucket in `data`.',
 });
 
+export const Platform =
+  Type.Unsafe<`${ActivityPlatforms.GITHUB | ActivityPlatforms.GITLAB | ActivityPlatforms.GERRIT}`>({
+    type: 'string',
+    enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
+    description:
+      'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+  });
+
 // The query of every bucketed series endpoint; spread `.properties` to add endpoint-specific keys.
 export const SeriesQuery = Type.Object({
   ...DateRangeQuery.properties,
@@ -59,14 +72,9 @@ export const PeriodSummary = Type.Object(
   {
     current: Type.Number(),
     previous: Type.Number(),
-    // The spec is OpenAPI 3.0.3, which has no type 'null'. Ajv and fast-json-stringify
-    // both honor nullable.
-    percentageChange: Type.Unsafe<number | null>({
-      type: 'number',
-      nullable: true,
-      description:
-        'Signed percent change from previous to current. Null if previous is 0 and current is not.',
-    }),
+    percentageChange: nullableNumber(
+      'Signed percent change from previous to current. Null if previous is 0 and current is not.',
+    ),
     changeValue: Type.Number(),
     periodFrom: Type.String({ format: 'date-time', description: 'Start of the current period.' }),
     periodTo: Type.String({ format: 'date-time', description: 'End of the current period.' }),
@@ -75,40 +83,71 @@ export const PeriodSummary = Type.Object(
 );
 export type PeriodSummary = Static<typeof PeriodSummary>;
 
-interface PeriodSummaryOptions {
+interface PeriodSummaryText {
   /** Names what is measured and opens each field description, e.g. 'Commits' or 'Active days'. */
   measure: string;
   /** Unit written after `current` and `previous`, e.g. 'count', 'count of days', 'percent'. */
   unit: string;
   /** Unit of `changeValue` when it differs from `unit`, e.g. 'percentage points'. */
   changeUnit?: string;
-  /** Integer for a count, number for a share. */
-  kind: 'integer' | 'number';
   title?: string;
   description?: string;
 }
 
-// PeriodSummary leaves its three plain numbers undescribed because the unit is per metric. This
-// writes them from the measure and unit, so every endpoint's summary reads the same way.
-export function periodSummary({
-  measure,
-  unit,
-  changeUnit = unit,
-  kind,
-  title,
-  description,
-}: PeriodSummaryOptions) {
-  const numeric = (text: string) =>
-    kind === 'integer' ? Type.Integer({ description: text }) : Type.Number({ description: text });
+interface PeriodSummaryOptions extends PeriodSummaryText {
+  /** Integer for a count, number for a share. */
+  kind: 'integer' | 'number';
+}
+
+interface NullablePeriodSummaryOptions extends PeriodSummaryText {
+  /** Appended to `current` and `previous`, e.g. 'Null when no pull request was opened in the period.' */
+  nullWhen: { current: string; previous: string };
+}
+
+// PeriodSummary leaves its three plain numbers undescribed because the unit is per metric. These
+// write them from the measure and unit, so every endpoint's summary reads the same way.
+const summaryText = ({ measure, unit, changeUnit = unit }: PeriodSummaryText) => ({
+  current: `${measure} in the current period (${unit}).`,
+  previous: `${measure} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (${unit}).`,
+  changeValue: `\`current\` minus \`previous\` (${changeUnit}).`,
+});
+
+const objectOptions = ({ title, description }: { title?: string; description?: string }) => ({
+  ...(title ? { title } : {}),
+  ...(description ? { description } : {}),
+});
+
+export function periodSummary(options: PeriodSummaryOptions) {
+  const text = summaryText(options);
+  const numeric = (description: string) =>
+    options.kind === 'integer' ? Type.Integer({ description }) : Type.Number({ description });
   return Type.Object(
     {
       ...PeriodSummary.properties,
-      current: numeric(`${measure} in the current period (${unit}).`),
-      previous: numeric(
-        `${measure} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (${unit}).`,
-      ),
-      changeValue: numeric(`\`current\` minus \`previous\` (${changeUnit}).`),
+      current: numeric(text.current),
+      previous: numeric(text.previous),
+      changeValue: numeric(text.changeValue),
     },
-    { ...(title ? { title } : {}), ...(description ? { description } : {}) },
+    objectOptions(options),
   );
 }
+
+// For a value an empty period has none of, such as a median, an average or a ratio.
+export function nullablePeriodSummary(options: NullablePeriodSummaryOptions) {
+  const text = summaryText(options);
+  return Type.Object(
+    {
+      ...PeriodSummary.properties,
+      current: nullableNumber(`${text.current} ${options.nullWhen.current}`),
+      previous: nullableNumber(`${text.previous} ${options.nullWhen.previous}`),
+      changeValue: nullableNumber(
+        `${text.changeValue} Null when \`current\` or \`previous\` is null.`,
+      ),
+      percentageChange: nullableNumber(
+        'Signed percent change from `previous` to `current`. Null when `current` or `previous` is null, or when `previous` is 0 and `current` is not.',
+      ),
+    },
+    objectOptions(options),
+  );
+}
+export type NullablePeriodSummary = Static<ReturnType<typeof nullablePeriodSummary>>;

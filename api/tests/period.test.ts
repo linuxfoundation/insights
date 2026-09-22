@@ -6,6 +6,7 @@ import {
   getPreviousDates,
   InvalidDateRangeError,
   toIsoUtc,
+  toNullablePeriodSummary,
   toPeriodSummary,
   toTinybirdRange,
   utcMidnight,
@@ -270,5 +271,28 @@ describe('toPeriodSummary (AC7)', () => {
 
   it('sets percentageChange to null when previous is 0', () => {
     expect(toPeriodSummary(5, 0, range)).toMatchObject({ changeValue: 5, percentageChange: null });
+  });
+});
+
+describe('toNullablePeriodSummary', () => {
+  const range = { startDate: '2025-06-20', endDate: '2025-09-18' };
+
+  it('matches toPeriodSummary when both sides have a value', () => {
+    expect(toNullablePeriodSummary(120, 80, range)).toEqual(toPeriodSummary(120, 80, range));
+  });
+
+  it.each([
+    [null, 80],
+    [120, null],
+    [null, null],
+  ])('nulls both derived values when current is %s and previous is %s', (current, previous) => {
+    expect(toNullablePeriodSummary(current, previous, range)).toEqual({
+      current,
+      previous,
+      percentageChange: null,
+      changeValue: null,
+      periodFrom: '2025-06-20T00:00:00Z',
+      periodTo: '2025-09-18T00:00:00Z',
+    });
   });
 });

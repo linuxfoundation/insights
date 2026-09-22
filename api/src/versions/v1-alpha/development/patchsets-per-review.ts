@@ -2,18 +2,16 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-import { Type, type Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   hasBucketBounds,
   toIsoUtc,
-  toPeriodSummary,
+  toNullablePeriodSummary,
   toTinybirdRange,
-  utcMidnight,
-  type DateRange,
 } from '../../../lib/period.js';
-import { PeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import { nullablePeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
 
 interface SummaryRow {
   patchsetsPerReview?: number | null;
@@ -41,35 +39,17 @@ const PatchsetsPerReviewQuery = Type.Object({
   ),
 });
 
-// The spec is OpenAPI 3.0.3, which has no type 'null'; see PeriodSummary.percentageChange.
-const nullableNumber = (description: string) =>
-  Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
-
-// PeriodSummary types its numbers as plain, but a median over no changesets is null, so the three
-// are overridden here and percentageChange gains the null-when-either-side-null rule.
-const PatchsetsPerReviewSummary = Type.Object(
-  {
-    ...PeriodSummary.properties,
-    current: nullableNumber(
-      'Median or average number of patchsets per Gerrit changeset opened in the current period, as `stat` selects, rounded to two decimals (patchsets per review). Null when no Gerrit changeset with a patchset count was opened in the period.',
-    ),
-    previous: nullableNumber(
-      'Median or average number of patchsets per Gerrit changeset opened in the comparison period, which ends the day before `periodFrom`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (patchsets per review). Null when no Gerrit changeset with a patchset count was opened in that period.',
-    ),
-    changeValue: nullableNumber(
-      '`current` minus `previous` (patchsets per review). Null when `current` or `previous` is null.',
-    ),
-    percentageChange: nullableNumber(
-      'Signed percent change from `previous` to `current`. Null when `current` or `previous` is null, or when `previous` is 0 and `current` is not.',
-    ),
+const PatchsetsPerReviewSummary = nullablePeriodSummary({
+  measure: 'Patchsets per Gerrit changeset opened',
+  unit: 'patchsets per review',
+  title: 'PatchsetsPerReviewSummary',
+  description:
+    'Median or average patchsets per Gerrit changeset, as `stat` selects and rounded to two decimals, for the current period against the comparison period before it.',
+  nullWhen: {
+    current: 'Null when no Gerrit changeset with a patchset count was opened in the period.',
+    previous: 'Null when no Gerrit changeset with a patchset count was opened in that period.',
   },
-  {
-    title: 'PatchsetsPerReviewSummary',
-    description:
-      'Patchsets per review for the current period against the comparison period before it, as the statistic `stat` selects.',
-  },
-);
-type PatchsetsPerReviewSummary = Static<typeof PatchsetsPerReviewSummary>;
+});
 
 const PatchsetsPerReview = Type.Object({
   summary: PatchsetsPerReviewSummary,
@@ -94,25 +74,6 @@ const PatchsetsPerReview = Type.Object({
     },
   ),
 });
-
-// toPeriodSummary takes plain numbers; a side without data leaves nothing to compare against.
-function toNullableSummary(
-  current: number | null,
-  previous: number | null,
-  range: DateRange,
-): PatchsetsPerReviewSummary {
-  if (current === null || previous === null) {
-    return {
-      current,
-      previous,
-      percentageChange: null,
-      changeValue: null,
-      periodFrom: utcMidnight(range.startDate),
-      periodTo: utcMidnight(range.endDate),
-    };
-  }
-  return toPeriodSummary(current, previous, range);
-}
 
 const patchsetsPerReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
@@ -158,7 +119,7 @@ const patchsetsPerReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
 
       const [currentRows, previousRows, seriesRows] = rows ?? [[], [], []];
       return {
-        summary: toNullableSummary(
+        summary: toNullablePeriodSummary(
           currentRows[0]?.patchsetsPerReview ?? null,
           previousRows[0]?.patchsetsPerReview ?? null,
           dates.current,

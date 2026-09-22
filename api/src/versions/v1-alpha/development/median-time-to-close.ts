@@ -2,18 +2,21 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-import { Type, type Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   hasBucketBounds,
   toIsoUtc,
-  toPeriodSummary,
+  toNullablePeriodSummary,
   toTinybirdRange,
-  utcMidnight,
-  type DateRange,
 } from '../../../lib/period.js';
-import { PeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import {
+  nullablePeriodSummary,
+  Platform,
+  ProjectSlugParams,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/median_time_to_close.json';
 
@@ -30,45 +33,20 @@ interface SeriesRow extends SummaryRow {
 
 const MedianTimeToCloseQuery = Type.Object({
   ...SeriesQuery.properties,
-  platform: Type.Optional(
-    Type.Unsafe<'github' | 'gitlab' | 'gerrit'>({
-      type: 'string',
-      enum: ['github', 'gitlab', 'gerrit'],
-      description:
-        'Count only pull requests from this platform: `github`, `gitlab` or `gerrit`, the pull request platforms among the `connectedPlatforms` the project endpoint returns. When omitted, the median covers GitHub, GitLab and Gerrit together.',
-    }),
-  ),
+  platform: Type.Optional(Platform),
 });
 
-// The spec is OpenAPI 3.0.3, which has no type 'null'; see PeriodSummary.percentageChange.
-const nullableNumber = (description: string) =>
-  Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
-
-// PeriodSummary types its numbers as plain, but a median over no closed pull requests is null, so
-// the three are overridden here and percentageChange gains the null-when-either-side-null rule.
-const MedianTimeToCloseSummary = Type.Object(
-  {
-    ...PeriodSummary.properties,
-    current: nullableNumber(
-      'Median time from a pull request being opened to being closed, over the pull requests opened in the current period (seconds). Null when no pull request opened in the period has been closed.',
-    ),
-    previous: nullableNumber(
-      'The same median for the comparison period, which ends the day before `periodFrom`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (seconds). Null when no pull request opened in that period has been closed.',
-    ),
-    changeValue: nullableNumber(
-      '`current` minus `previous` (seconds). Null when `current` or `previous` is null.',
-    ),
-    percentageChange: nullableNumber(
-      'Signed percent change from `previous` to `current`. Null when `current` or `previous` is null, or when `previous` is 0 and `current` is not.',
-    ),
+const MedianTimeToCloseSummary = nullablePeriodSummary({
+  measure: 'Median time from a pull request being opened to being closed',
+  unit: 'seconds',
+  title: 'MedianTimeToCloseSummary',
+  description:
+    'Median time to close a pull request, in seconds, for the current period and the period immediately before it.',
+  nullWhen: {
+    current: 'Null when no pull request opened in the period has been closed.',
+    previous: 'Null when no pull request opened in that period has been closed.',
   },
-  {
-    title: 'MedianTimeToCloseSummary',
-    description:
-      'Median time to close a pull request, in seconds, for the current period and the period immediately before it.',
-  },
-);
-type MedianTimeToCloseSummary = Static<typeof MedianTimeToCloseSummary>;
+});
 
 const MedianTimeToCloseBucket = Type.Object({
   startDate: Type.String({
@@ -92,25 +70,6 @@ const MedianTimeToClose = Type.Object({
       'One entry per granularity bucket in the current period, in the order the pipe returns them. A bucket the pipe reports without both bounds is omitted.',
   }),
 });
-
-// toPeriodSummary takes plain numbers; a side without data leaves nothing to compare against.
-function toMedianSummary(
-  current: number | null,
-  previous: number | null,
-  range: DateRange,
-): MedianTimeToCloseSummary {
-  if (current === null || previous === null) {
-    return {
-      current,
-      previous,
-      percentageChange: null,
-      changeValue: null,
-      periodFrom: utcMidnight(range.startDate),
-      periodTo: utcMidnight(range.endDate),
-    };
-  }
-  return toPeriodSummary(current, previous, range);
-}
 
 // The pipe types the median Nullable(Float64); anything else would reach the serializer as a 500,
 // where fetchPipe turns a row outside the contract into a 503.
@@ -170,12 +129,12 @@ const medianTimeToCloseRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         ]);
       });
       if (!rows) {
-        return { summary: toMedianSummary(null, null, dates.current), data: [] };
+        return { summary: toNullablePeriodSummary(null, null, dates.current), data: [] };
       }
 
       const [currentRows, previousRows, seriesRows] = rows;
       return {
-        summary: toMedianSummary(
+        summary: toNullablePeriodSummary(
           currentRows[0]?.medianTimeToCloseSeconds ?? null,
           previousRows[0]?.medianTimeToCloseSeconds ?? null,
           dates.current,

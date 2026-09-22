@@ -12,7 +12,12 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
-import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import {
+  nullableNumber,
+  periodSummary,
+  ProjectSlugParams,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const activitiesCountPath = '/v0/pipes/activities_count.json';
 const resolveVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
@@ -34,12 +39,9 @@ interface ResolveVelocityRow {
 const IssuesResolutionSummary = Type.Object(
   {
     ...periodSummary({ measure: 'Issues closed', unit: 'count', kind: 'integer' }).properties,
-    avgResolveTimeSeconds: Type.Unsafe<number | null>({
-      type: 'number',
-      nullable: true,
-      description:
-        'Average time from opening to closing an issue, over the issues closed in the current period (seconds). Null when none was closed.',
-    }),
+    avgResolveTimeSeconds: nullableNumber(
+      'Average time from opening to closing an issue, over the issues closed in the current period (seconds). Null when none was closed.',
+    ),
   },
   {
     title: 'IssuesResolutionSummary',

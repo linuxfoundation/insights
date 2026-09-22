@@ -4,7 +4,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
-import { DateRangeQuery, ProjectSlugParams } from '../../../schemas/common.js';
+import { DateRangeQuery, nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/pull_requests_review_time_by_size.json';
 
@@ -31,12 +31,9 @@ const ReviewTimeBucket = Type.Object({
     description:
       'Number of pull requests in the bucket whose first review happened in the period (count).',
   }),
-  averageReviewTimeSeconds: Type.Unsafe<number | null>({
-    type: 'number',
-    nullable: true,
-    description:
-      "Average time from opening a pull request in the bucket to its first review, in seconds. Null when none of the bucket's pull requests has a recorded review time.",
-  }),
+  averageReviewTimeSeconds: nullableNumber(
+    "Average time from opening a pull request in the bucket to its first review, in seconds. Null when none of the bucket's pull requests has a recorded review time.",
+  ),
 });
 
 const ReviewTimeByPrSize = Type.Object({

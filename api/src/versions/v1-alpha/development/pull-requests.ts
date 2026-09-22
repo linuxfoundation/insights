@@ -12,7 +12,12 @@ import {
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
-import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import {
+  nullableNumber,
+  periodSummary,
+  ProjectSlugParams,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 interface SummaryRow {
   activityCount?: number;
@@ -73,12 +78,9 @@ const PullRequests = Type.Object({
   openedSummary: pullRequestSummary('PullRequestsOpenedSummary', 'opened'),
   mergedSummary: pullRequestSummary('PullRequestsMergedSummary', 'merged'),
   closedSummary: pullRequestSummary('PullRequestsClosedSummary', 'closed'),
-  avgResolveTimeSeconds: Type.Unsafe<number | null>({
-    type: 'number',
-    nullable: true,
-    description:
-      'Average time to resolve a pull request in the current period, in seconds. Null when no pull request was resolved.',
-  }),
+  avgResolveTimeSeconds: nullableNumber(
+    'Average time to resolve a pull request in the current period, in seconds. Null when no pull request was resolved.',
+  ),
   data: Type.Array(
     Type.Object({
       startDate: Type.String({ format: 'date-time', description: 'Start of the bucket (UTC).' }),
