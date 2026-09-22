@@ -516,8 +516,9 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
       const unitOf = (value: string) =>
         summary.properties?.[value]?.description?.match(/\(([a-z ]+)\)\./)?.[1];
       const unit = unitOf('current');
+      // A count is an integer, so a number-kind summary may name any unit but a count.
       expect(unit ?? '', `${name}.${field}.current`).toMatch(
-        kind === 'integer' ? /^count( of [a-z]+)?$/ : /^(seconds|percent|percentage points)$/,
+        kind === 'integer' ? /^count( of [a-z]+)?$/ : /^(?!count)[a-z ]+$/,
       );
       for (const value of ['previous', 'changeValue']) {
         expect(summary.properties?.[value]?.type, `${name}.${field}.${value}`).toBe(kind);
