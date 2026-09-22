@@ -23,8 +23,8 @@ import {
 
 const pipePath = '/v0/pipes/review_efficiency.json';
 
-// The Nuxt data layer reads openedCount and resolvedCount; its stale series type says mergedCount,
-// which the mapping never uses.
+// The pipe answers openedCount and resolvedCount; its DESCRIPTION block and the Nuxt series type
+// still say mergedCount.
 interface SummaryRow {
   openedCount?: number;
   resolvedCount?: number;
@@ -35,9 +35,16 @@ interface SeriesRow extends SummaryRow {
   endDate: string | null;
 }
 
-// fetchPipe's default validator accepts a null element. Without this guard a null series row makes
-// hasBucketBounds throw outside the 503 mapping, and a null summary row reads as zero counts.
-const isRow = (row: SummaryRow) => typeof row === 'object' && row !== null;
+// fetchPipe's default validator accepts any element. A null row makes hasBucketBounds throw outside
+// the 503 mapping; an array row or a count outside the nonnegative safe integers reads as bad data.
+const isCount = (value?: number) =>
+  value === undefined || (Number.isSafeInteger(value) && value >= 0);
+const isRow = (row: SummaryRow) =>
+  typeof row === 'object' &&
+  row !== null &&
+  !Array.isArray(row) &&
+  isCount(row.openedCount) &&
+  isCount(row.resolvedCount);
 
 // Type.Unsafe shows up in OpenAPI as a plain enum, for the same reason Granularity in common.ts
 // uses it.
@@ -46,7 +53,7 @@ const Platform =
     type: 'string',
     enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
     description:
-      'Platform to count pull requests from: `github`, `gitlab` or `gerrit`. Without it the counts cover every platform the project has data for, as the Insights widget does. `connectedPlatforms` on the project endpoint can list other platforms, such as `git`; those get a 400 here.',
+      'Platform to count pull requests from: `github`, `gitlab` or `gerrit`. Without it the pipe applies no platform filter and counts every platform the project has pull request data for. `connectedPlatforms` on the project endpoint can list other platforms, such as `git`; those get a 400 here.',
   });
 
 const Query = Type.Object({
@@ -65,10 +72,10 @@ const ReviewEfficiencySummary = Type.Object(
   {
     ...PeriodSummary.properties,
     current: nullableNumber(
-      'Closed pull requests as a percentage of opened ones in the current period (percent). Null when no pull request was opened in the period.',
+      'Pull requests opened in the current period and since closed, as a percentage of all opened in it (percent). Null when no pull request was opened in the period.',
     ),
     previous: nullableNumber(
-      'Closed pull requests as a percentage of opened ones in the comparison period, which ends the day before `periodFrom`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (percent). Null when no pull request was opened in that period.',
+      'Pull requests opened in the comparison period and since closed, as a percentage of all opened in it. The comparison period ends the day before `periodFrom`; its span is derived in calendar months and days, so its elapsed days can differ from the current period (percent). Null when no pull request was opened in that period.',
     ),
     changeValue: nullableNumber(
       '`current` minus `previous` (percentage points). Null when `current` or `previous` is null.',
@@ -80,7 +87,7 @@ const ReviewEfficiencySummary = Type.Object(
   {
     title: 'ReviewEfficiencySummary',
     description:
-      'Closed pull requests as a percentage of opened ones, for the current period and the period immediately before it. The Insights widget shows this value as a ratio; the API reshapes it to a percent, so the change is in percentage points, and it exceeds 100 when more pull requests were closed than opened.',
+      'Pull requests opened in a period and since closed, as a percentage of all opened in it, for the current period and the period immediately before it. The Insights widget shows this value as a ratio; the API reshapes it to a percent, so the change is in percentage points. Because `closed` counts a subset of `opened`, the value runs from 0 to 100.',
   },
 );
 type ReviewEfficiencySummary = Static<typeof ReviewEfficiencySummary>;
@@ -95,7 +102,9 @@ const ReviewEfficiencyBucket = Type.Object({
     description: 'Last calendar day of the bucket, at 00:00:00 UTC.',
   }),
   opened: Type.Integer({ description: 'Pull requests opened in the bucket (count).' }),
-  closed: Type.Integer({ description: 'Pull requests closed in the bucket (count).' }),
+  closed: Type.Integer({
+    description: 'Pull requests opened in the bucket that have since been closed (count).',
+  }),
 });
 
 const ReviewEfficiency = Type.Object({
@@ -109,16 +118,16 @@ const ReviewEfficiency = Type.Object({
       'Pull requests opened in the current period against the comparison period before it.',
   }),
   closedSummary: periodSummary({
-    measure: 'Pull requests closed',
+    measure: 'Pull requests that have since been closed, of those opened',
     unit: 'count',
     kind: 'integer',
     title: 'ReviewEfficiencyClosedSummary',
     description:
-      'Pull requests closed in the current period against the comparison period before it. The pipe reports this count as resolved; the Insights widget labels it closed.',
+      'Pull requests opened in the current period that have since been closed, against the comparison period before it. The pipe counts a pull request as closed once it has a resolution time, merged or closed; the Insights widget labels this closed.',
   }),
   data: Type.Array(ReviewEfficiencyBucket, {
     description:
-      'One entry per granularity bucket in the current period, in pipe order. A bucket the pipe reports without both bounds is omitted.',
+      'One entry per granularity bucket in the current period, ascending by `startDate`, with 0 counts for a bucket without pull requests. A bucket the pipe reports without both bounds is omitted.',
   }),
 });
 
@@ -131,7 +140,8 @@ const counts = (rows: SummaryRow[]): Counts => ({
   opened: rows[0]?.openedCount ?? 0,
   closed: rows[0]?.resolvedCount ?? 0,
 });
-// Null when nothing was opened, so there is no denominator; above 100 when more closed than opened.
+// Null when nothing was opened, so there is no denominator. Left unclamped: the pipe counts closed
+// as a subset of opened, so a value above 100 would mean bad upstream data, not a real rate.
 const efficiency = ({ opened, closed }: Counts) => (opened > 0 ? (closed / opened) * 100 : null);
 
 // toPeriodSummary takes plain numbers; a side without data leaves nothing to compare against.
@@ -161,9 +171,9 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         tags: ['Development'],
         summary: 'Review efficiency',
         description:
-          'Returns closed pull requests as a percentage of opened pull requests (`efficiencyPercentage`) for the period against the comparison period before it, the opened and closed counts as their own summaries, and the pull requests opened and closed in each bucket. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and it exceeds 100 when more pull requests were closed than opened. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null. ' +
-          'Pull requests here cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without it the pipe is called with no platform filter and covers every platform the project has data for, as the Insights widget does. `granularity` has no default and must be sent. ' +
-          'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. ' +
+          'Returns the pull requests opened in the period that have since been closed, as a percentage of all pull requests opened in the period (`efficiencyPercentage`), against the comparison period before it; the opened and closed counts as their own summaries; and both counts per bucket. Closed means the pull request has a resolution time in the pipe, merged or closed, at any time up to now, so an older period has had longer to close its pull requests. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and because `closed` counts a subset of `opened` it runs from 0 to 100. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null. ' +
+          'Pull requests cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without `platform` the pipe applies no platform filter and counts pull requests from every platform the project has pull request data for. `granularity` has no default and must be sent. ' +
+          'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
           'An unknown project returns a null efficiency, zero counts and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
         params: ProjectSlugParams,
         querystring: Query,

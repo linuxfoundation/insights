@@ -347,7 +347,8 @@ describe('efficiency percentage (AC4)', () => {
     });
   });
 
-  it('exceeds 100 when more pull requests were closed than opened', async () => {
+  // The pipe counts closed as a subset of opened, so this only pins the arithmetic as unclamped.
+  it('passes the ratio through unclamped when a row reports more closed than opened', async () => {
     mockFetch.mockImplementation(
       routeTinybird({ current: [{ openedCount: 40, resolvedCount: 50 }] }),
     );
@@ -656,6 +657,23 @@ describe('Tinybird failures (AC8)', () => {
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
     expect(res.body).not.toContain('startDate');
+  });
+
+  // The pipe's counts are count() results, so a present count that is not a nonnegative safe
+  // integer, or an array in place of a row, is a malformed body.
+  it.each([
+    ['an array in place of a row', { current: [[]] }],
+    ['a string count', { current: [{ openedCount: '80', resolvedCount: 60 }] }],
+    ['a negative count', { previous: [{ openedCount: 50, resolvedCount: -1 }] }],
+    [
+      'a fractional count',
+      { series: [{ startDate: '2025-01-01', endDate: '2025-01-31', openedCount: 1.5 }] },
+    ],
+  ])('maps %s to 503 upstream_unavailable', async (_kind, rows) => {
+    mockFetch.mockImplementation(routeTinybird(rows as unknown as PipeRows));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
   });
 });
 
