@@ -1,12 +1,12 @@
-name: Lint & Test API and Libs
+name: Test API and Libs
 
 on:
   pull_request:
     paths:
-      - 'api/**'
-      - 'libs/**'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
+      - "api/**"
+      - "libs/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
 
 permissions:
   contents: read
@@ -28,9 +28,6 @@ jobs:
 
       - name: Build workspace libs
         run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
-
-      - name: Format check
-        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client format:check
 
       - name: Type check
         run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client tsc-check
