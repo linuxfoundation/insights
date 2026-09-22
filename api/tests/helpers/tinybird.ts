@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyInstance, LightMyRequestResponse } from 'fastify';
 import { afterAll, beforeAll, beforeEach, vi } from 'vitest';
+
 import { buildApp } from '../../src/app.js';
 import { getTinybirdClient } from '../../src/clients/tinybird.js';
 
