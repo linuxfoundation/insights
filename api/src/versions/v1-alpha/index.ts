@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import autoload from '@fastify/autoload';
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
+import activityTypeRoutes from './activity-types.js';
 import projectRoutes from './projects.js';
 
 // Owns everything under /v1-alpha; the spec route is mounted by the registry loop in app.ts.
@@ -16,6 +17,7 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   });
 
   await scope.register(projectRoutes);
+  await scope.register(activityTypeRoutes);
   for (const group of ['development', 'contributors']) {
     const dir = fileURLToPath(new URL(`./${group}`, import.meta.url));
     // @fastify/autoload throws ENOENT for a missing folder, so a lost development/ fails startup.
