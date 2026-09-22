@@ -2,20 +2,6 @@
 // SPDX-License-Identifier: MIT
 import { ofetch } from 'ofetch';
 
-interface KeywordData {
-    vol: number;
-    cpc: {
-        value: number;
-        currency: string;
-    };
-    competition: number;
-    trend: Array<{
-        month: string;
-        year: string;
-        value: number;
-    }>;
-}
-
 interface KeywordsEverywhereResponse {
     credits?: number;
     credits_consumed?: number;

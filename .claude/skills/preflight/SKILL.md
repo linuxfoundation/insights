@@ -66,7 +66,8 @@ git add -p
 ## Check 3: Linting
 
 ```bash
-cd frontend && pnpm lint
+# From repo root
+pnpm lint
 ```
 
 If there are lint errors, fix them. Common issues:
@@ -116,7 +117,7 @@ The authoritative list of protected files is maintained in `.claude/hooks/guard-
 git diff --name-only origin/main...HEAD
 
 # Extract the protected path patterns from the hook
-grep -E "^\s+(frontend/|\.husky/|eslint|\.prettier|CLAUDE|\.claude/|scripts/|COPYRIGHT|package\.json|pnpm-lock)" .claude/hooks/guard-protected-files.sh
+grep -E "^\s+(frontend/|\.husky/|\.oxlintrc|\.prettier|CLAUDE|\.claude/|scripts/|COPYRIGHT|package\.json|pnpm-lock)" .claude/hooks/guard-protected-files.sh
 ```
 
 For each changed file, check whether it matches any `case` pattern or glob (`[[ ... == glob ]]`) in the hook. If it does, flag it — those files should NOT be modified without code owner approval.

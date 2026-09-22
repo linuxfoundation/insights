@@ -32,9 +32,6 @@ jobs:
       - name: Format check
         run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client format:check
 
-      - name: Lint
-        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client lint
-
       - name: Type check
         run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client tsc-check
 

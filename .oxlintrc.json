@@ -1,0 +1,39 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "vue"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-debugger": "error",
+    "no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_", "destructuredArrayIgnorePattern": "^_" }
+    ],
+    "typescript/no-explicit-any": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["api/**", "libs/**"],
+      "rules": { "typescript/no-explicit-any": "error" }
+    },
+    {
+      "files": ["scripts/**", "workers/**"],
+      "rules": { "no-console": "off" }
+    }
+  ],
+  "ignorePatterns": [
+    "submodules/**",
+    ".claude/worktrees/**",
+    "**/dist/**",
+    "**/.nuxt/**",
+    "**/.output/**",
+    "**/storybook-static/**",
+    "**/.vitepress/**",
+    "frontend/docs/**",
+    "frontend/blog/**",
+    "frontend/public/**",
+    "frontend/.stress/**"
+  ]
+}

@@ -172,8 +172,8 @@ const isInWorkingHours = (value: number): boolean => value >= 8 && value <= 18;
  * @param yAxis - The y axis data
  * @returns The y axis mark line data
  */
-const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data'] => [
-  ...yAxis
+const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data'] =>
+  yAxis
     .map((item, idx) => [
       {
         name: '',
@@ -194,15 +194,14 @@ const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data
       // this is the hack to add the solid line on the non-working days section
       { yAxis: idx, x: '81%', lineStyle: { type: 'solid' as ZRLineType } },
     ])
-    .flat(),
-];
+    .flat();
 
 /**
  * Builds the x axis mark line data hack for non-working days
  * @returns The x axis mark line data
  */
-const buildXAxisMarkLineData = (xAxis: CategoryDataItem[]): YMarkLineOptionData['data'] => [
-  ...xAxis
+const buildXAxisMarkLineData = (xAxis: CategoryDataItem[]): YMarkLineOptionData['data'] =>
+  xAxis
     .map((item, idx) => {
       const yGridLines = [];
       if (idx < 5) {
@@ -230,8 +229,7 @@ const buildXAxisMarkLineData = (xAxis: CategoryDataItem[]): YMarkLineOptionData[
         ...yGridLines,
       ];
     })
-    .flat(),
-];
+    .flat();
 
 /**
  * Builds the mark line data

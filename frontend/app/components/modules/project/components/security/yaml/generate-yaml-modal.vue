@@ -222,7 +222,7 @@ const currentStep = computed<YamlGenerationStep | null>(() => {
 });
 
 watch(type, (newType: string) => {
-  form.value = { ...(yamlGenerationConfig[newType]?.template || {}) };
+  form.value = { ...yamlGenerationConfig[newType]?.template };
 });
 
 onMounted(() => {

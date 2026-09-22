@@ -33,8 +33,8 @@ export async function fetchOrganizationsLeaderboard(
 
   const path = '/v0/pipes/organizations_leaderboard.json';
   const [dataResponse, countResponse] = await Promise.all([
-    await fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(path, dataQuery),
-    await fetchFromTinybird<TinybirdCountData[]>(path, countQuery),
+    fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(path, dataQuery),
+    fetchFromTinybird<TinybirdCountData[]>(path, countQuery),
   ]);
 
   return {
