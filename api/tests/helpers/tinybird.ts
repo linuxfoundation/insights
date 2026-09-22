@@ -131,6 +131,22 @@ export interface OpenApiDoc {
   paths: Record<string, { get?: OpenApiOperation }>;
 }
 
+// Swagger may hoist a schema into components and leave a bare $ref behind; read through it.
+export const resolveSchema = (doc: OpenApiDoc, schema?: OpenApiSchema) =>
+  schema?.$ref ? doc.components?.schemas?.[schema.$ref.split('/').pop()!] : schema;
+
+// Paths of the properties, nested and array items included, that carry no description.
+export function undescribedFields(doc: OpenApiDoc, schema?: OpenApiSchema, path = ''): string[] {
+  return Object.entries(resolveSchema(doc, schema)?.properties ?? {}).flatMap(([key, child]) => {
+    const node = resolveSchema(doc, child);
+    return [
+      ...(child.description || node?.description ? [] : [`${path}${key}`]),
+      ...undescribedFields(doc, node, `${path}${key}.`),
+      ...undescribedFields(doc, node?.items, `${path}${key}[].`),
+    ];
+  });
+}
+
 // Swagger writes a query property's description on the parameter; older output kept it on the schema.
 export const parameterDescription = (param?: OpenApiParameter) =>
   param?.description ?? param?.schema.description;

@@ -10,12 +10,13 @@ import {
   parameterDescription,
   pipeCalls,
   queryString,
+  resolveSchema,
   tinybirdError,
   tinybirdResponse,
   tinybirdStub,
+  undescribedFields,
   useApp,
   type OpenApiDoc,
-  type OpenApiSchema,
 } from './helpers/tinybird.js';
 
 // Cases every Development route shares through fetchPipe, withBucket, the date schemas and the
@@ -282,24 +283,9 @@ describe.each(names)('%s', (name) => {
       for (const param of query ?? []) {
         expect(parameterDescription(param), `parameter ${param.name}`).toBeTruthy();
       }
-      const undescribed: string[] = [];
-      const resolve = (schema?: OpenApiSchema) =>
-        schema?.$ref ? spec.components?.schemas?.[schema.$ref.split('/').pop()!] : schema;
-      const walk = (schema: OpenApiSchema | undefined, path: string) => {
-        for (const [key, child] of Object.entries(resolve(schema)?.properties ?? {})) {
-          if (!child.description) undescribed.push(`${path}${key}`);
-          walk(child, `${path}${key}.`);
-          walk(child.items, `${path}${key}[].`);
-        }
-      };
-      walk(operationOf(name).responses['200']?.content['application/json']?.schema, '');
-      expect(
-        Object.keys(
-          resolve(operationOf(name).responses['200']?.content['application/json']?.schema)
-            ?.properties ?? {},
-        ).length,
-      ).toBeGreaterThan(0);
-      expect(undescribed).toEqual([]);
+      const schema = operationOf(name).responses['200']?.content['application/json']?.schema;
+      expect(Object.keys(resolveSchema(spec, schema)?.properties ?? {}).length).toBeGreaterThan(0);
+      expect(undescribedFields(spec, schema)).toEqual([]);
     });
 
     it('stays out of /v1', async () => {
@@ -308,5 +294,37 @@ describe.each(names)('%s', (name) => {
       const res = await get(url(name).replace('/v1-alpha/', '/v1/'));
       expect(res.statusCode).toBe(404);
     });
+  });
+});
+
+describe('undescribedFields', () => {
+  const doc: OpenApiDoc = {
+    paths: {},
+    components: {
+      schemas: {
+        Described: { type: 'object', description: 'Described in components.' },
+        Bare: { type: 'object' },
+        Buckets: {
+          type: 'array',
+          description: 'Buckets.',
+          items: { type: 'object', properties: { day: { type: 'string' } } },
+        },
+      },
+    },
+  };
+
+  it('reads a property description through a bare $ref', () => {
+    const schema = { properties: { summary: { $ref: '#/components/schemas/Described' } } };
+    expect(undescribedFields(doc, schema)).toEqual([]);
+  });
+
+  it('flags a $ref property whose target has no description', () => {
+    const schema = { properties: { summary: { $ref: '#/components/schemas/Bare' } } };
+    expect(undescribedFields(doc, schema)).toEqual(['summary']);
+  });
+
+  it('walks the items of an array behind a $ref', () => {
+    const schema = { properties: { data: { $ref: '#/components/schemas/Buckets' } } };
+    expect(undescribedFields(doc, schema)).toEqual(['data[].day']);
   });
 });
