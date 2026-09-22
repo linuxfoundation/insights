@@ -158,8 +158,6 @@ const patchsetsPerReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         ]);
       });
 
-      // An unknown project reads as three empty results, the same body a project without Gerrit
-      // changesets in either period gets.
       const [currentRows, previousRows, seriesRows] = rows ?? [[], [], []];
       return {
         summary: toNullableSummary(
