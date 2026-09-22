@@ -23,17 +23,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import type { ECElementEvent } from 'echarts';
 import { useRouter } from 'nuxt/app';
-import type { OSIGroup } from '../services/osi.template.service';
-import type { SortType } from '../services/osi.api.service';
-import LfxOSITooltip from './osi-tooltip.vue';
+import { ref, computed } from 'vue';
+
+import { formatNumberCurrency } from '~/components/shared/utils/formatter';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getTreeMapConfig } from '~/components/uikit/chart/configs/tree-map.chart';
-import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
-import { formatNumberCurrency } from '~/components/shared/utils/formatter';
+import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
+
+import type { SortType } from '../services/osi.api.service';
+import type { OSIGroup } from '../services/osi.template.service';
+import LfxOSITooltip from './osi-tooltip.vue';
 
 const router = useRouter();
 

@@ -181,6 +181,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import badgeConfigs, { getBadgeTierFromPercentile } from '~/components/modules/badges/config/badge.config';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import type { Pagination } from '~~/types/shared/pagination';

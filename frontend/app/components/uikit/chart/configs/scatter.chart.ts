@@ -6,6 +6,10 @@ import type {
   ScatterSeriesOption,
 } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
+
+import { lfxColors } from '~/config/styles/colors';
+
+import { convertToScatterData } from '../helpers/chart-helpers';
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
   CategoryData,
@@ -14,9 +18,7 @@ import type {
   ChartSeries,
   SeriesTypes,
 } from '../types/ChartTypes';
-import { convertToScatterData } from '../helpers/chart-helpers';
 import defaultOption, { categoryData } from './defaults.chart';
-import { lfxColors } from '~/config/styles/colors';
 
 /**
  * These are type declarations that were not exported from echarts

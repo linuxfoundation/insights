@@ -29,8 +29,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { Collection } from '~~/types/collection';
+
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import type { Collection } from '~~/types/collection';
 // @ts-expect-error Vite asset import with ?url suffix
 import lfIconUrl from '~/assets/images/icon.svg?url';
 

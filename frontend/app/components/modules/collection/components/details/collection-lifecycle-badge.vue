@@ -42,9 +42,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
+
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 import type { TagStyle } from '~/components/uikit/tag/types/tag.types';
 import { getLifecycleDescription } from '~~/config/health-breakdown-templates';
 

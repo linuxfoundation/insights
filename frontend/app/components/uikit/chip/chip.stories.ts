@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import LfxIcon from '../icon/icon.vue';
 import LfxAvatar from '../avatar/avatar.vue';
+import LfxIcon from '../icon/icon.vue';
 import LfxChip from './chip.vue';
 import { chipSizes, chipTypes } from './types/chip.types';
 

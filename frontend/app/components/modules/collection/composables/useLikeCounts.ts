@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { computed, watch, type ComputedRef } from 'vue';
+
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 

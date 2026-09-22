@@ -42,9 +42,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxSearchModal from '~/components/shared/layout/search/search-modal.vue';
+
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
+import LfxSearchModal from '~/components/shared/layout/search/search-modal.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const isModalOpen = ref(false);
 </script>

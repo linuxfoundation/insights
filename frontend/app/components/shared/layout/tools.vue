@@ -72,11 +72,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
-import { lfxTools } from '~/config/menu/tools';
 import { lfxMenu } from '~/config/menu';
+import { lfxTools } from '~/config/menu/tools';
 
 const isOpen = ref(false);
 </script>

@@ -221,21 +221,23 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { getLayerHexColor } from '../config/layer-colors';
-import MetricPickerPanel from './metric-picker-panel.vue';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { lfxColors } from '~/config/styles/colors';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { lfxColors } from '~/config/styles/colors';
 import type {
   AgenticEnrichedProject,
   MetricKey,
   MetricOption,
   MetricGroup,
 } from '~~/types/report/agentic-ai-momentum.types';
+
+import { getLayerHexColor } from '../config/layer-colors';
+import MetricPickerPanel from './metric-picker-panel.vue';
 
 const props = defineProps<{
   tbProjects: AgenticEnrichedProject[];

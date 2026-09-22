@@ -78,13 +78,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 // import LfxInput from "~/components/uikit/input/input.vue";
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import type { ShareData } from '~/components/shared/modules/share/types/share.types';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   defaults: ShareData;

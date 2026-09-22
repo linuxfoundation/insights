@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Collection } from '~~/types/collection';
+
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 import { useAuth } from '~~/composables/useAuth';
+import type { Collection } from '~~/types/collection';
 
 export interface DuplicateCollectionData {
   collection: Collection;

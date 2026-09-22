@@ -53,21 +53,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
+import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import type { OrgActivityTimeseries } from '~~/types/organization-page';
+import { computed } from 'vue';
+
+import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
+import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
+import type { OrgActivityTimeseries } from '~~/types/organization-page';
 
 const route = useRoute();
 const orgSlug = route.params.orgSlug as string;

@@ -75,12 +75,13 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+
+import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import { lfxTools } from '~/config/menu/tools';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
 import { lfxMenu } from '~/config/menu';
+import { lfxTools } from '~/config/menu/tools';
 
 const route = useRoute();
 

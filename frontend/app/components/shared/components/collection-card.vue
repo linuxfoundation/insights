@@ -202,31 +202,32 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import pluralize from 'pluralize';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import type { Collection, CollectionType } from '~~/types/collection';
-import { formatDate } from '~/components/shared/utils/formatter';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import LfxCard from '~/components/uikit/card/card.vue';
-import type { CollectionFeaturedProject } from '~~/types/collection';
+import { computed } from 'vue';
+
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
-import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
-import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatDate } from '~/components/shared/utils/formatter';
+import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import type { Collection, CollectionType } from '~~/types/collection';
+import type { CollectionFeaturedProject } from '~~/types/collection';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();

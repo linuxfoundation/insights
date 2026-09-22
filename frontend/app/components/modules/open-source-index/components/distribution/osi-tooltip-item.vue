@@ -37,8 +37,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { OSIItem } from '../services/osi.template.service';
 import { formatNumber } from '~/components/shared/utils/formatter';
+
+import type { OSIItem } from '../services/osi.template.service';
 
 defineProps<{
   item: OSIItem;

@@ -27,8 +27,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCreateCollectionButton from '~/components/modules/collection/components/create-modal/create-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const emit = defineEmits<{
   created: [];

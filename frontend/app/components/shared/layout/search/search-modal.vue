@@ -57,8 +57,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
 import { debounce } from 'lodash-es';
+import { computed, onMounted, ref } from 'vue';
+
+import LfxSearchResult from '~/components/shared/layout/search/search-result.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type {
   SearchCollection,
   SearchOrganization,
@@ -66,10 +71,6 @@ import type {
   SearchRepository,
   SearchResults,
 } from '~~/types/search';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxSearchResult from '~/components/shared/layout/search/search-result.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();

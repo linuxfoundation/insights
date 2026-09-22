@@ -66,13 +66,15 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
-import { fetchHealthScoreCoverageGithubSecurityQuery } from '../services/github-security.query';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageGithubSecurityStageCount } from '~~/types/report/health-score-coverage-github-security.types';
+
+import { fetchHealthScoreCoverageGithubSecurityQuery } from '../services/github-security.query';
 
 const { data, isLoading, suspense } = fetchHealthScoreCoverageGithubSecurityQuery();
 

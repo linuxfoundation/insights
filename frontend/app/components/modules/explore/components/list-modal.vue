@@ -35,10 +35,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+
 import LfxExploreTableHeader from '~/components/modules/explore/components/table-header.vue';
 import type { ExploreTab } from '~/components/modules/explore/types/explore.types';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 
 const props = defineProps<{
   modelValue: boolean;

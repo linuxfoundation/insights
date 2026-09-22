@@ -64,16 +64,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
+import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import type { OrganizationKpis } from '~~/types/organization-page';
-import { TanstackKey } from '~/components/shared/types/tanstack';
+import { computed } from 'vue';
+
 import { ORGANIZATION_PAGE_API_SERVICE } from '~/components/modules/organization/services/organization-page.api.service';
 import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { OrganizationKpis } from '~~/types/organization-page';
 
 const route = useRoute();
 const orgSlug = route.params.orgSlug as string;

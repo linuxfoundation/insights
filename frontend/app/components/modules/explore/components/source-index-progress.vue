@@ -44,10 +44,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { OSSIndexCategoryGroup } from '~~/types/ossindex/category-group';
+
 import type { SortType, OSIType } from '~/components/modules/open-source-index/services/osi.api.service';
-import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
+import type { OSSIndexCategoryGroup } from '~~/types/ossindex/category-group';
 
 const props = defineProps<{
   data: OSSIndexCategoryGroup[] | undefined;

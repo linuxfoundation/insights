@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+
 import { useAuth } from '~~/composables/useAuth';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';

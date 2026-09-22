@@ -82,17 +82,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { collectionTabs } from '~/components/modules/collection/config/collection-type-config';
+import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
+import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { collectionTabs } from '~/components/modules/collection/config/collection-type-config';
 import type { CollectionType } from '~~/types/collection';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
-import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);

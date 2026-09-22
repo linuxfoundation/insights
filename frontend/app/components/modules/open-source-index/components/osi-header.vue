@@ -151,18 +151,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { useRoute, useRouter } from 'nuxt/app';
-import type { SortType } from '../services/osi.api.service';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { computed, watch } from 'vue';
+
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+
+import type { SortType } from '../services/osi.api.service';
 
 const props = defineProps<{
   type?: string;

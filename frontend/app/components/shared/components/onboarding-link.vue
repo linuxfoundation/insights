@@ -35,8 +35,8 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   showMessage?: boolean;

@@ -35,9 +35,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { AvatarSize } from '../avatar/types/Avatar.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+
+import type { AvatarSize } from '../avatar/types/Avatar.types';
 
 const props = withDefaults(
   defineProps<{

@@ -36,9 +36,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import LfxButton from '~/components/uikit/button/button.vue';
+
 import LfxExploreListModal from '~/components/modules/explore/components/list-modal.vue';
 import type { ExploreTab } from '~/components/modules/explore/types/explore.types';
+import LfxButton from '~/components/uikit/button/button.vue';
 
 const props = defineProps<{
   value: ExploreTab;

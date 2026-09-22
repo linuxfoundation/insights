@@ -54,10 +54,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { ToastOptions, ToastTheme } from './types/toast.types';
-import { ToastTypesEnum } from './types/toast.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import { useSanitize } from '~~/composables/useSanitize';
+
+import type { ToastOptions, ToastTheme } from './types/toast.types';
+import { ToastTypesEnum } from './types/toast.types';
 
 const props = withDefaults(
   defineProps<{

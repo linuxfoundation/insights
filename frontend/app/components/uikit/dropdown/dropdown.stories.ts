@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Placement } from '@popperjs/core';
+
 import LfxButton from '../button/button.vue';
-import LfxDropdown from './dropdown.vue';
 import LfxDropdownItem from './dropdown-item.vue';
 import LfxDropdownSeparator from './dropdown-separator.vue';
+import LfxDropdown from './dropdown.vue';
 
 export default {
   title: 'LinuxFoundation/Dropdown',

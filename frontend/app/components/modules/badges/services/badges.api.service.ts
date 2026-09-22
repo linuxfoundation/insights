@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: MIT
 import { useQuery } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
-import { BadgeTier, type ProjectBadge } from '../types/badge.types';
-import { getBadgeTierFromPercentile } from '../config/tiers.config';
-import badgeConfigs from '../config/badge.config';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import type { Pagination } from '~~/types/shared/pagination';
+
+import badgeConfigs from '../config/badge.config';
+import { getBadgeTierFromPercentile } from '../config/tiers.config';
+import { BadgeTier, type ProjectBadge } from '../types/badge.types';
 
 class BadgesApiService {
   fetchProjectBadges(projectSlug: ComputedRef<string | undefined>) {

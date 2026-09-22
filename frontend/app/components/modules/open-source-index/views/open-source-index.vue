@@ -36,13 +36,15 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import LfxOSIHeader from '../components/osi-header.vue';
-import { type OSIType, OSS_INDEX_API_SERVICE, type SortType } from '../services/osi.api.service';
-import LfxOsiDistribution from '~/components/modules/open-source-index/components/osi-distribution.vue';
-import LfxOsiListProjects from '~/components/modules/open-source-index/components/list/osi-list-projects.vue';
+
 import LfxOsiListCollections from '~/components/modules/open-source-index/components/list/osi-list-collections.vue';
 import LfxOsiListGroups from '~/components/modules/open-source-index/components/list/osi-list-groups.vue';
+import LfxOsiListProjects from '~/components/modules/open-source-index/components/list/osi-list-projects.vue';
+import LfxOsiDistribution from '~/components/modules/open-source-index/components/osi-distribution.vue';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
+
+import LfxOSIHeader from '../components/osi-header.vue';
+import { type OSIType, OSS_INDEX_API_SERVICE, type SortType } from '../services/osi.api.service';
 
 const route = useRoute();
 

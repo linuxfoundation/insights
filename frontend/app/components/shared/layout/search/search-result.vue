@@ -215,13 +215,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import type { SearchCollection, SearchOrganization, SearchProject, SearchRepository } from '~~/types/search';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
-import { normalizeRepoName } from '~/components/shared/utils/helper';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import type { SearchCollection, SearchOrganization, SearchProject, SearchRepository } from '~~/types/search';
 
 const props = defineProps<{
   projects: SearchProject[];

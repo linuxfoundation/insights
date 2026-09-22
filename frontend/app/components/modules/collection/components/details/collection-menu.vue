@@ -63,15 +63,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
+import { computed } from 'vue';
+
+import { lfCollectionAggregateLinks } from '~/components/modules/collection/config/collection-links';
+import LfxProjectDateRangePicker from '~/components/modules/project/components/shared/header/date-range-picker.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxProjectDateRangePicker from '~/components/modules/project/components/shared/header/date-range-picker.vue';
-import { lfCollectionAggregateLinks } from '~/components/modules/collection/config/collection-links';
 
 const props = defineProps<{
   slug: string;
