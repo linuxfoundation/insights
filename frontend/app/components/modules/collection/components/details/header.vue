@@ -386,37 +386,39 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useRoute, useRouter } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
-import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
-import LfxCollectionMetricsRow from './collection-metrics-row.vue';
-import type { Collection, CollectionMetrics } from '~~/types/collection';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import CollectionOwner from '~/components/shared/components/collection-owner.vue';
-import { formatDate, formatNumberShort } from '~/components/shared/utils/formatter';
-import LfxToggle from '~/components/uikit/toggle/toggle.vue';
+import { useRoute, useRouter } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
+import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import type { CollectionType } from '~~/types/collection';
-import LikeButton from '~/components/shared/components/like-button.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
-import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { formatDate, formatNumberShort } from '~/components/shared/utils/formatter';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxToggle from '~/components/uikit/toggle/toggle.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { Collection, CollectionMetrics } from '~~/types/collection';
+import type { CollectionType } from '~~/types/collection';
+
+import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
+import LfxCollectionMetricsRow from './collection-metrics-row.vue';
 
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();

@@ -36,8 +36,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import LfxShareBadgeItem from '~/components/shared/modules/share/components/share-badge-item.vue';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxShareBadgeItem from '~/components/shared/modules/share/components/share-badge-item.vue';
 
 const emit = defineEmits<{ (e: 'copied'): void }>();
 

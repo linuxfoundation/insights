@@ -66,18 +66,20 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref } from 'vue';
-import { fetchHealthScoreCoverageLifecycleQuery } from '../services/lifecycle-distribution.query';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getDonutChartConfig, type DonutChartData } from '~/components/uikit/chart/configs/pie.chart';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { getDonutChartConfig, type DonutChartData } from '~/components/uikit/chart/configs/pie.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
   HealthScoreCoverageLifecycleCount,
   HealthScoreCoverageScope,
 } from '~~/types/report/health-score-coverage-lifecycle.types';
+
+import { fetchHealthScoreCoverageLifecycleQuery } from '../services/lifecycle-distribution.query';
 
 const SCOPE_TABS = [
   { value: 'all', label: 'All projects' },

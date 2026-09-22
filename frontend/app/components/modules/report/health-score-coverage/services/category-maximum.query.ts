@@ -12,6 +12,7 @@
 
 import type { QueryFunction } from '@tanstack/vue-query';
 import { useQuery } from '@tanstack/vue-query';
+
 import type { HealthScoreCoverageCategoryMaximumData } from '~~/types/report/health-score-coverage-category-maximum.types';
 
 const STALE_TIME = 1000 * 60 * 60; // 1 hour

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+
 import type { ShareData } from '~/components/shared/modules/share/types/share.types';
 import useResponsive from '~/components/shared/utils/responsive';
 

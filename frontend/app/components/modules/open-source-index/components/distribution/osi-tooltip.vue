@@ -58,11 +58,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { OSIGroup } from '../services/osi.template.service';
-import type { SortType } from '../services/osi.api.service';
-import LfxOSITooltipItem from './osi-tooltip-item.vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import type { SortType } from '../services/osi.api.service';
+import type { OSIGroup } from '../services/osi.template.service';
+import LfxOSITooltipItem from './osi-tooltip-item.vue';
 
 const props = defineProps<{
   group: OSIGroup | undefined;

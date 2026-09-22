@@ -24,9 +24,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import leaderboardConfigs from '../../config/index.config';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import leaderboardConfigs from '../../config/index.config';
 
 const props = defineProps<{
   leaderboardKey: string;

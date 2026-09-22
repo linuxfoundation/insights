@@ -43,10 +43,11 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
+
 import type { ConfirmOptions } from '~/components/shared/modules/confirm/store/confirm.store';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 
 const props = defineProps<{
   modelValue: boolean;

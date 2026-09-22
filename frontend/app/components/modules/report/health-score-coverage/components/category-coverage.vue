@@ -70,14 +70,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
-import { fetchHealthScoreCoverageCategoryCoverageQuery } from '../services/category-coverage.query';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageCategoryCount } from '~~/types/report/health-score-coverage-category-coverage.types';
+
+import { fetchHealthScoreCoverageCategoryCoverageQuery } from '../services/category-coverage.query';
 
 // Display labels per the design copy, keyed by the pipe-derived `categoryKey`. Duplicated here
 // rather than imported from config/signals.ts because that shared file is created by IN-1285 and

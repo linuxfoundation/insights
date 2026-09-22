@@ -80,9 +80,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { getHealthScoreDescription } from '~~/config/health-breakdown-templates';
 import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';

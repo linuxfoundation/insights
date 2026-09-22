@@ -210,23 +210,24 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import type { ProjectInsights } from '~~/types/project';
-import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
-import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { LfxRoutes } from '~/components/shared/types/routes';
+
 import LfxCollectionHealthScorePill from '~/components/modules/collection/components/details/collection-health-score-pill.vue';
 import LfxCollectionLifecycleBadge from '~/components/modules/collection/components/details/collection-lifecycle-badge.vue';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { ProjectInsights } from '~~/types/project';
 // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 // import LfxCollectionImpactScorePill from '~/components/modules/collection/components/details/collection-impact-score-pill.vue';
+import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
 import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
 import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';
-import LfxBadgeDetails from '~/components/modules/collection/components/details/badge-details.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 
 const props = withDefaults(
   defineProps<{

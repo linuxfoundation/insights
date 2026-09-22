@@ -1,20 +1,20 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { LeaderboardConfig } from './types/leaderboard.types';
 import { mostActiveContributorsConfig } from './most-active-contributors.config';
 import { mostActiveOrganizationsConfig } from './most-active-organizations.config';
+import type { LeaderboardConfig } from './types/leaderboard.types';
 // import { longestRunningConfig } from './longest-running.config';
+import { codebaseSizeConfig } from './codebase-size.config';
 import { commitActivityConfig } from './commit-activity.config';
-import { starsConfig } from './stars.config';
+import { fastestMergersConfig } from './fastest-mergers.config';
+import { fastestRespondersConfig } from './fastest-responders.config';
+import { focusedTeamsConfig } from './focused-teams.config';
 import { forksConfig } from './forks.config';
 import { packageDownloadsConfig } from './package-downloads.config';
-import { focusedTeamsConfig } from './focused-teams.config';
-import { smallTeamsMassiveOutputConfig } from './small-teams-massive-output.config';
-import { codebaseSizeConfig } from './codebase-size.config';
-import { fastestRespondersConfig } from './fastest-responders.config';
-import { fastestMergersConfig } from './fastest-mergers.config';
 import { resolutionRateConfig } from './resolution-rate.config';
+import { smallTeamsMassiveOutputConfig } from './small-teams-massive-output.config';
+import { starsConfig } from './stars.config';
 import { top100ContributorsConfig } from './top-100-contributors.config';
 import { top100OrganizationsConfig } from './top-100-organizations.config';
 

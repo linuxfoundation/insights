@@ -16,15 +16,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { merge } from 'lodash-es';
-import { getAiToolColor } from '../config/ai-tools-colors';
-import type { AiToolTimeSeriesDataPoint, PeriodTotalCommits } from '~~/types/report/ai-code-tracker.types';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import type { AiToolTimeSeriesDataPoint, PeriodTotalCommits } from '~~/types/report/ai-code-tracker.types';
+
+import { getAiToolColor } from '../config/ai-tools-colors';
 
 const props = defineProps<{
   data: AiToolTimeSeriesDataPoint[];

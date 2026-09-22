@@ -30,8 +30,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 withDefaults(
   defineProps<{

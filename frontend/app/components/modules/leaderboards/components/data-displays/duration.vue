@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import { formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 

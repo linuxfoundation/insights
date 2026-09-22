@@ -41,9 +41,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import pluralize from 'pluralize';
-import type { ProjectInsights } from '~~/types/project';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
+import type { ProjectInsights } from '~~/types/project';
 
 const props = defineProps<{
   project: ProjectInsights;

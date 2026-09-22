@@ -58,10 +58,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { BADGES_API_SERVICE } from '../services/badges.api.service';
 import LfxBadgesItem from './badges-item.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
 
 const route = useRoute();
 

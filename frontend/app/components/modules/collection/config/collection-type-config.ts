@@ -3,8 +3,8 @@
 
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { MenuItem } from '~/config/menu';
-import type { CollectionType } from '~~/types/collection';
 import type { User } from '~~/types/auth/auth-user.types';
+import type { CollectionType } from '~~/types/collection';
 
 export enum CollectionTypeEnum {
   CURATED = 'curated',

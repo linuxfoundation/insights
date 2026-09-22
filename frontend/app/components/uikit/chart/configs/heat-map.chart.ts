@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: MIT
 import type { HeatmapSeriesOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
+
+import { lfxColors } from '~/config/styles/colors';
+
+import { convertToHeatMapData } from '../helpers/chart-helpers';
 import { punchCardFormatter } from '../helpers/formatters';
 import type { CategoryData, ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
-import { convertToHeatMapData } from '../helpers/chart-helpers';
 import defaultOption from './defaults.chart';
-import { lfxColors } from '~/config/styles/colors';
 
 type pieceRange = {
   min: number;

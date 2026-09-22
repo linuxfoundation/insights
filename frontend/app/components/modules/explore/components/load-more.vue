@@ -24,8 +24,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+
 import { isElementVisible } from '~/components/shared/utils/helper';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 

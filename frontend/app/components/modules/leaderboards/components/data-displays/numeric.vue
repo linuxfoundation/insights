@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';

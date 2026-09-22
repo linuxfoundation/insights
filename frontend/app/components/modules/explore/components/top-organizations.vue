@@ -45,11 +45,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, resolveComponent, onServerPrefetch } from 'vue';
+
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 
 const props = defineProps<{
   isFullList?: boolean;

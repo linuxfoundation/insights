@@ -28,10 +28,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import leaderboardConfigs from '../../config/index.config';
-import LfxLeaderboardCard from '../sections/leaderboard-card.vue';
-import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
+
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+
+import leaderboardConfigs from '../../config/index.config';
+import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
+import LfxLeaderboardCard from '../sections/leaderboard-card.vue';
 
 const { data, isPending } = LEADERBOARD_API_SERVICE.fetchLeaderboardLanding();
 

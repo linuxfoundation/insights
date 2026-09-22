@@ -43,11 +43,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { SideNavItem } from './types/side-nav.types';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useQueryParam } from '~/components/shared/utils/query-param';
+
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import type { SideNavItem } from './types/side-nav.types';
 
 const props = defineProps<{
   list: SideNavItem[];

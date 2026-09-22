@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import type { Placement } from '@popperjs/core';
+
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 
 const props = withDefaults(

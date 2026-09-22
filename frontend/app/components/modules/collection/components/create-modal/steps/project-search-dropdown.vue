@@ -71,15 +71,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
 import { debounce } from 'lodash-es';
-import LfCollectionSearchResults from './collection-search-results.vue';
-import type { SearchProject, SearchRepository } from '~~/types/search';
+import { ref, onMounted, onUnmounted } from 'vue';
+
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import type { SearchProject, SearchRepository } from '~~/types/search';
+
+import LfCollectionSearchResults from './collection-search-results.vue';
 
 defineProps<{
   selectedProjectsSlugs: string[];

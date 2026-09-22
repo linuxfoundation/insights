@@ -33,11 +33,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
 
 const router = useRouter();
 

@@ -35,6 +35,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { debounce } from 'lodash-es';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{

@@ -20,10 +20,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
+import useResponsive from '~/components/shared/utils/responsive';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import useResponsive from '~/components/shared/utils/responsive';
 
 const props = defineProps<{
   url?: string;

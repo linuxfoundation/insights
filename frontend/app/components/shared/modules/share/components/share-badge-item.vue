@@ -26,15 +26,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { getBadgeUrl } from '~~/config/trust-score';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import useToastService from '~/components/uikit/toast/toast.service';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { getBadgeUrl } from '~~/config/trust-score';
 
 const props = defineProps<{
   type: string;

@@ -38,11 +38,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
+import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useOrganizationPageStore } from '~/components/modules/organization/store/organization-page.store';
 
 const { organization } = storeToRefs(useOrganizationPageStore());
 const orgDisplayName = computed(() => organization.value?.displayName || 'your organization');

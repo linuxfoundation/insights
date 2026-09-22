@@ -30,10 +30,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxOSIChart from '../components/distribution/osi-chart.vue';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxIcon from '~~/app/components/uikit/icon/icon.vue';
+
+import LfxOSIChart from '../components/distribution/osi-chart.vue';
 
 const props = defineProps<{
   type?: string;

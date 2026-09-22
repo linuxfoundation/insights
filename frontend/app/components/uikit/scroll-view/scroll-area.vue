@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
+
 import useScroll from '~/components/shared/utils/scroll';
 
 const { scrollTop } = useScroll();

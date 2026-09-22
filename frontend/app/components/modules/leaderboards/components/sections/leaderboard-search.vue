@@ -98,16 +98,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
 import pluralize from 'pluralize';
-import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
-import LfxLeaderboardSearchResults from './leaderboard-search-results.vue';
+import { computed, onMounted, ref, watch } from 'vue';
+
+import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+
+import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
+import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
+import LfxLeaderboardSearchResults from './leaderboard-search-results.vue';
 
 const props = defineProps<{
   config: LeaderboardConfig;

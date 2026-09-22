@@ -1,17 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { merge } from 'lodash-es';
 import type { EChartsOption as ECOption } from 'echarts';
 import type {
   TooltipOption,
   TooltipFormatterCallback as TFCallback,
   TopLevelFormatterParams as TLPParams,
 } from 'echarts/types/dist/shared';
-import type { TreeMapData } from '../types/ChartTypes';
-import { lfxColors } from '~/config/styles/colors';
+import { merge } from 'lodash-es';
+
 import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
 import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
+import { lfxColors } from '~/config/styles/colors';
+
+import type { TreeMapData } from '../types/ChartTypes';
 
 const visualMin = 1;
 const visualMax = 5;

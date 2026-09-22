@@ -20,11 +20,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted } from 'vue';
 import { registerMap } from 'echarts';
 import * as echarts from 'echarts';
-import world from './configs/world.json';
+import { onBeforeMount, onMounted } from 'vue';
+
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
+
+import world from './configs/world.json';
 
 const props = withDefaults(
   defineProps<{

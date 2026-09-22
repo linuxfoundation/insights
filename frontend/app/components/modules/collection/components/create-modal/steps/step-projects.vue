@@ -42,18 +42,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { minLength } from '@vuelidate/validators';
-import LfProjectSearchDropdown from './project-search-dropdown.vue';
-import LfSelectedProjectsList from './selected-projects-list.vue';
-import type { SearchProject, SearchRepository } from '~~/types/search';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed } from 'vue';
+
 import type {
   CreateCollectionForm,
   CollectionProject,
   CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { SearchProject, SearchRepository } from '~~/types/search';
+
+import LfProjectSearchDropdown from './project-search-dropdown.vue';
+import LfSelectedProjectsList from './selected-projects-list.vue';
 
 const props = defineProps<{
   modelValue: CreateCollectionForm;

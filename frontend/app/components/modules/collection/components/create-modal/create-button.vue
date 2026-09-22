@@ -27,15 +27,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfCreateCollectionModal from './create-collection-modal.vue';
-import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
+import { ref } from 'vue';
+
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import LfxButton from '~/components/uikit/button/button.vue';
+import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import LfCreateCollectionModal from './create-collection-modal.vue';
 
 withDefaults(
   defineProps<{

@@ -86,13 +86,15 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
-import { fetchHealthScoreCoverageSignalAvailabilityLfQuery } from '../services/signal-availability-lf.query';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageSignalAvailabilityLfSignal } from '~~/types/report/health-score-coverage-signal-availability-lf.types';
+
+import { fetchHealthScoreCoverageSignalAvailabilityLfQuery } from '../services/signal-availability-lf.query';
 
 // Display names per the design copy, keyed by the pipe's `signal_key`. Duplicated from IN-1290's
 // signal-availability.vue rather than imported - that component isn't merged into this release

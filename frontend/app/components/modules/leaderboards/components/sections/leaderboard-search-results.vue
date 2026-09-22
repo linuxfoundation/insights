@@ -51,11 +51,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import pluralize from 'pluralize';
+
+import type { LeaderboardConfig } from '~/components/modules/leaderboards/config/types/leaderboard.types';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import type { LeaderboardConfig } from '~/components/modules/leaderboards/config/types/leaderboard.types';
 
 defineProps<{
   items: Leaderboard[];

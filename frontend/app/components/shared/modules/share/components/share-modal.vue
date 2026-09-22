@@ -59,13 +59,14 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import type { ShareData } from '~/components/shared/modules/share/types/share.types';
+
 import LfxShareActions from '~/components/shared/modules/share/components/share-actions.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxShareBadge from '~/components/shared/modules/share/components/share-badge.vue';
+import type { ShareData } from '~/components/shared/modules/share/types/share.types';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
 const props = defineProps<{
   modelValue: boolean;
