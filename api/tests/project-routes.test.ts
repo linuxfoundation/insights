@@ -272,6 +272,8 @@ describe.each(names)('%s', (name) => {
       ['a timestamp in startDate', { startDate: '2025-01-01T00:00:00Z' }],
       ['an endDate that is not a date', { endDate: 'yesterday' }],
       ['an inverted range', { startDate: '2025-03-31', endDate: '2025-01-01' }],
+      ['a startDate before 2010-01-01', { startDate: '2009-12-31' }],
+      ['an endDate after today', { endDate: '2999-01-01' }],
     ]),
     ...casesIf(declares(name, 'granularity'), [
       ['a missing granularity', { granularity: undefined }],

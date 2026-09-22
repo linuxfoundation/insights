@@ -17,7 +17,8 @@ export class InvalidDateRangeError extends Error {
   }
 }
 
-// Same default as earliestPossibleStartDate in frontend/server/data/util.ts.
+// earliestPossibleStartDate in frontend/server/data/util.ts; the Insights date picker stops at today.
+// Bounding every range this way also keeps its previous period in positive years.
 const earliestStartDate = '2010-01-01';
 const dayMs = 86_400_000;
 
@@ -67,7 +68,14 @@ export function getPreviousDates(
   endDate?: string,
   now = new Date(),
 ): { current: DateRange; previous: DateRange } {
-  const current = { startDate, endDate: endDate ?? formatDay(now) };
+  const today = formatDay(now);
+  const current = { startDate, endDate: endDate ?? today };
+  if (current.startDate < earliestStartDate) {
+    throw new InvalidDateRangeError(`startDate must be on or after ${earliestStartDate}`);
+  }
+  if (current.endDate > today) {
+    throw new InvalidDateRangeError(`endDate must be on or before today (${today})`);
+  }
   const start = parseDay(current.startDate);
   const end = parseDay(current.endDate);
   if (start > end) {
@@ -85,10 +93,6 @@ export function getPreviousDates(
 
   const previousEnd = addDays(start, -1);
   const previousStart = addDays(addMonthsClamped(previousEnd, -months), -days);
-  // toISOString writes years below 0 as a signed six-digit year, which is not a YYYY-MM-DD day.
-  if (previousStart.getUTCFullYear() < 0) {
-    throw new InvalidDateRangeError('startDate is too early to compute a previous period');
-  }
   return {
     current,
     previous: { startDate: formatDay(previousStart), endDate: formatDay(previousEnd) },
