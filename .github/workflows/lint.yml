@@ -1,0 +1,25 @@
+name: Lint & Format
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.2
+
+      - name: Install root dependencies
+        run: pnpm install --filter '{.}' --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint

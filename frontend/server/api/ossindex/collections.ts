@@ -78,7 +78,7 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
     }));
 
     return {
-      ...(details || {}),
+      ...details,
       collections,
       page,
       pageSize,

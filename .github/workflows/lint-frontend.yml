@@ -1,4 +1,4 @@
-name: Lint & Format & Typescript Check
+name: Format & Typescript Check
 
 on:
   pull_request:
@@ -26,6 +26,6 @@ jobs:
       - name: Build workspace libs
         run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
 
-      - name: Lint code
-        run: pnpm format:check && pnpm lint && pnpm tsc-check
+      - name: Format & type check
+        run: pnpm format:check && pnpm tsc-check
         working-directory: frontend

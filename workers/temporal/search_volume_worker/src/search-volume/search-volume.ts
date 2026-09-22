@@ -144,7 +144,7 @@ async function getSearchVolumeFromKE(keywords: string[], keywordToProjectMap: { 
           const monthB = new Date(`${b.month} 1, 2000`).getMonth();
           return monthA - monthB;
         });
-      } catch (error) {
+      } catch {
         console.log(`Warning: Could not sort trend data for keyword '${keyword}'. Proceeding with original order.`);
       }
 

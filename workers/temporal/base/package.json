@@ -2,7 +2,6 @@
   "name": "@insights/temporal-worker",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "npx eslint --ext .ts src --max-warnings=0",
     "format": "npx prettier --write \"src/**/*.ts\"",
     "format-check": "npx prettier --check .",
     "tsc-check": "tsc --noEmit"

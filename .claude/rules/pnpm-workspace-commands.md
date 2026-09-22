@@ -16,10 +16,10 @@ This is a pnpm monorepo. All package management and script execution must follow
    ```sh
    cd frontend && pnpm dev
    cd frontend && pnpm build
-   cd frontend && pnpm lint
    cd frontend && pnpm test
    cd frontend && pnpm tsc-check
    ```
+   Lint runs from the repo root instead: `pnpm lint` (oxlint covers every package)
 
 4. **Never use `npm run *`** — `.claude/settings.json` only allows `Bash(pnpm *)` and git commands, and pnpm is the required tool for this repo
 
@@ -30,8 +30,8 @@ This is a pnpm monorepo. All package management and script execution must follow
 | Dev server | `pnpm dev` |
 | Production build | `pnpm build` |
 | Type check | `pnpm tsc-check` |
-| Lint | `pnpm lint` |
-| Lint + fix | `pnpm lint:fix` |
+| Lint (repo root) | `pnpm lint` |
+| Lint + fix (repo root) | `pnpm lint:fix` |
 | Format | `pnpm format` |
 | Tests | `pnpm test` |
 | Storybook | `pnpm storybook` |
