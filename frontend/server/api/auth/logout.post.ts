@@ -5,8 +5,9 @@
 import { setCookie, deleteCookie } from 'h3';
 import type { H3Event } from 'h3';
 import { Pool } from 'pg';
-import { isValidRedirectUrl } from '../../utils/redirect';
+
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { isValidRedirectUrl } from '../../utils/redirect';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 

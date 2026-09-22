@@ -6,12 +6,13 @@
 // merge-order reason as the types file next to it - see
 // health-score-coverage-category-coverage.types.ts.
 
-import { fetchFromTinybird } from '../tinybird';
 import type {
   HealthScoreCoverageCategoryCount,
   HealthScoreCoverageCategoryCoverageData,
   HealthScoreCoverageCategoryCoverageRow,
 } from '~~/types/report/health-score-coverage-category-coverage.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 /**
  * Maps the raw `health_score_report_category_coverage` single-row response into the fixed

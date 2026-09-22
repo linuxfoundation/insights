@@ -4,6 +4,7 @@ import type { Preview } from '@storybook/vue3';
 import { setup } from '@storybook/vue3';
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
+
 import '../app/assets/styles/main.scss';
 
 // Setup PrimeVue globally for all stories

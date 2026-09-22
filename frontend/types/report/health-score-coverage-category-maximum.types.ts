@@ -19,7 +19,9 @@ export interface HealthScoreCoverageCategoryMaximumRow {
 // Display order is fixed per the design: maintainerHealth, developmentActivity,
 // securitySupplyChain.
 export type HealthScoreCoverageCategoryMaximumCategoryKey =
-  'maintainerHealth' | 'developmentActivity' | 'securitySupplyChain';
+  | 'maintainerHealth'
+  | 'developmentActivity'
+  | 'securitySupplyChain';
 
 // One category's row for the table: its exact-maximum score and how many tracked repos hit it.
 export interface HealthScoreCoverageCategoryMaximumCount {

@@ -8,8 +8,8 @@
 // No `scope` query param - this pipe is not scope-filtered per the ticket.
 
 import { fetchHealthScoreCoverageSignalScores } from '~~/server/data/tinybird/report/health-score-coverage-signal-scores';
-import type { HealthScoreCoverageSignalScoresData } from '~~/types/report/health-score-coverage-signal-scores.types';
 import { logError } from '~~/server/utils/log';
+import type { HealthScoreCoverageSignalScoresData } from '~~/types/report/health-score-coverage-signal-scores.types';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageSignalScoresData> => {
   try {

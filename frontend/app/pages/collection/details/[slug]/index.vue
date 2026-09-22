@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
+
 import LfxCollectionDetailsView from '~/components/modules/collection/views/collection-details.vue';
 
 const route = useRoute();

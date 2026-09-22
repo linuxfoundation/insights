@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import CollectionLifecycleBadge from '~~/app/components/modules/collection/components/details/collection-lifecycle-badge.vue';
+import { describe, test, expect } from 'vitest';
+
 import CollectionHealthScorePill from '~~/app/components/modules/collection/components/details/collection-health-score-pill.vue';
 import CollectionImpactScorePill from '~~/app/components/modules/collection/components/details/collection-impact-score-pill.vue';
+import CollectionLifecycleBadge from '~~/app/components/modules/collection/components/details/collection-lifecycle-badge.vue';
 import LfxPopover from '~~/app/components/uikit/popover/popover.vue';
 import LfxTag from '~~/app/components/uikit/tag/tag.vue';
 

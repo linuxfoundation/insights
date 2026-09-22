@@ -1,15 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
+
 import {
   CommunityCollectionRepository,
   type CommunityCollection,
   type CreateCommunityCollectionInput,
 } from '~~/server/repo/communityCollection.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { getAuthUsername } from '~~/server/utils/common';
 import { checkGuardrails } from '~~/server/utils/guardrail';
+import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 /**
  * API Endpoint: POST /api/collection/community

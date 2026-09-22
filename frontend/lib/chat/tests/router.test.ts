@@ -7,11 +7,11 @@
  * Tests router agent with actual Bedrock model and real Tinybird MCP tools
  */
 
-import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { createAmazonBedrock, type AmazonBedrockProvider } from '@ai-sdk/amazon-bedrock';
-import type { LanguageModel } from 'ai';
 import { createMCPClient } from '@ai-sdk/mcp';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import type { LanguageModel } from 'ai';
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 
 import { RouterAgent } from '../agents/router';
 import { RouterDecisionAction } from '../enums';

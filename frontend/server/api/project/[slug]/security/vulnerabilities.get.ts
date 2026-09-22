@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { VulnerabilityListItem } from '~~/types/security/vulnerabilities.types';
-import type { Pagination } from '~~/types/shared/pagination';
 import { getBooleanQueryParam } from '~~/server/utils/common';
 import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
+import type { VulnerabilityListItem } from '~~/types/security/vulnerabilities.types';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export default defineEventHandler(
   async (event): Promise<Pagination<VulnerabilityListItem> | Error> => {

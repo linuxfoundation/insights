@@ -7,11 +7,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { createError, showError } from 'nuxt/app';
 import { computed, onServerPrefetch, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { createError, showError } from 'nuxt/app';
-import LfxOpenSourceIndexCategory from '~/components/modules/open-source-index/views/open-source-index-category.vue';
+
 import { OSS_INDEX_API_SERVICE, type SortType } from '~/components/modules/open-source-index/services/osi.api.service';
+import LfxOpenSourceIndexCategory from '~/components/modules/open-source-index/views/open-source-index-category.vue';
 
 const route = useRoute();
 const slug = ref<string>((route.params.slug as string) || '');

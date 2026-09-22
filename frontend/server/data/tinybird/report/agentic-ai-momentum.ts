@@ -1,11 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '../tinybird';
 import type {
   AgenticGlanceRow,
   AgenticGlanceData,
   AgenticTbProjectRow,
 } from '~~/types/report/agentic-ai-momentum.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 export async function fetchAgenticGlance(): Promise<AgenticGlanceData> {
   const result = await fetchFromTinybird<AgenticGlanceRow[]>(

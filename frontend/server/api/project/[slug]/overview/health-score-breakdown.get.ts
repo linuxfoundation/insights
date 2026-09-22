@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { z } from 'zod';
+
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { HealthBreakdownResults } from '~~/types/overview/responses.types';
 

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ofetch } from 'ofetch';
+
 import type { PipeInstructions, TextToSqlInstructions } from './types';
 
 // Function to execute a TinyBird pipe

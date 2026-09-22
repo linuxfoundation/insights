@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect } from 'vitest';
+
 import { getOpenVulnRow } from '../../config/health-breakdown-templates';
 import type { HealthBreakdownResults } from '../../types/overview/responses.types';
 

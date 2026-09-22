@@ -1,11 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '../tinybird';
-import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
-import type { ContributionOutsideHours } from '~~/types/development/responses.types';
-import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types';
-import type { TinybirdActivityHeatmapData } from '~~/server/data/tinybird/responses.types';
 import type { ActivityHeatmapByWeekdayTBQuery } from '~~/server/data/tinybird/requests.types';
+import type { TinybirdActivityHeatmapData } from '~~/server/data/tinybird/responses.types';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types';
+import type { ContributionOutsideHours } from '~~/types/development/responses.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 export async function fetchContributionsOutsideWorkHours(
   filter: ContributionsOutsideWorkHoursFilter,
