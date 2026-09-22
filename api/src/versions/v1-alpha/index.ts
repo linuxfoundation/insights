@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import autoload from '@fastify/autoload';
@@ -15,11 +16,14 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   });
 
   await scope.register(projectRoutes);
-  await scope.register(autoload, {
-    dir: fileURLToPath(new URL('./development', import.meta.url)),
-    dirNameRoutePrefix: false,
-    forceESM: true,
-  });
+  for (const group of ['development', 'contributors']) {
+    const dir = fileURLToPath(new URL(`./${group}`, import.meta.url));
+    // @fastify/autoload throws ENOENT for a missing dir. Git and tsc drop empty folders, so a
+    // group's folder appears with its first route.
+    if (existsSync(dir)) {
+      await scope.register(autoload, { dir, dirNameRoutePrefix: false, forceESM: true });
+    }
+  }
 };
 
 export default v1AlphaRoutes;

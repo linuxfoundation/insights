@@ -49,6 +49,10 @@ curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100&cursor=e
 - **Consistent performance.** The first page and the hundredth page respond equally fast,
   so iterating a large collection does not slow down as you go deeper.
 
+Endpoints that page through a ranking, such as a leaderboard, page by position instead, so
+a row whose rank changes between your requests, or that ties with others at a page
+boundary, can be skipped or repeated. Their descriptions say so.
+
 ## Cursors are opaque
 
 Treat `nextCursor` as an opaque string. Do not parse it, construct one by hand, or persist

@@ -12,7 +12,12 @@ import {
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
-import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schemas/common.js';
+import {
+  ContributionFlags,
+  DateRangeQuery,
+  periodSummary,
+  ProjectSlugParams,
+} from '../../../schemas/common.js';
 
 interface HeatmapRow {
   weekday: number;
@@ -24,18 +29,7 @@ const pipePath = '/v0/pipes/activity_heatmap_by_weekday_and_2hours_blocks.json';
 
 const Query = Type.Object({
   ...DateRangeQuery.properties,
-  includeCollaborations: Type.Optional(
-    Type.Boolean({
-      default: false,
-      description: 'Count collaboration activities such as reviews and comments as contributions.',
-    }),
-  ),
-  includeCodeContributions: Type.Optional(
-    Type.Boolean({
-      default: true,
-      description: 'Count code contributions such as commits, pull requests and patchsets.',
-    }),
-  ),
+  ...ContributionFlags.properties,
 });
 
 const OutsideWorkHoursSummary = periodSummary({

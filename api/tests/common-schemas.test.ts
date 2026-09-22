@@ -1,17 +1,24 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { Type } from '@sinclair/typebox';
+import { Type, type TSchema } from '@sinclair/typebox';
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { ActivityPlatforms } from '@lfx-insights/types';
 
 import { buildApp } from '../src/app.js';
 import { getPreviousDates, toPeriodSummary } from '../src/lib/period.js';
 import {
+  ActivityPlatform,
+  ActivityType,
+  ContributionFlags,
   DateRangeQuery,
   describe as describeField,
   Granularity,
   nullableNumber,
   nullablePeriodSummary,
+  paginated,
+  PaginationQuery,
   PeriodSummary,
   periodSummary,
   Platform,
@@ -92,6 +99,55 @@ const testVersion: ApiVersion = {
       '/projects/:slug/series',
       { schema: { params: ProjectSlugParams, querystring: SeriesQuery } },
       async (request) => ({ query: request.query }),
+    );
+    scope.get(
+      '/projects/:slug/flags',
+      { schema: { params: ProjectSlugParams, querystring: ContributionFlags } },
+      async (request) => ({ query: request.query }),
+    );
+    scope.get(
+      '/projects/:slug/collaborations',
+      {
+        schema: {
+          params: ProjectSlugParams,
+          querystring: Type.Object({
+            includeCollaborations: ContributionFlags.properties.includeCollaborations,
+          }),
+        },
+      },
+      async (request) => ({ query: request.query }),
+    );
+    scope.get(
+      '/projects/:slug/activity',
+      {
+        schema: {
+          params: ProjectSlugParams,
+          querystring: Type.Object({
+            platform: Type.Optional(ActivityPlatform),
+            activityType: Type.Optional(ActivityType),
+          }),
+        },
+      },
+      async (request) => ({ query: request.query }),
+    );
+    scope.get(
+      '/projects/:slug/page',
+      {
+        schema: {
+          params: ProjectSlugParams,
+          querystring: PaginationQuery,
+          response: {
+            200: paginated(Type.Object({ rank: Type.Integer({ description: 'Rank.' }) }), {
+              data: 'Ranked items.',
+            }),
+          },
+        },
+      },
+      async (request) => ({
+        data: [{ rank: 1 }],
+        pageSize: request.query.pageSize ?? 0,
+        nextCursor: request.query.cursor ?? null,
+      }),
     );
   },
 };
@@ -452,6 +508,185 @@ describe('nullablePeriodSummary', () => {
   });
 });
 
+describe('ContributionFlags', () => {
+  it('counts code contributions and leaves collaborations out by default', async () => {
+    const res = await get('/v1/projects/kubernetes/flags');
+    expect(res.statusCode).toBe(200);
+    expect(res.json().query).toEqual({
+      includeCodeContributions: true,
+      includeCollaborations: false,
+    });
+  });
+
+  it('coerces both flags from the query string', async () => {
+    const res = await get(
+      '/v1/projects/kubernetes/flags?includeCodeContributions=false&includeCollaborations=true',
+    );
+    expect(res.statusCode).toBe(200);
+    expect(res.json().query).toEqual({
+      includeCodeContributions: false,
+      includeCollaborations: true,
+    });
+  });
+
+  it('rejects a flag that is not a boolean', async () => {
+    const res = await get('/v1/projects/kubernetes/flags?includeCollaborations=maybe');
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('serves one flag on its own', async () => {
+    const res = await get('/v1/projects/kubernetes/collaborations');
+    expect(res.json().query).toEqual({ includeCollaborations: false });
+    const operation = await getOperation('/v1/projects/{slug}/collaborations');
+    const query = operation.parameters?.filter((param) => param.in === 'query');
+    expect(query?.map((param) => param.name)).toEqual(['includeCollaborations']);
+  });
+
+  it('publishes both flags as optional, described booleans with their defaults', async () => {
+    const operation = await getOperation('/v1/projects/{slug}/flags');
+    const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
+    for (const [flag, value] of [
+      ['includeCodeContributions', true],
+      ['includeCollaborations', false],
+    ] as const) {
+      const param = byName.get(flag);
+      expect(param?.required, flag).toBeFalsy();
+      expect(param?.schema, flag).toMatchObject({ type: 'boolean', default: value });
+      expect(parameterDescription(param), flag).toBe(
+        ContributionFlags.properties[flag].description,
+      );
+      expect(ContributionFlags.properties[flag].description, flag).toBeTruthy();
+    }
+  });
+});
+
+describe('ActivityPlatform and ActivityType', () => {
+  const platforms = Object.values(ActivityPlatforms).filter((value) => value !== 'all');
+
+  it('ActivityPlatform offers every activity platform but the all sentinel', () => {
+    expect(ActivityPlatform.enum).toEqual(platforms);
+    expect(ActivityPlatform.enum).toContain('git');
+  });
+
+  it('ActivityType takes a bounded type key, since the data decides which keys exist', () => {
+    expect(ActivityType).not.toHaveProperty('enum');
+    expect(ActivityType).toMatchObject({
+      type: 'string',
+      pattern: expect.any(String),
+      maxLength: expect.any(Number),
+    });
+  });
+
+  it('say that omitting them counts every platform or type', () => {
+    expect(ActivityPlatform.description).toMatch(/omit/i);
+    expect(ActivityType.description).toMatch(/omit/i);
+  });
+
+  it('ActivityType points at the activity-types endpoint and says what a key without data returns', () => {
+    expect(ActivityType.description).toContain('`GET /v1-alpha/projects/{slug}/activity-types`');
+    expect(ActivityType.description).toMatch(/no data returns empty results/i);
+  });
+
+  it('accept a platform the pull request filter does not, with an activity type', async () => {
+    const res = await get(
+      '/v1/projects/kubernetes/activity?platform=git&activityType=authored-commit',
+    );
+    expect(res.statusCode).toBe(200);
+    expect(res.json().query).toEqual({ platform: 'git', activityType: 'authored-commit' });
+  });
+
+  it.each(['thread_started', 'create_topic', 'issue-closed'])(
+    'accepts activityType=%s, a key the data holds',
+    async (activityType) => {
+      const res = await get(`/v1/projects/kubernetes/activity?activityType=${activityType}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.json().query).toEqual({ activityType });
+    },
+  );
+
+  it.each([
+    ['platform', 'all'],
+    ['platform', 'bitbucket'],
+    ['activityType', 'all'],
+    ['activityType', ''],
+    ['activityType', 'pull request'],
+    ['activityType', 'a'.repeat((ActivityType.maxLength ?? 0) + 1)],
+  ])('rejects %s=%s', async (param, value) => {
+    const res = await get(
+      `/v1/projects/kubernetes/activity?${new URLSearchParams({ [param]: value })}`,
+    );
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('publish platform as a plain enum and activityType as a bounded string, both described', async () => {
+    const operation = await getOperation('/v1/projects/{slug}/activity');
+    const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
+    expect(byName.get('platform')?.schema.enum).toEqual(platforms);
+    expect(byName.get('activityType')?.schema).toMatchObject({
+      type: 'string',
+      pattern: ActivityType.pattern,
+      maxLength: ActivityType.maxLength,
+    });
+    expect(byName.get('activityType')?.schema).not.toHaveProperty('enum');
+    expect(parameterDescription(byName.get('platform'))).toBe(ActivityPlatform.description);
+    expect(parameterDescription(byName.get('activityType'))).toBe(ActivityType.description);
+  });
+});
+
+describe('PaginationQuery and paginated()', () => {
+  it('defaults pageSize to 50 and answers a null nextCursor', async () => {
+    const res = await get('/v1/projects/kubernetes/page');
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ data: [{ rank: 1 }], pageSize: 50, nextCursor: null });
+  });
+
+  it.each(['1', '200'])('accepts pageSize=%s', async (pageSize) => {
+    const res = await get(`/v1/projects/kubernetes/page?pageSize=${pageSize}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.json().pageSize).toBe(Number(pageSize));
+  });
+
+  it.each(['0', '201', '2.5', 'ten'])('rejects pageSize=%s', async (pageSize) => {
+    const res = await get(`/v1/projects/kubernetes/page?pageSize=${pageSize}`);
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('takes the cursor as an opaque string', async () => {
+    const res = await get('/v1/projects/kubernetes/page?cursor=NTA');
+    expect(res.statusCode).toBe(200);
+    expect(res.json().nextCursor).toBe('NTA');
+  });
+
+  it('publishes cursor and pageSize as optional, described parameters', async () => {
+    const operation = await getOperation('/v1/projects/{slug}/page');
+    const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
+    expect(byName.get('cursor')?.required).toBeFalsy();
+    expect(byName.get('cursor')?.schema).toMatchObject({ type: 'string' });
+    expect(byName.get('pageSize')?.required).toBeFalsy();
+    expect(byName.get('pageSize')?.schema).toMatchObject({
+      type: 'integer',
+      minimum: 1,
+      maximum: 200,
+      default: 50,
+    });
+    for (const name of ['cursor', 'pageSize']) {
+      expect(parameterDescription(byName.get(name)), name).toBeTruthy();
+    }
+  });
+
+  it('publishes data, pageSize and nextCursor as required, described fields', async () => {
+    const operation = await getOperation('/v1/projects/{slug}/page');
+    const page = operation.responses['200']?.content['application/json']?.schema;
+    expect(page?.required).toEqual(['data', 'pageSize', 'nextCursor']);
+    expect(page?.properties?.data).toMatchObject({ type: 'array', description: 'Ranked items.' });
+    expect(page?.properties?.pageSize).toMatchObject({ type: 'integer' });
+    expect(page?.properties?.nextCursor).toMatchObject({ type: 'string', nullable: true });
+    for (const field of ['pageSize', 'nextCursor']) {
+      expect(page?.properties?.[field]?.description, field).toBeTruthy();
+    }
+  });
+});
+
 describe('nullableNumber and Platform', () => {
   it('describes a nullable number the way OpenAPI 3.0 spells it', () => {
     expect(nullableNumber('Seconds.')).toMatchObject({
@@ -471,8 +706,8 @@ describe('nullableNumber and Platform', () => {
   });
 });
 
-// Route lists come from the served spec, so a new development module is checked here without
-// anyone adding it to a list; tests/v1-alpha-autoload.test.ts pins the module side.
+// Route lists come from the served spec, so a new route module in a group folder is checked here
+// without anyone adding it to a list; tests/v1-alpha-autoload.test.ts pins the module side.
 const alphaApp = await buildApp();
 await alphaApp.ready();
 const specResponse = await alphaApp.inject({ method: 'GET', url: '/v1-alpha/openapi.json' });
@@ -484,25 +719,25 @@ if (specResponse.statusCode !== 200) {
 }
 const alphaSpec = specResponse.json<OpenApiDoc>();
 
-// Development routes are all GETs. A path without one fails the coverage check below by name
-// instead of skipping, which is where this suite gets extended when another method arrives.
-const developmentPrefix = '/v1-alpha/projects/{slug}/development/';
-const developmentOperations = new Map(
+// Group routes are all GETs. A path without one fails the coverage check below by name instead of
+// skipping, which is where this suite gets extended when another method arrives.
+const projectPrefix = '/v1-alpha/projects/{slug}/';
+const inGroup = (path: string) =>
+  ['development', 'contributors'].some((group) => path.startsWith(`${projectPrefix}${group}/`));
+const groupOperations = new Map(
   Object.entries(alphaSpec.paths).flatMap(([path, item]) =>
-    path.startsWith(developmentPrefix) && item.get
-      ? [[path.slice(developmentPrefix.length), item.get] as const]
-      : [],
+    inGroup(path) && item.get ? [[path.slice(projectPrefix.length), item.get] as const] : [],
   ),
 );
-const developmentRoutes = [...developmentOperations.keys()].sort();
-const developmentPaths = Object.keys(alphaSpec.paths)
-  .filter((path) => path.startsWith(developmentPrefix))
-  .map((path) => path.slice(developmentPrefix.length))
+const groupRoutes = [...groupOperations.keys()].sort();
+const groupPaths = Object.keys(alphaSpec.paths)
+  .filter(inGroup)
+  .map((path) => path.slice(projectPrefix.length))
   .sort();
 
 describe('the v1-alpha routes serve the shared wording and types (AC8, decision 4)', () => {
   const operation = (name: string) => {
-    const op = developmentOperations.get(name);
+    const op = groupOperations.get(name);
     if (!op) throw new Error(`${name} has no GET operation in the spec`);
     return op;
   };
@@ -532,19 +767,31 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
       );
   };
 
-  const seriesRoutes = developmentRoutes.filter((name) => parameter(name, 'granularity'));
-  const summaryCases = developmentRoutes.flatMap((name) =>
+  const seriesRoutes = groupRoutes.filter((name) => parameter(name, 'granularity'));
+  const pagedRoutes = groupRoutes.filter((name) => parameter(name, 'cursor'));
+  const summaryCases = groupRoutes.flatMap((name) =>
     summariesOf(name).map(([field, schema]) => [name, field, schema] as const),
   );
 
-  it('discovers the development routes from the spec', () => {
-    expect(developmentRoutes.length).toBeGreaterThanOrEqual(5);
-    expect(developmentRoutes).toEqual(developmentPaths);
+  // Parameters with one definition in common.ts; Development keeps Platform as its pull request
+  // filter, and every other group filters by activity platform.
+  const sharedParameters = (name: string): Record<string, TSchema> => ({
+    ...ContributionFlags.properties,
+    ...PaginationQuery.properties,
+    activityType: ActivityType,
+    platform: name.startsWith('development/') ? Platform : ActivityPlatform,
+  });
+  // Drops TypeBox's symbol keys, leaving what swagger serves.
+  const served = (schema: TSchema): OpenApiSchema => JSON.parse(JSON.stringify(schema));
+
+  it('discovers the development and contributors routes from the spec', () => {
+    expect(groupRoutes.length).toBeGreaterThanOrEqual(5);
+    expect(groupRoutes).toEqual(groupPaths);
     expect(seriesRoutes.length).toBeGreaterThan(0);
     expect(summaryCases.length).toBeGreaterThan(0);
   });
 
-  it.each(developmentRoutes)('%s serves an object response the checks below can read', (name) => {
+  it.each(groupRoutes)('%s serves an object response the checks below can read', (name) => {
     const schema = responseSchema(name);
     expect(schema?.type).toBe('object');
     const properties = Object.entries(schema?.properties ?? {});
@@ -554,7 +801,7 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     }
   });
 
-  it.each(developmentRoutes)(
+  it.each(groupRoutes)(
     '%s takes the common range and documents the inclusive start and exclusive end',
     (name) => {
       expect(operation(name).description).toMatch(/00:00 UTC/);
@@ -568,6 +815,28 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     expect(param?.required).toBe(true);
     expect(param?.schema.enum).toEqual(granularities);
     expect(parameterDescription(param)).toBe(Granularity.description);
+  });
+
+  it.each(groupRoutes)(
+    '%s serves each shared parameter it declares as common.ts defines it',
+    (name) => {
+      for (const [param, shared] of Object.entries(sharedParameters(name))) {
+        const declared = parameter(name, param);
+        if (declared) {
+          const { description, ...schema } = served(shared);
+          expect(parameterDescription(declared), `${name} ${param}`).toBe(description);
+          expect(declared.schema, `${name} ${param}`).toMatchObject(schema);
+        }
+      }
+    },
+  );
+
+  it.each(pagedRoutes)('%s answers with the shared page fields', (name) => {
+    const page = served(paginated(Type.Object({}), { data: 'Items.' }));
+    const schema = responseSchema(name);
+    expect(schema?.required).toEqual(page.required);
+    expect(schema?.properties?.pageSize).toEqual(page.properties?.pageSize);
+    expect(schema?.properties?.nextCursor).toEqual(page.properties?.nextCursor);
   });
 
   it.each(summaryCases)(

@@ -72,6 +72,17 @@ describe('docs content reflects existing ADRs (AC3)', () => {
     expect(pagination.toLowerCase()).toContain('cursor');
   });
 
+  it('pagination page leaves rankings paged by position out of the no-skip promise', () => {
+    const guarantees = read('pagination.md')
+      .split('## What cursors guarantee')[1]
+      ?.split('\n## ')[0];
+    expect(guarantees).toMatch(/rank/i);
+    expect(guarantees).toMatch(/by position/i);
+    expect(guarantees).toMatch(/skipped or repeated/i);
+    expect(guarantees).toMatch(/ties/i);
+    expect(guarantees).toMatch(/description/i);
+  });
+
   it('index or errors page documents camelCase JSON and ISO-8601 UTC dates (ADR-0014)', () => {
     const combined = read('index.md') + read('errors.md');
     expect(combined).toMatch(/camelCase/);
