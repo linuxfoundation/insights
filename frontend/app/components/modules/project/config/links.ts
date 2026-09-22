@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { LfxRoutes } from '~/components/shared/types/routes';
 import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 export interface ProjectLinkConfig {
   key: string;

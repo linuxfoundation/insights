@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { QueryFunction } from '@tanstack/vue-query';
-import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-import type { HealthScoreResults } from '~~/types/overview/responses.types';
+import { type ComputedRef, computed } from 'vue';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { HealthScoreResults } from '~~/types/overview/responses.types';
 
 export interface BenchmarksQueryParams {
   projectSlug: string;

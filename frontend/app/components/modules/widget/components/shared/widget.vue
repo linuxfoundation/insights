@@ -85,20 +85,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxCard from '~/components/uikit/card/card.vue';
-import type { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import { computed, ref, watch } from 'vue';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxWidgetMenu from '~/components/modules/widget/components/shared/widget-menu.vue';
-import { useSanitize } from '~~/composables/useSanitize';
-import type { BenchmarkScoreData, HealthScoreResults } from '~~/types/overview/responses.types';
+import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
 import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { links } from '~/config/links';
+import { useSanitize } from '~~/composables/useSanitize';
+import type { BenchmarkScoreData, HealthScoreResults } from '~~/types/overview/responses.types';
 
 const emit = defineEmits<{ (e: 'dataLoaded', value: string): void }>();
 const props = defineProps<{

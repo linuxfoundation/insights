@@ -182,18 +182,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { url } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import { url } from '@vuelidate/validators';
+import { computed } from 'vue';
+
 import LfxYamlAttestationItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-attestation-item.vue';
 import LfxYamlDistributionPointItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-distribution-point-item.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
 
 const props = defineProps<{
   modelValue: object;

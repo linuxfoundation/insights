@@ -52,11 +52,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { DateTime } from 'luxon';
-import { communityConfigs } from '../config';
-import type { CommunityMentions } from '~~/types/community/community';
+import { computed } from 'vue';
+
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import type { CommunityMentions } from '~~/types/community/community';
+
+import { communityConfigs } from '../config';
 
 const props = defineProps<{
   mention: CommunityMentions;

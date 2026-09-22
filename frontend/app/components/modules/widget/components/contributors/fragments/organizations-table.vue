@@ -102,12 +102,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue';
-import type { Organization } from '~~/types/contributors/responses.types';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import { isElementVisible } from '~/components/shared/utils/helper';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { isElementVisible } from '~/components/shared/utils/helper';
+import type { Organization } from '~~/types/contributors/responses.types';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);

@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import MedianTimeToClose from './median-time-to-close.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
 import MedianTimeToCloseFilters from './median-time-to-close-filters.vue';
 import MedianTimeToCloseSnapshotHeader from './median-time-to-close-snapshot-header.vue';
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import MedianTimeToClose from './median-time-to-close.vue';
 
 const medianTimeToClose: WidgetConfig = {
   key: 'medianTimeToClose',

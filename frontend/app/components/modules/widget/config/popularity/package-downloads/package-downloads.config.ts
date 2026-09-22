@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import PackageDownloads from './package-downloads.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import PackageDownloads from './package-downloads.vue';
 
 const packageDownloads: WidgetConfig = {
   key: 'packageDownloads',

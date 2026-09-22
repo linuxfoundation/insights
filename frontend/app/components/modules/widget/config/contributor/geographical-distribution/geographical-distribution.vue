@@ -66,28 +66,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import LfxGeoDistributionView from './fragments/geo-distribution-view.vue';
-import LfxGeographicalDistributionDrawer from './fragments/geographical-distribution-drawer.vue';
-import { filterKnownCountries } from './geo-map.helper';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
+
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
 import type {
   GeoMapData,
   GeoMapResponse,
 } from '~/components/modules/widget/components/contributors/types/geo-map.types';
-import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import { Widget } from '~/components/modules/widget/types/widget';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import {
   CONTRIBUTORS_API_SERVICE,
   type GeographicalDistributionQueryParams,
 } from '~~/app/components/modules/widget/services/contributors.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+import LfxGeoDistributionView from './fragments/geo-distribution-view.vue';
+import LfxGeographicalDistributionDrawer from './fragments/geographical-distribution-drawer.vue';
+import { filterKnownCountries } from './geo-map.helper';
 
 interface GeographicalDistributionModel extends WidgetModel {
   metric: string;

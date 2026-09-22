@@ -70,18 +70,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'nuxt/app';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxProjectRepositorySearch from '~/components/modules/project/components/shared/header/repository-switch/repository-search.vue';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+
 import LfxProjectRepositoryGroupSearch from '~/components/modules/project/components/shared/header/repository-switch/repository-group-search.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxProjectRepositorySearch from '~/components/modules/project/components/shared/header/repository-switch/repository-search.vue';
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import { lfProjectLinks, type ProjectLinkConfig } from '~/components/modules/project/config/links';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
 const props = defineProps<{
   modelValue: boolean;

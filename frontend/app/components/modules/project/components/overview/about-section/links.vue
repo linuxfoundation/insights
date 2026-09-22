@@ -40,14 +40,15 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import type {
   WebsiteLinkConfig,
   SocialLinkConfig,
   DisplayLinkConfig,
 } from '~~/app/components/modules/project/config/social-links';
 import { socialLinkConfigs, socialLinkOrder } from '~~/app/components/modules/project/config/social-links';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const { project } = storeToRefs(useProjectStore());
 

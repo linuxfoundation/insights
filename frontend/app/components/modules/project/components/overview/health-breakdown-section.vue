@@ -104,14 +104,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import LfxHealthBreakdownCategoryCard from './health-breakdown/category-card.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxChip from '~/components/uikit/chip/chip.vue';
-import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
+
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { getHealthScoreV2Config, isPartialHealthScore, healthScoreFilterEmptyState } from '~~/config/trust-score';
+import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import {
   getCategoryDescription,
   getCategoryScoreColor,
@@ -127,7 +126,10 @@ import {
   getIssueResolutionRow,
   getPrMergeRow,
 } from '~~/config/health-breakdown-templates';
+import { getHealthScoreV2Config, isPartialHealthScore, healthScoreFilterEmptyState } from '~~/config/trust-score';
 import type { HealthBreakdownResults } from '~~/types/overview/responses.types';
+
+import LfxHealthBreakdownCategoryCard from './health-breakdown/category-card.vue';
 
 const props = defineProps<{
   healthScoreV2: number | null;

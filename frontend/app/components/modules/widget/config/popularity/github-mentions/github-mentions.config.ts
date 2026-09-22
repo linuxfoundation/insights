@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import GithubMentions from './github-mentions.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import GithubMentions from './github-mentions.vue';
 
 const githubMentions: WidgetConfig = {
   key: 'githubMentions',

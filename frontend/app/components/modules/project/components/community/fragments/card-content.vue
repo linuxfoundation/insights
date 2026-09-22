@@ -45,9 +45,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import LfxCommunitySentimentIcon from './sentiment-icon.vue';
-import type { CommunityMentions } from '~~/types/community/community';
+
 import { useSanitize } from '~~/composables/useSanitize';
+import type { CommunityMentions } from '~~/types/community/community';
+
+import LfxCommunitySentimentIcon from './sentiment-icon.vue';
 
 const props = defineProps<{
   mention: CommunityMentions;

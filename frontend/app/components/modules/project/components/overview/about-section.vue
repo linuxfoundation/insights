@@ -24,14 +24,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import LfxProjectAboutSoftwareValue from './about-section/about-software-value.vue';
-import LfxTagsAndLanguages from './about-section/tags-ang-languages.vue';
-import LfxLicenses from './about-section/licenses.vue';
-import LfxLinks from './about-section/links.vue';
-import LfxProjectAboutSectionLoading from './about-section/about-section-loading.vue';
+
+import LfxBadges from '~/components/modules/badges/components/badges.vue';
 import LfxProjectAboutSectionConnectedPlatforms from '~/components/modules/project/components/overview/about-section/connected-platforms.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import LfxBadges from '~/components/modules/badges/components/badges.vue';
+
+import LfxProjectAboutSectionLoading from './about-section/about-section-loading.vue';
+import LfxProjectAboutSoftwareValue from './about-section/about-software-value.vue';
+import LfxLicenses from './about-section/licenses.vue';
+import LfxLinks from './about-section/links.vue';
+import LfxTagsAndLanguages from './about-section/tags-ang-languages.vue';
 
 const { isProjectLoading } = storeToRefs(useProjectStore());
 </script>

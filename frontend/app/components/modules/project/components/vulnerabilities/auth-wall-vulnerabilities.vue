@@ -67,10 +67,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useAuth } from '~~/composables/useAuth';
 
 const { login } = useAuth();

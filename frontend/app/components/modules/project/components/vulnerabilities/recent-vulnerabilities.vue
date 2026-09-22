@@ -43,14 +43,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxProjectVulnerabilityTableHeader from './vulnerability-table-header.vue';
-import LfxProjectVulnerabilityTable from './vulnerability-table.vue';
-import LfxVulnerabilitiesEmpty from './vulnerabilities-empty.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
+
 import {
   VULNERABILITY_API_SERVICE,
   type VulnerabilitiesQueryParams,
 } from '~/components/modules/project/services/vulnerability.api.service';
+import LfxButton from '~/components/uikit/button/button.vue';
+
+import LfxVulnerabilitiesEmpty from './vulnerabilities-empty.vue';
+import LfxProjectVulnerabilityTableHeader from './vulnerability-table-header.vue';
+import LfxProjectVulnerabilityTable from './vulnerability-table.vue';
 
 const props = withDefaults(
   defineProps<{

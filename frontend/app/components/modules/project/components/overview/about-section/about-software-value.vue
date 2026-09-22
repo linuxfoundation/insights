@@ -89,12 +89,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import { storeToRefs } from 'pinia';
+
 import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const { project } = storeToRefs(useProjectStore());
 

@@ -80,12 +80,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
+import { DateTime } from 'luxon';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { DateTime } from 'luxon';
-import type { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 

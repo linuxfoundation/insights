@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import PressMentions from './press-mentions.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
+import PressMentions from './press-mentions.vue';
 
 const pressMentions: WidgetConfig = {
   key: 'pressMentions',

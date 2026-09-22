@@ -1,9 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import Retention from './retention.vue';
+
 import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+import Retention from './retention.vue';
 
 const retention: WidgetConfig = {
   key: 'retention',

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import type { LocationQuery } from 'vue-router';
+
 import {
   dateOptKeys,
   lfxProjectDateOptions,
