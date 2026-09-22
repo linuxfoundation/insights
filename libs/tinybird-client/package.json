@@ -13,14 +13,11 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "format": "prettier --write \"{src,tests}/**/*.ts\"",
-    "format:check": "prettier --check \"{src,tests}/**/*.ts\"",
     "tsc-check": "tsc --noEmit",
     "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "prettier": "^3.0.0",
     "typescript": "^5.0.0",
     "vitest": "^3.0.0"
   }

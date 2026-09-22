@@ -28,13 +28,12 @@ pnpm --filter @lfx-insights/api dev
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Start with hot reload via `tsx watch` |
-| `pnpm start` | Run compiled output |
-| `pnpm build` | Compile TypeScript to `dist/` and build the VitePress docs site (`docs/site`) |
-| `pnpm tsc-check` | Type check without emit |
-| `pnpm test` | Run Vitest tests |
-| `pnpm format:check` | Prettier check |
+| Command          | Description                                                                   |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `pnpm dev`       | Start with hot reload via `tsx watch`                                         |
+| `pnpm start`     | Run compiled output                                                           |
+| `pnpm build`     | Compile TypeScript to `dist/` and build the VitePress docs site (`docs/site`) |
+| `pnpm tsc-check` | Type check without emit                                                       |
+| `pnpm test`      | Run Vitest tests                                                              |
 
-Linting runs from the repo root with `pnpm lint` (oxlint), not from this package.
+Linting and formatting run from the repo root with `pnpm lint` (oxlint) and `pnpm format` (oxfmt), not from this package.
