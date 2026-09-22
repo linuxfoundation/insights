@@ -17,8 +17,6 @@ import { PeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/
 
 const pipePath = '/v0/pipes/median_time_to_close.json';
 
-// Without granularity the pipe answers one row whose median is Nullable; a period without closed
-// pull requests can also come back as no row at all.
 interface SummaryRow {
   medianTimeToCloseSeconds?: number | null;
 }
