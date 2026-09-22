@@ -15,8 +15,6 @@ import {
 } from '../../../lib/period.js';
 import { PeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
 
-// One row of a rounded median or average over a Nullable column; a period without Gerrit
-// changesets can also come back as no row at all.
 interface SummaryRow {
   patchsetsPerReview?: number | null;
 }
