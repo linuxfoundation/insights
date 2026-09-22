@@ -51,9 +51,10 @@ export const pipeWindow = ({ pageSize, offset }: Page) => ({ limit: pageSize + 1
 // Rows must come in the order the pipe applied LIMIT and OFFSET in, so the extra row is the last
 // one. Re-sort first when a pipe's final ORDER BY differs.
 export function toPage<T>(rows: T[], { pageSize, offset }: Page) {
+  const nextOffset = offset + pageSize;
   return {
     data: rows.slice(0, pageSize),
     pageSize,
-    nextCursor: rows.length > pageSize ? encodeCursor(offset + pageSize) : null,
+    nextCursor: rows.length > pageSize && nextOffset <= maxOffset ? encodeCursor(nextOffset) : null,
   };
 }

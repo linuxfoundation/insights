@@ -90,4 +90,17 @@ describe('toPage', () => {
       offset: 75,
     });
   });
+
+  it('ends the list once the next offset would pass the Int32 range the pipes take', () => {
+    const last = toPage(rows(3), { pageSize: 2, offset: 2147483645 });
+    expect(requestedPage({ cursor: last.nextCursor!, pageSize: 2 })).toEqual({
+      pageSize: 2,
+      offset: 2147483647,
+    });
+    expect(toPage(rows(3), { pageSize: 2, offset: 2147483646 })).toEqual({
+      data: rows(2),
+      pageSize: 2,
+      nextCursor: null,
+    });
+  });
 });

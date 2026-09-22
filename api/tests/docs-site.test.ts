@@ -12,6 +12,13 @@ function read(relPath: string): string {
   return readFileSync(`${docsRoot}/${relPath}`, 'utf-8');
 }
 
+function cursorGuarantees(): string | undefined {
+  return read('pagination.md')
+    .split('## What cursors guarantee')[1]
+    ?.split('\n## ')[0]
+    ?.replace(/\s+/g, ' ');
+}
+
 describe('docs:dev / docs:build scripts (AC1)', () => {
   it('wires docs:dev and docs:build in api/package.json against docs/site', () => {
     const pkg = JSON.parse(readFileSync(`${apiRoot}package.json`, 'utf-8')) as {
@@ -73,14 +80,19 @@ describe('docs content reflects existing ADRs (AC3)', () => {
   });
 
   it('pagination page leaves rankings paged by position out of the no-skip promise', () => {
-    const guarantees = read('pagination.md')
-      .split('## What cursors guarantee')[1]
-      ?.split('\n## ')[0];
+    const guarantees = cursorGuarantees();
     expect(guarantees).toMatch(/rank/i);
     expect(guarantees).toMatch(/by position/i);
     expect(guarantees).toMatch(/skipped or repeated/i);
     expect(guarantees).toMatch(/ties/i);
     expect(guarantees).toMatch(/description/i);
+  });
+
+  it('pagination page leaves rankings out of the performance promise', () => {
+    const guarantees = cursorGuarantees();
+    expect(guarantees).toMatch(/performance guarantee does not cover them/i);
+    expect(guarantees).toMatch(/recomputes the whole ranking/i);
+    expect(guarantees).toMatch(/deep page costs about as much as the first/i);
   });
 
   it('index or errors page documents camelCase JSON and ISO-8601 UTC dates (ADR-0014)', () => {

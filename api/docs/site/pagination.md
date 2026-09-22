@@ -51,7 +51,9 @@ curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100&cursor=e
 
 Endpoints that page through a ranking, such as a leaderboard, page by position instead, so
 a row whose rank changes between your requests, or that ties with others at a page
-boundary, can be skipped or repeated. Their descriptions say so.
+boundary, can be skipped or repeated. Their descriptions say so. The performance guarantee
+does not cover them either: each request recomputes the whole ranking before it takes a
+page, so a deep page costs about as much as the first.
 
 ## Cursors are opaque
 
