@@ -213,8 +213,6 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         ]);
       });
 
-      // An unknown project reads as three empty results: null efficiency, zero counts and an
-      // empty series through the one code path.
       const [currentRows, previousRows, seriesRows] = rows ?? [[], [], []];
       const currentCounts = counts(currentRows);
       const previousCounts = counts(previousRows);
