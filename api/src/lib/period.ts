@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { PeriodSummary } from '../schemas/common.js';
+import type { NullablePeriodSummary, PeriodSummary } from '../schemas/common.js';
 
 export interface DateRange {
   startDate: string;
@@ -118,4 +118,22 @@ export function toPeriodSummary(
     periodFrom: utcMidnight(range.startDate),
     periodTo: utcMidnight(range.endDate),
   };
+}
+
+export function toNullablePeriodSummary(
+  current: number | null,
+  previous: number | null,
+  range: DateRange,
+): NullablePeriodSummary {
+  if (current === null || previous === null) {
+    return {
+      current,
+      previous,
+      percentageChange: null,
+      changeValue: null,
+      periodFrom: utcMidnight(range.startDate),
+      periodTo: utcMidnight(range.endDate),
+    };
+  }
+  return toPeriodSummary(current, previous, range);
 }

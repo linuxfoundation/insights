@@ -2,16 +2,19 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-import { Type, type Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
-  toPeriodSummary,
+  toNullablePeriodSummary,
   toTinybirdRange,
-  utcMidnight,
   type DateRange,
 } from '../../../lib/period.js';
-import { DateRangeQuery, PeriodSummary, ProjectSlugParams } from '../../../schemas/common.js';
+import {
+  DateRangeQuery,
+  nullablePeriodSummary,
+  ProjectSlugParams,
+} from '../../../schemas/common.js';
 
 interface LeadTimeRow {
   openedToMergedSeconds?: number | null;
@@ -23,34 +26,17 @@ interface LeadTimeRow {
 
 const pipePath = '/v0/pipes/pull_requests_merge_lead_time.json';
 
-// The spec is OpenAPI 3.0.3, which has no type 'null'; see PeriodSummary.percentageChange.
-const nullableNumber = (description: string) =>
-  Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
-
-// PeriodSummary types its numbers as plain, but an average over no pull requests is null, so the
-// three are overridden here and percentageChange gains the null-when-either-side-null rule.
 const durationSummary = (measure: string, title: string) =>
-  Type.Object(
-    {
-      ...PeriodSummary.properties,
-      current: nullableNumber(
-        `${measure} in the current period (seconds). Null when no pull request opened in the period reached this stage.`,
-      ),
-      previous: nullableNumber(
-        `${measure} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (seconds). Null when no pull request opened in that period reached this stage.`,
-      ),
-      changeValue: nullableNumber(
-        '`current` minus `previous` (seconds). Null when `current` or `previous` is null.',
-      ),
-      percentageChange: nullableNumber(
-        'Signed percent change from `previous` to `current`. Null when `current` or `previous` is null, or when `previous` is 0 and `current` is not.',
-      ),
+  nullablePeriodSummary({
+    measure,
+    unit: 'seconds',
+    title,
+    description: `${measure}, in seconds, for the current period and the period immediately before it.`,
+    nullWhen: {
+      current: 'Null when no pull request opened in the period reached this stage.',
+      previous: 'Null when no pull request opened in that period reached this stage.',
     },
-    {
-      title,
-      description: `${measure}, in seconds, for the current period and the period immediately before it.`,
-    },
-  );
+  });
 
 const MergeLeadTime = Type.Object({
   summary: durationSummary(
@@ -74,27 +60,6 @@ const MergeLeadTime = Type.Object({
     'MergeLeadTimeMerged',
   ),
 });
-type MergeLeadTime = Static<typeof MergeLeadTime>;
-type DurationSummary = MergeLeadTime['summary'];
-
-// toPeriodSummary takes plain numbers; a side without data leaves nothing to compare against.
-function toDurationSummary(
-  current: number | null,
-  previous: number | null,
-  range: DateRange,
-): DurationSummary {
-  if (current === null || previous === null) {
-    return {
-      current,
-      previous,
-      percentageChange: null,
-      changeValue: null,
-      periodFrom: utcMidnight(range.startDate),
-      periodTo: utcMidnight(range.endDate),
-    };
-  }
-  return toPeriodSummary(current, previous, range);
-}
 
 const mergeLeadTimeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
@@ -128,7 +93,7 @@ const mergeLeadTimeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
 
       const [currentRows, previousRows] = rows ?? [[], []];
       const stage = (field: keyof LeadTimeRow) =>
-        toDurationSummary(
+        toNullablePeriodSummary(
           currentRows[0]?.[field] ?? null,
           previousRows[0]?.[field] ?? null,
           dates.current,

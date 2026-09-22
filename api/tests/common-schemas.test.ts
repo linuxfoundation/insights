@@ -9,8 +9,11 @@ import {
   DateRangeQuery,
   describe as describeField,
   Granularity,
+  nullableNumber,
+  nullablePeriodSummary,
   PeriodSummary,
   periodSummary,
+  Platform,
   ProjectSlugParams,
   SeriesQuery,
 } from '../src/schemas/common.js';
@@ -405,6 +408,65 @@ describe('periodSummary factory (AC6)', () => {
       'extra',
     ]);
     expect(widened.properties.current).toBe(counts.properties.current);
+  });
+});
+
+describe('nullablePeriodSummary', () => {
+  const summary = nullablePeriodSummary({
+    measure: 'Median time to close',
+    unit: 'seconds',
+    title: 'MedianSummary',
+    nullWhen: {
+      current: 'Null when nothing closed in the period.',
+      previous: 'Null when nothing closed in that period.',
+    },
+  });
+
+  it('keeps the six PeriodSummary fields in the same order, all required', () => {
+    const fields = Object.keys(PeriodSummary.properties);
+    expect(Object.keys(summary.properties)).toEqual(fields);
+    expect(summary.required).toEqual(fields);
+    expect(summary.title).toBe('MedianSummary');
+  });
+
+  it('makes current, previous, changeValue and percentageChange nullable numbers', () => {
+    for (const field of ['current', 'previous', 'changeValue', 'percentageChange'] as const) {
+      expect(summary.properties[field], field).toMatchObject({ type: 'number', nullable: true });
+    }
+  });
+
+  it('writes the periodSummary wording with the null rule after the unit', () => {
+    expect(summary.properties.current.description).toBe(
+      'Median time to close in the current period (seconds). Null when nothing closed in the period.',
+    );
+    expect(summary.properties.previous.description).toMatch(
+      /\(seconds\)\. Null when nothing closed in that period\.$/,
+    );
+    expect(summary.properties.changeValue.description).toBe(
+      '`current` minus `previous` (seconds). Null when `current` or `previous` is null.',
+    );
+    expect(summary.properties.percentageChange.description).toMatch(
+      /Null when `current` or `previous` is null/,
+    );
+  });
+});
+
+describe('nullableNumber and Platform', () => {
+  it('describes a nullable number the way OpenAPI 3.0 spells it', () => {
+    expect(nullableNumber('Seconds.')).toMatchObject({
+      type: 'number',
+      nullable: true,
+      description: 'Seconds.',
+    });
+    expect(PeriodSummary.properties.percentageChange).toMatchObject({
+      type: 'number',
+      nullable: true,
+    });
+  });
+
+  it('offers the three pull request platforms and points at connectedPlatforms', () => {
+    expect(Platform.enum).toEqual(['github', 'gitlab', 'gerrit']);
+    expect(Platform.description).toMatch(/connectedPlatforms/);
   });
 });
 

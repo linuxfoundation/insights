@@ -1,22 +1,21 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
-import { Type, type Static } from '@sinclair/typebox';
-import { ActivityPlatforms } from '@lfx-insights/types';
+import { Type } from '@sinclair/typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   hasBucketBounds,
   toIsoUtc,
+  toNullablePeriodSummary,
   toPeriodSummary,
   toTinybirdRange,
-  utcMidnight,
-  type DateRange,
 } from '../../../lib/period.js';
 import {
-  PeriodSummary,
+  nullablePeriodSummary,
   periodSummary,
+  Platform,
   ProjectSlugParams,
   SeriesQuery,
 } from '../../../schemas/common.js';
@@ -46,51 +45,23 @@ const isRow = (row: SummaryRow) =>
   isCount(row.openedCount) &&
   isCount(row.resolvedCount);
 
-// Type.Unsafe shows up in OpenAPI as a plain enum, for the same reason Granularity in common.ts
-// uses it.
-const Platform =
-  Type.Unsafe<`${ActivityPlatforms.GITHUB | ActivityPlatforms.GITLAB | ActivityPlatforms.GERRIT}`>({
-    type: 'string',
-    enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
-    description:
-      'Platform to count pull requests from: `github`, `gitlab` or `gerrit`. Without it the pipe applies no platform filter and counts every platform the project has pull request data for. `connectedPlatforms` on the project endpoint can list other platforms, such as `git`; those get a 400 here.',
-  });
-
 const Query = Type.Object({
   ...SeriesQuery.properties,
   platform: Type.Optional(Platform),
 });
 
-// The spec is OpenAPI 3.0.3, which has no type 'null'; see PeriodSummary.percentageChange.
-const nullableNumber = (description: string) =>
-  Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
-
-// PeriodSummary types its numbers as plain, but a period without opened pull requests has no
-// denominator, so the three are overridden here and percentageChange gains the rule that either
-// side being null nulls it.
-const ReviewEfficiencySummary = Type.Object(
-  {
-    ...PeriodSummary.properties,
-    current: nullableNumber(
-      'Pull requests opened in the current period and since closed, as a percentage of all opened in it (percent). Null when no pull request was opened in the period.',
-    ),
-    previous: nullableNumber(
-      'Pull requests opened in the comparison period and since closed, as a percentage of all opened in it. The comparison period ends the day before `periodFrom`; its span is derived in calendar months and days, so its elapsed days can differ from the current period (percent). Null when no pull request was opened in that period.',
-    ),
-    changeValue: nullableNumber(
-      '`current` minus `previous` (percentage points). Null when `current` or `previous` is null.',
-    ),
-    percentageChange: nullableNumber(
-      'Signed percent change from `previous` to `current`. Null when `current` or `previous` is null, or when `previous` is 0 and `current` is not.',
-    ),
+const ReviewEfficiencySummary = nullablePeriodSummary({
+  measure: 'Pull requests opened and since closed, as a percentage of all opened',
+  unit: 'percent',
+  changeUnit: 'percentage points',
+  title: 'ReviewEfficiencySummary',
+  description:
+    'Pull requests opened in a period and since closed, as a percentage of all opened in it, for the current period and the period immediately before it. The Insights widget shows this value as a ratio; the API reshapes it to a percent, so the change is in percentage points. Because `closed` counts a subset of `opened`, the value runs from 0 to 100.',
+  nullWhen: {
+    current: 'Null when no pull request was opened in the period.',
+    previous: 'Null when no pull request was opened in that period.',
   },
-  {
-    title: 'ReviewEfficiencySummary',
-    description:
-      'Pull requests opened in a period and since closed, as a percentage of all opened in it, for the current period and the period immediately before it. The Insights widget shows this value as a ratio; the API reshapes it to a percent, so the change is in percentage points. Because `closed` counts a subset of `opened`, the value runs from 0 to 100.',
-  },
-);
-type ReviewEfficiencySummary = Static<typeof ReviewEfficiencySummary>;
+});
 
 const ReviewEfficiencyBucket = Type.Object({
   startDate: Type.String({
@@ -143,25 +114,6 @@ const counts = (rows: SummaryRow[]): Counts => ({
 // Null when nothing was opened, so there is no denominator. Left unclamped: the pipe counts closed
 // as a subset of opened, so a value above 100 would mean bad upstream data, not a real rate.
 const efficiency = ({ opened, closed }: Counts) => (opened > 0 ? (closed / opened) * 100 : null);
-
-// toPeriodSummary takes plain numbers; a side without data leaves nothing to compare against.
-function toEfficiencySummary(
-  current: number | null,
-  previous: number | null,
-  range: DateRange,
-): ReviewEfficiencySummary {
-  if (current === null || previous === null) {
-    return {
-      current,
-      previous,
-      percentageChange: null,
-      changeValue: null,
-      periodFrom: utcMidnight(range.startDate),
-      periodTo: utcMidnight(range.endDate),
-    };
-  }
-  return toPeriodSummary(current, previous, range);
-}
 
 const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
@@ -217,7 +169,7 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const currentCounts = counts(currentRows);
       const previousCounts = counts(previousRows);
       return {
-        efficiencyPercentage: toEfficiencySummary(
+        efficiencyPercentage: toNullablePeriodSummary(
           efficiency(currentCounts),
           efficiency(previousCounts),
           current,

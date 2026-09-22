@@ -2,19 +2,21 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-import { ActivityPlatforms } from '@lfx-insights/types';
-import { Type, type Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
   getPreviousDates,
   hasBucketBounds,
   toIsoUtc,
-  toPeriodSummary,
+  toNullablePeriodSummary,
   toTinybirdRange,
-  utcMidnight,
-  type DateRange,
 } from '../../../lib/period.js';
-import { PeriodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import {
+  nullablePeriodSummary,
+  Platform,
+  ProjectSlugParams,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 interface SummaryRow {
   medianTimeToReviewSeconds?: number | null;
@@ -41,48 +43,22 @@ const isSeriesRow = (row: SeriesRow) =>
 
 const pipePath = '/v0/pipes/median_time_to_review.json';
 
-// The pipe filters by platform only when the key is sent, so an omitted value covers all three.
-const Platform =
-  Type.Unsafe<`${ActivityPlatforms.GITHUB | ActivityPlatforms.GITLAB | ActivityPlatforms.GERRIT}`>({
-    type: 'string',
-    enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
-    description:
-      'Source platform to count pull requests from: `github` pull requests, `gitlab` merge requests or `gerrit` changesets, one of the values the project endpoint lists in `connectedPlatforms`. When omitted, pull requests from all three platforms are counted together.',
-  });
-
 const MedianTimeToReviewQuery = Type.Object({
   ...SeriesQuery.properties,
   platform: Type.Optional(Platform),
 });
 
-// The spec is OpenAPI 3.0.3, which has no type 'null'; see PeriodSummary.percentageChange.
-const nullableNumber = (description: string) =>
-  Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
-
-// PeriodSummary types its numbers as plain, but a median over no pull requests is null, so the
-// three are overridden here and percentageChange gains the null-when-either-side-null rule.
 const durationSummary = (measure: string, title: string) =>
-  Type.Object(
-    {
-      ...PeriodSummary.properties,
-      current: nullableNumber(
-        `${measure} in the current period (seconds). Null when the period has no pull request with a positive time to review.`,
-      ),
-      previous: nullableNumber(
-        `${measure} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (seconds). Null when that period has no pull request with a positive time to review.`,
-      ),
-      changeValue: nullableNumber(
-        '`current` minus `previous` (seconds). Null when `current` or `previous` is null.',
-      ),
-      percentageChange: nullableNumber(
-        'Signed percent change from `previous` to `current`. Null when `current` or `previous` is null, or when `previous` is 0 and `current` is not.',
-      ),
+  nullablePeriodSummary({
+    measure,
+    unit: 'seconds',
+    title,
+    description: `${measure}, in seconds, for the current period and the period immediately before it.`,
+    nullWhen: {
+      current: 'Null when the period has no pull request with a positive time to review.',
+      previous: 'Null when that period has no pull request with a positive time to review.',
     },
-    {
-      title,
-      description: `${measure}, in seconds, for the current period and the period immediately before it.`,
-    },
-  );
+  });
 
 const MedianTimeToReviewBucket = Type.Object({
   startDate: Type.String({
@@ -109,27 +85,6 @@ const MedianTimeToReview = Type.Object({
       'One entry per granularity bucket in the current period, in pipe order. A bucket the pipe reports without both bounds is omitted.',
   }),
 });
-type MedianTimeToReview = Static<typeof MedianTimeToReview>;
-type DurationSummary = MedianTimeToReview['summary'];
-
-// toPeriodSummary takes plain numbers; a side without data leaves nothing to compare against.
-function toDurationSummary(
-  current: number | null,
-  previous: number | null,
-  range: DateRange,
-): DurationSummary {
-  if (current === null || previous === null) {
-    return {
-      current,
-      previous,
-      percentageChange: null,
-      changeValue: null,
-      periodFrom: utcMidnight(range.startDate),
-      periodTo: utcMidnight(range.endDate),
-    };
-  }
-  return toPeriodSummary(current, previous, range);
-}
 
 const medianTimeToReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
@@ -181,7 +136,7 @@ const medianTimeToReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       });
       const [currentRows, previousRows, seriesRows] = rows ?? [[], [], []];
       return {
-        summary: toDurationSummary(
+        summary: toNullablePeriodSummary(
           currentRows[0]?.medianTimeToReviewSeconds ?? null,
           previousRows[0]?.medianTimeToReviewSeconds ?? null,
           dates.current,
