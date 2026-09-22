@@ -23,6 +23,7 @@ All approved events for the Insights application. Use the exact `enum value` whe
 | `VIEW_MY_COLLECTIONS`              | `view-my-collections`              | `page`    | `View My Collections`              | —                                                            |
 | `DUPLICATE_COLLECTION`             | `duplicate-collection`             | `feature` | `Duplicate collections`            | `sourceCollectionId`, `newCollectionId`                      |
 | `ADD_PROJECT_TO_COLLECTION`        | `add-project-to-collection`        | `feature` | `Add project to collection`        | `collectionId`, `projectId`                                  |
+| `ADD_REPO_TO_COLLECTION`           | `add-repo-to-collection`           | `feature` | `Add repo to collection`           | `collectionId`, `repositoryUrls`                             |
 | `ABANDONED_COLLECTION_CREATION`    | `abandoned-collection-creation`    | `feature` | `Abandoned collection creation`    | —                                                            |
 | `ABANDONED_COLLECTION_DUPLICATION` | `abandoned-collection-duplication` | `feature` | `Abandoned collection duplication` | —                                                            |
 | `ABANDONED_COLLECTION_EDITION`     | `abandoned-collection-edition`     | `feature` | `Abandoned collection edition`     | `sourceCollectionId`                                         |

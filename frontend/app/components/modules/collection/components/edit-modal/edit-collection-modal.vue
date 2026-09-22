@@ -194,6 +194,14 @@ const handleCloseAttempt = (): boolean => {
 };
 
 const closeModal = () => {
+  if (hasUnsavedChanges.value && !completedSuccessfully.value) {
+    trackEvent({
+      key: CollectionsEventKey.ABANDONED_COLLECTION_EDITION,
+      properties: {
+        sourceCollectionId: props.collection?.id,
+      },
+    });
+  }
   if (originalForm.value) {
     form.value = JSON.parse(JSON.stringify(originalForm.value));
   }
@@ -259,6 +267,18 @@ const updateCollection = async () => {
 
       if (form.value.visibility !== originalForm.value.visibility) {
         changedFields.push('privacy');
+      }
+
+      const projectIds = form.value.projects.map((p) => p.id).sort();
+      const originalProjectIds = originalForm.value.projects.map((p) => p.id).sort();
+      if (JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds)) {
+        changedFields.push('projects');
+      }
+
+      const repositoryUrls = form.value.repositories.map((r) => r.url).sort();
+      const originalRepositoryUrls = originalForm.value.repositories.map((r) => r.url).sort();
+      if (JSON.stringify(repositoryUrls) !== JSON.stringify(originalRepositoryUrls)) {
+        changedFields.push('repositories');
       }
     }
 

@@ -30,11 +30,12 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     throw createError({ statusCode: 503, statusMessage: 'Database not available' });
   }
 
+  const user = event.context.user as { sub?: string } | undefined;
+
   const body = await readBody<{
     key?: string;
     type?: string;
     name?: string;
-    userId?: string;
     properties?: Record<string, unknown>;
     feature?: string;
     source?: string;
@@ -58,7 +59,7 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
       key: body.key.trim(),
       type: body.type.trim(),
       name: body.name.trim(),
-      userId: body.userId,
+      userId: user?.sub,
       properties: body.properties,
       feature: body.feature?.trim(),
       source: body.source?.trim(),
@@ -68,6 +69,6 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     return { success: true };
   } catch (error) {
     console.error('Unexpected error tracking event in POST /api/events', error);
-    throw createError({ statusCode: 500, statusMessage: 'Internal server error', data: { error } });
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });

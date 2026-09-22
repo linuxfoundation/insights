@@ -50,14 +50,15 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
 
       watch(
         isAuthenticated,
-        (authenticated) => {
+        (authenticated, wasAuthenticated) => {
           if (authenticated && user.value) {
             analytics.identify(user.value.sub, {
               name: user.value.name,
               email: user.value.email,
               username: user.value.username,
             });
-          } else {
+          } else if (wasAuthenticated) {
+            // Only reset on sign-out, not on initial unauthenticated page load.
             analytics.reset();
           }
         },

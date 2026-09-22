@@ -306,13 +306,23 @@ const addToCollection = async () => {
 
     await COLLECTIONS_API_SERVICE.updateCollection(collection.id, payload);
 
-    trackEvent({
-      key: CollectionsEventKey.ADD_PROJECT_TO_COLLECTION,
-      properties: {
-        collectionId: collection.id,
-        projectId: props.project.id,
-      },
-    });
+    if (hasRepositories.value) {
+      trackEvent({
+        key: CollectionsEventKey.ADD_REPO_TO_COLLECTION,
+        properties: {
+          collectionId: collection.id,
+          repositoryUrls: props.repositories!.map((r) => r.url),
+        },
+      });
+    } else {
+      trackEvent({
+        key: CollectionsEventKey.ADD_PROJECT_TO_COLLECTION,
+        properties: {
+          collectionId: collection.id,
+          projectId: props.project.id,
+        },
+      });
+    }
 
     queryClient.invalidateQueries({
       queryKey: [TanstackKey.COLLECTION_PROJECTS],

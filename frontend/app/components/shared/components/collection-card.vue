@@ -283,14 +283,6 @@ const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
 const projectCount = computed(() => (props.collection.projectCount || 0) + (props.collection.repositoryCount || 0));
 
 const handleShare = () => {
-  trackEvent({
-    key: CollectionsEventKey.SHARE_COLLECTION,
-    properties: {
-      collectionId: props.collection.id,
-      shareMethod: 'link',
-    },
-  });
-
   const title = `LFX Insights | Collections - ${props.collection.name}`;
 
   const resolvedRoute = router.resolve({
@@ -303,6 +295,15 @@ const handleShare = () => {
     url: url.toString(),
     title,
     area: props.collection.name,
+    onShare: (shareMethod) => {
+      trackEvent({
+        key: CollectionsEventKey.SHARE_COLLECTION,
+        properties: {
+          collectionId: props.collection.id,
+          shareMethod,
+        },
+      });
+    },
   });
 };
 

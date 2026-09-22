@@ -6,7 +6,6 @@ export interface TrackEventInput {
   key: string;
   type: string;
   name: string;
-  description?: string;
   userId?: string;
   properties?: Record<string, unknown>;
   feature?: string;

@@ -3,11 +3,10 @@
 import { useNuxtApp } from 'nuxt/app';
 
 import { EVENT_DEFINITIONS, type EventKey } from '~/components/shared/types/events';
-import { useAuth } from '~~/composables/useAuth';
+
+type TrackFn = (event: string, props?: Record<string, unknown>) => void;
 
 export function useTrackEvent() {
-  const { user } = useAuth();
-
   const trackEvent = ({
     key,
     properties,
@@ -23,7 +22,6 @@ export function useTrackEvent() {
       type: definition.type,
       name: definition.name,
       feature: definition.feature,
-      userId: user.value?.sub ?? undefined,
       source: window.location.href,
       entrySource: document.referrer || undefined,
       properties,
@@ -31,8 +29,7 @@ export function useTrackEvent() {
 
     // Track to Segment via analytics plugin
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { $track } = useNuxtApp() as any;
+      const { $track } = useNuxtApp() as ReturnType<typeof useNuxtApp> & { $track?: TrackFn };
       $track?.(definition.name, payload);
     } catch (err) {
       console.warn('[Segment] Failed to track event:', definition.key, err);

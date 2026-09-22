@@ -43,7 +43,7 @@ import {
   useSeoMeta,
 } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { computed, ref, watch, onServerPrefetch, onMounted } from 'vue';
+import { computed, ref, watch, onServerPrefetch } from 'vue';
 
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
@@ -281,12 +281,17 @@ useHead(getCollectionSchema(data));
 
 const { trackEvent } = useTrackEvent();
 
-onMounted(() => {
-  trackEvent({
-    key: CollectionsEventKey.VIEW_COLLECTION,
-    properties: {
-      collectionId: slug as string,
-    },
-  });
-});
+watch(
+  data,
+  (collection) => {
+    if (!collection) return;
+    trackEvent({
+      key: CollectionsEventKey.VIEW_COLLECTION,
+      properties: {
+        collectionId: collection.id,
+      },
+    });
+  },
+  { once: true },
+);
 </script>

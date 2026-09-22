@@ -53,7 +53,7 @@ trackEvent({
 });
 ```
 
-`name`, `type`, `description`, and `feature` are looked up automatically from `EVENT_DEFINITIONS` — **never pass them in the call**.
+`name`, `type`, and `feature` are looked up automatically from `EVENT_DEFINITIONS` — **never pass them in the call**.
 
 `source` (current URL) and `entrySource` (referrer) are captured **automatically** — never pass them manually.
 
@@ -187,7 +187,7 @@ Track each separately in the right order.
 1. Create `frontend/app/components/shared/types/events/<feature>.ts`:
 
    ```ts
-   import { EventFeature, EventType, type EventDefinition } from '.';
+   import { EventFeature, EventType, type EventDefinition } from './base';
 
    export enum MyFeatureEventKey {
      DO_THING = 'do-thing',
@@ -213,6 +213,6 @@ Track each separately in the right order.
    };
    ```
 
-3. Add `EventFeature.MY_FEATURE` to the `EventFeature` enum in `index.ts`.
+3. Add `EventFeature.MY_FEATURE` to the `EventFeature` enum in `base.ts`.
 
 4. Add the new events to `references/events-catalog.md` under a new section.
