@@ -63,13 +63,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
+import { computed } from 'vue';
+
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 
 const NAME_MAX_LENGTH = 50;
 const DESCRIPTION_MAX_LENGTH = 200;

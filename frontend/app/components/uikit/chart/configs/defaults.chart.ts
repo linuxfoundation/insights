@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { GaugeSeriesOption } from 'echarts';
-import { axisLabelFormatter } from '../helpers/formatters';
-import type { CategoryData } from '../types/ChartTypes';
+
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
+
+import { axisLabelFormatter } from '../helpers/formatters';
+import type { CategoryData } from '../types/ChartTypes';
 
 const defaultOption: ECOption = {
   grid: {

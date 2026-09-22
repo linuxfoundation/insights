@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ScheduleAlreadyRunning, ScheduleOverlapPolicy } from '@temporalio/client'
+import { ScheduleAlreadyRunning, ScheduleOverlapPolicy } from '@temporalio/client';
 
-import { svc } from '../main'
-import { monthlySearchVolumeUpdateWorkflow } from '../workflows/monthlySearchVolumeUpdate'
+import { svc } from '../main';
+import { monthlySearchVolumeUpdateWorkflow } from '../workflows/monthlySearchVolumeUpdate';
 
 export async function scheduleMonthlySearchVolumeUpdate() {
   try {
@@ -31,17 +31,15 @@ export async function scheduleMonthlySearchVolumeUpdate() {
           backoffCoefficient: 2,
           maximumAttempts: 3,
         },
-        args: [{
-
-        }],
+        args: [{}],
       },
-    })
+    });
   } catch (err) {
     if (err instanceof ScheduleAlreadyRunning) {
-      svc.log.info('Search Volume schedule already registered in Temporal.')
-      svc.log.info('Configuration may have changed since. Please make sure they are in sync.')
+      svc.log.info('Search Volume schedule already registered in Temporal.');
+      svc.log.info('Configuration may have changed since. Please make sure they are in sync.');
     } else {
-      throw new Error(err)
+      throw new Error(err);
     }
   }
 }

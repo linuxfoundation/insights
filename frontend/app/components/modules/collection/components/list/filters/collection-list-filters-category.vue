@@ -61,14 +61,15 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
-import LfxDropdownSubmenu from '~/components/uikit/dropdown/dropdown-submenu.vue';
+
 import LfxCollectionListCategoryOptions from '~/components/modules/collection/components/list/filters/collection-list-filters-category-options.vue';
 import type { CategoryGroupOptions } from '~/components/modules/collection/services/collections.api.service';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxDropdownSubmenu from '~/components/uikit/dropdown/dropdown-submenu.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   modelValue: string;

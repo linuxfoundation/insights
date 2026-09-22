@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { getCookie } from 'h3';
+
 import { verifyOrRefreshOidcToken } from '~~/server/utils/auth-refresh';
 
 export default defineEventHandler(async (event) => {

@@ -13,6 +13,7 @@ import type { QueryFunction } from '@tanstack/vue-query';
 import { useQuery } from '@tanstack/vue-query';
 import type { ComputedRef } from 'vue';
 import { computed } from 'vue';
+
 import type {
   HealthScoreCoverageBandsData,
   HealthScoreCoverageScope,

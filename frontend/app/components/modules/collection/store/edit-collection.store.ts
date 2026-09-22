@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+
 import type { Collection } from '~~/types/collection';
 
 export interface EditCollectionData {

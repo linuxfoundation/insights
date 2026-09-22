@@ -2,34 +2,38 @@ set -e
 
 ROOT="$(git rev-parse --show-toplevel)"
 
-# Unset git's own worktree env vars: git sets these to an absolute path when
-# invoking hooks, which makes `git diff --relative` below resolve relative to
-# the wrong directory after `cd frontend` in a linked worktree (a plain clone
-# has no such vars, so the bug never showed up there). Unsetting forces git to
-# re-derive them from cwd instead.
+# git sets these to absolute paths when invoking hooks, which breaks path resolution in linked worktrees
 unset GIT_DIR GIT_WORK_TREE
 
-#run husky pre-commit hook only if frontend changed
-if git diff --name-only --cached | grep '^frontend/';
-  then
-    echo "FRONTEND FOLDER CHANGED --> starting husky..."
-    cd frontend
-    ESLINT_FILES=$(git diff --name-only --diff-filter=d --cached --relative | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$' | tr '\n' ' ')
-    if [ -n "$ESLINT_FILES" ]; then
-      pnpm exec eslint --fix $ESLINT_FILES
-      git add -u $(git diff --name-only --diff-filter=d --cached --relative | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$')
-    fi
-    pnpm tsc-check
-    cd "$ROOT"
+# oxlint runs from the repo root and covers every package, so only the staged files need checking
+LINT_FILES=$(git diff --name-only --diff-filter=d --cached | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$' | tr '\n' ' ')
+if [ -n "$LINT_FILES" ]; then
+  pnpm exec oxlint --fix --no-error-on-unmatched-pattern $LINT_FILES
+  git add $LINT_FILES
 fi
 
-if git diff --name-only --cached | grep '^api/';
-  then
-    echo "API FOLDER CHANGED --> running api checks..."
-    cd "$ROOT/api"
-    pnpm lint
-    pnpm tsc-check
-    cd "$ROOT"
+# oxfmt also covers json, markdown, yaml, styles, html and toml, so its staged-file list is wider
+FORMAT_FILES=$(git diff --name-only --diff-filter=d --cached | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue|json|jsonc|md|yml|yaml|css|scss|html|toml)$' | tr '\n' ' ')
+if [ -n "$FORMAT_FILES" ]; then
+  pnpm exec oxfmt --no-error-on-unmatched-pattern $FORMAT_FILES
+  # only re-stage when lintable files are also staged, see the GPG index race note below
+  if [ -n "$LINT_FILES" ]; then
+    git add $FORMAT_FILES
+  fi
+fi
+
+if git diff --name-only --cached | grep -q '^frontend/'; then
+  echo "FRONTEND FOLDER CHANGED --> running tsc-check..."
+  cd frontend
+  pnpm tsc-check
+  cd "$ROOT"
+fi
+
+if git diff --name-only --cached | grep -q '^api/'; then
+  echo "API FOLDER CHANGED --> running tsc-check..."
+  cd api
+  pnpm tsc-check
+  cd "$ROOT"
 fi
 
 #run lint-staged to add copyright license on top of all new files
@@ -40,9 +44,8 @@ fi
 # every staged file (disk content intact). Skipping it when there is no
 # matching work eliminates that race.
 #
-# Similarly, `git add -u` (which re-stages eslint --fix output) is now
-# inside the eslint guard above, so it also only runs when lintable files
-# are present — removing the other vector for the same GPG index race.
+# Similarly, both `git add` calls above only run when lintable files are present,
+# removing the other vector for the same GPG index race.
 if git diff --name-only --cached | grep -qE '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$'; then
   pnpm exec lint-staged --no-stash
 fi

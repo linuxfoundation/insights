@@ -48,6 +48,7 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
 import LfxIcon from '~/components/uikit/icon/icon.vue';

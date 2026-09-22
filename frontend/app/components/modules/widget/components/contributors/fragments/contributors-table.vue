@@ -119,15 +119,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
-import type { Contributor } from '~~/types/contributors/responses.types';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Contributor } from '~~/types/contributors/responses.types';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 

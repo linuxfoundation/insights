@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchHealthScoreCoverageGlance } from '~~/server/data/tinybird/report/health-score-coverage';
-import type { HealthScoreCoverageGlanceData } from '~~/types/report/health-score-coverage.types';
 import { logError } from '~~/server/utils/log';
+import type { HealthScoreCoverageGlanceData } from '~~/types/report/health-score-coverage.types';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageGlanceData> => {
   try {

@@ -102,6 +102,7 @@ Prompt for the agent:
 > Also read `.claude/hooks/guard-protected-files.sh` and parse its `case`/`if` patterns. For every changed file matching a protected pattern, emit a NIT finding with the hook's warning reason.
 >
 > **Severity calibration:**
+>
 > - **CRITICAL** — runtime bugs, security issues, secrets in code, broken auth, missing `createError` for HTTP errors
 > - **SHOULD_FIX** — documented style/structure violations (raw HTML instead of uikit, Options API, missing license headers, `space-y-*` instead of `gap-*`, `any` type, inline DB queries instead of repo pattern)
 > - **NIT** — minor improvements, naming, protected-file awareness
@@ -126,10 +127,10 @@ Check whether previously raised review comments were actually addressed in code.
 4. Build a markdown table:
 
 ```markdown
-| #   | Comment Summary          | File                        | Status    | Evidence                     |
-| --- | ------------------------ | --------------------------- | --------- | ---------------------------- |
-| 1   | Use lfx-button not button | app/components/Foo.vue      | FIXED     | Line 12 now uses lfx-button  |
-| 2   | Missing license header   | server/api/projects.get.ts  | NOT FIXED | File still has no header     |
+| #   | Comment Summary           | File                       | Status    | Evidence                    |
+| --- | ------------------------- | -------------------------- | --------- | --------------------------- |
+| 1   | Use lfx-button not button | app/components/Foo.vue     | FIXED     | Line 12 now uses lfx-button |
+| 2   | Missing license header    | server/api/projects.get.ts | NOT FIXED | File still has no header    |
 ```
 
 If no previous review comments, note "No previous review comments found" and move on.
@@ -150,9 +151,11 @@ Validates PR metadata against `commit-workflow.md`.
 3. **JIRA ticket reference** — at least one commit message or the PR body should reference an `IN-XXX` ticket. Extract with `grep -oE 'IN-[0-9]+'`. If none, flag SHOULD FIX.
 
 4. **Branch rebased on main**:
+
    ```bash
    git merge-base --is-ancestor origin/main origin/<headRefName>
    ```
+
    If non-zero exit code, flag SHOULD FIX: branch needs a rebase.
 
 5. **PR size** — if `additions > 1000`, note per `commit-workflow.md`'s 1000-line target.
@@ -160,13 +163,13 @@ Validates PR metadata against `commit-workflow.md`.
 Build a findings table:
 
 ```markdown
-| Check           | Status | Detail                                     |
-| --------------- | ------ | ------------------------------------------ |
-| PR title format | PASS   | `feat(auth): add token refresh`            |
-| Branch name     | PASS   | `feat/IN-1234`                             |
-| JIRA ticket     | PASS   | Found IN-1234 in commits                   |
-| Branch rebased  | PASS   | origin/main is an ancestor                 |
-| PR size         | PASS   | 342 additions                              |
+| Check           | Status | Detail                          |
+| --------------- | ------ | ------------------------------- |
+| PR title format | PASS   | `feat(auth): add token refresh` |
+| Branch name     | PASS   | `feat/IN-1234`                  |
+| JIRA ticket     | PASS   | Found IN-1234 in commits        |
+| Branch rebased  | PASS   | origin/main is an ancestor      |
+| PR size         | PASS   | 342 additions                   |
 ```
 
 ---
@@ -178,6 +181,7 @@ Wait for the Phase 2 enforcer Agent to complete. Then compile all findings.
 ### Apply false-positive filter
 
 Before surfacing any finding, drop it if:
+
 - The `rule` field cannot be matched by string search in the loaded rule files, checklists, or hook
 - It relates to a pattern that doesn't exist in this codebase (e.g. Angular-specific rules)
 

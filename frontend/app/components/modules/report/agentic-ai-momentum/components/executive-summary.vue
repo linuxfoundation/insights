@@ -192,11 +192,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { formatNumber, formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
+
 import { getResearchTopicLabel } from '~/components/modules/report/agentic-ai-momentum/config/layer-colors';
+import { formatNumber, formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import type {
   AgenticGlanceData,
   ResearchPapersData,

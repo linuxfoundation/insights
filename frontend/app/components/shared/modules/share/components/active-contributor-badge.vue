@@ -33,19 +33,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { DateTime } from 'luxon';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { DateTime } from 'luxon';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import { computed } from 'vue';
+
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import useToastService from '~/components/uikit/toast/toast.service';
-import { SHARE_API_SERVICE } from '~~/app/components/shared/modules/share/store/share.api.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumberShort } from '~/components/shared/utils/formatter';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import { SHARE_API_SERVICE } from '~~/app/components/shared/modules/share/store/share.api.service';
 import { getBadgeUrl } from '~~/config/trust-score';
 
 const emit = defineEmits<{ (e: 'copied'): void }>();

@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ReportRequest } from '~~/types/report/requests.types';
-import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { createGitHubIssue } from '~~/server/data/github/github.api';
 import { createJiraIssue } from '~~/server/data/jira/jira.api';
 import { getAuthUsername } from '~~/server/utils/common';
 import { logError } from '~~/server/utils/log';
 import { buildIssueTitle, buildIssueBody, buildJiraDescription } from '~~/server/utils/report';
+import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import type { ReportRequest } from '~~/types/report/requests.types';
 
 export default defineEventHandler(async (event): Promise<string> => {
   const body: ReportRequest = await readBody(event);

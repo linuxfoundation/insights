@@ -82,27 +82,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
-import LfEditModalSettings from './edit-modal-settings.vue';
-import LfEditModalProjects from './edit-modal-projects.vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { Collection } from '~~/types/collection';
-import type { ProjectInsights } from '~~/types/project';
-import type { Pagination } from '~~/types/shared/pagination';
+import { computed, ref, watch } from 'vue';
+
 import type {
   CreateCollectionForm,
   CollectionProject,
   CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import type { Collection } from '~~/types/collection';
+import type { ProjectInsights } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
+
+import LfEditModalProjects from './edit-modal-projects.vue';
+import LfEditModalSettings from './edit-modal-settings.vue';
 
 interface Tab {
   value: 'settings' | 'projects';

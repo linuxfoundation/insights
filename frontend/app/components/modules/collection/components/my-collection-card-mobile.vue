@@ -82,21 +82,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import { computed } from 'vue';
+
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import type { Collection, CollectionFeaturedProject } from '~~/types/collection';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import type { Collection, CollectionFeaturedProject } from '~~/types/collection';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();

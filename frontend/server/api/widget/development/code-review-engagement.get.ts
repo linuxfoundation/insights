@@ -1,13 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
+
 import { Granularity } from '@lfx-insights/types';
 import { createDataSource } from '~~/server/data/data-sources';
+import { getWidgetScope } from '~~/server/utils/common';
 import type {
   CodeReviewEngagementFilter,
   CodeReviewEngagementMetric,
 } from '~~/types/development/requests.types';
-import { getWidgetScope } from '~~/server/utils/common';
 
 /**
  * Frontend expects the data to be in the following format:

@@ -51,13 +51,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { url } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+import { url } from '@vuelidate/validators';
+
+import LfxYamlRepositoryStatus from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
-import LfxYamlRepositoryStatus from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue';
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 
 const props = defineProps<{
   modelValue: object;

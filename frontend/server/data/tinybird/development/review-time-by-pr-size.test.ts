@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
-import { mockReviewTimeByPRSizeData } from '../../../mocks/tinybird-review-time-by-pr-size-response.mock';
-import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import type { ReviewTimeByPRSizeFilter } from '~~/server/data/types';
+import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
+
+import { mockReviewTimeByPRSizeData } from '../../../mocks/tinybird-review-time-by-pr-size-response.mock';
 
 const mockFetchFromTinybird = vi.fn();
 

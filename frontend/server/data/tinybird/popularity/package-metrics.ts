@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: MIT
 import type { DateTime } from 'luxon';
 
-import type { PackageMetricsFilter } from '../../types';
-import { fetchFromTinybird } from '../tinybird';
+import { getPreviousDates } from '~~/server/data/util';
 import type { PackageMetrics } from '~~/types/popularity/responses.types';
 
-import { getPreviousDates } from '~~/server/data/util';
+import type { PackageMetricsFilter } from '../../types';
+import { fetchFromTinybird } from '../tinybird';
 
 export type PackageDownloadsResponse = {
   summary: {

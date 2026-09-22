@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
+
 import { ActivityTypes, ActivityPlatforms } from '@lfx-insights/types';
 import { createDataSource } from '~~/server/data/data-sources';
 import type { ContributorDependencyFilter } from '~~/server/data/types';

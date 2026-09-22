@@ -57,15 +57,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
 import { useMediaQuery } from '@vueuse/core';
-import { fetchHealthScoreCoverageSignalScoresQuery } from '../services/signal-scores.query';
+import { computed, onServerPrefetch } from 'vue';
+
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { SIGNAL_SCORE_PERCENTILES } from '~~/types/report/health-score-coverage-signal-scores.types';
 import type { HealthScoreCoverageSignalScore } from '~~/types/report/health-score-coverage-signal-scores.types';
+
+import { fetchHealthScoreCoverageSignalScoresQuery } from '../services/signal-scores.query';
 
 // Matches the `md` breakpoint in tailwind.config.js - below it, row labels switch from full text to
 // a fixed left gutter, otherwise the hardcoded 320px label column leaves almost no room for the

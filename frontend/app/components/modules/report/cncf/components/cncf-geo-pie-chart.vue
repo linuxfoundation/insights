@@ -17,11 +17,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import type { GeoDistributionDataPoint } from '~~/types/report/cncf.types';
-import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
+
 import { getCountryColor } from '~/components/modules/report/cncf/config/country-colors';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { lfxColors } from '~/config/styles/colors';
+import type { GeoDistributionDataPoint } from '~~/types/report/cncf.types';
 
 const props = defineProps<{
   data: GeoDistributionDataPoint[];

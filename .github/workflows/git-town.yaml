@@ -3,7 +3,7 @@ name: Git Town
 on:
   pull_request:
     branches:
-      - '**'
+      - "**"
 
 jobs:
   git-town:

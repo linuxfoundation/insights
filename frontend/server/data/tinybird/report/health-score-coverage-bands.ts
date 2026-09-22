@@ -5,13 +5,14 @@
 // server/data/tinybird/report/health-score-coverage.ts file for the same merge-order reason as
 // the types file next to it - see health-score-coverage-bands.types.ts.
 
-import { fetchFromTinybird } from '../tinybird';
 import type {
   HealthScoreCoverageBandCount,
   HealthScoreCoverageBandsData,
   HealthScoreCoverageBandsRow,
   HealthScoreCoverageScope,
 } from '~~/types/report/health-score-coverage-bands.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 // Fixed display order per the design: Excellent, Healthy, Fair, Concerning, Critical.
 const BAND_ORDER = ['excellent', 'healthy', 'fair', 'concerning', 'critical'] as const;

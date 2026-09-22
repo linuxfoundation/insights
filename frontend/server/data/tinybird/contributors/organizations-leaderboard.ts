@@ -1,13 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { OrganizationsLeaderboardFilter } from '~~/server/data/types';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { OrganizationsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 import type {
   TinybirdCountData,
   TinybirdOrganizationsLeaderboardData,
 } from '~~/server/data/tinybird/responses.types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { OrganizationsLeaderboardFilter } from '~~/server/data/types';
 import type { Organization, OrganizationLeaderboard } from '~~/types/contributors/responses.types';
-import type { OrganizationsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 export async function fetchOrganizationsLeaderboard(
   filter: OrganizationsLeaderboardFilter,
@@ -33,8 +33,8 @@ export async function fetchOrganizationsLeaderboard(
 
   const path = '/v0/pipes/organizations_leaderboard.json';
   const [dataResponse, countResponse] = await Promise.all([
-    await fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(path, dataQuery),
-    await fetchFromTinybird<TinybirdCountData[]>(path, countQuery),
+    fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(path, dataQuery),
+    fetchFromTinybird<TinybirdCountData[]>(path, countQuery),
   ]);
 
   return {

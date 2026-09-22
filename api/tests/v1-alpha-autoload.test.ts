@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 import { readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
 import { buildApp } from '../src/app.js';
 
 describe('v1-alpha development route autoload', () => {

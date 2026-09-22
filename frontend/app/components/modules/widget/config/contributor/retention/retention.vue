@@ -46,27 +46,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { DateTime } from 'luxon';
+import { storeToRefs } from 'pinia';
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import { DateTime } from 'luxon';
+
 import { Granularity } from '@lfx-insights/types';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import type { Retention } from '~~/types/contributors/responses.types';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
 import {
   CONTRIBUTORS_API_SERVICE,
   type RetentionQueryParams,
 } from '~~/app/components/modules/widget/services/contributors.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type { Retention } from '~~/types/contributors/responses.types';
 
 interface RetentionModel extends WidgetModel {
   activeTab: string;

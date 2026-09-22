@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { useQuery } from '@tanstack/vue-query';
 import { useRequestURL } from 'nuxt/app';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   AgenticDataResponse,

@@ -19,12 +19,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { WidgetBenchmarkConfig, WidgetModel } from '~~/app/components/modules/widget/config/widget.config';
+import { computed } from 'vue';
+
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import LfxBenchmark from '~/components/uikit/benchmarks/benchmarks.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { WidgetBenchmarkConfig, WidgetModel } from '~~/app/components/modules/widget/config/widget.config';
 
 const props = withDefaults(
   defineProps<{

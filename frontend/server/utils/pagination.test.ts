@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { describe, it, expect } from 'vitest';
+
 import { paginationTotal, paginationHasMore } from './pagination';
 
 describe('paginationTotal', () => {

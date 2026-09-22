@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { reactive } from 'vue';
-import { email, required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+import { email, required } from '@vuelidate/validators';
+import { reactive } from 'vue';
+
 import LfxInput from '../input/input.vue';
 import LfxFieldMessages from './field-messages.vue';
 import LfxField from './field.vue';

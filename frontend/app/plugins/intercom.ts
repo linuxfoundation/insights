@@ -3,6 +3,7 @@
 
 import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app';
 import { watch } from 'vue';
+
 import { useAuth } from '~~/composables/useAuth';
 
 declare global {

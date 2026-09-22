@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+
 import { type User } from '~~/types/auth/auth-user.types';
 
 export const useAuthStore = defineStore('auth', () => {

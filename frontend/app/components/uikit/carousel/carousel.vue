@@ -70,8 +70,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts" generic="T">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import type { CarouselProps } from './types/carousel.types';
+
 import LfxCarouselNavigation from './carousel-navigation.vue';
+import type { CarouselProps } from './types/carousel.types';
 
 const props = withDefaults(defineProps<CarouselProps<T>>(), {
   circular: false,

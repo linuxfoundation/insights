@@ -83,15 +83,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import LfxDropdownGroupTitle from '~/components/uikit/dropdown/dropdown-group-title.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 import LfxDropdownSearch from '~/components/uikit/dropdown/dropdown-search.vue';
-import type { Package } from '~~/types/popularity/responses.types';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { ecosystems } from '~~/app/config/ecosystems';
+import type { Package } from '~~/types/popularity/responses.types';
 import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
 
 const props = withDefaults(

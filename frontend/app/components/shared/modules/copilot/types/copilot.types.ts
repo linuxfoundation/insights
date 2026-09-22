@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Widget } from '~/components/modules/widget/types/widget';
-import type { Project } from '~~/types/project';
 import type { Config } from '~~/lib/chat/chart/types';
+import type { Project } from '~~/types/project';
 
 export interface CopilotData {
   widget?: Widget;
@@ -16,7 +16,12 @@ export interface CopilotData {
 export type CopilotParams = Record<string, string | number | null>;
 
 export type MessagePartType =
-  'router-status' | 'sql-result' | 'text' | 'pipe-result' | 'chat-response-id' | 'conversation-id';
+  | 'router-status'
+  | 'sql-result'
+  | 'text'
+  | 'pipe-result'
+  | 'chat-response-id'
+  | 'conversation-id';
 export type MessageStatus = 'analyzing' | 'complete' | 'error' | 'ask_clarification';
 export type MessageData = Record<string, string | number | null | string[] | object>;
 export type MessageRole = 'user' | 'assistant';

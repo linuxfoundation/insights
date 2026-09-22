@@ -38,10 +38,12 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import type { MessageData } from '../../types/copilot.types';
+
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import type { MessageData } from '../../types/copilot.types';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;

@@ -69,19 +69,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+import { computed, onServerPrefetch } from 'vue';
+
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
-import LfxProjectTrustScoreV2 from '~/components/modules/project/components/overview/trust-score-v2.vue';
 import LfxHealthBreakdownSection from '~/components/modules/project/components/overview/health-breakdown-section.vue';
+import LfxProjectTrustScoreV2 from '~/components/modules/project/components/overview/trust-score-v2.vue';
 // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 // import LfxImpactBreakdownSection from '~/components/modules/project/components/overview/impact-breakdown-section.vue';
-import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxHealthScoreBanner from '~/components/modules/project/components/overview/health-score-banner.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 
 const route = useRoute();
 const {

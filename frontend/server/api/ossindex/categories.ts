@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { OSSIndexCategoryTinybird } from '~~/types/ossindex/category';
 import type { CategoryGroup } from '~~/types/category/category-group';
+import type { OSSIndexCategoryTinybird } from '~~/types/ossindex/category';
 import type { OSSIndexCategoryGroupDetails } from '~~/types/ossindex/category-group';
 
 /**

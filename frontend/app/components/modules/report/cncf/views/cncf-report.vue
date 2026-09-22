@@ -142,26 +142,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, type ComputedRef } from 'vue';
 import { DateTime } from 'luxon';
-import { EUROPEAN_COUNTRY_CODES, EUROPE_AGGREGATE } from '../config/european-countries';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { ref, computed, watch, type ComputedRef } from 'vue';
+
+import LfxCncfGeoPieChart from '~/components/modules/report/cncf/components/cncf-geo-pie-chart.vue';
+import LfxCncfGeoStackedChart from '~/components/modules/report/cncf/components/cncf-geo-stacked-chart.vue';
+import { CNCF_REPORT_API_SERVICE } from '~/components/modules/report/cncf/services/cncf-report.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxCncfGeoStackedChart from '~/components/modules/report/cncf/components/cncf-geo-stacked-chart.vue';
-import LfxCncfGeoPieChart from '~/components/modules/report/cncf/components/cncf-geo-pie-chart.vue';
-import { CNCF_REPORT_API_SERVICE } from '~/components/modules/report/cncf/services/cncf-report.api.service';
 import type {
   CncfGeoDistributionOverTimeQueryParams,
   CncfGeoDistributionQueryParams,
   GeoDistributionOverTimeDataPoint,
 } from '~~/types/report/cncf.types';
+
+import { EUROPEAN_COUNTRY_CODES, EUROPE_AGGREGATE } from '../config/european-countries';
 
 const COLLECTION = 'cncf';
 const now = DateTime.local();

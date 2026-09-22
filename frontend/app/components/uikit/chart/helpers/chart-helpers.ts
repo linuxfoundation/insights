@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { graphic } from 'echarts';
 import { DateTime, Interval } from 'luxon';
+
 import { Granularity } from '@lfx-insights/types';
+
 import type {
   ChartData,
   ChartSeries,

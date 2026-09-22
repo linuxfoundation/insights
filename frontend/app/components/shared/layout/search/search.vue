@@ -45,10 +45,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { watch } from 'vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+
 import LfxSearchModal from '~/components/shared/layout/search/search-modal.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 
 const route = useRoute();
 

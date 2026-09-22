@@ -30,9 +30,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { DeltaDisplayProps } from './types/delta-display.types';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { formatNumber, formatNumberShort, formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import type { DeltaDisplayProps } from './types/delta-display.types';
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   isReverse: false,

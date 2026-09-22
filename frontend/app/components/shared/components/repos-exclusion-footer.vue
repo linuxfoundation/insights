@@ -20,10 +20,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed } from 'vue';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   pageContent: 'health-score' | 'security';

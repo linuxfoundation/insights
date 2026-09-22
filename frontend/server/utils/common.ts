@@ -35,7 +35,8 @@ export function getBooleanQueryParam(
 }
 
 export type WidgetScope =
-  { project: string; collectionSlug?: undefined } | { project?: undefined; collectionSlug: string };
+  | { project: string; collectionSlug?: undefined }
+  | { project?: undefined; collectionSlug: string };
 
 /**
  * Every /api/widget/... route is scoped to either a single project or a whole collection,

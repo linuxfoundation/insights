@@ -22,9 +22,11 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+
 import { copilotApiService } from '../../store/copilot.api.service';
 import LfxFeedbackButton from './feedback-button.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   id: string;

@@ -1,15 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import { ActivityTypes, ActivityPlatforms } from '@lfx-insights/types';
+import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
+import type { ContributorLeaderboard } from '~~/types/contributors/responses.types';
+
 import {
   mockTimeseries,
   mockContributorsLeaderboardCount,
 } from '../../../mocks/tinybird-contributors-leaderboard-response.mock';
-import type { ContributorLeaderboard } from '~~/types/contributors/responses.types';
-import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
-import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 describe('Contributors Leaderboard Data Source', () => {
   const mockFetchFromTinybird = vi.fn();

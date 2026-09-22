@@ -3,9 +3,9 @@
 
 import { BadgeTier } from '../types/badge.types';
 import { blackTierConfig } from './tiers/black.config';
+import { bronzeTierConfig } from './tiers/bronze.config';
 import { goldTierConfig } from './tiers/gold.config';
 import { silverTierConfig } from './tiers/silver.config';
-import { bronzeTierConfig } from './tiers/bronze.config';
 
 export interface TierConfig {
   label: string;

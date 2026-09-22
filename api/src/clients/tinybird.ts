@@ -1,12 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { FastifyRequest } from 'fastify';
+
 import {
   createTinybirdClient,
   TinybirdInvalidResponseError,
   type TinybirdClient,
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
+
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 

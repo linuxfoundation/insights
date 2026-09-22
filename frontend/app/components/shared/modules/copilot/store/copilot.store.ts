@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { CopilotData, ResultsHistory } from '../types/copilot.types';
+
 import { Widget } from '~/components/modules/widget/types/widget';
+
+import type { CopilotData, ResultsHistory } from '../types/copilot.types';
 
 const defaultData: CopilotData = {
   widget: Widget.ACTIVE_CONTRIBUTORS,

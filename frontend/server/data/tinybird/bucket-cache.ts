@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { TinybirdInvalidResponseError } from '@lfx-insights/tinybird-client';
+
 import type { TinybirdResponse } from './tinybird';
 
 /**

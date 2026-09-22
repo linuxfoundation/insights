@@ -1,21 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { defineStore } from 'pinia';
-import { ref, computed, watch } from 'vue';
-import { useRouter } from 'nuxt/app';
 import { DateTime } from 'luxon';
+import { useRouter } from 'nuxt/app';
+import { defineStore } from 'pinia';
 import pluralize from 'pluralize';
+import { ref, computed, watch } from 'vue';
+
 import { Granularity } from '@lfx-insights/types';
 import {
   dateOptKeys,
   lfxProjectDateOptions,
 } from '~/components/modules/project/config/date-options';
-import type { Project, ProjectRepository, ProjectRepositoryGroup } from '~~/types/project';
-import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
   processProjectParams,
   projectParamsSetter,
 } from '~/components/modules/project/services/project.query.service';
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import type { Project, ProjectRepository, ProjectRepositoryGroup } from '~~/types/project';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null

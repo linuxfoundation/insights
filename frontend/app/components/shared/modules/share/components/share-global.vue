@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
+
 import LfxShareModal from '~/components/shared/modules/share/components/share-modal.vue';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 

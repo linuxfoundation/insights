@@ -63,24 +63,25 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import type { Collection, CollectionType } from '~~/types/collection';
-import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { computed, ref } from 'vue';
+
+import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxButton from '~/components/uikit/button/button.vue';
+import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import type { ButtonType } from '~/components/uikit/button/types/button.types';
-import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
-import LfxCollectionAuthWall from '~/components/modules/collection/components/auth-wall/collection-auth-wall.vue';
 import { useAuth } from '~~/composables/useAuth';
+import type { Collection, CollectionType } from '~~/types/collection';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();

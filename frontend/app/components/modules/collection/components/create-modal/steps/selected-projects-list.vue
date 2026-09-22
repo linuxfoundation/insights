@@ -99,14 +99,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type {
   CollectionProject,
   CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
-import { getRepoNameFromUrl } from '~~/server/helpers/repository.helpers';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { getRepoNameFromUrl } from '~~/server/helpers/repository.helpers';
 
 defineProps<{
   projects: CollectionProject[];

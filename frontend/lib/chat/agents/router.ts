@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { routerPrompt } from '../prompts/router';
 import type { RouterOutput, RouterAgentInput } from '../types';
 import { routerOutputSchema } from '../types';
-import { routerPrompt } from '../prompts/router';
 import { BaseAgent } from './base-agent';
 
 export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {

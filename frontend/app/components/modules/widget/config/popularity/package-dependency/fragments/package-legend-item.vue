@@ -28,8 +28,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
-import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import type { Summary } from '~~/types/shared/summary.types';
 
 const props = defineProps<{
   title: string;

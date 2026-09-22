@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
+import type { Project } from '~~/types/project';
+
 import type {
   AIMessage,
   MessageData,
@@ -10,7 +12,6 @@ import type {
   MessageStatus,
 } from '../types/copilot.types';
 import type { CopilotParams } from '../types/copilot.types';
-import type { Project } from '~~/types/project';
 
 class CopilotApiService {
   // Generate unique ID for messages

@@ -228,37 +228,38 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { useRoute } from 'nuxt/app';
-import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import pluralize from 'pluralize';
-import type { Project, ProjectRepository } from '~~/types/project';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
-import LfxBack from '~/components/uikit/back/back.vue';
+import { computed, ref } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
+import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
+import LfxProjectFeaturedInCollection from '~/components/modules/project/components/shared/header/collection-information/featured-in-collection.vue';
 import LfxProjectDateRangePicker from '~/components/modules/project/components/shared/header/date-range-picker.vue';
-import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
-import useResponsive from '~/components/shared/utils/responsive';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import LfxProjectMenu from '~/components/modules/project/components/shared/header/project-menu.vue';
+import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import { useReportStore } from '~/components/shared/modules/report/store/report.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
-import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
-import LfxProjectFeaturedInCollection from '~/components/modules/project/components/shared/header/collection-information/featured-in-collection.vue';
+import useResponsive from '~/components/shared/utils/responsive';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxBack from '~/components/uikit/back/back.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useAuth } from '~~/composables/useAuth';
-import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
+import type { Project, ProjectRepository } from '~~/types/project';
 
 const props = defineProps<{
   project?: Project;

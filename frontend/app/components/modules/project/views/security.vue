@@ -153,29 +153,30 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, onServerPrefetch, ref } from 'vue';
+
+import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
 // import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
-import LfxProjectSecurityEvaluationSectionRow from '~/components/modules/project/components/security/evaluation-section-row.vue';
-import LfxProjectSecurityEvaluationSectionAccordion from '~/components/modules/project/components/security/evaluation-section-accordion.vue';
-import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import type { SecurityData } from '~~/types/security/responses.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
-import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
-import LfxEmptyState from '~/components/shared/components/empty-state.vue';
-import LfxProjectSecurityGenerateYamlSection from '~/components/modules/project/components/security/generate-yaml-section.vue';
-import LfxProjectSecurityControlAssessmentHead from '~/components/modules/project/components/security/control-assessment-head.vue';
-import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
-import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
-import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
-import LfxProjectVulnerabilitiesSection from '~/components/modules/project/components/vulnerabilities/vulnerabilities-section.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxProjectSecurityControlAssessmentHead from '~/components/modules/project/components/security/control-assessment-head.vue';
+import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
+import LfxProjectSecurityEvaluationSectionAccordion from '~/components/modules/project/components/security/evaluation-section-accordion.vue';
+import LfxProjectSecurityEvaluationSectionRow from '~/components/modules/project/components/security/evaluation-section-row.vue';
+import LfxProjectSecurityGenerateYamlSection from '~/components/modules/project/components/security/generate-yaml-section.vue';
+import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
+import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
 import LfxAuthWallVulnerabilities from '~/components/modules/project/components/vulnerabilities/auth-wall-vulnerabilities.vue';
+import LfxProjectVulnerabilitiesSection from '~/components/modules/project/components/vulnerabilities/vulnerabilities-section.vue';
+import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
+import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 const isSearchRepoModalOpen = ref(false);
 

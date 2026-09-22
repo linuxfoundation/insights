@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+
 import { getYaml } from '~/components/modules/project/services/js-yaml';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 

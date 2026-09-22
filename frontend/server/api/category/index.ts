@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { Pagination } from '~~/types/shared/pagination';
-import type { CategoryGroup } from '~~/types/category';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { CategoryGroup } from '~~/types/category';
 import type { Category } from '~~/types/category/category';
+import type { Pagination } from '~~/types/shared/pagination';
 
 /**
  * API Endpoint: /api/category

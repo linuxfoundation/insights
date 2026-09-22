@@ -66,17 +66,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import type { SecurityData } from '~~/types/security/responses.types';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import { lfxSecurityCategories } from '~/components/modules/project/config/security-category';
+import { computed } from 'vue';
+
 import LfxProjectSecurityPaginatedEvalRepos from '~/components/modules/project/components/security/paginated-eval-repos.vue';
-import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import { lfxSecurityCategories } from '~/components/modules/project/config/security-category';
 import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;

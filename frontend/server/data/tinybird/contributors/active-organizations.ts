@@ -9,6 +9,7 @@ let's refactor it to return the data in a more generic format.
  */
 
 import type { DateTime } from 'luxon';
+
 import type { ActiveOrganizationsFilter } from '../../types';
 import { getPreviousDates } from '../../util';
 import type { TinybirdResponse } from '../tinybird';

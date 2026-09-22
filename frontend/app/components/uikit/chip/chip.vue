@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
 import type { ChipSize, ChipType } from './types/chip.types';
 
 const props = withDefaults(

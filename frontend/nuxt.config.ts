@@ -2,22 +2,22 @@
 // SPDX-License-Identifier: MIT
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import head from './setup/head';
-import tailwindcss from './setup/tailwind';
-import primevue from './setup/primevue';
-import echarts from './setup/echarts';
-import caching from './setup/caching';
-import sitemap from './setup/sitemap';
-import modules from './setup/modules';
-import image from './setup/image';
-import ogImage from './setup/og-image';
-import runtimeConfig from './setup/runtime-config';
-import vite from './setup/vite';
 import { gtag, plausible } from './setup/analytics';
-import vue from './setup/vue';
-import robots from './setup/robots';
-import site from './setup/site';
+import caching from './setup/caching';
+import echarts from './setup/echarts';
+import head from './setup/head';
 import hooks from './setup/hooks';
+import image from './setup/image';
+import modules from './setup/modules';
+import ogImage from './setup/og-image';
+import primevue from './setup/primevue';
+import robots from './setup/robots';
+import runtimeConfig from './setup/runtime-config';
+import site from './setup/site';
+import sitemap from './setup/sitemap';
+import tailwindcss from './setup/tailwind';
+import vite from './setup/vite';
+import vue from './setup/vue';
 
 export default defineNuxtConfig({
   hooks,

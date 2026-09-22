@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 import { platforms } from '~/config/platforms';
 

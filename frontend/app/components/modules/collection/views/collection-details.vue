@@ -214,31 +214,32 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch, nextTick, watch, ref } from 'vue';
-import { createError, showError, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
+import { createError, showError, useRequestFetch } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
-import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
-import type { Collection } from '~~/types/collection';
+import { computed, onServerPrefetch, nextTick, watch, ref } from 'vue';
 
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import useResponsive from '~/components/shared/utils/responsive';
-import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import {
   collectionDetailsParamsGetter,
   collectionListParamsSetter,
 } from '~/components/modules/collection/services/collections.query.service';
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
+import useResponsive from '~/components/shared/utils/responsive';
 import useScroll from '~/components/shared/utils/scroll';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Collection } from '~~/types/collection';
+
+import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
+import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 
 const props = defineProps<{
   slug: string;

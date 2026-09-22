@@ -46,8 +46,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxTag from '~/components/uikit/tag/tag.vue';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 
 const props = withDefaults(
   defineProps<{

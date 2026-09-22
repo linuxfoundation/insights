@@ -134,25 +134,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import useResponsive from '~/components/shared/utils/responsive';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import type { CollectionType } from '~~/types/collection';
+
+import LfCreateCollectionButton from '../../components/create-modal/create-button.vue';
 import { collectionTabs, CollectionTypeEnum } from '../../config/collection-type-config';
 import type { CollectionTypesTabs } from '../../config/collection-type-config';
-import LfCreateCollectionButton from '../../components/create-modal/create-button.vue';
 import LfxCollectionAuthWall from '../auth-wall/collection-auth-wall.vue';
 import LfxCollectionListControls from './collection-list-controls.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import type { CollectionType } from '~~/types/collection';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import useResponsive from '~/components/shared/utils/responsive';
-import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 
 const { pageWidth } = useResponsive();
 const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);

@@ -53,12 +53,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useVirtualList } from '@vueuse/core';
-import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import { computed } from 'vue';
+
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+
+import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 
 const props = defineProps<{
   leaderboardConfig: LeaderboardConfig;

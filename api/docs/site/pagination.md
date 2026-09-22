@@ -11,16 +11,16 @@ forward through the result set until it runs out.
 
 Paginated endpoints accept two query parameters, both optional:
 
-| Parameter  | Type                    | Default | Notes                                   |
-| ---------- | ----------------------- | ------- | ---------------------------------------- |
-| `cursor`   | opaque base64url string | (none)  | Omit on the first request.               |
-| `pageSize` | integer                 | `50`    | Maximum `200`.                           |
+| Parameter  | Type                    | Default | Notes                      |
+| ---------- | ----------------------- | ------- | -------------------------- |
+| `cursor`   | opaque base64url string | (none)  | Omit on the first request. |
+| `pageSize` | integer                 | `50`    | Maximum `200`.             |
 
 ## Response shape
 
 ```json
 {
-  "data": [ /* ...page of results... */ ],
+  "data": [/* ...page of results... */],
   "pageSize": 50,
   "nextCursor": "eyJrIjoiMjAyNS0xMi0zMSIsImlkIjoiNDIifQ"
 }

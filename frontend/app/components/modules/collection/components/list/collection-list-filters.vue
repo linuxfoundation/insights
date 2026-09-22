@@ -14,8 +14,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { CategoryGroupOptions } from '~/components/modules/collection/services/collections.api.service';
+
 import LfxCollectionListCategory from '~/components/modules/collection/components/list/filters/collection-list-filters-category.vue';
+import type { CategoryGroupOptions } from '~/components/modules/collection/services/collections.api.service';
 
 const props = defineProps<{
   category: string;

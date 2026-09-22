@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: MIT
 import type { MapSeriesOption, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
+
+import { geoMapCountries } from '~/components/modules/widget/components/contributors/config/geo-map-countries';
+import { lfxColors } from '~/config/styles/colors';
+
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import type { SingleTooltipFormatterParams } from '../types/EChartTypes';
-import { lfxColors } from '~/config/styles/colors';
-import { geoMapCountries } from '~/components/modules/widget/components/contributors/config/geo-map-countries';
 
 interface GeoMapData {
   name: string;

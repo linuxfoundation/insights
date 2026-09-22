@@ -56,6 +56,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';

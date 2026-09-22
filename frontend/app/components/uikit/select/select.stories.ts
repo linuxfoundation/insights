@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { ref } from 'vue';
-import LfxSelect from './select.vue';
+
 import LfxOption from './option.vue';
+import LfxSelect from './select.vue';
 
 export default {
   title: 'LinuxFoundation/Select',

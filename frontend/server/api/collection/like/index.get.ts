@@ -1,11 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
+
 import { CollectionLikeRepository, type LikedCollection } from '~~/server/repo/collectionLike.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
+import { getAuthUsername } from '~~/server/utils/common';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import type { Pagination } from '~~/types/shared/pagination';
-import { getAuthUsername } from '~~/server/utils/common';
 
 /**
  * API Endpoint: GET /api/collection/like

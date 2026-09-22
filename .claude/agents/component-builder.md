@@ -17,52 +17,53 @@ You are a frontend UI expert for the LFX Insights repo. Your job is to build Vue
 
 Located in `frontend/app/components/uikit/`. Auto-imported by Nuxt as `<lfx-*>`. Always scan this directory before writing a component — new components may have been added since this list was written.
 
-| Component | Tag | Use for |
-|---|---|---|
-| accordion | `<lfx-accordion>` | Collapsible sections |
-| avatar | `<lfx-avatar>` | User/org avatars |
-| avatar-group | `<lfx-avatar-group>` | Stacked avatar list |
-| back | `<lfx-back>` | Back navigation link |
-| benchmarks | `<lfx-benchmarks>` | Benchmark comparisons |
-| button | `<lfx-button>` | All clickable actions |
-| card | `<lfx-card>` | Content containers |
-| carousel | `<lfx-carousel>` | Sliding content |
-| chart | `<lfx-chart>` | ECharts wrapper |
-| checkbox | `<lfx-checkbox>` | Boolean inputs |
-| chip | `<lfx-chip>` | Inline labels/tags |
-| datepicker | `<lfx-datepicker>` | Date selection |
-| delta-display | `<lfx-delta-display>` | Numeric change indicators |
-| drawer | `<lfx-drawer>` | Side panel overlays |
-| dropdown | `<lfx-dropdown>` | Dropdown menus |
-| field | `<lfx-field>` | Form field wrapper with label |
-| icon | `<lfx-icon>` | Icons |
-| icon-button | `<lfx-icon-button>` | Icon-only buttons |
-| input | `<lfx-input>` | Text inputs |
-| maintain-height | `<lfx-maintain-height>` | Prevent layout shift during loading |
-| menu-button | `<lfx-menu-button>` | Button with dropdown menu |
-| modal | `<lfx-modal>` | Dialog/modal overlays |
-| organization-logo | `<lfx-organization-logo>` | Org logo display |
-| popover | `<lfx-popover>` | Hover/click popovers |
-| progress-bar | `<lfx-progress-bar>` | Progress indicators |
-| radio | `<lfx-radio>` | Radio inputs |
-| scroll-view | `<lfx-scroll-view>` | Scrollable containers |
-| scrollable-shadow | `<lfx-scrollable-shadow>` | Scroll shadow effect |
-| select | `<lfx-select>` | Select dropdowns |
-| share | `<lfx-share>` | Share actions |
-| side-nav | `<lfx-side-nav>` | Sidebar navigation |
-| skeleton | `<lfx-skeleton>` | Loading placeholders |
-| spinner | `<lfx-spinner>` | Loading spinners |
-| table | `<lfx-table>` | Data tables |
-| tabs | `<lfx-tabs>` | Tab navigation |
-| tag | `<lfx-tag>` | Status/category tags |
-| textarea | `<lfx-textarea>` | Multi-line text input |
-| toast | `<lfx-toast>` | Notification toasts |
-| toggle | `<lfx-toggle>` | Boolean toggles |
-| tooltip | `<lfx-tooltip>` | Hover tooltips |
+| Component         | Tag                       | Use for                             |
+| ----------------- | ------------------------- | ----------------------------------- |
+| accordion         | `<lfx-accordion>`         | Collapsible sections                |
+| avatar            | `<lfx-avatar>`            | User/org avatars                    |
+| avatar-group      | `<lfx-avatar-group>`      | Stacked avatar list                 |
+| back              | `<lfx-back>`              | Back navigation link                |
+| benchmarks        | `<lfx-benchmarks>`        | Benchmark comparisons               |
+| button            | `<lfx-button>`            | All clickable actions               |
+| card              | `<lfx-card>`              | Content containers                  |
+| carousel          | `<lfx-carousel>`          | Sliding content                     |
+| chart             | `<lfx-chart>`             | ECharts wrapper                     |
+| checkbox          | `<lfx-checkbox>`          | Boolean inputs                      |
+| chip              | `<lfx-chip>`              | Inline labels/tags                  |
+| datepicker        | `<lfx-datepicker>`        | Date selection                      |
+| delta-display     | `<lfx-delta-display>`     | Numeric change indicators           |
+| drawer            | `<lfx-drawer>`            | Side panel overlays                 |
+| dropdown          | `<lfx-dropdown>`          | Dropdown menus                      |
+| field             | `<lfx-field>`             | Form field wrapper with label       |
+| icon              | `<lfx-icon>`              | Icons                               |
+| icon-button       | `<lfx-icon-button>`       | Icon-only buttons                   |
+| input             | `<lfx-input>`             | Text inputs                         |
+| maintain-height   | `<lfx-maintain-height>`   | Prevent layout shift during loading |
+| menu-button       | `<lfx-menu-button>`       | Button with dropdown menu           |
+| modal             | `<lfx-modal>`             | Dialog/modal overlays               |
+| organization-logo | `<lfx-organization-logo>` | Org logo display                    |
+| popover           | `<lfx-popover>`           | Hover/click popovers                |
+| progress-bar      | `<lfx-progress-bar>`      | Progress indicators                 |
+| radio             | `<lfx-radio>`             | Radio inputs                        |
+| scroll-view       | `<lfx-scroll-view>`       | Scrollable containers               |
+| scrollable-shadow | `<lfx-scrollable-shadow>` | Scroll shadow effect                |
+| select            | `<lfx-select>`            | Select dropdowns                    |
+| share             | `<lfx-share>`             | Share actions                       |
+| side-nav          | `<lfx-side-nav>`          | Sidebar navigation                  |
+| skeleton          | `<lfx-skeleton>`          | Loading placeholders                |
+| spinner           | `<lfx-spinner>`           | Loading spinners                    |
+| table             | `<lfx-table>`             | Data tables                         |
+| tabs              | `<lfx-tabs>`              | Tab navigation                      |
+| tag               | `<lfx-tag>`               | Status/category tags                |
+| textarea          | `<lfx-textarea>`          | Multi-line text input               |
+| toast             | `<lfx-toast>`             | Notification toasts                 |
+| toggle            | `<lfx-toggle>`            | Boolean toggles                     |
+| tooltip           | `<lfx-tooltip>`           | Hover tooltips                      |
 
 ## File Header
 
 Always start `.vue` files with:
+
 ```
 <!--
 Copyright (c) 2025 The Linux Foundation and each contributor.
@@ -97,6 +98,7 @@ When creating or modifying a uikit component, always produce a co-located `<comp
 **Always include** `tags: ['autodocs']` on the default export.
 
 **`argTypes` block** — document every prop and slot:
+
 ```ts
 argTypes: {
   // Props
@@ -127,6 +129,7 @@ argTypes: {
 ```
 
 **Simple story** (no custom template needed):
+
 ```ts
 export const Default = {
   args: {
@@ -137,6 +140,7 @@ export const Default = {
 ```
 
 **Story with a custom template** (needed when using slots, composing multiple components, or interactive state):
+
 ```ts
 const tmpl = `<lfx-my-component v-bind="propsObj">Slot content</lfx-my-component>`;
 
@@ -147,7 +151,9 @@ export const WithSlot = {
     props: Object.keys(argTypes),
     template: tmpl,
     computed: {
-      propsObj() { return args; },
+      propsObj() {
+        return args;
+      },
     },
   }),
   parameters: {
@@ -161,6 +167,7 @@ export const WithSlot = {
 ```
 
 **Interactive state** (modals, drawers, toggles — use `setup()` with `ref`):
+
 ```ts
 export const Default = {
   args: { modelValue: true },
@@ -179,6 +186,7 @@ export const Default = {
 ```
 
 **Background hint** (use when the component needs a specific background to look correct):
+
 ```ts
 parameters: {
   backgrounds: {
@@ -194,6 +202,7 @@ parameters: {
 ### Story Variants to Include
 
 Cover the main use cases in separate named exports:
+
 - `Default` — always required, shows the most common usage
 - One export per meaningful variant (e.g. `Secondary`, `WithIcon`, `Disabled`, `Loading`)
 - For components with slots: at least one story that demonstrates slot usage via `render`
@@ -201,6 +210,7 @@ Cover the main use cases in separate named exports:
 ### Story File Header
 
 Same MIT license header as `.vue` files:
+
 ```ts
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
@@ -213,6 +223,7 @@ For **uikit components**: produce both the `.vue` file and a co-located `.storie
 For **feature/module components**: produce only the `.vue` file — no story needed.
 
 Always:
+
 - Use uikit components for every UI primitive
 - Apply Tailwind classes for layout
 - Type all props and emits

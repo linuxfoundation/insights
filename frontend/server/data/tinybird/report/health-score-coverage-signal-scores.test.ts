@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { mapHealthScoreCoverageSignalScoreRows } from './health-score-coverage-signal-scores';
+
 import type { HealthScoreCoverageSignalScoreRow } from '~~/types/report/health-score-coverage-signal-scores.types';
+
+import { mapHealthScoreCoverageSignalScoreRows } from './health-score-coverage-signal-scores';
 
 describe('mapHealthScoreCoverageSignalScoreRows', () => {
   test('maps raw rows to camelCase, preserving order', () => {

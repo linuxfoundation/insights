@@ -99,18 +99,19 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { ProjectInsights } from '~~/types/project';
+
+import LfxBadgesShareModal from '~/components/modules/badges/components/share/badges-share-modal.vue';
 import badgeConfigs, {
   getBadgeTierFromPercentile,
   BadgeTier,
   type ProjectBadge,
   tierConfigs,
 } from '~/components/modules/badges/config/badge.config';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxBadgesShareModal from '~/components/modules/badges/components/share/badges-share-modal.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { ProjectInsights } from '~~/types/project';
 
 const props = defineProps<{
   project: ProjectInsights;

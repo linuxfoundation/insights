@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { isArray } from 'lodash-es';
+
 import type { ProjectRepository } from '~~/types/project';
 export const isEmptyData = (value: Record<string, unknown>[] | null | undefined) => {
   // check if the value is null or undefined or the length of the value is 0

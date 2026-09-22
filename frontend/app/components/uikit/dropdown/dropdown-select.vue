@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
 import type { Placement } from '@popperjs/core';
 import { computed, type VNode, provide } from 'vue';
 import { useSlots } from 'vue';
+
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 
 const props = withDefaults(

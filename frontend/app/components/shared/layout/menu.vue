@@ -19,8 +19,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
 import LfxLogin from '~/components/modules/auth/components/login.vue';
+import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
 </script>
 
 <script lang="ts">

@@ -78,16 +78,17 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSearch from '~/components/uikit/dropdown/dropdown-search.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const props = withDefaults(
   defineProps<{

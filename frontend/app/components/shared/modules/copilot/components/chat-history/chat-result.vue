@@ -29,9 +29,11 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import type { AIMessage } from '../../types/copilot.types';
 import LfxChatLabel from './chat-label.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   message: AIMessage;

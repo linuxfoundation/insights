@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import type { ActivityTypesFilter } from '~~/types/development/requests.types';
+
 import type { ActivityTypesTinybirdQuery } from '~~/server/data/tinybird/requests.types';
+import type { ActivityTypesFilter } from '~~/types/development/requests.types';
 
 const mockFetchFromTinybird = vi.fn();
 

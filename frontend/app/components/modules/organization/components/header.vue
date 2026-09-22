@@ -194,21 +194,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { OrganizationProfile } from '~~/types/organization-page';
-import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import { computed } from 'vue';
+
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+import { toSentenceCase } from '~/components/shared/utils/formatter';
+import useScroll from '~/components/shared/utils/scroll';
 import LfxBack from '~/components/uikit/back/back.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import { toSentenceCase } from '~/components/shared/utils/formatter';
-import { useBannerStore } from '~/components/shared/store/banner.store';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import type { OrganizationProfile } from '~~/types/organization-page';
 
 const props = defineProps<{
   organization: OrganizationProfile | undefined;
