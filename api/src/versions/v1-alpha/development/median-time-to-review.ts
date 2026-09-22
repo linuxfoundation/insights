@@ -181,8 +181,6 @@ const medianTimeToReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
           ),
         ]);
       });
-      // An unknown project reads as three empty results, the same body a project without a pull
-      // request with a positive time to review in either period gets.
       const [currentRows, previousRows, seriesRows] = rows ?? [[], [], []];
       return {
         summary: toDurationSummary(
