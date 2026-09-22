@@ -13,8 +13,6 @@ import {
 } from '../../../lib/period.js';
 import { DateRangeQuery, PeriodSummary, ProjectSlugParams } from '../../../schemas/common.js';
 
-// One row of Nullable(Float64) averages; a period without pull requests can also come back as
-// no row at all.
 interface LeadTimeRow {
   openedToMergedSeconds?: number | null;
   openedToReviewAssignedSeconds?: number | null;
@@ -128,8 +126,6 @@ const mergeLeadTimeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         return Promise.all([fetchLeadTime(dates.current), fetchLeadTime(dates.previous)]);
       });
 
-      // An unknown project reads as two empty results, the same body a project without pull
-      // requests in either period gets.
       const [currentRows, previousRows] = rows ?? [[], []];
       const stage = (field: keyof LeadTimeRow) =>
         toDurationSummary(
