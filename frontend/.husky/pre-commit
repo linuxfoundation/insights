@@ -12,11 +12,14 @@ if [ -n "$LINT_FILES" ]; then
   git add $LINT_FILES
 fi
 
-# oxfmt also covers json, markdown, yaml and styles, so its staged-file list is wider
-FORMAT_FILES=$(git diff --name-only --diff-filter=d --cached | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue|json|jsonc|md|yml|yaml|css|scss)$' | tr '\n' ' ')
+# oxfmt also covers json, markdown, yaml, styles, html and toml, so its staged-file list is wider
+FORMAT_FILES=$(git diff --name-only --diff-filter=d --cached | grep -E '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue|json|jsonc|md|yml|yaml|css|scss|html|toml)$' | tr '\n' ' ')
 if [ -n "$FORMAT_FILES" ]; then
   pnpm exec oxfmt --no-error-on-unmatched-pattern $FORMAT_FILES
-  git add $FORMAT_FILES
+  # only re-stage when lintable files are also staged, see the GPG index race note below
+  if [ -n "$LINT_FILES" ]; then
+    git add $FORMAT_FILES
+  fi
 fi
 
 if git diff --name-only --cached | grep -q '^frontend/'; then
@@ -41,8 +44,7 @@ fi
 # every staged file (disk content intact). Skipping it when there is no
 # matching work eliminates that race.
 #
-# Similarly, `git add` (which re-stages oxlint --fix output) is inside the
-# lint guard above, so it also only runs when lintable files are present,
+# Similarly, both `git add` calls above only run when lintable files are present,
 # removing the other vector for the same GPG index race.
 if git diff --name-only --cached | grep -qE '\.(js|cjs|mjs|ts|cts|mts|tsx|jsx|vue)$'; then
   pnpm exec lint-staged --no-stash
