@@ -22,8 +22,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { BenchmarkType } from '~~/types/shared/benchmark.types';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
+import type { BenchmarkType } from '~~/types/shared/benchmark.types';
 
 const props = defineProps<{
   type: BenchmarkType;

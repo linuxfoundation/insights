@@ -23,17 +23,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxCommunityResultsArea from '../components/community/sections/results-area.vue';
-import LfxCommunityFilterArea from '../components/community/sections/filter-area.vue';
+import { computed, onServerPrefetch, watch } from 'vue';
+
 import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
-import type { CommunityMentions } from '~~/types/community/community';
-import type { Pagination } from '~~/types/shared/pagination';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import type { CommunityMentions } from '~~/types/community/community';
+import type { Pagination } from '~~/types/shared/pagination';
+
+import LfxCommunityFilterArea from '../components/community/sections/filter-area.vue';
+import LfxCommunityResultsArea from '../components/community/sections/results-area.vue';
 
 const { showToast } = useToastService();
 const { project, startDate, endDate } = storeToRefs(useProjectStore());

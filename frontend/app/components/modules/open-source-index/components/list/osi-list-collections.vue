@@ -181,23 +181,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
-import pluralize from 'pluralize';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
-import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
-import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxHealthScore from '~/components/shared/components/health-score.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxTable from '~/components/uikit/table/table.vue';
-import { TanstackKey } from '~/components/shared/types/tanstack';
+import pluralize from 'pluralize';
+import { computed, onServerPrefetch } from 'vue';
+
 import { OSS_INDEX_API_SERVICE } from '~/components/modules/open-source-index/services/osi.api.service';
-import LfxButton from '~/components/uikit/button/button.vue';
-import type { OSSIndexCategoryDetails } from '~~/types/ossindex/category';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import LfxHealthScore from '~/components/shared/components/health-score.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
+import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxTable from '~/components/uikit/table/table.vue';
+import type { OSSIndexCategoryDetails } from '~~/types/ossindex/category';
 
 const props = withDefaults(
   defineProps<{

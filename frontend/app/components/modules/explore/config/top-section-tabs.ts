@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ExploreTab } from '../types/explore.types';
-import LfxExploreTopProjects from '../components/top-projects.vue';
 import LfxExploreTopContributors from '../components/top-contributors.vue';
 import LfxExploreTopOrganizations from '../components/top-organizations.vue';
+import LfxExploreTopProjects from '../components/top-projects.vue';
+import type { ExploreTab } from '../types/explore.types';
 
 export const TOP_SECTION_TABS: ExploreTab[] = [
   {

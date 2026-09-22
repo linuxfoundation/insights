@@ -156,38 +156,39 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { watch, computed, ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useQueryClient } from '@tanstack/vue-query';
-import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
-import { listHeaderBackground } from '../config/collection-type-config';
-import type { Pagination } from '~~/types/shared/pagination';
+import { storeToRefs } from 'pinia';
+import { watch, computed, ref } from 'vue';
 
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxLikedCollections from '~/components/modules/collection/components/discovery/liked-collections.vue';
 import LfxCollectionListItemLoading from '~/components/modules/collection/components/list/collection-list-item-loading.vue';
 import LfxCollectionListHeader from '~/components/modules/collection/components/list/header.vue';
+import LfxMyCollectionCardMobile from '~/components/modules/collection/components/my-collection-card-mobile.vue';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { type CollectionViewType } from '~/components/modules/collection/store/collections.store';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
-import LfxLikedCollections from '~/components/modules/collection/components/discovery/liked-collections.vue';
-import LfxMyCollectionCardMobile from '~/components/modules/collection/components/my-collection-card-mobile.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
+import useResponsive from '~/components/shared/utils/responsive';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import useScroll from '~/components/shared/utils/scroll';
-import useResponsive from '~/components/shared/utils/responsive';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import type { Collection, CollectionType } from '~~/types/collection';
-import { useBannerStore } from '~/components/shared/store/banner.store';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { type CollectionViewType } from '~/components/modules/collection/store/collections.store';
-import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import type { Pagination } from '~~/types/shared/pagination';
+
+import { listHeaderBackground } from '../config/collection-type-config';
+import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
 
 const queryClient = useQueryClient();
 

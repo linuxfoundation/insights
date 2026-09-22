@@ -35,24 +35,26 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
 import { Granularity } from '@lfx-insights/types';
-import searchQueriesConfig from './search-queries.config';
-import type { SearchQueries } from '~~/types/popularity/responses.types';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { lfxColors } from '~/config/styles/colors';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
+import { lfxColors } from '~/config/styles/colors';
+import type { SearchQueries } from '~~/types/popularity/responses.types';
+
+import searchQueriesConfig from './search-queries.config';
 
 const props = defineProps<{
   snapshot?: boolean;

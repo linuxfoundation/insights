@@ -45,26 +45,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onServerPrefetch, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useRoute } from 'nuxt/app';
-import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
-import { Widget } from '~/components/modules/widget/types/widget';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
-import { WidgetArea } from '~/components/modules/widget/types/widget-area';
-import { lfxWidgetArea, type WidgetAreaConfig } from '~/components/modules/widget/config/widget-area.config';
-import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
-import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
-import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import LfxWidget from '~/components/modules/widget/components/shared/widget.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { useQueryParam } from '~/components/shared/utils/query-param';
+import { storeToRefs } from 'pinia';
+import { computed, ref, onServerPrefetch, watch } from 'vue';
+
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxWidget from '~/components/modules/widget/components/shared/widget.vue';
+import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
+import { lfxWidgetArea, type WidgetAreaConfig } from '~/components/modules/widget/config/widget-area.config';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
+import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
+import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { usePopularityExcludedWidgets } from '~/components/modules/widget/composables/usePopularityExcludedWidgets';
-import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
+
+import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
 
 const props = defineProps<{
   name: WidgetArea;

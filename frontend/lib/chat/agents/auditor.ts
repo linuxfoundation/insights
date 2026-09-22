@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { auditorPrompt } from '../prompts/auditor';
 import type { AuditorOutput, AuditorAgentInput } from '../types';
 import { auditorOutputSchema } from '../types';
-import { auditorPrompt } from '../prompts/auditor';
 import { BaseAgent } from './base-agent';
 
 export class AuditorAgent extends BaseAgent<AuditorAgentInput, AuditorOutput> {

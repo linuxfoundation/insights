@@ -10,8 +10,8 @@
 //
 // Run: k6 run stress-test-normal.js
 
-import http from 'k6/http';
 import { sleep, check } from 'k6';
+import http from 'k6/http';
 
 const baseUrl = 'https://insights.linuxfoundation.org';
 

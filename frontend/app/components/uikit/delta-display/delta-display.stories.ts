@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import LfxDeltaDisplay from './delta-display.vue';
 import type { Summary } from '~~/types/shared/summary.types';
+
+import LfxDeltaDisplay from './delta-display.vue';
 
 export default {
   title: 'LinuxFoundation/DeltaDisplay',

@@ -50,12 +50,14 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import LfxOSIHeader from '../components/osi-header.vue';
-import { type OSIType, OSS_INDEX_API_SERVICE, type SortType } from '../services/osi.api.service';
+
 import LfxOsiDistribution from '~/components/modules/open-source-index/components/osi-distribution.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
+
+import LfxOSIHeader from '../components/osi-header.vue';
+import { type OSIType, OSS_INDEX_API_SERVICE, type SortType } from '../services/osi.api.service';
 
 const route = useRoute();
 

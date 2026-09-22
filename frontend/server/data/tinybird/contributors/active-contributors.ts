@@ -9,14 +9,15 @@ let's refactor it to return the data in a more generic format.
  */
 
 import type { DateTime } from 'luxon';
+
 import type { ActiveContributorsFilter } from '../../types';
 import { getPreviousDates } from '../../util';
-import type { TinybirdResponse } from '../tinybird';
-import { fetchFromTinybird } from '../tinybird';
 import type {
   TinybirdActiveContributorsData,
   TinybirdActiveContributorsSummary,
 } from '../responses.types';
+import type { TinybirdResponse } from '../tinybird';
+import { fetchFromTinybird } from '../tinybird';
 
 export type ActiveContributorsDataPoint = {
   startDate: string;

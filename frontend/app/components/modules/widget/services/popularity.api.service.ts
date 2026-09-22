@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 import type { QueryFunction } from '@tanstack/vue-query';
-import { type ComputedRef, type Ref, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
+import { type ComputedRef, type Ref, computed } from 'vue';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   ForksData,

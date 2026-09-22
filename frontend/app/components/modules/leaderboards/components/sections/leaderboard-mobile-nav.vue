@@ -61,11 +61,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import leaderboardConfigs from '../../config/index.config';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxModal from '~/components/uikit/modal/modal.vue';
 import useScroll from '~/components/shared/utils/scroll';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+
+import leaderboardConfigs from '../../config/index.config';
 
 const { scrollTop } = useScroll();
 

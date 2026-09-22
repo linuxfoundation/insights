@@ -76,12 +76,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from 'vue';
 import { DateTime } from 'luxon';
-import LfxModal from '~/components/uikit/modal/modal.vue';
+import { computed, ref, watch, nextTick } from 'vue';
+
+import type { DateOptionConfig } from '~/components/modules/project/config/date-options';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDatepicker from '~/components/uikit/datepicker/datepicker.vue';
-import type { DateOptionConfig } from '~/components/modules/project/config/date-options';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 
 const props = defineProps<{
   modelValue: boolean;

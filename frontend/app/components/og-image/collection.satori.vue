@@ -211,6 +211,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
 import type { Collection } from '~~/types/collection';
 
 const props = withDefaults(

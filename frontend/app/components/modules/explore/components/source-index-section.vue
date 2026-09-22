@@ -53,17 +53,19 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, onServerPrefetch } from 'vue';
-import LfxExploreSourceIndexFilters from './source-index-filters.vue';
-import LfxExploreSourceIndexProgress from './source-index-progress.vue';
+
 import {
   OSS_INDEX_API_SERVICE,
   type OSIType,
   type SortType,
 } from '~/components/modules/open-source-index/services/osi.api.service';
-import LfxButton from '~/components/uikit/button/button.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+
+import LfxExploreSourceIndexFilters from './source-index-filters.vue';
+import LfxExploreSourceIndexProgress from './source-index-progress.vue';
 
 const type = ref<OSIType>('horizontal');
 const sort = ref<SortType>('totalContributors');

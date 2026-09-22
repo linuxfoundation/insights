@@ -73,12 +73,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
-import LfxImpactBreakdownMetricRow from './impact-breakdown/metric-row.vue';
-import LfxChip from '~/components/uikit/chip/chip.vue';
+import { computed } from 'vue';
+
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
-import { getImpactLabelDisplay } from '~~/config/trust-score';
+import { formatNumberApprox } from '~/components/shared/utils/formatter';
+import LfxChip from '~/components/uikit/chip/chip.vue';
 import {
   getTransitiveDependentsDescription,
   getPopularityDescription,
@@ -86,8 +86,10 @@ import {
   getDirectDependentsDescription,
   getImpactSummaryDescription,
 } from '~~/config/health-breakdown-templates';
-import { formatNumberApprox } from '~/components/shared/utils/formatter';
+import { getImpactLabelDisplay } from '~~/config/trust-score';
 import type { ImpactBreakdownResults } from '~~/types/overview/responses.types';
+
+import LfxImpactBreakdownMetricRow from './impact-breakdown/metric-row.vue';
 
 const props = defineProps<{
   impactScore: number | null;

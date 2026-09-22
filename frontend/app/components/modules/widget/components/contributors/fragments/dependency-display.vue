@@ -43,11 +43,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import pluralize from 'pluralize';
-import type { Dependency, Contributor, Organization } from '~~/types/contributors/responses.types';
+import { computed } from 'vue';
+
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
+import type { Dependency, Contributor, Organization } from '~~/types/contributors/responses.types';
 
 const props = withDefaults(
   defineProps<{

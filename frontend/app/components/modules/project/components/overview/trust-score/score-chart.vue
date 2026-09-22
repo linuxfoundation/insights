@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getRadarChartConfig, type RadarIndicator } from '~/components/uikit/chart/configs/radar.chart';
 import { lfxColors } from '~/config/styles/colors';

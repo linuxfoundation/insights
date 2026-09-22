@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed } from 'vue';
+
 import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/views/leaderboard-detail.vue';
 import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
 

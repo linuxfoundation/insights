@@ -637,15 +637,17 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, watch, h, type FunctionalComponent } from 'vue';
-import { getLayerBadgeStyle } from '../config/layer-colors';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+
+import { formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
-import { formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
 import type { AgenticEnrichedProject, ProjectLeaderboardRow } from '~~/types/report/agentic-ai-momentum.types';
+
+import { getLayerBadgeStyle } from '../config/layer-colors';
 
 const props = defineProps<{
   tbProjects: AgenticEnrichedProject[];

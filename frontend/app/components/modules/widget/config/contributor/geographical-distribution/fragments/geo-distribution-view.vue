@@ -34,15 +34,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import pluralize from 'pluralize';
-import { filterKnownCountries } from '../geo-map.helper';
+import { computed } from 'vue';
+
+import type { GeoMapData } from '~/components/modules/widget/components/contributors/types/geo-map.types';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import type { GeoMapData } from '~/components/modules/widget/components/contributors/types/geo-map.types';
+
+import { filterKnownCountries } from '../geo-map.helper';
 
 const props = withDefaults(
   defineProps<{

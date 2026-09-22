@@ -84,9 +84,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
 import type { ChartErrorType } from '~/components/shared/modules/copilot/types/copilot.types';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const emit = defineEmits<{
   (e: 'retry'): void;

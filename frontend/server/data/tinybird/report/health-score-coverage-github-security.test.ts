@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { mapHealthScoreCoverageGithubSecurityRows } from './health-score-coverage-github-security';
+
 import type { HealthScoreCoverageGithubSecurityRow } from '~~/types/report/health-score-coverage-github-security.types';
+
+import { mapHealthScoreCoverageGithubSecurityRows } from './health-score-coverage-github-security';
 
 describe('mapHealthScoreCoverageGithubSecurityRows', () => {
   test('maps both isLF rows into the fixed funnel stages with per-column share', () => {

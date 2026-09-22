@@ -39,20 +39,21 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
-import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import { computed, watch } from 'vue';
+
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { Widget } from '~/components/modules/widget/types/widget';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import {
   DEVELOPMENT_API_SERVICE,
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
-import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Widget } from '~/components/modules/widget/types/widget';
+import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
+import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
 
 const props = defineProps<{
   modelValue?: WidgetModel;

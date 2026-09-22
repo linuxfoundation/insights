@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+
 import type { OrganizationProfile } from '~~/types/organization-page';
 
 export const useOrganizationPageStore = defineStore('organization-page', () => {

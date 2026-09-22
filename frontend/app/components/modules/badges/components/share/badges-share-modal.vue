@@ -49,12 +49,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ProjectBadge } from '../../types/badge.types';
-import LfxBadgesSharePreview from './badges-share-preview.vue';
-import LfxBadgesShareDownload from './badges-share-download.vue';
-import LfxBadgesShareSocials from './badges-share-socials.vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
+
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+
+import type { ProjectBadge } from '../../types/badge.types';
+import LfxBadgesShareDownload from './badges-share-download.vue';
+import LfxBadgesSharePreview from './badges-share-preview.vue';
+import LfxBadgesShareSocials from './badges-share-socials.vue';
 
 const props = defineProps<{
   modelValue: boolean;

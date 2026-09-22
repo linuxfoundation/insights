@@ -42,14 +42,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { MessageData } from '../types/copilot.types';
-import { useCopilotStore } from '../store/copilot.store';
-import LfxModal from '~/components/uikit/modal/modal.vue';
+import { computed, ref, watch } from 'vue';
+
 import LfxCopilotSidebar from '~/components/shared/modules/copilot/components/copilot-sidebar.vue';
 import LfxCopilotResultsSection from '~/components/shared/modules/copilot/components/results/results-section.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+
+import { useCopilotStore } from '../store/copilot.store';
+import type { MessageData } from '../types/copilot.types';
 
 const props = defineProps<{
   modelValue: boolean;

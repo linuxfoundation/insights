@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { mount, flushPromises } from '@vue/test-utils';
 import { useQueryClient } from '@tanstack/vue-query';
-import ControlAssessmentHead from './control-assessment-head.vue';
+import { mount, flushPromises } from '@vue/test-utils';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
+
+import ControlAssessmentHead from './control-assessment-head.vue';
 
 // Mock dependencies
 vi.mock('@tanstack/vue-query', async (importOriginal) => ({

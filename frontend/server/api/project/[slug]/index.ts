@@ -1,13 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 import type {
   Project,
   ProjectRepository,
   ProjectRepositoryGroup,
   ProjectTinybird,
 } from '~~/types/project';
-import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 
 /**
  * API Endpoint: /api/projects/{slug}

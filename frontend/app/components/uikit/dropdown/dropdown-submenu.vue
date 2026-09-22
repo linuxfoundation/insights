@@ -50,8 +50,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   width?: string;

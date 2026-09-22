@@ -138,11 +138,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { getResearchTopicLabel } from '../config/layer-colors';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import type { GitHubEcosystemBreadthData } from '~~/types/report/agentic-ai-momentum.types';
+
+import { getResearchTopicLabel } from '../config/layer-colors';
 
 interface TableRow {
   term: string;

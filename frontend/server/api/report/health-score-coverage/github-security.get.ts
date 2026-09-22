@@ -10,8 +10,8 @@
 // call (see its DESCRIPTION block), so there is nothing to filter by.
 
 import { fetchHealthScoreCoverageGithubSecurity } from '~~/server/data/tinybird/report/health-score-coverage-github-security';
-import type { HealthScoreCoverageGithubSecurityData } from '~~/types/report/health-score-coverage-github-security.types';
 import { logError } from '~~/server/utils/log';
+import type { HealthScoreCoverageGithubSecurityData } from '~~/types/report/health-score-coverage-github-security.types';
 
 export default defineEventHandler(async (): Promise<HealthScoreCoverageGithubSecurityData> => {
   try {

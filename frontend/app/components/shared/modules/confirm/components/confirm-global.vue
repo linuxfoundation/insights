@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
+
 import LfxConfirmModal from '~/components/shared/modules/confirm/components/confirm-modal.vue';
 import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
 

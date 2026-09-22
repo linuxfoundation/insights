@@ -33,9 +33,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import type { Instance, Placement } from '@popperjs/core';
 import { createPopper } from '@popperjs/core';
+import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 
 const props = withDefaults(
   defineProps<{

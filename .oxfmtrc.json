@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 100,
+  "singleAttributePerLine": true,
+  "sortImports": {
+    "internalPattern": ["@lfx-insights/", "~/", "~~/", "@/", "#"],
+    "partitionByComment": true
+  },
+  "overrides": [
+    {
+      "files": ["**/*.vue"],
+      "options": { "printWidth": 120 }
+    },
+    {
+      "files": ["**/*.yml", "**/*.yaml"],
+      "options": { "singleQuote": false }
+    }
+  ],
+  "ignorePatterns": [
+    "submodules/**",
+    ".claude/worktrees/**",
+    "**/dist/**",
+    "**/.nuxt/**",
+    "**/.output/**",
+    "**/storybook-static/**",
+    "**/.vitepress/**",
+    "**/*.d.ts",
+    "pnpm-lock.yaml",
+    "frontend/docs/**",
+    "frontend/blog/**",
+    "frontend/public/**"
+  ]
+}

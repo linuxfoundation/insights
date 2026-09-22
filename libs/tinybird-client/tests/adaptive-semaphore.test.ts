@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { AdaptiveSemaphore } from '../src/adaptive-semaphore.js';
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '../src/errors.js';
 import type { LatencyBackoffOptions } from '../src/types.js';

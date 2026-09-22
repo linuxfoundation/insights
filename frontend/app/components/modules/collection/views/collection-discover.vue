@@ -117,18 +117,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, watch } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
+import useResponsive from '~/components/shared/utils/responsive';
+
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
 import LfxLikedCollections from '../components/discovery/liked-collections.vue';
 import LfxMyCollectionCardMobile from '../components/my-collection-card-mobile.vue';
-import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
-import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
-import useResponsive from '~/components/shared/utils/responsive';
-
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const { pageWidth } = useResponsive();
 const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);

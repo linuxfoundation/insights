@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
+
 import { createDataSource } from '~~/server/data/data-sources';
-import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types';
 import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
+import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types';
 
 /**
  * Frontend expects the data to be in the following format:

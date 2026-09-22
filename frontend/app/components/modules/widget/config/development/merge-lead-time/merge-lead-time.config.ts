@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import MergeLeadTime from './merge-lead-time.vue';
+
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+import MergeLeadTime from './merge-lead-time.vue';
 
 const mergeLeadTime: WidgetConfig = {
   key: 'mergeLeadTime',

@@ -107,18 +107,20 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types';
+import { ref, watch, computed } from 'vue';
+
 import { copilotApiService } from '../store/copilot.api.service';
+import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types';
 // import { tempData } from '../store/copilot.api.service'
+import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import { useCopilotStore } from '../store/copilot.store';
 import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue';
-import LfxContextDisplay from './shared/context-display.vue';
 import LfxEmptyChat from './info/empty-chat.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxContextDisplay from './shared/context-display.vue';
 
 const props = defineProps<{
   isLoading: boolean;

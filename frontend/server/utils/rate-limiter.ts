@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 import { createHash, randomUUID } from 'crypto';
-import { type H3Event, getHeaders } from 'h3';
+
 import { RedisClientType } from '@redis/client';
+import { type H3Event, getHeaders } from 'h3';
+
 import {
   RateLimitRule,
   RateLimitResult,

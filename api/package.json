@@ -8,8 +8,6 @@
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.build.json && vitepress build docs/site",
-    "format": "prettier --write \"{src,tests,scripts}/**/*.ts\"",
-    "format:check": "prettier --check \"{src,tests,scripts}/**/*.ts\"",
     "tsc-check": "tsc --noEmit",
     "test": "vitest run",
     "openapi:export": "tsx scripts/export-openapi.ts",
@@ -30,7 +28,6 @@
   "devDependencies": {
     "@scalar/api-reference": "^1.68.0",
     "@types/node": "^22.0.0",
-    "prettier": "^3.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",
     "vitepress": "^1.6.4",

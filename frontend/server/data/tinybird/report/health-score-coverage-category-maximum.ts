@@ -5,13 +5,14 @@
 // the shared server/data/tinybird/report/health-score-coverage.ts file for the same merge-order
 // reason as the types file next to it - see health-score-coverage-category-maximum.types.ts.
 
-import { fetchFromTinybird } from '../tinybird';
 import type {
   HealthScoreCoverageCategoryMaximumCategoryKey,
   HealthScoreCoverageCategoryMaximumCount,
   HealthScoreCoverageCategoryMaximumData,
   HealthScoreCoverageCategoryMaximumRow,
 } from '~~/types/report/health-score-coverage-category-maximum.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 // Fixed category order, label and exact-maximum score per the design copy. The maximum values
 // (40 / 25 / 35) are the pipe's own thresholds (`countIf(... = 40)` etc.), not derived from the

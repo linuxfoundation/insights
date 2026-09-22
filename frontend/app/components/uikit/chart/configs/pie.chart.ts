@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { merge } from 'lodash-es';
-import { lfxColors } from '~/config/styles/colors';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import { lfxColors } from '~/config/styles/colors';
 
 export interface DonutChartData {
   name: string;

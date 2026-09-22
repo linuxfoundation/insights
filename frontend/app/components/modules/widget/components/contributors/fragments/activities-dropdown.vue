@@ -88,20 +88,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { useQuery, type QueryFunction } from '@tanstack/vue-query';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { useQuery, type QueryFunction } from '@tanstack/vue-query';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed } from 'vue';
+
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxDropdownGroupTitle from '~/components/uikit/dropdown/dropdown-group-title.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { platforms } from '~~/app/config/platforms';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
 import type { ActivityTypeItem, ActivityTypesByPlatformResponse } from '~~/types/development/responses.types';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = withDefaults(
   defineProps<{

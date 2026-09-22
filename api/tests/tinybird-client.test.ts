@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyBaseLogger } from 'fastify';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { createInMemoryBucketCache } from '../src/clients/bucket-cache.js';
 import { fetchPipe, getTinybirdClient, withBucket } from '../src/clients/tinybird.js';
 import { UpstreamUnavailableError } from '../src/lib/errors.js';

@@ -33,11 +33,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+
+import { useBannerStore } from '~/components/shared/store/banner.store';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { bannerConfig } from '~/config/banner.config';
-import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const bannerStore = useBannerStore();
 const { isBannerVisible } = storeToRefs(bannerStore);

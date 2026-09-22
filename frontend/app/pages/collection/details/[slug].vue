@@ -31,33 +31,34 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRequestFetch, createError, showError, navigateTo, useNuxtApp } from 'nuxt/app';
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
-import { computed, ref, watch, onServerPrefetch } from 'vue';
+import { useRoute, useRequestFetch, createError, showError, navigateTo, useNuxtApp } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import type { Collection, CollectionMetrics } from '~~/types/collection';
-import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
-import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
-import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import { useRichSchema } from '~~/composables/useRichSchema';
-import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { computed, ref, watch, onServerPrefetch } from 'vue';
+
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useBannerStore } from '~/components/shared/store/banner.store';
-import useScroll from '~/components/shared/utils/scroll';
-import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
+import LfxCollectionMenu from '~/components/modules/collection/components/details/collection-menu.vue';
+import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import {
   collectionDetailsParamsGetter,
   collectionListParamsSetter,
 } from '~/components/modules/collection/services/collections.query.service';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import {
   useProjectStore,
   defaultTimeRangeKey,
   defaultDateOption,
 } from '~/components/modules/project/store/project.store';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import { useRichSchema } from '~~/composables/useRichSchema';
+import type { Collection, CollectionMetrics } from '~~/types/collection';
 
 const route = useRoute();
 const { slug } = route.params;

@@ -41,10 +41,11 @@ SPDX-License-Identifier: MIT
 // import type { FetchError } from 'ofetch';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import { watch, computed } from 'vue';
+
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = withDefaults(
   defineProps<{

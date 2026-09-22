@@ -27,8 +27,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { FieldMessageType } from '~/components/uikit/field/types/FieldMessageType';
+
 import { fieldMessageTypeData } from '~/components/uikit/field/constants/fieldMessageTypeData';
+import type { FieldMessageType } from '~/components/uikit/field/types/FieldMessageType';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = withDefaults(

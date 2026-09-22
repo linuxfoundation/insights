@@ -3,6 +3,7 @@
 
 import { defineNuxtPlugin, useAsyncData, useRoute, navigateTo } from 'nuxt/app';
 import { watch, watchEffect, nextTick } from 'vue';
+
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import {
   authState,

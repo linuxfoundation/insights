@@ -24,8 +24,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxSelect from '~/components/uikit/select/select.vue';
 import LfxOption from '~/components/uikit/select/option.vue';
+import LfxSelect from '~/components/uikit/select/select.vue';
 
 const props = defineProps<{
   modelValue: string;

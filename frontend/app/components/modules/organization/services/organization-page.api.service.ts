@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 import { useInfiniteQuery } from '@tanstack/vue-query';
 import type { QueryFunction } from '@tanstack/vue-query';
+
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   OrganizationProfile,
   OrganizationKpis,
@@ -10,7 +12,6 @@ import type {
   OrgContributorTimeseries,
   OrgContributor,
 } from '~~/types/organization-page';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const PAGE_SIZE = 20;
 

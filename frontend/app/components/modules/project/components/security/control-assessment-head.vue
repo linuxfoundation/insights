@@ -56,21 +56,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useRoute } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
-import { links } from '~/config/links';
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { ref, computed } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { links } from '~/config/links';
 
 const { selectedReposValues } = storeToRefs(useProjectStore());
 const { isAuthenticated } = storeToRefs(useAuthStore());

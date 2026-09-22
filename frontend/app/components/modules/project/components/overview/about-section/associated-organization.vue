@@ -59,14 +59,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
+import { computed } from 'vue';
+
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import type { Organization } from '~~/types/contributors/responses.types';
-import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
+import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
+import type { Organization } from '~~/types/contributors/responses.types';
 
 const route = useRoute();
 

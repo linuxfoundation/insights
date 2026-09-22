@@ -135,18 +135,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
 import { useRouter } from 'nuxt/app';
-import LfxTable from '~/components/uikit/table/table.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import { computed, onServerPrefetch } from 'vue';
+
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import LfxTable from '~/components/uikit/table/table.vue';
 
 const props = defineProps<{
   sort: string;

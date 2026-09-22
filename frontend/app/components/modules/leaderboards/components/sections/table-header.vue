@@ -32,9 +32,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+
+import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 
 withDefaults(
   defineProps<{

@@ -12,8 +12,8 @@
 //
 // Run: k6 run stress-test-worst-case.js
 
-import http from 'k6/http';
 import { check } from 'k6';
+import http from 'k6/http';
 
 const baseUrl = 'https://insights.linuxfoundation.org';
 const topProjectsCount = 200;

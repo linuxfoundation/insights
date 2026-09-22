@@ -43,13 +43,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxSearch from '~/components/shared/layout/search/search.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxBanner from '~/components/shared/layout/banner.vue';
 import LfxMenu from '~/components/shared/layout/menu.vue';
-import LfxTools from '~/components/shared/layout/tools.vue';
 import LfxMenuMobile from '~/components/shared/layout/menu/menu-mobile.vue';
 import LfxMenuTablet from '~/components/shared/layout/menu/menu-tablet.vue';
-import LfxBanner from '~/components/shared/layout/banner.vue';
+import LfxSearch from '~/components/shared/layout/search/search.vue';
+import LfxTools from '~/components/shared/layout/tools.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 </script>
 
 <script lang="ts">

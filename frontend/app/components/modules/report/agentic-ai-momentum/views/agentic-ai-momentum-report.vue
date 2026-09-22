@@ -105,14 +105,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import LfxAgenticExecutiveSummary from '../components/executive-summary.vue';
-import LfxAgenticResearchChart from '../components/research-chart.vue';
-import LfxAgenticGithubActivityTable from '../components/github-activity-table.vue';
-import LfxAgenticProjectLeaderboard from '../components/project-leaderboard.vue';
-import LfxAgenticMetricExplorer from '../components/metric-explorer.vue';
-import { AGENTIC_AI_MOMENTUM_API_SERVICE } from '../services/agentic-ai-momentum.api.service';
+
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+
+import LfxAgenticExecutiveSummary from '../components/executive-summary.vue';
+import LfxAgenticGithubActivityTable from '../components/github-activity-table.vue';
+import LfxAgenticMetricExplorer from '../components/metric-explorer.vue';
+import LfxAgenticProjectLeaderboard from '../components/project-leaderboard.vue';
+import LfxAgenticResearchChart from '../components/research-chart.vue';
+import { AGENTIC_AI_MOMENTUM_API_SERVICE } from '../services/agentic-ai-momentum.api.service';
 
 // Fetch all data
 const { data: glanceData, status: glanceStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchGlance();

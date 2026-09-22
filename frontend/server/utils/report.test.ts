@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { describe, test, expect } from 'vitest';
 
-import { buildIssueTitle, buildIssueBody, buildJiraDescription } from './report';
 import type { ReportRequest } from '~~/types/report/requests.types';
+
+import { buildIssueTitle, buildIssueBody, buildJiraDescription } from './report';
 
 const baseRequest: ReportRequest = {
   description: 'Numbers look wrong',

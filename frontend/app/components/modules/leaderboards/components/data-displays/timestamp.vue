@@ -17,8 +17,9 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { DateTime } from 'luxon';
 import { computed } from 'vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+
 import { formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 const props = defineProps<{

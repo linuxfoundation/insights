@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import LfxProjectTimestampRowDisplay from '../components/row-displays/project-timestamp.vue';
 import LfxProjectTimestampMinimizedRowDisplay from '../components/minimize-row-displays/project-timestamp.vue';
+import LfxProjectTimestampRowDisplay from '../components/row-displays/project-timestamp.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const longestRunningConfig: LeaderboardConfig = {

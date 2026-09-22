@@ -3,6 +3,7 @@
 
 import { DateTime, Duration } from 'luxon';
 import pluralize from 'pluralize';
+
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
 
 type ShowUnits = 'short' | 'long' | 'no';

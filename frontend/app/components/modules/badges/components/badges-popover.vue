@@ -85,11 +85,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ProjectBadge } from '../types/badge.types';
-import { tierConfigs, getTierTagStyle } from '../config/tiers.config';
+
+import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
+
+import { tierConfigs, getTierTagStyle } from '../config/tiers.config';
+import type { ProjectBadge } from '../types/badge.types';
 
 const props = defineProps<{
   badge: ProjectBadge;

@@ -3,13 +3,16 @@
 import { graphic } from 'echarts';
 import type { LineSeriesOption, MarkAreaOption, MarkLineOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
+
+import { formatByGranularity } from '~/components/shared/types/granularity';
+import { lfxColors } from '~/config/styles/colors';
+
 import {
   buildSeries,
   convertDateData,
   convertToGradientColor,
   hexToRgba,
 } from '../helpers/chart-helpers';
-
 import {
   axisLabelFormatter,
   tooltipFormatter,
@@ -18,8 +21,6 @@ import {
 } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
-import { lfxColors } from '~/config/styles/colors';
-import { formatByGranularity } from '~/components/shared/types/granularity';
 
 const defaultLineOption: ECOption = {
   ...defaultOption,

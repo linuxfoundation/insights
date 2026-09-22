@@ -7,13 +7,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute, useRequestFetch } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
-import type { Collection } from '~~/types/collection';
+import { useRoute, useRequestFetch } from 'nuxt/app';
+import { computed } from 'vue';
+
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import LfxCollectionPopularityView from '~/components/modules/collection/views/collection-popularity.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import type { Collection } from '~~/types/collection';
 
 const route = useRoute();
 const { slug } = route.params;

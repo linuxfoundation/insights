@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import LfxCodebaseSizeRowDisplay from '../components/row-displays/codebase-size-row.vue';
 import LfxCodebaseSizeMinimizedRowDisplay from '../components/minimize-row-displays/codebase-size-row.vue';
+import LfxCodebaseSizeRowDisplay from '../components/row-displays/codebase-size-row.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const codebaseSizeConfig: LeaderboardConfig = {

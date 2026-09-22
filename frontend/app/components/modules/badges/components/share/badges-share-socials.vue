@@ -74,13 +74,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { ProjectBadge } from '../../types/badge.types';
-import { tierConfigs } from '../../config/tiers.config';
+import { computed } from 'vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+
+import { tierConfigs } from '../../config/tiers.config';
+import type { ProjectBadge } from '../../types/badge.types';
 
 const props = defineProps<{
   badge: ProjectBadge;

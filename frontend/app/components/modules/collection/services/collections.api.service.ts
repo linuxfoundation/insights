@@ -6,16 +6,17 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/vue-query';
-import { type ComputedRef, type Ref, computed } from 'vue';
 import { isArray } from 'lodash-es';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Collection, CollectionMetrics, CollectionType } from '~~/types/collection';
-import type { Category, CategoryGroup } from '~~/types/category';
-import type { ProjectInsights } from '~~/types/project';
-import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { SearchResults } from '~~/types/search';
-import { type User } from '~~/types/auth/auth-user.types';
+import { type ComputedRef, type Ref, computed } from 'vue';
+
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { type User } from '~~/types/auth/auth-user.types';
+import type { Category, CategoryGroup } from '~~/types/category';
+import type { Collection, CollectionMetrics, CollectionType } from '~~/types/collection';
+import type { ProjectInsights } from '~~/types/project';
+import type { SearchResults } from '~~/types/search';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export interface CategoryGroupOptions {
   value: string;

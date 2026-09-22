@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { combineHealthScoreCoverageSignalAvailabilityLfRows } from './health-score-coverage-signal-availability-lf';
+
 import type { HealthScoreCoverageSignalAvailabilityLfRow } from '~~/types/report/health-score-coverage-signal-availability-lf.types';
+
+import { combineHealthScoreCoverageSignalAvailabilityLfRows } from './health-score-coverage-signal-availability-lf';
 
 describe('combineHealthScoreCoverageSignalAvailabilityLfRows', () => {
   test('pairs lf and other rows by signal_key', () => {

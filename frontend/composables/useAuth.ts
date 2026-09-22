@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { ref, computed } from 'vue';
 import { navigateTo, useRoute } from 'nuxt/app';
+import { ref, computed } from 'vue';
+
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import type { AuthData } from '~~/types/auth/auth-user.types';
 

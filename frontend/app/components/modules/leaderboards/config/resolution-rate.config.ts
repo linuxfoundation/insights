@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import LfxProjectDecimalRowDisplay from '../components/row-displays/project-decimal.vue';
 import LfxProjectDecimalMinimizedRowDisplay from '../components/minimize-row-displays/project-decimal.vue';
+import LfxProjectDecimalRowDisplay from '../components/row-displays/project-decimal.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const resolutionRateConfig: LeaderboardConfig = {

@@ -45,9 +45,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
-import LfCreateCollectionModalHeader from './modal-header.vue';
-import LfCreateCollectionModalFooter from './modal-footer.vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
+
 import {
   createCollectionSteps,
   createCollectionTemplate,
@@ -57,10 +55,14 @@ import {
   type CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import type { Collection } from '~~/types/collection';
 import type { ProjectInsights } from '~~/types/project';
+
+import LfCreateCollectionModalFooter from './modal-footer.vue';
+import LfCreateCollectionModalHeader from './modal-header.vue';
 
 const props = withDefaults(
   defineProps<{

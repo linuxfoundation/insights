@@ -65,14 +65,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useAuthStore } from '../store/auth.store';
-import { useAuth } from '~~/composables/useAuth';
-import LfxButton from '~/components/uikit/button/button.vue';
+
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 import { links } from '~/config/links';
+import { useAuth } from '~~/composables/useAuth';
+
+import { useAuthStore } from '../store/auth.store';
 
 const { isAuthenticated, user, isLoading, login, logout } = useAuth();
 const authStore = useAuthStore();

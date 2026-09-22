@@ -28,13 +28,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import LfxButton from '~/components/uikit/button/button.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { getBadgeUrl } from '~~/config/trust-score';
-import LfxButton from '~/components/uikit/button/button.vue';
 
 const props = defineProps<{
   isRepoSelected?: boolean;

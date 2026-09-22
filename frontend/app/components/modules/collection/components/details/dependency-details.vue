@@ -82,10 +82,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import pluralize from 'pluralize';
-import type { ProjectInsights } from '~~/types/project';
+import { computed } from 'vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import type { ProjectInsights } from '~~/types/project';
 
 const props = defineProps<{
   project: ProjectInsights;

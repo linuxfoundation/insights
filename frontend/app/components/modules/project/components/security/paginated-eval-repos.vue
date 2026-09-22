@@ -27,9 +27,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import type { SecurityData } from '~~/types/security/responses.types';
+
 import LfxProjectSecurityEvaluationRepository from '~/components/modules/project/components/security/evaluation-repository.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 type PaginatedChecks = {
   repo: string;

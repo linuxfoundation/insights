@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { OctolensWebhook } from '~~/types/community/community';
 import { addDataToTinybirdDatasource } from '~~/server/data/tinybird/tinybird';
 import { auth } from '~~/server/utils/jwt';
+import { OctolensWebhook } from '~~/types/community/community';
 
 export default defineEventHandler(async (event): Promise<boolean | Error> => {
   await auth(event);

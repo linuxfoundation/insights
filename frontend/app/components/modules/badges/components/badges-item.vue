@@ -35,10 +35,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+
 import type { ProjectBadge } from '../types/badge.types';
 import LfxBadgesPopover from './badges-popover.vue';
 import LfxBadgesShareModal from './share/badges-share-modal.vue';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
 
 const props = defineProps<{
   badge?: ProjectBadge;

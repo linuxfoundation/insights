@@ -8,8 +8,9 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
+
 import LfxCommunityFilterModal from '~/components/modules/project/components/community/sections/community-filter-modal.vue';
+import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
 
 const { isCommunityFilterOpen } = storeToRefs(useCommunityStore());
 </script>
