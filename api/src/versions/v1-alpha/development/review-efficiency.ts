@@ -34,8 +34,6 @@ interface SeriesRow extends SummaryRow {
   endDate: string | null;
 }
 
-// fetchPipe's default validator accepts any element. A null row makes hasBucketBounds throw outside
-// the 503 mapping; an array row or a count outside the nonnegative safe integers reads as bad data.
 const isCount = (value?: number) =>
   value === undefined || (Number.isSafeInteger(value) && value >= 0);
 const isRow = (row: SummaryRow) =>
@@ -111,8 +109,7 @@ const counts = (rows: SummaryRow[]): Counts => ({
   opened: rows[0]?.openedCount ?? 0,
   closed: rows[0]?.resolvedCount ?? 0,
 });
-// Null when nothing was opened, so there is no denominator. Left unclamped: the pipe counts closed
-// as a subset of opened, so a value above 100 would mean bad upstream data, not a real rate.
+// Unclamped: the pipe counts closed as a subset of opened, so above 100 means bad upstream data.
 const efficiency = ({ opened, closed }: Counts) => (opened > 0 ? (closed / opened) * 100 : null);
 
 const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
@@ -135,11 +132,9 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, granularity, platform } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const { current, previous } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
-        // An undefined platform is dropped from the query string by the client.
         const shared: TinybirdQuery = {
           project: slug,
           bucketId,

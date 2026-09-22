@@ -59,7 +59,6 @@ const defaultRows: PipeRows = {
   velocity: [{ averageIssueResolveVelocitySeconds: 7451999 }],
 };
 
-// The previous summary is the only call that carries a startDate other than the caller's own.
 function pipeRows(url: URL, rows: PipeRows): object[] {
   const params = url.searchParams;
   switch (url.pathname) {
@@ -347,7 +346,6 @@ describe('merge and summary edge cases (AC4)', () => {
 
 describe('unknown slug (AC5)', () => {
   beforeEach(() => {
-    // The Tinybird client warns when a project has no bucket; keep the test output readable.
     vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 

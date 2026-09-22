@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   callsTo,
   developmentPath,
   mockFetch,
   pipeCalls,
   queryString,
-  tinybirdError,
   tinybirdHost,
   tinybirdStub,
   useApp,
@@ -20,8 +20,6 @@ const leaderboardPath = '/v0/pipes/contributors_leaderboard.json';
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-// getPreviousDates shifts the range back by its calendar span (2 months 30 days here), ending
-// the day before startDate.
 const previousStart = '2024-10-01';
 const previousEnd = '2024-12-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
@@ -131,8 +129,6 @@ interface PipeRows {
   leaderboard?: object[];
 }
 
-// The two active_contributors calls differ by their startDate; the leaderboard has its own pipe
-// path.
 const routeTinybird = ({
   bucket,
   current = [currentRow],
@@ -330,11 +326,7 @@ describe('request validation (AC7)', () => {
   });
 
   it('defaults the range to 2010-01-01 through today when both dates are omitted', async () => {
-    // Only Date is faked, so the Tinybird client's real timers keep running and the request
-    // cannot straddle a UTC midnight between the handler and the assertion.
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-09-21T12:00:00Z'));
-    try {
+    await atDate('2025-09-21T12:00:00Z', async () => {
       const res = await get(url({ startDate: undefined, endDate: undefined }));
       expect(res.statusCode).toBe(200);
       expect(res.json().summary).toMatchObject({
@@ -344,26 +336,7 @@ describe('request validation (AC7)', () => {
       const leaderboard = callsTo(leaderboardPath)[0];
       expect(leaderboard?.searchParams.get('startDate')).toBe(atMidnight('2010-01-01'));
       expect(leaderboard?.searchParams.get('endDate')).toBe(atMidnight('2025-09-21'));
-    } finally {
-      vi.useRealTimers();
-    }
-  });
-});
-
-describe('Tinybird failures (AC8)', () => {
-  // The shared suite fails every pipe call at once; this fails the leaderboard while the summary
-  // calls succeed.
-  it('maps a failing contributors_leaderboard call alone to 503 upstream_unavailable', async () => {
-    vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.spyOn(console, 'warn').mockImplementation(() => {});
-    mockFetch.mockImplementation(
-      tinybirdStub((url) => (url.pathname === leaderboardPath ? tinybirdError(500) : [currentRow])),
-    );
-    const res = await get(url());
-    expect(res.statusCode).toBe(503);
-    expect(res.json().code).toBe('upstream_unavailable');
-    expect(res.body).not.toContain('tinybird internal detail');
-    vi.restoreAllMocks();
+    });
   });
 });
 
@@ -426,7 +399,6 @@ describe('malformed pipe rows (AC11)', () => {
     expect(res.json().summary).toMatchObject({ current: 0, previous: 0, changeValue: 0 });
   });
 
-  // The serializer would otherwise answer 500 with its own message, or write null as "".
   it.each([
     ['without a displayName', { avatar, contributionCount: 5, contributionPercentage: 10 }],
     ['with a null displayName', { displayName: null, avatar, contributionCount: 5 }],

@@ -22,7 +22,6 @@ import {
 const activitiesCountPath = '/v0/pipes/activities_count.json';
 const resolveVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
-// activities_count answers with one summary row without granularity and one row per bucket with it.
 interface ActivityCountSummaryRow {
   activityCount?: number;
 }
@@ -71,7 +70,6 @@ const IssuesResolution = Type.Object({
   }),
 });
 
-// A bucket seen in either series gets an entry, with 0 for the series it is missing from.
 function mergeBuckets(
   opened: ActivityCountBucketRow[],
   closed: ActivityCountBucketRow[],
@@ -116,8 +114,6 @@ const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { current, previous } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
-        // The filter the Nuxt widget handler sends; countType 'new' is ActivityFilterCountType.NEW.
-        // The current-period calls forward the query's own bounds, so an omitted date stays omitted.
         const filter: TinybirdQuery = {
           project: slug,
           bucketId,

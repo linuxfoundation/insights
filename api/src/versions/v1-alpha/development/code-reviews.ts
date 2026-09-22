@@ -16,7 +16,6 @@ import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/
 
 const pipePath = '/v0/pipes/activities_count.json';
 
-// The Nuxt code-reviews list; the operation description below names the types and the overlap.
 const codeReviewTypes = [
   ActivityTypes.PULL_REQUEST_REVIEWED,
   ActivityTypes.MERGE_REQUEST_REVIEW_CHANGES_REQUESTED,
@@ -82,8 +81,6 @@ const codeReviewsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { current, previous } = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
-        // The Nuxt handler sends exactly these params, and the pipe definition lives outside this
-        // repo, so adding the contribution flags could change the count against the widget.
         const shared: TinybirdQuery = {
           project: slug,
           bucketId,

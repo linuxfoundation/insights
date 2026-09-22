@@ -23,7 +23,6 @@ const mergedTypes = 'pull_request-merged,merge_request-merged,changeset-merged';
 const closedTypes = 'pull_request-closed,merge_request-closed,changeset-closed,changeset-abandoned';
 const activityGroups = [openedTypes, mergedTypes, closedTypes];
 
-// Tinybird wants `YYYY-MM-DD 00:00:00`; the previous range is what getPreviousDates derives.
 const currentRange = { startDate: '2025-01-01 00:00:00', endDate: '2025-03-31 00:00:00' };
 const previousRange = { startDate: '2024-10-01 00:00:00', endDate: '2024-12-31 00:00:00' };
 
@@ -33,7 +32,6 @@ const summaryCounts: Record<string, { current: number; previous: number }> = {
   [closedTypes]: { current: 10, previous: 5 },
 };
 
-// The pipe returns bucket bounds as ClickHouse Date values; the three series share their bounds.
 const bucketBounds = [
   ['2025-01-01', '2025-01-05'],
   ['2025-01-06', '2025-01-12'],
@@ -335,7 +333,6 @@ describe('defaults (AC5)', () => {
 
 describe('unknown slug and empty data (AC6, AC7)', () => {
   beforeEach(() => {
-    // The Tinybird client warns when the bucket lookup finds no row; keep the output readable.
     vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 

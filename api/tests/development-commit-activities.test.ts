@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  atDate,
   calledUrls,
   callsTo,
   developmentPath,
@@ -22,13 +23,11 @@ const range = 'startDate=2025-01-01&endDate=2025-03-31';
 const repos = `repos=${encodeURIComponent(k8sRepo)}&repos=${encodeURIComponent(websiteRepo)}`;
 const baseQuery = `${range}&granularity=monthly&${repos}`;
 
-// The previous period of 2025-01-01..2025-03-31, per getPreviousDates.
 const currentStart = '2025-01-01 00:00:00';
 const previousStart = '2024-10-01 00:00:00';
 const previousEnd = '2024-12-31 00:00:00';
 const summaryCounts: Record<string, number> = { [currentStart]: 120, [previousStart]: 100 };
 
-// Tinybird returns Date columns as YYYY-MM-DD; the extra key stands in for the rest of a pipe row.
 const monthlyRows = [
   {
     startDate: '2025-01-01',
@@ -77,7 +76,6 @@ const defaultPipes: Record<string, PipeResponder> = {
   [cumulativeCount]: () => monthlyRows,
 };
 
-// Routes the stubbed fetch by pipe path so a test overrides one pipe at a time.
 function stubTinybird(overrides: Record<string, PipeResponder> = {}, bucket?: unknown[]) {
   const pipes = { ...defaultPipes, ...overrides };
   mockFetch.mockImplementation(
@@ -222,38 +220,33 @@ describe('granularity (AC5)', () => {
 });
 
 describe('date range (AC6)', () => {
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it('sends the resolved 2010-01-01..today range to the pipes when the caller omits dates', async () => {
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date('2025-03-31T12:00:00Z'));
+    await atDate('2025-03-31T12:00:00Z', async () => {
+      const res = await get(`${route}?granularity=monthly`);
+      expect(res.statusCode).toBe(200);
+      expect(res.json().summary).toMatchObject({
+        periodFrom: '2010-01-01T00:00:00Z',
+        periodTo: '2025-03-31T00:00:00Z',
+      });
 
-    const res = await get(`${route}?granularity=monthly`);
-    expect(res.statusCode).toBe(200);
-    expect(res.json().summary).toMatchObject({
-      periodFrom: '2010-01-01T00:00:00Z',
-      periodTo: '2025-03-31T00:00:00Z',
+      // The pipes count exactly the range the summary reports, so no pre-2010 commit slips in.
+      const calls = callsTo(activitiesCount);
+      const current = calls.filter((url) => params(url).startDate === '2010-01-01 00:00:00');
+      expect(current).toHaveLength(2);
+      for (const url of current) {
+        expect(params(url).endDate).toBe('2025-03-31 00:00:00');
+      }
+      expect(current.filter(isSeries)).toHaveLength(1);
+
+      const previous = calls.filter((url) => !current.includes(url));
+      expect(previous.map(params)).toEqual([
+        expect.objectContaining({
+          startDate: '1994-10-01 00:00:00',
+          endDate: '2009-12-31 00:00:00',
+        }),
+      ]);
+      expect(previous[0]?.searchParams.has('granularity')).toBe(false);
     });
-
-    // The pipes count exactly the range the summary reports, so no pre-2010 commit slips in.
-    const calls = callsTo(activitiesCount);
-    const current = calls.filter((url) => params(url).startDate === '2010-01-01 00:00:00');
-    expect(current).toHaveLength(2);
-    for (const url of current) {
-      expect(params(url).endDate).toBe('2025-03-31 00:00:00');
-    }
-    expect(current.filter(isSeries)).toHaveLength(1);
-
-    const previous = calls.filter((url) => !current.includes(url));
-    expect(previous.map(params)).toEqual([
-      expect.objectContaining({
-        startDate: '1994-10-01 00:00:00',
-        endDate: '2009-12-31 00:00:00',
-      }),
-    ]);
-    expect(previous[0]?.searchParams.has('granularity')).toBe(false);
   });
 });
 

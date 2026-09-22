@@ -8,13 +8,10 @@ import { ActivityPlatforms, Granularity as SharedGranularity } from '@lfx-insigh
 export const nullableNumber = (description: string) =>
   Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
 
-// Any non-empty slug passes, so an unknown project reaches the handler and returns empty data.
 export const ProjectSlugParams = Type.Object({
   slug: Type.String({ minLength: 1 }),
 });
 
-// Both bounds reach Tinybird as 00:00:00 on the given day, so the descriptions spell out the
-// half-open range the Insights widgets use: inclusive start, exclusive end.
 export const DateRangeQuery = Type.Object({
   // Fastify's default Ajv coerces a single repos=x to ['x'] (coerceTypes: 'array').
   repos: Type.Optional(Type.Array(Type.String(), { description: 'Repository URLs to filter by.' })),
@@ -34,14 +31,12 @@ export const DateRangeQuery = Type.Object({
   ),
 });
 
-// Keeps the shared schema as the source of the field's type and adds an endpoint's own wording.
 export const describe = <T extends TSchema>(schema: T, description: string): T => ({
   ...schema,
   description,
 });
 
 // Type.Unsafe shows up in OpenAPI as a plain enum, where a literal union becomes anyOf of consts.
-// The template literal derives the API's five values from the shared enum, omitting hourly.
 export const Granularity = Type.Unsafe<`${Exclude<SharedGranularity, SharedGranularity.HOURLY>}`>({
   type: 'string',
   enum: [
@@ -62,7 +57,6 @@ export const Platform =
       'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
   });
 
-// The query of every bucketed series endpoint; spread `.properties` to add endpoint-specific keys.
 export const SeriesQuery = Type.Object({
   ...DateRangeQuery.properties,
   granularity: Granularity,
@@ -95,7 +89,6 @@ interface PeriodSummaryText {
 }
 
 interface PeriodSummaryOptions extends PeriodSummaryText {
-  /** Integer for a count, number for a share. */
   kind: 'integer' | 'number';
 }
 
@@ -104,8 +97,7 @@ interface NullablePeriodSummaryOptions extends PeriodSummaryText {
   nullWhen: { current: string; previous: string };
 }
 
-// PeriodSummary leaves its three plain numbers undescribed because the unit is per metric. These
-// write them from the measure and unit, so every endpoint's summary reads the same way.
+// PeriodSummary leaves its three numbers undescribed because the unit is per metric.
 const summaryText = ({ measure, unit, changeUnit = unit }: PeriodSummaryText) => ({
   current: `${measure} in the current period (${unit}).`,
   previous: `${measure} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (${unit}).`,

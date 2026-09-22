@@ -22,15 +22,11 @@ interface SummaryRow {
   medianTimeToReviewSeconds?: number | null;
 }
 
-// The pipe types the bucket bounds Nullable(Date) and writes 0 for a bucket without a pull
-// request with a positive time to review.
 interface SeriesRow extends SummaryRow {
   startDate: string | null;
   endDate: string | null;
 }
 
-// Rows the guards reject become the documented 503 in fetchPipe, see clients/tinybird.ts. A null
-// bound is in contract and dropped later by hasBucketBounds; a missing median reads 0 or null.
 const isPlainObject = (row: unknown) =>
   typeof row === 'object' && row !== null && !Array.isArray(row);
 const isMedian = (value: unknown) =>
@@ -107,7 +103,6 @@ const medianTimeToReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, granularity, platform } = request.query;
-      // A bad range is a 400, so it is checked before the 503 mapping can catch it.
       const dates = getPreviousDates(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {

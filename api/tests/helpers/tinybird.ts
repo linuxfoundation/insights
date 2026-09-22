@@ -82,6 +82,18 @@ export function useApp(): { get: (url: string) => Promise<LightMyRequestResponse
   return { get: (url: string) => app.inject({ method: 'GET', url }) };
 }
 
+// Only Date is faked, so the Tinybird client's real timers keep running and a request cannot
+// straddle a UTC midnight between the handler and the assertion.
+export async function atDate<T>(iso: string, run: () => Promise<T>): Promise<T> {
+  vi.useFakeTimers({ toFake: ['Date'] });
+  vi.setSystemTime(new Date(iso));
+  try {
+    return await run();
+  } finally {
+    vi.useRealTimers();
+  }
+}
+
 export interface OpenApiSchema {
   $ref?: string;
   type?: string;

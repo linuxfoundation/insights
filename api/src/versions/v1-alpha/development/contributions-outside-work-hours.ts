@@ -12,8 +12,6 @@ import {
 } from '../../../lib/period.js';
 import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schemas/common.js';
 
-// weekday is ISO (1 = Monday to 7 = Sunday) and twoHoursBlock the block's start hour, both in
-// the contributor's local time as computed by the pipe.
 interface HeatmapRow {
   weekday: number;
   twoHoursBlock: number;
