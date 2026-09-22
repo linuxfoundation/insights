@@ -73,25 +73,19 @@ export const ContributionFlags = Type.Object({
   ),
 });
 
-export const ActivityPlatform = Type.Unsafe<`${Exclude<ActivityPlatforms, ActivityPlatforms.ALL>}`>(
-  {
-    type: 'string',
-    enum: Object.values(ActivityPlatforms).filter((platform) => platform !== ActivityPlatforms.ALL),
-    description:
-      'Count only activity on this platform. Omit it to count activity on every platform.',
-  },
+// The data holds platforms and type keys that the ActivityPlatforms and ActivityTypes enums lack or
+// spell differently, so the data decides the valid values. `all`, the Insights sentinel, is refused:
+// omitting the parameter means every value.
+const dataValue = (description: string) =>
+  Type.String({ pattern: '^[\\w-]+$', maxLength: 100, not: { enum: ['all'] }, description });
+
+export const ActivityPlatform = dataValue(
+  'Count only activity on this platform: one of the `platform`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for the project. A platform with no data returns empty results. Omit it to count activity on every platform.',
 );
 
-// The data holds type keys the ActivityTypes enum lacks or spells differently, so the data decides
-// which keys exist. `all`, the Insights sentinel, is refused since omitting the parameter means
-// every type.
-export const ActivityType = Type.String({
-  pattern: '^[\\w-]+$',
-  maxLength: 100,
-  not: { enum: ['all'] },
-  description:
-    'Count only activity of this type: one of the `key`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for the project. A type with no data returns empty results. Omit it to count every type.',
-});
+export const ActivityType = dataValue(
+  'Count only activity of this type: one of the `key`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for the project. A type with no data returns empty results. Omit it to count every type.',
+);
 
 export const SeriesQuery = Type.Object({
   ...DateRangeQuery.properties,

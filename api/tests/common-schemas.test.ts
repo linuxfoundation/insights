@@ -4,8 +4,6 @@ import { Type, type TSchema } from '@sinclair/typebox';
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { ActivityPlatforms } from '@lfx-insights/types';
-
 import { buildApp } from '../src/app.js';
 import { getPreviousDates, toPeriodSummary } from '../src/lib/period.js';
 import {
@@ -561,16 +559,12 @@ describe('ContributionFlags', () => {
 });
 
 describe('ActivityPlatform and ActivityType', () => {
-  const platforms = Object.values(ActivityPlatforms).filter((value) => value !== 'all');
-
-  it('ActivityPlatform offers every activity platform but the all sentinel', () => {
-    expect(ActivityPlatform.enum).toEqual(platforms);
-    expect(ActivityPlatform.enum).toContain('git');
-  });
-
-  it('ActivityType takes a bounded type key, since the data decides which keys exist', () => {
-    expect(ActivityType).not.toHaveProperty('enum');
-    expect(ActivityType).toMatchObject({
+  it.each([
+    ['ActivityPlatform', ActivityPlatform],
+    ['ActivityType', ActivityType],
+  ])('%s takes a bounded value, since the data decides which values exist', (_name, schema) => {
+    expect(schema).not.toHaveProperty('enum');
+    expect(schema).toMatchObject({
       type: 'string',
       pattern: expect.any(String),
       maxLength: expect.any(Number),
@@ -582,9 +576,11 @@ describe('ActivityPlatform and ActivityType', () => {
     expect(ActivityType.description).toMatch(/omit/i);
   });
 
-  it('ActivityType points at the activity-types endpoint and says what a key without data returns', () => {
-    expect(ActivityType.description).toContain('`GET /v1-alpha/projects/{slug}/activity-types`');
-    expect(ActivityType.description).toMatch(/no data returns empty results/i);
+  it('point at the activity-types endpoint and say what a value without data returns', () => {
+    for (const schema of [ActivityPlatform, ActivityType]) {
+      expect(schema.description).toContain('`GET /v1-alpha/projects/{slug}/activity-types`');
+      expect(schema.description).toMatch(/no data returns empty results/i);
+    }
   });
 
   it('accept a platform the pull request filter does not, with an activity type', async () => {
@@ -595,18 +591,24 @@ describe('ActivityPlatform and ActivityType', () => {
     expect(res.json().query).toEqual({ platform: 'git', activityType: 'authored-commit' });
   });
 
-  it.each(['thread_started', 'create_topic', 'issue-closed'])(
-    'accepts activityType=%s, a key the data holds',
-    async (activityType) => {
-      const res = await get(`/v1/projects/kubernetes/activity?activityType=${activityType}`);
-      expect(res.statusCode).toBe(200);
-      expect(res.json().query).toEqual({ activityType });
-    },
-  );
+  it.each([
+    ['platform', 'mailinglist'],
+    ['platform', 'meetings'],
+    ['activityType', 'thread_started'],
+    ['activityType', 'create_topic'],
+    ['activityType', 'issue-closed'],
+  ])('accepts %s=%s, a value the data holds', async (param, value) => {
+    const res = await get(
+      `/v1/projects/kubernetes/activity?${new URLSearchParams({ [param]: value })}`,
+    );
+    expect(res.statusCode).toBe(200);
+    expect(res.json().query).toEqual({ [param]: value });
+  });
 
   it.each([
     ['platform', 'all'],
-    ['platform', 'bitbucket'],
+    ['platform', ''],
+    ['platform', 'git hub'],
     ['activityType', 'all'],
     ['activityType', ''],
     ['activityType', 'pull request'],
@@ -618,18 +620,21 @@ describe('ActivityPlatform and ActivityType', () => {
     expect(res.statusCode).toBe(400);
   });
 
-  it('publish platform as a plain enum and activityType as a bounded string, both described', async () => {
+  it('publish platform and activityType as bounded strings, both described', async () => {
     const operation = await getOperation('/v1/projects/{slug}/activity');
     const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
-    expect(byName.get('platform')?.schema.enum).toEqual(platforms);
-    expect(byName.get('activityType')?.schema).toMatchObject({
-      type: 'string',
-      pattern: ActivityType.pattern,
-      maxLength: ActivityType.maxLength,
-    });
-    expect(byName.get('activityType')?.schema).not.toHaveProperty('enum');
-    expect(parameterDescription(byName.get('platform'))).toBe(ActivityPlatform.description);
-    expect(parameterDescription(byName.get('activityType'))).toBe(ActivityType.description);
+    for (const [name, schema] of [
+      ['platform', ActivityPlatform],
+      ['activityType', ActivityType],
+    ] as const) {
+      expect(byName.get(name)?.schema).toMatchObject({
+        type: 'string',
+        pattern: schema.pattern,
+        maxLength: schema.maxLength,
+      });
+      expect(byName.get(name)?.schema).not.toHaveProperty('enum');
+      expect(parameterDescription(byName.get(name))).toBe(schema.description);
+    }
   });
 });
 
