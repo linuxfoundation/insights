@@ -45,5 +45,5 @@ When implementing an event not yet in this catalog, inform the developer so the 
 
 1. Create `events/<feature>.ts` with the key enum and definitions
 2. Re-export from `events/index.ts` (extend `EventKey` union + spread definitions)
-3. Add `EventFeature.<FEATURE>` to the enum in `index.ts`
+3. Add `EventFeature.<FEATURE>` to the enum in `base.ts`
 4. Add a new section to this catalog

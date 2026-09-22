@@ -2,24 +2,23 @@
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
 
+import { EVENT_DEFINITIONS } from '~/components/shared/types/events';
 import { EventsRepository } from '~~/server/repo/events.repo';
+import { verifyOrRefreshOidcToken } from '~~/server/utils/auth-refresh';
 
 /**
  * API Endpoint: POST /api/events
  * Description: Tracks a user interaction event.
  *
  * Request Body:
- * - key (string, required): Unique event key/identifier
- * - type (string, required): Event type category
- * - name (string, required): Human-readable event name
+ * - key (string, required): Must match a key in the server-side event catalog
  * - properties (object, optional): Arbitrary event metadata
- * - feature (string, optional): Feature area where the event occurred
  * - source (string, optional): URL of the page where the event occurred
  * - entrySource (string, optional): URL of the referrer/entry page
  *
  * Response:
  * - 200: { success: true }
- * - 400: Validation error
+ * - 400: Validation error or unknown event key
  * - 503: Database not available
  * - 500: Internal Server Error
  */
@@ -30,14 +29,19 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     throw createError({ statusCode: 503, statusMessage: 'Database not available' });
   }
 
-  const user = event.context.user as { sub?: string } | undefined;
+  // Optionally resolve the authenticated user — this route is public so anonymous events
+  // are allowed; we just capture the sub when a valid session exists.
+  let userId: string | undefined;
+  try {
+    const decoded = await verifyOrRefreshOidcToken(event);
+    userId = decoded?.sub;
+  } catch {
+    // No valid session — event is recorded as anonymous.
+  }
 
   const body = await readBody<{
     key?: string;
-    type?: string;
-    name?: string;
     properties?: Record<string, unknown>;
-    feature?: string;
     source?: string;
     entrySource?: string;
   }>(event);
@@ -45,23 +49,24 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
   if (!body?.key?.trim()) {
     throw createError({ statusCode: 400, statusMessage: 'key is required' });
   }
-  if (!body?.type?.trim()) {
-    throw createError({ statusCode: 400, statusMessage: 'type is required' });
-  }
-  if (!body?.name?.trim()) {
-    throw createError({ statusCode: 400, statusMessage: 'name is required' });
+
+  const key = body.key.trim() as keyof typeof EVENT_DEFINITIONS;
+  const definition = EVENT_DEFINITIONS[key];
+
+  if (!definition) {
+    throw createError({ statusCode: 400, statusMessage: `Unknown event key: ${body.key}` });
   }
 
   const repo = new EventsRepository(insightsDbPool);
 
   try {
     await repo.track({
-      key: body.key.trim(),
-      type: body.type.trim(),
-      name: body.name.trim(),
-      userId: user?.sub,
+      key: definition.key,
+      type: definition.type,
+      name: definition.name,
+      feature: definition.feature,
+      userId,
       properties: body.properties,
-      feature: body.feature?.trim(),
       source: body.source?.trim(),
       entrySource: body.entrySource?.trim(),
     });

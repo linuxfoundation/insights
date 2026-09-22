@@ -94,11 +94,15 @@ const { showToast } = useToastService();
 
 const emit = defineEmits<{ (e: 'copied'): void }>();
 
-const copy = (url: string) => {
-  navigator?.clipboard.writeText(url);
-  showToast(`Link copied to clipboard`, ToastTypesEnum.positive);
-  props.defaults.onShare?.('copy');
-  emit('copied');
+const copy = async (url: string) => {
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast(`Link copied to clipboard`, ToastTypesEnum.positive);
+    props.defaults.onShare?.('copy');
+    emit('copied');
+  } catch {
+    showToast(`Failed to copy link`, ToastTypesEnum.negative);
+  }
 };
 
 const email = () => {

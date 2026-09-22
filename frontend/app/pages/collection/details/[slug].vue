@@ -292,6 +292,6 @@ watch(
       },
     });
   },
-  { once: true },
+  { immediate: true, once: true },
 );
 </script>
