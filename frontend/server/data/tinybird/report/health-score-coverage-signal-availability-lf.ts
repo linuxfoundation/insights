@@ -10,11 +10,12 @@
 // (crowd.dev PR #4581), calling it twice with `scope=lf` and `scope=other` and pairing the rows
 // by `signal_key`.
 
-import { fetchFromTinybird } from '../tinybird';
 import type {
   HealthScoreCoverageSignalAvailabilityLfData,
   HealthScoreCoverageSignalAvailabilityLfRow,
 } from '~~/types/report/health-score-coverage-signal-availability-lf.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 const PIPE_PATH = '/v0/pipes/health_score_report_signal_availability.json';
 

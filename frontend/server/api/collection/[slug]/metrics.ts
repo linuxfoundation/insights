@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import type { CollectionMetrics, CollectionMetricsTinybird } from '~~/types/collection';
-import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { getOptionalUser } from '~~/server/utils/jwt';
+import type { CollectionMetrics, CollectionMetricsTinybird } from '~~/types/collection';
 
 /**
  * API Endpoint: /api/collection/:slug/metrics

@@ -19,9 +19,10 @@
  * }
  */
 import { DateTime } from 'luxon';
+
 import { Granularity } from '@lfx-insights/types';
-import type { ActiveOrganizationsFilter } from '~~/server/data/types';
 import { createDataSource } from '~~/server/data/data-sources';
+import type { ActiveOrganizationsFilter } from '~~/server/data/types';
 import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
 
 /**

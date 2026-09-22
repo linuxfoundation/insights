@@ -1,7 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { createPrivateKey } from 'node:crypto';
+
 import { SignJWT, importPKCS8 } from 'jose';
+
 import { useRuntimeConfig } from '#imports';
 
 // Accept either a base64-encoded key or the raw PEM text pasted directly (with real or

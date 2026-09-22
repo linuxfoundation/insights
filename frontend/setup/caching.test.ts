@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, afterEach } from 'vitest';
 import { createRouter } from 'radix3';
+import { describe, test, expect, afterEach } from 'vitest';
 
 const noCacheHeader = 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0';
 

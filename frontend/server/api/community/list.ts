@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import { Pagination } from '~~/types/shared/pagination';
-import { CommunityMentions } from '~~/types/community/community';
 import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
+import { CommunityMentions } from '~~/types/community/community';
+import { Pagination } from '~~/types/shared/pagination';
 
 export default defineEventHandler(async (event): Promise<Pagination<CommunityMentions>> => {
   const query = getQuery(event);

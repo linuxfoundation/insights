@@ -20,7 +20,10 @@ export interface HealthScoreCoverageGithubSecurityRow {
 }
 
 export type HealthScoreCoverageGithubSecurityStageKey =
-  'tracked' | 'healthPublished' | 'securityScored' | 'scorecardScanned';
+  | 'tracked'
+  | 'healthPublished'
+  | 'securityScored'
+  | 'scorecardScanned';
 
 // One funnel stage, ready for the table. Stages are monotonically decreasing (each stage's `lf`
 // and `other` are <= the previous stage's) per the pipe's DESCRIPTION.

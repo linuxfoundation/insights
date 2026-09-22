@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { Pool } from 'pg';
 import { createUIMessageStream, createUIMessageStreamResponse } from 'ai';
+import type { Pool } from 'pg';
+
 import { DataCopilot } from '~~/lib/chat/data-copilot';
 import { InsightsProjectsRepository } from '~~/server/repo/insightsProjects.repo';
 

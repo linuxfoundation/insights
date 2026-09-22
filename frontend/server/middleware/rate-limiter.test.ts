@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { H3Event } from 'h3';
 import type { RedisClientType } from '@redis/client';
+import type { H3Event } from 'h3';
 import { describe, it, expect, vi, beforeEach, afterEach, beforeAll } from 'vitest';
+
 import type { RateLimiterConfig } from '~~/server/types/rate-limiter';
 
 const checkRateLimitMock = vi.fn();

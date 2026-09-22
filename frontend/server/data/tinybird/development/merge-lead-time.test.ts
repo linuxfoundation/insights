@@ -1,13 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+import type { MergeLeadTimeFilter } from '~~/server/data/types';
+import type { MergeLeadTime } from '~~/types/development/responses.types';
+
 import {
   mockCurrentData,
   mockPreviousData,
 } from '../../../mocks/tinybird-merge-lead-time-response.mock';
-import type { MergeLeadTime } from '~~/types/development/responses.types';
-import type { MergeLeadTimeFilter } from '~~/server/data/types';
 
 const mockFetchFromTinybird = vi.fn();
 

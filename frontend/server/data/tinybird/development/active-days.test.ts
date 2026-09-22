@@ -1,15 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import { Granularity } from '@lfx-insights/types';
+import type { ActiveDays } from '~~/types/development/responses.types';
+
 import {
   mockCurrentSummary,
   mockPreviousSummary,
   mockActiveDaysData,
 } from '../../../mocks/tinybird-active-days-response.mock';
 import type { ActiveDaysFilter } from '../../types';
-import type { ActiveDays } from '~~/types/development/responses.types';
 
 const mockFetchFromTinybird = vi.fn();
 

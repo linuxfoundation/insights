@@ -9,8 +9,8 @@
 // both the lf and other series together, so the fetcher below fetches both scopes internally.
 
 import { fetchHealthScoreCoverageSignalAvailabilityLf } from '~~/server/data/tinybird/report/health-score-coverage-signal-availability-lf';
-import type { HealthScoreCoverageSignalAvailabilityLfData } from '~~/types/report/health-score-coverage-signal-availability-lf.types';
 import { logError } from '~~/server/utils/log';
+import type { HealthScoreCoverageSignalAvailabilityLfData } from '~~/types/report/health-score-coverage-signal-availability-lf.types';
 
 export default defineEventHandler(
   async (): Promise<HealthScoreCoverageSignalAvailabilityLfData> => {

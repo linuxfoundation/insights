@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+import type { ContributorDependency } from '~~/types/contributors/responses.types';
+
 import { mockTimeseries } from '../../../mocks/tinybird-contributors-dependency-response.mock';
 import { mockTimeseries as mockLeaderboardTimeseries } from '../../../mocks/tinybird-contributors-leaderboard-response.mock';
-import type { ContributorDependency } from '~~/types/contributors/responses.types';
 
 const mockFetchFromTinybird = vi.fn();
 

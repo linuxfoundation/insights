@@ -12,8 +12,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
 import { useRoute } from 'nuxt/app';
+import { watch } from 'vue';
+
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
 import { useAuth } from '~~/composables/useAuth';
 

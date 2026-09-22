@@ -44,11 +44,12 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { clearError, useRoute } from 'nuxt/app';
+
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useResponsive from '~/components/shared/utils/responsive';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   error: object;

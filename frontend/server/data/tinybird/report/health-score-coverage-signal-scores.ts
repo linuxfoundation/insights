@@ -6,13 +6,14 @@
 // merge-order reason as the types file next to it - see
 // health-score-coverage-signal-scores.types.ts.
 
-import { fetchFromTinybird } from '../tinybird';
 import { SIGNAL_SCORE_PERCENTILES } from '~~/types/report/health-score-coverage-signal-scores.types';
 import type {
   HealthScoreCoverageSignalScore,
   HealthScoreCoverageSignalScoreRow,
   HealthScoreCoverageSignalScoresData,
 } from '~~/types/report/health-score-coverage-signal-scores.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 /**
  * Maps the raw `health_score_report_signal_scores` rows into the shape the chart consumes. The

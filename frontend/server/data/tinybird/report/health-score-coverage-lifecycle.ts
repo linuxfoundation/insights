@@ -5,7 +5,6 @@
 // shared server/data/tinybird/report/health-score-coverage.ts file for the same merge-order reason
 // as the types file next to it - see health-score-coverage-lifecycle.types.ts.
 
-import { fetchFromTinybird } from '../tinybird';
 import { healthScoreLifecycleLabels } from '~/components/modules/report/health-score-coverage/config/lifecycle';
 import type {
   HealthScoreCoverageLifecycleCount,
@@ -13,6 +12,8 @@ import type {
   HealthScoreCoverageLifecycleRow,
   HealthScoreCoverageScope,
 } from '~~/types/report/health-score-coverage-lifecycle.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 /**
  * Maps the raw `health_score_report_lifecycle` rows into the shape the chart consumes: the NULL

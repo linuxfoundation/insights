@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { mapHealthScoreCoverageCategoryMaximumRow } from './health-score-coverage-category-maximum';
+
 import type { HealthScoreCoverageCategoryMaximumRow } from '~~/types/report/health-score-coverage-category-maximum.types';
+
+import { mapHealthScoreCoverageCategoryMaximumRow } from './health-score-coverage-category-maximum';
 
 describe('mapHealthScoreCoverageCategoryMaximumRow', () => {
   test('maps the single row into the fixed 3-category order with label and maximum', () => {

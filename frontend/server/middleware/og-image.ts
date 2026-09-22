@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { sendRedirect } from 'h3';
+
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectTinybird } from '~~/types/project';
 

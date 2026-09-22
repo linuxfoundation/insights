@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { fileURLToPath } from 'node:url';
+
 import type { Import } from 'unimport';
 
 type NitroConfigWithErrorHandler = { errorHandler?: string | string[] };
