@@ -121,7 +121,7 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
         includeCodeContributions,
         includeCollaborations,
       } = request.query;
-      // No comparison period: this only fills the default range and rejects an inverted one.
+      // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
       const { current } = getPreviousDates(startDate, endDate);
       const page = requestedPage(request.query);
 
