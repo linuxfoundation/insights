@@ -10,13 +10,13 @@ import {
   parameterDescription,
   pipeCalls,
   queryString,
-  resolveSchema,
   tinybirdError,
   tinybirdResponse,
   tinybirdStub,
-  undescribedFields,
+  responseFields,
   useApp,
   type OpenApiDoc,
+  type OpenApiSchema,
 } from './helpers/tinybird.js';
 
 // Cases every Development route shares through fetchPipe, withBucket, the date schemas and the
@@ -278,14 +278,16 @@ describe.each(names)('%s', (name) => {
       }
     });
 
-    it('describes every query parameter and every response field', () => {
+    it('describes every query parameter, and describes and requires every response field', () => {
       const query = operationOf(name).parameters?.filter((param) => param.in === 'query');
       for (const param of query ?? []) {
         expect(parameterDescription(param), `parameter ${param.name}`).toBeTruthy();
       }
       const schema = operationOf(name).responses['200']?.content['application/json']?.schema;
-      expect(Object.keys(resolveSchema(spec, schema)?.properties ?? {}).length).toBeGreaterThan(0);
-      expect(undescribedFields(spec, schema)).toEqual([]);
+      const fields = responseFields(spec, schema);
+      expect(fields.length).toBeGreaterThan(0);
+      expect(fields.filter((field) => !field.described).map((field) => field.path)).toEqual([]);
+      expect(fields.filter((field) => !field.required).map((field) => field.path)).toEqual([]);
     });
 
     it('stays out of /v1', async () => {
@@ -297,7 +299,7 @@ describe.each(names)('%s', (name) => {
   });
 });
 
-describe('undescribedFields', () => {
+describe('responseFields', () => {
   const doc: OpenApiDoc = {
     paths: {},
     components: {
@@ -307,24 +309,51 @@ describe('undescribedFields', () => {
         Buckets: {
           type: 'array',
           description: 'Buckets.',
-          items: { type: 'object', properties: { day: { type: 'string' } } },
+          items: {
+            type: 'object',
+            required: ['day'],
+            properties: { day: { type: 'string' } },
+          },
         },
       },
     },
   };
+  const paths = (schema: OpenApiSchema, flag: 'required' | 'described') =>
+    responseFields(doc, schema)
+      .filter((field) => !field[flag])
+      .map((field) => field.path);
 
   it('reads a property description through a bare $ref', () => {
-    const schema = { properties: { summary: { $ref: '#/components/schemas/Described' } } };
-    expect(undescribedFields(doc, schema)).toEqual([]);
+    const schema = {
+      required: ['summary'],
+      properties: { summary: { $ref: '#/components/schemas/Described' } },
+    };
+    expect(paths(schema, 'described')).toEqual([]);
   });
 
   it('flags a $ref property whose target has no description', () => {
-    const schema = { properties: { summary: { $ref: '#/components/schemas/Bare' } } };
-    expect(undescribedFields(doc, schema)).toEqual(['summary']);
+    const schema = {
+      required: ['summary'],
+      properties: { summary: { $ref: '#/components/schemas/Bare' } },
+    };
+    expect(paths(schema, 'described')).toEqual(['summary']);
   });
 
   it('walks the items of an array behind a $ref', () => {
-    const schema = { properties: { data: { $ref: '#/components/schemas/Buckets' } } };
-    expect(undescribedFields(doc, schema)).toEqual(['data[].day']);
+    const schema = {
+      required: ['data'],
+      properties: { data: { $ref: '#/components/schemas/Buckets' } },
+    };
+    expect(paths(schema, 'described')).toEqual(['data[].day']);
+    expect(paths(schema, 'required')).toEqual([]);
+  });
+
+  it('flags a property its parent does not require, at any depth', () => {
+    const schema = {
+      properties: {
+        summary: { description: 'x', properties: { current: { description: 'y' } } },
+      },
+    };
+    expect(paths(schema, 'required')).toEqual(['summary', 'summary.current']);
   });
 });

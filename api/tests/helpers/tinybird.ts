@@ -135,14 +135,30 @@ export interface OpenApiDoc {
 export const resolveSchema = (doc: OpenApiDoc, schema?: OpenApiSchema) =>
   schema?.$ref ? doc.components?.schemas?.[schema.$ref.split('/').pop()!] : schema;
 
-// Paths of the properties, nested and array items included, that carry no description.
-export function undescribedFields(doc: OpenApiDoc, schema?: OpenApiSchema, path = ''): string[] {
-  return Object.entries(resolveSchema(doc, schema)?.properties ?? {}).flatMap(([key, child]) => {
-    const node = resolveSchema(doc, child);
+export interface ResponseField {
+  path: string;
+  required: boolean;
+  described: boolean;
+}
+
+// Every property of a response schema, nested objects and array items included.
+export function responseFields(
+  doc: OpenApiDoc,
+  schema?: OpenApiSchema,
+  path = '',
+): ResponseField[] {
+  const node = resolveSchema(doc, schema);
+  const required = new Set(node?.required ?? []);
+  return Object.entries(node?.properties ?? {}).flatMap(([key, child]) => {
+    const resolved = resolveSchema(doc, child);
     return [
-      ...(child.description || node?.description ? [] : [`${path}${key}`]),
-      ...undescribedFields(doc, node, `${path}${key}.`),
-      ...undescribedFields(doc, node?.items, `${path}${key}[].`),
+      {
+        path: `${path}${key}`,
+        required: required.has(key),
+        described: Boolean(child.description || resolved?.description),
+      },
+      ...responseFields(doc, resolved, `${path}${key}.`),
+      ...responseFields(doc, resolved?.items, `${path}${key}[].`),
     ];
   });
 }
