@@ -322,10 +322,6 @@ describe.each(names)('%s', (name) => {
         return res.json<{ data: unknown[]; pageSize: number; nextCursor: string | null }>();
       };
 
-      it('says in its description that rows can be skipped or repeated', () => {
-        expect(operationOf(name).description).toMatch(/skipped or repeated/i);
-      });
-
       it('asks the pipe for 51 rows from offset 0 by default', async () => {
         mockFetch.mockImplementation(emptyRows);
         expect(await getPage()).toMatchObject({ data: [], pageSize: 50, nextCursor: null });

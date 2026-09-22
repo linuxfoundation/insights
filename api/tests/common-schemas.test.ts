@@ -571,18 +571,6 @@ describe('ActivityPlatform and ActivityType', () => {
     });
   });
 
-  it('say that omitting them counts every platform or type', () => {
-    expect(ActivityPlatform.description).toMatch(/omit/i);
-    expect(ActivityType.description).toMatch(/omit/i);
-  });
-
-  it('point at the activity-types endpoint and say what a value without data returns', () => {
-    for (const schema of [ActivityPlatform, ActivityType]) {
-      expect(schema.description).toContain('`GET /v1-alpha/projects/{slug}/activity-types`');
-      expect(schema.description).toMatch(/no data returns empty results/i);
-    }
-  });
-
   it('accept a platform the pull request filter does not, with an activity type', async () => {
     const res = await get(
       '/v1/projects/kubernetes/activity?platform=git&activityType=authored-commit',

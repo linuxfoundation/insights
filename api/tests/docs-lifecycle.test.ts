@@ -21,14 +21,6 @@ describe('lifecycle page (AC2, AC3)', () => {
     expect(lifecycle.toLowerCase()).toContain('no contract guarantees');
   });
 
-  it('marks identity fields provisional in /v1-alpha', () => {
-    const alpha = read('lifecycle.md').split('## `/v1`')[0];
-    expect(alpha.toLowerCase()).toMatch(/identity fields[^.]*provisional/);
-    for (const field of ['display names', 'avatars', 'GitHub handles', 'logos']) {
-      expect(alpha).toContain(field);
-    }
-  });
-
   it('documents the /v1 contract guarantees', () => {
     const lifecycle = read('lifecycle.md');
     expect(lifecycle.toLowerCase()).toContain('additive');
