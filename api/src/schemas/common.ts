@@ -20,14 +20,14 @@ export const DateRangeQuery = Type.Object({
     Type.String({
       format: 'date',
       description:
-        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Inclusive: the period starts at 00:00 UTC on this day.',
+        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Inclusive: the period starts at 00:00 UTC on this day. The earliest accepted day is 2000-01-01.',
     }),
   ),
   endDate: Type.Optional(
     Type.String({
       format: 'date',
       description:
-        'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets.',
+        'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets. The latest accepted day is today in UTC.',
     }),
   ),
 });

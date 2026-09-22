@@ -187,6 +187,28 @@ describe('getPreviousDates rejects an inverted range (AC5)', () => {
   });
 });
 
+describe('getPreviousDates takes dates from 2000-01-01 to today', () => {
+  const now = new Date('2025-09-18T12:00:00Z');
+
+  it.each([
+    ['a startDate before 2000-01-01', '1999-12-31', '2025-01-01'],
+    ['a year-one startDate', '0001-01-01', undefined],
+    ['an endDate after today', '2025-01-01', '2025-09-19'],
+    ['a far-future endDate', undefined, '9999-12-31'],
+  ])('rejects %s as a 400 invalid_request', (_label, startDate, endDate) => {
+    const error = thrownBy(() => getPreviousDates(startDate, endDate, now));
+    expect(error).toBeInstanceOf(InvalidDateRangeError);
+    expect(error).toMatchObject({ statusCode: 400, code: 'invalid_request' });
+  });
+
+  it('accepts 2000-01-01 and today as the bounds', () => {
+    expect(getPreviousDates('2000-01-01', '2025-09-18', now).current).toEqual({
+      startDate: '2000-01-01',
+      endDate: '2025-09-18',
+    });
+  });
+});
+
 describe('InvalidDateRangeError (AC9)', () => {
   it('is named after its class and keeps the 400 invalid_request mapping', () => {
     const error = new InvalidDateRangeError('startDate must be on or before endDate');
