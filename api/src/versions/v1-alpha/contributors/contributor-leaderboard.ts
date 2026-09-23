@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { activityFilterParams, fetchPipe, withBucket } from '../../../clients/tinybird.js';
 import {
   Contributor,
   type ContributorRow,
@@ -13,22 +13,16 @@ import {
   toContributor,
 } from '../../../lib/contributors.js';
 import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
-import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
+import { currentPeriod } from '../../../lib/period.js';
 import {
-  ActivityPlatform,
-  ActivityType,
-  ContributionFlags,
-  DateRangeQuery,
+  ActivityFilterQuery,
   paginated,
   PaginationQuery,
   ProjectSlugParams,
 } from '../../../schemas/common.js';
 
 const Query = Type.Object({
-  ...DateRangeQuery.properties,
-  platform: Type.Optional(ActivityPlatform),
-  activityType: Type.Optional(ActivityType),
-  ...ContributionFlags.properties,
+  ...ActivityFilterQuery.properties,
   ...PaginationQuery.properties,
 });
 
@@ -56,17 +50,7 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
     },
     async (request) => {
       const { slug } = request.params;
-      const {
-        repos,
-        startDate,
-        endDate,
-        platform,
-        activityType,
-        includeCodeContributions,
-        includeCollaborations,
-      } = request.query;
-      // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
-      const { current } = getPreviousDates(startDate, endDate);
+      const current = currentPeriod(request.query);
       const page = requestedPage(request.query);
 
       const rows = await withBucket(request, slug, (bucketId) =>
@@ -74,14 +58,7 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
           request,
           contributorsLeaderboardPath,
           {
-            project: slug,
-            bucketId,
-            repos: repoFilter(repos),
-            ...toTinybirdRange(current),
-            platform,
-            activity_type: activityType,
-            includeCodeContributions,
-            includeCollaborations,
+            ...activityFilterParams(slug, bucketId, request.query, current),
             ...pipeWindow(page),
           },
           isContributorRow,

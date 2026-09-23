@@ -3,9 +3,8 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { activityFilterParams, fetchPipe, withBucket } from '../../../clients/tinybird.js';
+import { toGroups } from '../../../lib/dependency.js';
 import {
   isOrganizationRow,
   Organization,
@@ -13,14 +12,8 @@ import {
   toOrganization,
   type OrganizationRow,
 } from '../../../lib/organizations.js';
-import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
-import {
-  ActivityPlatform,
-  ActivityType,
-  ContributionFlags,
-  DateRangeQuery,
-  ProjectSlugParams,
-} from '../../../schemas/common.js';
+import { currentPeriod } from '../../../lib/period.js';
+import { ActivityFilterQuery, ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/organization_dependency.json';
 
@@ -33,38 +26,6 @@ const isDependencyRow = (row: DependencyRow) =>
   typeof row.contributionPercentageRunningTotal === 'number' &&
   Number.isSafeInteger(row.totalOrganizationCount) &&
   row.totalOrganizationCount >= 0;
-
-// The pipe sums two-decimal shares in Float64, which leaves noise such as 51.370000000000005.
-const toTwoDecimals = (value: number) => Math.round(value * 100) / 100;
-
-function toGroups(rows: DependencyRow[]) {
-  if (rows.length === 0) {
-    return {
-      topOrganizations: { count: 0, contributionPercentage: 0 },
-      otherOrganizations: { count: 0, contributionPercentage: 0 },
-    };
-  }
-  // The pipe's outer query has no ORDER BY, so the share is the largest running total rather than
-  // the last row's.
-  const topShare = toTwoDecimals(
-    Math.max(...rows.map((row) => row.contributionPercentageRunningTotal)),
-  );
-  return {
-    topOrganizations: { count: rows.length, contributionPercentage: topShare },
-    // Every row carries the same total.
-    otherOrganizations: {
-      count: Math.max(0, rows[0].totalOrganizationCount - rows.length),
-      contributionPercentage: toTwoDecimals(100 - topShare),
-    },
-  };
-}
-
-const Query = Type.Object({
-  ...DateRangeQuery.properties,
-  platform: Type.Optional(ActivityPlatform),
-  activityType: Type.Optional(ActivityType),
-  ...ContributionFlags.properties,
-});
 
 const TopOrganizations = Type.Object(
   {
@@ -118,35 +79,16 @@ const organizationDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) =>
           'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
           'An unknown project, or a period without matching contributions, returns zero counts and shares and an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
         params: ProjectSlugParams,
-        querystring: Query,
+        querystring: ActivityFilterQuery,
         response: { 200: OrganizationDependency },
       },
     },
     async (request) => {
       const { slug } = request.params;
-      const {
-        repos,
-        startDate,
-        endDate,
-        platform,
-        activityType,
-        includeCodeContributions,
-        includeCollaborations,
-      } = request.query;
-      // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
-      const { current } = getPreviousDates(startDate, endDate);
+      const current = currentPeriod(request.query);
 
       const rows = await withBucket(request, slug, (bucketId) => {
-        const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
-          repos: repoFilter(repos),
-          ...toTinybirdRange(current),
-          platform,
-          activity_type: activityType,
-          includeCodeContributions,
-          includeCollaborations,
-        };
+        const shared = activityFilterParams(slug, bucketId, request.query, current);
 
         return Promise.all([
           // Insights sends no limit, so the pipe finds the top group among the leaderboard's
@@ -161,10 +103,15 @@ const organizationDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) =>
         ]);
       });
       const [dependencyRows, leaderboardRows] = rows ?? [[], []];
+      const groups = toGroups(dependencyRows, (row) => row.totalOrganizationCount);
 
       // organizations_leaderboard orders by count, then organization id, both descending, in its
       // only node, so rows arrive ranked.
-      return { ...toGroups(dependencyRows), data: leaderboardRows.map(toOrganization) };
+      return {
+        topOrganizations: groups.top,
+        otherOrganizations: groups.other,
+        data: leaderboardRows.map(toOrganization),
+      };
     },
   );
 };

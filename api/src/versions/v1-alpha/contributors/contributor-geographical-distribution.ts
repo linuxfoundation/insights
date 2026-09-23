@@ -3,27 +3,14 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { activityFilterParams, fetchPipe, withBucket } from '../../../clients/tinybird.js';
 import { geoDistribution } from '../../../lib/geo-distribution.js';
-import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
-import {
-  ActivityPlatform,
-  ActivityType,
-  ContributionFlags,
-  DateRangeQuery,
-  ProjectSlugParams,
-} from '../../../schemas/common.js';
+import { currentPeriod } from '../../../lib/period.js';
+import { ActivityFilterQuery, ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/contributors_geo_distribution.json';
 
 const { isRow, toItem, Item } = geoDistribution('contributor');
-
-const Query = Type.Object({
-  ...DateRangeQuery.properties,
-  platform: Type.Optional(ActivityPlatform),
-  activityType: Type.Optional(ActivityType),
-  ...ContributionFlags.properties,
-});
 
 const GeographicalDistribution = Type.Object({
   data: Type.Array(Item, {
@@ -45,38 +32,19 @@ const contributorGeographicalDistributionRoutes: FastifyPluginAsyncTypebox = asy
           'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
           'An unknown project returns an empty `data` list.',
         params: ProjectSlugParams,
-        querystring: Query,
+        querystring: ActivityFilterQuery,
         response: { 200: GeographicalDistribution },
       },
     },
     async (request) => {
       const { slug } = request.params;
-      const {
-        repos,
-        startDate,
-        endDate,
-        platform,
-        activityType,
-        includeCodeContributions,
-        includeCollaborations,
-      } = request.query;
-      // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
-      const { current } = getPreviousDates(startDate, endDate);
+      const current = currentPeriod(request.query);
 
       const rows = await withBucket(request, slug, (bucketId) =>
         fetchPipe(
           request,
           pipePath,
-          {
-            project: slug,
-            bucketId,
-            repos: repoFilter(repos),
-            ...toTinybirdRange(current),
-            platform,
-            activity_type: activityType,
-            includeCodeContributions,
-            includeCollaborations,
-          },
+          activityFilterParams(slug, bucketId, request.query, current),
           isRow,
         ),
       );

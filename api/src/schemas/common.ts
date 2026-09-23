@@ -87,6 +87,24 @@ export const ActivityType = dataValue(
   'Count only activity of this type: one of the `key`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for the project. A type with no data returns empty results. Omit it to count every type.',
 );
 
+export const ActivityFilterQuery = Type.Object({
+  ...DateRangeQuery.properties,
+  platform: Type.Optional(ActivityPlatform),
+  activityType: Type.Optional(ActivityType),
+  ...ContributionFlags.properties,
+});
+
+export const BucketBounds = Type.Object({
+  startDate: Type.String({
+    format: 'date-time',
+    description: 'First day of the bucket, at 00:00:00 UTC.',
+  }),
+  endDate: Type.String({
+    format: 'date-time',
+    description: 'Last calendar day of the bucket, at 00:00:00 UTC.',
+  }),
+});
+
 export const SeriesQuery = Type.Object({
   ...DateRangeQuery.properties,
   granularity: Granularity,

@@ -3,9 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { activityFilterParams, fetchPipe, withBucket } from '../../../clients/tinybird.js';
 import {
   Contributor,
   type ContributorRow,
@@ -14,14 +12,9 @@ import {
   isContributorRow,
   toContributor,
 } from '../../../lib/contributors.js';
-import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
-import {
-  ActivityPlatform,
-  ActivityType,
-  ContributionFlags,
-  DateRangeQuery,
-  ProjectSlugParams,
-} from '../../../schemas/common.js';
+import { toGroups } from '../../../lib/dependency.js';
+import { currentPeriod } from '../../../lib/period.js';
+import { ActivityFilterQuery, ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/contributor_dependency.json';
 
@@ -34,38 +27,6 @@ const isDependencyRow = (row: DependencyRow) =>
   typeof row.contributionPercentageRunningTotal === 'number' &&
   Number.isSafeInteger(row.totalContributorCount) &&
   row.totalContributorCount >= 0;
-
-// The pipe sums two-decimal shares in Float64, which leaves noise such as 51.370000000000005.
-const toTwoDecimals = (value: number) => Math.round(value * 100) / 100;
-
-function toGroups(rows: DependencyRow[]) {
-  if (rows.length === 0) {
-    return {
-      topContributors: { count: 0, contributionPercentage: 0 },
-      otherContributors: { count: 0, contributionPercentage: 0 },
-    };
-  }
-  // The pipe's row order is unreliable, so the share is the largest running total rather than
-  // the last row's.
-  const topShare = toTwoDecimals(
-    Math.max(...rows.map((row) => row.contributionPercentageRunningTotal)),
-  );
-  return {
-    topContributors: { count: rows.length, contributionPercentage: topShare },
-    // Every row carries the same total.
-    otherContributors: {
-      count: Math.max(0, rows[0].totalContributorCount - rows.length),
-      contributionPercentage: toTwoDecimals(100 - topShare),
-    },
-  };
-}
-
-const Query = Type.Object({
-  ...DateRangeQuery.properties,
-  platform: Type.Optional(ActivityPlatform),
-  activityType: Type.Optional(ActivityType),
-  ...ContributionFlags.properties,
-});
 
 const TopContributors = Type.Object(
   {
@@ -118,35 +79,16 @@ const contributorDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) => 
           'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
           'An unknown project, or a period without matching contributions, returns zero counts and shares and an empty `data` list. Contributor identity fields are provisional in /v1-alpha.',
         params: ProjectSlugParams,
-        querystring: Query,
+        querystring: ActivityFilterQuery,
         response: { 200: ContributorDependency },
       },
     },
     async (request) => {
       const { slug } = request.params;
-      const {
-        repos,
-        startDate,
-        endDate,
-        platform,
-        activityType,
-        includeCodeContributions,
-        includeCollaborations,
-      } = request.query;
-      // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
-      const { current } = getPreviousDates(startDate, endDate);
+      const current = currentPeriod(request.query);
 
       const rows = await withBucket(request, slug, (bucketId) => {
-        const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
-          repos: repoFilter(repos),
-          ...toTinybirdRange(current),
-          platform,
-          activity_type: activityType,
-          includeCodeContributions,
-          includeCollaborations,
-        };
+        const shared = activityFilterParams(slug, bucketId, request.query, current);
 
         return Promise.all([
           // The pipe finds the top group among the leaderboard's first `limit` contributors
@@ -161,9 +103,11 @@ const contributorDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) => 
         ]);
       });
       const [dependencyRows, leaderboardRows] = rows ?? [[], []];
+      const groups = toGroups(dependencyRows, (row) => row.totalContributorCount);
 
       return {
-        ...toGroups(dependencyRows),
+        topContributors: groups.top,
+        otherContributors: groups.other,
         data: leaderboardRows.sort(inLeaderboardOrder).map(toContributor),
       };
     },
