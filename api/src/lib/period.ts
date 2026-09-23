@@ -63,8 +63,8 @@ function addMonthsClamped(date: Date, months: number): Date {
   return utcDate(year, month, Math.min(date.getUTCDate(), lastDay));
 }
 
-// Validates the requested range and derives the comparison period before it. Ports getPreviousDates
-// from frontend/server/data/util.ts, Luxon month-end clamping included, so both match the UI day for day.
+// Ports getPreviousDates from frontend/server/data/util.ts, Luxon month-end clamping included, so the
+// comparison period matches the UI day for day.
 export function resolvePeriods(
   startDate = defaultStartDate,
   endDate?: string,
