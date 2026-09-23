@@ -40,15 +40,16 @@ watch(
   [isReady, isAuthenticated],
   ([ready, authed]) => {
     if (!ready || !process.client) return;
+    // Track before the auth-callback guard so login redirects (?auth=success)
+    // are captured — they arrive authenticated and would otherwise be skipped.
+    if (authed && !viewTracked.value) {
+      viewTracked.value = true;
+      trackEvent({ key: CollectionsEventKey.VIEW_MY_COLLECTIONS });
+    }
     const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
     if (isAuthCallback) return;
     if (!authed) {
       login(window.location.pathname + window.location.search + window.location.hash);
-      return;
-    }
-    if (!viewTracked.value) {
-      viewTracked.value = true;
-      trackEvent({ key: CollectionsEventKey.VIEW_MY_COLLECTIONS });
     }
   },
   { immediate: true },

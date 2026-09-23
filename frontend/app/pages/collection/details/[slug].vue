@@ -281,8 +281,10 @@ useHead(getCollectionSchema(data));
 
 const { trackEvent } = useTrackEvent();
 
-// Stop manually after first successful fire so async loads are captured.
-const stopViewWatch = watch(
+// let avoids a TDZ crash when data is pre-populated and the callback runs
+// synchronously before watch() returns.
+let stopViewWatch: () => void;
+stopViewWatch = watch(
   data,
   (collection) => {
     if (!collection) return;

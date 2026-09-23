@@ -55,7 +55,7 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     if (typeof body.properties !== 'object' || Array.isArray(body.properties)) {
       throw createError({ statusCode: 400, statusMessage: 'properties must be an object' });
     }
-    if (JSON.stringify(body.properties).length > MAX_PROPERTIES_BYTES) {
+    if (Buffer.byteLength(JSON.stringify(body.properties), 'utf8') > MAX_PROPERTIES_BYTES) {
       throw createError({ statusCode: 400, statusMessage: 'properties payload too large' });
     }
   }
