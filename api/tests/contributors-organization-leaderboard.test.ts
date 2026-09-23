@@ -18,74 +18,67 @@ import {
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
 const atMidnight = (day: string) => `${day} 00:00:00`;
-const pipePath = '/v0/pipes/contributors_leaderboard.json';
+const pipePath = '/v0/pipes/organizations_leaderboard.json';
 
-// Rows as the pipe returns them: `id` is the member id the pipe pages by, which the route drops.
+// Rows as the pipe returns them: `id` is the organization id the pipe pages by, which the route drops.
 const pipeRows = [
   {
-    id: 'b17e3beb-09e2-447f-a12d-00c716dd00db',
-    avatar: 'https://avatars.githubusercontent.com/u/6732289?v=4',
-    displayName: 'Jakub Kicinski',
-    githubHandleArray: ['kuba-moo'],
-    contributionCount: 9234,
-    contributionPercentage: 3.12,
-    roles: ['maintainer'],
+    id: 'd7bf07d9-780b-4279-bfbc-d83f85950353',
+    slug: 'red-hat-inc',
+    logo: 'https://logos.test/red-hat.svg',
+    displayName: 'Red Hat, Inc.',
+    contributionCount: 16593,
+    contributionPercentage: 12.04,
   },
   {
-    id: 'a3bbff07-7cec-4885-b688-d8b377a580c6',
-    avatar: 'https://avatars.githubusercontent.com/u/118310711?v=4',
-    displayName: 'Alex Deucher',
-    githubHandleArray: ['alexdeucher', 'agd5f'],
-    contributionCount: 6625,
-    contributionPercentage: 2.24,
-    roles: ['maintainer', 'contributor'],
+    id: '9f7f73b0-95d6-49c2-bffe-8300c03852ef',
+    slug: 'linaro-limited',
+    logo: 'https://logos.test/linaro.svg',
+    displayName: 'Linaro Limited',
+    contributionCount: 13560,
+    contributionPercentage: 9.84,
   },
   {
-    id: '7f65feb0-589b-11ee-bf26-d732180a3416',
-    avatar: '',
-    displayName: 'Mark Brown',
-    githubHandleArray: [],
-    contributionCount: 5584,
-    contributionPercentage: 1.89,
-    roles: [],
+    id: '0c562f29-ab29-4383-b4ca-85457367ee39',
+    slug: 'arm-limited',
+    logo: '',
+    displayName: 'Arm Limited',
+    contributionCount: 9996,
+    contributionPercentage: 7.25,
   },
 ];
 
 const expectedData = [
   {
-    name: 'Jakub Kicinski',
-    avatar: 'https://avatars.githubusercontent.com/u/6732289?v=4',
-    contributions: 9234,
-    contributionPercentage: 3.12,
-    roles: ['maintainer'],
-    githubHandles: ['kuba-moo'],
+    name: 'Red Hat, Inc.',
+    slug: 'red-hat-inc',
+    logo: 'https://logos.test/red-hat.svg',
+    contributions: 16593,
+    contributionPercentage: 12.04,
   },
   {
-    name: 'Alex Deucher',
-    avatar: 'https://avatars.githubusercontent.com/u/118310711?v=4',
-    contributions: 6625,
-    contributionPercentage: 2.24,
-    roles: ['maintainer', 'contributor'],
-    githubHandles: ['alexdeucher', 'agd5f'],
+    name: 'Linaro Limited',
+    slug: 'linaro-limited',
+    logo: 'https://logos.test/linaro.svg',
+    contributions: 13560,
+    contributionPercentage: 9.84,
   },
   {
-    name: 'Mark Brown',
-    avatar: '',
-    contributions: 5584,
-    contributionPercentage: 1.89,
-    roles: [],
-    githubHandles: [],
+    name: 'Arm Limited',
+    slug: 'arm-limited',
+    logo: '',
+    contributions: 9996,
+    contributionPercentage: 7.25,
   },
 ];
 
-const pipeRow = (id: string, contributionCount: number) => ({
+const pipeRow = (id: string, contributionCount: number, displayName = `Organization ${id}`) => ({
   id,
-  avatar: `https://avatars.test/${id}.png`,
-  displayName: `Member ${id}`,
-  githubHandleArray: [],
+  slug: `organization-${id}`,
+  logo: `https://logos.test/${id}.png`,
+  displayName,
   contributionCount,
   contributionPercentage: 1,
-  roles: [],
 });
 
 interface PipeRows {
@@ -97,7 +90,7 @@ const routeTinybird = ({ bucket, rows = pipeRows }: PipeRows = {}) =>
   tinybirdStub(() => rows, bucket);
 
 const url = (params: Record<string, string | string[] | undefined> = {}, slug = 'kubernetes') =>
-  `/v1-alpha/projects/${slug}/contributors/contributor-leaderboard?${queryString({
+  `/v1-alpha/projects/${slug}/contributors/organization-leaderboard?${queryString({
     startDate,
     endDate,
     ...params,
@@ -117,16 +110,18 @@ beforeEach(() => {
   mockFetch.mockImplementation(routeTinybird());
 });
 
-describe('GET /v1-alpha/projects/{slug}/contributors/contributor-leaderboard (AC1)', () => {
-  it('returns a page of contributors with the renamed fields', async () => {
+describe('GET /v1-alpha/projects/{slug}/contributors/organization-leaderboard (AC1)', () => {
+  it('returns a page of organizations with the renamed fields', async () => {
     const res = await get(url());
     expect(res.statusCode).toBe(200);
     expect(res.json()).toEqual({ data: expectedData, pageSize: 50, nextCursor: null });
   });
 
-  it('returns only the documented keys, dropping the member id and extra pipe fields', async () => {
+  it('returns only the documented keys, dropping the organization id, website and extra pipe fields', async () => {
     mockFetch.mockImplementation(
-      routeTinybird({ rows: pipeRows.map((row) => ({ ...row, slug: 'x', extra: 'x' })) }),
+      routeTinybird({
+        rows: pipeRows.map((row) => ({ ...row, website: 'https://site.test', extra: 'x' })),
+      }),
     );
     const res = await get(url());
     expect(res.statusCode).toBe(200);
@@ -135,49 +130,27 @@ describe('GET /v1-alpha/projects/{slug}/contributors/contributor-leaderboard (AC
     expect(body.data).toHaveLength(pipeRows.length);
     for (const item of body.data) {
       expect(Object.keys(item).sort()).toEqual([
-        'avatar',
         'contributionPercentage',
         'contributions',
-        'githubHandles',
+        'logo',
         'name',
-        'roles',
+        'slug',
       ]);
     }
     expect(res.body).not.toContain(pipeRows[0]!.id);
+    expect(res.body).not.toContain('https://site.test');
   });
 
-  it('answers empty roles and githubHandles when the pipe sends null or leaves them out', async () => {
-    const withoutLists = {
-      id: 'b',
-      avatar: 'https://avatars.test/b.png',
-      displayName: 'Member b',
-      contributionCount: 5,
-      contributionPercentage: 1,
-    };
-    mockFetch.mockImplementation(
-      routeTinybird({
-        rows: [{ ...pipeRow('c', 9), roles: null, githubHandleArray: null }, withoutLists],
-      }),
-    );
+  it('keeps an empty logo as an empty string rather than null', async () => {
+    mockFetch.mockImplementation(routeTinybird({ rows: [{ ...pipeRow('a', 3), logo: '' }] }));
     const res = await get(url());
     expect(res.statusCode).toBe(200);
-    const { data } = res.json<{ data: object[] }>();
-    expect(data).toHaveLength(2);
-    for (const item of data) {
-      expect(item).toMatchObject({ roles: [], githubHandles: [] });
-    }
-  });
-
-  it('keeps an empty avatar as an empty string rather than null', async () => {
-    mockFetch.mockImplementation(routeTinybird({ rows: [{ ...pipeRow('a', 3), avatar: '' }] }));
-    const res = await get(url());
-    expect(res.statusCode).toBe(200);
-    expect(res.json().data[0].avatar).toBe('');
+    expect(res.json().data[0].logo).toBe('');
   });
 });
 
 describe('Tinybird calls (AC2)', () => {
-  it('makes one contributors_leaderboard call with the slug and the range, never the count-only one', async () => {
+  it('makes one organizations_leaderboard call with the slug and the range, never the count-only one', async () => {
     await get(url());
     const calls = pipeCalls();
     expect(calls).toHaveLength(1);
@@ -235,45 +208,32 @@ describe('Tinybird calls (AC2)', () => {
   });
 });
 
-// The pipe pages by contribution count, then member id, both descending, but its last node sorts
-// by count alone, so tied rows can come back in any order.
+// The pipe's only node orders by contribution count, then organization id, both descending, and
+// pages that order, so rows already arrive in paging order.
 describe('rank order (AC3)', () => {
-  it('restores the paging order of a tie at the page boundary and drops the lookahead row', async () => {
-    const top = pipeRow('11111111-1111-4111-8111-111111111111', 10);
-    const tieFirst = pipeRow('cccccccc-cccc-4ccc-8ccc-cccccccccccc', 5);
-    const tieLast = pipeRow('55555555-5555-4555-8555-555555555555', 5);
-    mockFetch.mockImplementation(routeTinybird({ rows: [top, tieLast, tieFirst] }));
+  it('keeps the pipe order of a tie at the page boundary and drops the lookahead row', async () => {
+    const top = pipeRow('11111111-1111-4111-8111-111111111111', 10, 'Top');
+    const tieFirst = pipeRow('cccccccc-cccc-4ccc-8ccc-cccccccccccc', 5, 'Zeta');
+    const tieLast = pipeRow('55555555-5555-4555-8555-555555555555', 5, 'Alpha');
+    mockFetch.mockImplementation(routeTinybird({ rows: [top, tieFirst, tieLast] }));
     const res = await get(url({ pageSize: '2' }));
     expect(res.statusCode).toBe(200);
     const page = res.json<Page>();
-    expect(namesOf(page)).toEqual([top.displayName, tieFirst.displayName]);
+    expect(namesOf(page)).toEqual(['Top', 'Zeta']);
     expect(page.nextCursor).toEqual(expect.any(String));
   });
 
-  // memberId is a String column, which ClickHouse orders by its bytes. A UUID column would order
-  // by the second half first, which puts these two the other way round.
-  it('breaks a tie by the member id in string order, not UUID order', async () => {
-    const firstAsString = pipeRow('ffffffff-ffff-4fff-8000-000000000000', 5);
-    const firstAsUuid = pipeRow('00000000-0000-4000-bfff-ffffffffffff', 5);
-    mockFetch.mockImplementation(routeTinybird({ rows: [firstAsUuid, firstAsString] }));
-    const res = await get(url({ pageSize: '1' }));
-    expect(res.statusCode).toBe(200);
-    const page = res.json<Page>();
-    expect(namesOf(page)).toEqual([firstAsString.displayName]);
-    expect(page.nextCursor).toEqual(expect.any(String));
-  });
-
-  it('keeps every tied row of a last page in the paging order', async () => {
+  it('keeps every tied row of a last page in the pipe order', async () => {
     const rows = [
-      pipeRow('22222222-2222-4222-8222-222222222222', 7),
-      pipeRow('99999999-9999-4999-8999-999999999999', 7),
-      pipeRow('44444444-4444-4444-8444-444444444444', 7),
+      pipeRow('99999999-9999-4999-8999-999999999999', 7, 'Mid'),
+      pipeRow('44444444-4444-4444-8444-444444444444', 7, 'Zulu'),
+      pipeRow('22222222-2222-4222-8222-222222222222', 7, 'Able'),
     ];
     mockFetch.mockImplementation(routeTinybird({ rows }));
     const res = await get(url());
     expect(res.statusCode).toBe(200);
     const page = res.json<Page>();
-    expect(namesOf(page)).toEqual([rows[1]!, rows[2]!, rows[0]!].map((row) => row.displayName));
+    expect(namesOf(page)).toEqual(['Mid', 'Zulu', 'Able']);
     expect(page.nextCursor).toBeNull();
   });
 });
@@ -281,19 +241,16 @@ describe('rank order (AC3)', () => {
 describe('Tinybird failures (AC4)', () => {
   const valid = pipeRow('ab', 4);
   it.each([
-    ['without the member id', { ...valid, id: undefined }],
-    ['with a numeric member id', { ...valid, id: 42 }],
+    ['without the slug', { ...valid, slug: undefined }],
+    ['with a numeric slug', { ...valid, slug: 42 }],
+    ['with a null logo', { ...valid, logo: null }],
     ['without the display name', { ...valid, displayName: undefined }],
-    ['with a null avatar', { ...valid, avatar: null }],
     ['without the contribution count', { ...valid, contributionCount: undefined }],
     ['with a fractional contribution count', { ...valid, contributionCount: 2.5 }],
-    ['with a string contribution count', { ...valid, contributionCount: '4' }],
     ['with a negative contribution count', { ...valid, contributionCount: -1 }],
+    ['with a string contribution count', { ...valid, contributionCount: '4' }],
     ['without the contribution percentage', { ...valid, contributionPercentage: undefined }],
     ['with a string contribution percentage', { ...valid, contributionPercentage: 'high' }],
-    ['with roles that are not a list', { ...valid, roles: 'maintainer' }],
-    ['with a role that is not a string', { ...valid, roles: [1] }],
-    ['with a GitHub handle that is not a string', { ...valid, githubHandleArray: [null] }],
   ])('maps a pipe row %s to 503 upstream_unavailable', async (_case, row) => {
     mockFetch.mockImplementation(routeTinybird({ rows: [...pipeRows, row] }));
     const res = await get(url());
@@ -319,7 +276,7 @@ describe('OpenAPI (AC6)', () => {
     const res = await get('/v1-alpha/openapi.json');
     expect(res.statusCode).toBe(200);
     const spec = res.json<OpenApiDoc>();
-    const operation = spec.paths[contributorsPath('contributor-leaderboard')]?.get;
+    const operation = spec.paths[contributorsPath('organization-leaderboard')]?.get;
     const page = resolveSchema(
       spec,
       operation?.responses['200']?.content['application/json']?.schema,
@@ -347,18 +304,20 @@ describe('OpenAPI (AC6)', () => {
     ]);
   });
 
-  it('types every item field, with a non-nullable avatar and string lists', async () => {
+  it('types every item field, with non-nullable identity strings', async () => {
     const { item } = await getSpec();
-    expect(item?.properties?.name).toMatchObject({ type: 'string' });
-    expect(item?.properties?.avatar).toMatchObject({ type: 'string' });
-    expect(item?.properties?.avatar?.nullable).toBeFalsy();
+    expect(Object.keys(item?.properties ?? {}).sort()).toEqual([
+      'contributionPercentage',
+      'contributions',
+      'logo',
+      'name',
+      'slug',
+    ]);
+    for (const text of ['name', 'slug', 'logo']) {
+      expect(item?.properties?.[text], text).toMatchObject({ type: 'string' });
+      expect(item?.properties?.[text]?.nullable, text).toBeFalsy();
+    }
     expect(item?.properties?.contributions).toMatchObject({ type: 'integer' });
     expect(item?.properties?.contributionPercentage).toMatchObject({ type: 'number' });
-    for (const list of ['roles', 'githubHandles']) {
-      expect(item?.properties?.[list], list).toMatchObject({
-        type: 'array',
-        items: { type: 'string' },
-      });
-    }
   });
 });
