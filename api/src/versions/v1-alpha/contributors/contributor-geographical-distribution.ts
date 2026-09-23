@@ -4,54 +4,49 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import {
-  Contributor,
-  type ContributorRow,
-  contributorsLeaderboardPath,
-  inLeaderboardOrder,
-  isContributorRow,
-  toContributor,
-} from '../../../lib/contributors.js';
-import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
+import { geoDistribution } from '../../../lib/geo-distribution.js';
 import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
 import {
   ActivityPlatform,
   ActivityType,
   ContributionFlags,
   DateRangeQuery,
-  paginated,
-  PaginationQuery,
   ProjectSlugParams,
 } from '../../../schemas/common.js';
+
+const pipePath = '/v0/pipes/contributors_geo_distribution.json';
+
+const { isRow, toItem, Item } = geoDistribution('contributor');
 
 const Query = Type.Object({
   ...DateRangeQuery.properties,
   platform: Type.Optional(ActivityPlatform),
   activityType: Type.Optional(ActivityType),
   ...ContributionFlags.properties,
-  ...PaginationQuery.properties,
 });
 
-const ContributorLeaderboard = paginated(Contributor, {
-  data: 'Up to `pageSize` contributors, ranked by contributions, most first. An unknown project gets an empty list.',
+const GeographicalDistribution = Type.Object({
+  data: Type.Array(Item, {
+    description:
+      'One entry per country with at least one active contributor, most contributors first; countries with the same count come in no set order. The list is not paginated: it holds at most one entry per country, plus `Unknown`. An unknown project gets an empty list.',
+  }),
 });
 
-const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) => {
+const contributorGeographicalDistributionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
-    '/projects/:slug/contributors/contributor-leaderboard',
+    '/projects/:slug/contributors/contributor-geographical-distribution',
     {
       schema: {
         tags: ['Contributors'],
-        summary: 'Get the contributor leaderboard',
+        summary: 'Get the geographical distribution of contributors',
         description:
-          "Returns the project's contributors ranked by their contributions in the period, most first, with each one's contribution count and share, one page at a time. " +
-          'Contributors with the same count are ordered by an internal contributor ID, so tied contributors keep their order from one page to the next. ' +
-          'Pages follow rank position, as the Pagination guide describes: a contributor whose rank changes between your requests can be skipped or repeated. ' +
+          "Returns, for each country, how many of the project's active contributors in the period are located there and their share of all active contributors. " +
+          'An active contributor is a person with at least one activity in the period that matches the filters, of a kind the contribution flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true. ' +
           'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
-          'An unknown project returns an empty `data` list. Contributor identity fields are provisional in /v1-alpha.',
+          'An unknown project returns an empty `data` list.',
         params: ProjectSlugParams,
         querystring: Query,
-        response: { 200: ContributorLeaderboard },
+        response: { 200: GeographicalDistribution },
       },
     },
     async (request) => {
@@ -67,12 +62,11 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
       } = request.query;
       // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
       const { current } = getPreviousDates(startDate, endDate);
-      const page = requestedPage(request.query);
 
       const rows = await withBucket(request, slug, (bucketId) =>
-        fetchPipe<ContributorRow>(
+        fetchPipe(
           request,
-          contributorsLeaderboardPath,
+          pipePath,
           {
             project: slug,
             bucketId,
@@ -82,14 +76,13 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
             activity_type: activityType,
             includeCodeContributions,
             includeCollaborations,
-            ...pipeWindow(page),
           },
-          isContributorRow,
+          isRow,
         ),
       );
-      return toPage((rows ?? []).sort(inLeaderboardOrder).map(toContributor), page);
+      return { data: (rows ?? []).map(toItem) };
     },
   );
 };
 
-export default contributorLeaderboardRoutes;
+export default contributorGeographicalDistributionRoutes;

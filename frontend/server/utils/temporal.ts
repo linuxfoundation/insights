@@ -175,3 +175,10 @@ export interface IUpsertOSPSBaselineSecurityInsightsParams {
   repoUrl: string;
   token: string;
 }
+
+export const DOCS_READINESS_TASK_QUEUE = 'docs-readiness';
+export const PROCESS_PROJECT_DOCS_READINESS_WORKFLOW = 'processProjectDocsReadiness';
+
+export interface IProcessProjectDocsReadinessParams {
+  projectId: string;
+}

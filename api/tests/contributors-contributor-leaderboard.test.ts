@@ -288,6 +288,7 @@ describe('Tinybird failures (AC4)', () => {
     ['without the contribution count', { ...valid, contributionCount: undefined }],
     ['with a fractional contribution count', { ...valid, contributionCount: 2.5 }],
     ['with a string contribution count', { ...valid, contributionCount: '4' }],
+    ['with a negative contribution count', { ...valid, contributionCount: -1 }],
     ['without the contribution percentage', { ...valid, contributionPercentage: undefined }],
     ['with a string contribution percentage', { ...valid, contributionPercentage: 'high' }],
     ['with roles that are not a list', { ...valid, roles: 'maintainer' }],
