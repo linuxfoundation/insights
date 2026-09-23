@@ -73,6 +73,16 @@ describe('Tinybird call (AC2)', () => {
   });
 });
 
+describe('unknown project (AC3)', () => {
+  it('answers an empty list without calling the packages pipe', async () => {
+    mockFetch.mockImplementation(tinybirdStub(() => pipeRows, []));
+    const res = await get(route);
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ data: [] });
+    expect(callsTo(pipePath)).toHaveLength(0);
+  });
+});
+
 describe('OpenAPI (AC4)', () => {
   it('publishes search as an optional string', async () => {
     const res = await get('/v1-alpha/openapi.json');
