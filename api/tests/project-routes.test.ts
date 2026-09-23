@@ -392,7 +392,11 @@ describe('responseFields', () => {
       schemas: {
         Buckets: {
           type: 'array',
-          items: { type: 'object', properties: { day: { type: 'string' } } },
+          items: {
+            type: 'object',
+            required: ['day'],
+            properties: { day: { type: 'string' }, note: { type: 'string' } },
+          },
         },
       },
     },
@@ -407,7 +411,7 @@ describe('responseFields', () => {
       required: ['data'],
       properties: { data: { $ref: '#/components/schemas/Buckets' } },
     };
-    expect(optional(schema)).toEqual(['data[].day']);
+    expect(optional(schema)).toEqual(['data[].note']);
   });
 
   it('flags a property its parent does not require, at any depth', () => {
