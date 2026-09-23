@@ -18,7 +18,13 @@ const isRow = (row: Row) => typeof row.dataTimestamp === 'string' && typeof row.
 
 const Query = Type.Object({
   startDate: DateRangeQuery.properties.startDate,
-  endDate: DateRangeQuery.properties.endDate,
+  endDate: Type.Optional(
+    Type.String({
+      format: 'date',
+      description:
+        'End of the range, as a UTC calendar day (YYYY-MM-DD). Inclusive: a month dated on this day is part of the result. The latest accepted day is today in UTC.',
+    }),
+  ),
 });
 
 const SearchQueries = Type.Object({
