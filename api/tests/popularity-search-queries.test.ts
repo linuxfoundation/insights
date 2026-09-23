@@ -79,6 +79,12 @@ describe('malformed rows', () => {
     const res = await get(route);
     expect(res.statusCode).toBe(503);
   });
+
+  it('answers 503 when a dataTimestamp names a day the month does not have', async () => {
+    mockFetch.mockImplementation(tinybirdStub(() => [{ dataTimestamp: '2024-02-31', volume: 1 }]));
+    const res = await get(route);
+    expect(res.statusCode).toBe(503);
+  });
 });
 
 describe('OpenAPI (AC4)', () => {

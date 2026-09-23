@@ -14,10 +14,14 @@ interface Row {
   volume: number;
 }
 
-const isDay = (value: unknown) =>
-  typeof value === 'string' &&
-  /^\d{4}-\d{2}-\d{2}$/.test(value) &&
-  !Number.isNaN(Date.parse(utcMidnight(value)));
+// Date rolls an impossible day like 2024-02-31 into the next month, so the round trip must match.
+const isDay = (value: unknown) => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const time = Date.parse(utcMidnight(value));
+  return !Number.isNaN(time) && new Date(time).toISOString().slice(0, 10) === value;
+};
 
 const isRow = (row: Row) => isDay(row.dataTimestamp) && typeof row.volume === 'number';
 
