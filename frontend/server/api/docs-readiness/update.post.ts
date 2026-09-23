@@ -21,18 +21,6 @@ interface DocsReadinessUpdateResponse {
   message: string;
 }
 
-/**
- * API Endpoint: POST /api/docs-readiness/update
- * Description: Triggers an on-demand docs readiness run for a specific project
- *
- * Request Body:
- * - slug (string, required): The project slug
- *
- * Response:
- * - success (boolean): Whether the workflow was successfully started
- * - workflowId (string): The Temporal workflow ID
- * - message (string): Success or error message
- */
 export default defineEventHandler(async (event): Promise<DocsReadinessUpdateResponse | Error> => {
   const body: DocsReadinessUpdateRequest = await readBody(event);
 
