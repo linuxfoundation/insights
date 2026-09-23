@@ -9,6 +9,11 @@ description: >
 
 # Event Tracking — Insights App
 
+> **Status:** Ready for rollout, but Segment dispatch is currently disabled in
+> `frontend/composables/useTrackEvent.ts` pending alignment with the analytics team.
+> Events still persist to the internal `events` table via `/api/events`. Re-enable
+> by uncommenting the `$track` block in the composable.
+
 ## What this skill does
 
 Helps you add the right `trackEvent()` call to the right place in the codebase, using the catalog-approved event definitions.
