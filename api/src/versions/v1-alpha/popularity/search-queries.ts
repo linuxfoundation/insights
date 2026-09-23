@@ -14,7 +14,12 @@ interface Row {
   volume: number;
 }
 
-const isRow = (row: Row) => typeof row.dataTimestamp === 'string' && typeof row.volume === 'number';
+const isDay = (value: unknown) =>
+  typeof value === 'string' &&
+  /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+  !Number.isNaN(Date.parse(utcMidnight(value)));
+
+const isRow = (row: Row) => isDay(row.dataTimestamp) && typeof row.volume === 'number';
 
 const Query = Type.Object({
   startDate: DateRangeQuery.properties.startDate,

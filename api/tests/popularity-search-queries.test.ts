@@ -64,12 +64,20 @@ describe('Tinybird call (AC2)', () => {
   });
 
   it('defaults the range to 2010-01-01 through today', async () => {
+    const before = new Date().toISOString().slice(0, 10);
     await get(route);
-    const today = new Date().toISOString().slice(0, 10);
-    expect(params(callsTo(pipePath)[0] as URL)).toMatchObject({
-      startDate: '2010-01-01 00:00:00',
-      endDate: `${today} 00:00:00`,
-    });
+    const after = new Date().toISOString().slice(0, 10);
+    const sent = params(callsTo(pipePath)[0] as URL);
+    expect(sent.startDate).toBe('2010-01-01 00:00:00');
+    expect([`${before} 00:00:00`, `${after} 00:00:00`]).toContain(sent.endDate);
+  });
+});
+
+describe('malformed rows', () => {
+  it('answers 503 when a dataTimestamp is not a calendar day', async () => {
+    mockFetch.mockImplementation(tinybirdStub(() => [{ dataTimestamp: '2024-13-45', volume: 1 }]));
+    const res = await get(route);
+    expect(res.statusCode).toBe(503);
   });
 });
 
