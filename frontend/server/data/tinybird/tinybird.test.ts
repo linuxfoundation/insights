@@ -91,12 +91,16 @@ describe('fetchFromTinybird shim', () => {
   it('re-throws TinybirdClientError as H3 createError with the same statusCode', async () => {
     const { TinybirdClientError } = await import('@lfx-insights/tinybird-client');
     mockClientFetch.mockRejectedValue(new TinybirdClientError(429, 'rate limited'));
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     const { fetchFromTinybird } = await import('./tinybird');
 
     await expect(fetchFromTinybird('/mock-path', {})).rejects.toMatchObject({
       statusCode: 429,
     });
+    expect(error).toHaveBeenCalledWith(expect.stringContaining('/mock-path'));
+
+    error.mockRestore();
   });
 
   it.each(['TinybirdQueueFullError', 'TinybirdQueueTimeoutError'] as const)(
@@ -153,12 +157,16 @@ describe('postToTinybird shim', () => {
   it('re-throws TinybirdClientError as H3 createError with the same statusCode', async () => {
     const { TinybirdClientError } = await import('@lfx-insights/tinybird-client');
     mockClientPost.mockRejectedValue(new TinybirdClientError(429, 'rate limited'));
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     const { postToTinybird } = await import('./tinybird');
 
     await expect(postToTinybird('/mock-path', {})).rejects.toMatchObject({
       statusCode: 429,
     });
+    expect(error).toHaveBeenCalledWith(expect.stringContaining('/mock-path'));
+
+    error.mockRestore();
   });
 
   it('re-throws non-TinybirdClientError errors unchanged', async () => {
@@ -190,12 +198,16 @@ describe('addDataToTinybirdDatasource shim', () => {
   it('re-throws TinybirdClientError as H3 createError with the same statusCode', async () => {
     const { TinybirdClientError } = await import('@lfx-insights/tinybird-client');
     mockClientIngest.mockRejectedValue(new TinybirdClientError(503, 'unavailable'));
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     const { addDataToTinybirdDatasource } = await import('./tinybird');
 
     await expect(addDataToTinybirdDatasource('my_datasource', {})).rejects.toMatchObject({
       statusCode: 503,
     });
+    expect(error).toHaveBeenCalledWith(expect.stringContaining('my_datasource'));
+
+    error.mockRestore();
   });
 
   it('re-throws non-TinybirdClientError errors unchanged', async () => {
