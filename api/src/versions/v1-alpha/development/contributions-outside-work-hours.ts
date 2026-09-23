@@ -7,7 +7,7 @@ import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
-  getPreviousDates,
+  resolvePeriods,
   toPeriodSummary,
   toTinybirdRange,
   type DateRange,
@@ -101,7 +101,7 @@ const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (sc
       const { slug } = request.params;
       const { repos, startDate, endDate, includeCollaborations, includeCodeContributions } =
         request.query;
-      const dates = getPreviousDates(startDate, endDate);
+      const dates = resolvePeriods(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
         const filter: TinybirdQuery = {

@@ -7,7 +7,7 @@ import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { fetchPipe, repoFilter, withBucket, type RequestLog } from '../clients/tinybird.js';
 import type { Granularity, PeriodSummary } from '../schemas/common.js';
 import {
-  getPreviousDates,
+  resolvePeriods,
   hasBucketBounds,
   toIsoUtc,
   toPeriodSummary,
@@ -48,7 +48,7 @@ export async function fetchActivityCounts(
   pipeParams: TinybirdQuery,
 ): Promise<ActivityCountResult> {
   const { repos, startDate, endDate, granularity, countType = 'new' } = query;
-  const { current, previous } = getPreviousDates(startDate, endDate);
+  const { current, previous } = resolvePeriods(startDate, endDate);
   const isCumulative = countType === 'cumulative';
 
   const rows = await withBucket(request, slug, (bucketId) => {

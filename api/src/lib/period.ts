@@ -63,9 +63,9 @@ function addMonthsClamped(date: Date, months: number): Date {
   return utcDate(year, month, Math.min(date.getUTCDate(), lastDay));
 }
 
-// Ports Luxon's end.diff(start, ['months', 'days']) and minus() from frontend/server/data/util.ts,
-// month-end clamping included, so previous periods match the UI's day for day.
-export function getPreviousDates(
+// Validates the requested range and derives the comparison period before it. Ports getPreviousDates
+// from frontend/server/data/util.ts, Luxon month-end clamping included, so both match the UI day for day.
+export function resolvePeriods(
   startDate = defaultStartDate,
   endDate?: string,
   now = new Date(),
@@ -101,9 +101,9 @@ export function getPreviousDates(
   };
 }
 
-// Only the current range is used; getPreviousDates fills in its defaults and validates both dates.
+// Only the current range is used; resolvePeriods fills in its defaults and validates both dates.
 export function currentPeriod(query: { startDate?: string; endDate?: string }): DateRange {
-  return getPreviousDates(query.startDate, query.endDate).current;
+  return resolvePeriods(query.startDate, query.endDate).current;
 }
 
 // Signed, unlike Nuxt's Math.abs, so a drop reads negative just like changeValue.
