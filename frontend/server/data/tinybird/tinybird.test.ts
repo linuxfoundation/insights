@@ -8,6 +8,18 @@ const mockClientFetch = vi.fn();
 const mockClientPost = vi.fn();
 const mockClientIngest = vi.fn();
 
+const MockTinybirdClientError = vi.hoisted(
+  () =>
+    class TinybirdClientError extends Error {
+      constructor(
+        public statusCode: number,
+        message: string,
+      ) {
+        super(message);
+      }
+    },
+);
+
 vi.mock('@lfx-insights/tinybird-client', () => ({
   createTinybirdClient: () => ({
     fetch: mockClientFetch,
@@ -15,12 +27,15 @@ vi.mock('@lfx-insights/tinybird-client', () => ({
     ingest: mockClientIngest,
     getBucketIdForProject: vi.fn(),
   }),
-  TinybirdClientError: class TinybirdClientError extends Error {
-    constructor(
-      public statusCode: number,
-      message: string,
-    ) {
-      super(message);
+  TinybirdClientError: MockTinybirdClientError,
+  TinybirdQueueFullError: class TinybirdQueueFullError extends MockTinybirdClientError {
+    constructor() {
+      super(503, 'Tinybird request queue full');
+    }
+  },
+  TinybirdQueueTimeoutError: class TinybirdQueueTimeoutError extends MockTinybirdClientError {
+    constructor() {
+      super(503, 'Tinybird request queue timeout');
     }
   },
 }));
@@ -82,6 +97,26 @@ describe('fetchFromTinybird shim', () => {
     await expect(fetchFromTinybird('/mock-path', {})).rejects.toMatchObject({
       statusCode: 429,
     });
+  });
+
+  it('reports local queue rejections as a busy server instead of a Tinybird failure', async () => {
+    const { TinybirdQueueFullError } = await import('@lfx-insights/tinybird-client');
+    mockClientFetch.mockRejectedValue(new TinybirdQueueFullError());
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const { fetchFromTinybird } = await import('./tinybird');
+
+    await expect(fetchFromTinybird('/v0/pipes/mock.json', {})).rejects.toMatchObject({
+      statusCode: 503,
+      statusMessage: 'Server busy, try again shortly',
+    });
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('rejected by local queue'));
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('/v0/pipes/mock.json'));
+    expect(error).not.toHaveBeenCalled();
+
+    warn.mockRestore();
+    error.mockRestore();
   });
 
   it('re-throws non-TinybirdClientError errors unchanged', async () => {
