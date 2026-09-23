@@ -50,8 +50,23 @@ type SeriesRow = MetricRow & { startDate: string; endDate: string };
 
 const metricNames = Object.keys(metrics) as Metric[];
 
+const isMetricRow = (row: MetricRow) =>
+  typeof row === 'object' &&
+  row !== null &&
+  metricNames.every((metric) => {
+    const value = row[metrics[metric].column];
+    return value === undefined || typeof value === 'number';
+  });
+
 const Query = Type.Object({
   ...SeriesQuery.properties,
+  startDate: Type.Optional(
+    Type.String({
+      format: 'date',
+      description:
+        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: records dated on this day are left out, so the period covers the days after it. The earliest accepted day is 2000-01-01.',
+    }),
+  ),
   ecosystem: Type.Optional(
     Type.String({
       description:
@@ -143,8 +158,13 @@ const packageMetricsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         };
         const currentRange = toTinybirdRange(current);
         return Promise.all([
-          fetchPipe<MetricRow>(request, pipePath, { ...common, ...currentRange }),
-          fetchPipe<MetricRow>(request, pipePath, { ...common, ...toTinybirdRange(previous) }),
+          fetchPipe<MetricRow>(request, pipePath, { ...common, ...currentRange }, isMetricRow),
+          fetchPipe<MetricRow>(
+            request,
+            pipePath,
+            { ...common, ...toTinybirdRange(previous) },
+            isMetricRow,
+          ),
           fetchPipe<SeriesRow>(
             request,
             pipePath,
