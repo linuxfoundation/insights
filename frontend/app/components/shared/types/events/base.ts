@@ -15,4 +15,6 @@ export interface EventDefinition<K extends string = string> {
   type: EventType;
   name: string;
   feature: EventFeature;
+  /** Catalog-approved property keys. Server strips anything not listed. */
+  allowedProperties: readonly string[];
 }

@@ -71,6 +71,12 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
   const source = body.source?.trim().slice(0, MAX_URL_LENGTH);
   const entrySource = body.entrySource?.trim().slice(0, MAX_URL_LENGTH);
 
+  // Strip any property keys not in the catalog allowlist for this event.
+  const allowed = new Set(definition.allowedProperties);
+  const properties = body.properties
+    ? Object.fromEntries(Object.entries(body.properties).filter(([k]) => allowed.has(k)))
+    : undefined;
+
   const repo = new EventsRepository(insightsDbPool);
 
   try {
@@ -80,7 +86,7 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
       name: definition.name,
       feature: definition.feature,
       userId,
-      properties: body.properties,
+      properties,
       source,
       entrySource,
     });
