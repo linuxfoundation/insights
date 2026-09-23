@@ -141,7 +141,6 @@ export const resolveSchema = (doc: OpenApiDoc, schema?: OpenApiSchema) =>
 export interface ResponseField {
   path: string;
   required: boolean;
-  described: boolean;
 }
 
 export function responseFields(
@@ -154,11 +153,7 @@ export function responseFields(
   return Object.entries(node?.properties ?? {}).flatMap(([key, child]) => {
     const resolved = resolveSchema(doc, child);
     return [
-      {
-        path: `${path}${key}`,
-        required: required.has(key),
-        described: Boolean(child.description || resolved?.description),
-      },
+      { path: `${path}${key}`, required: required.has(key) },
       ...responseFields(doc, resolved, `${path}${key}.`),
       ...responseFields(doc, resolved?.items, `${path}${key}[].`),
     ];

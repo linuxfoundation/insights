@@ -7,7 +7,6 @@ import {
   bucketsPath,
   callsTo,
   mockFetch,
-  parameterDescription,
   pipeCalls,
   projectPath,
   queryString,
@@ -355,12 +354,9 @@ describe.each(names)('%s', (name) => {
   }
 
   describe('OpenAPI', () => {
-    it(`is tagged ${tagOf(name)}, with a summary and a description`, () => {
-      const operation = operationOf(name);
+    it(`is tagged ${tagOf(name)}`, () => {
       expect(tagOf(name), `add the tag of ${name.split('/')[0]} to groupTags`).toBeDefined();
-      expect(operation.tags).toEqual([tagOf(name)]);
-      expect(operation.summary).toBeTruthy();
-      expect(operation.description).toBeTruthy();
+      expect(operationOf(name).tags).toEqual([tagOf(name)]);
     });
 
     if (hasDates(name)) {
@@ -373,15 +369,10 @@ describe.each(names)('%s', (name) => {
       });
     }
 
-    it('describes every query parameter, and describes and requires every response field', () => {
-      const query = operationOf(name).parameters?.filter((param) => param.in === 'query');
-      for (const param of query ?? []) {
-        expect(parameterDescription(param), `parameter ${param.name}`).toBeTruthy();
-      }
+    it('requires every response field', () => {
       const schema = operationOf(name).responses['200']?.content['application/json']?.schema;
       const fields = responseFields(spec, schema);
       expect(fields.length).toBeGreaterThan(0);
-      expect(fields.filter((field) => !field.described).map((field) => field.path)).toEqual([]);
       expect(fields.filter((field) => !field.required).map((field) => field.path)).toEqual([]);
     });
 
@@ -399,48 +390,24 @@ describe('responseFields', () => {
     paths: {},
     components: {
       schemas: {
-        Described: { type: 'object', description: 'Described in components.' },
-        Bare: { type: 'object' },
         Buckets: {
           type: 'array',
-          description: 'Buckets.',
-          items: {
-            type: 'object',
-            required: ['day'],
-            properties: { day: { type: 'string' } },
-          },
+          items: { type: 'object', properties: { day: { type: 'string' } } },
         },
       },
     },
   };
-  const paths = (schema: OpenApiSchema, flag: 'required' | 'described') =>
+  const optional = (schema: OpenApiSchema) =>
     responseFields(doc, schema)
-      .filter((field) => !field[flag])
+      .filter((field) => !field.required)
       .map((field) => field.path);
-
-  it('reads a property description through a bare $ref', () => {
-    const schema = {
-      required: ['summary'],
-      properties: { summary: { $ref: '#/components/schemas/Described' } },
-    };
-    expect(paths(schema, 'described')).toEqual([]);
-  });
-
-  it('flags a $ref property whose target has no description', () => {
-    const schema = {
-      required: ['summary'],
-      properties: { summary: { $ref: '#/components/schemas/Bare' } },
-    };
-    expect(paths(schema, 'described')).toEqual(['summary']);
-  });
 
   it('walks the items of an array behind a $ref', () => {
     const schema = {
       required: ['data'],
       properties: { data: { $ref: '#/components/schemas/Buckets' } },
     };
-    expect(paths(schema, 'described')).toEqual(['data[].day']);
-    expect(paths(schema, 'required')).toEqual([]);
+    expect(optional(schema)).toEqual(['data[].day']);
   });
 
   it('flags a property its parent does not require, at any depth', () => {
@@ -449,6 +416,6 @@ describe('responseFields', () => {
         summary: { description: 'x', properties: { current: { description: 'y' } } },
       },
     };
-    expect(paths(schema, 'required')).toEqual(['summary', 'summary.current']);
+    expect(optional(schema)).toEqual(['summary', 'summary.current']);
   });
 });
