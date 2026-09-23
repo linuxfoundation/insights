@@ -77,7 +77,7 @@ describe('empty results (OR2)', () => {
 });
 
 describe('Tinybird calls (OR3)', () => {
-  it('makes a single organization_retention call with the slug as project, onlyContributions=false and both flags at their defaults', async () => {
+  it('makes a single organization_retention call with the slug as project and both flags at their defaults', async () => {
     mockFetch.mockImplementation(routeTinybird());
     await get(url());
     const calls = pipeCalls();
@@ -86,7 +86,6 @@ describe('Tinybird calls (OR3)', () => {
     expect(call.origin).toBe(tinybirdHost);
     expect(call.pathname).toBe('/v0/pipes/organization_retention.json');
     expect(call.searchParams.get('project')).toBe('kubernetes');
-    expect(call.searchParams.get('onlyContributions')).toBe('false');
     expect(call.searchParams.get('includeCodeContributions')).toBe('true');
     expect(call.searchParams.get('includeCollaborations')).toBe('false');
     expect(call.searchParams.get('granularity')).toBe('monthly');

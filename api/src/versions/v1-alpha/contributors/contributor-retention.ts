@@ -26,7 +26,7 @@ const contributorRetentionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         summary: 'Get contributor retention',
         description:
           "Returns, per granularity bucket, the share of the previous bucket's contributors who were active again in this bucket. " +
-          'Activity here includes forks and stars along with everything the contribution flags select, since the underlying widget always counts them. ' +
+          'Activity counts the kinds the contribution flags select, as on the other Contributors endpoints, so stars and forks never count. ' +
           'The comparison is bucket over bucket, not against the whole period. `repos` narrows it to those repositories. ' +
           'Without dates the period runs from 2010-01-01 to today, and it runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. ' +
           'An unknown project returns an empty `data` list.',
@@ -62,7 +62,6 @@ const contributorRetentionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
             activity_type: activityType,
             includeCodeContributions,
             includeCollaborations,
-            onlyContributions: false,
           },
           isRetentionRow,
         ),
