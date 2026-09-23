@@ -354,9 +354,12 @@ describe.each(names)('%s', (name) => {
   }
 
   describe('OpenAPI', () => {
-    it(`is tagged ${tagOf(name)}`, () => {
+    it(`is tagged ${tagOf(name)}, with a summary and a description`, () => {
+      const operation = operationOf(name);
       expect(tagOf(name), `add the tag of ${name.split('/')[0]} to groupTags`).toBeDefined();
-      expect(operationOf(name).tags).toEqual([tagOf(name)]);
+      expect(operation.tags).toEqual([tagOf(name)]);
+      expect(operation.summary).toBeTruthy();
+      expect(operation.description).toBeTruthy();
     });
 
     if (hasDates(name)) {
