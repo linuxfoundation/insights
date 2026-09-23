@@ -10,6 +10,7 @@ import {
   ActivityPlatform,
   ActivityType,
   ContributionFlags,
+  countType,
   DateRangeQuery,
   describe as describeField,
   Granularity,
@@ -758,4 +759,13 @@ describe('the v1-alpha routes serve the shared types (AC8, decision 4)', () => {
       });
     },
   );
+});
+
+describe('countType factory', () => {
+  const schema = countType('the stars added');
+
+  it('is an optional new or cumulative switch that defaults to new', () => {
+    expect(schema).toMatchObject({ type: 'string', enum: ['new', 'cumulative'], default: 'new' });
+    expect(Type.Object({ countType: schema }).required).toBeUndefined();
+  });
 });

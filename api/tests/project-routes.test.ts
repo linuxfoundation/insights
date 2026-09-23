@@ -45,6 +45,7 @@ const hasDates = (name: string) => declares(name, 'startDate') || declares(name,
 const groupTags: Record<string, string> = {
   development: 'Development',
   contributors: 'Contributors',
+  popularity: 'Popularity',
 };
 const tagOf = (name: string) => (name.includes('/') ? groupTags[name.split('/')[0]] : 'Projects');
 
