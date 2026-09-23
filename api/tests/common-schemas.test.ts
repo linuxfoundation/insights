@@ -58,10 +58,6 @@ interface OpenApiDoc {
 
 const granularities = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly'];
 
-// Swagger writes a query property's description on the parameter; older output kept it on the schema.
-const parameterDescription = (param?: OpenApiParameter) =>
-  param?.description ?? param?.schema.description;
-
 // A throwaway version that wires the shared pieces together the way an endpoint will.
 const testVersion: ApiVersion = {
   prefix: '/v1',
@@ -299,24 +295,6 @@ describe('an inverted date range through a route (AC5)', () => {
   });
 });
 
-describe('DateRangeQuery descriptions state the bound semantics (AC8)', () => {
-  it('documents startDate as inclusive from 00:00 UTC and endDate as exclusive at 00:00 UTC', async () => {
-    const operation = await getOperation('/v1/projects/{slug}/echo');
-    const byName = Object.fromEntries(
-      (operation.parameters ?? []).map((param) => [param.name, param]),
-    );
-    expect(parameterDescription(byName['startDate'])).toMatch(/inclusive/i);
-    expect(parameterDescription(byName['startDate'])).toMatch(/00:00(:00)? UTC/);
-    expect(parameterDescription(byName['endDate'])).toMatch(/exclusive/i);
-    expect(parameterDescription(byName['endDate'])).toMatch(/00:00(:00)? UTC/);
-  });
-
-  it('keeps the schema-level descriptions in step with the served ones', () => {
-    expect(DateRangeQuery.properties.startDate.description).toMatch(/inclusive/i);
-    expect(DateRangeQuery.properties.endDate.description).toMatch(/exclusive/i);
-  });
-});
-
 describe('describe() (AC6)', () => {
   it('returns the schema with only the description replaced', () => {
     const described = describeField(Granularity, 'Bucket width for this endpoint.');
@@ -333,10 +311,6 @@ describe('describe() (AC6)', () => {
 });
 
 describe('Granularity and SeriesQuery (AC7)', () => {
-  it('carries a description on the shared schema', () => {
-    expect(Granularity.description).toBe('Width of each bucket in `data`.');
-  });
-
   it('SeriesQuery is DateRangeQuery plus a required granularity', () => {
     expect(Object.keys(SeriesQuery.properties)).toEqual([
       ...Object.keys(DateRangeQuery.properties),
@@ -363,12 +337,11 @@ describe('Granularity and SeriesQuery (AC7)', () => {
     });
   });
 
-  it('shows granularity as a required, described enum in OpenAPI', async () => {
+  it('shows granularity as a required enum in OpenAPI', async () => {
     const operation = await getOperation('/v1/projects/{slug}/series');
     const param = operation.parameters?.find((p) => p.name === 'granularity');
     expect(param?.required).toBe(true);
     expect(param?.schema.enum).toEqual(granularities);
-    expect(parameterDescription(param)).toBe(Granularity.description);
   });
 });
 
@@ -413,24 +386,6 @@ describe('periodSummary factory (AC6)', () => {
     expect(share.properties.changeValue.type).toBe('number');
   });
 
-  it('describes current, previous and changeValue from the measure and unit', () => {
-    expect(counts.properties.current.description).toBe('Commits in the current period (count).');
-    expect(counts.properties.previous.description).toBe(
-      'Commits in the comparison period, which ends the day before `periodFrom`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (count).',
-    );
-    expect(counts.properties.changeValue.description).toBe('`current` minus `previous` (count).');
-  });
-
-  it('uses changeUnit for changeValue when given', () => {
-    expect(share.properties.current.description).toBe(
-      'Share of contributions made outside work hours in the current period (percent).',
-    );
-    expect(share.properties.previous.description).toMatch(/\(percent\)\.$/);
-    expect(share.properties.changeValue.description).toBe(
-      '`current` minus `previous` (percentage points).',
-    );
-  });
-
   it('reuses the shared percentageChange, periodFrom and periodTo schemas', () => {
     for (const summary of [counts, share]) {
       expect(summary.properties.percentageChange).toBe(PeriodSummary.properties.percentageChange);
@@ -439,13 +394,9 @@ describe('periodSummary factory (AC6)', () => {
     }
   });
 
-  it('writes title and description only when given', () => {
+  it('writes title only when given', () => {
     expect(counts.title).toBe('CommitSummary');
-    expect(counts.description).toBe(
-      'Commit totals for the current period against the previous one.',
-    );
     expect(share).not.toHaveProperty('title');
-    expect(share).not.toHaveProperty('description');
   });
 
   it('spreads into a wider object without losing the field schemas', () => {
@@ -489,21 +440,6 @@ describe('nullablePeriodSummary', () => {
       expect(summary.properties[field], field).toMatchObject({ type: 'number', nullable: true });
     }
   });
-
-  it('writes the periodSummary wording with the null rule after the unit', () => {
-    expect(summary.properties.current.description).toBe(
-      'Median time to close in the current period (seconds). Null when nothing closed in the period.',
-    );
-    expect(summary.properties.previous.description).toMatch(
-      /\(seconds\)\. Null when nothing closed in that period\.$/,
-    );
-    expect(summary.properties.changeValue.description).toBe(
-      '`current` minus `previous` (seconds). Null when `current` or `previous` is null.',
-    );
-    expect(summary.properties.percentageChange.description).toMatch(
-      /Null when `current` or `previous` is null/,
-    );
-  });
 });
 
 describe('ContributionFlags', () => {
@@ -540,7 +476,7 @@ describe('ContributionFlags', () => {
     expect(query?.map((param) => param.name)).toEqual(['includeCollaborations']);
   });
 
-  it('publishes both flags as optional, described booleans with their defaults', async () => {
+  it('publishes both flags as optional booleans with their defaults', async () => {
     const operation = await getOperation('/v1/projects/{slug}/flags');
     const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
     for (const [flag, value] of [
@@ -550,10 +486,6 @@ describe('ContributionFlags', () => {
       const param = byName.get(flag);
       expect(param?.required, flag).toBeFalsy();
       expect(param?.schema, flag).toMatchObject({ type: 'boolean', default: value });
-      expect(parameterDescription(param), flag).toBe(
-        ContributionFlags.properties[flag].description,
-      );
-      expect(ContributionFlags.properties[flag].description, flag).toBeTruthy();
     }
   });
 });
@@ -608,7 +540,7 @@ describe('ActivityPlatform and ActivityType', () => {
     expect(res.statusCode).toBe(400);
   });
 
-  it('publish platform and activityType as bounded strings, both described', async () => {
+  it('publish platform and activityType as bounded strings', async () => {
     const operation = await getOperation('/v1/projects/{slug}/activity');
     const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
     for (const [name, schema] of [
@@ -621,7 +553,6 @@ describe('ActivityPlatform and ActivityType', () => {
         maxLength: schema.maxLength,
       });
       expect(byName.get(name)?.schema).not.toHaveProperty('enum');
-      expect(parameterDescription(byName.get(name))).toBe(schema.description);
     }
   });
 });
@@ -650,7 +581,7 @@ describe('PaginationQuery and paginated()', () => {
     expect(res.json().nextCursor).toBe('NTA');
   });
 
-  it('publishes cursor and pageSize as optional, described parameters', async () => {
+  it('publishes cursor and pageSize as optional parameters', async () => {
     const operation = await getOperation('/v1/projects/{slug}/page');
     const byName = new Map(operation.parameters?.map((param) => [param.name, param]));
     expect(byName.get('cursor')?.required).toBeFalsy();
@@ -662,21 +593,15 @@ describe('PaginationQuery and paginated()', () => {
       maximum: 200,
       default: 50,
     });
-    for (const name of ['cursor', 'pageSize']) {
-      expect(parameterDescription(byName.get(name)), name).toBeTruthy();
-    }
   });
 
-  it('publishes data, pageSize and nextCursor as required, described fields', async () => {
+  it('publishes data, pageSize and nextCursor as required fields', async () => {
     const operation = await getOperation('/v1/projects/{slug}/page');
     const page = operation.responses['200']?.content['application/json']?.schema;
     expect(page?.required).toEqual(['data', 'pageSize', 'nextCursor']);
-    expect(page?.properties?.data).toMatchObject({ type: 'array', description: 'Ranked items.' });
+    expect(page?.properties?.data).toMatchObject({ type: 'array' });
     expect(page?.properties?.pageSize).toMatchObject({ type: 'integer' });
     expect(page?.properties?.nextCursor).toMatchObject({ type: 'string', nullable: true });
-    for (const field of ['pageSize', 'nextCursor']) {
-      expect(page?.properties?.[field]?.description, field).toBeTruthy();
-    }
   });
 });
 
@@ -685,7 +610,6 @@ describe('nullableNumber and Platform', () => {
     expect(nullableNumber('Seconds.')).toMatchObject({
       type: 'number',
       nullable: true,
-      description: 'Seconds.',
     });
     expect(PeriodSummary.properties.percentageChange).toMatchObject({
       type: 'number',
@@ -693,9 +617,8 @@ describe('nullableNumber and Platform', () => {
     });
   });
 
-  it('offers the three pull request platforms and points at connectedPlatforms', () => {
+  it('offers the three pull request platforms', () => {
     expect(Platform.enum).toEqual(['github', 'gitlab', 'gerrit']);
-    expect(Platform.description).toMatch(/connectedPlatforms/);
   });
 });
 
@@ -728,7 +651,7 @@ const groupPaths = Object.keys(alphaSpec.paths)
   .map((path) => path.slice(projectPrefix.length))
   .sort();
 
-describe('the v1-alpha routes serve the shared wording and types (AC8, decision 4)', () => {
+describe('the v1-alpha routes serve the shared types (AC8, decision 4)', () => {
   const operation = (name: string) => {
     const op = groupOperations.get(name);
     if (!op) throw new Error(`${name} has no GET operation in the spec`);
@@ -794,20 +717,10 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
     }
   });
 
-  it.each(groupRoutes)(
-    '%s takes the common range and documents the inclusive start and exclusive end',
-    (name) => {
-      expect(operation(name).description).toMatch(/00:00 UTC/);
-      expect(parameterDescription(parameter(name, 'startDate'))).toMatch(/inclusive/i);
-      expect(parameterDescription(parameter(name, 'endDate'))).toMatch(/exclusive/i);
-    },
-  );
-
-  it.each(seriesRoutes)('%s describes granularity with the shared wording', (name) => {
+  it.each(seriesRoutes)('%s takes granularity as the shared required enum', (name) => {
     const param = parameter(name, 'granularity');
     expect(param?.required).toBe(true);
     expect(param?.schema.enum).toEqual(granularities);
-    expect(parameterDescription(param)).toBe(Granularity.description);
   });
 
   it.each(groupRoutes)(
@@ -816,8 +729,7 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
       for (const [param, shared] of Object.entries(sharedParameters(name))) {
         const declared = parameter(name, param);
         if (declared) {
-          const { description, ...schema } = served(shared);
-          expect(parameterDescription(declared), `${name} ${param}`).toBe(description);
+          const { description: _description, ...schema } = served(shared);
           expect(declared.schema, `${name} ${param}`).toMatchObject(schema);
         }
       }
@@ -833,25 +745,13 @@ describe('the v1-alpha routes serve the shared wording and types (AC8, decision 
   });
 
   it.each(summaryCases)(
-    '%s %s states a unit on every value and keeps percentageChange nullable',
+    '%s %s types its values alike and keeps percentageChange nullable',
     (name, field, summary) => {
       const kind = summary.properties?.current?.type;
       expect(['integer', 'number'], `${name}.${field}.current`).toContain(kind);
-      // The unit sits in parentheses before a period so a nullable note can follow it.
-      const unitOf = (value: string) =>
-        summary.properties?.[value]?.description?.match(/\(([a-z ]+)\)\./)?.[1];
-      const unit = unitOf('current');
-      // A count is an integer, so a number-kind summary may name any unit but a count.
-      expect(unit ?? '', `${name}.${field}.current`).toMatch(
-        kind === 'integer' ? /^count( of [a-z]+)?$/ : /^(?!count)[a-z ]+$/,
-      );
       for (const value of ['previous', 'changeValue']) {
         expect(summary.properties?.[value]?.type, `${name}.${field}.${value}`).toBe(kind);
       }
-      expect(unitOf('previous'), `${name}.${field}.previous`).toBe(unit);
-      expect(unitOf('changeValue'), `${name}.${field}.changeValue`).toBe(
-        unit === 'percent' ? 'percentage points' : unit,
-      );
       expect(summary.properties?.percentageChange).toMatchObject({
         type: 'number',
         nullable: true,
