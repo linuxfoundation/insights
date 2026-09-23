@@ -4,6 +4,14 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import {
+  Contributor,
+  type ContributorRow,
+  contributorsLeaderboardPath,
+  inLeaderboardOrder,
+  isContributorRow,
+  toContributor,
+} from '../../../lib/contributors.js';
 import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
 import {
@@ -16,76 +24,12 @@ import {
   ProjectSlugParams,
 } from '../../../schemas/common.js';
 
-const pipePath = '/v0/pipes/contributors_leaderboard.json';
-
-interface ContributorRow {
-  id: string;
-  displayName: string;
-  avatar: string;
-  contributionCount: number;
-  contributionPercentage: number;
-  roles?: string[] | null;
-  githubHandleArray?: string[] | null;
-}
-
-const isOptionalStringList = (value: unknown) =>
-  value === undefined ||
-  value === null ||
-  (Array.isArray(value) && value.every((entry) => typeof entry === 'string'));
-
-const isContributorRow = (row: ContributorRow) =>
-  typeof row.id === 'string' &&
-  typeof row.displayName === 'string' &&
-  typeof row.avatar === 'string' &&
-  Number.isSafeInteger(row.contributionCount) &&
-  typeof row.contributionPercentage === 'number' &&
-  isOptionalStringList(row.roles) &&
-  isOptionalStringList(row.githubHandleArray);
-
-// The pipe pages by count, then member id, both descending, but its final node re-sorts by count
-// alone. Member ids are ASCII UUIDs in a String column, so ClickHouse compares bytes, as `<` does.
-const inPipeOrder = (a: ContributorRow, b: ContributorRow) =>
-  b.contributionCount - a.contributionCount || (a.id < b.id ? 1 : a.id > b.id ? -1 : 0);
-
-const toContributor = (row: ContributorRow) => ({
-  name: row.displayName,
-  avatar: row.avatar,
-  contributions: row.contributionCount,
-  contributionPercentage: row.contributionPercentage,
-  roles: row.roles ?? [],
-  githubHandles: row.githubHandleArray ?? [],
-});
-
 const Query = Type.Object({
   ...DateRangeQuery.properties,
   platform: Type.Optional(ActivityPlatform),
   activityType: Type.Optional(ActivityType),
   ...ContributionFlags.properties,
   ...PaginationQuery.properties,
-});
-
-const Contributor = Type.Object({
-  name: Type.String({
-    description:
-      "The contributor's display name. For a project outside the Linux Foundation, their username instead: the one from their GitHub activity, else git, else another platform.",
-  }),
-  avatar: Type.String({
-    description: "URL of the contributor's avatar image. An empty string when they have none.",
-  }),
-  contributions: Type.Integer({
-    description: 'Contributions by the contributor in the period that match the filters (count).',
-  }),
-  contributionPercentage: Type.Number({
-    description:
-      "The contributor's share of all contributions in the period that match the filters, in percent, rounded to two decimals.",
-  }),
-  roles: Type.Array(Type.String(), {
-    description:
-      "Roles the contributor holds in the project's repositories, or only in `repos` when given: `maintainer` or `contributor`, as read from files such as MAINTAINERS, CODEOWNERS and CONTRIBUTORS. A role counts whatever the period, including one that has ended. Empty when they hold none.",
-  }),
-  githubHandles: Type.Array(Type.String(), {
-    description: "The contributor's verified GitHub usernames. Empty when they have none.",
-  }),
 });
 
 const ContributorLeaderboard = paginated(Contributor, {
@@ -128,7 +72,7 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
       const rows = await withBucket(request, slug, (bucketId) =>
         fetchPipe<ContributorRow>(
           request,
-          pipePath,
+          contributorsLeaderboardPath,
           {
             project: slug,
             bucketId,
@@ -143,7 +87,7 @@ const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) =>
           isContributorRow,
         ),
       );
-      return toPage((rows ?? []).sort(inPipeOrder).map(toContributor), page);
+      return toPage((rows ?? []).sort(inLeaderboardOrder).map(toContributor), page);
     },
   );
 };
