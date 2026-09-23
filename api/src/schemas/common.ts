@@ -110,6 +110,16 @@ export const SeriesQuery = Type.Object({
   granularity: Granularity,
 });
 
+export const countType = (counted: string) =>
+  Type.Optional(
+    Type.Unsafe<'new' | 'cumulative'>({
+      type: 'string',
+      enum: ['new', 'cumulative'],
+      default: 'new',
+      description: `\`new\` counts ${counted} in each bucket; \`cumulative\` gives the running total up to the end of each bucket.`,
+    }),
+  );
+
 export const PeriodSummary = Type.Object(
   {
     current: Type.Number(),

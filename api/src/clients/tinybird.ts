@@ -17,7 +17,7 @@ import { createInMemoryBucketCache } from './bucket-cache.js';
 
 const bucketsPath = '/v0/pipes/project_buckets.json';
 
-type RequestLog = Pick<FastifyRequest, 'log'>;
+export type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
 

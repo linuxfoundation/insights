@@ -18,11 +18,11 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
 
   await scope.register(projectRoutes);
   await scope.register(activityTypeRoutes);
-  for (const group of ['development', 'contributors']) {
+  for (const group of ['development', 'contributors', 'popularity']) {
     const dir = fileURLToPath(new URL(`./${group}`, import.meta.url));
     // @fastify/autoload throws ENOENT for a missing folder, so a lost development/ fails startup.
-    // Git and tsc drop empty folders, so contributors/ is skipped until its first route lands.
-    if (group !== 'contributors' || existsSync(dir)) {
+    // Git and tsc drop empty folders, so the other groups are skipped until their first route lands.
+    if (group === 'development' || existsSync(dir)) {
       await scope.register(autoload, { dir, dirNameRoutePrefix: false, forceESM: true });
     }
   }
