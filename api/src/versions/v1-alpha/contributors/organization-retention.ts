@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
+import { resolvePeriods, toTinybirdRange } from '../../../lib/period.js';
 import {
   isRetentionRow,
   RetentionQuery,
@@ -46,8 +46,8 @@ const organizationRetentionRoutes: FastifyPluginAsyncTypebox = async (scope) => 
         includeCodeContributions = true,
         includeCollaborations = false,
       } = request.query;
-      // Only the current range is used; getPreviousDates fills its defaults and checks its dates.
-      const { current } = getPreviousDates(startDate, endDate);
+      // Only the current range is used; resolvePeriods fills its defaults and checks its dates.
+      const { current } = resolvePeriods(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) =>
         fetchPipe<RetentionRow>(
