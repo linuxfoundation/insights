@@ -62,7 +62,6 @@ const contributorRetentionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
             activity_type: activityType,
             includeCodeContributions,
             includeCollaborations,
-            // false counts forks and stars as activity, matching the Insights retention widget.
             onlyContributions: false,
           },
           isRetentionRow,
