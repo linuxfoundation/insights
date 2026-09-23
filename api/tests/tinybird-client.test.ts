@@ -3,6 +3,8 @@
 import type { FastifyBaseLogger } from 'fastify';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '@lfx-insights/tinybird-client';
+
 import { createInMemoryBucketCache } from '../src/clients/bucket-cache.js';
 import { fetchPipe, getTinybirdClient, withBucket } from '../src/clients/tinybird.js';
 import { UpstreamUnavailableError } from '../src/lib/errors.js';
@@ -51,7 +53,8 @@ const callsTo = (path: string) => calledUrls().filter((url) => url.pathname === 
 // The wrapper only needs the request's logger, so a bare object stands in for FastifyRequest.
 function fakeRequest() {
   const error = vi.fn();
-  return { request: { log: { error } as unknown as FastifyBaseLogger }, error };
+  const warn = vi.fn();
+  return { request: { log: { error, warn } as unknown as FastifyBaseLogger }, error, warn };
 }
 
 async function rejectionOf(promise: Promise<unknown>): Promise<unknown> {
@@ -167,6 +170,27 @@ describe('fetchPipe (AC3)', () => {
     expect(err).toBeInstanceOf(UpstreamUnavailableError);
     expect(error).toHaveBeenCalledTimes(1);
     expect(String(error.mock.calls[0]?.[1])).toContain(pipePath);
+  });
+});
+
+describe('fetchPipe queue rejections', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it.each([
+    ['queue full', () => new TinybirdQueueFullError()],
+    ['queue timeout', () => new TinybirdQueueTimeoutError()],
+  ])('maps %s to UpstreamUnavailableError and logs a warning', async (_, makeError) => {
+    vi.spyOn(getTinybirdClient(), 'fetch').mockRejectedValue(makeError());
+    const { request, error, warn } = fakeRequest();
+
+    const err = await rejectionOf(fetchPipe<Row>(request, pipePath, { bucketId: 3 }));
+
+    expect(err).toBeInstanceOf(UpstreamUnavailableError);
+    expect(error).not.toHaveBeenCalled();
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(String(warn.mock.calls[0]?.[1])).toContain(pipePath);
   });
 });
 

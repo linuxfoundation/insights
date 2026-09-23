@@ -179,7 +179,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
         params,
         status,
         durationMs: Date.now() - fetchStart,
-        wasQueued,
+        wasQueued: wasQueued || error instanceof TinybirdQueueTimeoutError,
         active: semaphore.getActive(),
         queued: semaphore.getQueueLength(),
         timestamp: new Date().toISOString(),

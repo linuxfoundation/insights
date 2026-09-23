@@ -132,9 +132,9 @@ describe('fetchFromTinybird throttle behavior', () => {
   });
 
   it.each([
-    ['queue full', () => new TinybirdQueueFullError()],
-    ['queue timeout', () => new TinybirdQueueTimeoutError()],
-  ])('logs %s rejections as a warning, not a request error', async (_, makeError) => {
+    ['queue full', () => new TinybirdQueueFullError(), false],
+    ['queue timeout', () => new TinybirdQueueTimeoutError(), true],
+  ])('logs %s rejections as a warning, not a request error', async (_, makeError, wasQueued) => {
     mockAcquire.mockRejectedValue(makeError());
     const logger = { warn: vi.fn(), error: vi.fn() };
 
@@ -145,8 +145,11 @@ describe('fetchFromTinybird throttle behavior', () => {
       statusCode: 503,
     });
 
-    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('tinybird_queue_rejected'));
     expect(logger.error).not.toHaveBeenCalled();
+    expect(JSON.parse(logger.warn.mock.calls[0]?.[0])).toMatchObject({
+      message: 'tinybird_queue_rejected',
+      wasQueued,
+    });
   });
 
   it('skips semaphore for ping and bucket lookup paths', async () => {

@@ -5,6 +5,8 @@ import type { FastifyRequest } from 'fastify';
 import {
   createTinybirdClient,
   TinybirdInvalidResponseError,
+  TinybirdQueueFullError,
+  TinybirdQueueTimeoutError,
   type TinybirdClient,
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
@@ -44,7 +46,11 @@ async function fromTinybird<T>(
   try {
     return await call();
   } catch (err: unknown) {
-    request.log.error({ err }, `Tinybird ${path} request failed`);
+    if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
+      request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
+    } else {
+      request.log.error({ err }, `Tinybird ${path} request failed`);
+    }
     throw new UpstreamUnavailableError();
   }
 }
