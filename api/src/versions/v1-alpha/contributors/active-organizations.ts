@@ -14,6 +14,7 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import {
+  BucketBounds,
   ContributionFlags,
   periodSummary,
   ProjectSlugParams,
@@ -38,14 +39,7 @@ const ActiveOrganizationsQuery = Type.Object({
 });
 
 const ActiveOrganizationsBucket = Type.Object({
-  startDate: Type.String({
-    format: 'date-time',
-    description: 'First day of the bucket, at 00:00:00 UTC.',
-  }),
-  endDate: Type.String({
-    format: 'date-time',
-    description: 'Last calendar day of the bucket, at 00:00:00 UTC.',
-  }),
+  ...BucketBounds.properties,
   organizations: Type.Integer({ description: 'Active organizations in the bucket (count).' }),
 });
 

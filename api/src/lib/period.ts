@@ -101,6 +101,11 @@ export function getPreviousDates(
   };
 }
 
+// Only the current range is used; getPreviousDates fills in its defaults and validates both dates.
+export function currentPeriod(query: { startDate?: string; endDate?: string }): DateRange {
+  return getPreviousDates(query.startDate, query.endDate).current;
+}
+
 // Signed, unlike Nuxt's Math.abs, so a drop reads negative just like changeValue.
 export function calculatePercentageChange(current: number, previous: number): number | null {
   if (previous === 0) {

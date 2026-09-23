@@ -14,6 +14,7 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import {
+  BucketBounds,
   ContributionFlags,
   periodSummary,
   ProjectSlugParams,
@@ -40,14 +41,7 @@ const ActiveContributorsQuery = Type.Object({
 });
 
 const ActiveContributorsBucket = Type.Object({
-  startDate: Type.String({
-    format: 'date-time',
-    description: 'First day of the bucket, at 00:00:00 UTC.',
-  }),
-  endDate: Type.String({
-    format: 'date-time',
-    description: 'Last calendar day of the bucket, at 00:00:00 UTC.',
-  }),
+  ...BucketBounds.properties,
   contributors: Type.Integer({
     description:
       'Active contributors in the bucket (count). A person active in several buckets counts in each, so the buckets can add up to more than `summary.current`.',
