@@ -85,6 +85,15 @@ describe('malformed rows', () => {
     const res = await get(route);
     expect(res.statusCode).toBe(503);
   });
+
+  it.each([
+    ['negative', -1],
+    ['fractional', 1.5],
+  ])('answers 503 when a volume is %s', async (_, volume) => {
+    mockFetch.mockImplementation(tinybirdStub(() => [{ dataTimestamp: '2024-01-01', volume }]));
+    const res = await get(route);
+    expect(res.statusCode).toBe(503);
+  });
 });
 
 describe('OpenAPI (AC4)', () => {

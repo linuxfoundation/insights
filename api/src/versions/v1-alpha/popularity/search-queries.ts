@@ -23,7 +23,8 @@ const isDay = (value: unknown) => {
   return !Number.isNaN(time) && new Date(time).toISOString().slice(0, 10) === value;
 };
 
-const isRow = (row: Row) => isDay(row.dataTimestamp) && typeof row.volume === 'number';
+const isRow = (row: Row) =>
+  isDay(row.dataTimestamp) && Number.isSafeInteger(row.volume) && row.volume >= 0;
 
 const Query = Type.Object({
   startDate: DateRangeQuery.properties.startDate,
