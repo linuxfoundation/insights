@@ -125,6 +125,20 @@ async function getOperation(): Promise<OpenApiOperation | undefined> {
   return res.json<OpenApiDoc>().paths[contributorsPath('contributor-retention')]?.get;
 }
 
+describe('Tinybird failures', () => {
+  const valid = seriesRows[1]!;
+  it.each([
+    ['without the start date', { ...valid, startDate: undefined }],
+    ['with a null end date', { ...valid, endDate: null }],
+    ['with a string retention rate', { ...valid, retentionRate: 'high' }],
+  ])('maps a pipe row %s to 503 upstream_unavailable', async (_case, row) => {
+    mockFetch.mockImplementation(routeTinybird([...seriesRows, row]));
+    const res = await get(url());
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+  });
+});
+
 describe('OpenAPI (CR4)', () => {
   it('publishes the range, granularity, activityType, repos and both flags as query parameters', async () => {
     const operation = await getOperation();
