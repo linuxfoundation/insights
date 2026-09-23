@@ -213,6 +213,42 @@ describe('unknown project (AC4)', () => {
   });
 });
 
+describe('malformed rows', () => {
+  const summaryStub = (row: unknown) => tinybirdStub((url) => (isSeries(url) ? seriesRows : [row]));
+
+  it.each([
+    ['an array', []],
+    ['a negative count', { downloadsCount: -1 }],
+    ['a fractional count', { downloadsCount: 1.5 }],
+  ])('answers 503 when a summary row is %s', async (_, row) => {
+    mockFetch.mockImplementation(summaryStub(row));
+    const res = await get(`${route}?${baseQuery}`);
+    expect(res.statusCode).toBe(503);
+  });
+
+  it('answers 503 when a series row has no start date', async () => {
+    mockFetch.mockImplementation(
+      tinybirdStub((url) =>
+        isSeries(url) ? [{ ...seriesRows[0], startDate: null }] : [summaryRows[currentStart]],
+      ),
+    );
+    const res = await get(`${route}?${baseQuery}`);
+    expect(res.statusCode).toBe(503);
+  });
+
+  it('answers 503 when a series row has a non-numeric count', async () => {
+    mockFetch.mockImplementation(
+      tinybirdStub((url) =>
+        isSeries(url)
+          ? [{ ...seriesRows[0], downloadsCount: '1100' }]
+          : [summaryRows[currentStart]],
+      ),
+    );
+    const res = await get(`${route}?${baseQuery}`);
+    expect(res.statusCode).toBe(503);
+  });
+});
+
 describe('OpenAPI (AC5)', () => {
   it('publishes ecosystem and name as optional strings', async () => {
     const res = await get('/v1-alpha/openapi.json');

@@ -50,13 +50,14 @@ type SeriesRow = MetricRow & { startDate: string; endDate: string };
 
 const metricNames = Object.keys(metrics) as Metric[];
 
+const isCount = (value?: number) =>
+  value === undefined || (Number.isSafeInteger(value) && value >= 0);
 const isMetricRow = (row: MetricRow) =>
   typeof row === 'object' &&
   row !== null &&
-  metricNames.every((metric) => {
-    const value = row[metrics[metric].column];
-    return value === undefined || typeof value === 'number';
-  });
+  !Array.isArray(row) &&
+  metricNames.every((metric) => isCount(row[metrics[metric].column]));
+const isSeriesRow = (row: SeriesRow) => isMetricRow(row) && hasBucketBounds(row);
 
 const Query = Type.Object({
   ...SeriesQuery.properties,
@@ -169,7 +170,7 @@ const packageMetricsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
             request,
             pipePath,
             { ...common, ...currentRange, granularity },
-            hasBucketBounds,
+            isSeriesRow,
           ),
         ]);
       });
