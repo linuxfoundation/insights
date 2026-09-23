@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute, useSeoMeta } from 'nuxt/app';
-import { onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
 import { CollectionsEventKey } from '~/components/shared/types/events/collections';
@@ -34,11 +34,7 @@ const { isAuthenticated, isReady, login } = useAuth();
 const { trackEvent } = useTrackEvent();
 const route = useRoute();
 
-onMounted(() => {
-  trackEvent({
-    key: CollectionsEventKey.VIEW_MY_COLLECTIONS,
-  });
-});
+const viewTracked = ref(false);
 
 watch(
   [isReady, isAuthenticated],
@@ -48,6 +44,11 @@ watch(
     if (isAuthCallback) return;
     if (!authed) {
       login(window.location.pathname + window.location.search + window.location.hash);
+      return;
+    }
+    if (!viewTracked.value) {
+      viewTracked.value = true;
+      trackEvent({ key: CollectionsEventKey.VIEW_MY_COLLECTIONS });
     }
   },
   { immediate: true },

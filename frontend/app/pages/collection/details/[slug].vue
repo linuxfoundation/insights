@@ -281,7 +281,8 @@ useHead(getCollectionSchema(data));
 
 const { trackEvent } = useTrackEvent();
 
-watch(
+// Stop manually after first successful fire so async loads are captured.
+const stopViewWatch = watch(
   data,
   (collection) => {
     if (!collection) return;
@@ -291,7 +292,8 @@ watch(
         collectionId: collection.id,
       },
     });
+    stopViewWatch();
   },
-  { immediate: true, once: true },
+  { immediate: true },
 );
 </script>

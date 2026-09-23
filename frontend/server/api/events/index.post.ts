@@ -46,8 +46,18 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     entrySource?: string;
   }>(event);
 
-  if (!body?.key?.trim()) {
+  if (typeof body?.key !== 'string' || !body.key.trim()) {
     throw createError({ statusCode: 400, statusMessage: 'key is required' });
+  }
+
+  const MAX_PROPERTIES_BYTES = 10_240;
+  if (body.properties !== undefined) {
+    if (typeof body.properties !== 'object' || Array.isArray(body.properties)) {
+      throw createError({ statusCode: 400, statusMessage: 'properties must be an object' });
+    }
+    if (JSON.stringify(body.properties).length > MAX_PROPERTIES_BYTES) {
+      throw createError({ statusCode: 400, statusMessage: 'properties payload too large' });
+    }
   }
 
   const key = body.key.trim() as keyof typeof EVENT_DEFINITIONS;

@@ -50,7 +50,8 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
 
       watch(
         [isAuthenticated, user],
-        ([authenticated, currentUser], [wasAuthenticated]) => {
+        ([authenticated, currentUser], oldVal) => {
+          const wasAuthenticated = oldVal?.[0];
           if (authenticated && currentUser) {
             analytics.identify(currentUser.sub, {
               name: currentUser.name,
