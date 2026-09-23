@@ -5,7 +5,7 @@ import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { buildApp } from '../src/app.js';
-import { getPreviousDates, toPeriodSummary } from '../src/lib/period.js';
+import { resolvePeriods, toPeriodSummary } from '../src/lib/period.js';
 import {
   ActivityPlatform,
   ActivityType,
@@ -86,7 +86,7 @@ const testVersion: ApiVersion = {
         },
       },
       async (request) => {
-        const { current } = getPreviousDates(request.query.startDate, request.query.endDate);
+        const { current } = resolvePeriods(request.query.startDate, request.query.endDate);
         return { summary: toPeriodSummary(5, 0, current) };
       },
     );
