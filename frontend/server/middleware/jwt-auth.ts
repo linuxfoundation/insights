@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
   const protectedRoutes = [
     '/api/community/list',
     '/api/security/update',
+    '/api/docs-readiness/update',
     '/api/collection/community',
     '/api/collection/like',
   ];
