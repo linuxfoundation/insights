@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { TinybirdQueueFullError } from '../src/errors.js';
+import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '../src/errors.js';
 
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -129,6 +129,24 @@ describe('fetchFromTinybird throttle behavior', () => {
 
     // release() must NOT be called — no slot was acquired
     expect(mockRelease).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['queue full', () => new TinybirdQueueFullError()],
+    ['queue timeout', () => new TinybirdQueueTimeoutError()],
+  ])('logs %s rejections as a warning, not a request error', async (_, makeError) => {
+    mockAcquire.mockRejectedValue(makeError());
+    const logger = { warn: vi.fn(), error: vi.fn() };
+
+    const { createTinybirdClient } = await import('../src/client.js');
+    const client = createTinybirdClient({ baseUrl: 'https://tb.test', token: 'tok', logger });
+
+    await expect(client.fetch('/v0/pipes/test.json', {})).rejects.toMatchObject({
+      statusCode: 503,
+    });
+
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('tinybird_queue_rejected'));
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it('skips semaphore for ping and bucket lookup paths', async () => {

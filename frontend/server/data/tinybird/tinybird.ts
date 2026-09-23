@@ -75,9 +75,6 @@ function isLocalQueueRejection(err: TinybirdClientError): boolean {
 function toH3Error(err: unknown, target: string): never {
   if (err instanceof TinybirdClientError) {
     if (isLocalQueueRejection(err)) {
-      console.warn(
-        `Tinybird request not sent, rejected by local queue (${target}): ${err.message}`,
-      );
       throw createError({
         statusCode: err.statusCode,
         statusMessage: 'Server busy, try again shortly',
