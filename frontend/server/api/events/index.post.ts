@@ -12,7 +12,7 @@ import { verifyOrRefreshOidcToken } from '~~/server/utils/auth-refresh';
  *
  * Request Body:
  * - key (string, required): Must match a key in the server-side event catalog
- * - properties (object, optional): Arbitrary event metadata
+ * - properties (object, optional): Event properties; filtered server-side against the catalog allowlist for the given key
  * - source (string, optional): URL of the page where the event occurred
  * - entrySource (string, optional): URL of the referrer/entry page
  *

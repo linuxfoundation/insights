@@ -54,7 +54,7 @@ const { trackEvent } = useTrackEvent();
 
 trackEvent({
   key: CollectionsEventKey.CREATE_COLLECTION,
-  properties: { collectionId, isPrivate }, // catalog-defined fields only — optional
+  properties: { newCollectionId, isPrivate }, // catalog-defined fields only — optional
 });
 ```
 
@@ -99,7 +99,7 @@ const handleCreateCollection = async () => {
 
   trackEvent({
     key: CollectionsEventKey.CREATE_COLLECTION,
-    properties: { collectionId: result.id, isPrivate: form.isPrivate },
+    properties: { newCollectionId: result.id, isPrivate: form.isPrivate },
   })
 }
 ```
