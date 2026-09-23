@@ -41,12 +41,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { url } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import { url } from '@vuelidate/validators';
+
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 
 const props = defineProps<{
   modelValue: object;

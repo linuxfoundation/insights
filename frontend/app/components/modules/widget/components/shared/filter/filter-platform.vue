@@ -60,15 +60,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import { computed, watch } from 'vue';
+
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { platforms } from '~/config/platforms';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
 import type { PlatformConfig } from '~~/types/shared/platforms.types';
-import LfxButton from '~/components/uikit/button/button.vue';
 
 const props = defineProps<{
   modelValue: string;

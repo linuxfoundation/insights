@@ -56,16 +56,18 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfProjectSearchDropdown from '../create-modal/steps/project-search-dropdown.vue';
-import LfSelectedProjectsList from '../create-modal/steps/selected-projects-list.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { SearchProject, SearchRepository } from '~~/types/search';
+
 import type {
   CreateCollectionForm,
   CollectionProject,
   CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfSkeletonLoader from '~/components/uikit/skeleton/skeleton.vue';
+import type { SearchProject, SearchRepository } from '~~/types/search';
+
+import LfProjectSearchDropdown from '../create-modal/steps/project-search-dropdown.vue';
+import LfSelectedProjectsList from '../create-modal/steps/selected-projects-list.vue';
 
 const props = defineProps<{
   modelValue: CreateCollectionForm;

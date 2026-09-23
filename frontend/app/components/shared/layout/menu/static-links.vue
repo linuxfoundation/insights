@@ -37,13 +37,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
-import LfxMenuGithubButton from './github-button.vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { lfxMenu, type MenuItem } from '~/config/menu';
+import { computed } from 'vue';
+
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import { lfxMenu, type MenuItem } from '~/config/menu';
+
+import LfxMenuGithubButton from './github-button.vue';
 
 const route = useRoute();
 

@@ -6,8 +6,10 @@ import { getCookie, setCookie, deleteCookie } from 'h3';
 import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 import { discovery, refreshTokenGrant } from 'openid-client';
-import { hasLfxInsightsPermission, isLfInsightsTeamMember } from './jwt';
+
 import type { DecodedIdToken, DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+
+import { hasLfxInsightsPermission, isLfInsightsTeamMember } from './jwt';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 
@@ -66,7 +68,8 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
       username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
-        string | undefined,
+        | string
+        | undefined,
       intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 

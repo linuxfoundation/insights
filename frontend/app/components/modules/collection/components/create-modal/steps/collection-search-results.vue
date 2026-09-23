@@ -116,9 +116,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type { SearchProject, SearchRepository } from '~~/types/search';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { SearchProject, SearchRepository } from '~~/types/search';
 
 const props = defineProps<{
   selectedProjectsSlugs: string[];

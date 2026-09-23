@@ -113,20 +113,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed, type ComputedRef } from 'vue';
 import { DateTime } from 'luxon';
-import LfxAiCommitsTimeChart from '../components/ai-commits-time-chart.vue';
-import { AI_CODE_TRACKER_API_SERVICE } from '../services/ai-code-tracker.api.service';
-import { AI_TOOL_RELEASE_DATES } from '../config/ai-tools';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import { ref, computed, type ComputedRef } from 'vue';
+
 import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import type { AiCodeTrackerQueryParams } from '~~/types/report/ai-code-tracker.types';
+
+import LfxAiCommitsTimeChart from '../components/ai-commits-time-chart.vue';
+import { AI_TOOL_RELEASE_DATES } from '../config/ai-tools';
+import { AI_CODE_TRACKER_API_SERVICE } from '../services/ai-code-tracker.api.service';
 
 const now = DateTime.local();
 const lastMonthEnd = now.minus({ months: 1 }).endOf('month').toFormat('yyyy-MM-dd');

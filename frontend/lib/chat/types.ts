@@ -4,8 +4,10 @@
 import type { UIMessageStreamWriter } from 'ai';
 import type { Pool } from 'pg';
 import { z } from 'zod';
-import { RouterDecisionAction } from './enums';
+
 import type { ChatResponse } from '~~/server/repo/chat.repo';
+
+import { RouterDecisionAction } from './enums';
 
 // ============================================
 // Pipe Instruction Types

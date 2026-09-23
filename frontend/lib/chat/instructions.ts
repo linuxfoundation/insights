@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ofetch } from 'ofetch';
+
 import type { PipeInstructions, TextToSqlInstructions } from './types';
 
 // Function to execute a TinyBird pipe
@@ -54,7 +55,7 @@ export async function executePipeInstructions(
   // Execute each pipe with its inputs using TinyBird API
   for (const pipeInstruction of instructions.pipes) {
     try {
-      const inputs = !!bucketId ? { bucketId, ...pipeInstruction.inputs } : pipeInstruction.inputs;
+      const inputs = bucketId ? { bucketId, ...pipeInstruction.inputs } : pipeInstruction.inputs;
       const result = await executeTinybirdPipe(pipeInstruction.name, inputs);
       pipeResults[pipeInstruction.id] = result;
     } catch (error) {

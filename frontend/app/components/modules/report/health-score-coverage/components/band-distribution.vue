@@ -62,17 +62,19 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref } from 'vue';
-import { fetchHealthScoreCoverageBandsQuery } from '../services/band-distribution.query';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
   HealthScoreCoverageBandCount,
   HealthScoreCoverageScope,
 } from '~~/types/report/health-score-coverage-bands.types';
+
+import { fetchHealthScoreCoverageBandsQuery } from '../services/band-distribution.query';
 
 const SCOPE_TABS = [
   { value: 'all', label: 'All projects' },

@@ -5,24 +5,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Package Management
+
 - Use `pnpm` for package management (not npm/yarn)
 - `pnpm install --filter frontend` - Install dependencies from project root
 - `pnpm dev` - Start development server on localhost:3000 (run from frontend directory)
 - Always run install commands from project root using workspace filter
 
 ### Build & Test
+
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build locally
 - `pnpm test` - Run tests with Vitest
 - `pnpm tsc-check` - Run TypeScript type checking
 
 ### Code Quality
-- `pnpm lint` - Run ESLint
-- `pnpm lint:fix` - Fix ESLint issues automatically
-- `pnpm format` - Format code with Prettier
+
+- `pnpm lint` - Run oxlint from the repo root (covers every package)
+- `pnpm lint:fix` - Fix oxlint issues automatically
+- `pnpm format` - Format code with oxfmt from the repo root
 - `pnpm format:check` - Check code formatting
 
 ### Documentation & Storybook
+
 - `pnpm storybook` - Run Storybook on port 6006
 - `pnpm storybook:build` - Build Storybook
 - `pnpm docs:dev` - Run VitePress docs on localhost:5173
@@ -31,6 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture Overview
 
 ### Framework & Technology Stack
+
 - **Nuxt 4** (Vue 3) framework with TypeScript
 - **Tailwind CSS** for styling with **PrimeVue** component library
 - **Pinia** for state management
@@ -41,6 +46,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Vitest** for testing, **Storybook** for component development
 
 ### Project Structure
+
 All paths below are relative to the `frontend/` directory.
 
 ```
@@ -73,6 +79,7 @@ frontend/
 ### Key Architectural Patterns
 
 #### Authentication Flow
+
 - Uses Auth0 with PKCE (Proof Key for Code Exchange) flow
 - Server-side session management with HTTP-only cookies
 - API routes handle login (`/api/auth/login`), callback (`/api/auth/callback`), and logout
@@ -80,18 +87,21 @@ frontend/
 - Detailed flow documented in `AUTH_CONFIGURATION.md`
 
 #### Data Management
+
 - **Vue Query** for server state management and caching
 - **Pinia** stores for client-side application state
 - API layer in `server/api/` follows RESTful conventions
 - Repository pattern for data access in `server/repo/`
 
 #### Component Architecture
+
 - UI Kit components in `app/components/uikit/` for reusable design system
 - Feature-specific components organized by domain
 - PrimeVue components for complex UI patterns
 - Storybook for component documentation and testing
 
 #### Configuration Management
+
 - Modular Nuxt config split across `setup/` directory:
   - `head.ts` - Meta tags and SEO
   - `tailwind.ts` - Tailwind configuration
@@ -112,12 +122,14 @@ frontend/
   - `rate-limiter.ts` - API rate limiting
 
 #### Environment & Deployment
+
 - Environment-specific configuration via runtime config
 - Production vs development environment detection
 - Proxy configuration for docs (`/docs`) and blog (`/blog`) routes
 - Analytics integration (Google Analytics, Plausible)
 
 ### Database Integration
+
 - PostgreSQL with separate read/write hosts
 - Environment variables for database configuration:
   - `INSIGHTS_DB_WRITE_HOST` / `INSIGHTS_DB_READ_HOST`
@@ -125,6 +137,7 @@ frontend/
   - `INSIGHTS_DB_DATABASE`
 
 ### API Integration
+
 - Tinybird API integration for analytics data
 - GitHub API token for repository data
 - Redis for caching (optional)
@@ -133,30 +146,35 @@ frontend/
 ## Development Guidelines
 
 ### TypeScript
+
 - Strict TypeScript configuration enabled
 - Type definitions organized in `types/` directory
 - Use `tsc-check` command to verify types before committing
 
 ### Authentication Development
+
 - Auth0 domain differs between environments (staging vs production)
 - Local development uses `http://localhost:3000` callbacks
 - Production uses `https://insights.linuxfoundation.org` callbacks
 - See `AUTH_CONFIGURATION.md` for detailed setup instructions
 
 ### Testing
+
 - Vitest for unit testing
 - Happy DOM for DOM simulation
 - Use `pnpm test` to run tests during development
 
 ### Code Quality
-- ESLint with TypeScript and Vue-specific rules
-- Prettier for code formatting
+
+- oxlint (`pnpm lint` from the repo root) with TypeScript and Vue script-block rules
+- oxfmt (`pnpm format` from the repo root) for code formatting
 - Husky git hooks for pre-commit checks
 - License headers automatically added via lint-staged
 - whenever you generate html/vue code make sure to use ui components from the ui kit in the project `frontend/app/components/uikit/`
 - make sure to always consider tailwind config file to see correct classes names
 
 ### Code Comments
+
 - Comment the why, not the what. A comment earns its place by stating a constraint, workaround, external quirk, or tradeoff the code cannot show.
 - Keep comments terse: at most 2 sentences or 35 words. If it needs more, restructure the code or move the explanation to a doc.
 - Skip narration comments that restate the next line, and change-log comments ("moved from X", "fixed in this PR"); git history covers those.

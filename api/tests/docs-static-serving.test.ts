@@ -3,8 +3,10 @@
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
 import { buildApp } from '../src/app.js';
 import { docsFixtureDist } from './setup/build-docs-fixture.js';
 
@@ -73,15 +75,17 @@ describe('static serving of the built docs site under /docs (AC1, AC4)', () => {
     expect(body.openapi).toMatch(/^3\./);
   });
 
-  it("returns Fastify's own default 404 for an unmatched /v1/* route, not the docs page (AC5)", async () => {
+  it('answers an unmatched /v1/* route with the shared JSON 404, not the docs page (AC5)', async () => {
     const res = await app.inject({ method: 'GET', url: '/v1/does-not-exist' });
-    expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.statusCode).toBe(404);
+    expect(res.headers['content-type']).toBe('application/json; charset=utf-8');
     expect(res.json()).toMatchObject({ error: 'Not Found', statusCode: 404 });
   });
 
   it('does not treat a near-miss path like /docsomething as a docs path (AC5)', async () => {
     const res = await app.inject({ method: 'GET', url: '/docsomething' });
-    expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.statusCode).toBe(404);
+    expect(res.headers['content-type']).toBe('application/json; charset=utf-8');
     expect(res.json()).toMatchObject({ error: 'Not Found', statusCode: 404 });
   });
 });

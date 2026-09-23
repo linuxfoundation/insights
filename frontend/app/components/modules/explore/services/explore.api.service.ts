@@ -1,14 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { computed } from 'vue';
 import type { QueryFunction } from '@tanstack/vue-query';
 import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
-import type { ExploreContributors } from '~~/types/explore/contributors';
+import { computed } from 'vue';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { Pagination } from '~~/types/shared/pagination';
+import type { Collection } from '~~/types/collection';
+import type { ExploreContributors } from '~~/types/explore/contributors';
 import type { ExploreOrganizations } from '~~/types/explore/organizations';
 import type { Project } from '~~/types/project';
-import type { Collection } from '~~/types/collection';
+import type { Pagination } from '~~/types/shared/pagination';
 
 class ExploreApiService {
   fetchTopContributors(pageSize: number) {

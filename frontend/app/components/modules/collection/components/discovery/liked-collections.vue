@@ -86,20 +86,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
+import { computed, watch } from 'vue';
+
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import LfxCollectionListItemLoading from '~/components/modules/collection/components/list/collection-list-item-loading.vue';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import useResponsive from '~/components/shared/utils/responsive';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const { pageWidth } = useResponsive();
 const isMobile = computed(() => pageWidth.value > 0 && pageWidth.value < 768);

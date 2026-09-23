@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 import { createHash } from 'crypto';
-import type { H3Event } from 'h3';
+
 import type { RedisClientType } from '@redis/client';
+import type { H3Event } from 'h3';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import type { RateLimiterConfig } from '../types/rate-limiter';
 
 const getHeadersMock = vi.fn();

@@ -50,15 +50,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ref, computed, nextTick } from 'vue';
 // import LfxIcon from '~/components/uikit/icon/icon.vue'
 import type { Granularity } from '@lfx-insights/types';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { barGranularities } from '~/components/shared/types/granularity';
 
 const props = defineProps<{

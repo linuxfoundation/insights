@@ -36,10 +36,11 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxDropdownSearch from '~/components/uikit/dropdown/dropdown-search.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+
 import type { CategoryGroupOptions } from '~/components/modules/collection/services/collections.api.service';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSearch from '~/components/uikit/dropdown/dropdown-search.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 
 const props = defineProps<{
   options: CategoryGroupOptions[];

@@ -139,20 +139,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue';
 import pluralize from 'pluralize';
-import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import LfxCollectionsFilter from '../filters/collections-filter.vue';
-import LfxLeaderboardSearch from './leaderboard-search.vue';
+import { ref, watch, nextTick } from 'vue';
+
+import LfxLeaderboardMobileNav from '~/components/modules/leaderboards/components/sections/leaderboard-mobile-nav.vue';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import useScroll from '~/components/shared/utils/scroll';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import { useShareStore } from '~/components/shared/modules/share/store/share.store';
-import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxLeaderboardMobileNav from '~/components/modules/leaderboards/components/sections/leaderboard-mobile-nav.vue';
+
+import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
+import LfxCollectionsFilter from '../filters/collections-filter.vue';
+import LfxLeaderboardSearch from './leaderboard-search.vue';
 
 const { openShareModal } = useShareStore();
 const props = defineProps<{

@@ -48,14 +48,16 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
-import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
-import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
+
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+
+import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
+import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
+import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
 // import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
-import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
 import { links } from '~/config/links';
+import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
 
 const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useCommunityStore());
 

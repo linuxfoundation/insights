@@ -1,11 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { H3Event } from 'h3';
 import { RedisClientType } from '@redis/client';
+import type { H3Event } from 'h3';
+
+import { RateLimiterConfig } from '~~/server/types/rate-limiter';
+
 import { checkRateLimit } from '../utils/rate-limiter';
 import { getRedisClient } from '../utils/redis-client';
-import { RateLimiterConfig } from '~~/server/types/rate-limiter';
 
 /**
  * This is a rate-limiting middleware that checks incoming requests against the configured rate

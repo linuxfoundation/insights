@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { pipePrompt } from '../prompts/pipe';
 import type { PipeOutput, PipeAgentInput } from '../types';
 import { pipeOutputSchema } from '../types';
-import { pipePrompt } from '../prompts/pipe';
 import { BaseAgent } from './base-agent';
 
 export class PipeAgent extends BaseAgent<PipeAgentInput, PipeOutput> {

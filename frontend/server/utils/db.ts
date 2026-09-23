@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Pool } from 'pg';
+
 import { isLocal } from './common';
 
 let insightsDbPool: Pool | null = null;

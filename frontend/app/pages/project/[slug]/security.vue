@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxProjectSecurityView from '~/components/modules/project/views/security.vue';
 

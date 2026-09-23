@@ -89,19 +89,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxCopilotLoadingState from '../shared/loading-state.vue';
-import LfxCopilotEmptyResult from '../info/empty-result.vue';
-import { useCopilotStore } from '../../store/copilot.store';
-import LfxCopilotTableResults from './table-results.vue';
-import LfxCopilotResultsHeader from './results-header.vue';
-import LfxCopilotResultsToggle from './results-toggle.vue';
-import LfxCopilotChartResults from './chart-results.vue';
-import type { Config } from '~~/lib/chat/chart/types';
+import { computed, ref } from 'vue';
+
 import type { ChartErrorType } from '~/components/shared/modules/copilot/types/copilot.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { Config } from '~~/lib/chat/chart/types';
+
+import { useCopilotStore } from '../../store/copilot.store';
+import LfxCopilotEmptyResult from '../info/empty-result.vue';
+import LfxCopilotLoadingState from '../shared/loading-state.vue';
+import LfxCopilotChartResults from './chart-results.vue';
+import LfxCopilotResultsHeader from './results-header.vue';
+import LfxCopilotResultsToggle from './results-toggle.vue';
+import LfxCopilotTableResults from './table-results.vue';
 
 const emit = defineEmits<{
   (e: 'update:isChartLoading', value: boolean): void;

@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { mapHealthScoreCoverageBandsRows } from './health-score-coverage-bands';
+
 import type { HealthScoreCoverageBandsRow } from '~~/types/report/health-score-coverage-bands.types';
+
+import { mapHealthScoreCoverageBandsRows } from './health-score-coverage-bands';
 
 describe('mapHealthScoreCoverageBandsRows', () => {
   test('splits full (covered=3) and partial (covered=2) counts per band', () => {

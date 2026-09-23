@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { createDataSource } from '~~/server/data/data-sources';
-import type { ActivityTypesFilter } from '~~/types/development/requests.types';
 import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
+import type { ActivityTypesFilter } from '~~/types/development/requests.types';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);

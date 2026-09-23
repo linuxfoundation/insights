@@ -114,12 +114,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 import { useAuth } from '~~/composables/useAuth';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';

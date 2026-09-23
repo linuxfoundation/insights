@@ -1,14 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { computed, type ComputedRef } from 'vue';
 import type { QueryFunction } from '@tanstack/vue-query';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
-import type { Project } from '~~/types/project';
-import type { User } from '~~/types/auth/auth-user.types';
+import { computed, type ComputedRef } from 'vue';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { CommunityMentions } from '~~/types/community/community';
-import type { Pagination } from '~~/types/shared/pagination';
 import { isLFUser } from '~/components/shared/utils/helper';
+import type { User } from '~~/types/auth/auth-user.types';
+import type { CommunityMentions } from '~~/types/community/community';
+import type { Project } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export interface QueryParams {
   projectSlug: string;

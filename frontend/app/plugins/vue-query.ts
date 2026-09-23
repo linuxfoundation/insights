@@ -1,8 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { DehydratedState, VueQueryPluginOptions } from '@tanstack/vue-query';
-import type { NuxtApp } from 'nuxt/app';
-import { defineNuxtPlugin, useState } from 'nuxt/app';
 import {
   VueQueryPlugin,
   QueryClient,
@@ -10,6 +8,8 @@ import {
   dehydrate,
   defaultShouldDehydrateQuery,
 } from '@tanstack/vue-query';
+import type { NuxtApp } from 'nuxt/app';
+import { defineNuxtPlugin, useState } from 'nuxt/app';
 // Nuxt 3 app aliases
 
 const SSR_DEHYDRATE_WAIT_TIMEOUT_MS = 5000;

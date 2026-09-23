@@ -32,6 +32,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import type { TabsProps, TabsEmits } from './types/tab.types';
 
 const props = withDefaults(defineProps<TabsProps>(), {

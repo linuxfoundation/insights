@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DateTime } from 'luxon';
 import { describe, test, expect, vi } from 'vitest';
 
-import { DateTime } from 'luxon';
 import { calculatePercentageChange, earliestPossibleStartDate, getPreviousDates } from './util';
 
 describe('getPreviousDates', () => {
@@ -76,6 +76,15 @@ describe('getPreviousDates', () => {
         to: expectedPreviousEndDate,
       },
     });
+  });
+
+  test('should throw a 400 error when startDate is after endDate', () => {
+    const currentStartDate = DateTime.utc(2026, 9, 21);
+    const currentEndDate = DateTime.utc(2025, 9, 21);
+
+    expect(() => getPreviousDates(currentStartDate, currentEndDate)).toThrow(
+      expect.objectContaining({ statusCode: 400 }),
+    );
   });
 });
 

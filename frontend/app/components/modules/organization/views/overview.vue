@@ -17,11 +17,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxOrgKpiRow from '~/components/modules/organization/components/overview/kpi-row.vue';
-import LfxOrgProjectsSection from '~/components/modules/organization/components/overview/projects-section.vue';
 import LfxOrgActivityChart from '~/components/modules/organization/components/overview/activity-chart.vue';
 import LfxOrgContributorsChart from '~/components/modules/organization/components/overview/contributors-chart.vue';
+import LfxOrgKpiRow from '~/components/modules/organization/components/overview/kpi-row.vue';
 import LfxOrgLockedContributorsSection from '~/components/modules/organization/components/overview/locked-contributors-section.vue';
+import LfxOrgProjectsSection from '~/components/modules/organization/components/overview/projects-section.vue';
 </script>
 
 <script lang="ts">

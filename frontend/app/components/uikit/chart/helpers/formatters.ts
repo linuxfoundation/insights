@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: MIT
 import type { CallbackDataParams, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import { DateTime } from 'luxon';
+
 import { Granularity } from '@lfx-insights/types';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import { lfxColors } from '~/config/styles/colors';
+
+import type { ChartData, ChartSeries } from '../types/ChartTypes';
 import type {
   MultipleTooltipFormatterParams,
   SingleTooltipFormatterParams,
 } from '../types/EChartTypes';
-import type { ChartData, ChartSeries } from '../types/ChartTypes';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
-import { lfxColors } from '~/config/styles/colors';
 
 declare type LabelFormatterParams = {
   value: number | string | Date;
@@ -46,7 +48,8 @@ export const tooltipLabelFormatter = (params: LabelFormatterParams) => {
 // charts tooltip can't use tailwind classes, so we need to use inline styles
 const tooltipSingleValue =
   (decimals: number = 0) =>
-  (params: SingleTooltipFormatterParams) => `
+  (params: SingleTooltipFormatterParams) =>
+    `
   <div style="display: flex;
     flex-direction: row;
     align-items: center;
@@ -63,7 +66,8 @@ const tooltipSingleValue =
 
 const tooltipSingleValueWithBullet =
   (series: ChartSeries[], decimals: number = 0) =>
-  (params: SingleTooltipFormatterParams, idx: number) => `
+  (params: SingleTooltipFormatterParams, idx: number) =>
+    `
   <div style="display: flex;
     flex-direction: row;
     align-items: center;

@@ -1,22 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { ActivityTypes } from '@lfx-insights/types';
-import type { CodeReviewEngagement } from '~~/types/development/responses.types';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import {
+  ActiveContributorsTinybirdQuery,
+  ActivitiesCountTinybirdQuery,
+  ContributorsLeaderboardTinybirdQuery,
+} from '~~/server/data/tinybird/requests.types';
 import {
   TinybirdActiveContributorsSummary,
   TinyBirdActivitiesCountDataItem,
   TinyBirdActivitiesCountSummaryData,
   TinybirdContributorsLeaderboardData,
 } from '~~/server/data/tinybird/responses.types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { CodeReviewEngagementFilter } from '~~/types/development/requests.types';
 import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
-import {
-  ActiveContributorsTinybirdQuery,
-  ActivitiesCountTinybirdQuery,
-  ContributorsLeaderboardTinybirdQuery,
-} from '~~/server/data/tinybird/requests.types';
+import type { CodeReviewEngagement } from '~~/types/development/responses.types';
 
 const prParticipantsActivityTypes = [
   ActivityTypes.PULL_REQUEST_REVIEWED,

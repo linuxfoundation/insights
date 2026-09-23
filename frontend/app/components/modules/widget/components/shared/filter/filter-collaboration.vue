@@ -34,9 +34,10 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { links } from '~/config/links';
 
 const props = defineProps<{

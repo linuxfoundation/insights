@@ -45,12 +45,14 @@ pnpm install --filter frontend
 Create `frontend/.env` and populate it with the values below. Ask a team member for the secret values — they are shared via the team's secrets manager.
 
 **Required secrets (get from team):**
+
 - `NUXT_PUBLIC_AUTH0_CLIENT_ID`
 - `NUXT_AUTH0_CLIENT_SECRET`
 - `NUXT_JWT_SECRET`
 - `NUXT_TINYBIRD_TOKEN` — data won't load without this
 
 **Database — only needed if you will run Step 4 (Postgres). Use these exact values:**
+
 ```
 NUXT_INSIGHTS_DB_WRITE_HOST=localhost
 NUXT_INSIGHTS_DB_READ_HOST=localhost
@@ -63,9 +65,11 @@ NUXT_INSIGHTS_DB_DATABASE=insights
 > Database, auth, and other runtime config vars must use the `NUXT_` prefix so Nuxt's runtime config picks them up automatically. A few server-only vars (e.g. `APP_ENV`) are read directly via `process.env` and do not need the prefix — check `frontend/setup/runtime-config.ts` for the full list.
 
 **Collections feature** — only needed if working on collections endpoints:
+
 ```
 NUXT_CM_DB_ENABLED=true
 ```
+
 This also requires crowd.dev (`crowd-web`) DB credentials — ask the team for them.
 
 Tell the user to let you know when their `.env` is ready, then continue to Step 4.
@@ -75,6 +79,7 @@ Tell the user to let you know when their `.env` is ready, then continue to Step 
 ## Step 4: Start the local database (optional)
 
 **Ask the user:** Do you need to work on any of the following features locally?
+
 - Auth / login flow
 - Collections pages (`/collection/*`, "add to collection" buttons)
 - Copilot / chat
@@ -96,11 +101,13 @@ Use port `5450` (the port used throughout this guide — the Nuxt runtime defaul
 ### 4b. Start Postgres
 
 If the `insights-postgres` container already exists, just start it:
+
 ```bash
 docker start insights-postgres
 ```
 
 Otherwise create it:
+
 ```bash
 docker run -d \
   --name insights-postgres \
@@ -115,6 +122,7 @@ docker run -d \
 > `wal_level=logical` is required — one migration creates a logical replication slot for Sequin and will fail without it.
 
 Wait for Postgres to be ready:
+
 ```bash
 until docker exec insights-postgres pg_isready -U postgres; do sleep 1; done
 ```
@@ -132,6 +140,7 @@ cd database && \
 ```
 
 > **Linux:** `host.docker.internal` may not resolve. Use `PGHOST=localhost` with `--host-network` instead:
+>
 > ```bash
 > cd database && PGHOST=localhost PGPORT=5450 PGDATABASE=insights PGUSER=postgres PGPASSWORD=example bash migrate.sh --host-network
 > ```
@@ -183,18 +192,18 @@ The app will be available at `http://localhost:3000`.
 
 ## Troubleshooting
 
-| Symptom | Fix |
-|---|---|
-| Port 3000 already in use | Run `lsof -ti tcp:3000 \| xargs kill` — do not switch ports, Auth0 callback is hardcoded to :3000 |
-| DB errors but I skipped Step 4 | Expected for auth/collections/chat routes — run Step 4 if you need those features |
-| Port 5450 already in use | Pick a free port (e.g. `-p 5455:5432`) and update `NUXT_INSIGHTS_DB_PORT` in `.env` |
-| `host.docker.internal` not resolving (Linux) | Use `PGHOST=localhost` with `--host-network` |
-| Migration checksum mismatch | Never edit an applied migration — create a new one with `/db-migrate new <name>` |
-| Auth errors in browser | Check Auth0 env vars in `frontend/.env` |
-| No data showing | Check `NUXT_TINYBIRD_TOKEN` is populated in `frontend/.env` |
-| 503 on collections endpoints | Add `NUXT_CM_DB_ENABLED=true` and CM DB credentials to `frontend/.env` |
-| DB env vars not picked up | Ensure all vars have the `NUXT_` prefix — e.g. `NUXT_INSIGHTS_DB_PORT`, not `INSIGHTS_DB_PORT` |
-| Container exists but wrong settings | `docker rm -f insights-postgres` then re-run the `docker run` command |
+| Symptom                                      | Fix                                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Port 3000 already in use                     | Run `lsof -ti tcp:3000 \| xargs kill` — do not switch ports, Auth0 callback is hardcoded to :3000 |
+| DB errors but I skipped Step 4               | Expected for auth/collections/chat routes — run Step 4 if you need those features                 |
+| Port 5450 already in use                     | Pick a free port (e.g. `-p 5455:5432`) and update `NUXT_INSIGHTS_DB_PORT` in `.env`               |
+| `host.docker.internal` not resolving (Linux) | Use `PGHOST=localhost` with `--host-network`                                                      |
+| Migration checksum mismatch                  | Never edit an applied migration — create a new one with `/db-migrate new <name>`                  |
+| Auth errors in browser                       | Check Auth0 env vars in `frontend/.env`                                                           |
+| No data showing                              | Check `NUXT_TINYBIRD_TOKEN` is populated in `frontend/.env`                                       |
+| 503 on collections endpoints                 | Add `NUXT_CM_DB_ENABLED=true` and CM DB credentials to `frontend/.env`                            |
+| DB env vars not picked up                    | Ensure all vars have the `NUXT_` prefix — e.g. `NUXT_INSIGHTS_DB_PORT`, not `INSIGHTS_DB_PORT`    |
+| Container exists but wrong settings          | `docker rm -f insights-postgres` then re-run the `docker run` command                             |
 
 ---
 

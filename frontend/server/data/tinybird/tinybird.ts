@@ -1,12 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
+
 import {
   createTinybirdClient,
   TinybirdClientError,
   type TinybirdResponse,
   BucketCacheStorage,
 } from '@lfx-insights/tinybird-client';
+
 import { getBucketIdForProject } from './bucket-cache';
 
 export type { TinybirdResponse };
@@ -39,11 +41,19 @@ export const client = createTinybirdClient({
     process.env.NUXT_TINYBIRD_SLOW_REQUEST_THRESHOLD_MS ?? '5000',
     10,
   ),
+  latencyBackoff: process.env.NUXT_TINYBIRD_LATENCY_BACKOFF === 'false' ? false : {},
   bucketCache: createNitroRedisAdapter(),
 });
 
 type DateTimeOrPrimitive =
-  string | number | boolean | string[] | number[] | DateTime | undefined | null;
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | DateTime
+  | undefined
+  | null;
 
 function serializeQuery(
   query: Record<string, DateTimeOrPrimitive>,

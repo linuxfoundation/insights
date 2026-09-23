@@ -8,10 +8,6 @@
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.build.json && vitepress build docs/site",
-    "lint": "eslint src tests scripts --max-warnings=0",
-    "lint:fix": "eslint src tests scripts --fix",
-    "format": "prettier --write \"{src,tests,scripts}/**/*.ts\"",
-    "format:check": "prettier --check \"{src,tests,scripts}/**/*.ts\"",
     "tsc-check": "tsc --noEmit",
     "test": "vitest run",
     "openapi:export": "tsx scripts/export-openapi.ts",
@@ -20,26 +16,20 @@
     "docs:preview": "vitepress preview docs/site"
   },
   "dependencies": {
-    "@lfx-insights/tinybird-client": "workspace:*",
-    "@lfx-insights/types": "workspace:*",
+    "@fastify/autoload": "^6.5.0",
     "@fastify/static": "^8.0.0",
     "@fastify/swagger": "^9.0.0",
     "@fastify/type-provider-typebox": "^5.0.0",
+    "@lfx-insights/tinybird-client": "workspace:*",
+    "@lfx-insights/types": "workspace:*",
     "@sinclair/typebox": "^0.34.0",
     "fastify": "^5.0.0"
   },
   "devDependencies": {
     "@scalar/api-reference": "^1.68.0",
     "@types/node": "^22.0.0",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^10.0.0",
-    "eslint-import-resolver-typescript": "^4.0.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^3.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",
-    "typescript-eslint": "^8.0.0",
     "vitepress": "^1.6.4",
     "vitest": "^3.0.0"
   }

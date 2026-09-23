@@ -11,16 +11,16 @@ forward through the result set until it runs out.
 
 Paginated endpoints accept two query parameters, both optional:
 
-| Parameter  | Type                    | Default | Notes                                   |
-| ---------- | ----------------------- | ------- | ---------------------------------------- |
-| `cursor`   | opaque base64url string | (none)  | Omit on the first request.               |
-| `pageSize` | integer                 | `50`    | Maximum `200`.                           |
+| Parameter  | Type                    | Default | Notes                      |
+| ---------- | ----------------------- | ------- | -------------------------- |
+| `cursor`   | opaque base64url string | (none)  | Omit on the first request. |
+| `pageSize` | integer                 | `50`    | Maximum `200`.             |
 
 ## Response shape
 
 ```json
 {
-  "data": [ /* ...page of results... */ ],
+  "data": [/* ...page of results... */],
   "pageSize": 50,
   "nextCursor": "eyJrIjoiMjAyNS0xMi0zMSIsImlkIjoiNDIifQ"
 }
@@ -48,6 +48,12 @@ curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100&cursor=e
   ended, even when data is added or removed between your requests.
 - **Consistent performance.** The first page and the hundredth page respond equally fast,
   so iterating a large collection does not slow down as you go deeper.
+
+Endpoints that page through a ranking, such as a leaderboard, page by position instead, so
+a row whose rank changes between your requests, or that ties with others at a page
+boundary, can be skipped or repeated. Their descriptions say so. The performance guarantee
+does not cover them either: each request recomputes the whole ranking before it takes a
+page, so a deep page costs about as much as the first.
 
 ## Cursors are opaque
 

@@ -110,12 +110,13 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     maxQueueSize = DEFAULT_MAX_QUEUE_SIZE,
     queueTimeoutMs = DEFAULT_QUEUE_TIMEOUT_MS,
     slowRequestThresholdMs = DEFAULT_SLOW_REQUEST_THRESHOLD_MS,
+    latencyBackoff = {},
     bucketCache: bucketCacheStorage,
   } = config;
 
   const baseUrl = stripTrailingSlashes(rawBaseUrl);
   const logger: TinybirdLogger = config.logger ?? console;
-  const semaphore = new AdaptiveSemaphore(maxConcurrent, maxQueueSize, logger);
+  const semaphore = new AdaptiveSemaphore(maxConcurrent, maxQueueSize, logger, latencyBackoff);
   const bucketCache = createBucketCache(bucketCacheStorage, logger);
 
   const authHeaders = { Authorization: `Bearer ${token}` };
@@ -138,6 +139,10 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
       const response = await send();
       const data = await parseResponse<T>(response);
+      const queryElapsedSeconds = data.statistics?.elapsed;
+      if (acquired && Number.isFinite(queryElapsedSeconds)) {
+        semaphore.reportTinybirdLatency(queryElapsedSeconds * 1000);
+      }
 
       const durationMs = Date.now() - fetchStart;
       if (durationMs > slowRequestThresholdMs) {

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod';
-import { textToSqlInstructionsSchema, type SqlErrorContext } from '../types';
+
 import { textToSqlPrompt } from '../prompts/text-to-sql';
+import { textToSqlInstructionsSchema, type SqlErrorContext } from '../types';
 import { BaseAgent } from './base-agent';
 
 // Output schema for SQL agent

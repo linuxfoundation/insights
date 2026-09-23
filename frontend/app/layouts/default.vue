@@ -26,21 +26,22 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute, useHead } from 'nuxt/app';
-import { watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxNavbar from '~/components/shared/layout/navbar.vue';
-import LfxToast from '~/components/uikit/toast/toast.vue';
+import { watch, computed } from 'vue';
+
+import LfxAddToCollectionGlobal from '~/components/modules/collection/components/add-to-collection-modal/add-to-collection-global.vue';
+import LfDuplicateCollectionGlobal from '~/components/modules/collection/components/create-modal/duplicate-collection-global.vue';
+import LfEditCollectionGlobal from '~/components/modules/collection/components/edit-modal/edit-collection-global.vue';
+import LfxCommunityFilterGlobal from '~/components/modules/project/components/community/sections/community-filter-global.vue';
 import LfxInsightsFooter from '~/components/shared/layout/footer.vue';
+import LfxNavbar from '~/components/shared/layout/navbar.vue';
+import LfxConfirmGlobal from '~/components/shared/modules/confirm/components/confirm-global.vue';
+import LfxCopilotGlobal from '~/components/shared/modules/copilot/components/copilot-global.vue';
 import LfxReportGlobal from '~/components/shared/modules/report/components/report-global.vue';
 import LfxShareGlobal from '~/components/shared/modules/share/components/share-global.vue';
-import LfEditCollectionGlobal from '~/components/modules/collection/components/edit-modal/edit-collection-global.vue';
-import LfDuplicateCollectionGlobal from '~/components/modules/collection/components/create-modal/duplicate-collection-global.vue';
-import LfxAddToCollectionGlobal from '~/components/modules/collection/components/add-to-collection-modal/add-to-collection-global.vue';
-import LfxCopilotGlobal from '~/components/shared/modules/copilot/components/copilot-global.vue';
-import LfxCommunityFilterGlobal from '~/components/modules/project/components/community/sections/community-filter-global.vue';
-import LfxConfirmGlobal from '~/components/shared/modules/confirm/components/confirm-global.vue';
-import { useRichSchema } from '~~/composables/useRichSchema';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import LfxToast from '~/components/uikit/toast/toast.vue';
+import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();
 

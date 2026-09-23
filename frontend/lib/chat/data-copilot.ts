@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
-import type { LanguageModel } from 'ai';
 import { createMCPClient } from '@ai-sdk/mcp';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import type { Pool } from 'pg';
+import type { LanguageModel } from 'ai';
 import { ofetch } from 'ofetch';
+import type { Pool } from 'pg';
+
 import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo';
 import { ChatRepository } from '../../server/repo/chat.repo';
-
 import { TextToSqlAgent, PipeAgent, RouterAgent, AuditorAgent } from './agents';
+import { RouterDecisionAction, StreamDataStatus, StreamDataType } from './enums';
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions';
 import type {
   AgentResponseCompleteParams,
@@ -25,7 +26,6 @@ import type {
   TextToSqlAgentInput,
   TextToSqlAgentStreamInput,
 } from './types';
-import { RouterDecisionAction, StreamDataStatus, StreamDataType } from './enums';
 import { generateDataSummary } from './utils/data-summary';
 import { writeStreamData } from './utils/stream-data';
 

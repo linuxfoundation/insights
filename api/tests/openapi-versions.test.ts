@@ -3,8 +3,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
 import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it } from 'vitest';
+
 import { buildApp } from '../src/app.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from '../src/versions/registry.js';
 
@@ -81,8 +83,8 @@ async function getSpec(instance: FastifyInstance, url: string): Promise<OpenApiD
 }
 
 describe('version registry (AC1)', () => {
-  it('lists /v1 as the only supported version', () => {
-    expect(versionRegistry.map((entry) => entry.prefix)).toEqual(['/v1']);
+  it('lists /v1 and /v1-alpha as the supported versions', () => {
+    expect(versionRegistry.map((entry) => entry.prefix)).toEqual(['/v1', '/v1-alpha']);
   });
 
   it('maps version prefixes to spec info.version values', () => {

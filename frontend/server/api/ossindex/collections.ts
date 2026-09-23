@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { OSSIndexCollectionTinybird } from '~~/types/ossindex/collection';
 import type { Category } from '~~/types/category/category';
 import type { OSSIndexCategoryDetails } from '~~/types/ossindex/category';
+import type { OSSIndexCollectionTinybird } from '~~/types/ossindex/collection';
 
 /**
  * API endpoint to fetch OSS Index collections from TinyBird
@@ -78,7 +78,7 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
     }));
 
     return {
-      ...(details || {}),
+      ...details,
       collections,
       page,
       pageSize,

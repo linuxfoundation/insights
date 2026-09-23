@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import PatchsetsPerReview from './patchsets-per-review.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+
 import PatchsetsPerReviewFilters from './patchsets-per-review-filters.vue';
 import PatchsetsPerReviewSnapshotHeader from './patchsets-per-review-snapshot-header.vue';
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import PatchsetsPerReview from './patchsets-per-review.vue';
 
 const patchsetsPerReview: WidgetConfig = {
   key: 'patchsetPerReview',

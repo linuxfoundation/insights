@@ -15,6 +15,8 @@ page explains what each stage means for you as a caller.
   change at any time.
 - We allow **breaking changes** freely at this stage, since it exists to validate an
   endpoint's contract and performance before wider exposure.
+- **Identity fields**, such as display names, avatars, GitHub handles and logos, are
+  provisional: an endpoint can change or drop them before it moves to `/v1`.
 
 Do not build production integrations against `/v1-alpha`.
 
@@ -44,3 +46,22 @@ response stays in place for at least **two weeks**, then the `/v1-alpha` route i
 removed entirely.
 
 See the [Changelog](/changelog) for when individual endpoints are promoted.
+
+## Deprecation signals
+
+When an entire version is deprecated, every response from its routes carries headers you
+can watch for programmatically:
+
+- `Deprecation` is always sent and announces the deprecation. Its value is the
+  deprecation date as `@<unix-timestamp>`, per
+  [RFC 9745](https://www.rfc-editor.org/rfc/rfc9745.html).
+- `Sunset` is sent once a removal date is set. It gives the earliest date the version
+  can be removed, as an HTTP date, per
+  [RFC 8594](https://www.rfc-editor.org/rfc/rfc8594.html). The version keeps working
+  until that date.
+- `Link` tells you where to go next: `rel="successor-version"` points at the replacement
+  version prefix, and `rel="deprecation"` points at the migration guide. Each relation
+  is sent only once its target exists.
+
+Alert on the `Deprecation` header in your integration so you can plan a migration well
+before the `Sunset` date.

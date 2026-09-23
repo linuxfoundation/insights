@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Granularity } from '@lfx-insights/types';
-import PullRequests from './pull-requests.vue';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+import PullRequests from './pull-requests.vue';
 
 const pullRequests: WidgetConfig = {
   key: 'pullRequests',

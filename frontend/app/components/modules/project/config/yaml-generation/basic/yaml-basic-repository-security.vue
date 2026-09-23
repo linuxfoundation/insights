@@ -54,8 +54,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 const props = defineProps<{
   modelValue: object;
 }>();

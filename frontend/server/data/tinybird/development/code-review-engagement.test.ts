@@ -1,26 +1,28 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+
 import { ActivityTypes, Granularity } from '@lfx-insights/types';
-import {
-  mockPRParticipantsCurrentSummary,
-  mockPRParticipantsPreviousSummary,
-  mockPRParticipantsData,
-} from '../../../mocks/tinybird-code-review-engagement-response.mock';
-import {
-  mockActivitiesCountCurrentSummary,
-  mockActivitiesCountPreviousSummary,
-  mockQuarterlyActivitiesCountData,
-} from '~~/server/mocks/tinybird-activities-count.mock';
-import type { CodeReviewEngagement } from '~~/types/development/responses.types';
-import type { CodeReviewEngagementFilter } from '~~/types/development/requests.types';
-import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
 import {
   ActiveContributorsTinybirdQuery,
   ActivitiesCountTinybirdQuery,
   ContributorsLeaderboardTinybirdQuery,
 } from '~~/server/data/tinybird/requests.types';
+import {
+  mockActivitiesCountCurrentSummary,
+  mockActivitiesCountPreviousSummary,
+  mockQuarterlyActivitiesCountData,
+} from '~~/server/mocks/tinybird-activities-count.mock';
+import type { CodeReviewEngagementFilter } from '~~/types/development/requests.types';
+import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
+import type { CodeReviewEngagement } from '~~/types/development/responses.types';
+
+import {
+  mockPRParticipantsCurrentSummary,
+  mockPRParticipantsPreviousSummary,
+  mockPRParticipantsData,
+} from '../../../mocks/tinybird-code-review-engagement-response.mock';
 
 const mockFetchFromTinybird = vi.fn();
 

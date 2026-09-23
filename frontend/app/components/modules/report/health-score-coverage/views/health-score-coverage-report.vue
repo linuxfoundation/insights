@@ -85,17 +85,19 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
-import { HEALTH_SCORE_COVERAGE_API_SERVICE } from '../services/health-score-coverage.api.service';
-import KpiRow from '../components/kpi-row.vue';
+
+import { formatNumber, formatDate } from '~/components/shared/utils/formatter';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+
 import BandDistribution from '../components/band-distribution.vue';
-import LifecycleDistribution from '../components/lifecycle-distribution.vue';
-import SignalScores from '../components/signal-scores.vue';
 import CategoryCoverage from '../components/category-coverage.vue';
-import SignalAvailabilityLf from '../components/signal-availability-lf.vue';
 import CategoryMaximumTable from '../components/category-maximum-table.vue';
 import GithubSecurityFunnel from '../components/github-security-funnel.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { formatNumber, formatDate } from '~/components/shared/utils/formatter';
+import KpiRow from '../components/kpi-row.vue';
+import LifecycleDistribution from '../components/lifecycle-distribution.vue';
+import SignalAvailabilityLf from '../components/signal-availability-lf.vue';
+import SignalScores from '../components/signal-scores.vue';
+import { HEALTH_SCORE_COVERAGE_API_SERVICE } from '../services/health-score-coverage.api.service';
 
 const { data: glanceData, status, suspense } = HEALTH_SCORE_COVERAGE_API_SERVICE.fetchGlance();
 

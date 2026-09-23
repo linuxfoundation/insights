@@ -58,16 +58,17 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+
+import type { OspsBaselineScore } from '~/components/modules/project/config/osps-baseline-score';
+import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
 import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import { links } from '~/config/links';
 import { lfxColors } from '~/config/styles/colors';
 import type { SecurityData } from '~~/types/security/responses.types';
-import { links } from '~/config/links';
-import type { OspsBaselineScore } from '~/components/modules/project/config/osps-baseline-score';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
 
 const props = defineProps<{
   isRepository: boolean;

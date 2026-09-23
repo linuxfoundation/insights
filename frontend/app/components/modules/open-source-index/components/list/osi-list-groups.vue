@@ -72,14 +72,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
 import pluralize from 'pluralize';
-import { OSS_INDEX_API_SERVICE } from '~/components/modules/open-source-index/services/osi.api.service';
-import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
-import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed, onServerPrefetch } from 'vue';
+
 import LfxOsiListCollections from '~/components/modules/open-source-index/components/list/osi-list-collections.vue';
+import { OSS_INDEX_API_SERVICE } from '~/components/modules/open-source-index/services/osi.api.service';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
+import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
 const props = defineProps<{

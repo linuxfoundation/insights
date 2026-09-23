@@ -68,12 +68,13 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
+import type { Widget } from '~/components/modules/widget/types/widget';
+
 import type { AIMessage } from '../../types/copilot.types';
 import LfxContextDisplay from '../shared/context-display.vue';
-import LfxChatResult from './chat-result.vue';
 import LfxChatError from './chat-error.vue';
 import LfxChatFeedback from './chat-feedback.vue';
-import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxChatResult from './chat-result.vue';
 
 const emit = defineEmits<{
   (e: 'selectResult', id: string): void;

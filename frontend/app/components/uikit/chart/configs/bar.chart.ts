@@ -3,6 +3,11 @@
 import { graphic } from 'echarts';
 import type { BarSeriesOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
+
+import { formatByGranularity } from '~/components/shared/types/granularity';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { lfxColors } from '~/config/styles/colors';
+
 import { convertDateData } from '../helpers/chart-helpers';
 import {
   axisLabelFormatter,
@@ -10,12 +15,8 @@ import {
   tooltipFormatterWithData,
   tooltipLabelFormatter,
 } from '../helpers/formatters';
-
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import { lfxColors } from '~/config/styles/colors';
-import { formatByGranularity } from '~/components/shared/types/granularity';
 
 /**
  * Create a striped pattern for bar fills with small 45-degree stripes

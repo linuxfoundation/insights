@@ -3,10 +3,14 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
 import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
+
+import { notFoundHandler } from './lib/errors.js';
+import { applyLifecycle } from './versions/lifecycle.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from './versions/registry.js';
 
 export interface BuildAppOptions {
@@ -115,13 +119,19 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
   };
 
   for (const entry of versions) {
-    await app.register(entry.plugin, { prefix: entry.prefix });
-    // The route set is fixed once the app is ready, so the document is derived once per version.
-    let cached: ReturnType<typeof versionedDoc> | undefined;
-    app.get(
-      `${entry.prefix}/openapi.json`,
-      { schema: { hide: true } },
-      async () => (cached ??= versionedDoc(entry.prefix)),
+    await app.register(
+      async (scope) => {
+        applyLifecycle(scope, entry.lifecycle);
+        await scope.register(entry.plugin);
+        // The route set is fixed once the app is ready, so the document is derived once per version.
+        let cached: ReturnType<typeof versionedDoc> | undefined;
+        scope.get(
+          '/openapi.json',
+          { schema: { hide: true } },
+          async () => (cached ??= versionedDoc(entry.prefix)),
+        );
+      },
+      { prefix: entry.prefix },
     );
   }
 
@@ -169,6 +179,10 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     },
     { prefix: '/docs' },
   );
+
+  // Deprecated version scopes register this same handler, so the two 404 bodies can't drift
+  // (see src/lib/errors.ts).
+  app.setNotFoundHandler(notFoundHandler);
 
   return app;
 }

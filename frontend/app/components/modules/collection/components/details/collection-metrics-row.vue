@@ -82,12 +82,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { CollectionMetrics } from '~~/types/collection';
+
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import type { CollectionMetrics } from '~~/types/collection';
 
 const props = defineProps<{
   metrics?: CollectionMetrics;

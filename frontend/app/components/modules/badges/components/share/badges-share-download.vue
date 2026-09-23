@@ -65,18 +65,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
-import { storeToRefs } from 'pinia';
 import html2canvas from 'html2canvas';
-import type { ProjectBadge } from '../../types/badge.types';
-import LfxCardDownloadPreview from '../download/card-download-preview.vue';
-import LfxBadgeDownloadPreview from '../download/badge-download-preview.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import { storeToRefs } from 'pinia';
+import { ref, nextTick } from 'vue';
+
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+
+import type { ProjectBadge } from '../../types/badge.types';
+import LfxBadgeDownloadPreview from '../download/badge-download-preview.vue';
+import LfxCardDownloadPreview from '../download/card-download-preview.vue';
 
 const props = defineProps<{
   badge: ProjectBadge;

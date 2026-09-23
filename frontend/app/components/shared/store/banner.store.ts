@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+
 import { bannerConfig } from '~/config/banner.config';
 
 export const useBannerStore = defineStore('banner', () => {

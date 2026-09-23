@@ -73,12 +73,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
-import { fetchHealthScoreCoverageCategoryMaximumQuery } from '../services/category-maximum.query';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTable from '~/components/uikit/table/table.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type { HealthScoreCoverageCategoryMaximumCount } from '~~/types/report/health-score-coverage-category-maximum.types';
+
+import { fetchHealthScoreCoverageCategoryMaximumQuery } from '../services/category-maximum.query';
 
 const { data, isLoading, suspense } = fetchHealthScoreCoverageCategoryMaximumQuery();
 

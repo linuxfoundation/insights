@@ -160,27 +160,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
+import { computed, ref, watch } from 'vue';
+
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import type {
   AddToCollectionProject,
   AddToCollectionRepository,
 } from '~/components/modules/collection/store/add-to-collection.store';
-import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import { useAuth } from '~~/composables/useAuth';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxOption from '~/components/uikit/select/option.vue';
+import LfxSelect from '~/components/uikit/select/select.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxModal from '~/components/uikit/modal/modal.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import LfxSelect from '~/components/uikit/select/select.vue';
-import LfxOption from '~/components/uikit/select/option.vue';
+import { useAuth } from '~~/composables/useAuth';
 import type { Collection } from '~~/types/collection';
-import type { Pagination } from '~~/types/shared/pagination';
 import type { ProjectInsights } from '~~/types/project';
-import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { Pagination } from '~~/types/shared/pagination';
 
 const props = withDefaults(
   defineProps<{

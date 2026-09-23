@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+
 import { describe, expect, it } from 'vitest';
 
 const apiRoot = fileURLToPath(new URL('..', import.meta.url));
@@ -38,6 +39,14 @@ describe('lifecycle page (AC2, AC3)', () => {
     expect(lifecycle).toMatch(/returns.*410|410.*on promotion|immediately.*410/i);
     expect(lifecycle.toLowerCase()).toMatch(/410[^.]*two weeks|two weeks[^.]*410/);
     expect(lifecycle).toContain('rel="successor-version"');
+  });
+
+  it('documents the deprecation signal headers for retiring versions', () => {
+    const lifecycle = read('lifecycle.md');
+    expect(lifecycle.toLowerCase()).toContain('deprecation signals');
+    expect(lifecycle).toContain('`Deprecation`');
+    expect(lifecycle).toContain('`Sunset`');
+    expect(lifecycle).toContain('rel="deprecation"');
   });
 });
 

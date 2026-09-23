@@ -1,18 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { QueryFunction } from '@tanstack/vue-query';
-import { type Ref, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { sortBy } from 'lodash-es';
+import { type Ref, computed } from 'vue';
+
+import { LfxRoutes } from '~/components/shared/types/routes';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
+import type { OSSIndexCategory, OSSIndexCategoryDetails } from '~~/types/ossindex/category';
 import type {
   OSSIndexCategoryGroup,
   OSSIndexCategoryGroupDetails,
 } from '~~/types/ossindex/category-group';
-import { LfxRoutes } from '~/components/shared/types/routes';
-import type { OSSIndexCategory, OSSIndexCategoryDetails } from '~~/types/ossindex/category';
 import type { OSSIndexCollection } from '~~/types/ossindex/collection';
-import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
 export type OSIType = 'vertical' | 'horizontal' | 'projects' | 'collections';
 export interface BreadcrumbData {

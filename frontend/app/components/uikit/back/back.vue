@@ -13,8 +13,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { useRouter } from 'nuxt/app';
+import { ref, onMounted } from 'vue';
 
 const router = useRouter();
 const previousRoute = ref<string | null>(null);

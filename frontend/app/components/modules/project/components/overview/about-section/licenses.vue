@@ -94,14 +94,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useRouter, useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { useRouter, useRoute } from 'nuxt/app';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+
 import { normalizeRepoName } from '~/components/shared/utils/helper';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const { projectRepos, selectedRepositories } = storeToRefs(useProjectStore());
 const router = useRouter();

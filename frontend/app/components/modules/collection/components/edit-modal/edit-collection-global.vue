@@ -13,8 +13,10 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import LfEditCollectionModal from './edit-collection-modal.vue';
+
 import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+
+import LfEditCollectionModal from './edit-collection-modal.vue';
 
 const editCollectionStore = useEditCollectionStore();
 const { isEditModalOpen, editData } = storeToRefs(editCollectionStore);

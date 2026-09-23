@@ -48,17 +48,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { merge } from 'lodash-es';
-import { getResearchTopicColor, getResearchTopicLabel } from '../config/layer-colors';
+import { computed, ref } from 'vue';
+
+import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type { ResearchPapersData } from '~~/types/report/agentic-ai-momentum.types';
+
+import { getResearchTopicColor, getResearchTopicLabel } from '../config/layer-colors';
 
 const props = defineProps<{
   data: ResearchPapersData[];

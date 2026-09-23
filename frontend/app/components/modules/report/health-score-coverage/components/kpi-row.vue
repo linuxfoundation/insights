@@ -61,8 +61,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 defineProps<{

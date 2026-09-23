@@ -25,8 +25,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = withDefaults(
   defineProps<{

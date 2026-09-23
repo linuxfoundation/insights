@@ -27,6 +27,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, withDefaults } from 'vue';
+
 import type { ToggleSize } from './types/toggle.types';
 
 const props = withDefaults(

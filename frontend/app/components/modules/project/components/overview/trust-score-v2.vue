@@ -184,11 +184,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
-import LfxHealthScoreRing from './trust-score/health-score-ring.vue';
+import { computed } from 'vue';
+
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { lfxColors } from '~/config/styles/colors';
 import {
   getHealthScoreV2Config,
   isPartialHealthScore,
@@ -197,14 +198,15 @@ import {
   getLifecycleLabelConfig,
   healthScoreFilterEmptyState,
 } from '~~/config/trust-score';
-import { lfxColors } from '~/config/styles/colors';
-import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+
+import LfxHealthScoreRing from './trust-score/health-score-ring.vue';
+import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
 // import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import {
   getLifecycleDescription,
   getHealthScoreDescription,

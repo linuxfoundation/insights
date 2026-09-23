@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { ProjectInsightsTinybird } from '~~/types/project';
 import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { logError } from '~~/server/utils/log';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const query = getQuery(event);

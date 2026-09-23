@@ -1,9 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Component } from 'vue';
+
 import basic from './basic/basic-yaml.config';
-import comprehensive from './comprehensive/comprehensive-yaml.config';
 import childRepository from './child-repository/child-repository-yaml.config';
+import comprehensive from './comprehensive/comprehensive-yaml.config';
 
 export interface YamlGenerationStep {
   label: string; // Name of the step

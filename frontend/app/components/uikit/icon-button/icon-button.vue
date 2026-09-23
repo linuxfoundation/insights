@@ -18,8 +18,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { IconButtonSize, IconButtonType } from '~/components/uikit/icon-button/types/icon-button.types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { IconType } from '~/components/uikit/icon/types/icon.types';
 
 const props = withDefaults(

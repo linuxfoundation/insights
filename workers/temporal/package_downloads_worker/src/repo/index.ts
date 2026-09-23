@@ -1,12 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DbStore } from "@crowd/database";
+import { DbStore } from '@crowd/database';
+
 import {
   IInsightsProjectRepo,
   IPackageDownload,
   IPackageDownloadRun,
   IPackageDownloadsRepo,
-} from "../types";
+} from '../types';
 
 export async function savePackagesDownloadForRepo(
   store: DbStore,
@@ -73,10 +74,7 @@ export async function savePackagesDownloadForRepo(
   );
 }
 
-export async function savePackageDownloadRun(
-  store: DbStore,
-  run: IPackageDownloadRun,
-) {
+export async function savePackageDownloadRun(store: DbStore, run: IPackageDownloadRun) {
   await store.connection().query(
     `INSERT INTO package_downloads_runs
       (date, insights_project_id, repository_url, bytes_returned, returned_any_package_data, error)
@@ -94,22 +92,17 @@ export async function findReposToProcessForDate(
   limit: number,
 ): Promise<IInsightsProjectRepo[]> {
   // find last processed repo for the date
-  const lastProcessedRepo: IPackageDownloadsRepo = await insightsDbStore
-    .connection()
-    .oneOrNone(
-      `select repository_url from package_downloads
+  const lastProcessedRepo: IPackageDownloadsRepo = await insightsDbStore.connection().oneOrNone(
+    `select repository_url from package_downloads
      where date = $(date)
      order by repository_url desc
      limit 1`,
-      { date },
-    );
+    { date },
+  );
 
-  const lastProcessedRepoUrlFilter = lastProcessedRepo
-    ? " and url > $(lastProcessedRepoUrl)"
-    : "";
+  const lastProcessedRepoUrlFilter = lastProcessedRepo ? ' and url > $(lastProcessedRepoUrl)' : '';
 
-  const failedReposSubquery =
-    failedRepos.length > 0 ? "and url not in ($(failedRepos:csv))" : "";
+  const failedReposSubquery = failedRepos.length > 0 ? 'and url not in ($(failedRepos:csv))' : '';
 
   const repos: IInsightsProjectRepo[] = await cmDbStore.connection().query(
     `
@@ -125,9 +118,7 @@ export async function findReposToProcessForDate(
       limit $(limit)
     `,
     {
-      lastProcessedRepoUrl: lastProcessedRepo
-        ? lastProcessedRepo.repository_url
-        : undefined,
+      lastProcessedRepoUrl: lastProcessedRepo ? lastProcessedRepo.repository_url : undefined,
       limit,
       failedRepos: failedRepos.length > 0 ? failedRepos : undefined,
     },

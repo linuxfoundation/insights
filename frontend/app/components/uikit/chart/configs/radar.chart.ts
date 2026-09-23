@@ -5,8 +5,9 @@ import { merge } from 'lodash-es';
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 // import defaultOption from './defaults.chart';
-import { hexToRgba } from '../helpers/chart-helpers';
 import { lfxColors } from '~/config/styles/colors';
+
+import { hexToRgba } from '../helpers/chart-helpers';
 
 export interface RadarIndicator {
   key: string;

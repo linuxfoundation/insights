@@ -24,17 +24,19 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'scrolledToView', id: string): void }>();
 
+const onScrolledToView = () => {
+  emit('scrolledToView', props.id);
+};
+
 onMounted(() => {
   if (scrollViewRef.value) {
-    scrollViewRef.value.addEventListener('scrolledToView', () => {
-      emit('scrolledToView', props.id);
-    });
+    scrollViewRef.value.addEventListener('scrolledToView', onScrolledToView);
   }
 });
 
 onUnmounted(() => {
   if (scrollViewRef.value) {
-    scrollViewRef.value.removeEventListener('scrolledToView', () => {});
+    scrollViewRef.value.removeEventListener('scrolledToView', onScrolledToView);
 
     if (props.observer) {
       props.observer.unobserve(scrollViewRef.value);

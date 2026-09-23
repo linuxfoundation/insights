@@ -74,18 +74,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import LfxProjectVulnerabilitySummary from './vulnerability-summary.vue';
-import LfxProjectVulnerabilitySeverity from './vulnerability-severity.vue';
-import LfxProjectVulnerabilityEcosystem from './vulnerability-ecosystem.vue';
+import { computed, ref } from 'vue';
+
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+
 import LfxProjectRecentVulnerabilities from './recent-vulnerabilities.vue';
 import LfxProjectVulnerabilityDrawer from './vulnerability-drawer.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxEmptyState from '~/components/shared/components/empty-state.vue';
-import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxProjectVulnerabilityEcosystem from './vulnerability-ecosystem.vue';
+import LfxProjectVulnerabilitySeverity from './vulnerability-severity.vue';
+import LfxProjectVulnerabilitySummary from './vulnerability-summary.vue';
 
 const route = useRoute();
 

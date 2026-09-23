@@ -1,13 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 import type {
   TinybirdContributorsLeaderboardData,
   TinybirdCountData,
 } from '~~/server/data/tinybird/responses.types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
 import type { Contributor, ContributorLeaderboard } from '~~/types/contributors/responses.types';
-import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 export async function fetchContributorsLeaderboard(
   filter: ContributorsLeaderboardFilter,

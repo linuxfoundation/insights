@@ -1,8 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { mapHealthScoreCoverageCategoryCoverageRow } from './health-score-coverage-category-coverage';
+
 import type { HealthScoreCoverageCategoryCoverageRow } from '~~/types/report/health-score-coverage-category-coverage.types';
+
+import { mapHealthScoreCoverageCategoryCoverageRow } from './health-score-coverage-category-coverage';
 
 describe('mapHealthScoreCoverageCategoryCoverageRow', () => {
   test('maps the single row into the fixed 3-category order', () => {

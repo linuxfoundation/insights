@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { LocationQuery } from 'vue-router';
+
 import type { URLParams } from '~/components/shared/utils/query-param';
 
 export const collectionListParamsGetter = (query: LocationQuery): URLParams => ({

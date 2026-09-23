@@ -1,14 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import releasesData from '~~/public/data/agentic-ai-momentum/github_releases_count.json';
+import projectsData from '~~/public/data/agentic-ai-momentum/projects.json';
+import { fetchAgenticProjectsList } from '~~/server/data/tinybird/report/agentic-ai-momentum';
 import type {
   AgenticDataResponse,
   AgenticEnrichedProject,
   AgenticProject,
   GitHubReleasesData,
 } from '~~/types/report/agentic-ai-momentum.types';
-import { fetchAgenticProjectsList } from '~~/server/data/tinybird/report/agentic-ai-momentum';
-import projectsData from '~~/public/data/agentic-ai-momentum/projects.json';
-import releasesData from '~~/public/data/agentic-ai-momentum/github_releases_count.json';
 
 const SECONDS_PER_DAY = 86400;
 

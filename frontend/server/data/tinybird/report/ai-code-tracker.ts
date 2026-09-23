@@ -1,12 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { DateTime } from 'luxon';
-import { fetchFromTinybird } from '../tinybird';
+
 import type {
   AiToolTimeSeriesDataPoint,
   PeriodTotalCommits,
   AiCodeTrackerResponse,
 } from '~~/types/report/ai-code-tracker.types';
+
+import { fetchFromTinybird } from '../tinybird';
 
 interface TinybirdAiToolItem {
   toolKey: string;

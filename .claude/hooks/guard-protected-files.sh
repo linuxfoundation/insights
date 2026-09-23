@@ -90,10 +90,10 @@ if [[ "$FILE_PATH" == .husky/* ]]; then
 fi
 
 case "$FILE_PATH" in
-  eslint.config.*|frontend/eslint.config.*)
-    warn "ESLint configuration — changes affect code quality rules for the project." ;;
-  .prettierrc*|frontend/.prettierrc*)
-    warn "Prettier configuration — changes affect code formatting standards." ;;
+  .oxlintrc*)
+    warn "Oxlint configuration — changes affect code quality rules for the project." ;;
+  .oxfmtrc*)
+    warn "Oxfmt configuration — changes affect code formatting standards." ;;
   CLAUDE.md)
     warn "Project instructions — changes affect AI assistant behavior for all users." ;;
   .claude/settings.json)

@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Component } from 'vue';
+
 import StepDetails from '../components/create-modal/steps/step-details.vue';
 import StepProjects from '../components/create-modal/steps/step-projects.vue';
 import StepVisibility from '../components/create-modal/steps/step-visibility.vue';

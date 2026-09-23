@@ -1,16 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {
+  lfxOspsBaselineScore,
+  type OspsBaselineScore,
+} from '~/components/modules/project/config/osps-baseline-score';
+import { lfxColors } from '~/config/styles/colors';
+import {
   type SecurityData,
   SecurityDataResult,
   type SecurityAssessmentData,
   SecurityDataCategory,
 } from '~~/types/security/responses.types';
-import {
-  lfxOspsBaselineScore,
-  type OspsBaselineScore,
-} from '~/components/modules/project/config/osps-baseline-score';
-import { lfxColors } from '~/config/styles/colors';
 
 export interface OverviewQueryParams {
   projectSlug: string;

@@ -1,17 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { discovery, authorizationCodeGrant } from 'openid-client';
+import { H3Error } from 'h3';
 import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
-import { H3Error } from 'h3';
+import { discovery, authorizationCodeGrant } from 'openid-client';
 import { Pool } from 'pg';
+
+import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
+
+import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
+import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { getAuthUsername } from '../../utils/common';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
-import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
-import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
-import { getAuthUsername } from '../../utils/common';
-import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
@@ -148,7 +150,8 @@ export default defineEventHandler(async (event) => {
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
       isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
       username: decodedIdToken['https://sso.linuxfoundation.org/claims/username'] as
-        string | undefined,
+        | string
+        | undefined,
       intercomJwt: decodedIdToken['http://lfx.dev/claims/intercom'] as string | undefined,
     };
 

@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DateTime } from 'luxon';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the entire lib so the shim is isolated
 const mockClientFetch = vi.fn();

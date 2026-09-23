@@ -44,16 +44,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import pluralize from 'pluralize';
-import LfxFeaturedInCollectionDropdown from './featured-in-collection-dropdown.vue';
+import { computed } from 'vue';
+
+import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 import { useAuth } from '~~/composables/useAuth';
-import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
 import type { Project } from '~~/types/project';
+
+import LfxFeaturedInCollectionDropdown from './featured-in-collection-dropdown.vue';
 
 const props = withDefaults(
   defineProps<{

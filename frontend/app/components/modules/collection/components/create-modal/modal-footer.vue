@@ -61,9 +61,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
+import { createCollectionSteps } from '~/components/modules/collection/config/create-collection.config';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { createCollectionSteps } from '~/components/modules/collection/config/create-collection.config';
 
 const props = defineProps<{
   step: number;

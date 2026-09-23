@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { ref } from 'vue';
-import LfxAccordion from './accordion.vue';
+
 import LfxAccordionItem from './accordion-item.vue';
+import LfxAccordion from './accordion.vue';
 
 export default {
   title: 'LinuxFoundation/Accordion',

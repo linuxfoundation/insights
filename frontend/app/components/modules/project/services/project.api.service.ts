@@ -7,9 +7,10 @@ import {
   useQueryClient,
 } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Project } from '~~/types/project';
+
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { Project } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export interface ProjectCollectionItem {
   name: string;
