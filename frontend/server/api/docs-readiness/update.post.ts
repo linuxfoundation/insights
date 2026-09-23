@@ -1,14 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { WorkflowExecutionAlreadyStartedError } from '@temporalio/client';
+
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { ProjectTinybird } from '~~/types/project';
 import {
   getTemporalClient,
   DOCS_READINESS_TASK_QUEUE,
   PROCESS_PROJECT_DOCS_READINESS_WORKFLOW,
   type IProcessProjectDocsReadinessParams,
 } from '~~/server/utils/temporal';
+import type { ProjectTinybird } from '~~/types/project';
 
 interface DocsReadinessUpdateRequest {
   slug: string;
