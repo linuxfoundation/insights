@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: MIT
 import { describe, expect, it } from 'vitest';
 
-import { InvalidCursorError, pipeWindow, requestedPage, toPage } from '../src/lib/pagination.js';
+import {
+  InvalidCursorError,
+  pipeWindow,
+  requestedPage,
+  toCountedPage,
+  toPage,
+} from '../src/lib/pagination.js';
 
 const rows = (count: number) => Array.from({ length: count }, (_, index) => ({ index }));
 const base64url = (text: string) => Buffer.from(text).toString('base64url');
@@ -102,5 +108,28 @@ describe('toPage', () => {
       pageSize: 2,
       nextCursor: null,
     });
+  });
+});
+
+describe('toCountedPage', () => {
+  it('keeps pageSize rows and points the cursor past them while the total has more', () => {
+    const page = toCountedPage(rows(3), { pageSize: 2, offset: 4 }, 7);
+    expect(page.data).toEqual(rows(2));
+    expect(page.pageSize).toBe(2);
+    expect(requestedPage({ cursor: page.nextCursor!, pageSize: 2 })).toEqual({
+      pageSize: 2,
+      offset: 6,
+    });
+  });
+
+  it('ends the list once the page reaches the total', () => {
+    expect(toCountedPage(rows(2), { pageSize: 2, offset: 4 }, 6).nextCursor).toBeNull();
+    expect(toCountedPage([], { pageSize: 2, offset: 10 }, 6).nextCursor).toBeNull();
+  });
+
+  it('ends the list once the next offset would pass the Int32 range', () => {
+    expect(
+      toCountedPage(rows(2), { pageSize: 2, offset: 2147483646 }, 2 ** 40).nextCursor,
+    ).toBeNull();
   });
 });

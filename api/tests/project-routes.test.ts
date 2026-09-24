@@ -77,6 +77,9 @@ const rankedRows = (count: number) =>
     contributionPercentage: 1,
   }));
 
+// These pipes page by page number rather than limit and offset, so their own files test paging.
+const pagesByNumber = new Set(['security/vulnerabilities']);
+
 const { get } = useApp();
 const emptyRows = tinybirdStub(() => []);
 
@@ -313,7 +316,7 @@ describe.each(names)('%s', (name) => {
     });
   }
 
-  if (declares(name, 'cursor')) {
+  if (declares(name, 'cursor') && !pagesByNumber.has(name)) {
     describe('pagination', () => {
       const pagedCalls = () =>
         pipeCalls()

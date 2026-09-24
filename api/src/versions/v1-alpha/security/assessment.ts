@@ -4,7 +4,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { ControlResult, enumGuard } from '../../../lib/security.js';
+import { ControlResult, enumGuard, isString } from '../../../lib/security.js';
 import { nullableString, ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/security_and_best_practices.json';
@@ -42,7 +42,6 @@ const categoryOrder = [
 ];
 
 const isResult = enumGuard(ControlResult);
-const isString = (value: unknown) => typeof value === 'string';
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 

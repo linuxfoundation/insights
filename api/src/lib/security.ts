@@ -29,6 +29,9 @@ export const enumGuard = (schema: TSchema) => {
   return (value: unknown) => allowed.has(value);
 };
 
+export const isString = (value: unknown) => typeof value === 'string';
+export const isCount = (value: unknown) => Number.isSafeInteger(value) && (value as number) >= 0;
+
 type BreakdownRow<C extends string> = Record<C, string> & { count: number; percentage: number };
 
 // The by-severity and by-ecosystem pipes return the same row under a different key column.
@@ -45,8 +48,7 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
     !Array.isArray(row) &&
     typeof row[column] === 'string' &&
     inEnum(row[column]) &&
-    Number.isSafeInteger(row.count) &&
-    row.count >= 0 &&
+    isCount(row.count) &&
     Number.isFinite(row.percentage);
 
   const toItem = (row: BreakdownRow<C>) => ({
