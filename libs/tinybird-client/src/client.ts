@@ -38,28 +38,17 @@ const SKIP_THROTTLE_PATHS = new Set([
  */
 const RETRYABLE_STATUS_CODES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
 const GET_RETRY_COUNT = 1;
-// Tinybird's own capacity guard (429/503 "server busy") needs real time to clear; retrying
-// instantly just re-hits the same overloaded pipe and wastes the one retry we have.
-const RETRY_DELAY_MS = 300;
-
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 async function fetchWithRetry(url: string, init: RequestInit, retries: number): Promise<Response> {
   for (let attempt = 0; ; attempt++) {
     try {
       const response = await fetch(url, init);
       if (!response.ok && RETRYABLE_STATUS_CODES.has(response.status) && attempt < retries) {
-        await delay(RETRY_DELAY_MS);
         continue;
       }
       return response;
     } catch (error) {
       if (attempt >= retries) throw error;
-      await delay(RETRY_DELAY_MS);
     }
   }
 }

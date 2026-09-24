@@ -137,34 +137,6 @@ describe('createTinybirdClient — fetch()', () => {
     expect(result).toEqual(mockResult);
   });
 
-  it('waits before retrying a transient 503 instead of re-hitting Tinybird instantly', async () => {
-    vi.useFakeTimers();
-    try {
-      mockFetch
-        .mockResolvedValueOnce({
-          ok: false,
-          status: 503,
-          statusText: 'Service Unavailable',
-          text: () => Promise.resolve(''),
-          json: () => Promise.resolve({}),
-        } as unknown as Response)
-        .mockResolvedValueOnce(okResponse(mockResult));
-
-      const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN });
-      const fetchPromise = client.fetch('/mock-path', {});
-
-      await vi.advanceTimersByTimeAsync(0);
-      // Immediately after the failed first attempt, the retry must not have fired yet.
-      expect(mockFetch).toHaveBeenCalledTimes(1);
-
-      await vi.advanceTimersByTimeAsync(300);
-      await expect(fetchPromise).resolves.toEqual(mockResult);
-      expect(mockFetch).toHaveBeenCalledTimes(2);
-    } finally {
-      vi.useRealTimers();
-    }
-  });
-
   it('retries once on a network error, then succeeds', async () => {
     mockFetch
       .mockRejectedValueOnce(new Error('network error'))
