@@ -18,11 +18,14 @@ interface SummaryRow {
   ecosystems: string[];
 }
 
+const inRange = (value: number, max: number) =>
+  Number.isFinite(value) && value >= 0 && value <= max;
+
 const isSummaryRow = (row: SummaryRow) =>
   isCount(row.count) &&
-  Number.isFinite(row.fixedPercentage) &&
+  inRange(row.fixedPercentage, 100) &&
   isCount(row.daysSinceLastVuln) &&
-  (row.avgCvssScore === null || Number.isFinite(row.avgCvssScore)) &&
+  (row.avgCvssScore === null || inRange(row.avgCvssScore, 10)) &&
   Array.isArray(row.ecosystems) &&
   row.ecosystems.every(isString);
 
