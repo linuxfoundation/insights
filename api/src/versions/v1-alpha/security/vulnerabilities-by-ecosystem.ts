@@ -17,6 +17,10 @@ const { isRow, toItem, Item } = breakdown(
   ),
 );
 
+// Compares character codes so the tie order is the same on every host, where localeCompare
+// follows the host locale.
+const compareCharCodes = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+
 const Query = Type.Object({
   repos: Type.Optional(
     Type.Array(Type.String(), {
@@ -61,7 +65,9 @@ const vulnerabilitiesByEcosystemRoutes: FastifyPluginAsyncTypebox = async (scope
       );
       const data = (rows ?? [])
         .map(toItem)
-        .sort((a, b) => b.count - a.count || (a.ecosystem ?? '').localeCompare(b.ecosystem ?? ''));
+        .sort(
+          (a, b) => b.count - a.count || compareCharCodes(a.ecosystem ?? '', b.ecosystem ?? ''),
+        );
       return { data };
     },
   );
