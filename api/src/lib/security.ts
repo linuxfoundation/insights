@@ -57,7 +57,7 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
     typeof row[column] === 'string' &&
     inEnum(row[column]) &&
     isCount(row.count) &&
-    Number.isFinite(row.percentage);
+    inRange(row.percentage, 100);
 
   const toItem = (row: BreakdownRow<C>) => ({
     ...field(key, row[column] as Static<S>),
