@@ -35,15 +35,17 @@ describe('v1-alpha group route autoload', () => {
     expect((await modulesIn('development')).length).toBeGreaterThan(0);
   });
 
-  it.each(['development', 'contributors', 'popularity'])(
+  it.each(['development', 'contributors', 'popularity', 'security'])(
     'serves one route per module in src/versions/v1-alpha/%s',
     async (group) => {
       const res = await app.inject({ method: 'GET', url: '/v1-alpha/openapi.json' });
       expect(res.statusCode).toBe(200);
       const spec = res.json<{ paths: Record<string, unknown> }>();
+      const prefix = `/v1-alpha/projects/{slug}/${group}/`;
+      // Autoload serves every module flat, so vulnerabilities/summary lives in vulnerabilities-summary.ts.
       const served = Object.keys(spec.paths)
-        .filter((path) => path.startsWith(`/v1-alpha/projects/{slug}/${group}/`))
-        .map((path) => path.slice(path.lastIndexOf('/') + 1))
+        .filter((path) => path.startsWith(prefix))
+        .map((path) => path.slice(prefix.length).replaceAll('/', '-'))
         .sort();
       expect(served).toEqual(await modulesIn(group));
     },
