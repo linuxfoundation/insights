@@ -32,6 +32,12 @@ export const enumGuard = (schema: TSchema) => {
 export const isString = (value: unknown) => typeof value === 'string';
 export const isCount = (value: unknown) => Number.isSafeInteger(value) && (value as number) >= 0;
 
+// The `count=true` answer of vulnerabilities_list.
+export interface CountRow {
+  count: number;
+}
+export const isCountRow = (row: CountRow) => isCount(row.count);
+
 type BreakdownRow<C extends string> = Record<C, string> & { count: number; percentage: number };
 
 // The by-severity and by-ecosystem pipes return the same row under a different key column.

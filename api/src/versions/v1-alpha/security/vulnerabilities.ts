@@ -7,8 +7,9 @@ import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js'
 import { pipePages, requestedPage, toCountedPage } from '../../../lib/pagination.js';
 import { toIsoUtc } from '../../../lib/period.js';
 import {
+  type CountRow,
   enumGuard,
-  isCount,
+  isCountRow,
   isString,
   Severity,
   VulnerabilityStatus,
@@ -54,12 +55,6 @@ const isRow = (row: Row) =>
   row.paths.every(isString) &&
   isString(row.fixedVersion) &&
   isString(row.referenceLink);
-
-interface CountRow {
-  count: number;
-}
-
-const isCountRow = (row: CountRow) => isCount(row.count);
 
 const toItem = (row: Row) => ({
   ...row,
