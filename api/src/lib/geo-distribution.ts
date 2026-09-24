@@ -15,7 +15,7 @@ const placement: Record<Noun, string> = {
     'Each organization is placed by the country on its record, inferred from its location, else by its headquarters location',
 };
 
-const field = <K extends string, V>(key: K, value: V) => ({ [key]: value }) as Record<K, V>;
+export const field = <K extends string, V>(key: K, value: V) => ({ [key]: value }) as Record<K, V>;
 
 // The contributor and organization geo pipes differ only in the names of their count and share
 // columns, so one noun builds the guard, the mapper and the item schema for either.
