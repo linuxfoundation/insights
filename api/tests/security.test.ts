@@ -45,3 +45,12 @@ describe('breakdown (AC5)', () => {
     expect(Item.required?.sort()).toEqual(['count', 'ecosystem', 'percentage']);
   });
 });
+
+describe('breakdown with an enum key (AC5)', () => {
+  const { isRow } = breakdown('severity', 'severity', Severity);
+
+  it('accepts a key inside the enum and rejects one outside it', () => {
+    expect(isRow({ severity: 'HIGH', count: 1, percentage: 10 })).toBe(true);
+    expect(isRow({ severity: 'SEVERE', count: 1, percentage: 10 })).toBe(false);
+  });
+});

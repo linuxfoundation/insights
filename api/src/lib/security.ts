@@ -31,11 +31,15 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
   column: C,
   keySchema: S,
 ) {
+  // The serializer ignores enum, so an off-enum key must fail the guard to reach fetchPipe's 503.
+  const allowed = Array.isArray(keySchema.enum) ? new Set<unknown>(keySchema.enum) : null;
+
   const isRow = (row: BreakdownRow<C>) =>
     typeof row === 'object' &&
     row !== null &&
     !Array.isArray(row) &&
     typeof row[column] === 'string' &&
+    (allowed === null || allowed.has(row[column])) &&
     Number.isSafeInteger(row.count) &&
     row.count >= 0 &&
     Number.isFinite(row.percentage);
