@@ -10,6 +10,8 @@ export const nullableNumber = (description: string) =>
   Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
 export const nullableString = (description: string) =>
   Type.Unsafe<string | null>({ type: 'string', nullable: true, description });
+export const nullableDateTime = (description: string) =>
+  Type.Unsafe<string | null>({ type: 'string', format: 'date-time', nullable: true, description });
 
 export const ProjectSlugParams = Type.Object({
   slug: Type.String({ minLength: 1 }),
