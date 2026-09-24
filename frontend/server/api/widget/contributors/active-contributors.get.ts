@@ -31,6 +31,7 @@ import { Granularity } from '@lfx-insights/types';
 import { createDataSource } from '~~/server/data/data-sources';
 import type { ActiveContributorsFilter } from '~~/server/data/types';
 import { getBooleanQueryParam, getWidgetScope } from '~~/server/utils/common';
+import { logError } from '~~/server/utils/log';
 
 export default defineEventHandler(async (event) => {
   // TODO: Check the project configuration to determine whether to show the data.
@@ -70,7 +71,11 @@ export default defineEventHandler(async (event) => {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
       throw error;
     }
-    console.error('Error fetching active contributors:', error);
+    logError(
+      'widget/contributors/active-contributors',
+      'Failed to fetch active contributors',
+      error,
+    );
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch active contributors data',
