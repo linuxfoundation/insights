@@ -4,7 +4,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { type CountRow, isCount, isCountRow, isString } from '../../../lib/security.js';
+import { type CountRow, inRange, isCount, isCountRow, isString } from '../../../lib/security.js';
 import { nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
 
 const summaryPath = '/v0/pipes/vulnerabilities_summary.json';
@@ -17,9 +17,6 @@ interface SummaryRow {
   avgCvssScore: number | null;
   ecosystems: string[];
 }
-
-const inRange = (value: number, max: number) =>
-  Number.isFinite(value) && value >= 0 && value <= max;
 
 const isSummaryRow = (row: SummaryRow) =>
   isCount(row.count) &&
