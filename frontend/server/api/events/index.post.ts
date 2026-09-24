@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { getRequestWebStream } from 'h3';
 import type { Pool } from 'pg';
 
 import { EVENT_DEFINITIONS } from '~/components/shared/types/events';
@@ -39,12 +40,23 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     // No valid session — event is recorded as anonymous.
   }
 
-  const body = await readBody<{
+  // Use the Web Streams API to read the body directly from the raw stream.
+  // H3's readBody skips reading when Content-Length is absent, which happens when
+  // Cloudflare proxies the request and strips that header before forwarding to the origin.
+  let body: {
     key?: string;
     properties?: Record<string, unknown>;
     source?: string;
     entrySource?: string;
-  }>(event);
+  } | null = null;
+  try {
+    const stream = getRequestWebStream(event);
+    if (stream) {
+      body = await new Response(stream).json();
+    }
+  } catch {
+    // malformed or missing body — validation below produces the right error
+  }
 
   if (typeof body?.key !== 'string' || !body.key.trim()) {
     throw createError({ statusCode: 400, statusMessage: 'key is required' });
