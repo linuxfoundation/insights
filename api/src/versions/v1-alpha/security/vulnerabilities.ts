@@ -14,6 +14,7 @@ import {
   VulnerabilityStatus,
 } from '../../../lib/security.js';
 import {
+  nullableDateTime,
   nullableString,
   paginated,
   PaginationQuery,
@@ -105,7 +106,7 @@ const Vulnerability = Type.Object({
   severity: Severity,
   description: nullableString('Summary of the advisory. `null` when it has none.'),
   ecosystem: Type.String({ description: 'Package ecosystem, such as `npm` or `Go`.' }),
-  publishedAt: nullableString(
+  publishedAt: nullableDateTime(
     'When the advisory was published, in ISO 8601 UTC. `null` when the advisory has no date.',
   ),
   status: VulnerabilityStatus,
