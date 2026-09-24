@@ -31,6 +31,8 @@ export const enumGuard = (schema: TSchema) => {
 
 export const isString = (value: unknown) => typeof value === 'string';
 export const isCount = (value: unknown) => Number.isSafeInteger(value) && (value as number) >= 0;
+export const inRange = (value: number, max: number) =>
+  Number.isFinite(value) && value >= 0 && value <= max;
 
 // The `count=true` answer of vulnerabilities_list.
 export interface CountRow {
@@ -55,7 +57,7 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
     typeof row[column] === 'string' &&
     inEnum(row[column]) &&
     isCount(row.count) &&
-    Number.isFinite(row.percentage);
+    inRange(row.percentage, 100);
 
   // An empty key means the package had no value there, so it answers null and keeps its share.
   const toItem = (row: BreakdownRow<C>) => ({
