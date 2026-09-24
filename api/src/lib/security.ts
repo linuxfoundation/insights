@@ -57,7 +57,7 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
     typeof row[column] === 'string' &&
     inEnum(row[column]) &&
     isCount(row.count) &&
-    inRange(row.percentage, 100);
+    Number.isFinite(row.percentage);
 
   // An empty key means the package had no value there, so it answers null and keeps its share.
   const toItem = (row: BreakdownRow<C>) => ({

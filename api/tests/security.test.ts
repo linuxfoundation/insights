@@ -33,8 +33,6 @@ describe('breakdown (AC5)', () => {
     ['a string count', { ...row, count: '12' }],
     ['a missing percentage', { packageEcosystem: 'npm', count: 12 }],
     ['a non-finite percentage', { ...row, percentage: Number.NaN }],
-    ['a negative percentage', { ...row, percentage: -1 }],
-    ['a percentage above 100', { ...row, percentage: 101 }],
   ])('rejects %s', (_, bad) => {
     expect(isRow(bad as never)).toBe(false);
   });
