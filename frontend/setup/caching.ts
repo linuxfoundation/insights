@@ -83,6 +83,7 @@ export default {
     ...(process.env.NUXT_APP_ENV === 'production'
       ? {
           '/api/health': { cache: false },
+          '/api/events': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
           '/api/health/ready': { cache: false },
