@@ -281,20 +281,22 @@ useHead(getCollectionSchema(data));
 
 const { trackEvent } = useTrackEvent();
 
-// let avoids a TDZ crash when data is pre-populated and the callback runs
-// synchronously before watch() returns.
-let stopViewWatch: () => void;
+// `let` + `tracked` flag: when immediate:true fires synchronously, stopViewWatch is still
+// undefined (not yet assigned), so we guard with the flag and use optional chaining on stop.
+let viewTracked = false;
+let stopViewWatch: (() => void) | undefined;
 stopViewWatch = watch(
   data,
   (collection) => {
-    if (!collection) return;
+    if (!collection || viewTracked) return;
+    viewTracked = true;
     trackEvent({
       key: CollectionsEventKey.VIEW_COLLECTION,
       properties: {
         collectionId: collection.id,
       },
     });
-    stopViewWatch();
+    stopViewWatch?.();
   },
   { immediate: true },
 );
