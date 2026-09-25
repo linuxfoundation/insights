@@ -37,6 +37,14 @@ describe('fetchMemberTiers', () => {
       'https://lfx-api.test/b2b_orgs/member-tiers/jane%20doe?v=1',
       'https://lfx-api.test/b2b_orgs/member-tiers/jane%20doe?v=1',
     ]);
+    const tokenInit = fetchMock.mock.calls[0]![1]!;
+    expect(tokenInit.method).toBe('POST');
+    expect(JSON.parse(String(tokenInit.body))).toEqual({
+      grant_type: 'client_credentials',
+      client_id: 'client',
+      client_secret: 'secret',
+      audience: 'https://lfx-api.test/',
+    });
     const init = fetchMock.mock.calls[1]![1]!;
     expect(new Headers(init.headers).get('authorization')).toBe('Bearer m2m-token');
   });
