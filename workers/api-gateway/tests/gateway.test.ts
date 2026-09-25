@@ -77,6 +77,7 @@ describe('api gateway', () => {
     expect(request.headers.get('x-org-id')).toBe('001B000000IqhSLIAZ');
     expect(request.headers.get('x-tier')).toBe('gold');
     expect(request.headers.get('x-client-ip')).toBe('203.0.113.7');
+    expect(request.redirect).toBe('manual');
   });
 
   it('overwrites client-supplied trusted headers', async () => {

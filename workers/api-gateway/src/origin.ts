@@ -27,7 +27,12 @@ export function buildOriginRequest(request: Request, env: Env, entitlement: Enti
   headers.set(ORG_HEADER, entitlement.orgTier.orgId);
   headers.set(TIER_HEADER, entitlement.orgTier.tier);
 
-  return new Request(target, { method: request.method, headers, body: request.body });
+  return new Request(target, {
+    method: request.method,
+    headers,
+    body: request.body,
+    redirect: 'manual',
+  });
 }
 
 export function callOrigin(request: Request): Promise<Response> {
