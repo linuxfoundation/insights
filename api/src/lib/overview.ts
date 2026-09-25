@@ -36,10 +36,17 @@ type NullDeep<T extends TObject> = {
 };
 
 // Answers an unknown project or an empty repo-filtered breakdown with every field explicitly null.
+// Throws on a leaf without `nullable`, since a null there would break the schema it answers for.
 export function nullObject<T extends TObject>(schema: T): NullDeep<T> {
   const result: Record<string, unknown> = {};
   for (const [key, field] of Object.entries(schema.properties)) {
-    result[key] = 'properties' in field ? nullObject(field as TObject) : null;
+    if ('properties' in field) {
+      result[key] = nullObject(field as TObject);
+    } else if (field.nullable === true) {
+      result[key] = null;
+    } else {
+      throw new Error(`nullObject: field "${key}" is not nullable`);
+    }
   }
   return result as NullDeep<T>;
 }
