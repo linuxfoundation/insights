@@ -28,9 +28,53 @@ const kubernetesRow = {
   excludedRepositories: [],
   connectedPlatforms: ['github', 'git'],
   repoData: [[k8sRepo, '90', '1']],
-  repoLicenses: [[k8sRepo, 'Apache-2.0']],
+  repoLicenses: [
+    [k8sRepo, 'Apache-2.0'],
+    [k8sRepo, 'MIT'],
+  ],
+  keywords: ['containers', 'orchestration'],
+  website: 'https://kubernetes.io',
+  github: 'https://github.com/kubernetes',
+  linkedin: '',
+  twitter: '',
+  softwareValue: '1500000',
+  maturity: 'Graduated',
   widgets: ['commitActivities'],
   status: 'active',
+};
+
+const kubernetesAbout = {
+  description: 'Production-grade container orchestration',
+  logoUrl: 'https://example.org/k8s.png',
+  softwareValue: 1500000,
+  tags: ['containers', 'orchestration'],
+  maturity: 'Graduated',
+  links: {
+    website: 'https://kubernetes.io',
+    linkedin: null,
+    github: 'https://github.com/kubernetes',
+    twitter: null,
+  },
+};
+
+const k8sRepoOut = {
+  url: k8sRepo,
+  name: 'kubernetes/kubernetes',
+  score: 90,
+  rank: 1,
+  licenses: ['Apache-2.0', 'MIT'],
+  archived: false,
+  excluded: false,
+};
+
+const websiteRepoOut = {
+  url: websiteRepo,
+  name: 'kubernetes/website',
+  score: null,
+  rank: null,
+  licenses: [],
+  archived: true,
+  excluded: false,
 };
 
 const tinybirdRows = (rows: object[]) => async () =>
@@ -82,26 +126,140 @@ beforeEach(() => {
 const get = (url: string) => app.inject({ method: 'GET', url });
 
 describe('GET /v1-alpha/projects/{slug} (AC1, AC8)', () => {
-  it('returns the name, repository URLs and connected platforms', async () => {
+  it('returns the name, repositories, connected platforms and About fields', async () => {
     const res = await get('/v1-alpha/projects/kubernetes');
     expect(res.statusCode).toBe(200);
     expect(res.json()).toEqual({
       slug: 'kubernetes',
       name: 'Kubernetes',
-      repositories: [{ url: k8sRepo }, { url: websiteRepo }],
+      ...kubernetesAbout,
+      repositories: [k8sRepoOut, websiteRepoOut],
       connectedPlatforms: ['github', 'git'],
     });
   });
 
-  it('returns only the four documented keys, dropping the rest of the pipe row', async () => {
+  it('returns only the documented keys, dropping the rest of the pipe row', async () => {
     const res = await get('/v1-alpha/projects/kubernetes');
     const body = res.json<{ repositories: object[] }>();
     expect(Object.keys(body).sort()).toEqual(
-      ['connectedPlatforms', 'name', 'repositories', 'slug'].sort(),
+      [
+        'connectedPlatforms',
+        'description',
+        'links',
+        'logoUrl',
+        'maturity',
+        'name',
+        'repositories',
+        'slug',
+        'softwareValue',
+        'tags',
+      ].sort(),
     );
     for (const repo of body.repositories) {
-      expect(Object.keys(repo)).toEqual(['url']);
+      expect(Object.keys(repo).sort()).toEqual(
+        ['archived', 'excluded', 'licenses', 'name', 'rank', 'score', 'url'].sort(),
+      );
     }
+  });
+});
+
+describe('About fields (IN-1385 AC2)', () => {
+  it('answers null for empty or missing project fields and [] for missing tags', async () => {
+    const { keywords: _k, website: _w, github: _g, maturity: _m, ...bareRow } = kubernetesRow;
+    mockFetch.mockImplementation(
+      tinybirdRows([{ ...bareRow, description: '', logo: '', softwareValue: 0 }]),
+    );
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toMatchObject({
+      description: null,
+      logoUrl: null,
+      softwareValue: null,
+      tags: [],
+      maturity: null,
+      links: { website: null, linkedin: null, github: null, twitter: null },
+    });
+  });
+
+  it('answers null maturity for an empty string and parses a numeric software value', async () => {
+    mockFetch.mockImplementation(
+      tinybirdRows([{ ...kubernetesRow, maturity: '', softwareValue: 2500 }]),
+    );
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.json()).toMatchObject({ maturity: null, softwareValue: 2500 });
+  });
+});
+
+describe('repository fields (IN-1385 AC3)', () => {
+  it('parses repoData given as numbers and answers null for an unranked repository', async () => {
+    mockFetch.mockImplementation(
+      tinybirdRows([
+        {
+          ...kubernetesRow,
+          repoData: [
+            [k8sRepo, 72.5, 3],
+            [websiteRepo, '0', '0'],
+          ],
+        },
+      ]),
+    );
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.json().repositories).toMatchObject([
+      { url: k8sRepo, score: 72.5, rank: 3 },
+      { url: websiteRepo, score: null, rank: null },
+    ]);
+  });
+
+  it('flags excluded repositories and leaves out listed URLs that are not project repositories', async () => {
+    const staleRepo = 'https://github.com/old-org/website';
+    mockFetch.mockImplementation(
+      tinybirdRows([
+        {
+          ...kubernetesRow,
+          archivedRepositories: [websiteRepo, staleRepo],
+          excludedRepositories: [k8sRepo, staleRepo],
+        },
+      ]),
+    );
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.json().repositories).toEqual([
+      { ...k8sRepoOut, excluded: true },
+      { ...websiteRepoOut, archived: true },
+    ]);
+  });
+
+  it('answers null score and rank, no licenses and false flags when the pipe omits those lists', async () => {
+    const {
+      repoData: _d,
+      repoLicenses: _l,
+      archivedRepositories: _a,
+      excludedRepositories: _e,
+      ...bareRow
+    } = kubernetesRow;
+    mockFetch.mockImplementation(tinybirdRows([bareRow]));
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.statusCode).toBe(200);
+    for (const repo of res.json().repositories) {
+      expect(repo).toMatchObject({
+        score: null,
+        rank: null,
+        licenses: [],
+        archived: false,
+        excluded: false,
+      });
+    }
+  });
+
+  it.each([
+    ['https://github.com/kubernetes/kubernetes/', 'kubernetes/kubernetes'],
+    ['https://gerrit.onap.org/r/aai/aai-common', 'https://gerrit.onap.org/r/aai/aai-common'],
+    ['https://gitlab.com/group/sub/repo', 'https://gitlab.com/group/sub/repo'],
+  ])('names %s as %s, as the Insights UI does', async (repoUrl, name) => {
+    mockFetch.mockImplementation(
+      tinybirdRows([{ ...kubernetesRow, repositories: [repoUrl], repoData: [] }]),
+    );
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.json().repositories[0]).toMatchObject({ url: repoUrl, name });
   });
 });
 
