@@ -39,7 +39,11 @@ describe('fetchMemberTiers', () => {
   });
 
   it('throws when member-tiers rejects the call', async () => {
-    vi.stubGlobal('fetch', async () => new Response('forbidden', { status: 403 }));
-    await expect(fetchMemberTiers('jane', env)).rejects.toThrow('403');
+    vi.stubGlobal('fetch', async (input: RequestInfo | URL) =>
+      String(input).startsWith('https://auth.test/')
+        ? Response.json({ access_token: 'm2m-token', expires_in: 86400 })
+        : new Response('forbidden', { status: 403 }),
+    );
+    await expect(fetchMemberTiers('jane', env)).rejects.toThrow('member-tiers request failed: 403');
   });
 });
