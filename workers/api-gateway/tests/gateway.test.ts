@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { Entitlement, EntitlementCache } from '../src/cache';
 import type { Env } from '../src/env';
 import { exchangePat, usernameFromJwt } from '../src/exchange';
+import { ADMIN_ORG_TIER } from '../src/flags';
 import { handle, type Deps } from '../src/index';
 import type { MemberOrgTier } from '../src/tiers';
 
@@ -17,6 +18,8 @@ const env: Env = {
   M2M_AUDIENCE: 'https://lfx-api.test/',
   M2M_CLIENT_ID: 'client',
   M2M_CLIENT_SECRET: 'secret',
+  LD_SDK_KEY: 'sdk-test',
+  LD_FLAG_URL: 'https://sdk.launchdarkly.test/sdk/latest-flags/insights-public-api',
 };
 
 const goldTier: MemberOrgTier = {
@@ -35,10 +38,11 @@ function memoryCache(): EntitlementCache & { entries: Map<string, Entitlement> }
   };
 }
 
-function setup(memberTiers: Deps['fetchMemberTiers'] = fetchMemberTiers) {
+function setup(memberTiers: Deps['fetchMemberTiers'] = fetchMemberTiers, admins: string[] = []) {
   const deps = {
     cache: memoryCache(),
     exchangePat: vi.fn(exchangePat),
+    fetchAdminUsernames: vi.fn(async () => admins),
     fetchMemberTiers: vi.fn(memberTiers),
     callOrigin: vi.fn(async (_request: Request) => new Response('ok')),
   };
@@ -119,6 +123,16 @@ describe('api gateway', () => {
     );
 
     expect(new URL(forwarded().url).host).toBe('origin.test');
+  });
+
+  it('injects the admin org and tier for a flagged LFID without calling member-tiers', async () => {
+    const { deps, forwarded } = setup(fetchMemberTiers, ['stub-user']);
+    await handle(apiRequest(), env, deps);
+
+    const headers = forwarded().headers;
+    expect(deps.fetchMemberTiers).not.toHaveBeenCalled();
+    expect(headers.get('x-org-id')).toBe(ADMIN_ORG_TIER.orgId);
+    expect(headers.get('x-tier')).toBe(ADMIN_ORG_TIER.tier);
   });
 
   it('caches the entitlement under a salted hash, never the raw PAT', async () => {
