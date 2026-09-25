@@ -15,7 +15,6 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 COPY api ./api
 COPY libs/tinybird-client ./libs/tinybird-client
 COPY libs/types ./libs/types
-# Builds the TypeScript and the /docs site the API serves.
 RUN pnpm --filter @lfx-insights/types build && \
     pnpm --filter @lfx-insights/tinybird-client build && \
     pnpm --filter @lfx-insights/api build
