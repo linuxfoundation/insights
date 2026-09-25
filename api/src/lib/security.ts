@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { Type, type TSchema } from '@sinclair/typebox';
+import { Type, type Static, type TSchema } from '@sinclair/typebox';
 
 import { field } from './geo-distribution.js';
 
@@ -60,7 +60,7 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
     Number.isFinite(row.percentage);
 
   const toItem = (row: BreakdownRow<C>) => ({
-    ...field(key, row[column]),
+    ...field(key, row[column] as Static<S>),
     count: row.count,
     percentage: row.percentage,
   });
