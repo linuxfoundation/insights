@@ -31,6 +31,14 @@ export const enumGuard = (schema: TSchema) => {
 
 export const isString = (value: unknown) => typeof value === 'string';
 export const isCount = (value: unknown) => Number.isSafeInteger(value) && (value as number) >= 0;
+export const inRange = (value: number, max: number) =>
+  Number.isFinite(value) && value >= 0 && value <= max;
+
+// The `count=true` answer of vulnerabilities_list.
+export interface CountRow {
+  count: number;
+}
+export const isCountRow = (row: CountRow) => isCount(row.count);
 
 type BreakdownRow<C extends string> = Record<C, string> & { count: number; percentage: number };
 
