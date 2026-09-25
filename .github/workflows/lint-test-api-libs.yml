@@ -5,6 +5,7 @@ on:
     paths:
       - "api/**"
       - "libs/**"
+      - "workers/api-gateway/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
 
@@ -24,16 +25,16 @@ jobs:
           version: 10.18.2
 
       - name: Install dependencies
-        run: pnpm install --filter @lfx-insights/api... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
+        run: pnpm install --filter @lfx-insights/api... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types --filter @lfx-insights/api-gateway
 
       - name: Build workspace libs
         run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
 
       - name: Type check
-        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client tsc-check
+        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/types --filter @lfx-insights/tinybird-client --filter @lfx-insights/api-gateway tsc-check
 
       - name: Build API
         run: pnpm --filter @lfx-insights/api build
 
       - name: Test
-        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/tinybird-client test
+        run: pnpm --filter @lfx-insights/api --filter @lfx-insights/tinybird-client --filter @lfx-insights/api-gateway test
