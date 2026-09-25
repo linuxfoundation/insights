@@ -23,6 +23,12 @@ export const ControlResult = dataEnum(
   'Outcome of the control evaluation.',
 );
 
+// The serializer ignores enum, so an off-enum value must fail the row guard to reach fetchPipe's 503.
+export const enumGuard = (schema: TSchema) => {
+  const allowed = new Set<unknown>(schema.enum);
+  return (value: unknown) => allowed.has(value);
+};
+
 type BreakdownRow<C extends string> = Record<C, string> & { count: number; percentage: number };
 
 // The by-severity and by-ecosystem pipes return the same row under a different key column.
@@ -31,15 +37,14 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
   column: C,
   keySchema: S,
 ) {
-  // The serializer ignores enum, so an off-enum key must fail the guard to reach fetchPipe's 503.
-  const allowed = Array.isArray(keySchema.enum) ? new Set<unknown>(keySchema.enum) : null;
+  const inEnum = Array.isArray(keySchema.enum) ? enumGuard(keySchema) : () => true;
 
   const isRow = (row: BreakdownRow<C>) =>
     typeof row === 'object' &&
     row !== null &&
     !Array.isArray(row) &&
     typeof row[column] === 'string' &&
-    (allowed === null || allowed.has(row[column])) &&
+    inEnum(row[column]) &&
     Number.isSafeInteger(row.count) &&
     row.count >= 0 &&
     Number.isFinite(row.percentage);
