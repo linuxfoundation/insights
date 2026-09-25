@@ -35,7 +35,7 @@ describe('v1-alpha group route autoload', () => {
     expect((await modulesIn('development')).length).toBeGreaterThan(0);
   });
 
-  it.each(['development', 'contributors', 'popularity', 'security'])(
+  it.each(['development', 'contributors', 'popularity', 'security', 'overview'])(
     'serves one route per module in src/versions/v1-alpha/%s',
     async (group) => {
       const res = await app.inject({ method: 'GET', url: '/v1-alpha/openapi.json' });

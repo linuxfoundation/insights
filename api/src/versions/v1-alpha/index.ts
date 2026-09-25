@@ -18,7 +18,7 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
 
   await scope.register(projectRoutes);
   await scope.register(activityTypeRoutes);
-  for (const group of ['development', 'contributors', 'popularity', 'security']) {
+  for (const group of ['development', 'contributors', 'popularity', 'security', 'overview']) {
     const dir = fileURLToPath(new URL(`./${group}`, import.meta.url));
     // @fastify/autoload throws ENOENT for a missing folder, so a lost development/ fails startup.
     // Git and tsc drop empty folders, so the other groups are skipped until their first route lands.

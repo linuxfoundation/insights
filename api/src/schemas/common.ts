@@ -12,6 +12,9 @@ export const nullableString = (description: string) =>
   Type.Unsafe<string | null>({ type: 'string', nullable: true, description });
 export const nullableDateTime = (description: string) =>
   Type.Unsafe<string | null>({ type: 'string', format: 'date-time', nullable: true, description });
+// A nullable enum must list null itself: Ajv and OpenAPI 3.0 validators don't infer it from `nullable`.
+export const nullableEnum = <T extends string>(values: readonly T[], description: string) =>
+  Type.Unsafe<T | null>({ type: 'string', nullable: true, enum: [...values, null], description });
 
 export const ProjectSlugParams = Type.Object({
   slug: Type.String({ minLength: 1 }),
