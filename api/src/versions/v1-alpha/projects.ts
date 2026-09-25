@@ -30,17 +30,18 @@ interface ProjectRow {
 
 const orNull = (value: string | undefined) => value || null;
 
-// Mirrors getRepoNameFromUrl in frontend/server/helpers/repository.helpers.ts, so names match the Insights UI.
+// Mirrors getRepoNameFromUrl in frontend/server/helpers/repository.helpers.ts, matching on the host rather than the whole URL.
 function repoName(url: string): string {
   try {
-    const parts = new URL(url).pathname.split('/').filter(Boolean);
-    if (url.includes('gerrit')) {
-      if (url.includes('/c/')) return parts.slice(2, 4).join('/');
-      if (url.includes('/q/project:')) {
+    const { hostname, pathname } = new URL(url);
+    const parts = pathname.split('/').filter(Boolean);
+    if (hostname.includes('gerrit')) {
+      if (pathname.includes('/c/')) return parts.slice(2, 4).join('/');
+      if (pathname.includes('/q/project:')) {
         const last = parts.at(-1) as string;
         return last.includes('project:') ? (last.split(':').at(-1) as string) : last;
       }
-    } else if (url.includes('github.com')) {
+    } else if (hostname === 'github.com') {
       return parts.slice(0, 2).join('/');
     }
   } catch {
@@ -76,7 +77,8 @@ const Project = Type.Object({
         description: 'Repository URL. Pass it in `repos` on the Development endpoints.',
       }),
       name: Type.String({
-        description: 'Display name: `owner/repo` for a GitHub repository, the URL for any other.',
+        description:
+          'Display name, as the Insights UI shows it: `owner/repo` for a GitHub repository, a shortened path for a Gerrit `/c/` or `/q/project:` URL, and the URL for any other.',
       }),
       score: nullableNumber(
         'Score of the repository among ranked open source repositories, from 0 to 1. Null when the repository is not ranked.',
