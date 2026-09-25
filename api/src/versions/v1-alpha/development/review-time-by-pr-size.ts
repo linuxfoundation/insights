@@ -4,7 +4,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { getPreviousDates, toTinybirdRange } from '../../../lib/period.js';
+import { resolvePeriods, toTinybirdRange } from '../../../lib/period.js';
 import { DateRangeQuery, nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/pull_requests_review_time_by_size.json';
@@ -65,7 +65,7 @@ const reviewTimeByPrSizeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { slug } = request.params;
       const { repos, startDate, endDate } = request.query;
       // No comparison period: this only fills the default range and rejects an inverted one.
-      const { current } = getPreviousDates(startDate, endDate);
+      const { current } = resolvePeriods(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) =>
         fetchPipe<ReviewTimeRow>(

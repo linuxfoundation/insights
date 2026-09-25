@@ -7,13 +7,18 @@ import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
-  getPreviousDates,
+  resolvePeriods,
   hasBucketBounds,
   toIsoUtc,
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
-import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import {
+  ContributionFlags,
+  periodSummary,
+  ProjectSlugParams,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/active_days.json';
 
@@ -30,13 +35,7 @@ interface SeriesRow {
 
 const ActiveDaysQuery = Type.Object({
   ...SeriesQuery.properties,
-  includeCollaborations: Type.Optional(
-    Type.Boolean({
-      default: false,
-      description:
-        'Also count collaboration activity (reviews, comments and similar) as contributions, alongside code contributions.',
-    }),
-  ),
+  includeCollaborations: ContributionFlags.properties.includeCollaborations,
 });
 
 const ActiveDaysBucket = Type.Object({
@@ -94,7 +93,7 @@ const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         granularity,
         includeCollaborations = false,
       } = request.query;
-      const dates = getPreviousDates(startDate, endDate);
+      const dates = resolvePeriods(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
         const shared: TinybirdQuery = {

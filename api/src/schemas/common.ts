@@ -8,6 +8,10 @@ import { ActivityPlatforms, Granularity as SharedGranularity } from '@lfx-insigh
 // nullable.
 export const nullableNumber = (description: string) =>
   Type.Unsafe<number | null>({ type: 'number', nullable: true, description });
+export const nullableString = (description: string) =>
+  Type.Unsafe<string | null>({ type: 'string', nullable: true, description });
+export const nullableDateTime = (description: string) =>
+  Type.Unsafe<string | null>({ type: 'string', format: 'date-time', nullable: true, description });
 
 export const ProjectSlugParams = Type.Object({
   slug: Type.String({ minLength: 1 }),
@@ -20,14 +24,14 @@ export const DateRangeQuery = Type.Object({
     Type.String({
       format: 'date',
       description:
-        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Inclusive: the period starts at 00:00 UTC on this day.',
+        'Start of the period, as a UTC calendar day (YYYY-MM-DD). Inclusive: the period starts at 00:00 UTC on this day. The earliest accepted day is 2000-01-01.',
     }),
   ),
   endDate: Type.Optional(
     Type.String({
       format: 'date',
       description:
-        'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets.',
+        'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets. The latest accepted day is today in UTC.',
     }),
   ),
 });
@@ -58,10 +62,67 @@ export const Platform =
       'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
   });
 
+export const ContributionFlags = Type.Object({
+  includeCollaborations: Type.Optional(
+    Type.Boolean({
+      default: false,
+      description: 'Count collaboration activity, such as reviews and comments, as contributions.',
+    }),
+  ),
+  includeCodeContributions: Type.Optional(
+    Type.Boolean({
+      default: true,
+      description: 'Count code contributions, such as commits, pull requests and patchsets.',
+    }),
+  ),
+});
+
+// The data holds platforms and type keys that the ActivityPlatforms and ActivityTypes enums lack or
+// spell differently, so the data decides the valid values. `all`, the Insights sentinel, is refused:
+// omitting the parameter means every value.
+const dataValue = (description: string) =>
+  Type.String({ pattern: '^[\\w-]+$', maxLength: 100, not: { enum: ['all'] }, description });
+
+export const ActivityPlatform = dataValue(
+  'Count only activity on this platform: one of the `platform`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for the project. A platform with no data returns empty results. Omit it to count activity on every platform.',
+);
+
+export const ActivityType = dataValue(
+  'Count only activity of this type: one of the `key`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for the project. A type with no data returns empty results. Omit it to count every type.',
+);
+
+export const ActivityFilterQuery = Type.Object({
+  ...DateRangeQuery.properties,
+  platform: Type.Optional(ActivityPlatform),
+  activityType: Type.Optional(ActivityType),
+  ...ContributionFlags.properties,
+});
+
+export const BucketBounds = Type.Object({
+  startDate: Type.String({
+    format: 'date-time',
+    description: 'First day of the bucket, at 00:00:00 UTC.',
+  }),
+  endDate: Type.String({
+    format: 'date-time',
+    description: 'Last calendar day of the bucket, at 00:00:00 UTC.',
+  }),
+});
+
 export const SeriesQuery = Type.Object({
   ...DateRangeQuery.properties,
   granularity: Granularity,
 });
+
+export const countType = (counted: string) =>
+  Type.Optional(
+    Type.Unsafe<'new' | 'cumulative'>({
+      type: 'string',
+      enum: ['new', 'cumulative'],
+      default: 'new',
+      description: `\`new\` counts ${counted} in each bucket; \`cumulative\` gives the running total up to the end of each bucket.`,
+    }),
+  );
 
 export const PeriodSummary = Type.Object(
   {
@@ -144,3 +205,34 @@ export function nullablePeriodSummary(options: NullablePeriodSummaryOptions) {
   );
 }
 export type NullablePeriodSummary = Static<ReturnType<typeof nullablePeriodSummary>>;
+
+export const PaginationQuery = Type.Object({
+  cursor: Type.Optional(
+    Type.String({
+      description:
+        'Opaque cursor for the next page: the `nextCursor` of the previous response, passed back unchanged. Omit it for the first page.',
+    }),
+  ),
+  pageSize: Type.Optional(
+    Type.Integer({
+      minimum: 1,
+      maximum: 200,
+      default: 50,
+      description: 'Maximum number of items in `data`, from 1 to 200.',
+    }),
+  ),
+});
+
+export function paginated<T extends TSchema>(item: T, options: { data: string }) {
+  return Type.Object({
+    data: Type.Array(item, { description: options.data }),
+    pageSize: Type.Integer({
+      description: 'Page size of this response: the `pageSize` sent, or 50 when it was omitted.',
+    }),
+    nextCursor: Type.Unsafe<string | null>({
+      type: 'string',
+      nullable: true,
+      description: 'Pass it as `cursor` to get the next page. Null on the last page.',
+    }),
+  });
+}

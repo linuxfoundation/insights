@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getPreviousDates } from '../src/lib/period.js';
+import { resolvePeriods } from '../src/lib/period.js';
 import {
   calledUrls,
   callsTo,
@@ -24,7 +24,7 @@ const websiteRepo = 'https://github.com/kubernetes/website';
 const activitiesPath = '/v0/pipes/activities_count.json';
 const velocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
-// The request range and the previous range getPreviousDates derives from it (the UI's 90d preset).
+// The request range and the previous range resolvePeriods derives from it (the UI's 90d preset).
 const range = { startDate: '2025-06-20', endDate: '2025-09-18' };
 const previousRange = { startDate: '2025-03-21', endDate: '2025-06-19' };
 const tinybirdDay = (day: string) => `${day} 00:00:00`;
@@ -235,7 +235,7 @@ describe('Tinybird calls (AC2)', () => {
 
 describe('omitted dates (AC3)', () => {
   it('sends no dates on the current-period calls, the computed range on the previous summary, and reports the default period', async () => {
-    const { current, previous } = getPreviousDates();
+    const { current, previous } = resolvePeriods();
     const res = await get(withQuery({ granularity: 'monthly' }));
     expect(res.statusCode).toBe(200);
     expect(res.json().summary).toMatchObject({

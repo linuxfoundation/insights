@@ -18,7 +18,10 @@ export class InvalidDateRangeError extends Error {
 }
 
 // Same default as earliestPossibleStartDate in frontend/server/data/util.ts.
-const earliestStartDate = '2010-01-01';
+const defaultStartDate = '2010-01-01';
+// The oldest start a caller may ask for. With the end capped at today, as in the Insights date picker,
+// every previous period stays in positive years.
+const earliestStartDate = '2000-01-01';
 const dayMs = 86_400_000;
 
 // Dates are UTC midnights read with UTC getters, so the host time zone never shifts a calendar day.
@@ -60,14 +63,21 @@ function addMonthsClamped(date: Date, months: number): Date {
   return utcDate(year, month, Math.min(date.getUTCDate(), lastDay));
 }
 
-// Ports Luxon's end.diff(start, ['months', 'days']) and minus() from frontend/server/data/util.ts,
-// month-end clamping included, so previous periods match the UI's day for day.
-export function getPreviousDates(
-  startDate = earliestStartDate,
+// Ports getPreviousDates from frontend/server/data/util.ts, Luxon month-end clamping included, so the
+// comparison period matches the UI day for day.
+export function resolvePeriods(
+  startDate = defaultStartDate,
   endDate?: string,
   now = new Date(),
 ): { current: DateRange; previous: DateRange } {
-  const current = { startDate, endDate: endDate ?? formatDay(now) };
+  const today = formatDay(now);
+  const current = { startDate, endDate: endDate ?? today };
+  if (current.startDate < earliestStartDate) {
+    throw new InvalidDateRangeError(`startDate must be on or after ${earliestStartDate}`);
+  }
+  if (current.endDate > today) {
+    throw new InvalidDateRangeError(`endDate must be on or before today (${today})`);
+  }
   const start = parseDay(current.startDate);
   const end = parseDay(current.endDate);
   if (start > end) {
@@ -85,14 +95,15 @@ export function getPreviousDates(
 
   const previousEnd = addDays(start, -1);
   const previousStart = addDays(addMonthsClamped(previousEnd, -months), -days);
-  // toISOString writes years below 0 as a signed six-digit year, which is not a YYYY-MM-DD day.
-  if (previousStart.getUTCFullYear() < 0) {
-    throw new InvalidDateRangeError('startDate is too early to compute a previous period');
-  }
   return {
     current,
     previous: { startDate: formatDay(previousStart), endDate: formatDay(previousEnd) },
   };
+}
+
+// Only the current range is used; resolvePeriods fills in its defaults and validates both dates.
+export function currentPeriod(query: { startDate?: string; endDate?: string }): DateRange {
+  return resolvePeriods(query.startDate, query.endDate).current;
 }
 
 // Signed, unlike Nuxt's Math.abs, so a drop reads negative just like changeValue.

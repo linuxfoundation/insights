@@ -6,6 +6,8 @@ import {
   TinybirdClientError,
   TinybirdInvalidResponseError,
   TinybirdProjectNotFoundError,
+  TinybirdQueueFullError,
+  TinybirdQueueTimeoutError,
 } from './errors.js';
 import type {
   TinybirdClient,
@@ -169,19 +171,24 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
           ? (error as { statusCode: number }).statusCode
           : undefined;
 
-      logger.error(
-        JSON.stringify({
-          message: 'tinybird_request_error',
-          pipe: path,
-          params,
-          status,
-          durationMs: Date.now() - fetchStart,
-          wasQueued,
-          active: semaphore.getActive(),
-          queued: semaphore.getQueueLength(),
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      const queueRejected =
+        error instanceof TinybirdQueueFullError || error instanceof TinybirdQueueTimeoutError;
+      const logEntry = JSON.stringify({
+        message: queueRejected ? 'tinybird_queue_rejected' : 'tinybird_request_error',
+        pipe: path,
+        params,
+        status,
+        durationMs: Date.now() - fetchStart,
+        wasQueued: wasQueued || error instanceof TinybirdQueueTimeoutError,
+        active: semaphore.getActive(),
+        queued: semaphore.getQueueLength(),
+        timestamp: new Date().toISOString(),
+      });
+      if (queueRejected) {
+        logger.warn(logEntry);
+      } else {
+        logger.error(logEntry);
+      }
 
       if (status === 429) {
         semaphore.reportTinybirdRateLimit();

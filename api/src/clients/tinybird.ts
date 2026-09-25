@@ -1,20 +1,25 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import type { Static } from '@sinclair/typebox';
 import type { FastifyRequest } from 'fastify';
 
 import {
   createTinybirdClient,
   TinybirdInvalidResponseError,
+  TinybirdQueueFullError,
+  TinybirdQueueTimeoutError,
   type TinybirdClient,
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
 
 import { UpstreamUnavailableError } from '../lib/errors.js';
+import { type DateRange, toTinybirdRange } from '../lib/period.js';
+import type { ActivityFilterQuery } from '../schemas/common.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 
 const bucketsPath = '/v0/pipes/project_buckets.json';
 
-type RequestLog = Pick<FastifyRequest, 'log'>;
+export type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
 
@@ -44,7 +49,11 @@ async function fromTinybird<T>(
   try {
     return await call();
   } catch (err: unknown) {
-    request.log.error({ err }, `Tinybird ${path} request failed`);
+    if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
+      request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
+    } else {
+      request.log.error({ err }, `Tinybird ${path} request failed`);
+    }
     throw new UpstreamUnavailableError();
   }
 }
@@ -73,6 +82,24 @@ export function fetchPipe<T>(
 export function repoFilter(repos?: string[]): string[] | undefined {
   const kept = repos?.filter(Boolean);
   return kept?.length ? kept : undefined;
+}
+
+export function activityFilterParams(
+  slug: string,
+  bucketId: number,
+  query: Static<typeof ActivityFilterQuery>,
+  current: DateRange,
+): TinybirdQuery {
+  return {
+    project: slug,
+    bucketId,
+    repos: repoFilter(query.repos),
+    ...toTinybirdRange(current),
+    platform: query.platform,
+    activity_type: query.activityType,
+    includeCodeContributions: query.includeCodeContributions,
+    includeCollaborations: query.includeCollaborations,
+  };
 }
 
 // Null means Tinybird has no bucket for the slug: metric routes answer zeros without a pipe call,

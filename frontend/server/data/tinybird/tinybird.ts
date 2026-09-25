@@ -5,6 +5,8 @@ import { DateTime } from 'luxon';
 import {
   createTinybirdClient,
   TinybirdClientError,
+  TinybirdQueueFullError,
+  TinybirdQueueTimeoutError,
   type TinybirdResponse,
   BucketCacheStorage,
 } from '@lfx-insights/tinybird-client';
@@ -66,12 +68,22 @@ function serializeQuery(
   );
 }
 
-function toH3Error(err: unknown): never {
+function isLocalQueueRejection(err: TinybirdClientError): boolean {
+  return err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError;
+}
+
+function toH3Error(err: unknown, target: string): never {
   if (err instanceof TinybirdClientError) {
+    if (isLocalQueueRejection(err)) {
+      throw createError({
+        statusCode: err.statusCode,
+        statusMessage: 'Server busy, try again shortly',
+      });
+    }
     // err.message can include up to 300 chars of the upstream response body - log it
     // server-side only, and send clients a fixed message so Tinybird diagnostics/query
     // details are never exposed through public endpoints that rethrow this error.
-    console.error(`Tinybird request failed (${err.statusCode}): ${err.message}`);
+    console.error(`Tinybird request failed (${err.statusCode}, ${target}): ${err.message}`);
     throw createError({ statusCode: err.statusCode, statusMessage: 'Tinybird request failed' });
   }
   throw err;
@@ -117,7 +129,7 @@ export async function fetchFromTinybird<T>(
   try {
     return await client.fetch<T>(path, serializeQuery(query));
   } catch (e) {
-    toH3Error(e);
+    toH3Error(e, path);
   }
 }
 
@@ -128,7 +140,7 @@ export async function postToTinybird<T>(
   try {
     return await client.post<T>(path, serializeQuery(params));
   } catch (e) {
-    toH3Error(e);
+    toH3Error(e, path);
   }
 }
 
@@ -139,6 +151,6 @@ export async function addDataToTinybirdDatasource(
   try {
     return await client.ingest(datasource, data);
   } catch (e) {
-    toH3Error(e);
+    toH3Error(e, datasource);
   }
 }

@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   calculatePercentageChange,
-  getPreviousDates,
+  resolvePeriods,
   InvalidDateRangeError,
   toIsoUtc,
   toNullablePeriodSummary,
@@ -97,11 +97,11 @@ function thrownBy(fn: () => unknown): unknown {
   throw new Error('expected the call to throw');
 }
 
-describe('getPreviousDates matches the Nuxt Luxon implementation (AC5)', () => {
+describe('resolvePeriods matches the Nuxt Luxon implementation (AC5)', () => {
   it.each(luxonFixtures)(
     '$label ($start to $end)',
     ({ start, end, previousStart, previousEnd }) => {
-      expect(getPreviousDates(start, end)).toEqual({
+      expect(resolvePeriods(start, end)).toEqual({
         current: { startDate: start, endDate: end },
         previous: { startDate: previousStart, endDate: previousEnd },
       });
@@ -109,25 +109,25 @@ describe('getPreviousDates matches the Nuxt Luxon implementation (AC5)', () => {
   );
 });
 
-describe('getPreviousDates defaults (AC5)', () => {
+describe('resolvePeriods defaults (AC5)', () => {
   const now = new Date('2025-09-18T15:30:00Z');
 
   it('uses 2010-01-01 and today in UTC when both dates are omitted', () => {
-    expect(getPreviousDates(undefined, undefined, now)).toEqual({
+    expect(resolvePeriods(undefined, undefined, now)).toEqual({
       current: { startDate: '2010-01-01', endDate: '2025-09-18' },
       previous: { startDate: '1994-04-13', endDate: '2009-12-31' },
     });
   });
 
   it('uses today in UTC when only endDate is omitted', () => {
-    expect(getPreviousDates('2025-06-20', undefined, now)).toEqual({
+    expect(resolvePeriods('2025-06-20', undefined, now)).toEqual({
       current: { startDate: '2025-06-20', endDate: '2025-09-18' },
       previous: { startDate: '2025-03-21', endDate: '2025-06-19' },
     });
   });
 
   it('uses 2010-01-01 when only startDate is omitted', () => {
-    expect(getPreviousDates(undefined, '2025-09-18', now).current).toEqual({
+    expect(resolvePeriods(undefined, '2025-09-18', now).current).toEqual({
       startDate: '2010-01-01',
       endDate: '2025-09-18',
     });
@@ -135,13 +135,13 @@ describe('getPreviousDates defaults (AC5)', () => {
 
   it('reads today from the clock when now is not passed', () => {
     const before = new Date().toISOString().slice(0, 10);
-    const { endDate } = getPreviousDates('2025-06-20').current;
+    const { endDate } = resolvePeriods('2025-06-20').current;
     const after = new Date().toISOString().slice(0, 10);
     expect([before, after]).toContain(endDate);
   });
 });
 
-describe('getPreviousDates works in UTC calendar days (AC5)', () => {
+describe('resolvePeriods works in UTC calendar days (AC5)', () => {
   const originalTz = process.env.TZ;
 
   afterEach(() => {
@@ -156,12 +156,12 @@ describe('getPreviousDates works in UTC calendar days (AC5)', () => {
     'gives the UTC result when the host runs in %s',
     (timeZone) => {
       process.env.TZ = timeZone;
-      expect(getPreviousDates('2025-01-31', '2025-03-01')).toEqual({
+      expect(resolvePeriods('2025-01-31', '2025-03-01')).toEqual({
         current: { startDate: '2025-01-31', endDate: '2025-03-01' },
         previous: { startDate: '2024-12-29', endDate: '2025-01-30' },
       });
       for (const instant of ['2025-09-18T00:30:00Z', '2025-09-18T23:30:00Z']) {
-        expect(getPreviousDates(undefined, undefined, new Date(instant)).current.endDate).toBe(
+        expect(resolvePeriods(undefined, undefined, new Date(instant)).current.endDate).toBe(
           '2025-09-18',
         );
       }
@@ -169,13 +169,13 @@ describe('getPreviousDates works in UTC calendar days (AC5)', () => {
   );
 });
 
-describe('getPreviousDates rejects an inverted range (AC5)', () => {
+describe('resolvePeriods rejects an inverted range (AC5)', () => {
   it('throws InvalidDateRangeError when startDate is after endDate', () => {
-    expect(() => getPreviousDates('2025-09-19', '2025-09-18')).toThrow(InvalidDateRangeError);
+    expect(() => resolvePeriods('2025-09-19', '2025-09-18')).toThrow(InvalidDateRangeError);
   });
 
   it('marks the error as a 400 invalid_request', () => {
-    expect(thrownBy(() => getPreviousDates('2025-09-19', '2025-09-18'))).toMatchObject({
+    expect(thrownBy(() => resolvePeriods('2025-09-19', '2025-09-18'))).toMatchObject({
       statusCode: 400,
       code: 'invalid_request',
     });
@@ -183,7 +183,29 @@ describe('getPreviousDates rejects an inverted range (AC5)', () => {
 
   it('compares against the defaulted endDate too', () => {
     const now = new Date('2025-09-18T12:00:00Z');
-    expect(() => getPreviousDates('2025-09-19', undefined, now)).toThrow(InvalidDateRangeError);
+    expect(() => resolvePeriods('2025-09-19', undefined, now)).toThrow(InvalidDateRangeError);
+  });
+});
+
+describe('resolvePeriods takes dates from 2000-01-01 to today', () => {
+  const now = new Date('2025-09-18T12:00:00Z');
+
+  it.each([
+    ['a startDate before 2000-01-01', '1999-12-31', '2025-01-01'],
+    ['a year-one startDate', '0001-01-01', undefined],
+    ['an endDate after today', '2025-01-01', '2025-09-19'],
+    ['a far-future endDate', undefined, '9999-12-31'],
+  ])('rejects %s as a 400 invalid_request', (_label, startDate, endDate) => {
+    const error = thrownBy(() => resolvePeriods(startDate, endDate, now));
+    expect(error).toBeInstanceOf(InvalidDateRangeError);
+    expect(error).toMatchObject({ statusCode: 400, code: 'invalid_request' });
+  });
+
+  it('accepts 2000-01-01 and today as the bounds', () => {
+    expect(resolvePeriods('2000-01-01', '2025-09-18', now).current).toEqual({
+      startDate: '2000-01-01',
+      endDate: '2025-09-18',
+    });
   });
 });
 

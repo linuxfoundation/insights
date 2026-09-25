@@ -7,7 +7,7 @@ import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { ActivityTypes } from '@lfx-insights/types';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { getPreviousDates, toPeriodSummary, toTinybirdRange } from '../../../lib/period.js';
+import { resolvePeriods, toPeriodSummary, toTinybirdRange } from '../../../lib/period.js';
 import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schemas/common.js';
 
 const activeContributorsPath = '/v0/pipes/active_contributors.json';
@@ -111,7 +111,7 @@ const codeReviewParticipantsRoutes: FastifyPluginAsyncTypebox = async (scope) =>
     async (request) => {
       const { slug } = request.params;
       const { repos, startDate, endDate, limit = 5 } = request.query;
-      const dates = getPreviousDates(startDate, endDate);
+      const dates = resolvePeriods(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
         const shared: TinybirdQuery = {
