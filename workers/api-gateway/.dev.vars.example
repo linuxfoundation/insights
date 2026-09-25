@@ -1,0 +1,3 @@
+ORIGIN_URL=http://localhost:4000
+WORKER_SECRET=local-worker-secret
+PAT_HASH_SALT=local-pat-hash-salt
