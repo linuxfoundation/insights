@@ -35,7 +35,7 @@ export function useTrackEvent() {
     //   console.warn('[Segment] Failed to track event:', definition.key, err);
     // }
 
-    // Track to custom database — server derives metadata from key.
+    // Track to custom database; server derives metadata from key.
     $fetch('/api/events', {
       method: 'POST',
       body: {

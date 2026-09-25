@@ -41,7 +41,7 @@ watch(
   ([ready, authed]) => {
     if (!ready || !process.client) return;
     // Track before the auth-callback guard so login redirects (?auth=success)
-    // are captured — they arrive authenticated and would otherwise be skipped.
+    // are captured while still authenticated, before the guard can short-circuit.
     if (authed && !viewTracked.value) {
       viewTracked.value = true;
       trackEvent({ key: CollectionsEventKey.VIEW_MY_COLLECTIONS });

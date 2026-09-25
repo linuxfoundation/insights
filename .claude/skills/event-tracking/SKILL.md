@@ -22,8 +22,8 @@ Helps you add the right `trackEvent()` call to the right place in the codebase, 
 
 ```
 frontend/app/components/shared/types/events/
-├── index.ts          # EventType, EventFeature enums; EventDefinition interface;
-│                     # EventKey union type; aggregated EVENT_DEFINITIONS record
+├── base.ts           # EventType, EventFeature enums; EventDefinition interface
+├── index.ts          # EventKey union type; aggregated EVENT_DEFINITIONS record
 └── collections.ts    # CollectionsEventKey enum + COLLECTIONS_EVENT_DEFINITIONS
     <feature>.ts      # (future) FeatureEventKey enum + FEATURE_EVENT_DEFINITIONS
 
@@ -204,6 +204,7 @@ Track each separately in the right order.
        type: EventType.FEATURE,
        name: 'Do thing',
        feature: EventFeature.MY_FEATURE,
+       allowedProperties: [],
      },
    };
    ```

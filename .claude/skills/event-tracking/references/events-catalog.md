@@ -21,7 +21,7 @@ All approved events for the Insights application. Use the exact `enum value` whe
 | `VIEW_CURATED_COLLECTIONS`         | `view-curated-collections`         | `page`    | `View Curated Collections`         | —                                                            |
 | `VIEW_COMMUNITY_COLLECTIONS`       | `view-community-collections`       | `page`    | `View Community Collections`       | —                                                            |
 | `VIEW_MY_COLLECTIONS`              | `view-my-collections`              | `page`    | `View My Collections`              | —                                                            |
-| `DUPLICATE_COLLECTION`             | `duplicate-collection`             | `feature` | `Duplicate collections`            | `sourceCollectionId`, `newCollectionId`                      |
+| `DUPLICATE_COLLECTION`             | `duplicate-collection`             | `feature` | `Duplicate collection`             | `sourceCollectionId`, `newCollectionId`                      |
 | `ADD_PROJECT_TO_COLLECTION`        | `add-project-to-collection`        | `feature` | `Add project to collection`        | `collectionId`, `projectId`                                  |
 | `ADD_REPO_TO_COLLECTION`           | `add-repo-to-collection`           | `feature` | `Add repo to collection`           | `collectionId`, `repositoryUrls`                             |
 | `ABANDONED_COLLECTION_CREATION`    | `abandoned-collection-creation`    | `feature` | `Abandoned collection creation`    | —                                                            |

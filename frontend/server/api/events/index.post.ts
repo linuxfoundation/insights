@@ -30,8 +30,8 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
     throw createError({ statusCode: 503, statusMessage: 'Database not available' });
   }
 
-  // Optionally resolve the authenticated user — this route is public so anonymous events
-  // are allowed; we just capture the sub when a valid session exists.
+  // Optionally resolve the authenticated user. Public route so anonymous events
+  // are allowed; capture the sub when a valid session exists.
   let userId: string | undefined;
   try {
     const decoded = await verifyOrRefreshOidcToken(event);
@@ -43,6 +43,7 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
   // Use the Web Streams API to read the body directly from the raw stream.
   // H3's readBody skips reading when Content-Length is absent, which happens when
   // Cloudflare proxies the request and strips that header before forwarding to the origin.
+  const MAX_BODY_BYTES = 20_480;
   let body: {
     key?: string;
     properties?: Record<string, unknown>;
@@ -52,10 +53,29 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
   try {
     const stream = getRequestWebStream(event);
     if (stream) {
-      body = await new Response(stream).json();
+      const reader = stream.getReader();
+      const chunks: Uint8Array[] = [];
+      let totalBytes = 0;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        totalBytes += value.byteLength;
+        if (totalBytes > MAX_BODY_BYTES) {
+          throw createError({ statusCode: 413, statusMessage: 'Request body too large' });
+        }
+        chunks.push(value);
+      }
+      const combined = new Uint8Array(totalBytes);
+      let offset = 0;
+      for (const chunk of chunks) {
+        combined.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+      body = JSON.parse(new TextDecoder().decode(combined));
     }
-  } catch {
-    // malformed or missing body — validation below produces the right error
+  } catch (err) {
+    if (err && typeof err === 'object' && 'statusCode' in err) throw err;
+    // malformed or missing body; validation below produces the right error
   }
 
   if (typeof body?.key !== 'string' || !body.key.trim()) {
