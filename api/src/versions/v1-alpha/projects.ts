@@ -30,12 +30,18 @@ interface ProjectRow {
 
 const orNull = (value: string | undefined) => value || null;
 
-// Mirrors the Insights UI: GitHub repositories are named owner/repo, every other URL names itself.
+// Mirrors getRepoNameFromUrl in frontend/server/helpers/repository.helpers.ts, so names match the Insights UI.
 function repoName(url: string): string {
   try {
-    const { hostname, pathname } = new URL(url);
-    if (hostname === 'github.com') {
-      return pathname.split('/').filter(Boolean).slice(0, 2).join('/');
+    const parts = new URL(url).pathname.split('/').filter(Boolean);
+    if (url.includes('gerrit')) {
+      if (url.includes('/c/')) return parts.slice(2, 4).join('/');
+      if (url.includes('/q/project:')) {
+        const last = parts.at(-1) as string;
+        return last.includes('project:') ? (last.split(':').at(-1) as string) : last;
+      }
+    } else if (url.includes('github.com')) {
+      return parts.slice(0, 2).join('/');
     }
   } catch {
     // A malformed URL names itself.

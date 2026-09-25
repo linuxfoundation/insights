@@ -254,6 +254,8 @@ describe('repository fields (IN-1385 AC3)', () => {
     ['https://github.com/kubernetes/kubernetes/', 'kubernetes/kubernetes'],
     ['https://gerrit.onap.org/r/aai/aai-common', 'https://gerrit.onap.org/r/aai/aai-common'],
     ['https://gitlab.com/group/sub/repo', 'https://gitlab.com/group/sub/repo'],
+    ['https://gerrit.example.org/r/c/org/repo/+/123', 'org/repo'],
+    ['https://gerrit.example.org/r/q/project:org/tools', 'tools'],
   ])('names %s as %s, as the Insights UI does', async (repoUrl, name) => {
     mockFetch.mockImplementation(
       tinybirdRows([{ ...kubernetesRow, repositories: [repoUrl], repoData: [] }]),
