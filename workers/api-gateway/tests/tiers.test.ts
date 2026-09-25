@@ -13,7 +13,10 @@ const env = {
   M2M_CLIENT_SECRET: 'secret',
 } as Env;
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
 
 describe('fetchMemberTiers', () => {
   it('calls member-tiers with an M2M token and reuses the token', async () => {
@@ -36,6 +39,26 @@ describe('fetchMemberTiers', () => {
     ]);
     const init = fetchMock.mock.calls[1]![1]!;
     expect(new Headers(init.headers).get('authorization')).toBe('Bearer m2m-token');
+  });
+
+  it('fetches a new token once the cached one is inside the expiry margin', async () => {
+    vi.useFakeTimers({ now: Date.now() + 2 * 86_400_000 });
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) =>
+      String(input).startsWith('https://auth.test/')
+        ? Response.json({ access_token: 'short-token', expires_in: 120 })
+        : Response.json([]),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    await fetchMemberTiers('jane', env);
+    await fetchMemberTiers('jane', env);
+    vi.advanceTimersByTime(61_000);
+    await fetchMemberTiers('jane', env);
+
+    const tokenCalls = fetchMock.mock.calls.filter(([input]) =>
+      String(input).endsWith('/oauth/token'),
+    );
+    expect(tokenCalls).toHaveLength(2);
   });
 
   it('throws when member-tiers rejects the call', async () => {
