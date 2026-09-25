@@ -6,7 +6,7 @@ export const ENTITLEMENT_TTL_SECONDS = 600;
 
 export interface Entitlement {
   accessToken: string;
-  orgTier: OrgTier | null;
+  orgTier: OrgTier;
 }
 
 export interface EntitlementCache {

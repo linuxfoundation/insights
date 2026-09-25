@@ -30,14 +30,24 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
     const username = usernameFromJwt(exchanged.access_token);
     if (!username) return unauthorized();
 
-    entitlement = {
-      accessToken: exchanged.access_token,
-      orgTier: pickOrgTier(await deps.fetchMemberTiers(username, env)),
-    } satisfies Entitlement;
+    const orgTier = pickOrgTier(await deps.fetchMemberTiers(username, env));
+    if (!orgTier) return forbidden();
+
+    entitlement = { accessToken: exchanged.access_token, orgTier } satisfies Entitlement;
     await deps.cache.put(key, entitlement, Math.min(exchanged.expires_in, ENTITLEMENT_TTL_SECONDS));
   }
 
   return deps.callOrigin(buildOriginRequest(request, env, entitlement));
+}
+
+function forbidden(): Response {
+  const body = {
+    statusCode: 403,
+    code: 'forbidden',
+    error: 'Forbidden',
+    message: 'An active LFX membership is required',
+  };
+  return Response.json(body, { status: 403 });
 }
 
 function unauthorized(): Response {

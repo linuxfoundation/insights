@@ -12,7 +12,9 @@ import {
 
 export function buildOriginRequest(request: Request, env: Env, entitlement: Entitlement): Request {
   const incoming = new URL(request.url);
-  const target = new URL(incoming.pathname + incoming.search, env.ORIGIN_URL);
+  const target = new URL(env.ORIGIN_URL);
+  target.pathname = incoming.pathname;
+  target.search = incoming.search;
 
   const headers = new Headers(request.headers);
   for (const name of TRUSTED_HEADERS) headers.delete(name);
@@ -22,10 +24,8 @@ export function buildOriginRequest(request: Request, env: Env, entitlement: Enti
   const clientIp = request.headers.get('cf-connecting-ip');
   if (clientIp) headers.set(CLIENT_IP_HEADER, clientIp);
 
-  if (entitlement.orgTier) {
-    headers.set(ORG_HEADER, entitlement.orgTier.orgId);
-    headers.set(TIER_HEADER, entitlement.orgTier.tier);
-  }
+  headers.set(ORG_HEADER, entitlement.orgTier.orgId);
+  headers.set(TIER_HEADER, entitlement.orgTier.tier);
 
   return new Request(target, { method: request.method, headers, body: request.body });
 }
