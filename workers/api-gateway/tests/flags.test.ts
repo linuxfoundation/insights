@@ -39,13 +39,15 @@ describe('fetchAdminUsernames', () => {
     vi.stubGlobal('fetch', fetchMock);
     const env = {
       LD_SDK_KEY: 'sdk-test',
-      LD_FLAG_URL: 'https://ld.test/sdk/latest-flags/admins',
+      LD_FLAG_URL: 'https://sdk.launchdarkly.test/sdk/latest-flags/insights-public-api',
     } as Env;
 
     expect(await fetchAdminUsernames(env)).toContain('jdoe');
     await fetchAdminUsernames(env);
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(String(fetchMock.mock.calls[0]![0])).toBe('https://ld.test/sdk/latest-flags/admins');
+    expect(String(fetchMock.mock.calls[0]![0])).toBe(
+      'https://sdk.launchdarkly.test/sdk/latest-flags/insights-public-api',
+    );
     expect(new Headers(fetchMock.mock.calls[0]![1]!.headers).get('authorization')).toBe('sdk-test');
 
     vi.advanceTimersByTime(61_000);
