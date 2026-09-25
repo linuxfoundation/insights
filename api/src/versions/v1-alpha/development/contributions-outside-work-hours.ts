@@ -7,12 +7,17 @@ import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import {
-  getPreviousDates,
+  resolvePeriods,
   toPeriodSummary,
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
-import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schemas/common.js';
+import {
+  ContributionFlags,
+  DateRangeQuery,
+  periodSummary,
+  ProjectSlugParams,
+} from '../../../schemas/common.js';
 
 interface HeatmapRow {
   weekday: number;
@@ -24,18 +29,7 @@ const pipePath = '/v0/pipes/activity_heatmap_by_weekday_and_2hours_blocks.json';
 
 const Query = Type.Object({
   ...DateRangeQuery.properties,
-  includeCollaborations: Type.Optional(
-    Type.Boolean({
-      default: false,
-      description: 'Count collaboration activities such as reviews and comments as contributions.',
-    }),
-  ),
-  includeCodeContributions: Type.Optional(
-    Type.Boolean({
-      default: true,
-      description: 'Count code contributions such as commits, pull requests and patchsets.',
-    }),
-  ),
+  ...ContributionFlags.properties,
 });
 
 const OutsideWorkHoursSummary = periodSummary({
@@ -107,7 +101,7 @@ const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (sc
       const { slug } = request.params;
       const { repos, startDate, endDate, includeCollaborations, includeCodeContributions } =
         request.query;
-      const dates = getPreviousDates(startDate, endDate);
+      const dates = resolvePeriods(startDate, endDate);
 
       const rows = await withBucket(request, slug, (bucketId) => {
         const filter: TinybirdQuery = {

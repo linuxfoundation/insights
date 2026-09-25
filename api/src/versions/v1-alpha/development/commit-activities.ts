@@ -5,40 +5,17 @@ import { Type } from '@sinclair/typebox';
 
 import { ActivityTypes } from '@lfx-insights/types';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchActivityCounts } from '../../../lib/activity-count.js';
 import {
-  getPreviousDates,
-  hasBucketBounds,
-  toIsoUtc,
-  toPeriodSummary,
-  toTinybirdRange,
-} from '../../../lib/period.js';
-import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
-
-interface SummaryRow {
-  activityCount?: number;
-}
-
-interface SeriesRow {
-  startDate: string;
-  endDate: string;
-  activityCount?: number;
-  cumulativeActivityCount?: number;
-}
-
-const activitiesCountPath = '/v0/pipes/activities_count.json';
+  countType,
+  periodSummary,
+  ProjectSlugParams,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const CommitActivitiesQuery = Type.Object({
   ...SeriesQuery.properties,
-  countType: Type.Optional(
-    Type.Unsafe<'new' | 'cumulative'>({
-      type: 'string',
-      enum: ['new', 'cumulative'],
-      default: 'new',
-      description:
-        '`new` counts the commits made in each bucket; `cumulative` gives the running total up to the end of each bucket.',
-    }),
-  ),
+  countType: countType('the commits made'),
 });
 
 const CommitSummary = periodSummary({
@@ -79,54 +56,13 @@ const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     },
     async (request) => {
       const { slug } = request.params;
-      const { repos, startDate, endDate, granularity, countType = 'new' } = request.query;
-      const { current, previous } = getPreviousDates(startDate, endDate);
-      const isCumulative = countType === 'cumulative';
-
-      const rows = await withBucket(request, slug, (bucketId) => {
-        const common = {
-          project: slug,
-          bucketId,
-          repos: repoFilter(repos),
-          activity_type: ActivityTypes.AUTHORED_COMMIT,
-          onlyContributions: true,
-          includeCodeContributions: true,
-          includeCollaborations: false,
-        };
-        const currentRange = toTinybirdRange(current);
-        const seriesPipe = isCumulative ? 'activities_cumulative_count' : 'activities_count';
-
-        return Promise.all([
-          fetchPipe<SummaryRow>(request, activitiesCountPath, { ...common, ...currentRange }),
-          fetchPipe<SummaryRow>(request, activitiesCountPath, {
-            ...common,
-            ...toTinybirdRange(previous),
-          }),
-          fetchPipe<SeriesRow>(
-            request,
-            `/v0/pipes/${seriesPipe}.json`,
-            { ...common, ...currentRange, granularity },
-            hasBucketBounds,
-          ),
-        ]);
+      const { summary, data } = await fetchActivityCounts(request, slug, request.query, {
+        activity_type: ActivityTypes.AUTHORED_COMMIT,
+        onlyContributions: true,
+        includeCodeContributions: true,
+        includeCollaborations: false,
       });
-      if (!rows) {
-        return { summary: toPeriodSummary(0, 0, current), data: [] };
-      }
-
-      const [currentRows, previousRows, seriesRows] = rows;
-      return {
-        summary: toPeriodSummary(
-          currentRows[0]?.activityCount ?? 0,
-          previousRows[0]?.activityCount ?? 0,
-          current,
-        ),
-        data: seriesRows.map((row) => ({
-          startDate: toIsoUtc(row.startDate),
-          endDate: toIsoUtc(row.endDate),
-          commits: (isCumulative ? row.cumulativeActivityCount : row.activityCount) ?? 0,
-        })),
-      };
+      return { summary, data: data.map(({ count, ...bucket }) => ({ ...bucket, commits: count })) };
     },
   );
 };

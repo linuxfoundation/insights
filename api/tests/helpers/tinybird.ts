@@ -8,7 +8,9 @@ import { getTinybirdClient } from '../../src/clients/tinybird.js';
 
 export const tinybirdHost = 'https://tinybird.test';
 export const bucketsPath = '/v0/pipes/project_buckets.json';
-export const developmentPath = (name: string) => `/v1-alpha/projects/{slug}/development/${name}`;
+export const projectPath = (subpath: string) => `/v1-alpha/projects/{slug}/${subpath}`;
+export const developmentPath = (name: string) => projectPath(`development/${name}`);
+export const contributorsPath = (name: string) => projectPath(`contributors/${name}`);
 
 export const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -139,10 +141,8 @@ export const resolveSchema = (doc: OpenApiDoc, schema?: OpenApiSchema) =>
 export interface ResponseField {
   path: string;
   required: boolean;
-  described: boolean;
 }
 
-// Every property of a response schema, nested objects and array items included.
 export function responseFields(
   doc: OpenApiDoc,
   schema?: OpenApiSchema,
@@ -153,11 +153,7 @@ export function responseFields(
   return Object.entries(node?.properties ?? {}).flatMap(([key, child]) => {
     const resolved = resolveSchema(doc, child);
     return [
-      {
-        path: `${path}${key}`,
-        required: required.has(key),
-        described: Boolean(child.description || resolved?.description),
-      },
+      { path: `${path}${key}`, required: required.has(key) },
       ...responseFields(doc, resolved, `${path}${key}.`),
       ...responseFields(doc, resolved?.items, `${path}${key}[].`),
     ];
