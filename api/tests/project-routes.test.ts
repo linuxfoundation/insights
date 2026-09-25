@@ -47,6 +47,7 @@ const groupTags: Record<string, string> = {
   contributors: 'Contributors',
   popularity: 'Popularity',
   security: 'Security',
+  overview: 'Overview',
 };
 const tagOf = (name: string) => (name.includes('/') ? groupTags[name.split('/')[0]] : 'Projects');
 
