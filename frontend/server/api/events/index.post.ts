@@ -36,8 +36,8 @@ export default defineEventHandler(async (event): Promise<{ success: boolean }> =
   try {
     const decoded = await verifyOrRefreshOidcToken(event);
     userId = decoded?.sub;
-  } catch {
-    // No valid session — event is recorded as anonymous.
+  } catch (err) {
+    console.warn('[events] auth resolution failed, recording as anonymous:', err);
   }
 
   // Use the Web Streams API to read the body directly from the raw stream.

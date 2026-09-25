@@ -103,7 +103,7 @@ const props = withDefaults(
   defineProps<{
     type: CollectionType;
     status?: 'pending' | 'success' | 'error' | 'idle';
-    error?: Error | null;
+    error?: Error | { message: string } | null;
     errorMessage?: string;
     isEmpty?: boolean;
     mobileLayout?: 'cards' | 'list';
