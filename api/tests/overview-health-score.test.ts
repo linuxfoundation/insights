@@ -203,6 +203,8 @@ describe('row guard (AC5)', () => {
     ['an unknown impact label', { impactLabel: 'significant' }],
     ['a covered category count above 3', { coveredCategoryCount: 4 }],
     ['a max score above 100', { healthMaxScore: 120 }],
+    ['a max score outside the derived maxima', { healthMaxScore: 70 }],
+    ['a score above the max score', { healthScoreV2: 66 }],
   ])('answers 503 for a project row with %s', async (_label, patch) => {
     insightsRows = [{ ...insightsRow, ...patch }];
     expect((await get(route)).statusCode).toBe(503);

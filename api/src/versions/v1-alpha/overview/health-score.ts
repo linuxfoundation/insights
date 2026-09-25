@@ -42,6 +42,8 @@ interface LifecycleRow {
 
 const upTo = (value: unknown, max: number) =>
   value === null || (isCount(value) && (value as number) <= max);
+// The maxima the pipe derives from the covered categories.
+const healthMaxScores = new Set<unknown>([60, 65, 75, 100, null]);
 const isHealthLabel = enumGuard(HealthLabel);
 const isLifecycleLabel = enumGuard(LifecycleLabel);
 const isImpactLabel = enumGuard(ImpactLabel);
@@ -59,7 +61,10 @@ const isInsightsRow = (row: InsightsRow) =>
   upTo(row.impactScore, 100) &&
   isImpactLabel(row.impactLabel) &&
   upTo(row.coveredCategoryCount, 3) &&
-  upTo(row.healthMaxScore, 100);
+  healthMaxScores.has(row.healthMaxScore) &&
+  (row.healthScoreV2 === null ||
+    row.healthMaxScore === null ||
+    row.healthScoreV2 <= row.healthMaxScore);
 
 const isLifecycleRow = (row: LifecycleRow) => isLifecycleLabel(row.lifecycleLabel);
 
