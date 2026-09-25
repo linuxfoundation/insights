@@ -6,44 +6,58 @@ import { Type } from '@sinclair/typebox';
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
 import { nullObject, OverviewQuery } from '../../../lib/overview.js';
 import { toIsoUtc } from '../../../lib/period.js';
+import { isCount } from '../../../lib/security.js';
 import { nullableDateTime, nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
 
 const projectPath = '/v0/pipes/project_insights_health_breakdown.json';
 const repoPath = '/v0/pipes/repo_health_score_v2_breakdown.json';
 
-const numberColumns = [
-  'busFactorScore',
+// Each signal's point maximum; `scorecardScore` is the OpenSSF score from 0 to 10.
+const scoreMax = {
+  busFactorScore: 18,
+  orgDiversityScore: 7,
+  responsivenessScore: 15,
+  openVulnScore: 10,
+  scorecardScorePts: 7,
+  scorecardScore: 10,
+  securityPracticesScore: 7,
+  dependencyHealthScore: 5,
+  releaseCadenceScore: 8,
+  commitActivityScore: 5,
+  issueResolutionScore: 7,
+  prMergeScore: 5,
+} as const;
+
+const countColumns = [
   'busFactorCount',
-  'orgDiversityScore',
   'orgCount',
-  'responsivenessScore',
-  'medianPrResponseS',
-  'medianIssueResponseS',
-  'openVulnScore',
   'openCriticals',
   'openHighs',
   'openModerates',
   'openUnknowns',
-  'scorecardScorePts',
-  'scorecardScore',
-  'securityPracticesScore',
   'branchProtectionRequiredReviews',
-  'dependencyHealthScore',
   'vulnerableDeps',
-  'releaseCadenceScore',
-  'daysSinceLatest',
-  'daysBetweenRecent',
-  'commitActivityScore',
   'commitsLast6m',
-  'issueResolutionScore',
   'closed12m',
   'opened12m',
-  'medianCloseS',
-  'prMergeScore',
   'merged12m',
   'closedUnmerged12m',
+] as const;
+
+// Live data holds negative values here, so these are only checked for finiteness.
+const signedColumns = [
+  'medianPrResponseS',
+  'medianIssueResponseS',
+  'daysSinceLatest',
+  'daysBetweenRecent',
+  'medianCloseS',
   'medianMergeS',
 ] as const;
+
+type NumberColumn =
+  | keyof typeof scoreMax
+  | (typeof countColumns)[number]
+  | (typeof signedColumns)[number];
 
 // The pipes send these as UInt8 0/1; a Bool column would arrive as true/false.
 const flagColumns = [
@@ -67,7 +81,7 @@ const flagColumns = [
 
 type PipeFlag = 0 | 1 | boolean | null;
 
-type Row = Record<(typeof numberColumns)[number], number | null> &
+type Row = Record<NumberColumn, number | null> &
   Record<(typeof flagColumns)[number], PipeFlag> & { lastCommitAt: string | null };
 
 const pipeTimestamp = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)?$/;
@@ -76,7 +90,12 @@ const flagValues = new Set<unknown>([0, 1, true, false, null]);
 const isRow = (row: Row) =>
   typeof row === 'object' &&
   row !== null &&
-  numberColumns.every((column) => row[column] === null || Number.isFinite(row[column])) &&
+  Object.entries(scoreMax).every(([column, max]) => {
+    const value = row[column as NumberColumn];
+    return value === null || (Number.isFinite(value) && value >= 0 && value <= max);
+  }) &&
+  countColumns.every((column) => row[column] === null || isCount(row[column])) &&
+  signedColumns.every((column) => row[column] === null || Number.isFinite(row[column])) &&
   flagColumns.every((column) => flagValues.has(row[column])) &&
   (row.lastCommitAt === null ||
     (typeof row.lastCommitAt === 'string' && pipeTimestamp.test(row.lastCommitAt)));

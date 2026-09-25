@@ -258,6 +258,11 @@ describe('row guard (AC4)', () => {
     ['a count that is not a number', { openHighs: 'many' }],
     ['a missing column', { medianMergeS: undefined }],
     ['a lastCommitAt that is not a pipe timestamp', { lastCommitAt: 'yesterday' }],
+    ['a score above its maximum', { busFactorScore: 19 }],
+    ['a negative score', { prMergeScore: -1 }],
+    ['an OpenSSF score above 10', { scorecardScore: 10.5 }],
+    ['a negative count', { vulnerableDeps: -1 }],
+    ['a fractional count', { orgCount: 2.5 }],
   ])('answers 503 for %s', async (_label, patch) => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     rows = [{ ...pipeRow, ...patch }];
@@ -265,5 +270,13 @@ describe('row guard (AC4)', () => {
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
     vi.restoreAllMocks();
+  });
+
+  it('accepts negative durations and day counts, which live data holds', async () => {
+    rows = [{ ...pipeRow, medianPrResponseS: -60, daysSinceLatest: -3 }];
+    const res = await get(route);
+    expect(res.statusCode).toBe(200);
+    expect(res.json().maintainerHealth.responsiveness.medianPrResponseSeconds).toBe(-60);
+    expect(res.json().developmentActivity.releaseCadence.daysSinceLatestRelease).toBe(-3);
   });
 });
