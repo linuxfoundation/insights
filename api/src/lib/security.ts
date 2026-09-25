@@ -59,8 +59,9 @@ export function breakdown<K extends string, C extends string, S extends TSchema>
     isCount(row.count) &&
     Number.isFinite(row.percentage);
 
+  // An empty key means the package had no value there, so it answers null and keeps its share.
   const toItem = (row: BreakdownRow<C>) => ({
-    ...field(key, row[column] as Static<S>),
+    ...field(key, (row[column] || null) as Static<S>),
     count: row.count,
     percentage: row.percentage,
   });
