@@ -80,7 +80,7 @@ describe('api gateway', () => {
   });
 
   it('overwrites client-supplied trusted headers', async () => {
-    const { deps, forwarded } = setup(async () => []);
+    const { deps, forwarded } = setup();
     await handle(
       apiRequest({ 'x-tier': 'platinum', 'x-org-id': 'someone-else', 'x-worker-secret': 'guess' }),
       env,
@@ -88,23 +88,31 @@ describe('api gateway', () => {
     );
 
     const headers = forwarded().headers;
-    expect(headers.get('x-tier')).toBeNull();
-    expect(headers.get('x-org-id')).toBeNull();
+    expect(headers.get('x-tier')).toBe('gold');
+    expect(headers.get('x-org-id')).toBe('001B000000IqhSLIAZ');
     expect(headers.get('x-worker-secret')).toBe('worker-secret');
   });
 
-  it('picks the highest tier and keeps the first org on a tie', async () => {
-    const silver = { ...goldTier, b2b_org_uid: 'silver-org', tier: 'silver' };
-    const platinum = { ...goldTier, b2b_org_uid: 'platinum-org', tier: 'platinum' };
-    const { deps, forwarded } = setup(async () => [
-      silver,
-      platinum,
-      { ...platinum, b2b_org_uid: 'later' },
-    ]);
-    await handle(apiRequest(), env, deps);
+  it('rejects a caller without an active membership and caches nothing', async () => {
+    const { deps } = setup(async () => []);
+    const response = await handle(apiRequest(), env, deps);
 
-    expect(forwarded().headers.get('x-org-id')).toBe('platinum-org');
-    expect(forwarded().headers.get('x-tier')).toBe('platinum');
+    expect(response.status).toBe(403);
+    expect(deps.callOrigin).not.toHaveBeenCalled();
+    expect(deps.cache.entries.size).toBe(0);
+  });
+
+  it('keeps the origin host for a path starting with //', async () => {
+    const { deps, forwarded } = setup();
+    await handle(
+      new Request('https://api.test//attacker.example/x', {
+        headers: { authorization: 'Bearer lfi_abc123' },
+      }),
+      env,
+      deps,
+    );
+
+    expect(new URL(forwarded().url).host).toBe('origin.test');
   });
 
   it('caches the entitlement under a salted hash, never the raw PAT', async () => {
