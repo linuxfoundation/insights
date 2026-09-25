@@ -118,7 +118,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
@@ -142,6 +142,7 @@ const {
   status: curatedStatus,
   error: curatedError,
   refetch: refetchCuratedCollections,
+  suspense: curatedSuspense,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
 const {
@@ -149,7 +150,12 @@ const {
   status: communityStatus,
   error: communityError,
   refetch: refetchCommunityCollections,
+  suspense: communitySuspense,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections();
+
+// Wait for both queries so SSR HTML reflects the settled state (success or error) instead of
+// the pending skeleton, which would mismatch the dehydrated state the client hydrates with.
+onServerPrefetch(() => Promise.allSettled([curatedSuspense(), communitySuspense()]));
 
 const {
   data: myCollectionsData,

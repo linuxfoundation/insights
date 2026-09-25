@@ -21,10 +21,10 @@ export const useShareStore = defineStore('share', () => {
   const openShareModal = (defaults: ShareData = defaultData) => {
     shareDefaults.value = defaults;
     if (canUseNativeShare()) {
-      navigator.share({
-        title: defaults.title,
-        url: defaults.url,
-      });
+      navigator
+        .share({ title: defaults.title, url: defaults.url })
+        .then(() => defaults.onShare?.('native'))
+        .catch(() => {});
     } else {
       isShareModalOpen.value = true;
     }

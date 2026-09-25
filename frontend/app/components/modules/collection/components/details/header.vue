@@ -399,6 +399,7 @@ import CollectionOwner from '~/components/shared/components/collection-owner.vue
 import LikeButton from '~/components/shared/components/like-button.vue';
 import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { formatDate, formatNumberShort } from '~/components/shared/utils/formatter';
@@ -414,6 +415,7 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 import type { Collection, CollectionMetrics } from '~~/types/collection';
 import type { CollectionType } from '~~/types/collection';
 
@@ -424,6 +426,7 @@ const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { openConfirmModal } = useConfirmStore();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 const queryClient = useQueryClient();
 
 const authStore = useAuthStore();
@@ -483,6 +486,15 @@ const handleShare = () => {
     url: url.toString(),
     title,
     area: props.collection?.name,
+    onShare: (shareMethod) => {
+      trackEvent({
+        key: CollectionsEventKey.SHARE_COLLECTION,
+        properties: {
+          collectionId: props.collection?.id,
+          shareMethod,
+        },
+      });
+    },
   });
 };
 
@@ -517,7 +529,12 @@ const handleDelete = () => {
         if (result) {
           isDeleting.value = true;
           await COLLECTIONS_API_SERVICE.deleteCollection(props.collection!.id);
-
+          trackEvent({
+            key: CollectionsEventKey.DELETE_COLLECTION,
+            properties: {
+              collectionId: props.collection!.id,
+            },
+          });
           invalidateMyCollections();
           isDeleting.value = false;
           router.push({ name: LfxRoutes.COLLECTIONS_MY_COLLECTIONS });

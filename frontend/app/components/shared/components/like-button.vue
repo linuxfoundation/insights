@@ -70,6 +70,7 @@ import LfxCollectionAuthWall from '~/components/modules/collection/components/au
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -81,11 +82,13 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useAuth } from '~~/composables/useAuth';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 import type { Collection, CollectionType } from '~~/types/collection';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 const { isAuthenticated } = useAuth();
 const isAuthWallOpen = ref(false);
 
@@ -143,6 +146,12 @@ const handleLike = async () => {
         collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
         showToast('Failed to unlike collection', ToastTypesEnum.negative);
       } else {
+        trackEvent({
+          key: CollectionsEventKey.DISLIKE_COLLECTION,
+          properties: {
+            collectionId: props.collection.id,
+          },
+        });
         invalidateCollectionQueries();
         emit('updated', props.collection);
       }
@@ -158,6 +167,12 @@ const handleLike = async () => {
         collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
         showToast('Failed to like collection', ToastTypesEnum.negative);
       } else {
+        trackEvent({
+          key: CollectionsEventKey.LIKE_COLLECTION,
+          properties: {
+            collectionId: props.collection.id,
+          },
+        });
         invalidateCollectionQueries();
         emit('updated', props.collection);
       }

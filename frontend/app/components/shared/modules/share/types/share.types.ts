@@ -9,4 +9,5 @@ export interface ShareData {
   showGithubBadge?: boolean;
   activeTab?: 'link' | 'github-badge';
   additionalShare?: Component;
+  onShare?: (method: string) => void;
 }

@@ -91,6 +91,7 @@ import type {
   CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -99,6 +100,7 @@ import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 import type { Collection } from '~~/types/collection';
 import type { ProjectInsights } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -146,10 +148,12 @@ const collectionProjects = computed<ProjectInsights[]>(
 );
 
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 const queryClient = useQueryClient();
 
 const activeTab = ref<'settings' | 'projects'>('settings');
 const isUpdating = ref(false);
+const completedSuccessfully = ref(false);
 const form = ref<CreateCollectionForm>({
   name: '',
   description: '',
@@ -190,6 +194,14 @@ const handleCloseAttempt = (): boolean => {
 };
 
 const closeModal = () => {
+  if (hasUnsavedChanges.value && !completedSuccessfully.value) {
+    trackEvent({
+      key: CollectionsEventKey.ABANDONED_COLLECTION_EDITION,
+      properties: {
+        sourceCollectionId: props.collection?.id,
+      },
+    });
+  }
   if (originalForm.value) {
     form.value = JSON.parse(JSON.stringify(originalForm.value));
   }
@@ -240,6 +252,44 @@ const updateCollection = async () => {
 
   try {
     const updated = await COLLECTIONS_API_SERVICE.updateCollection(props.collection.id, payload);
+
+    completedSuccessfully.value = true;
+
+    const changedFields: string[] = [];
+    if (originalForm.value) {
+      if (form.value.name !== originalForm.value.name) {
+        changedFields.push('name');
+      }
+
+      if (form.value.description !== originalForm.value.description) {
+        changedFields.push('description');
+      }
+
+      if (form.value.visibility !== originalForm.value.visibility) {
+        changedFields.push('privacy');
+      }
+
+      const projectIds = form.value.projects.map((p) => p.id).sort();
+      const originalProjectIds = originalForm.value.projects.map((p) => p.id).sort();
+      if (JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds)) {
+        changedFields.push('projects');
+      }
+
+      const repositoryUrls = form.value.repositories.map((r) => r.url).sort();
+      const originalRepositoryUrls = originalForm.value.repositories.map((r) => r.url).sort();
+      if (JSON.stringify(repositoryUrls) !== JSON.stringify(originalRepositoryUrls)) {
+        changedFields.push('repositories');
+      }
+    }
+
+    trackEvent({
+      key: CollectionsEventKey.UPDATE_COLLECTION,
+      properties: {
+        collectionId: props.collection.id,
+        changedFields,
+      },
+    });
+
     queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTIONS] });
     queryClient.invalidateQueries({ queryKey: [TanstackKey.MY_COLLECTIONS] });
     queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTION_PROJECTS] });
@@ -270,6 +320,16 @@ watch(
     if (value) {
       activeTab.value = 'settings';
       initializeForm();
+    } else {
+      if (hasUnsavedChanges.value && !completedSuccessfully.value) {
+        trackEvent({
+          key: CollectionsEventKey.ABANDONED_COLLECTION_EDITION,
+          properties: {
+            sourceCollectionId: props.collection?.id,
+          },
+        });
+      }
+      completedSuccessfully.value = false;
     }
   },
   { immediate: true },

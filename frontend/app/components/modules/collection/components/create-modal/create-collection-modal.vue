@@ -55,9 +55,11 @@ import {
   type CollectionRepository,
 } from '~/components/modules/collection/config/create-collection.config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 import type { Collection } from '~~/types/collection';
 import type { ProjectInsights } from '~~/types/project';
 
@@ -88,12 +90,14 @@ const isModalOpen = computed({
 });
 
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 
 const step = ref(0);
 const form = ref<CreateCollectionForm>({ ...createCollectionTemplate, projects: [], repositories: [] });
 const stepRef = ref<{ $v?: { $invalid: boolean; $touch: () => void } } | null>(null);
 const isCreating = ref(false);
 const isLoadingProjects = ref(false);
+const completedSuccessfully = ref(false);
 
 const steps = computed<CreateCollectionStep[]>(() => createCollectionSteps);
 
@@ -205,7 +209,27 @@ const createCollection = async () => {
   isCreating.value = true;
 
   try {
-    await COLLECTIONS_API_SERVICE.createCollection(payload);
+    const result = await COLLECTIONS_API_SERVICE.createCollection(payload);
+
+    completedSuccessfully.value = true;
+
+    if (isDuplicateMode.value) {
+      trackEvent({
+        key: CollectionsEventKey.DUPLICATE_COLLECTION,
+        properties: {
+          sourceCollectionId: props.sourceCollection?.id,
+          newCollectionId: result.id,
+        },
+      });
+    } else {
+      trackEvent({
+        key: CollectionsEventKey.CREATE_COLLECTION,
+        properties: {
+          isPrivate: payload.isPrivate,
+          newCollectionId: result.id,
+        },
+      });
+    }
     showToast('Collection created successfully!', ToastTypesEnum.positive);
     emit('created', form.value);
     isModalOpen.value = false;
@@ -237,6 +261,14 @@ watch(isModalOpen, async (value) => {
       await initializeFromSourceCollection();
     }
   } else {
+    if (isFormDirty.value && !completedSuccessfully.value) {
+      trackEvent({
+        key: isDuplicateMode.value
+          ? CollectionsEventKey.ABANDONED_COLLECTION_DUPLICATION
+          : CollectionsEventKey.ABANDONED_COLLECTION_CREATION,
+      });
+    }
+    completedSuccessfully.value = false;
     step.value = 0;
     form.value = { ...createCollectionTemplate, projects: [], repositories: [] };
   }

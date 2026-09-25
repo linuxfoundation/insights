@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     '/api/collection',
     '/api/project',
     '/api/repository',
+    '/api/events',
   ];
   if (allowedRoutes.some((route) => event.node.req.url?.startsWith(route))) {
     // Add the database pool to the event context

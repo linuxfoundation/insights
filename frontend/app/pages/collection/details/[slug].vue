@@ -32,7 +32,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
-import { useRoute, useRequestFetch, createError, showError, navigateTo, useNuxtApp } from 'nuxt/app';
+import {
+  useRoute,
+  useRequestFetch,
+  createError,
+  showError,
+  navigateTo,
+  useNuxtApp,
+  useHead,
+  useSeoMeta,
+} from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch, onServerPrefetch } from 'vue';
 
@@ -52,12 +61,14 @@ import {
   defaultDateOption,
 } from '~/components/modules/project/store/project.store';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
 import { useRichSchema } from '~~/composables/useRichSchema';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 import type { Collection, CollectionMetrics } from '~~/types/collection';
 
 const route = useRoute();
@@ -267,4 +278,26 @@ useSeoMeta({
 });
 
 useHead(getCollectionSchema(data));
+
+const { trackEvent } = useTrackEvent();
+
+// `let` + `tracked` flag: when immediate:true fires synchronously, stopViewWatch is still
+// undefined (not yet assigned), so we guard with the flag and use optional chaining on stop.
+let viewTracked = false;
+let stopViewWatch: (() => void) | undefined;
+stopViewWatch = watch(
+  data,
+  (collection) => {
+    if (!collection || viewTracked) return;
+    viewTracked = true;
+    trackEvent({
+      key: CollectionsEventKey.VIEW_COLLECTION,
+      properties: {
+        collectionId: collection.id,
+      },
+    });
+    stopViewWatch?.();
+  },
+  { immediate: true },
+);
 </script>

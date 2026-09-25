@@ -248,6 +248,7 @@ import { useEditCollectionStore } from '~/components/modules/collection/store/ed
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { formatDate } from '~/components/shared/utils/formatter';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
@@ -258,6 +259,7 @@ import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 import type { Collection, CollectionFeaturedProject } from '~~/types/collection';
 import type { CollectionType } from '~~/types/collection';
 
@@ -267,6 +269,7 @@ const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
+const { trackEvent } = useTrackEvent();
 const emit = defineEmits<{
   (e: 'updated', collection: Collection | null): void;
 }>();
@@ -312,6 +315,15 @@ const handleShare = () => {
     url: url.toString(),
     title,
     area: props.collection.name,
+    onShare: (shareMethod) => {
+      trackEvent({
+        key: CollectionsEventKey.SHARE_COLLECTION,
+        properties: {
+          collectionId: props.collection.id,
+          shareMethod,
+        },
+      });
+    },
   });
 };
 
@@ -333,6 +345,12 @@ const handleClone = () => {
 const handleDeleteCollection = async () => {
   try {
     await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    trackEvent({
+      key: CollectionsEventKey.DELETE_COLLECTION,
+      properties: {
+        collectionId: props.collection.id,
+      },
+    });
     showToast('Collection deleted successfully', ToastTypesEnum.positive);
     emit('updated', null);
   } catch (error) {

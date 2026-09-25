@@ -94,16 +94,22 @@ const { showToast } = useToastService();
 
 const emit = defineEmits<{ (e: 'copied'): void }>();
 
-const copy = (url: string) => {
-  navigator?.clipboard.writeText(url);
-  showToast(`Link copied to clipboard`, ToastTypesEnum.positive);
-  emit('copied');
+const copy = async (url: string) => {
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast(`Link copied to clipboard`, ToastTypesEnum.positive);
+    props.defaults.onShare?.('copy');
+    emit('copied');
+  } catch {
+    showToast(`Failed to copy link`, ToastTypesEnum.negative);
+  }
 };
 
 const email = () => {
   const title = props.defaults?.title ? `Check this out: ${props.defaults.title}` : 'Check this out';
   const url = encodeURIComponent(props.defaults.url);
   const link = `mailto:?subject=${title}&body=${url}`;
+  props.defaults.onShare?.('email');
   window?.open(link, '_blank');
 };
 
@@ -116,6 +122,7 @@ const twitter = () => {
   const height = 480;
   const left = window.screen.width / 2 - width / 2;
   const top = window.screen.height / 2 - height / 2;
+  props.defaults.onShare?.('twitter');
   window?.open(
     link,
     '_blank',
@@ -127,6 +134,7 @@ const reddit = () => {
   const url = encodeURIComponent(props.defaults.url);
   const title = props.defaults?.title ? `Explore ${props.defaults.title}` : 'Explore this';
   const link = `https://www.reddit.com/submit?title=${title}&url=${url}`;
+  props.defaults.onShare?.('reddit');
   window?.open(link, '_blank');
 };
 
@@ -138,6 +146,7 @@ const linkedin = () => {
   const height = 480;
   const left = window.screen.width / 2 - width / 2;
   const top = window.screen.height / 2 - height / 2;
+  props.defaults.onShare?.('linkedin');
   window?.open(
     link,
     '_blank',

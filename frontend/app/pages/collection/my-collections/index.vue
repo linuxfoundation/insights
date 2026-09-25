@@ -12,11 +12,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
-import { watch } from 'vue';
+import { useRoute, useSeoMeta } from 'nuxt/app';
+import { ref, watch } from 'vue';
 
 import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
+import { CollectionsEventKey } from '~/components/shared/types/events/collections';
 import { useAuth } from '~~/composables/useAuth';
+import { useTrackEvent } from '~~/composables/useTrackEvent';
 
 const title = 'My Collections | LFX Insights';
 const description = 'View and manage your personal collections of open source projects on LFX Insights.';
@@ -29,12 +31,21 @@ useSeoMeta({
 });
 
 const { isAuthenticated, isReady, login } = useAuth();
+const { trackEvent } = useTrackEvent();
 const route = useRoute();
+
+const viewTracked = ref(false);
 
 watch(
   [isReady, isAuthenticated],
   ([ready, authed]) => {
     if (!ready || !process.client) return;
+    // Track before the auth-callback guard so login redirects (?auth=success)
+    // are captured while still authenticated, before the guard can short-circuit.
+    if (authed && !viewTracked.value) {
+      viewTracked.value = true;
+      trackEvent({ key: CollectionsEventKey.VIEW_MY_COLLECTIONS });
+    }
     const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
     if (isAuthCallback) return;
     if (!authed) {
