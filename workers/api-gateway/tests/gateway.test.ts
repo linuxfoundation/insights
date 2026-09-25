@@ -93,6 +93,20 @@ describe('api gateway', () => {
     expect(headers.get('x-worker-secret')).toBe('worker-secret');
   });
 
+  it('picks the highest tier and keeps the first org on a tie', async () => {
+    const silver = { ...goldTier, b2b_org_uid: 'silver-org', tier: 'silver' };
+    const platinum = { ...goldTier, b2b_org_uid: 'platinum-org', tier: 'platinum' };
+    const { deps, forwarded } = setup(async () => [
+      silver,
+      platinum,
+      { ...platinum, b2b_org_uid: 'later' },
+    ]);
+    await handle(apiRequest(), env, deps);
+
+    expect(forwarded().headers.get('x-org-id')).toBe('platinum-org');
+    expect(forwarded().headers.get('x-tier')).toBe('platinum');
+  });
+
   it('caches the entitlement under a salted hash, never the raw PAT', async () => {
     const { deps } = setup();
     await handle(apiRequest(), env, deps);

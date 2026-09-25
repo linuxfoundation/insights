@@ -31,7 +31,13 @@ export async function fetchMemberTiers(_username: string, _env: Env): Promise<Me
   ];
 }
 
+const TIER_RANK = ['silver', 'gold', 'platinum'];
+
 export function pickOrgTier(tiers: MemberOrgTier[]): OrgTier | null {
-  const [top] = tiers;
+  const rank = (t: MemberOrgTier) => TIER_RANK.indexOf(t.tier);
+  const top = tiers.reduce<MemberOrgTier | undefined>(
+    (best, t) => (!best || rank(t) > rank(best) ? t : best),
+    undefined,
+  );
   return top ? { orgId: top.b2b_org_uid, tier: top.tier } : null;
 }
