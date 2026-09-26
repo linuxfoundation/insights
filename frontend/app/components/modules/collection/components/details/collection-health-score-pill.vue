@@ -58,7 +58,7 @@ SPDX-License-Identifier: MIT
           />
           <p
             v-if="healthScoreDescription"
-            class="text-neutral-600"
+            class="leading-4 text-neutral-600"
           >
             {{ healthScoreDescription }}
           </p>
@@ -72,8 +72,8 @@ SPDX-License-Identifier: MIT
             <span class="size-5 rounded-full bg-white flex items-center justify-center shrink-0">
               <lfx-icon
                 :name="category.icon"
-                :size="11"
-                class="text-neutral-400"
+                :size="12"
+                class="text-neutral-600"
               />
             </span>
             <span class="font-medium text-neutral-900">{{ category.name }}</span>
