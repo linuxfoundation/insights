@@ -37,7 +37,7 @@ export const getHealthScoreV2Config = (
       ? healthScoreV2Config[label]
       : healthScoreV2Config.unavailable;
   if (isPartial) {
-    return { ...config, label: `${config.label} - Partial` };
+    return { ...config, label: `${config.label}*` };
   }
   return config;
 };

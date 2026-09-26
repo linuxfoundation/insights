@@ -30,6 +30,10 @@ export default {
       description: 'Hides the empty portion of the progress bar',
       control: 'boolean',
     },
+    missing: {
+      description: 'Width (percent) of a trailing dotted segment for missing data',
+      control: 'number',
+    },
   },
 };
 
@@ -110,5 +114,14 @@ export const MultipleSegments = {
     color: 'normal',
     size: 'normal',
     label: '75% Total',
+  },
+};
+
+export const WithMissingSegment = {
+  args: {
+    values: [52],
+    color: 'positive',
+    size: 'small',
+    missing: 35,
   },
 };

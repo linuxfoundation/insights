@@ -17,10 +17,12 @@ export default defineEventHandler(async (event): Promise<void> => {
     if (!res.data || res.data.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const healthLabel = res.data[0].healthLabel;
-    const healthMaxScore = res.data[0].healthMaxScore;
-    const config = getHealthScoreV2Config(healthLabel, isPartialHealthScore(healthMaxScore));
-    const message = encodeURIComponent(config.label);
+    const { healthLabel, healthMaxScore, healthScoreV2 } = res.data[0];
+    const isPartial = isPartialHealthScore(healthMaxScore);
+    const config = getHealthScoreV2Config(healthLabel, isPartial);
+    const message = encodeURIComponent(
+      isPartial ? `${config.label} (${healthScoreV2}/${healthMaxScore})` : config.label,
+    );
     const label = encodeURIComponent('Health Score');
     const color = config.ghBadgeColor.replace('#', '');
     const url = `https://img.shields.io/static/v1?label=${label}&message=${message}&color=${color}&logo=linuxfoundation&logoColor=white&style=flat`;

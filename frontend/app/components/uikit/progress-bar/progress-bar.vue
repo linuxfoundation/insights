@@ -21,6 +21,11 @@ SPDX-License-Identifier: MIT
       v-if="!props.hideEmpty"
       class="c-progress-bar__empty"
     />
+    <div
+      v-if="props.missing"
+      class="c-progress-bar__missing"
+      :style="{ width: `${props.missing}%` }"
+    />
   </div>
 </template>
 
@@ -35,12 +40,15 @@ const props = withDefaults(
     color?: ProgressBarType;
     label?: string;
     hideEmpty?: boolean;
+    // trailing dotted segment (percent) for data that is missing rather than scored low
+    missing?: number;
   }>(),
   {
     color: 'normal',
     size: 'normal',
     hideEmpty: false,
     label: undefined,
+    missing: undefined,
   },
 );
 </script>

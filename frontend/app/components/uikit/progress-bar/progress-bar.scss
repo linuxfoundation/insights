@@ -4,7 +4,8 @@
   @apply flex flex-row items-center gap-0.5 w-full;
 
   .c-progress-bar__value,
-  .c-progress-bar__empty {
+  .c-progress-bar__empty,
+  .c-progress-bar__missing {
     @apply rounded-xs transition-all h-2;
   }
 
@@ -41,12 +42,24 @@
   &--size-small {
     @apply gap-0;
     .c-progress-bar__value,
-    .c-progress-bar__empty {
+    .c-progress-bar__empty,
+    .c-progress-bar__missing {
       @apply h-1;
     }
   }
 
   .c-progress-bar__empty {
     @apply bg-neutral-200 grow;
+  }
+
+  .c-progress-bar__missing {
+    @apply shrink-0 rounded-none bg-repeat-x;
+    // dots are sized to the bar height on an 8px pitch, so gaps only show at size small
+    background-image: radial-gradient(
+      circle closest-side,
+      theme('colors.neutral.200') 95%,
+      transparent
+    );
+    background-size: 8px 100%;
   }
 }
