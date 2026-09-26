@@ -90,15 +90,18 @@ const gaugeConfig = computed(() => {
 });
 
 // Clockwise arc from maxScore to 100 on the ring's stroke centerline (r=54 in a 112 box).
+// Inset by 6px at both ends so dots never sit on the colored arc's round caps.
 const missingArcPath = computed(() => {
   const r = 54;
+  const inset = 6 / (2 * Math.PI * r);
   const point = (fraction: number) => {
     const angle = fraction * 2 * Math.PI;
     return `${56 + r * Math.sin(angle)} ${56 - r * Math.cos(angle)}`;
   };
-  const start = props.maxScore / 100;
-  const largeArc = 1 - start > 0.5 ? 1 : 0;
-  return `M ${point(start)} A ${r} ${r} 0 ${largeArc} 1 ${point(0.9999)}`;
+  const start = props.maxScore / 100 + inset;
+  const end = 1 - inset;
+  const largeArc = end - start > 0.5 ? 1 : 0;
+  return `M ${point(start)} A ${r} ${r} 0 ${largeArc} 1 ${point(end)}`;
 });
 </script>
 
