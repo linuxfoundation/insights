@@ -89,8 +89,7 @@ const gaugeConfig = computed(() => {
   return config;
 });
 
-// Clockwise arc from maxScore to 100 on the ring's stroke centerline (r=54 in a 112 box).
-// Inset by 6px at both ends so dots never sit on the colored arc's round caps.
+// Arc from maxScore to 100, inset 6px at each end so dots clear the score arc's round caps.
 const missingArcPath = computed(() => {
   const r = 54;
   const inset = 6 / (2 * Math.PI * r);
