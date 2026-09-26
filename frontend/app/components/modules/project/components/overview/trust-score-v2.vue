@@ -35,25 +35,28 @@ SPDX-License-Identifier: MIT
                       </template>
                     </lfx-tooltip>
                   </span>
-                  <span
-                    class="text-lg font-semibold"
-                    :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
-                    >{{ scoreLabel }}</span
-                  >
-                  <lfx-tooltip
-                    v-if="isPartial"
-                    placement="top"
-                  >
-                    <span class="text-xs text-neutral-500 underline decoration-dotted cursor-help"
-                      >Partial score (2/3 categories)</span
+                  <div class="flex flex-col items-start gap-0.5">
+                    <span
+                      class="text-lg font-semibold"
+                      :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
+                      >{{ scoreLabel }}</span
                     >
-                    <template #content>
-                      <div class="max-w-xs text-xs leading-relaxed">
-                        This Health Score is partial because the {{ missingCategoryLabel }} category is missing data for
-                        this project. The score is computed from the remaining categories only.
-                      </div>
-                    </template>
-                  </lfx-tooltip>
+                    <lfx-tooltip
+                      v-if="isPartial"
+                      placement="top"
+                      class="flex"
+                    >
+                      <span class="text-2xs leading-[14px] text-neutral-500 underline decoration-dotted cursor-help"
+                        >Partial score (2/3 categories)</span
+                      >
+                      <template #content>
+                        <div class="max-w-xs text-xs leading-relaxed">
+                          This Health Score is partial because the {{ missingCategoryLabel }} category is missing data
+                          for this project. The score is computed from the remaining categories only.
+                        </div>
+                      </template>
+                    </lfx-tooltip>
+                  </div>
                 </div>
                 <lfx-health-score-ring
                   :score="healthScoreV2 ?? 0"

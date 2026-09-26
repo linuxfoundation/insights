@@ -87,7 +87,7 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
     // Renders the popover content inline so its partial-only markup can be asserted.
     const popoverStub = { LfxPopover: { template: '<div><slot /><slot name="content" /></div>' } };
 
-    test('partial score shows asterisk, score/max, dashed missing segment and footnote', () => {
+    test('partial score shows asterisk, score/max, dotted missing segment and footnote', () => {
       const wrapper = mount(CollectionHealthScorePill, {
         props: {
           score: 52,
@@ -102,7 +102,7 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
 
       expect(wrapper.text()).toContain('Healthy*');
       expect(wrapper.text()).toContain('(52/65)');
-      expect(wrapper.text()).toContain('— /35');
+      expect(wrapper.text()).toContain('—/35');
       expect(wrapper.text()).toContain(
         '*The Health score is partial because the Security & Supply Chain category is missing data for this project.',
       );

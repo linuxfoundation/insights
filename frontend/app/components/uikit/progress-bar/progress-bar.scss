@@ -53,6 +53,13 @@
   }
 
   .c-progress-bar__missing {
-    @apply border border-dashed border-neutral-300 bg-transparent shrink-0;
+    @apply shrink-0 rounded-none bg-repeat-x;
+    // 4px round dots with 4px gaps, sized to the bar height
+    background-image: radial-gradient(
+      circle closest-side,
+      theme('colors.neutral.200') 95%,
+      transparent
+    );
+    background-size: 8px 100%;
   }
 }

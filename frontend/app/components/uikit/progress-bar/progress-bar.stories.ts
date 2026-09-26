@@ -31,7 +31,7 @@ export default {
       control: 'boolean',
     },
     missing: {
-      description: 'Width (percent) of a trailing dashed segment for missing data',
+      description: 'Width (percent) of a trailing dotted segment for missing data',
       control: 'number',
     },
   },

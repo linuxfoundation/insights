@@ -40,7 +40,7 @@ const props = withDefaults(
     color?: ProgressBarType;
     label?: string;
     hideEmpty?: boolean;
-    // trailing dashed segment (percent) for data that is missing rather than scored low
+    // trailing dotted segment (percent) for data that is missing rather than scored low
     missing?: number;
   }>(),
   {

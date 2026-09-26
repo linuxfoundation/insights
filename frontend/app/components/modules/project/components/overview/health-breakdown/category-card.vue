@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT
       </span>
       <span
         v-else
-        class="text-xs text-neutral-400 shrink-0"
+        class="text-xs font-semibold text-neutral-900 shrink-0"
         >—</span
       >
     </div>
