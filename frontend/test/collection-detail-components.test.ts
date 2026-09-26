@@ -102,7 +102,7 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
 
       expect(wrapper.text()).toContain('Healthy*');
       expect(wrapper.text()).toContain('(52/65)');
-      expect(wrapper.text()).toContain('—/35');
+      expect(wrapper.text()).toContain('— /35');
       expect(wrapper.text()).toContain(
         '*The Health score is partial because the Security & Supply Chain category is missing data for this project.',
       );

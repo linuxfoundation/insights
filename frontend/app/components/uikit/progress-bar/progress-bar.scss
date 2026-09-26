@@ -54,7 +54,7 @@
 
   .c-progress-bar__missing {
     @apply shrink-0 rounded-none bg-repeat-x;
-    // 4px round dots with 4px gaps, sized to the bar height
+    // dots are sized to the bar height on an 8px pitch, so gaps only show at size small
     background-image: radial-gradient(
       circle closest-side,
       theme('colors.neutral.200') 95%,

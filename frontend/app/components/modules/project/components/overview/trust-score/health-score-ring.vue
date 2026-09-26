@@ -47,6 +47,7 @@ import { computed } from 'vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
 import { lfxColors } from '~/config/styles/colors';
+import { isPartialHealthScore } from '~~/config/trust-score';
 
 const props = withDefaults(
   defineProps<{
@@ -62,7 +63,7 @@ const props = withDefaults(
   },
 );
 
-const isPartial = computed(() => props.maxScore < 100);
+const isPartial = computed(() => isPartialHealthScore(props.maxScore));
 
 // Arc is always on a 0-100 scale; for partial scores the track past maxScore is left for the dotted overlay.
 const gaugeConfig = computed(() => {

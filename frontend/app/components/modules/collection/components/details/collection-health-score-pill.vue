@@ -78,7 +78,7 @@ SPDX-License-Identifier: MIT
             </span>
             <span class="font-medium text-neutral-900">{{ category.name }}</span>
             <span class="ml-auto shrink-0">
-              <span class="font-semibold text-neutral-900">{{ category.score ?? '—' }}</span
+              <span class="font-semibold text-neutral-900">{{ category.score ?? '— ' }}</span
               ><span class="text-neutral-400">/{{ category.max }}</span>
             </span>
           </div>
