@@ -57,9 +57,9 @@ describe('getHealthScoreV2Config', () => {
     expect(result.label).toBe('Healthy');
   });
 
-  test('should append " - Partial" to the label when isPartial is true', () => {
+  test('should append an asterisk to the label when isPartial is true', () => {
     const result = getHealthScoreV2Config('healthy', true);
-    expect(result.label).toBe('Healthy - Partial');
+    expect(result.label).toBe('Healthy*');
   });
 
   test('should not append a partial suffix when isPartial is false', () => {
@@ -67,9 +67,9 @@ describe('getHealthScoreV2Config', () => {
     expect(result.label).toBe('Healthy');
   });
 
-  test('should append the partial suffix to the unavailable fallback when label is null', () => {
+  test('should append the asterisk to the unavailable fallback when label is null', () => {
     const result = getHealthScoreV2Config(null, true);
-    expect(result.label).toBe('Unavailable - Partial');
+    expect(result.label).toBe('Unavailable*');
   });
 
   test('should preserve the badge color when appending the partial suffix', () => {

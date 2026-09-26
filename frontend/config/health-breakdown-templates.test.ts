@@ -3,7 +3,11 @@
 import { describe, test, expect } from 'vitest';
 
 import type { HealthBreakdownResults } from '../types/overview/responses.types';
-import { getLifecycleDescription, getOpenVulnRow } from './health-breakdown-templates';
+import {
+  getLifecycleDescription,
+  getMissingHealthCategoryName,
+  getOpenVulnRow,
+} from './health-breakdown-templates';
 
 describe('getLifecycleDescription', () => {
   test('should return the inert description when lifecycle state is "inert"', () => {
@@ -91,5 +95,23 @@ describe('health-breakdown-templates', () => {
     const result = getOpenVulnRow(signals);
 
     expect(result.status).toBe('positive');
+  });
+});
+
+describe('getMissingHealthCategoryName', () => {
+  test('names Maintainer Health when it is missing', () => {
+    expect(getMissingHealthCategoryName(null, 30, 20)).toBe('Maintainer Health');
+  });
+
+  test('names Security & Supply Chain when it is missing', () => {
+    expect(getMissingHealthCategoryName(35, null, 20)).toBe('Security & Supply Chain');
+  });
+
+  test('names Development Activity when it is missing', () => {
+    expect(getMissingHealthCategoryName(35, 30, null)).toBe('Development Activity');
+  });
+
+  test('returns null when no category is missing', () => {
+    expect(getMissingHealthCategoryName(35, 30, 20)).toBeNull();
   });
 });

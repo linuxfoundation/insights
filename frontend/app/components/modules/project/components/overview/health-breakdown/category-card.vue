@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
       <span
         v-else
         class="text-xs text-neutral-400 shrink-0"
-        >No data</span
+        >—</span
       >
     </div>
 

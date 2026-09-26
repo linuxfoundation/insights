@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
         :class="healthScoreDotClass"
       />
       <span class="text-xs font-medium text-neutral-900">{{ healthScoreLabel }}</span>
-      <span class="text-xs font-medium text-neutral-500">({{ props.score }})</span>
+      <span class="text-xs font-medium text-neutral-500">({{ props.score }}/{{ maxScore }})</span>
     </lfx-chip>
 
     <template #content>
@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
       </div>
       <div
         v-else
-        class="w-64 space-y-3 text-xs bg-white border border-neutral-100 rounded-xl shadow-xl p-3"
+        class="w-80 flex flex-col gap-4 text-xs bg-white border border-neutral-200 rounded-xl shadow-xl p-3"
       >
         <div class="flex items-center gap-1.5">
           <span
@@ -45,11 +45,12 @@ SPDX-License-Identifier: MIT
             :class="healthScoreDotClass"
           />
           <span class="font-semibold text-neutral-900">{{ healthScoreLabel }}</span>
-          <span class="text-neutral-500">({{ props.score }}/{{ props.healthMaxScore ?? 100 }})</span>
+          <span class="text-neutral-500">({{ props.score }}/{{ maxScore }})</span>
         </div>
         <lfx-progress-bar
-          :values="[progressBarValue]"
+          :values="[props.score]"
           :color="progressBarColor"
+          :missing="isPartial ? 100 - maxScore : undefined"
           size="small"
         />
         <p
@@ -73,6 +74,12 @@ SPDX-License-Identifier: MIT
             <span class="ml-auto font-medium text-neutral-900">{{ category.display }}</span>
           </div>
         </div>
+        <p
+          v-if="isPartial && missingCategoryName"
+          class="text-neutral-500 italic"
+        >
+          *The Health score is partial because the {{ missingCategoryName }} category is missing data for this project.
+        </p>
       </div>
     </template>
   </lfx-popover>
@@ -85,7 +92,7 @@ import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
-import { getHealthScoreDescription } from '~~/config/health-breakdown-templates';
+import { getHealthScoreDescription, getMissingHealthCategoryName } from '~~/config/health-breakdown-templates';
 import { getHealthScoreV2Config, isPartialHealthScore } from '~~/config/trust-score';
 
 const props = defineProps<{
@@ -111,8 +118,17 @@ const bandFromScore = (score: number) => {
 
 const band = computed(() => (props.healthLabel ?? bandFromScore(props.score)).toLowerCase());
 
-const healthScoreLabel = computed(
-  () => getHealthScoreV2Config(band.value, isPartialHealthScore(props.healthMaxScore ?? null)).label,
+const isPartial = computed(() => isPartialHealthScore(props.healthMaxScore ?? null));
+const maxScore = computed(() => props.healthMaxScore ?? 100);
+
+const healthScoreLabel = computed(() => getHealthScoreV2Config(band.value, isPartial.value).label);
+
+const missingCategoryName = computed(() =>
+  getMissingHealthCategoryName(
+    props.maintainerHealthScoreV2 ?? null,
+    props.securitySupplyChainScoreV2 ?? null,
+    props.developmentActivityScoreV2 ?? null,
+  ),
 );
 
 const healthScoreDotClass = computed(() => {
@@ -125,10 +141,6 @@ const healthScoreDotClass = computed(() => {
   };
   return classes[band.value] ?? 'bg-health-critical';
 });
-
-// The progress bar renders `values` as a raw 0-100 fill percentage, so a capped score (e.g. 45
-// out of a 65 max) needs rescaling - otherwise the bar under-fills relative to the displayed total.
-const progressBarValue = computed(() => (props.score / (props.healthMaxScore ?? 100)) * 100);
 
 const progressBarColor = computed(() => {
   if (band.value === 'excellent' || band.value === 'healthy') return 'positive';
@@ -151,19 +163,19 @@ const categories = computed(() => [
     key: 'maintainer-health',
     name: 'Maintainer Health',
     icon: 'heart-pulse',
-    display: `${props.maintainerHealthScoreV2 ?? '-'}/40`,
+    display: `${props.maintainerHealthScoreV2 ?? '— '}/40`,
   },
   {
     key: 'security-supply-chain',
     name: 'Security & Supply Chain',
     icon: 'shield-check',
-    display: `${props.securitySupplyChainScoreV2 ?? '-'}/35`,
+    display: `${props.securitySupplyChainScoreV2 ?? '— '}/35`,
   },
   {
     key: 'development-activity',
     name: 'Development Activity',
     icon: 'laptop-code',
-    display: `${props.developmentActivityScoreV2 ?? '-'}/25`,
+    display: `${props.developmentActivityScoreV2 ?? '— '}/25`,
   },
 ]);
 </script>

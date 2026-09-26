@@ -7,6 +7,7 @@ import CollectionHealthScorePill from '~~/app/components/modules/collection/comp
 import CollectionImpactScorePill from '~~/app/components/modules/collection/components/details/collection-impact-score-pill.vue';
 import CollectionLifecycleBadge from '~~/app/components/modules/collection/components/details/collection-lifecycle-badge.vue';
 import LfxPopover from '~~/app/components/uikit/popover/popover.vue';
+import LfxProgressBar from '~~/app/components/uikit/progress-bar/progress-bar.vue';
 import LfxTag from '~~/app/components/uikit/tag/tag.vue';
 
 describe('Collection detail pill components — IN-1239 regression suite', () => {
@@ -81,6 +82,50 @@ describe('Collection detail pill components — IN-1239 regression suite', () =>
         });
         expect(wrapper.text()).toContain(label);
       });
+    });
+
+    // Renders the popover content inline so its partial-only markup can be asserted.
+    const popoverStub = { LfxPopover: { template: '<div><slot /><slot name="content" /></div>' } };
+
+    test('partial score shows asterisk, score/max, dashed missing segment and footnote', () => {
+      const wrapper = mount(CollectionHealthScorePill, {
+        props: {
+          score: 52,
+          healthLabel: 'healthy',
+          healthMaxScore: 65,
+          maintainerHealthScoreV2: 40,
+          securitySupplyChainScoreV2: null,
+          developmentActivityScoreV2: 12,
+        },
+        global: { stubs: popoverStub },
+      });
+
+      expect(wrapper.text()).toContain('Healthy*');
+      expect(wrapper.text()).toContain('(52/65)');
+      expect(wrapper.text()).toContain('— /35');
+      expect(wrapper.text()).toContain(
+        '*The Health score is partial because the Security & Supply Chain category is missing data for this project.',
+      );
+      expect(wrapper.findComponent(LfxProgressBar).props('missing')).toBe(35);
+    });
+
+    test('full score shows score/100 without partial markers', () => {
+      const wrapper = mount(CollectionHealthScorePill, {
+        props: {
+          score: 85,
+          healthLabel: 'excellent',
+          healthMaxScore: 100,
+          maintainerHealthScoreV2: 38,
+          securitySupplyChainScoreV2: 27,
+          developmentActivityScoreV2: 20,
+        },
+        global: { stubs: popoverStub },
+      });
+
+      expect(wrapper.text()).toContain('(85/100)');
+      expect(wrapper.text()).not.toContain('*');
+      expect(wrapper.text()).not.toContain('is partial because');
+      expect(wrapper.findComponent(LfxProgressBar).props('missing')).toBeUndefined();
     });
   });
 

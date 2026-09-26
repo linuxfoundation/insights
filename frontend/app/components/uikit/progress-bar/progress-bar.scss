@@ -4,7 +4,8 @@
   @apply flex flex-row items-center gap-0.5 w-full;
 
   .c-progress-bar__value,
-  .c-progress-bar__empty {
+  .c-progress-bar__empty,
+  .c-progress-bar__missing {
     @apply rounded-xs transition-all h-2;
   }
 
@@ -41,12 +42,17 @@
   &--size-small {
     @apply gap-0;
     .c-progress-bar__value,
-    .c-progress-bar__empty {
+    .c-progress-bar__empty,
+    .c-progress-bar__missing {
       @apply h-1;
     }
   }
 
   .c-progress-bar__empty {
     @apply bg-neutral-200 grow;
+  }
+
+  .c-progress-bar__missing {
+    @apply border border-dashed border-neutral-300 bg-transparent shrink-0;
   }
 }
