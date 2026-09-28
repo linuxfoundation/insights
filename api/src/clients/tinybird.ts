@@ -58,9 +58,8 @@ async function fromTinybird<T>(
   }
 }
 
-// The client only checks that `data` is present, so a pipe answering outside its contract is
-// rejected here and maps to 503 with the other upstream faults. `total` is Tinybird's
-// rows_before_limit_at_least, which it can leave out.
+// The client only checks that `data` is present, so off-contract rows or totals are rejected here
+// and map to 503 with the other upstream faults. Tinybird can omit `total`.
 export function fetchCountedPipe<T>(
   request: RequestLog,
   path: string,
@@ -73,6 +72,9 @@ export function fetchCountedPipe<T>(
     const { data, rows_before_limit_at_least: total } = await client.fetch<T[]>(path, params);
     if (!Array.isArray(data) || !data.every(isRow)) {
       throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
+    }
+    if (total !== undefined && !(Number.isSafeInteger(total) && total >= 0)) {
+      throw new TinybirdInvalidResponseError('Tinybird returned an unexpected row total');
     }
     return { rows: data, total };
   });
