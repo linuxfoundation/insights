@@ -50,4 +50,15 @@ describe('v1-alpha group route autoload', () => {
       expect(served).toEqual(await modulesIn(group));
     },
   );
+
+  // Leaderboard routes sit outside a project, and path parameters keep them from mapping to file names.
+  it('serves one route per module in src/versions/v1-alpha/leaderboards', async () => {
+    const spec = (await app.inject({ method: 'GET', url: '/v1-alpha/openapi.json' })).json<{
+      paths: Record<string, unknown>;
+    }>();
+    const served = Object.keys(spec.paths).filter(
+      (path) => path === '/v1-alpha/leaderboards' || path.startsWith('/v1-alpha/leaderboards/'),
+    );
+    expect(served).toHaveLength((await modulesIn('leaderboards')).length);
+  });
 });

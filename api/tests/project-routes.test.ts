@@ -30,16 +30,27 @@ await discovery.close();
 
 // The trailing slash leaves out the project route itself, which has its own test file.
 const prefix = projectPath('');
-const routes = Object.entries(spec.paths).flatMap(([path, item]) =>
-  path.startsWith(prefix) && item.get
-    ? [{ name: path.slice(prefix.length), path, operation: item.get }]
-    : [],
-);
+// Routes outside a project skip the slug, bucket, repos and date cases.
+const globalPrefix = '/v1-alpha/';
+const globalGroups = new Set(['leaderboards']);
+const routes = Object.entries(spec.paths).flatMap(([path, item]) => {
+  if (!item.get) {
+    return [];
+  }
+  if (path.startsWith(prefix)) {
+    return [{ name: path.slice(prefix.length), path, operation: item.get, scoped: true }];
+  }
+  const name = path.slice(globalPrefix.length);
+  return path.startsWith(globalPrefix) && globalGroups.has(name.split('/')[0])
+    ? [{ name, path, operation: item.get, scoped: false }]
+    : [];
+});
 const names = routes.map((route) => route.name).sort();
 const routeOf = (name: string) => routes.find((route) => route.name === name)!;
 const operationOf = (name: string) => routeOf(name).operation;
 const declares = (name: string, param: string) =>
   operationOf(name).parameters?.some((p) => p.name === param) ?? false;
+const scoped = (name: string) => routeOf(name).scoped;
 const hasDates = (name: string) => declares(name, 'startDate') || declares(name, 'endDate');
 
 const groupTags: Record<string, string> = {
@@ -48,8 +59,10 @@ const groupTags: Record<string, string> = {
   popularity: 'Popularity',
   security: 'Security',
   overview: 'Overview',
+  leaderboards: 'Leaderboards',
 };
-const tagOf = (name: string) => (name.includes('/') ? groupTags[name.split('/')[0]] : 'Projects');
+const tagOf = (name: string) =>
+  scoped(name) && !name.includes('/') ? 'Projects' : groupTags[name.split('/')[0]];
 
 const knownRequired = new Set(['slug', 'granularity']);
 const validQuery = (name: string) => ({
@@ -129,34 +142,40 @@ describe.each(names)('%s', (name) => {
     expect(maxInFlight).toBe(expected);
   });
 
-  it('answers an unknown project after the bucket lookup alone', async () => {
-    vi.spyOn(console, 'warn').mockImplementation(() => {});
-    mockFetch.mockImplementation(tinybirdStub(() => [], []));
-    const res = await get(url(name, {}, 'no-such-project'));
-    expect(res.statusCode).toBe(200);
-    expect(callsTo(bucketsPath)[0]?.searchParams.get('project')).toBe('no-such-project');
-    expect(pipeCalls()).toHaveLength(0);
-    vi.restoreAllMocks();
-  });
+  if (scoped(name)) {
+    it('answers an unknown project after the bucket lookup alone', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      mockFetch.mockImplementation(tinybirdStub(() => [], []));
+      const res = await get(url(name, {}, 'no-such-project'));
+      expect(res.statusCode).toBe(200);
+      expect(callsTo(bucketsPath)[0]?.searchParams.get('project')).toBe('no-such-project');
+      expect(pipeCalls()).toHaveLength(0);
+      vi.restoreAllMocks();
+    });
 
-  it('looks the bucket up once and forwards it, 0 included, on every pipe call', async () => {
-    mockFetch.mockImplementation(tinybirdStub(() => [], [{ bucketId: 0 }]));
-    expect((await get(url(name))).statusCode).toBe(200);
-    expect(callsTo(bucketsPath)).toHaveLength(1);
-    expect(callsTo(bucketsPath)[0]?.searchParams.get('project')).toBe('kubernetes');
-    expect(pipeCalls().length).toBeGreaterThan(0);
-    for (const call of pipeCalls()) {
-      expect(call.searchParams.get('bucketId'), call.pathname).toBe('0');
-    }
-  });
+    it('looks the bucket up once and forwards it, 0 included, on every pipe call', async () => {
+      mockFetch.mockImplementation(tinybirdStub(() => [], [{ bucketId: 0 }]));
+      expect((await get(url(name))).statusCode).toBe(200);
+      expect(callsTo(bucketsPath)).toHaveLength(1);
+      expect(callsTo(bucketsPath)[0]?.searchParams.get('project')).toBe('kubernetes');
+      expect(pipeCalls().length).toBeGreaterThan(0);
+      for (const call of pipeCalls()) {
+        expect(call.searchParams.get('bucketId'), call.pathname).toBe('0');
+      }
+    });
+  }
 
   describe('upstream failures answer 503 upstream_unavailable with the header set', () => {
     const cases: [string, () => void][] = [
-      ['a failing bucket lookup', () => mockFetch.mockResolvedValue(tinybirdError(500))],
-      [
-        'a bucket lookup network error',
-        () => mockFetch.mockRejectedValue(new TypeError('fetch failed')),
-      ],
+      ...(scoped(name)
+        ? ([
+            ['a failing bucket lookup', () => mockFetch.mockResolvedValue(tinybirdError(500))],
+            [
+              'a bucket lookup network error',
+              () => mockFetch.mockRejectedValue(new TypeError('fetch failed')),
+            ],
+          ] as [string, () => void][])
+        : []),
       [
         'a pipe network error',
         () =>
@@ -235,7 +254,7 @@ describe.each(names)('%s', (name) => {
       vi.restoreAllMocks();
     });
 
-    it('calls no pipe when the bucket lookup fails', async () => {
+    it.runIf(scoped(name))('calls no pipe when the bucket lookup fails', async () => {
       mockFetch.mockImplementation(async (input: unknown) =>
         new URL(String(input)).pathname === bucketsPath ? tinybirdError(500) : tinybirdResponse([]),
       );
