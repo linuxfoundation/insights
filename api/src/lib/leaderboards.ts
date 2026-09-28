@@ -247,8 +247,10 @@ export const isEntryRow = (row: unknown): row is LeaderboardRow => {
   );
 };
 
-// isLF is widened to number: isEntryRow is what actually pins it to 0 or 1 before this runs.
-export const toEntry = (row: Omit<LeaderboardRow, 'isLF'> & { isLF: number }) => ({
+// isLF and status stay wide so callers can pass plain rows; isEntryRow pins both before this runs.
+export const toEntry = (
+  row: Omit<LeaderboardRow, 'isLF'> & { isLF: number },
+): LeaderboardEntry => ({
   rank: row.rank,
   id: row.id,
   name: row.name,
@@ -257,7 +259,7 @@ export const toEntry = (row: Omit<LeaderboardRow, 'isLF'> & { isLF: number }) =>
   value: row.value,
   previousPeriodValue: row.previousPeriodValue,
   isLF: row.isLF === 1,
-  status: row.status || null,
+  status: (row.status || null) as LeaderboardEntry['status'],
   githubHandles: row.githubHandleArray,
   totalCount: row.totalCount,
 });
