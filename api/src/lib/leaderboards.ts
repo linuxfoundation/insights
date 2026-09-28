@@ -222,7 +222,9 @@ export interface LeaderboardRow {
   totalCount: number;
 }
 
-const isStatus = enumGuard(LeaderboardStatus);
+const statusGuard = enumGuard(LeaderboardStatus);
+const isStatus = (value: unknown): value is NonNullable<LeaderboardEntry['status']> =>
+  statusGuard(value);
 
 export const isEntryRow = (row: unknown): row is LeaderboardRow => {
   if (typeof row !== 'object' || row === null || Array.isArray(row)) {
@@ -247,7 +249,7 @@ export const isEntryRow = (row: unknown): row is LeaderboardRow => {
   );
 };
 
-// isLF and status stay wide so callers can pass plain rows; isEntryRow pins both before this runs.
+// isLF and status stay wide so callers can pass plain rows; an off-enum status maps to null.
 export const toEntry = (
   row: Omit<LeaderboardRow, 'isLF'> & { isLF: number },
 ): LeaderboardEntry => ({
@@ -259,7 +261,7 @@ export const toEntry = (
   value: row.value,
   previousPeriodValue: row.previousPeriodValue,
   isLF: row.isLF === 1,
-  status: (row.status || null) as LeaderboardEntry['status'],
+  status: isStatus(row.status) ? row.status : null,
   githubHandles: row.githubHandleArray,
   totalCount: row.totalCount,
 });
