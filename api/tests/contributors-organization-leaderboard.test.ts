@@ -141,6 +141,13 @@ describe('GET /v1-alpha/projects/{slug}/contributors/organization-leaderboard (A
     expect(res.body).not.toContain('https://site.test');
   });
 
+  it('keeps an empty slug as an empty string for an organization without a public page', async () => {
+    mockFetch.mockImplementation(routeTinybird({ rows: [{ ...pipeRow('a', 3), slug: '' }] }));
+    const res = await get(url());
+    expect(res.statusCode).toBe(200);
+    expect(res.json().data[0].slug).toBe('');
+  });
+
   it('keeps an empty logo as an empty string rather than null', async () => {
     mockFetch.mockImplementation(routeTinybird({ rows: [{ ...pipeRow('a', 3), logo: '' }] }));
     const res = await get(url());
