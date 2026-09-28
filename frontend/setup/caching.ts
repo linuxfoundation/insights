@@ -112,6 +112,9 @@ export default {
           '/project/**': { cache: false },
           '/collection/**': { cache: false },
           '/collection': { cache: false },
+          // swr:false makes an expired entry recompute inline, so a 404 for a blocked org reaches the client.
+          '/api/organization-page/**': { cache: { maxAge: shortCache, base: 'redis', swr: false } },
+          '/organization/**': { cache: { maxAge: longCache, base: 'redis', swr: false } },
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {}),
