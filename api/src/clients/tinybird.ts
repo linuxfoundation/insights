@@ -60,11 +60,12 @@ async function fromTinybird<T>(
 
 // The client only checks that `data` is present, so off-contract rows or totals are rejected here
 // and map to 503 with the other upstream faults. Tinybird can omit `total`.
-export function fetchCountedPipe<T>(
+function fetchGuarded<T>(
   request: RequestLog,
   path: string,
   params: TinybirdQuery,
-  isRow: (row: T) => boolean = () => true,
+  isRow: (row: T) => boolean,
+  checkTotal: boolean,
 ): Promise<{ rows: T[]; total: number | undefined }> {
   // A missing API_TB_* variable throws here, outside the 503 mapping, so it stays a 500.
   const client = getTinybirdClient();
@@ -73,11 +74,20 @@ export function fetchCountedPipe<T>(
     if (!Array.isArray(data) || !data.every(isRow)) {
       throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
     }
-    if (total !== undefined && !(Number.isSafeInteger(total) && total >= 0)) {
+    if (checkTotal && total !== undefined && !(Number.isSafeInteger(total) && total >= 0)) {
       throw new TinybirdInvalidResponseError('Tinybird returned an unexpected row total');
     }
     return { rows: data, total };
   });
+}
+
+export function fetchCountedPipe<T>(
+  request: RequestLog,
+  path: string,
+  params: TinybirdQuery,
+  isRow: (row: T) => boolean,
+): Promise<{ rows: T[]; total: number | undefined }> {
+  return fetchGuarded(request, path, params, isRow, true);
 }
 
 export async function fetchPipe<T>(
@@ -86,7 +96,7 @@ export async function fetchPipe<T>(
   params: TinybirdQuery,
   isRow: (row: T) => boolean = () => true,
 ): Promise<T[]> {
-  return (await fetchCountedPipe(request, path, params, isRow)).rows;
+  return (await fetchGuarded(request, path, params, isRow, false)).rows;
 }
 
 // Ajv coerces a bare `repos=` into [''] and the client sends an empty array as `repos=`, which a

@@ -87,11 +87,15 @@ const leaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       );
       const fetched = chunks.flatMap((chunk) => chunk.rows);
       const rows = fetched.slice(skip, skip + page.pageSize);
-      // Without Tinybird's total, a full last pipe page is the only sign that more rows follow.
+      // A total below the rows already seen contradicts the page, so it is treated as missing. Then a
+      // full last pipe page is the only sign that more rows follow.
       const last = chunks[chunks.length - 1]!;
+      const seen = pages[0]! * page.pageSize + fetched.length;
+      const reported = chunks[0]!.total;
       const total =
-        chunks[0]!.total ??
-        pages[0]! * page.pageSize + fetched.length + (last.rows.length === page.pageSize ? 1 : 0);
+        reported !== undefined && reported >= seen
+          ? reported
+          : seen + (last.rows.length === page.pageSize ? 1 : 0);
 
       const info = leaderboardTypes.find((entry) => entry.type === type)!;
       return { ...info, ...toCountedPage(rows.map(toEntry), page, total) };
