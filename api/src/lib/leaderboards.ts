@@ -239,6 +239,7 @@ export const isEntryRow = (row: unknown): row is LeaderboardRow => {
     Number.isFinite(candidate.value) &&
     Number.isFinite(candidate.previousPeriodValue) &&
     (candidate.isLF === 0 || candidate.isLF === 1) &&
+    isString(candidate.status) &&
     (candidate.status === '' || isStatus(candidate.status)) &&
     Array.isArray(candidate.githubHandleArray) &&
     candidate.githubHandleArray.every(isString) &&

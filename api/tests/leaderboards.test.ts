@@ -158,7 +158,7 @@ describe('toEntry (AC3)', () => {
     });
   });
 
-  it('answers empty strings as null and keeps a contributor handles', () => {
+  it("answers empty strings as null and keeps a contributor's handles", () => {
     const contributor = {
       ...row,
       slug: '',
