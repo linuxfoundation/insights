@@ -59,22 +59,32 @@ async function fromTinybird<T>(
 }
 
 // The client only checks that `data` is present, so a pipe answering outside its contract is
-// rejected here and maps to 503 with the other upstream faults.
-export function fetchPipe<T>(
+// rejected here and maps to 503 with the other upstream faults. `total` is Tinybird's
+// rows_before_limit_at_least, which it can leave out.
+export function fetchCountedPipe<T>(
+  request: RequestLog,
+  path: string,
+  params: TinybirdQuery,
+  isRow: (row: T) => boolean = () => true,
+): Promise<{ rows: T[]; total: number | undefined }> {
+  // A missing API_TB_* variable throws here, outside the 503 mapping, so it stays a 500.
+  const client = getTinybirdClient();
+  return fromTinybird(request, path, async () => {
+    const { data, rows_before_limit_at_least: total } = await client.fetch<T[]>(path, params);
+    if (!Array.isArray(data) || !data.every(isRow)) {
+      throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
+    }
+    return { rows: data, total };
+  });
+}
+
+export async function fetchPipe<T>(
   request: RequestLog,
   path: string,
   params: TinybirdQuery,
   isRow: (row: T) => boolean = () => true,
 ): Promise<T[]> {
-  // A missing API_TB_* variable throws here, outside the 503 mapping, so it stays a 500.
-  const client = getTinybirdClient();
-  return fromTinybird(request, path, async () => {
-    const { data } = await client.fetch<T[]>(path, params);
-    if (!Array.isArray(data) || !data.every(isRow)) {
-      throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
-    }
-    return data;
-  });
+  return (await fetchCountedPipe(request, path, params, isRow)).rows;
 }
 
 // Ajv coerces a bare `repos=` into [''] and the client sends an empty array as `repos=`, which a

@@ -64,13 +64,13 @@ const groupTags: Record<string, string> = {
 const tagOf = (name: string) =>
   scoped(name) && !name.includes('/') ? 'Projects' : groupTags[name.split('/')[0]];
 
-const knownRequired = new Set(['slug', 'granularity']);
+const knownRequired = new Set(['slug', 'granularity', 'type']);
 const validQuery = (name: string) => ({
   ...(hasDates(name) ? { startDate: '2025-01-01', endDate: '2025-03-31' } : {}),
   ...(declares(name, 'granularity') ? { granularity: 'monthly' } : {}),
 });
 const url = (name: string, params: Record<string, string | undefined> = {}, slug = 'kubernetes') =>
-  `${routeOf(name).path.replace('{slug}', slug)}?${queryString({ ...validQuery(name), ...params })}`;
+  `${routeOf(name).path.replace('{slug}', slug).replace('{type}', 'stars')}?${queryString({ ...validQuery(name), ...params })}`;
 
 type QueryCase = [label: string, params: Record<string, string | undefined>];
 const casesIf = (condition: boolean, cases: QueryCase[]) => (condition ? cases : []);
@@ -92,7 +92,7 @@ const rankedRows = (count: number) =>
   }));
 
 // These pipes page by page number rather than limit and offset, so their own files test paging.
-const pagesByNumber = new Set(['security/vulnerabilities']);
+const pagesByNumber = new Set(['security/vulnerabilities', 'leaderboards/{type}']);
 
 const { get } = useApp();
 const emptyRows = tinybirdStub(() => []);
