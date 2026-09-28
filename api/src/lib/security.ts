@@ -5,7 +5,7 @@ import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import { field } from './geo-distribution.js';
 
 // Values are exposed as the data holds them, matching the Security tab.
-const dataEnum = <T extends string>(values: readonly T[], description: string) =>
+export const dataEnum = <T extends string>(values: readonly T[], description: string) =>
   Type.Unsafe<T>({ type: 'string', enum: [...values], description });
 
 export const Severity = dataEnum(
