@@ -83,6 +83,17 @@ const CATEGORY_NAME: Record<HealthCategoryKey, string> = {
   development: 'Development Activity',
 };
 
+export const getMissingHealthCategoryName = (
+  maintainerScore: number | null,
+  securityScore: number | null,
+  developmentScore: number | null,
+): string | null => {
+  if (maintainerScore === null) return CATEGORY_NAME.maintainer;
+  if (securityScore === null) return CATEGORY_NAME.security;
+  if (developmentScore === null) return CATEGORY_NAME.development;
+  return null;
+};
+
 const capitalize = (value: string): string =>
   value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : value;
 

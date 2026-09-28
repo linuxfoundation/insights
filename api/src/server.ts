@@ -19,6 +19,8 @@ const host = process.env.HOST ?? '0.0.0.0';
 
 const app = await buildApp();
 
+process.once('SIGTERM', () => void app.close().then(() => process.exit(0)));
+
 app.listen({ port, host }).catch((err) => {
   app.log.error(err);
   process.exit(1);

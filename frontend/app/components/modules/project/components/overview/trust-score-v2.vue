@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
                       </template>
                     </lfx-tooltip>
                   </span>
-                  <span class="flex items-center gap-1">
+                  <div class="flex flex-col items-start gap-0.5">
                     <span
                       class="text-lg font-semibold"
                       :class="isEmpty ? 'text-neutral-400' : scoreTextColorClass"
@@ -44,12 +44,11 @@ SPDX-License-Identifier: MIT
                     <lfx-tooltip
                       v-if="isPartial"
                       placement="top"
+                      class="flex"
                     >
-                      <lfx-icon
-                        name="circle-question"
-                        :size="11"
-                        class="cursor-help text-neutral-400"
-                      />
+                      <span class="text-2xs leading-[14px] text-neutral-500 underline decoration-dotted cursor-help"
+                        >Partial score (2/3 categories)</span
+                      >
                       <template #content>
                         <div class="max-w-xs text-xs leading-relaxed">
                           This Health Score is partial because the {{ missingCategoryLabel }} category is missing data
@@ -57,7 +56,7 @@ SPDX-License-Identifier: MIT
                         </div>
                       </template>
                     </lfx-tooltip>
-                  </span>
+                  </div>
                 </div>
                 <lfx-health-score-ring
                   :score="healthScoreV2 ?? 0"
@@ -210,6 +209,7 @@ import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import {
   getLifecycleDescription,
   getHealthScoreDescription,
+  getMissingHealthCategoryName,
   // TEMPORARILY HIDDEN (IN-1243): Impact section disabled until underlying data quality issue is fixed. Re-enable by uncommenting.
   // getImpactSummaryDescription,
 } from '~~/config/health-breakdown-templates';
@@ -250,12 +250,13 @@ const showShareBadge = computed(
 
 const isPartial = computed(() => isPartialHealthScore(props.healthMaxScore));
 
-const missingCategoryLabel = computed(() => {
-  if (props.maintainerHealthScoreV2 === null) return 'Maintainer Health';
-  if (props.securitySupplyChainScoreV2 === null) return 'Security & Supply Chain';
-  if (props.developmentActivityScoreV2 === null) return 'Development Activity';
-  return null;
-});
+const missingCategoryLabel = computed(() =>
+  getMissingHealthCategoryName(
+    props.maintainerHealthScoreV2,
+    props.securitySupplyChainScoreV2,
+    props.developmentActivityScoreV2,
+  ),
+);
 
 const scoreLabel = computed(() => getHealthScoreV2Config(props.healthLabel, isPartial.value).label);
 

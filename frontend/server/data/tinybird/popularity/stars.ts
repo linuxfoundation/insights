@@ -50,10 +50,10 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
 export async function fetchStarsActivities(filter: ActivityCountFilter): Promise<StarsData> {
   const { currentSummaryQuery, previousSummaryQuery, dataQuery } = getTinybirdQueries(filter);
 
-  const summariesPath = 'activities_count.json'; // Tinybird uses this one for the summaries
-  let dataPath = 'activities_cumulative_count.json';
+  const summariesPath = 'stars_count.json';
+  let dataPath = 'stars_cumulative_count.json';
   if (filter.countType === ActivityFilterCountType.NEW) {
-    dataPath = 'activities_count.json';
+    dataPath = 'stars_count.json';
   }
 
   const [currentSummaryData, previousSummaryData, currentData] = await Promise.all([
