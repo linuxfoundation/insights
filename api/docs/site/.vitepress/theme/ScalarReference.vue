@@ -16,10 +16,10 @@ onMounted(async () => {
   const { createApiReference } = await import('@scalar/api-reference');
   if (!mountEl.value) return;
   const created = createApiReference(mountEl.value, {
-    // One source per API version; v1-alpha holds every route until v1 ships.
+    // One source per API version. Uncomment v1 once it has routes; an empty spec renders a blank page.
     sources: [
       { title: 'v1-alpha', slug: 'v1-alpha', url: '/v1-alpha/openapi.json', default: true },
-      { title: 'v1', slug: 'v1', url: '/v1/openapi.json' },
+      // { title: 'v1', slug: 'v1', url: '/v1/openapi.json' },
     ],
     // Try-it client off: it would let a PAT be pasted into the browser.
     hideClientButton: true,
