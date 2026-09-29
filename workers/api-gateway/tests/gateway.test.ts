@@ -11,7 +11,6 @@ import type { MemberOrgTier } from '../src/tiers';
 
 const env: Env = {
   ORIGIN_URL: 'http://origin.test',
-  WORKER_SECRET: 'worker-secret',
   PAT_HASH_SALT: 'salt',
   LFX_API_URL: 'https://lfx-api.test/',
   M2M_ISSUER_URL: 'https://auth.test/',
@@ -103,7 +102,6 @@ describe('api gateway', () => {
     expect(usernameFromJwt(request.headers.get('authorization')!.replace('Bearer ', ''))).toBe(
       'stub-user',
     );
-    expect(request.headers.get('x-worker-secret')).toBe('worker-secret');
     expect(request.headers.get('x-org-id')).toBe('001B000000IqhSLIAZ');
     expect(request.headers.get('x-tier')).toBe('gold');
     expect(request.headers.get('x-client-ip')).toBe('203.0.113.7');
@@ -113,7 +111,11 @@ describe('api gateway', () => {
   it('overwrites client-supplied trusted headers', async () => {
     const { deps, forwarded } = setup();
     await handle(
-      apiRequest({ 'x-tier': 'platinum', 'x-org-id': 'someone-else', 'x-worker-secret': 'guess' }),
+      apiRequest({
+        'x-tier': 'platinum',
+        'x-org-id': 'someone-else',
+        'x-client-ip': '198.51.100.1',
+      }),
       env,
       deps,
     );
@@ -121,7 +123,7 @@ describe('api gateway', () => {
     const headers = forwarded().headers;
     expect(headers.get('x-tier')).toBe('gold');
     expect(headers.get('x-org-id')).toBe('001B000000IqhSLIAZ');
-    expect(headers.get('x-worker-secret')).toBe('worker-secret');
+    expect(headers.get('x-client-ip')).toBeNull();
   });
 
   it('rejects a caller without an active membership and caches nothing', async () => {

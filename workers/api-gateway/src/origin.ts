@@ -2,13 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { Entitlement } from './cache';
 import type { Env } from './env';
-import {
-  CLIENT_IP_HEADER,
-  ORG_HEADER,
-  TIER_HEADER,
-  TRUSTED_HEADERS,
-  WORKER_SECRET_HEADER,
-} from './headers';
+import { CLIENT_IP_HEADER, ORG_HEADER, TIER_HEADER, TRUSTED_HEADERS } from './headers';
 
 export function buildOriginRequest(request: Request, env: Env, entitlement: Entitlement): Request {
   const incoming = new URL(request.url);
@@ -19,7 +13,6 @@ export function buildOriginRequest(request: Request, env: Env, entitlement: Enti
   const headers = new Headers(request.headers);
   for (const name of TRUSTED_HEADERS) headers.delete(name);
   headers.set('authorization', `Bearer ${entitlement.accessToken}`);
-  headers.set(WORKER_SECRET_HEADER, env.WORKER_SECRET);
 
   const clientIp = request.headers.get('cf-connecting-ip');
   if (clientIp) headers.set(CLIENT_IP_HEADER, clientIp);

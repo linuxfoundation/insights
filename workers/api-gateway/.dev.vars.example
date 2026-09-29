@@ -1,5 +1,4 @@
 ORIGIN_URL=http://localhost:4000
-WORKER_SECRET=local-worker-secret
 PAT_HASH_SALT=local-pat-hash-salt
 LFX_API_URL=
 M2M_ISSUER_URL=
