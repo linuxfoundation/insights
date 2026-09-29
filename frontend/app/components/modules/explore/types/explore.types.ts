@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { Component } from 'vue';
 
-export type ExploreType = 'project' | 'contributor';
+export type ExploreType = 'project';
 export interface ExploreTab {
   title: string;
   description: string;

@@ -6,39 +6,10 @@ import { computed } from 'vue';
 
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Collection } from '~~/types/collection';
-import type { ExploreContributors } from '~~/types/explore/contributors';
 import type { Project } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
 
 class ExploreApiService {
-  fetchTopContributors(pageSize: number) {
-    const queryKey = computed(() => [TanstackKey.TOP_CONTRIBUTORS, pageSize]);
-
-    const queryFn = computed<QueryFunction<ExploreContributors[]>>(() =>
-      this.topContributorsQueryFn(() => ({
-        pageSize,
-      })),
-    );
-
-    return useQuery<ExploreContributors[]>({
-      queryKey,
-      queryFn,
-    });
-  }
-
-  topContributorsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<ExploreContributors[]> {
-    const { pageSize } = query();
-    return async () =>
-      await $fetch(`/api/explore/contributors`, {
-        params: {
-          page: 0,
-          pageSize,
-        },
-      });
-  }
-
   fetchTopProjects(pageSize: number) {
     const queryKey = computed(() => [TanstackKey.TOP_PROJECTS, pageSize]);
 
