@@ -83,6 +83,24 @@ describe('caching configuration', () => {
     expect(dev.routeRules['/api/**']?.cache).toBeUndefined();
   });
 
+  test('organization page routes disable stale-while-revalidate in production only', async () => {
+    const prod = await loadCachingConfig('production');
+    expect(prod.routeRules['/organization/**']?.cache).toEqual({
+      maxAge: 86400,
+      base: 'redis',
+      swr: false,
+    });
+    expect(prod.routeRules['/api/organization-page/**']?.cache).toEqual({
+      maxAge: 3600,
+      base: 'redis',
+      swr: false,
+    });
+
+    const dev = await loadCachingConfig('development');
+    expect(dev.routeRules['/organization/**']).toBeUndefined();
+    expect(dev.routeRules['/api/organization-page/**']).toBeUndefined();
+  });
+
   test('every route rule pattern is declared exactly once', async () => {
     // Guards against reintroducing the DE-1044 bug: a pattern split across two config sources
     // (or duplicated within this one) has its rule silently replaced instead of merged.

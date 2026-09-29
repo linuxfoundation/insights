@@ -32,7 +32,7 @@ export const Organization = Type.Object({
   name: Type.String({ description: "The organization's display name." }),
   slug: Type.String({
     description:
-      "The organization's slug in LFX Insights, as in its organization page URL `https://insights.linuxfoundation.org/organization/{slug}`. It can change, for example when the organization is renamed.",
+      "The organization's slug in LFX Insights, as in its organization page URL `https://insights.linuxfoundation.org/organization/{slug}`. It can change, for example when the organization is renamed. An empty string when the organization has no public page, so there is no page to link to.",
   }),
   logo: Type.String({
     description: "URL of the organization's logo image. An empty string when it has none.",
