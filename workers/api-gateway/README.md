@@ -4,7 +4,7 @@ Cloudflare Worker in front of the Insights public API ([ADR-0006](../../api/docs
 
 1. Reads `Authorization: Bearer lfi_...` and answers `401` without one.
 2. Looks up the cached entitlement by a salted hash of the PAT (10 minutes).
-3. On a miss, exchanges the PAT for an Auth0 JWT and resolves the user's org and tier from the member-tiers endpoint.
+3. On a miss, exchanges the PAT for an Auth0 JWT. LFIDs individually targeted with `true` on the LaunchDarkly flag at `LD_FLAG_URL` get the admin org and tier; everyone else is resolved from the member-tiers endpoint.
 4. Forwards to the API with `Bearer <JWT>`, `x-tier`, `x-org-id`, `x-worker-secret` and `x-client-ip`, replacing any client-supplied copies.
 
 The Auth0 exchange (`src/exchange.ts`) is a stub that returns the real response shape. The origin is reached over `ORIGIN_URL` until the Workers VPC binding exists.
