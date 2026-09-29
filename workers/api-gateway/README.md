@@ -7,7 +7,7 @@ Cloudflare Worker in front of the Insights public API ([ADR-0006](../../api/docs
 3. On a miss, exchanges the PAT for an Auth0 JWT. LFIDs individually targeted with `true` on the LaunchDarkly flag at `LD_FLAG_URL` get the admin org and tier; everyone else is resolved from the member-tiers endpoint.
 4. Forwards to the API with `Bearer <JWT>`, `x-tier`, `x-org-id`, `x-worker-secret` and `x-client-ip`, replacing any client-supplied copies.
 
-The Auth0 exchange (`src/exchange.ts`) is a stub that returns the real response shape. It accepts only `STUB_PAT` and issues a JWT for `STUB_USERNAME`, so set `STUB_USERNAME` to a real LFID to exercise the admin flag and member-tiers; with either unset, every PAT gets `401`. Deployed, the Worker reaches the API through the `INSIGHTS_API` Workers VPC binding; `wrangler dev` has no VPC support, so local runs call `ORIGIN_URL` directly.
+The Auth0 exchange (`src/exchange.ts`) is a stub that returns the real response shape. It accepts only `STUB_PAT` and issues a JWT for `STUB_USERNAME`, so set `STUB_USERNAME` to a real LFID to exercise the admin flag and member-tiers; with either unset, every PAT gets `401`. The `production` environment in `wrangler.jsonc` reaches the API through the `INSIGHTS_API` Workers VPC binding (`pnpm deploy --env production`), with `ORIGIN_URL` set as a secret like the other values. The default config has no binding, so `wrangler dev` calls `ORIGIN_URL` from `.dev.vars` directly.
 
 ## Local development
 
