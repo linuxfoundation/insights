@@ -5,6 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import { fetchCountedPipe } from '../../../clients/tinybird.js';
 import {
+  escapeLike,
   isEntryRow,
   LeaderboardEntry,
   LeaderboardType,
@@ -78,7 +79,7 @@ const leaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) => {
               leaderboardType: type,
               page: number,
               pageSize: page.pageSize,
-              search: search || undefined,
+              search: search ? escapeLike(search) : undefined,
               collectionSlug: collectionSlug || undefined,
             },
             isEntryRow,

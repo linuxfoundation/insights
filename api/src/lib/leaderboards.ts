@@ -226,6 +226,9 @@ const statusGuard = enumGuard(LeaderboardStatus);
 const isStatus = (value: unknown): value is NonNullable<LeaderboardEntry['status']> =>
   statusGuard(value);
 
+// The pipe wraps `search` in `ILIKE '%' || search || '%'`, where `\`, `%` and `_` are pattern syntax.
+export const escapeLike = (text: string) => text.replace(/[\\%_]/g, '\\$&');
+
 export const isEntryRow = (row: unknown): row is LeaderboardRow => {
   if (typeof row !== 'object' || row === null || Array.isArray(row)) {
     return false;

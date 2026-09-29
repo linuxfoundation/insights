@@ -36,12 +36,14 @@ const row = (rank: number) => ({
 // The pipe pages by page number and reports the filtered total in rows_before_limit_at_least.
 let all: unknown[] = [];
 let withTotal = true;
+let reportedTotal: unknown;
 
 const { get } = useApp();
 
 beforeEach(() => {
   all = Array.from({ length: 5 }, (_, index) => row(index + 1));
   withTotal = true;
+  reportedTotal = undefined;
   mockFetch.mockImplementation(
     tinybirdStub((url) => {
       if (url.pathname !== pipePath) {
@@ -55,7 +57,7 @@ beforeEach(() => {
           data,
           meta: [],
           rows: data.length,
-          ...(withTotal ? { rows_before_limit_at_least: all.length } : {}),
+          ...(withTotal ? { rows_before_limit_at_least: reportedTotal ?? all.length } : {}),
           statistics: { elapsed: 0.01, rows_read: 1, bytes_read: 1 },
         }),
         { status: 200, headers: { 'content-type': 'application/json' } },
@@ -90,6 +92,15 @@ describe('Tinybird call (AC1)', () => {
     expect(pagesAsked()).toEqual([['0', '50']]);
     expect(call?.searchParams.has('search')).toBe(false);
     expect(call?.searchParams.has('collectionSlug')).toBe(false);
+  });
+
+  it.each([
+    ['_', '\\_'],
+    ['50%', '50\\%'],
+    ['a\\b', 'a\\\\b'],
+  ])('escapes the LIKE wildcards of search %s', async (search, sent) => {
+    await bodyOf({ search });
+    expect(callsTo(pipePath)[0]?.searchParams.get('search')).toBe(sent);
   });
 
   it('forwards search and collectionSlug', async () => {
@@ -162,6 +173,24 @@ describe('paging (AC3, AC4)', () => {
     expect(body.nextCursor).toBeNull();
   });
 
+  describe('with a total below the rows already seen', () => {
+    beforeEach(() => {
+      reportedTotal = 1;
+    });
+
+    it('falls back to the full last pipe page', async () => {
+      const body = await bodyOf({ pageSize: '2' });
+      expect(ranks(body)).toEqual([1, 2]);
+      expect(body.nextCursor).toEqual(expect.any(String));
+    });
+
+    it('answers nextCursor null when the last pipe page is short', async () => {
+      const body = await bodyOf({ pageSize: '2', cursor: cursorFor(4) });
+      expect(ranks(body)).toEqual([5]);
+      expect(body.nextCursor).toBeNull();
+    });
+  });
+
   describe('without rows_before_limit_at_least', () => {
     beforeEach(() => {
       withTotal = false;
@@ -175,6 +204,18 @@ describe('paging (AC3, AC4)', () => {
     it('answers nextCursor null when the last pipe page is short', async () => {
       const body = await bodyOf({ pageSize: '2', cursor: cursorFor(4) });
       expect(ranks(body)).toEqual([5]);
+      expect(body.nextCursor).toBeNull();
+    });
+
+    it('counts the rows before a misaligned cursor when the last pipe page is full', async () => {
+      const body = await bodyOf({ pageSize: '2', cursor: cursorFor(1) });
+      expect(ranks(body)).toEqual([2, 3]);
+      expect(body.nextCursor).toEqual(expect.any(String));
+    });
+
+    it('answers nextCursor null for a misaligned cursor when the last pipe page is short', async () => {
+      const body = await bodyOf({ pageSize: '2', cursor: cursorFor(3) });
+      expect(ranks(body)).toEqual([4, 5]);
       expect(body.nextCursor).toBeNull();
     });
   });
@@ -202,6 +243,15 @@ describe('row guard (AC6)', () => {
   it('answers 503 for a row failing the entry guard', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     all = [{ ...row(1), rank: 0 }];
+    const res = await get(route);
+    expect(res.statusCode).toBe(503);
+    expect(res.json().code).toBe('upstream_unavailable');
+    vi.restoreAllMocks();
+  });
+
+  it.each([-1, 1.5, '5'])('answers 503 for the row total %j', async (value) => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    reportedTotal = value;
     const res = await get(route);
     expect(res.statusCode).toBe(503);
     expect(res.json().code).toBe('upstream_unavailable');
