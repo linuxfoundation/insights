@@ -35,6 +35,6 @@ export function buildOriginRequest(request: Request, env: Env, entitlement: Enti
   });
 }
 
-export function callOrigin(request: Request): Promise<Response> {
-  return fetch(request);
+export function callOrigin(request: Request, env: Env): Promise<Response> {
+  return env.INSIGHTS_API ? env.INSIGHTS_API.fetch(request) : fetch(request);
 }

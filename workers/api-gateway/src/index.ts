@@ -45,7 +45,7 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
     await deps.cache.put(key, entitlement, Math.min(exchanged.expires_in, ENTITLEMENT_TTL_SECONDS));
   }
 
-  return deps.callOrigin(buildOriginRequest(request, env, entitlement));
+  return deps.callOrigin(buildOriginRequest(request, env, entitlement), env);
 }
 
 function isHealthPath(pathname: string): boolean {
