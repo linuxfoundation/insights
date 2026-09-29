@@ -24,6 +24,9 @@ onMounted(async () => {
     // Try-it client off: it would let a PAT be pasted into the browser.
     hideClientButton: true,
     hideTestRequestButton: true,
+    // Scalar shows its hosted AI agent and MCP generator by default on localhost.
+    agent: { disabled: true },
+    mcp: { disabled: true },
   });
   // Component may unmount while the dynamic import was pending; destroy right away instead of leaking.
   if (unmounted) {
@@ -41,5 +44,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="mountEl" />
+  <!-- vp-raw keeps VitePress's router from hijacking Scalar's hash links. -->
+  <div ref="mountEl" class="vp-raw scalar-reference" />
 </template>
+
+<style scoped>
+/* Scalar's sticky sidebar and headers sit below the fixed VitePress nav bar. */
+.scalar-reference {
+  --scalar-custom-header-height: var(--vp-nav-height);
+}
+</style>
