@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@fastify/autoload": "^6.5.0",
-    "@fastify/static": "^8.0.0",
+    "@fastify/static": "^10.1.2",
     "@fastify/swagger": "^9.0.0",
     "@fastify/type-provider-typebox": "^5.0.0",
     "@lfx-insights/tinybird-client": "workspace:*",
