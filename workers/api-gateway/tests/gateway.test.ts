@@ -20,6 +20,8 @@ const env: Env = {
   M2M_CLIENT_SECRET: 'secret',
   LD_SDK_KEY: 'sdk-test',
   LD_FLAG_URL: 'https://flags.test/admin-flag',
+  STUB_PAT: 'lfi_abc123',
+  STUB_USERNAME: 'stub-user',
 };
 
 const goldTier: MemberOrgTier = {
@@ -80,6 +82,16 @@ describe('api gateway', () => {
     const response = await handle(apiRequest({ authorization: 'Bearer eyJhbGci' }), env, deps);
 
     expect(response.status).toBe(401);
+  });
+
+  it('rejects a PAT the exchange does not accept and caches nothing', async () => {
+    const { deps } = setup();
+    const response = await handle(apiRequest({ authorization: 'Bearer lfi_other' }), env, deps);
+
+    expect(response.status).toBe(401);
+    expect(deps.fetchMemberTiers).not.toHaveBeenCalled();
+    expect(deps.callOrigin).not.toHaveBeenCalled();
+    expect(deps.cache.entries.size).toBe(0);
   });
 
   it('forwards to the origin with the exchanged JWT and Worker-set headers', async () => {

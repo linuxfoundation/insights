@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import type { Env } from './env';
 
 export const USERNAME_CLAIM = 'http://lfx.dev/claims/username';
 
@@ -10,16 +11,17 @@ export interface TokenExchangeResponse {
   issued_token_type: 'urn:ietf:params:oauth:token-type:access_token';
 }
 
-export async function exchangePat(_pat: string): Promise<TokenExchangeResponse> {
+export async function exchangePat(pat: string, env: Env): Promise<TokenExchangeResponse | null> {
+  if (!env.STUB_PAT || !env.STUB_USERNAME || pat !== env.STUB_PAT) return null;
   const now = Math.floor(Date.now() / 1000);
   return {
     access_token: unsignedJwt({
       iss: 'https://stub.auth0.invalid/',
-      sub: 'auth0|stub-user',
+      sub: `auth0|${env.STUB_USERNAME}`,
       aud: 'https://api.insights.linuxfoundation.org',
       iat: now,
       exp: now + 600,
-      [USERNAME_CLAIM]: 'stub-user',
+      [USERNAME_CLAIM]: env.STUB_USERNAME,
     }),
     token_type: 'Bearer',
     expires_in: 600,
