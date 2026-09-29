@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 const props = defineProps<{
-  type: 'project' | 'contributor' | 'organization';
+  type: 'project' | 'contributor';
 }>();
 </script>
 
