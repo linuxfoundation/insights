@@ -19,7 +19,7 @@ const env: Env = {
   M2M_CLIENT_ID: 'client',
   M2M_CLIENT_SECRET: 'secret',
   LD_SDK_KEY: 'sdk-test',
-  LD_FLAG_URL: 'https://sdk.launchdarkly.test/sdk/latest-flags/insights-public-api',
+  LD_FLAG_URL: 'https://flags.test/admin-flag',
 };
 
 const goldTier: MemberOrgTier = {
