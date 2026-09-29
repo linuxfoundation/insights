@@ -16,7 +16,7 @@ const env: Env = {
   M2M_ISSUER_URL: 'https://auth.test/',
   M2M_AUDIENCE: 'https://lfx-api.test/',
   M2M_CLIENT_ID: 'client',
-  M2M_CLIENT_SECRET: 'secret',
+  M2M_PRIVATE_KEY: 'unused',
   LD_SDK_KEY: 'sdk-test',
   LD_FLAG_URL: 'https://flags.test/admin-flag',
   STUB_PAT: 'lfi_abc123',
