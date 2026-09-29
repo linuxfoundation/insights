@@ -7,7 +7,6 @@ import { computed } from 'vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Collection } from '~~/types/collection';
 import type { ExploreContributors } from '~~/types/explore/contributors';
-import type { ExploreOrganizations } from '~~/types/explore/organizations';
 import type { Project } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
 
@@ -33,33 +32,6 @@ class ExploreApiService {
     const { pageSize } = query();
     return async () =>
       await $fetch(`/api/explore/contributors`, {
-        params: {
-          page: 0,
-          pageSize,
-        },
-      });
-  }
-  fetchTopOrganizations(pageSize: number) {
-    const queryKey = computed(() => [TanstackKey.TOP_ORGANIZATIONS, pageSize]);
-
-    const queryFn = computed<QueryFunction<ExploreOrganizations[]>>(() =>
-      this.topOrganizationsQueryFn(() => ({
-        pageSize,
-      })),
-    );
-
-    return useQuery<ExploreOrganizations[]>({
-      queryKey,
-      queryFn,
-    });
-  }
-
-  topOrganizationsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<ExploreOrganizations[]> {
-    const { pageSize } = query();
-    return async () =>
-      await $fetch(`/api/explore/organizations`, {
         params: {
           page: 0,
           pageSize,

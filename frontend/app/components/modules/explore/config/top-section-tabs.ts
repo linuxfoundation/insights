@@ -1,7 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import LfxExploreTopContributors from '../components/top-contributors.vue';
-import LfxExploreTopOrganizations from '../components/top-organizations.vue';
 import LfxExploreTopProjects from '../components/top-projects.vue';
 import type { ExploreTab } from '../types/explore.types';
 
@@ -20,13 +19,5 @@ export const TOP_SECTION_TABS: ExploreTab[] = [
     component: LfxExploreTopContributors,
     icon: 'people-group',
     type: 'contributor',
-  },
-  {
-    title: 'Top organizations',
-    description: `Organizations ranked by the number of affiliated contributions in 
-    ALL projects tracked by Insights over the last 10 years.`,
-    component: LfxExploreTopOrganizations,
-    icon: 'buildings',
-    type: 'organization',
   },
 ];
