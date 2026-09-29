@@ -12,6 +12,11 @@ const env: Env = {
   ORIGIN_URL: 'http://origin.test',
   WORKER_SECRET: 'worker-secret',
   PAT_HASH_SALT: 'salt',
+  LFX_API_URL: 'https://lfx-api.test/',
+  M2M_ISSUER_URL: 'https://auth.test/',
+  M2M_AUDIENCE: 'https://lfx-api.test/',
+  M2M_CLIENT_ID: 'client',
+  M2M_CLIENT_SECRET: 'secret',
 };
 
 const goldTier: MemberOrgTier = {

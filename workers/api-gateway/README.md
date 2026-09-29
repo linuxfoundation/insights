@@ -7,7 +7,7 @@ Cloudflare Worker in front of the Insights public API ([ADR-0006](../../api/docs
 3. On a miss, exchanges the PAT for an Auth0 JWT and resolves the user's org and tier from the member-tiers endpoint.
 4. Forwards to the API with `Bearer <JWT>`, `x-tier`, `x-org-id`, `x-worker-secret` and `x-client-ip`, replacing any client-supplied copies.
 
-The Auth0 exchange (`src/exchange.ts`) and the member-tiers call (`src/tiers.ts`) are stubs that return the real response shapes. The origin is reached over `ORIGIN_URL` until the Workers VPC binding exists.
+The Auth0 exchange (`src/exchange.ts`) is a stub that returns the real response shape. The origin is reached over `ORIGIN_URL` until the Workers VPC binding exists.
 
 ## Local development
 
