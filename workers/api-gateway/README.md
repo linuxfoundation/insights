@@ -3,7 +3,7 @@
 Cloudflare Worker in front of the Insights public API ([ADR-0006](../../api/docs/arch/adr/0006-pat-token-exchange-for-api-credentials.md), variant 4b). For each request it:
 
 1. Reads `Authorization: Bearer lfi_...` and answers `401` unless the PAT has the `lfx-v2-pat-service` shape: `lfi_`, a 12-character lookup id and a 32-character random part, all base62.
-2. Looks up the cached entitlement by a salted hash of the PAT (10 minutes).
+2. Looks up the cached entitlement by the SHA-256 of the PAT (10 minutes).
 3. On a miss, exchanges the PAT for an Auth0 JWT. LFIDs individually targeted with `true` on the LaunchDarkly flag at `LD_FLAG_URL` get the admin org and tier; everyone else is resolved from the member-tiers endpoint.
 4. Forwards to the API with `Bearer <JWT>`, `x-tier`, `x-org-id` and `x-client-ip`, replacing any client-supplied copies.
 

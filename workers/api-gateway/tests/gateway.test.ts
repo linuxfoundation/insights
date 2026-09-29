@@ -7,11 +7,11 @@ import type { Env } from '../src/env';
 import { exchangePat, usernameFromJwt } from '../src/exchange';
 import { ADMIN_ORG_TIER } from '../src/flags';
 import { handle, type Deps } from '../src/index';
-import { hashPat } from '../src/pat';
 import type { MemberOrgTier } from '../src/tiers';
 
 const PAT = `lfi_Ab3kZ9QmT2xL${'q'.repeat(32)}`;
 const OTHER_PAT = `lfi_Zz9yX8wV7uT6${'r'.repeat(32)}`;
+const PAT_SHA256 = '546465101016b02e95bc61b66bb3b7b4a7ec208f6cd8e15b4d780180e9dcb7a6';
 
 const env: Env = {
   ORIGIN_URL: 'http://origin.test',
@@ -82,6 +82,7 @@ describe('api gateway', () => {
   it.each([
     ['without the lfi_ prefix', 'eyJhbGci'],
     ['that is too short', 'lfi_abc123'],
+    ['that is too long', `lfi_${'A'.repeat(45)}`],
     ['with a non-base62 character', `lfi_${'A'.repeat(43)}-`],
   ])('rejects a bearer token %s before the exchange', async (_case, token) => {
     const { deps } = setup();
@@ -174,7 +175,6 @@ describe('api gateway', () => {
     expect(deps.exchangePat).toHaveBeenCalledTimes(1);
     expect(deps.fetchMemberTiers).toHaveBeenCalledTimes(1);
     const [key] = deps.cache.entries.keys();
-    expect(key).toBe(await hashPat(PAT));
-    expect(key).toMatch(/^[0-9a-f]{64}$/);
+    expect(key).toBe(PAT_SHA256);
   });
 });
