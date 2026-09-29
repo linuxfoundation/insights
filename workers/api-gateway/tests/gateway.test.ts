@@ -41,8 +41,8 @@ function setup(memberTiers: Deps['fetchMemberTiers'] = fetchMemberTiers) {
   return { deps, forwarded };
 }
 
-function apiRequest(headers: Record<string, string> = {}) {
-  return new Request('https://api.insights.linuxfoundation.org/v1-alpha/projects/k8s?x=1', {
+function apiRequest(headers: Record<string, string> = {}, path = '/v1-alpha/projects/k8s?x=1') {
+  return new Request(`https://api.insights.linuxfoundation.org${path}`, {
     headers: { authorization: 'Bearer lfi_abc123', ...headers },
   });
 }
@@ -54,6 +54,15 @@ describe('api gateway', () => {
 
     expect(response.status).toBe(401);
     expect(await response.json()).toMatchObject({ statusCode: 401, code: 'unauthorized' });
+    expect(deps.callOrigin).not.toHaveBeenCalled();
+  });
+
+  it.each(['/health', '/health/live', '/health/ready'])('hides %s from the edge', async (path) => {
+    const { deps } = setup();
+    const response = await handle(apiRequest({}, path), env, deps);
+
+    expect(response.status).toBe(404);
+    expect(deps.exchangePat).not.toHaveBeenCalled();
     expect(deps.callOrigin).not.toHaveBeenCalled();
   });
 

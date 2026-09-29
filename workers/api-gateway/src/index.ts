@@ -20,6 +20,8 @@ export interface Deps {
 }
 
 export async function handle(request: Request, env: Env, deps: Deps): Promise<Response> {
+  if (isHealthPath(new URL(request.url).pathname)) return notFound();
+
   const pat = readPat(request);
   if (!pat) return unauthorized();
 
@@ -38,6 +40,20 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
   }
 
   return deps.callOrigin(buildOriginRequest(request, env, entitlement));
+}
+
+function isHealthPath(pathname: string): boolean {
+  return pathname === '/health' || pathname.startsWith('/health/');
+}
+
+function notFound(): Response {
+  const body = {
+    statusCode: 404,
+    code: 'not_found',
+    error: 'Not Found',
+    message: 'Route not found',
+  };
+  return Response.json(body, { status: 404 });
 }
 
 function forbidden(): Response {
