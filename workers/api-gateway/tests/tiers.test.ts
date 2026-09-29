@@ -5,13 +5,42 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Env } from '../src/env';
 import { fetchMemberTiers } from '../src/tiers';
 
+const keys = (await crypto.subtle.generateKey(
+  {
+    name: 'RSASSA-PKCS1-v1_5',
+    modulusLength: 2048,
+    publicExponent: new Uint8Array([1, 0, 1]),
+    hash: 'SHA-256',
+  },
+  true,
+  ['sign', 'verify'],
+)) as CryptoKeyPair;
+const pkcs8 = Buffer.from(await crypto.subtle.exportKey('pkcs8', keys.privateKey));
+const pem = `-----BEGIN PRIVATE KEY-----\n${pkcs8.toString('base64')}\n-----END PRIVATE KEY-----\n`;
+
 const env = {
   LFX_API_URL: 'https://lfx-api.test/',
   M2M_ISSUER_URL: 'https://auth.test/',
   M2M_AUDIENCE: 'https://lfx-api.test/',
   M2M_CLIENT_ID: 'client',
-  M2M_CLIENT_SECRET: 'secret',
+  M2M_PRIVATE_KEY: Buffer.from(pem).toString('base64'),
 } as Env;
+
+async function verifyAssertion(assertion: string): Promise<Record<string, unknown>> {
+  const [header, claims, signature] = assertion.split('.');
+  const valid = await crypto.subtle.verify(
+    'RSASSA-PKCS1-v1_5',
+    keys.publicKey,
+    Buffer.from(signature!, 'base64url'),
+    new TextEncoder().encode(`${header}.${claims}`),
+  );
+  expect(valid).toBe(true);
+  expect(JSON.parse(Buffer.from(header!, 'base64url').toString())).toEqual({
+    alg: 'RS256',
+    typ: 'JWT',
+  });
+  return JSON.parse(Buffer.from(claims!, 'base64url').toString());
+}
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -39,12 +68,17 @@ describe('fetchMemberTiers', () => {
     ]);
     const tokenInit = fetchMock.mock.calls[0]![1]!;
     expect(tokenInit.method).toBe('POST');
-    expect(JSON.parse(String(tokenInit.body))).toEqual({
+    const { client_assertion: assertion, ...body } = JSON.parse(String(tokenInit.body));
+    expect(body).toEqual({
       grant_type: 'client_credentials',
       client_id: 'client',
-      client_secret: 'secret',
+      client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
       audience: 'https://lfx-api.test/',
     });
+    const claims = await verifyAssertion(assertion);
+    expect(claims).toMatchObject({ iss: 'client', sub: 'client', aud: 'https://auth.test/' });
+    expect(Number(claims.exp) - Number(claims.iat)).toBe(60);
+    expect(claims.jti).toEqual(expect.any(String));
     const init = fetchMock.mock.calls[1]![1]!;
     expect(new Headers(init.headers).get('authorization')).toBe('Bearer m2m-token');
   });
