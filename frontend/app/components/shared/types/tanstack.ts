@@ -81,7 +81,6 @@ export enum TanstackKey {
 
   // Explore
   TOP_CONTRIBUTORS = 'explore-top-contributors',
-  TOP_ORGANIZATIONS = 'explore-top-organizations',
   TOP_PROJECTS = 'explore-top-projects',
 
   // Leaderboards
