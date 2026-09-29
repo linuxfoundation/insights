@@ -4,7 +4,6 @@
 export interface Env {
   ORIGIN_URL: string;
   INSIGHTS_API?: Fetcher;
-  PAT_HASH_SALT: string;
   LFX_API_URL: string;
   M2M_ISSUER_URL: string;
   M2M_AUDIENCE: string;

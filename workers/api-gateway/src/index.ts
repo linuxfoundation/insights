@@ -27,7 +27,7 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
   const pat = readPat(request);
   if (!pat) return unauthorized();
 
-  const key = await hashPat(pat, env.PAT_HASH_SALT);
+  const key = await hashPat(pat);
   let entitlement = await deps.cache.get(key);
   if (!entitlement) {
     const exchanged = await deps.exchangePat(pat, env);

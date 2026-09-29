@@ -7,11 +7,14 @@ import type { Env } from '../src/env';
 import { exchangePat, usernameFromJwt } from '../src/exchange';
 import { ADMIN_ORG_TIER } from '../src/flags';
 import { handle, type Deps } from '../src/index';
+import { hashPat } from '../src/pat';
 import type { MemberOrgTier } from '../src/tiers';
+
+const PAT = `lfi_Ab3kZ9QmT2xL${'q'.repeat(32)}`;
+const OTHER_PAT = `lfi_Zz9yX8wV7uT6${'r'.repeat(32)}`;
 
 const env: Env = {
   ORIGIN_URL: 'http://origin.test',
-  PAT_HASH_SALT: 'salt',
   LFX_API_URL: 'https://lfx-api.test/',
   M2M_ISSUER_URL: 'https://auth.test/',
   M2M_AUDIENCE: 'https://lfx-api.test/',
@@ -19,7 +22,7 @@ const env: Env = {
   M2M_CLIENT_SECRET: 'secret',
   LD_SDK_KEY: 'sdk-test',
   LD_FLAG_URL: 'https://flags.test/admin-flag',
-  STUB_PAT: 'lfi_abc123',
+  STUB_PAT: PAT,
   STUB_USERNAME: 'stub-user',
 };
 
@@ -53,7 +56,7 @@ function setup(memberTiers: Deps['fetchMemberTiers'] = fetchMemberTiers, admins:
 
 function apiRequest(headers: Record<string, string> = {}, path = '/v1-alpha/projects/k8s?x=1') {
   return new Request(`https://api.insights.linuxfoundation.org${path}`, {
-    headers: { authorization: 'Bearer lfi_abc123', ...headers },
+    headers: { authorization: `Bearer ${PAT}`, ...headers },
   });
 }
 
@@ -76,16 +79,21 @@ describe('api gateway', () => {
     expect(deps.callOrigin).not.toHaveBeenCalled();
   });
 
-  it('rejects a bearer token without the lfi_ prefix', async () => {
+  it.each([
+    ['without the lfi_ prefix', 'eyJhbGci'],
+    ['that is too short', 'lfi_abc123'],
+    ['with a non-base62 character', `lfi_${'A'.repeat(43)}-`],
+  ])('rejects a bearer token %s before the exchange', async (_case, token) => {
     const { deps } = setup();
-    const response = await handle(apiRequest({ authorization: 'Bearer eyJhbGci' }), env, deps);
+    const response = await handle(apiRequest({ authorization: `Bearer ${token}` }), env, deps);
 
     expect(response.status).toBe(401);
+    expect(deps.exchangePat).not.toHaveBeenCalled();
   });
 
   it('rejects a PAT the exchange does not accept and caches nothing', async () => {
     const { deps } = setup();
-    const response = await handle(apiRequest({ authorization: 'Bearer lfi_other' }), env, deps);
+    const response = await handle(apiRequest({ authorization: `Bearer ${OTHER_PAT}` }), env, deps);
 
     expect(response.status).toBe(401);
     expect(deps.fetchMemberTiers).not.toHaveBeenCalled();
@@ -139,7 +147,7 @@ describe('api gateway', () => {
     const { deps, forwarded } = setup();
     await handle(
       new Request('https://api.test//attacker.example/x', {
-        headers: { authorization: 'Bearer lfi_abc123' },
+        headers: { authorization: `Bearer ${PAT}` },
       }),
       env,
       deps,
@@ -158,7 +166,7 @@ describe('api gateway', () => {
     expect(headers.get('x-tier')).toBe(ADMIN_ORG_TIER.tier);
   });
 
-  it('caches the entitlement under a salted hash, never the raw PAT', async () => {
+  it('caches the entitlement under the SHA-256 of the PAT, never the raw PAT', async () => {
     const { deps } = setup();
     await handle(apiRequest(), env, deps);
     await handle(apiRequest(), env, deps);
@@ -166,7 +174,7 @@ describe('api gateway', () => {
     expect(deps.exchangePat).toHaveBeenCalledTimes(1);
     expect(deps.fetchMemberTiers).toHaveBeenCalledTimes(1);
     const [key] = deps.cache.entries.keys();
+    expect(key).toBe(await hashPat(PAT));
     expect(key).toMatch(/^[0-9a-f]{64}$/);
-    expect(key).not.toContain('lfi_');
   });
 });
