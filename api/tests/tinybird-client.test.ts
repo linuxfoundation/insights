@@ -6,7 +6,12 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '@lfx-insights/tinybird-client';
 
 import { createInMemoryBucketCache } from '../src/clients/bucket-cache.js';
-import { fetchPipe, getTinybirdClient, withBucket } from '../src/clients/tinybird.js';
+import {
+  fetchCountedPipe,
+  fetchPipe,
+  getTinybirdClient,
+  withBucket,
+} from '../src/clients/tinybird.js';
 import { UpstreamUnavailableError } from '../src/lib/errors.js';
 
 const tinybirdHost = 'https://tinybird.test';
@@ -27,11 +32,12 @@ const jsonResponse = (body: unknown, status = 200) =>
     headers: { 'content-type': 'application/json' },
   });
 
-const tinybirdRows = (rows: unknown) =>
+const tinybirdRows = (rows: unknown, extra: Record<string, unknown> = {}) =>
   jsonResponse({
     data: rows,
     meta: [],
     rows: 0,
+    ...extra,
     statistics: { elapsed: 0, rows_read: 0, bytes_read: 0 },
   });
 
@@ -170,6 +176,57 @@ describe('fetchPipe (AC3)', () => {
     expect(err).toBeInstanceOf(UpstreamUnavailableError);
     expect(error).toHaveBeenCalledTimes(1);
     expect(String(error.mock.calls[0]?.[1])).toContain(pipePath);
+  });
+});
+
+describe('fetchCountedPipe row total', () => {
+  const anyRow = () => true;
+
+  it.each([0, 7])('returns the rows with the total %j', async (total) => {
+    serve({
+      [pipePath]: () => tinybirdRows([{ activityCount: 5 }], { rows_before_limit_at_least: total }),
+    });
+    const { request } = fakeRequest();
+
+    expect(await fetchCountedPipe<Row>(request, pipePath, { bucketId: 3 }, anyRow)).toEqual({
+      rows: [{ activityCount: 5 }],
+      total,
+    });
+  });
+
+  it('returns an undefined total when the pipe leaves it out', async () => {
+    serve({ [pipePath]: () => tinybirdRows([{ activityCount: 5 }]) });
+    const { request } = fakeRequest();
+
+    const result = await fetchCountedPipe<Row>(request, pipePath, { bucketId: 3 }, anyRow);
+    expect(result.total).toBeUndefined();
+  });
+
+  it.each([-1, 1.5, '7'])(
+    'maps the total %j to UpstreamUnavailableError and logs it once',
+    async (total) => {
+      serve({ [pipePath]: () => tinybirdRows([], { rows_before_limit_at_least: total }) });
+      const { request, error } = fakeRequest();
+
+      const err = await rejectionOf(
+        fetchCountedPipe<Row>(request, pipePath, { bucketId: 3 }, anyRow),
+      );
+
+      expect(err).toBeInstanceOf(UpstreamUnavailableError);
+      expect(error).toHaveBeenCalledTimes(1);
+      expect(String(error.mock.calls[0]?.[1])).toContain(pipePath);
+    },
+  );
+
+  it('leaves the total of fetchPipe unchecked', async () => {
+    serve({
+      [pipePath]: () => tinybirdRows([{ activityCount: 5 }], { rows_before_limit_at_least: -1 }),
+    });
+    const { request } = fakeRequest();
+
+    expect(await fetchPipe<Row>(request, pipePath, { bucketId: 3 })).toEqual([
+      { activityCount: 5 },
+    ]);
   });
 });
 
