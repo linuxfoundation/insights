@@ -80,7 +80,6 @@ export enum TanstackKey {
   OSS_INDEX_COLLECTIONS_LIST = 'oss-index-collections-list',
 
   // Explore
-  TOP_CONTRIBUTORS = 'explore-top-contributors',
   TOP_PROJECTS = 'explore-top-projects',
 
   // Leaderboards

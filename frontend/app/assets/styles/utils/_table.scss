@@ -8,12 +8,6 @@
       @apply hover:bg-neutral-50 cursor-pointer p-1.5 rounded-md transition-all duration-300 #{!important};
     }
   }
-  &.explore-tables {
-    @apply gap-3 pt-1.5;
-    .lfx-table-row {
-      @apply py-0;
-    }
-  }
 }
 
 .lfx-table-header {
