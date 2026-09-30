@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { Pool } from 'pg';
+import { createPostgresPool, type Pool } from '@lfx-insights/postgres-client';
 
 import { isLocal } from './common';
 
@@ -10,16 +10,13 @@ let cmDbPool: Pool | null = null;
 export function getInsightsDbPool(): Pool {
   const config = useRuntimeConfig();
   if (!insightsDbPool) {
-    insightsDbPool = new Pool({
+    insightsDbPool = createPostgresPool({
       host: config.insightsDbWriteHost,
       port: config.insightsDbPort,
       database: config.insightsDbDatabase,
       user: config.insightsDbUsername,
       password: config.insightsDbPassword,
-      max: 20,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
-      ssl: isLocal ? false : { rejectUnauthorized: false },
+      ssl: !isLocal,
     });
   }
   return insightsDbPool;
@@ -28,16 +25,13 @@ export function getInsightsDbPool(): Pool {
 export function getCMDbPool(): Pool {
   const config = useRuntimeConfig();
   if (!cmDbPool) {
-    cmDbPool = new Pool({
+    cmDbPool = createPostgresPool({
       host: config.cmDbWriteHost,
       port: config.cmDbPort,
       database: config.cmDbDatabase,
       user: config.cmDbUsername,
       password: config.cmDbPassword,
-      max: 20,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
-      ssl: isLocal ? false : { rejectUnauthorized: false },
+      ssl: !isLocal,
     });
   }
   return cmDbPool;

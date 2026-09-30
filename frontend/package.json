@@ -27,6 +27,7 @@
     "@ai-sdk/openai": "^4.0.59",
     "@ai-sdk/vue": "^4.0.93",
     "@aws-sdk/client-bedrock-runtime": "^3.1127.0",
+    "@lfx-insights/postgres-client": "workspace:*",
     "@lfx-insights/tinybird-client": "workspace:*",
     "@lfx-insights/types": "workspace:*",
     "@linuxfoundation/lfx-ui-core": "^0.2.0",
