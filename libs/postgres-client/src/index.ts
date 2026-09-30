@@ -27,13 +27,4 @@ export function createPostgresPool(config: PostgresConfig): Pool {
   });
 }
 
-export async function pingPostgres(pool: Pick<Pool, 'query'>): Promise<boolean> {
-  try {
-    await pool.query('SELECT 1');
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 export type { Pool } from 'pg';

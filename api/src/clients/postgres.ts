@@ -1,19 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { createPostgresPool, pingPostgres, type Pool } from '@lfx-insights/postgres-client';
+import { createPostgresPool, type Pool } from '@lfx-insights/postgres-client';
 
+import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import type { RequestLog } from './tinybird.js';
 
 let pool: Pool | undefined;
 
-function requiredEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`${name} environment variable is required`);
-  }
-  return value;
-}
+export const cmDbEnv = [
+  'API_CM_DB_HOST',
+  'API_CM_DB_DATABASE',
+  'API_CM_DB_USERNAME',
+  'API_CM_DB_PASSWORD',
+] as const;
 
 // Built on first use, so importing this module never needs the API_CM_DB_* variables. The CM
 // database holds collections; the API only reads it, so point API_CM_DB_HOST at a read replica.
@@ -35,14 +35,6 @@ export async function closeCmPool(): Promise<void> {
   const current = pool;
   pool = undefined;
   await current?.end();
-}
-
-export async function isCmReachable(): Promise<boolean> {
-  try {
-    return await pingPostgres(getCmPool());
-  } catch {
-    return false;
-  }
 }
 
 // Every Postgres failure becomes a 503, like a Tinybird failure, so driver errors never reach the caller.

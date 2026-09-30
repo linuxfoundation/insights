@@ -10,7 +10,7 @@ vi.mock('pg', () => ({
   }),
 }));
 
-import { createPostgresPool, pingPostgres } from '../src/index.js';
+import { createPostgresPool } from '../src/index.js';
 
 const config = {
   host: 'db.test',
@@ -37,20 +37,5 @@ describe('createPostgresPool', () => {
     createPostgresPool({ ...config, ssl: false });
 
     expect(poolOptions.at(-1)).toMatchObject({ ssl: false });
-  });
-});
-
-describe('pingPostgres', () => {
-  it('is true when the database answers', async () => {
-    const query = vi.fn().mockResolvedValue({ rows: [{ '?column?': 1 }] });
-
-    await expect(pingPostgres({ query } as never)).resolves.toBe(true);
-    expect(query).toHaveBeenCalledWith('SELECT 1');
-  });
-
-  it('is false when the query fails', async () => {
-    const query = vi.fn().mockRejectedValue(new Error('connection refused'));
-
-    await expect(pingPostgres({ query } as never)).resolves.toBe(false);
   });
 });

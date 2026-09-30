@@ -34,6 +34,12 @@ const stubCmEnv = () => {
   }
 };
 
+const stubAllEnv = () => {
+  stubCmEnv();
+  vi.stubEnv('API_TB_TOKEN', 'token');
+  vi.stubEnv('API_TB_HOST', 'https://tinybird.test');
+};
+
 const log = { log: { error: vi.fn() } } as never;
 
 beforeEach(() => {
@@ -67,34 +73,38 @@ describe('health routes', () => {
     expect(pg.query).not.toHaveBeenCalled();
   });
 
-  it('is ready when the CM database answers', async () => {
-    stubCmEnv();
-    pg.query.mockResolvedValue({ rows: [] });
+  it('is ready when every upstream is configured', async () => {
+    stubAllEnv();
 
     const response = await app.inject({ method: 'GET', url: '/health/ready' });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toEqual({ status: 'ok', postgres: 'up' });
-    expect(pg.query).toHaveBeenCalledWith('SELECT 1');
+    expect(response.json()).toEqual({ status: 'ok' });
   });
 
-  it('is unavailable when the CM database fails', async () => {
-    stubCmEnv();
+  it('stays ready while the CM database is down, since every pod shares it', async () => {
+    stubAllEnv();
     pg.query.mockRejectedValue(new Error('connection refused'));
 
     const response = await app.inject({ method: 'GET', url: '/health/ready' });
 
-    expect(response.statusCode).toBe(503);
-    expect(response.json()).toEqual({ status: 'unavailable', postgres: 'down' });
+    expect(response.statusCode).toBe(200);
+    expect(pg.query).not.toHaveBeenCalled();
+    expect(pg.options).toEqual([]);
   });
 
-  it('is unavailable when the CM database is not configured', async () => {
-    vi.stubEnv('API_CM_DB_HOST', '');
+  it('names the missing variables when the pod is misconfigured', async () => {
+    stubAllEnv();
+    vi.stubEnv('API_CM_DB_PASSWORD', '');
+    vi.stubEnv('API_TB_TOKEN', '');
 
     const response = await app.inject({ method: 'GET', url: '/health/ready' });
 
     expect(response.statusCode).toBe(503);
-    expect(pg.options).toEqual([]);
+    expect(response.json()).toEqual({
+      status: 'unavailable',
+      missingConfig: ['API_CM_DB_PASSWORD', 'API_TB_TOKEN'],
+    });
   });
 
   it('stays out of the OpenAPI documents', () => {
