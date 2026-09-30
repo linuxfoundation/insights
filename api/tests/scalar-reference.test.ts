@@ -28,7 +28,7 @@ describe('Reference page wiring (AC1, AC3)', () => {
 
   it('the Scalar embed component points at the live OpenAPI spec route', () => {
     const component = read('.vitepress/theme/ScalarReference.vue');
-    expect(component).toContain('/v1/openapi.json');
+    expect(component).toContain("url: '/v1-alpha/openapi.json'");
   });
 
   it('declares @scalar/api-reference as an api devDependency', () => {

@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 import { defineConfig } from 'vitepress';
 
+import { referenceSections } from './reference-search';
+
 const navItems = [
   { text: 'Quickstart', link: '/' },
   { text: 'Authentication', link: '/authentication' },
@@ -23,11 +25,16 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: navItems,
-    sidebar: [{ text: 'Guide', items: navItems }],
+    sidebar: navItems,
     socialLinks: [{ icon: 'github', link: 'https://github.com/linuxfoundation/insights' }],
     search: {
       provider: 'local',
       options: {
+        miniSearch: {
+          // Returning undefined keeps VitePress's own heading-based split for the other pages.
+          _splitIntoSections: (file) =>
+            file.endsWith('/reference.md') ? referenceSections() : undefined,
+        },
         translations: {
           button: {
             buttonText: 'Search the docs...',
