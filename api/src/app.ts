@@ -92,7 +92,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
       info: {
         title: 'LFX Insights API',
         version: '0.1.0',
-        description: 'Public API for LFX Insights.',
+        description: 'LFX Insights public API.',
       },
       // Omitted servers means same-origin per the OpenAPI spec.
       ...(publicUrl ? { servers: [{ url: publicUrl }] } : {}),
