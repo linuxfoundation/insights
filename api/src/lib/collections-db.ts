@@ -157,3 +157,23 @@ export async function findCollectionMembers(
   );
   return row ?? null;
 }
+
+export type CollectionDetailRow = CollectionRow & Omit<CollectionMembers, 'id'>;
+
+// One statement, so the row and its member lists come from the same snapshot.
+export async function findCollectionDetail(
+  request: RequestLog,
+  slug: string,
+): Promise<CollectionDetailRow | null> {
+  const [row] = await queryCm<CollectionDetailRow>(
+    request,
+    `SELECT ${collectionColumns},
+       COALESCE((SELECT array_agg(ip.id ORDER BY ip.id) ${memberProjects}), '{}') AS "projectIds",
+       COALESCE((SELECT array_agg(r.url ORDER BY r.url) ${memberRepositories}), '{}') AS "repositoryUrls"
+     FROM collections c
+     LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
+     WHERE c.slug = $1 AND ${visible}`,
+    [slug],
+  );
+  return row ?? null;
+}
