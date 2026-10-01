@@ -5,7 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -13,11 +13,11 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
   BucketBounds,
   ContributionFlags,
   periodSummary,
-  ProjectSlugParams,
   SeriesQuery,
 } from '../../../schemas/common.js';
 
@@ -73,21 +73,17 @@ const ActiveContributors = Type.Object({
 });
 
 const activeContributorsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/contributors/active-contributors',
-    {
-      schema: {
-        tags: ['Contributors'],
-        summary: 'Get active contributors',
-        description:
-          'Returns the number of active contributors in the period against the comparison period before it, the maintainer and reviewer counts in the period, and the active contributors per bucket. An active contributor is a person with at least one activity in the period of a kind the contribution flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true. `repos` narrows every count to those repositories. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: ActiveContributorsQuery,
-        response: { 200: ActiveContributors },
-      },
+  widgetRoutes(scope, {
+    path: 'contributors/active-contributors',
+    schema: {
+      tags: ['Contributors'],
+      summary: 'Get active contributors',
+      description:
+        'Returns the number of active contributors in the period against the comparison period before it, the maintainer and reviewer counts in the period, and the active contributors per bucket. An active contributor is a person with at least one activity in the period of a kind the contribution flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true. `repos` narrows every count to those repositories. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+      querystring: ActiveContributorsQuery,
+      response: { 200: ActiveContributors },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const {
         repos,
         startDate,
@@ -98,10 +94,9 @@ const activeContributorsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       } = request.query;
       const dates = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           includeCodeContributions,
           includeCollaborations,
@@ -144,7 +139,7 @@ const activeContributorsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         })),
       };
     },
-  );
+  });
 };
 
 export default activeContributorsRoutes;

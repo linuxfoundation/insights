@@ -1,11 +1,21 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const collectionExists = vi.hoisted(() => vi.fn());
+vi.mock('../src/lib/collections-db.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../src/lib/collections-db.js')>()),
+  collectionExists,
+}));
 
 import { buildApp } from '../src/app.js';
+import { UpstreamUnavailableError } from '../src/lib/errors.js';
 import {
   bucketsPath,
   callsTo,
+  collectionBucketsPath,
+  collectionRoutePath,
+  collectionStub,
   mockFetch,
   pipeCalls,
   projectPath,
@@ -20,7 +30,8 @@ import {
 } from './helpers/tinybird.js';
 
 // Cases the routes below a project share through fetchPipe, withBucket, the shared query schemas
-// and the alpha plugin. Route files keep only what is specific to their route.
+// and the alpha plugin, then the same routes below a collection. Route files keep only what is
+// specific to their route.
 const discovery = await buildApp();
 await discovery.ready();
 const spec = (
@@ -409,6 +420,238 @@ describe.each(names)('%s', (name) => {
       expect(Object.keys(v1.paths)).not.toContain(routeOf(name).path.replace('/v1-alpha/', '/v1/'));
       const res = await get(url(name).replace('/v1-alpha/', '/v1/'));
       expect(res.statusCode).toBe(404);
+    });
+  });
+});
+
+// The collection variant of every route that registers one, through the widget-scope helper.
+const collectionPrefix = collectionRoutePath('');
+const collectionRoutes = Object.entries(spec.paths).flatMap(([path, item]) =>
+  item.get && path.startsWith(collectionPrefix)
+    ? [{ name: path.slice(collectionPrefix.length), path, operation: item.get }]
+    : [],
+);
+const collectionNames = collectionRoutes.map((route) => route.name).sort();
+const collectionOf = (name: string) => collectionRoutes.find((route) => route.name === name)!;
+const collectionDeclares = (name: string, param: string) =>
+  collectionOf(name).operation.parameters?.some((p) => p.name === param) ?? false;
+const collectionUrl = (
+  name: string,
+  params: Record<string, string | undefined> = {},
+  slug = 'cncf',
+) =>
+  `${collectionOf(name).path.replace('{slug}', slug)}?${queryString({ ...validQuery(name), ...params })}`;
+const emptyCollection = collectionStub(() => []);
+// The module mock answers for the CM database: only these collections are public.
+const publicCollections = new Set(['cncf']);
+
+describe('collection scope discovery', () => {
+  it('registers a collection variant only for routes that have a project route', () => {
+    expect(collectionNames.length).toBeGreaterThan(0);
+    for (const name of collectionNames) {
+      expect(names, `${name} has no project route to share its handler with`).toContain(name);
+    }
+  });
+});
+
+describe.each(collectionNames)('collection scope: %s', (name) => {
+  beforeEach(() => {
+    collectionExists.mockReset();
+    collectionExists.mockImplementation(async (_request, slug: string) =>
+      publicCollections.has(slug),
+    );
+  });
+
+  it('answers 200 with Cache-Control: private, max-age=0', async () => {
+    mockFetch.mockImplementation(emptyCollection);
+    const res = await get(collectionUrl(name));
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['cache-control']).toBe('private, max-age=0');
+  });
+
+  it('issues its pipe calls concurrently', async () => {
+    mockFetch.mockImplementation(emptyCollection);
+    await get(collectionUrl(name));
+    const expected = pipeCalls().length;
+    expect(expected).toBeGreaterThan(0);
+
+    let inFlight = 0;
+    let maxInFlight = 0;
+    mockFetch.mockReset().mockImplementation(
+      collectionStub(async () => {
+        inFlight += 1;
+        maxInFlight = Math.max(maxInFlight, inFlight);
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        inFlight -= 1;
+        return [];
+      }),
+    );
+    expect((await get(collectionUrl(name))).statusCode).toBe(200);
+    expect(maxInFlight).toBe(expected);
+  });
+
+  it.each(['no-such-collection', 'private-one'])(
+    'answers 404 for %s without calling Tinybird',
+    async (slug) => {
+      mockFetch.mockImplementation(emptyCollection);
+      const res = await get(collectionUrl(name, {}, slug));
+      expect(res.statusCode).toBe(404);
+      expect(res.json()).toMatchObject({ code: 'not_found', message: 'Collection not found' });
+      expect(res.headers['cache-control']).toBe('private, max-age=0');
+      expect(collectionExists.mock.calls[0]?.[1]).toBe(slug);
+      expect(mockFetch).not.toHaveBeenCalled();
+    },
+  );
+
+  it('sends collectionSlug on every pipe call, and neither a project nor a project bucket lookup', async () => {
+    mockFetch.mockImplementation(collectionStub(() => [], [{ bucketId: 0 }]));
+    expect((await get(collectionUrl(name))).statusCode).toBe(200);
+    expect(pipeCalls().length).toBeGreaterThan(0);
+    for (const call of pipeCalls()) {
+      expect(call.searchParams.get('collectionSlug'), call.pathname).toBe('cncf');
+      expect(call.searchParams.has('project'), call.pathname).toBe(false);
+    }
+    expect(callsTo(bucketsPath)).toHaveLength(0);
+  });
+
+  it('routes through the collection bucket the Tinybird client resolves', async () => {
+    mockFetch.mockImplementation(collectionStub(() => [], [{ bucketId: 4 }]));
+    await get(collectionUrl(name));
+    expect(callsTo(collectionBucketsPath)).toHaveLength(1);
+    expect(callsTo(collectionBucketsPath)[0]?.searchParams.get('collectionSlug')).toBe('cncf');
+    for (const call of pipeCalls()) {
+      expect(call.searchParams.get('bucketId'), call.pathname).toBe('4');
+    }
+  });
+
+  it('still answers when the collection has no bucket', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    mockFetch.mockImplementation(collectionStub(() => [], []));
+    expect((await get(collectionUrl(name))).statusCode).toBe(200);
+    for (const call of pipeCalls()) {
+      expect(call.searchParams.has('bucketId'), call.pathname).toBe(false);
+    }
+    vi.restoreAllMocks();
+  });
+
+  describe('upstream failures answer 503 upstream_unavailable with the header set', () => {
+    const cases: [string, () => void][] = [
+      [
+        'a pipe network error',
+        () =>
+          mockFetch.mockImplementation(
+            collectionStub(() => {
+              throw new TypeError('fetch failed: tinybird internal detail');
+            }),
+          ),
+      ],
+      [
+        'a pipe body that is not JSON',
+        () =>
+          mockFetch.mockImplementation(
+            collectionStub(
+              () => new Response('<html>tinybird internal detail</html>', { status: 200 }),
+            ),
+          ),
+      ],
+      [
+        'a collection lookup failure',
+        () => collectionExists.mockRejectedValue(new UpstreamUnavailableError()),
+      ],
+    ];
+
+    it.each(cases)('%s', async (_label, arrange) => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      mockFetch.mockImplementation(emptyCollection);
+      arrange();
+      const res = await get(collectionUrl(name));
+      expect(res.statusCode).toBe(503);
+      expect(res.json().code).toBe('upstream_unavailable');
+      expect(res.body).not.toContain('tinybird internal detail');
+      expect(res.headers['cache-control']).toBe('private, max-age=0');
+      vi.restoreAllMocks();
+    });
+
+    it.each([500, 404, 401, 429])('a pipe %i, without echoing the status', async (status) => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      mockFetch.mockImplementation(collectionStub(() => tinybirdError(status)));
+      const res = await get(collectionUrl(name));
+      expect(res.statusCode).toBe(503);
+      expect(res.json().code).toBe('upstream_unavailable');
+      expect(res.body).not.toContain(String(status));
+      expect(res.headers['cache-control']).toBe('private, max-age=0');
+      vi.restoreAllMocks();
+    });
+
+    it('calls no pipe when the collection lookup fails', async () => {
+      collectionExists.mockRejectedValue(new UpstreamUnavailableError());
+      expect((await get(collectionUrl(name))).statusCode).toBe(503);
+      expect(mockFetch).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('repos', () => {
+    it('is left out of the published parameters', () => {
+      expect(collectionDeclares(name, 'repos')).toBe(false);
+    });
+
+    it('is ignored when a caller sends it anyway', async () => {
+      mockFetch.mockImplementation(emptyCollection);
+      const repo = queryString({ repos: ['https://github.com/kubernetes/kubernetes'] });
+      expect((await get(`${collectionUrl(name)}&${repo}`)).statusCode).toBe(200);
+      for (const call of pipeCalls()) {
+        expect(call.searchParams.has('repos'), call.pathname).toBe(false);
+      }
+    });
+  });
+
+  it('rejects a bad query with 400 before the collection lookup or Tinybird', async () => {
+    const bad = collectionDeclares(name, 'granularity')
+      ? { granularity: 'hourly' }
+      : { startDate: '2025-01-01T00:00:00Z' };
+    const res = await get(collectionUrl(name, bad));
+    expect(res.statusCode).toBe(400);
+    expect(collectionExists).not.toHaveBeenCalled();
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
+  describe('OpenAPI', () => {
+    const operation = () => collectionOf(name).operation;
+
+    it('is tagged Collections, with a summary and a description', () => {
+      expect(operation().tags).toEqual(['Collections']);
+      expect(operation().summary).toBeTruthy();
+      expect(operation().description).toBeTruthy();
+    });
+
+    it('requires the slug and documents the 404', () => {
+      const slug = operation().parameters?.find((param) => param.name === 'slug');
+      expect(slug?.required).toBe(true);
+      expect(operation().description).toContain('unknown or private collection');
+    });
+
+    it('reads as a collection, with no project wording left over', () => {
+      const text = JSON.stringify([
+        operation().description,
+        operation().parameters,
+        operation().responses,
+      ]);
+      expect(text).not.toMatch(/unknown project|the project|project's|project repository|`repos`/);
+    });
+
+    it('requires every response field', () => {
+      const schema = operation().responses['200']?.content['application/json']?.schema;
+      const fields = responseFields(spec, schema);
+      expect(fields.length).toBeGreaterThan(0);
+      expect(fields.filter((field) => !field.required).map((field) => field.path)).toEqual([]);
+    });
+
+    it('stays out of /v1', async () => {
+      const v1 = (await get('/v1/openapi.json')).json<OpenApiDoc>();
+      const v1Path = collectionOf(name).path.replace('/v1-alpha/', '/v1/');
+      expect(Object.keys(v1.paths)).not.toContain(v1Path);
+      expect((await get(collectionUrl(name).replace('/v1-alpha/', '/v1/'))).statusCode).toBe(404);
     });
   });
 });

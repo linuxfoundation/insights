@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { activityFilterParams, fetchPipe, withBucket } from '../../../clients/tinybird.js';
+import { activityFilterParams, fetchPipe } from '../../../clients/tinybird.js';
 import { toGroups } from '../../../lib/dependency.js';
 import {
   isOrganizationRow,
@@ -13,7 +13,8 @@ import {
   type OrganizationRow,
 } from '../../../lib/organizations.js';
 import { currentPeriod } from '../../../lib/period.js';
-import { ActivityFilterQuery, ProjectSlugParams } from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { ActivityFilterQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/organization_dependency.json';
 
@@ -65,30 +66,26 @@ const OrganizationDependency = Type.Object({
 });
 
 const organizationDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/contributors/organization-dependency',
-    {
-      schema: {
-        tags: ['Contributors'],
-        summary: 'Get the organization dependency',
-        description:
-          "Returns the project's organization dependency in the period: how many organizations make up the top group and their combined share of contributions, the count and share of all other organizations, and the five organizations with the most contributions. " +
-          'The top group is the smallest set of organizations, taken from the most contributions down, whose shares together reach 51% of the contributions attributed to organizations in the period; its share is their running total at that point, so it is usually a little above 51%. ' +
-          'Only the 10 organizations with the most contributions are considered: when together they hold less than 51%, the top group is those 10 and its share stays below 51%. ' +
-          'The top five are ranked by contributions, most first, and organizations with the same count are ordered by an internal organization ID, as in the organization leaderboard. ' +
-          'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
-          'An unknown project, or a period without matching contributions, returns zero counts and shares and an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
-        params: ProjectSlugParams,
-        querystring: ActivityFilterQuery,
-        response: { 200: OrganizationDependency },
-      },
+  widgetRoutes(scope, {
+    path: 'contributors/organization-dependency',
+    schema: {
+      tags: ['Contributors'],
+      summary: 'Get the organization dependency',
+      description:
+        "Returns the project's organization dependency in the period: how many organizations make up the top group and their combined share of contributions, the count and share of all other organizations, and the five organizations with the most contributions. " +
+        'The top group is the smallest set of organizations, taken from the most contributions down, whose shares together reach 51% of the contributions attributed to organizations in the period; its share is their running total at that point, so it is usually a little above 51%. ' +
+        'Only the 10 organizations with the most contributions are considered: when together they hold less than 51%, the top group is those 10 and its share stays below 51%. ' +
+        'The top five are ranked by contributions, most first, and organizations with the same count are ordered by an internal organization ID, as in the organization leaderboard. ' +
+        'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
+        'An unknown project, or a period without matching contributions, returns zero counts and shares and an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
+      querystring: ActivityFilterQuery,
+      response: { 200: OrganizationDependency },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const current = currentPeriod(request.query);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
-        const shared = activityFilterParams(slug, bucketId, request.query, current);
+      const rows = await withTarget((target) => {
+        const shared = activityFilterParams(target, request.query, current);
 
         return Promise.all([
           // Insights sends no limit, so the pipe finds the top group among the leaderboard's
@@ -113,7 +110,7 @@ const organizationDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) =>
         data: leaderboardRows.map(toOrganization),
       };
     },
-  );
+  });
 };
 
 export default organizationDependencyRoutes;
