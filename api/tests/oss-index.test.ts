@@ -3,10 +3,12 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  isCollectionProjectTuple,
   isTopCollectionTuple,
   isCategoryTopProjectTuple,
   isTopProjectTuple,
   toCategoryTopProject,
+  toCollectionProject,
   toTopCollection,
   toTopProject,
 } from '../src/lib/oss-index.js';
@@ -114,5 +116,51 @@ describe('tuple guards', () => {
     ['a negative software value', ['p1', 30, 'n', 'l', -2400, 0.8, 86, 'd', 'active']],
   ])('reject a project tuple that is %s', (_label, value) => {
     expect(isTopProjectTuple(value)).toBe(false);
+  });
+});
+
+const collectionProjectTuple = [
+  'p1',
+  30,
+  'Node.js',
+  'https://logo.test/n.png',
+  2400,
+  0.8,
+  86,
+  'Runtime',
+  'nodejs-node',
+  'active',
+];
+
+describe('collection project tuple', () => {
+  it('is accepted when well formed', () => {
+    expect(isCollectionProjectTuple(collectionProjectTuple)).toBe(true);
+  });
+
+  it.each([
+    ['not an array', 'x'],
+    ['the 9 slot tuple', projectTuple],
+    ['too long', [...collectionProjectTuple, 1]],
+    ['a null slug', [...collectionProjectTuple.slice(0, 8), null, 'active']],
+    ['a numeric status', [...collectionProjectTuple.slice(0, 9), 1]],
+    ['a null logo', ['p1', 30, 'n', null, 1, 1, 1, 'd', 's', 'active']],
+    ['a string health score', ['p1', 30, 'n', 'l', 1, 1, '86', 'd', 's', 'active']],
+  ])('is rejected when %s', (_label, value) => {
+    expect(isCollectionProjectTuple(value)).toBe(false);
+  });
+
+  it('is mapped with the slug and logo renamed to logoUrl', () => {
+    expect(toCollectionProject(collectionProjectTuple as never)).toEqual({
+      id: 'p1',
+      count: 30,
+      name: 'Node.js',
+      slug: 'nodejs-node',
+      logoUrl: 'https://logo.test/n.png',
+      description: 'Runtime',
+      softwareValue: 2400,
+      avgScore: 0.8,
+      healthScore: 86,
+      status: 'active',
+    });
   });
 });
