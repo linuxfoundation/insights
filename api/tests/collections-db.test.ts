@@ -9,6 +9,7 @@ import {
   findCollection,
   findCollectionMembers,
   listCollections,
+  listProjectCollections,
   type CollectionQuery,
 } from '../src/lib/collections-db.js';
 
@@ -88,6 +89,30 @@ describe('findCollection', () => {
 
   it('returns null for an unknown or private slug', async () => {
     await expect(findCollection(log, 'private-one')).resolves.toBeNull();
+  });
+});
+
+describe('listProjectCollections', () => {
+  it('returns the public collections holding the project, ordered by name', async () => {
+    const rows = [{ name: 'CNCF', slug: 'cncf', logoUrl: null }];
+    queryCm.mockResolvedValue(rows);
+
+    await expect(listProjectCollections(log, 'kubernetes')).resolves.toEqual(rows);
+    expect(params()).toEqual(['kubernetes']);
+    expect(normalized()).toContain(`ip.slug = $1 AND ${visible}`);
+    expect(normalized()).toMatch(/ORDER BY c\.name, c\.slug$/);
+  });
+
+  it('matches live memberships of a project that is not deleted', async () => {
+    await listProjectCollections(log, 'kubernetes');
+
+    expect(normalized()).toContain('JOIN "collectionsInsightsProjects" cip');
+    expect(normalized()).toContain('cip."deletedAt" IS NULL');
+    expect(normalized()).toContain('ip."deletedAt" IS NULL');
+  });
+
+  it('returns an empty list for an unknown project', async () => {
+    await expect(listProjectCollections(log, 'no-such-project')).resolves.toEqual([]);
   });
 });
 
