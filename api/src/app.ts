@@ -9,6 +9,7 @@ import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
 
+import { healthRoutes } from './health.js';
 import { notFoundHandler } from './lib/errors.js';
 import { applyLifecycle } from './versions/lifecycle.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from './versions/registry.js';
@@ -134,6 +135,8 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
       { prefix: entry.prefix },
     );
   }
+
+  await app.register(healthRoutes);
 
   const docsRoot = options.docsRoot ?? defaultDocsRoot;
   const docsNotFoundPage = existsSync(docsRoot) ? join(docsRoot, '404.html') : undefined;

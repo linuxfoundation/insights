@@ -12,6 +12,7 @@ import {
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
 
+import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import { type DateRange, toTinybirdRange } from '../lib/period.js';
 import type { ActivityFilterQuery } from '../schemas/common.js';
@@ -23,18 +24,16 @@ export type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
 
+export const tinybirdEnv = ['API_TB_TOKEN', 'API_TB_HOST'] as const;
+
 // Built on first use, so importing this module never needs the API_TB_* variables.
 export function getTinybirdClient(): TinybirdClient {
   if (!client) {
-    const token = process.env.API_TB_TOKEN;
-    if (!token) {
-      throw new Error('API_TB_TOKEN environment variable is required');
-    }
-    const baseUrl = process.env.API_TB_HOST;
-    if (!baseUrl) {
-      throw new Error('API_TB_HOST environment variable is required');
-    }
-    client = createTinybirdClient({ baseUrl, token, bucketCache: createInMemoryBucketCache() });
+    client = createTinybirdClient({
+      baseUrl: requiredEnv('API_TB_HOST'),
+      token: requiredEnv('API_TB_TOKEN'),
+      bucketCache: createInMemoryBucketCache(),
+    });
   }
   return client;
 }

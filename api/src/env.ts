@@ -11,3 +11,13 @@ export function loadLocalEnv(): void {
     process.loadEnvFile(envPath);
   }
 }
+
+export function requiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`${name} environment variable is required`);
+  }
+  return value;
+}
+
+export const missingEnv = (names: readonly string[]) => names.filter((name) => !process.env[name]);

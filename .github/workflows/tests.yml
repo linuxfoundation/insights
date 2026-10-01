@@ -19,10 +19,10 @@ jobs:
           version: 10.18.2
 
       - name: Install dependencies
-        run: pnpm install --filter lfx-insights... --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
+        run: pnpm install --filter lfx-insights... --filter @lfx-insights/postgres-client --filter @lfx-insights/tinybird-client --filter @lfx-insights/types
 
       - name: Build workspace libs
-        run: pnpm --filter @lfx-insights/types --filter @lfx-insights/tinybird-client build
+        run: pnpm --filter @lfx-insights/types --filter @lfx-insights/postgres-client --filter @lfx-insights/tinybird-client build
 
       - name: Run tests
         env:

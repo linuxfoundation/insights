@@ -35,3 +35,4 @@ Code to record a new decision interactively.
 | [ADR-0019](./0019-opentelemetry-instrumentation.md)              | OpenTelemetry instrumentation; OTel trace ID is the request ID                                     |                                |            |
 | [ADR-0020](./0020-standalone-pat-service-on-platform-cluster.md) | The PAT service is a standalone service on the LFX platform cluster                                | accepted                       | 2026-09-14 |
 | [ADR-0021](./0021-rfc-deprecation-sunset-header-formats.md)      | Deprecation and Sunset headers use the RFC 9745 and RFC 8594 wire formats                          | accepted                       | 2026-09-17 |
+| [ADR-0022](./0022-config-only-readiness-probe.md)                | `/health/ready` checks this pod's configuration only, never an upstream                            | accepted                       | 2026-10-01 |
