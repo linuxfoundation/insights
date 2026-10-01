@@ -104,6 +104,30 @@ describe('health routes', () => {
     expect(response.json()).toEqual({
       status: 'unavailable',
       missingConfig: ['API_CM_DB_PASSWORD', 'API_TB_TOKEN'],
+      invalidConfig: [],
+    });
+  });
+
+  it('treats an empty API_CM_DB_PORT as the default', async () => {
+    stubAllEnv();
+    vi.stubEnv('API_CM_DB_PORT', '');
+
+    const response = await app.inject({ method: 'GET', url: '/health/ready' });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it.each(['abc', '0', '70000', '54.3'])('reports API_CM_DB_PORT=%s as invalid', async (port) => {
+    stubAllEnv();
+    vi.stubEnv('API_CM_DB_PORT', port);
+
+    const response = await app.inject({ method: 'GET', url: '/health/ready' });
+
+    expect(response.statusCode).toBe(503);
+    expect(response.json()).toEqual({
+      status: 'unavailable',
+      missingConfig: [],
+      invalidConfig: ['API_CM_DB_PORT'],
     });
   });
 
@@ -133,6 +157,16 @@ describe('getCmPool', () => {
     ]);
   });
 
+  it('falls back to port 5432 when API_CM_DB_PORT is empty', async () => {
+    stubCmEnv();
+    vi.stubEnv('API_CM_DB_PORT', '');
+    pg.query.mockResolvedValue({ rows: [] });
+
+    await queryCm(log, 'SELECT 1');
+
+    expect(pg.options[0]).toMatchObject({ port: 5432 });
+  });
+
   it('turns TLS off with API_CM_DB_SSL=false', async () => {
     stubCmEnv();
     vi.stubEnv('API_CM_DB_SSL', 'false');
@@ -146,6 +180,14 @@ describe('getCmPool', () => {
 });
 
 describe('queryCm', () => {
+  it('turns an invalid port into a 503', async () => {
+    stubCmEnv();
+    vi.stubEnv('API_CM_DB_PORT', 'abc');
+
+    await expect(queryCm(log, 'SELECT 1')).rejects.toBeInstanceOf(UpstreamUnavailableError);
+    expect(pg.options).toEqual([]);
+  });
+
   it('returns the rows of the query', async () => {
     stubCmEnv();
     pg.query.mockResolvedValue({ rows: [{ id: 'a' }] });

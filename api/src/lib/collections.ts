@@ -236,7 +236,10 @@ const isLifecycleLabel = enumGuard(LifecycleLabel);
 const isImpactLabel = enumGuard(ImpactLabel);
 const isLeaderboardType = enumGuard(LeaderboardType);
 
-const isScore = (value: unknown) => value === null || isCount(value);
+const upTo = (value: unknown, max: number) =>
+  value === null || (isCount(value) && (value as number) <= max);
+// The maxima the pipe derives from the covered categories.
+const healthMaxScores = new Set<unknown>([60, 65, 75, 100, null]);
 const isPercentage = (value: unknown) => Number.isFinite(value);
 
 const isAchievement = (value: unknown) =>
@@ -260,6 +263,7 @@ export const isCollectionProjectRow = (row: unknown): row is CollectionProjectRo
     isString(candidate.slug) &&
     isString(candidate.logoUrl) &&
     (candidate.isLF === 0 || candidate.isLF === 1) &&
+    isString(candidate.status) &&
     (candidate.status === '' || isStatus(candidate.status)) &&
     isCount(candidate.contributorCount) &&
     isCount(candidate.organizationCount) &&
@@ -270,14 +274,17 @@ export const isCollectionProjectRow = (row: unknown): row is CollectionProjectRo
     isPercentage(candidate.organizationDependencyPercentage) &&
     Array.isArray(candidate.achievements) &&
     candidate.achievements.every(isAchievement) &&
-    isScore(candidate.healthScoreV2) &&
+    upTo(candidate.healthScoreV2, 100) &&
     isHealthLabel(candidate.healthLabel) &&
-    isScore(candidate.healthMaxScore) &&
-    isScore(candidate.maintainerHealthScoreV2) &&
-    isScore(candidate.securitySupplyChainScoreV2) &&
-    isScore(candidate.developmentActivityScoreV2) &&
+    healthMaxScores.has(candidate.healthMaxScore) &&
+    (candidate.healthScoreV2 === null ||
+      candidate.healthMaxScore === null ||
+      (candidate.healthScoreV2 as number) <= (candidate.healthMaxScore as number)) &&
+    upTo(candidate.maintainerHealthScoreV2, 40) &&
+    upTo(candidate.securitySupplyChainScoreV2, 35) &&
+    upTo(candidate.developmentActivityScoreV2, 25) &&
     isLifecycleLabel(candidate.lifecycleLabel) &&
-    isScore(candidate.impactScore) &&
+    upTo(candidate.impactScore, 100) &&
     isImpactLabel(candidate.impactLabel)
   );
 };

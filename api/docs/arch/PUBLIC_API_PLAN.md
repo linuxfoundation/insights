@@ -175,7 +175,7 @@ Bootstrap the standalone service per §3 D1 (Fastify) and share code with fronte
 - **T-003** CI: lint, typecheck, test, build, image push (mirror frontend pipeline).
 - **T-004** Extract Tinybird client (`adaptive-semaphore.ts`, `bucket-cache.ts`, `TinybirdResponse<T>` type, core HTTP fetch logic) into `libs/tinybird-client`. Replace `ofetch` with native `fetch` (Node 18+). Remove Luxon and H3/Nuxt-specific dependencies. The lib is framework-agnostic. Frontend and API both depend on it.
 - **T-005** Extract shared enum definitions (`ActivityPlatforms`, `ActivityTypes`, `Granularity`) into `libs/insights-types`. Request/response shape types are defined separately in each app: the frontend keeps its Luxon-based types; `/api` defines its own TypeBox schemas.
-- **T-006** Standard health endpoints: `/health/live`, `/health/ready` (TB ping, Redis ping, PG ping). Exempt from the API-key requirement and restricted at the network layer (see ADR-0009 Scope).
+- **T-006** Standard health endpoints: `/health/live`, `/health/ready` (config-only readiness, see ADR-0022). Exempt from the API-key requirement and restricted at the network layer (see ADR-0009 Scope).
 - **T-007** Error envelope ADR + Fastify error hook: single shape for all errors (`{ error: { code, message, requestId, docsUrl } }`).
 - **T-008** Wire OTel trace ID as the request ID: error envelope's `requestId` = OTel trace ID. Inbound `traceparent` honoured via the W3C propagator (auto); outbound calls inject it automatically. W3C `traceparent` is the sole HTTP propagation channel. No `X-Request-Id` response header. No separate ULID generator (per ADR-0019).
 - **T-009** Local dev story: `pnpm dev` from `api/`, hot reload via `tsx watch` or `fastify-cli`, env file template.

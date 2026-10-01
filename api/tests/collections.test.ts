@@ -129,6 +129,14 @@ describe('isCollectionProjectRow', () => {
     ['a zero rank', { achievements: [['forks', 0, 10]] }],
     ['a fractional count', { contributorCount: 1.5 }],
     ['a quoted number', { softwareValue: '153463468' }],
+    ['a non-string status', { status: 5 }],
+    ['a score above its maximum', { maintainerHealthScoreV2: 41 }],
+    ['a supply chain score above 35', { securitySupplyChainScoreV2: 36 }],
+    ['a development activity score above 25', { developmentActivityScoreV2: 26 }],
+    ['an impact score above 100', { impactScore: 101 }],
+    ['a health score above 100', { healthScoreV2: 101 }],
+    ['an unknown health maximum', { healthMaxScore: 80 }],
+    ['a health score above the health maximum', { healthScoreV2: 70, healthMaxScore: 60 }],
   ])('rejects %s', (_, change) => {
     expect(isCollectionProjectRow({ ...projectRow, ...change })).toBe(false);
   });

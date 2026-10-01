@@ -15,13 +15,26 @@ export const cmDbEnv = [
   'API_CM_DB_PASSWORD',
 ] as const;
 
+// Empty means the default port; anything else must be a valid port number.
+export function cmDbPort(): number {
+  const raw = process.env.API_CM_DB_PORT;
+  if (raw === undefined || raw === '') {
+    return 5432;
+  }
+  const port = Number(raw);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new Error('API_CM_DB_PORT must be an integer between 1 and 65535');
+  }
+  return port;
+}
+
 // Built on first use, so importing this module never needs the API_CM_DB_* variables. The CM
 // database holds collections; the API only reads it, so point API_CM_DB_HOST at a read replica.
 export function getCmPool(): Pool {
   if (!pool) {
     pool = createPostgresPool({
       host: requiredEnv('API_CM_DB_HOST'),
-      port: Number(process.env.API_CM_DB_PORT ?? 5432),
+      port: cmDbPort(),
       database: requiredEnv('API_CM_DB_DATABASE'),
       user: requiredEnv('API_CM_DB_USERNAME'),
       password: requiredEnv('API_CM_DB_PASSWORD'),
