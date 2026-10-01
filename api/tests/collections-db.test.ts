@@ -7,6 +7,7 @@ vi.mock('../src/clients/postgres.js', () => ({ queryCm }));
 
 import {
   findCollection,
+  findCollectionDetail,
   findCollectionMembers,
   listCollections,
   type CollectionQuery,
@@ -103,5 +104,21 @@ describe('findCollectionMembers', () => {
 
   it('returns null for an unknown or private slug', async () => {
     await expect(findCollectionMembers(log, 'private-one')).resolves.toBeNull();
+  });
+});
+
+describe('findCollectionDetail', () => {
+  it('reads the row and both member lists in one public-only query', async () => {
+    await findCollectionDetail(log, 'cncf');
+
+    expect(queryCm).toHaveBeenCalledTimes(1);
+    expect(sql()).toContain(visible);
+    expect(sql()).toContain('"projectIds"');
+    expect(sql()).toContain('"repositoryUrls"');
+    expect(params()).toEqual(['cncf']);
+  });
+
+  it('returns null when no public collection matches', async () => {
+    await expect(findCollectionDetail(log, 'missing')).resolves.toBeNull();
   });
 });
