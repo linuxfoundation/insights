@@ -120,6 +120,14 @@ describe('GET /v1-alpha/oss-index/groups', () => {
     ['a missing group id', row({ id: undefined })],
     ['a non-array topProjects', row({ topProjects: 'x' })],
     ['a malformed collection tuple', row({ topCollections: [['c1', 1, null, 1, 1]] })],
+    ['a negative totalContributors', row({ totalContributors: -1 })],
+    ['a fractional projectCount', row({ projectCount: 1.5 })],
+    ['a fractional softwareValue', row({ softwareValue: 10.5 })],
+    ['a negative collection tuple count', row({ topCollections: [['c1', -1, 'n', 1, 1]] })],
+    [
+      'a fractional project tuple count',
+      row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd', 's']] }),
+    ],
     ['a short project tuple', row({ topProjects: [['p1', 1, 'n']] })],
     ['a null project logo', row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd', 's']] })],
   ])('answers 503 upstream_unavailable for %s', async (_label, bad) => {
