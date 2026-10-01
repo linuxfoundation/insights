@@ -5,19 +5,15 @@ import { Type } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   toPeriodSummary,
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
-import {
-  ContributionFlags,
-  DateRangeQuery,
-  periodSummary,
-  ProjectSlugParams,
-} from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { ContributionFlags, DateRangeQuery, periodSummary } from '../../../schemas/common.js';
 
 interface HeatmapRow {
   weekday: number;
@@ -80,33 +76,28 @@ const sum = (rows: HeatmapRow[]) => rows.reduce((total, row) => total + row.acti
 const share = (part: number, total: number) => (total === 0 ? 0 : (part / total) * 100);
 
 const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/contributions-outside-work-hours',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Contributions outside work hours',
-        description:
-          'Returns the heatmap of contributions by weekday and 2-hour block for the current period, the share of contributions made outside work hours for the current and the previous period, and that share split into weekdays and weekends. ' +
-          'Outside work hours means Monday to Friday from 18:00 to 08:00, plus all of Saturday and Sunday. ' +
-          "Weekdays and hours are in each contributor's local time: the activity timestamp is shifted by an offset derived from the contributor's profile country or location, and contributors without a mappable location are left out. " +
-          '`startDate` and `endDate` filter on the original UTC timestamps: the period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Counts cover git, GitHub, GitLab and Gerrit activity, and the underlying dataset is rebuilt once a day. ' +
-          'An unknown project returns zero shares and an empty heatmap.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: ContributionsOutsideWorkHours },
-      },
+  widgetRoutes(scope, {
+    path: 'development/contributions-outside-work-hours',
+    schema: {
+      tags: ['Development'],
+      summary: 'Contributions outside work hours',
+      description:
+        'Returns the heatmap of contributions by weekday and 2-hour block for the current period, the share of contributions made outside work hours for the current and the previous period, and that share split into weekdays and weekends. ' +
+        'Outside work hours means Monday to Friday from 18:00 to 08:00, plus all of Saturday and Sunday. ' +
+        "Weekdays and hours are in each contributor's local time: the activity timestamp is shifted by an offset derived from the contributor's profile country or location, and contributors without a mappable location are left out. " +
+        '`startDate` and `endDate` filter on the original UTC timestamps: the period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Counts cover git, GitHub, GitLab and Gerrit activity, and the underlying dataset is rebuilt once a day. ' +
+        'An unknown project returns zero shares and an empty heatmap.',
+      querystring: Query,
+      response: { 200: ContributionsOutsideWorkHours },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, includeCollaborations, includeCodeContributions } =
         request.query;
       const dates = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const filter: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           includeCodeContributions,
           includeCollaborations,
@@ -148,7 +139,7 @@ const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (sc
         })),
       };
     },
-  );
+  });
 };
 
 export default contributionsOutsideWorkHoursRoutes;

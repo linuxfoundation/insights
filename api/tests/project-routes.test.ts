@@ -441,7 +441,7 @@ const collectionUrl = (
   slug = 'cncf',
 ) =>
   `${collectionOf(name).path.replace('{slug}', slug)}?${queryString({ ...validQuery(name), ...params })}`;
-const collectionGroups = ['contributors'];
+const collectionGroups = ['contributors', 'development'];
 const collectionExcluded = new Set<string>();
 const emptyCollection = collectionStub(() => []);
 // The module mock answers for the CM database: only these collections are public.
@@ -650,7 +650,9 @@ describe.each(collectionNames)('collection scope: %s', (name) => {
         operation().parameters,
         operation().responses,
       ]);
-      expect(text).not.toMatch(/unknown project|the project|project's|project repository|`repos`/);
+      expect(text).not.toMatch(
+        /unknown project|the project|project's|project repository|`repos`|collection endpoint/,
+      );
     });
 
     it('requires every response field', () => {

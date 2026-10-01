@@ -5,7 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -14,11 +14,11 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
   nullablePeriodSummary,
   periodSummary,
   Platform,
-  ProjectSlugParams,
   SeriesQuery,
 } from '../../../schemas/common.js';
 
@@ -115,31 +115,26 @@ const counts = (rows: SummaryRow[]): Counts => ({
 const efficiency = ({ opened, closed }: Counts) => (opened > 0 ? (closed / opened) * 100 : null);
 
 const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/review-efficiency',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Review efficiency',
-        description:
-          'Returns the pull requests opened in the period that have since been closed, as a percentage of all pull requests opened in the period (`efficiencyPercentage`), against the comparison period before it; the opened and closed counts as their own summaries; and both counts per bucket. Closed means the pull request has a resolution time in the pipe, merged or closed, at any time up to now, so an older period has had longer to close its pull requests. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and because `closed` counts a subset of `opened` it runs from 0 to 100. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null. ' +
-          'Pull requests cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without `platform` the pipe applies no platform filter and counts pull requests from every platform the project has pull request data for. `granularity` has no default and must be sent. ' +
-          'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
-          'An unknown project returns a null efficiency, zero counts and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: ReviewEfficiency },
-      },
+  widgetRoutes(scope, {
+    path: 'development/review-efficiency',
+    schema: {
+      tags: ['Development'],
+      summary: 'Review efficiency',
+      description:
+        'Returns the pull requests opened in the period that have since been closed, as a percentage of all pull requests opened in the period (`efficiencyPercentage`), against the comparison period before it; the opened and closed counts as their own summaries; and both counts per bucket. Closed means the pull request has a resolution time in the pipe, merged or closed, at any time up to now, so an older period has had longer to close its pull requests. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and because `closed` counts a subset of `opened` it runs from 0 to 100. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null. ' +
+        'Pull requests cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without `platform` the pipe applies no platform filter and counts pull requests from every platform the project has pull request data for. `granularity` has no default and must be sent. ' +
+        'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
+        'An unknown project returns a null efficiency, zero counts and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
+      querystring: Query,
+      response: { 200: ReviewEfficiency },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, platform } = request.query;
       const { current, previous } = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           platform,
         };
@@ -181,7 +176,7 @@ const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         })),
       };
     },
-  );
+  });
 };
 
 export default reviewEfficiencyRoutes;
