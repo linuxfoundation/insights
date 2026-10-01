@@ -5,7 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -13,11 +13,11 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
   BucketBounds,
   ContributionFlags,
   periodSummary,
-  ProjectSlugParams,
   SeriesQuery,
 } from '../../../schemas/common.js';
 
@@ -61,21 +61,17 @@ const ActiveOrganizations = Type.Object({
 });
 
 const activeOrganizationsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/contributors/active-organizations',
-    {
-      schema: {
-        tags: ['Contributors'],
-        summary: 'Get active organizations',
-        description:
-          'Returns the number of active organizations in the period against the comparison period before it, and the number of active organizations per bucket. An organization is active when at least one activity attributed to it falls in the period and is of a kind the flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true. `summary` counts each organization once for the whole period, while each bucket counts the organizations active in it, so the buckets can add up to more than `summary.current`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zeros and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: ActiveOrganizationsQuery,
-        response: { 200: ActiveOrganizations },
-      },
+  widgetRoutes(scope, {
+    path: 'contributors/active-organizations',
+    schema: {
+      tags: ['Contributors'],
+      summary: 'Get active organizations',
+      description:
+        'Returns the number of active organizations in the period against the comparison period before it, and the number of active organizations per bucket. An organization is active when at least one activity attributed to it falls in the period and is of a kind the flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true. `summary` counts each organization once for the whole period, while each bucket counts the organizations active in it, so the buckets can add up to more than `summary.current`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zeros and an empty `data` list.',
+      querystring: ActiveOrganizationsQuery,
+      response: { 200: ActiveOrganizations },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const {
         repos,
         startDate,
@@ -86,10 +82,9 @@ const activeOrganizationsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       } = request.query;
       const dates = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           includeCodeContributions,
           includeCollaborations,
@@ -125,7 +120,7 @@ const activeOrganizationsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         })),
       };
     },
-  );
+  });
 };
 
 export default activeOrganizationsRoutes;
