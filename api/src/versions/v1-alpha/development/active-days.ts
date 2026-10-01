@@ -5,7 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -13,12 +13,8 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
-import {
-  ContributionFlags,
-  periodSummary,
-  ProjectSlugParams,
-  SeriesQuery,
-} from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { ContributionFlags, periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/active_days.json';
 
@@ -71,21 +67,17 @@ const ActiveDays = Type.Object({
 });
 
 const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/active-days',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Get active days',
-        description:
-          'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends the day before `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zeros and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: ActiveDaysQuery,
-        response: { 200: ActiveDays },
-      },
+  widgetRoutes(scope, {
+    path: 'development/active-days',
+    schema: {
+      tags: ['Development'],
+      summary: 'Get active days',
+      description:
+        'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends the day before `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zeros and an empty `data` list.',
+      querystring: ActiveDaysQuery,
+      response: { 200: ActiveDays },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const {
         repos,
         startDate,
@@ -95,10 +87,9 @@ const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       } = request.query;
       const dates = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           includeCodeContributions: true,
           includeCollaborations,
@@ -139,7 +130,7 @@ const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         })),
       };
     },
-  );
+  });
 };
 
 export default activeDaysRoutes;

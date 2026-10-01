@@ -5,7 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -13,12 +13,8 @@ import {
   toNullablePeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
-import {
-  nullablePeriodSummary,
-  Platform,
-  ProjectSlugParams,
-  SeriesQuery,
-} from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { nullablePeriodSummary, Platform, SeriesQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/median_time_to_close.json';
 
@@ -76,30 +72,25 @@ const isNullableNumber = (value: unknown) =>
 const isSummaryRow = (row: SummaryRow) => isNullableNumber(row.medianTimeToCloseSeconds);
 
 const medianTimeToCloseRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/median-time-to-close',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Median time to close',
-        description:
-          'Returns the median time a pull request takes from being opened to being closed, in seconds, for the current period against the comparison period before it (`summary`), and the same median per bucket of the requested granularity (`data`). The period and the buckets select pull requests by the day they were opened, from 00:00 UTC on `startDate` up to 00:00 UTC on `endDate`, so activity later on `endDate` is outside the period; the pipe compares with `<=`, so a pull request opened at exactly 00:00 UTC on `endDate` is still counted. The median is over how long those took to close. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
-          'Only pull requests already closed, whether merged or closed without merging, with a positive close time count. `platform` narrows the median to GitHub pull requests, GitLab merge requests or Gerrit changesets; when omitted, the median covers GitHub, GitLab and Gerrit together. A period with no closed pull request has a null median, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket with no closed pull request carries 0. ' +
-          'An unknown project returns a null summary with the requested period bounds and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
-        params: ProjectSlugParams,
-        querystring: MedianTimeToCloseQuery,
-        response: { 200: MedianTimeToClose },
-      },
+  widgetRoutes(scope, {
+    path: 'development/median-time-to-close',
+    schema: {
+      tags: ['Development'],
+      summary: 'Median time to close',
+      description:
+        'Returns the median time a pull request takes from being opened to being closed, in seconds, for the current period against the comparison period before it (`summary`), and the same median per bucket of the requested granularity (`data`). The period and the buckets select pull requests by the day they were opened, from 00:00 UTC on `startDate` up to 00:00 UTC on `endDate`, so activity later on `endDate` is outside the period; the pipe compares with `<=`, so a pull request opened at exactly 00:00 UTC on `endDate` is still counted. The median is over how long those took to close. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
+        'Only pull requests already closed, whether merged or closed without merging, with a positive close time count. `platform` narrows the median to GitHub pull requests, GitLab merge requests or Gerrit changesets; when omitted, the median covers GitHub, GitLab and Gerrit together. A period with no closed pull request has a null median, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket with no closed pull request carries 0. ' +
+        'An unknown project returns a null summary with the requested period bounds and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
+      querystring: MedianTimeToCloseQuery,
+      response: { 200: MedianTimeToClose },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, platform } = request.query;
       const dates = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           platform,
         };
@@ -139,7 +130,7 @@ const medianTimeToCloseRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         })),
       };
     },
-  );
+  });
 };
 
 export default medianTimeToCloseRoutes;

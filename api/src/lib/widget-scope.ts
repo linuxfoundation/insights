@@ -3,7 +3,7 @@
 import { Type, type Static, type TObject, type TSchema } from '@sinclair/typebox';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 
-import { withBucket } from '../clients/tinybird.js';
+import { type RequestLog, withBucket } from '../clients/tinybird.js';
 import { ProjectSlugParams } from '../schemas/common.js';
 import { collectionExists } from './collections-db.js';
 import { NotFoundError } from './errors.js';
@@ -22,6 +22,11 @@ export interface PipeTarget {
 
 // Null when the project has no Tinybird bucket, which the handler answers with its empty result.
 export type WithTarget = <T>(query: (target: PipeTarget) => Promise<T>) => Promise<T | null>;
+
+// Exported for project routes that call a shared helper taking `WithTarget` outside `widgetRoutes`.
+export function projectTarget(request: RequestLog, slug: string): WithTarget {
+  return (query) => withBucket(request, slug, (bucketId) => query({ project: slug, bucketId }));
+}
 
 export type WidgetRequest<Q extends TObject> = FastifyRequest<{ Querystring: Static<Q> }>;
 
@@ -77,10 +82,7 @@ export function widgetRoutes<Q extends TObject, R extends TSchema>(
       },
     },
     async (request: SlugRequest<Q>) => {
-      const { slug } = request.params;
-      return handler(request, (query) =>
-        withBucket(request, slug, (bucketId) => query({ project: slug, bucketId })),
-      );
+      return handler(request, projectTarget(request, request.params.slug));
     },
   );
 

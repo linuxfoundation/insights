@@ -6,9 +6,10 @@ import { Type } from '@sinclair/typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { ActivityTypes } from '@lfx-insights/types';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import { resolvePeriods, toPeriodSummary, toTinybirdRange } from '../../../lib/period.js';
-import { DateRangeQuery, periodSummary, ProjectSlugParams } from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { DateRangeQuery, periodSummary } from '../../../schemas/common.js';
 
 const activeContributorsPath = '/v0/pipes/active_contributors.json';
 const leaderboardPath = '/v0/pipes/contributors_leaderboard.json';
@@ -95,28 +96,23 @@ const CodeReviewParticipants = Type.Object({
 });
 
 const codeReviewParticipantsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/code-review-participants',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Get code review participants',
-        description:
-          'Returns the number of contributors who took part in code review in the period against the comparison period before it, and the participants with the most review activity. A participant is a contributor with at least one review activity attributed to them. On GitHub and GitLab that is opening a pull or merge request, being assigned to it or asked to review it, reviewing it (including approving it or requesting changes), or commenting on it. On Gerrit it is creating a changeset, commenting on a changeset or patchset, or approving a patchset. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list. Participant identity fields are provisional in /v1-alpha.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: CodeReviewParticipants },
-      },
+  widgetRoutes(scope, {
+    path: 'development/code-review-participants',
+    schema: {
+      tags: ['Development'],
+      summary: 'Get code review participants',
+      description:
+        'Returns the number of contributors who took part in code review in the period against the comparison period before it, and the participants with the most review activity. A participant is a contributor with at least one review activity attributed to them. On GitHub and GitLab that is opening a pull or merge request, being assigned to it or asked to review it, reviewing it (including approving it or requesting changes), or commenting on it. On Gerrit it is creating a changeset, commenting on a changeset or patchset, or approving a patchset. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list. Participant identity fields are provisional in /v1-alpha.',
+      querystring: Query,
+      response: { 200: CodeReviewParticipants },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, limit = 5 } = request.query;
       const dates = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const shared: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           activity_types: participantActivityTypes,
         };
@@ -162,7 +158,7 @@ const codeReviewParticipantsRoutes: FastifyPluginAsyncTypebox = async (scope) =>
         })),
       };
     },
-  );
+  });
 };
 
 export default codeReviewParticipantsRoutes;

@@ -6,7 +6,7 @@ import { Type, type Static } from '@sinclair/typebox';
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 import { ActivityTypes } from '@lfx-insights/types';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -14,12 +14,8 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from '../../../lib/period.js';
-import {
-  nullableNumber,
-  periodSummary,
-  ProjectSlugParams,
-  SeriesQuery,
-} from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { nullableNumber, periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const activitiesCountPath = '/v0/pipes/activities_count.json';
 const resolveVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
@@ -97,28 +93,23 @@ function mergeBuckets(
 }
 
 const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/issues-resolution',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Get issue resolution',
-        description:
-          'Returns the issues closed in the period against the comparison period before it, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: SeriesQuery,
-        response: { 200: IssuesResolution },
-      },
+  widgetRoutes(scope, {
+    path: 'development/issues-resolution',
+    schema: {
+      tags: ['Development'],
+      summary: 'Get issue resolution',
+      description:
+        'Returns the issues closed in the period against the comparison period before it, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+      querystring: SeriesQuery,
+      response: { 200: IssuesResolution },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity } = request.query;
       const { current, previous } = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const filter: TinybirdQuery = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           countType: 'new',
           onlyContributions: false,
@@ -160,7 +151,7 @@ const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         data: mergeBuckets(opened, closed),
       };
     },
-  );
+  });
 };
 
 export default issuesResolutionRoutes;

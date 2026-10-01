@@ -6,6 +6,7 @@ import { Type } from '@sinclair/typebox';
 import { ActivityTypes } from '@lfx-insights/types';
 
 import { fetchActivityCounts } from '../../../lib/activity-count.js';
+import { projectTarget } from '../../../lib/widget-scope.js';
 import {
   countType,
   periodSummary,
@@ -58,13 +59,18 @@ const starsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       // Stars are not contributions, so onlyContributions=false lets the pipes count them.
-      const { summary, data } = await fetchActivityCounts(request, slug, request.query, {
-        activity_type: ActivityTypes.STARS,
-        onlyContributions: false,
-        includeCodeContributions: true,
-        includeCollaborations: true,
-        includeOtherContributions: true,
-      });
+      const { summary, data } = await fetchActivityCounts(
+        request,
+        projectTarget(request, slug),
+        request.query,
+        {
+          activity_type: ActivityTypes.STARS,
+          onlyContributions: false,
+          includeCodeContributions: true,
+          includeCollaborations: true,
+          includeOtherContributions: true,
+        },
+      );
       return { summary, data: data.map(({ count, ...bucket }) => ({ ...bucket, stars: count })) };
     },
   );
