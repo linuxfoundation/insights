@@ -27,6 +27,9 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     'security',
     'overview',
     'leaderboards',
+    'collections',
+    'categories',
+    'oss-index',
   ]) {
     const dir = fileURLToPath(new URL(`./${group}`, import.meta.url));
     // @fastify/autoload throws ENOENT for a missing folder, so a lost development/ fails startup.
