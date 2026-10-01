@@ -16,7 +16,7 @@ export type TopCollectionTuple = [
   avgScore: number,
 ];
 
-export type TopProjectTuple = [
+type ProjectHead = [
   id: string,
   count: number,
   name: string,
@@ -25,12 +25,19 @@ export type TopProjectTuple = [
   avgScore: number,
   v1HealthScore: number,
   description: string,
-  status: string,
+];
+
+type HealthTail = [
   healthScore: number | null,
   healthLabel: string | null,
   scaledHealthScore: number | null,
   healthMaxScore: number | null,
 ];
+
+export type TopProjectTuple = [...head: ProjectHead, status: string, ...health: HealthTail];
+
+// The categories pipe returns the project tuple without its status slot.
+export type CategoryTopProjectTuple = [...head: ProjectHead, ...health: HealthTail];
 
 // Counts and the UInt64 software value must be non-negative safe integers. The 0-1 averages use
 // inRange; the dropped v1 score only needs a finite number.
@@ -46,9 +53,7 @@ export const isTopCollectionTuple = (value: unknown): value is TopCollectionTupl
   isCount(value[3]) &&
   inRange(value[4], 1);
 
-export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
-  Array.isArray(value) &&
-  value.length >= 13 &&
+const isProjectHead = (value: unknown[]) =>
   isString(value[0]) &&
   isCount(value[1]) &&
   isString(value[2]) &&
@@ -56,10 +61,21 @@ export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   isCount(value[4]) &&
   inRange(value[5], 1) &&
   isNumber(value[6]) &&
-  isString(value[7]) &&
+  isString(value[7]);
+
+const isHealthTail = (value: unknown[], start: number) =>
+  isHealthScore(value[start], value[start + 1], value[start + 3]) &&
+  isNullableNumber(value[start + 2]);
+
+export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
+  Array.isArray(value) &&
+  value.length >= 13 &&
+  isProjectHead(value) &&
   isString(value[8]) &&
-  isHealthScore(value[9], value[10], value[12]) &&
-  isNullableNumber(value[11]);
+  isHealthTail(value, 9);
+
+export const isCategoryTopProjectTuple = (value: unknown): value is CategoryTopProjectTuple =>
+  Array.isArray(value) && value.length >= 12 && isProjectHead(value) && isHealthTail(value, 8);
 
 export const TopCollection = Type.Object(
   {
@@ -103,6 +119,11 @@ export const TopProject = Type.Object(
 );
 export type TopProject = Static<typeof TopProject>;
 
+export const CategoryTopProject = Type.Omit(TopProject, ['status'], {
+  title: 'CategoryTopProject',
+});
+export type CategoryTopProject = Static<typeof CategoryTopProject>;
+
 export const toTopCollection = ([
   id,
   count,
@@ -137,6 +158,32 @@ export const toTopProject = ([
   healthLabel: healthLabel as TopProject['healthLabel'],
   healthMaxScore,
   status,
+});
+
+export const toCategoryTopProject = ([
+  id,
+  count,
+  name,
+  logo,
+  softwareValue,
+  avgScore,
+  ,
+  description,
+  healthScore,
+  healthLabel,
+  ,
+  healthMaxScore,
+]: CategoryTopProjectTuple): CategoryTopProject => ({
+  id,
+  count,
+  name,
+  logoUrl: logo,
+  description,
+  softwareValue,
+  avgScore,
+  healthScore,
+  healthLabel: healthLabel as CategoryTopProject['healthLabel'],
+  healthMaxScore,
 });
 
 export const sortValues = ['totalContributors', 'softwareValue'] as const;
