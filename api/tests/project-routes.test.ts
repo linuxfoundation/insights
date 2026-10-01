@@ -441,6 +441,8 @@ const collectionUrl = (
   slug = 'cncf',
 ) =>
   `${collectionOf(name).path.replace('{slug}', slug)}?${queryString({ ...validQuery(name), ...params })}`;
+const collectionGroups = ['contributors'];
+const collectionExcluded = new Set<string>();
 const emptyCollection = collectionStub(() => []);
 // The module mock answers for the CM database: only these collections are public.
 const publicCollections = new Set(['cncf']);
@@ -452,6 +454,17 @@ describe('collection scope discovery', () => {
       expect(names, `${name} has no project route to share its handler with`).toContain(name);
     }
   });
+
+  // A route left project-only must be listed in `collectionExcluded` with its reason.
+  it.each(collectionGroups)(
+    'registers a collection variant for every %s project route',
+    (group) => {
+      const inGroup = (name: string) => name.startsWith(`${group}/`);
+      expect(collectionNames.filter(inGroup)).toEqual(
+        names.filter((name) => inGroup(name) && !collectionExcluded.has(name)),
+      );
+    },
+  );
 });
 
 describe.each(collectionNames)('collection scope: %s', (name) => {
