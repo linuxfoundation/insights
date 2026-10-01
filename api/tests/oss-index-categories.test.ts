@@ -135,6 +135,9 @@ describe('GET /v1-alpha/oss-index/categories', () => {
     ['a short project tuple', row({ topProjects: [['p1', 1, 'n']] })],
     ['a nine slot project tuple', row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 's']] })],
     ['a null project logo', row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd']] })],
+    ['a negative totalContributors', row({ totalContributors: -1 })],
+    ['a fractional softwareValue', row({ softwareValue: 1.5 })],
+    ['a fractional project count', row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd']] })],
   ])('answers 503 upstream_unavailable for %s', async (_label, bad) => {
     rows = [bad];
     const res = await get(`${route}?categoryGroupSlug=${slug}`);
