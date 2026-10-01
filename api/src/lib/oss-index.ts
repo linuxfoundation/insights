@@ -155,3 +155,64 @@ export const sortQuery = Type.Object({
     ),
   ),
 });
+
+// Collection project tuples: the 9 slot project tuple plus the project slug before the status.
+export type CollectionProjectTuple = [
+  id: string,
+  count: number,
+  name: string,
+  logo: string,
+  softwareValue: number,
+  avgScore: number,
+  healthScore: number,
+  description: string,
+  slug: string,
+  status: string,
+];
+
+export const isCollectionProjectTuple = (value: unknown): value is CollectionProjectTuple =>
+  Array.isArray(value) &&
+  value.length === 10 &&
+  isString(value[0]) &&
+  isCount(value[1]) &&
+  isString(value[2]) &&
+  isString(value[3]) &&
+  isCount(value[4]) &&
+  isNumber(value[5]) &&
+  isNumber(value[6]) &&
+  isString(value[7]) &&
+  isString(value[8]) &&
+  isString(value[9]);
+
+export const CollectionProject = Type.Object(
+  {
+    ...TopProject.properties,
+    slug: Type.String({ description: 'URL slug of the project.' }),
+  },
+  { title: 'CollectionProject' },
+);
+export type CollectionProject = Static<typeof CollectionProject>;
+
+export const toCollectionProject = ([
+  id,
+  count,
+  name,
+  logo,
+  softwareValue,
+  avgScore,
+  healthScore,
+  description,
+  slug,
+  status,
+]: CollectionProjectTuple): CollectionProject => ({
+  id,
+  count,
+  name,
+  slug,
+  logoUrl: logo,
+  description,
+  softwareValue,
+  avgScore,
+  healthScore,
+  status,
+});
