@@ -10,6 +10,7 @@ import {
   fetchCountedPipe,
   fetchPipe,
   getTinybirdClient,
+  postCountedPipe,
   withBucket,
 } from '../src/clients/tinybird.js';
 import { UpstreamUnavailableError } from '../src/lib/errors.js';
@@ -227,6 +228,39 @@ describe('fetchCountedPipe row total', () => {
     expect(await fetchPipe<Row>(request, pipePath, { bucketId: 3 })).toEqual([
       { activityCount: 5 },
     ]);
+  });
+});
+
+describe('postCountedPipe', () => {
+  const anyRow = () => true;
+
+  it('posts the params in the body and returns the rows with the total', async () => {
+    serve({
+      [pipePath]: () => tinybirdRows([{ activityCount: 5 }], { rows_before_limit_at_least: 7 }),
+    });
+    const { request } = fakeRequest();
+
+    expect(await postCountedPipe<Row>(request, pipePath, { ids: ['a', 'b'] }, anyRow)).toEqual({
+      rows: [{ activityCount: 5 }],
+      total: 7,
+    });
+    const [url, init] = mockFetch.mock.calls[0]!;
+    expect(String(url)).toBe(`${tinybirdHost}${pipePath}`);
+    expect(init.method).toBe('POST');
+    expect(new URLSearchParams(init.body).get('ids')).toBe('a,b');
+  });
+
+  it('maps a rejected row and an invalid total to UpstreamUnavailableError', async () => {
+    serve({ [pipePath]: () => tinybirdRows([{ activityCount: 5 }]) });
+    const { request } = fakeRequest();
+    expect(
+      await rejectionOf(postCountedPipe<Row>(request, pipePath, {}, () => false)),
+    ).toBeInstanceOf(UpstreamUnavailableError);
+
+    serve({ [pipePath]: () => tinybirdRows([], { rows_before_limit_at_least: -1 }) });
+    expect(await rejectionOf(postCountedPipe<Row>(request, pipePath, {}, anyRow))).toBeInstanceOf(
+      UpstreamUnavailableError,
+    );
   });
 });
 
