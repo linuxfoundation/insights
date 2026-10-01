@@ -4,7 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 import {
   isTopCollectionTuple,
+  isCategoryTopProjectTuple,
   isTopProjectTuple,
+  toCategoryTopProject,
   toTopCollection,
   toTopProject,
 } from '../src/lib/oss-index.js';
@@ -47,6 +49,38 @@ describe('toTopProject', () => {
       healthScore: 86,
       status: 'active',
     });
+  });
+});
+
+const categoryProjectTuple = projectTuple.slice(0, 8);
+
+describe('toCategoryTopProject', () => {
+  it('names each tuple slot and renames logo to logoUrl', () => {
+    expect(toCategoryTopProject(categoryProjectTuple as never)).toEqual({
+      id: 'p1',
+      count: 30,
+      name: 'Node.js',
+      logoUrl: 'https://logo.test/n.png',
+      description: 'Runtime',
+      softwareValue: 2400,
+      avgScore: 0.8,
+      healthScore: 86,
+    });
+  });
+});
+
+describe('isCategoryTopProjectTuple', () => {
+  it('accepts an eight slot tuple', () => {
+    expect(isCategoryTopProjectTuple(categoryProjectTuple)).toBe(true);
+  });
+
+  it.each([
+    ['too short', projectTuple.slice(0, 7)],
+    ['nine slots', projectTuple],
+    ['a null logo', ['p1', 30, 'n', null, 2400, 0.8, 86, 'd']],
+    ['a string health score', ['p1', 30, 'n', 'l', 2400, 0.8, '86', 'd']],
+  ])('rejects a tuple that is %s', (_label, value) => {
+    expect(isCategoryTopProjectTuple(value)).toBe(false);
   });
 });
 

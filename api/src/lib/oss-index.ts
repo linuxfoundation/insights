@@ -26,6 +26,11 @@ export type TopProjectTuple = [
   status: string,
 ];
 
+// The categories pipe returns the project tuple without its trailing status slot.
+export type CategoryTopProjectTuple = TopProjectTuple extends [...infer Head, string]
+  ? Head
+  : never;
+
 // Counts and the UInt64 software value must be non-negative safe integers; only the Float64
 // scores use the finite-number check.
 const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
@@ -39,9 +44,9 @@ export const isTopCollectionTuple = (value: unknown): value is TopCollectionTupl
   isCount(value[3]) &&
   isNumber(value[4]);
 
-export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
+export const isCategoryTopProjectTuple = (value: unknown): value is CategoryTopProjectTuple =>
   Array.isArray(value) &&
-  value.length === 9 &&
+  value.length === 8 &&
   isString(value[0]) &&
   isCount(value[1]) &&
   isString(value[2]) &&
@@ -49,7 +54,12 @@ export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   isCount(value[4]) &&
   isNumber(value[5]) &&
   isNumber(value[6]) &&
-  isString(value[7]) &&
+  isString(value[7]);
+
+export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
+  Array.isArray(value) &&
+  value.length === 9 &&
+  isCategoryTopProjectTuple(value.slice(0, 8)) &&
   isString(value[8]);
 
 export const TopCollection = Type.Object(
@@ -80,6 +90,11 @@ export const TopProject = Type.Object(
 );
 export type TopProject = Static<typeof TopProject>;
 
+export const CategoryTopProject = Type.Omit(TopProject, ['status'], {
+  title: 'CategoryTopProject',
+});
+export type CategoryTopProject = Static<typeof CategoryTopProject>;
+
 export const toTopCollection = ([
   id,
   count,
@@ -108,6 +123,26 @@ export const toTopProject = ([
   avgScore,
   healthScore,
   status,
+});
+
+export const toCategoryTopProject = ([
+  id,
+  count,
+  name,
+  logo,
+  softwareValue,
+  avgScore,
+  healthScore,
+  description,
+]: CategoryTopProjectTuple): CategoryTopProject => ({
+  id,
+  count,
+  name,
+  logoUrl: logo,
+  description,
+  softwareValue,
+  avgScore,
+  healthScore,
 });
 
 export const sortValues = ['totalContributors', 'softwareValue'] as const;
