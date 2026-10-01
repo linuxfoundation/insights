@@ -156,7 +156,8 @@ export const sortQuery = Type.Object({
   ),
 });
 
-// Collection project tuples: the 9 slot project tuple plus the project slug before the status.
+// The collections pipe inserts the project slug before status, so its tuples cannot reuse the
+// positional checks of the 9 slot shape.
 export type CollectionProjectTuple = [
   id: string,
   count: number,
