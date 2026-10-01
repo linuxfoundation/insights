@@ -141,7 +141,17 @@ export interface CollectionMembers {
   repositoryUrls: string[];
 }
 
-// What the Tinybird collection pipes take, and the slug lookup of the collection-scoped routes.
+// The slug check of the collection-scoped widget routes, which need no more than the answer.
+export async function collectionExists(request: RequestLog, slug: string): Promise<boolean> {
+  const rows = await queryCm<{ id: string }>(
+    request,
+    `SELECT c.id FROM collections c WHERE c.slug = $1 AND ${visible} LIMIT 1`,
+    [slug],
+  );
+  return rows.length > 0;
+}
+
+// What the Tinybird collection pipes take.
 export async function findCollectionMembers(
   request: RequestLog,
   slug: string,

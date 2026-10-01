@@ -15,6 +15,7 @@ import {
 import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import { type DateRange, toTinybirdRange } from '../lib/period.js';
+import type { PipeTarget } from '../lib/widget-scope.js';
 import type { ActivityFilterQuery } from '../schemas/common.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 
@@ -106,14 +107,12 @@ export function repoFilter(repos?: string[]): string[] | undefined {
 }
 
 export function activityFilterParams(
-  slug: string,
-  bucketId: number,
+  target: PipeTarget,
   query: Static<typeof ActivityFilterQuery>,
   current: DateRange,
 ): TinybirdQuery {
   return {
-    project: slug,
-    bucketId,
+    ...target,
     repos: repoFilter(query.repos),
     ...toTinybirdRange(current),
     platform: query.platform,

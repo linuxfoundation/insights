@@ -8,9 +8,11 @@ import { getTinybirdClient } from '../../src/clients/tinybird.js';
 
 export const tinybirdHost = 'https://tinybird.test';
 export const bucketsPath = '/v0/pipes/project_buckets.json';
+export const collectionBucketsPath = '/v0/pipes/collection_buckets.json';
 export const projectPath = (subpath: string) => `/v1-alpha/projects/{slug}/${subpath}`;
 export const developmentPath = (name: string) => projectPath(`development/${name}`);
 export const contributorsPath = (name: string) => projectPath(`contributors/${name}`);
+export const collectionRoutePath = (subpath: string) => `/v1-alpha/collections/{slug}/${subpath}`;
 
 export const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -44,9 +46,25 @@ export const tinybirdStub =
     return result instanceof Response ? result : tinybirdResponse(result);
   };
 
+// Collection routes leave the bucket lookup to the Tinybird client, which asks the
+// collection_buckets pipe for the `collectionSlug` it finds in the params.
+export const collectionStub =
+  (respond: PipeResponder, bucket: unknown[] = [{ bucketId: 3 }]) =>
+  async (input: unknown) => {
+    const url = new URL(String(input));
+    if (url.pathname === collectionBucketsPath) {
+      return tinybirdResponse(bucket);
+    }
+    const result = await respond(url);
+    return result instanceof Response ? result : tinybirdResponse(result);
+  };
+
 export const calledUrls = () => mockFetch.mock.calls.map((call) => new URL(String(call[0])));
 export const callsTo = (path: string) => calledUrls().filter((url) => url.pathname === path);
-export const pipeCalls = () => calledUrls().filter((url) => url.pathname !== bucketsPath);
+export const pipeCalls = () =>
+  calledUrls().filter(
+    (url) => url.pathname !== bucketsPath && url.pathname !== collectionBucketsPath,
+  );
 
 export function queryString(params: Record<string, string | string[] | undefined>): string {
   const search = new URLSearchParams();
