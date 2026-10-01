@@ -113,6 +113,43 @@ export const toCollection = (row: CollectionRow): Collection => ({
   updatedAt: row.updatedAt.toISOString(),
 });
 
+export const CollectionRef = Type.Object(
+  {
+    name: Type.String({ description: 'Display name of the collection.' }),
+    slug: Type.String({ description: 'Collection slug, as used in the request path.' }),
+    logoUrl: nullableString('URL of the collection logo. Null when it has none.'),
+  },
+  { title: 'CollectionRef' },
+);
+export type CollectionRef = Static<typeof CollectionRef>;
+
+export const CollectionMemberships = Type.Object(
+  {
+    data: Type.Array(CollectionRef, {
+      description: 'Public collections that contain the item, sorted by `name`, then `slug`.',
+    }),
+    publicCount: Type.Integer({
+      minimum: 0,
+      description: 'Public collections that contain the item (count). Equals the length of `data`.',
+    }),
+  },
+  { title: 'CollectionMemberships' },
+);
+export type CollectionMemberships = Static<typeof CollectionMemberships>;
+
+// The columns of a collection reference query.
+export interface CollectionRefRow {
+  name: string;
+  slug: string;
+  logoUrl: string | null;
+}
+
+export const toCollectionRef = (row: CollectionRefRow): CollectionRef => ({
+  name: row.name,
+  slug: row.slug,
+  logoUrl: row.logoUrl || null,
+});
+
 export const CollectionProjectType = dataEnum(
   ['project', 'repo'] as const,
   '`project` is an Insights project; `repo` is a repository added to the collection on its own.',
