@@ -10,9 +10,9 @@ import { paginated, PaginationQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/category_list.json';
 
-// The pipe pages rows, so a group could straddle two pipe pages. One call for every row (about
-// 350 today) lets the route page over whole groups instead.
-const allRows = 5000;
+// The pipe pages rows, so a group could straddle two pipe pages. Reading every row (about 350
+// today, one call) lets the route page over whole groups instead.
+const pipePageSize = 5000;
 
 interface Row {
   id: string;
@@ -105,19 +105,24 @@ const categoryRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { search, type } = request.query;
       const page = requestedPage(request.query);
 
-      const rows = await fetchPipe<Row>(
-        request,
-        pipePath,
-        {
-          search: search || undefined,
-          categoryGroupType: type || undefined,
-          page: 0,
-          pageSize: allRows,
-          orderBy: 'categoryGroupName',
-          orderDirection: 'asc',
-        },
-        isRow,
-      );
+      const rows: Row[] = [];
+      for (let pipePage = 0; ; pipePage++) {
+        const batch = await fetchPipe<Row>(
+          request,
+          pipePath,
+          {
+            search: search || undefined,
+            categoryGroupType: type || undefined,
+            page: pipePage,
+            pageSize: pipePageSize,
+            orderBy: 'categoryGroupName',
+            orderDirection: 'asc',
+          },
+          isRow,
+        );
+        rows.push(...batch);
+        if (batch.length < pipePageSize) break;
+      }
 
       const { limit, offset } = pipeWindow(page);
       return toPage(groupRows(rows).slice(offset, offset + limit), page);

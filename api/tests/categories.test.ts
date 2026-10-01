@@ -100,6 +100,25 @@ describe('Tinybird call', () => {
     expect(calls[0]?.searchParams.get('orderDirection')).toBe('asc');
   });
 
+  it('reads further pipe pages until one comes back short', async () => {
+    await pageOf();
+    const full = Number(callsTo(pipePath)[0]?.searchParams.get('pageSize'));
+    mockFetch.mockClear();
+    mockFetch.mockImplementation(
+      tinybirdStub((url) =>
+        url.searchParams.get('page') === '0'
+          ? Array.from({ length: full }, (_, i) => row('A', `c${i}`))
+          : [row('B', 'last')],
+      ),
+    );
+    const { data } = await pageOf();
+    expect(callsTo(pipePath).map((url) => url.searchParams.get('page'))).toEqual(['0', '1']);
+    expect(data.map((group) => [group.name, group.categories.length])).toEqual([
+      ['A', full],
+      ['B', 1],
+    ]);
+  });
+
   it('forwards search and type as search and categoryGroupType', async () => {
     await pageOf('?search=open&type=vertical');
     const params = callsTo(pipePath)[0]!.searchParams;
