@@ -6,13 +6,8 @@ import { Type } from '@sinclair/typebox';
 import { ActivityPlatforms, ActivityTypes } from '@lfx-insights/types';
 
 import { fetchActivityCounts } from '../../../lib/activity-count.js';
-import { projectTarget } from '../../../lib/widget-scope.js';
-import {
-  countType,
-  periodSummary,
-  ProjectSlugParams,
-  SeriesQuery,
-} from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { countType, periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const MailingListsMessagesQuery = Type.Object({
   ...SeriesQuery.properties,
@@ -43,40 +38,31 @@ const MailingListsMessages = Type.Object({
 });
 
 const mailingListsMessagesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/popularity/mailing-lists-messages',
-    {
-      schema: {
-        tags: ['Popularity'],
-        summary: 'Get mailing list messages',
-        description:
-          'Returns the messages sent to the project groups.io mailing lists per time bucket of the requested granularity, as new messages in each bucket or as a cumulative total, plus a summary comparing the messages sent in the current period with the comparison period before it. Only groups.io messages are counted. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: MailingListsMessagesQuery,
-        response: { 200: MailingListsMessages },
-      },
+  widgetRoutes(scope, {
+    path: 'popularity/mailing-lists-messages',
+    schema: {
+      tags: ['Popularity'],
+      summary: 'Get mailing list messages',
+      description:
+        'Returns the messages sent to the project groups.io mailing lists per time bucket of the requested granularity, as new messages in each bucket or as a cumulative total, plus a summary comparing the messages sent in the current period with the comparison period before it. Only groups.io messages are counted. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+      querystring: MailingListsMessagesQuery,
+      response: { 200: MailingListsMessages },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       // Mirrors the widget, which leaves includeOtherContributions unset for messages.
-      const { summary, data } = await fetchActivityCounts(
-        request,
-        projectTarget(request, slug),
-        request.query,
-        {
-          activity_type: ActivityTypes.MESSAGE,
-          platform: ActivityPlatforms.GROUPS_IO,
-          onlyContributions: false,
-          includeCodeContributions: true,
-          includeCollaborations: true,
-        },
-      );
+      const { summary, data } = await fetchActivityCounts(request, withTarget, request.query, {
+        activity_type: ActivityTypes.MESSAGE,
+        platform: ActivityPlatforms.GROUPS_IO,
+        onlyContributions: false,
+        includeCodeContributions: true,
+        includeCollaborations: true,
+      });
       return {
         summary,
         data: data.map(({ count, ...bucket }) => ({ ...bucket, messages: count })),
       };
     },
-  );
+  });
 };
 
 export default mailingListsMessagesRoutes;

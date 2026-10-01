@@ -27,6 +27,32 @@ describe('collectionText', () => {
       'An unknown project or a pipe with no data returns an empty list.',
       'A pipe with no data returns an empty list.',
     ],
+    ['One row per month. Empty for an unknown project.', 'One row per month.'],
+    [
+      'The volume covers the whole project, so there is no repository filter.',
+      'The volume covers the whole collection, so there is no repository filter.',
+    ],
+    [
+      'Google searches for the project name that month.',
+      'Google searches for the member project names that month, added up.',
+    ],
+    [
+      'Returns the monthly Google Search volume for the project name, one row per month.',
+      'Returns the monthly Google Search volume for the member project names, added up, one row per month.',
+    ],
+    [
+      'One summary per metric: the highest value any one matching package reported on a single day of the period.',
+      'One summary per metric: the sum over member projects of the highest value any one of their matching packages reported on a single day of the period.',
+    ],
+    [
+      'Highest running download total of one package',
+      'Highest running download total of one package, summed over the member projects',
+    ],
+    [
+      'Most repositories depending on one package on a single day',
+      'Most repositories depending on one package on a single day, summed over the member projects',
+    ],
+    ['Pass `name` to read one package.', 'Pass `name` to read one package.'],
     ['`repos` narrows it to those repositories. Next.', 'Next.'],
     ['Narrows. `repos` narrows every count to those repositories. Next.', 'Narrows. Next.'],
     [

@@ -3,8 +3,9 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { DateRangeQuery, ProjectSlugParams } from '../../../schemas/common.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { DateRangeQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/packages.json';
 
@@ -54,28 +55,24 @@ const Packages = Type.Object({
 });
 
 const packagesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/popularity/packages',
-    {
-      schema: {
-        tags: ['Popularity'],
-        summary: 'List packages',
-        description:
-          'Returns the packages published from the project repositories, with their ecosystem and repository. Pass a package `ecosystem` and `name` to the package metrics endpoint to read its downloads and dependents. `search` keeps the packages whose name or ecosystem contains it, ignoring case. A package published from several repositories appears once per repository. The whole list comes in one response, sorted by `ecosystem`, `name`, then `repo`, comparing character codes. An unknown project returns an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: Packages },
-      },
+  widgetRoutes(scope, {
+    path: 'popularity/packages',
+    schema: {
+      tags: ['Popularity'],
+      summary: 'List packages',
+      description:
+        'Returns the packages published from the project repositories, with their ecosystem and repository. Pass a package `ecosystem` and `name` to the package metrics endpoint to read its downloads and dependents. `search` keeps the packages whose name or ecosystem contains it, ignoring case. A package published from several repositories appears once per repository. The whole list comes in one response, sorted by `ecosystem`, `name`, then `repo`, comparing character codes. An unknown project returns an empty `data` list.',
+      querystring: Query,
+      response: { 200: Packages },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, search } = request.query;
 
-      const rows = await withBucket(request, slug, (bucketId) =>
+      const rows = await withTarget((target) =>
         fetchPipe<Row>(
           request,
           pipePath,
-          { project: slug, bucketId, repos: repoFilter(repos), search: search || undefined },
+          { ...target, repos: repoFilter(repos), search: search || undefined },
           isRow,
         ),
       );
@@ -86,7 +83,7 @@ const packagesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       // The pipe returns its distinct rows in no set order.
       return { data: rows.sort(compareRows) };
     },
-  );
+  });
 };
 
 export default packagesRoutes;
