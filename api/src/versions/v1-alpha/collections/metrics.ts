@@ -7,7 +7,7 @@ import { fetchPipe } from '../../../clients/tinybird.js';
 import { findCollection } from '../../../lib/collections-db.js';
 import { NotFoundError } from '../../../lib/errors.js';
 import { inRange, isCount } from '../../../lib/security.js';
-import { nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
+import { ProjectSlugParams } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/collection_insights_aggregate.json';
 
@@ -27,12 +27,21 @@ const CollectionMetrics = Type.Object(
       description:
         'Projects plus repositories added on their own in the collection (count), as the collection page lists them.',
     }),
-    uniqueContributorCount: nullableNumber(
-      'Contributors across the collection, each counted once (count). `null` when no data is available.',
-    ),
-    avgHealthScore: nullableNumber(
-      'Average health score of the collection projects, from 0 to 100. `null` when no data is available or no project has a score.',
-    ),
+    uniqueContributorCount: Type.Unsafe<number | null>({
+      type: 'integer',
+      minimum: 0,
+      nullable: true,
+      description:
+        'Contributors across the collection, each counted once (count). `null` when no data is available.',
+    }),
+    avgHealthScore: Type.Unsafe<number | null>({
+      type: 'number',
+      minimum: 0,
+      maximum: 100,
+      nullable: true,
+      description:
+        'Average health score of the collection projects, from 0 to 100. `null` when no data is available or no project has a score.',
+    }),
   },
   { title: 'CollectionMetrics' },
 );

@@ -126,4 +126,15 @@ describe('GET /v1-alpha/collections/{slug}/metrics', () => {
     expect(operation?.tags).toEqual(['Collections']);
     expect(operation?.summary).toBeTruthy();
   });
+
+  it('publishes the bounds the row guard enforces', async () => {
+    const doc = (await get('/v1-alpha/openapi.json')).json() as OpenApiDoc;
+    const schema = JSON.stringify(doc.paths['/v1-alpha/collections/{slug}/metrics']?.get);
+    expect(schema).toContain(
+      '"uniqueContributorCount":{"type":"integer","minimum":0,"nullable":true',
+    );
+    expect(schema).toContain(
+      '"avgHealthScore":{"type":"number","minimum":0,"maximum":100,"nullable":true',
+    );
+  });
 });
