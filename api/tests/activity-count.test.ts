@@ -3,9 +3,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { fetchActivityCounts } from '../src/lib/activity-count.js';
+import { projectTarget, type WithTarget } from '../src/lib/widget-scope.js';
 import {
   bucketsPath,
   calledUrls,
+  collectionStub,
   mockFetch,
   pipeCalls,
   tinybirdStub,
@@ -48,6 +50,8 @@ function stub(bucket?: unknown[]) {
 }
 
 useApp();
+const kubernetes = projectTarget(request, 'kubernetes');
+const cncf: WithTarget = (pipeQuery) => pipeQuery({ collectionSlug: 'cncf' });
 
 beforeEach(() => {
   stub();
@@ -55,7 +59,7 @@ beforeEach(() => {
 
 describe('fetchActivityCounts', () => {
   it('sends the caller pipe params with project, bucketId and repos on all three calls', async () => {
-    await fetchActivityCounts(request, 'kubernetes', query, starParams);
+    await fetchActivityCounts(request, kubernetes, query, starParams);
 
     const calls = pipeCalls();
     expect(calls).toHaveLength(3);
@@ -77,7 +81,7 @@ describe('fetchActivityCounts', () => {
   });
 
   it('keeps project, bucketId and repos when the caller params name them too', async () => {
-    await fetchActivityCounts(request, 'kubernetes', query, {
+    await fetchActivityCounts(request, kubernetes, query, {
       ...starParams,
       project: 'other',
       bucketId: 99,
@@ -92,8 +96,25 @@ describe('fetchActivityCounts', () => {
     }
   });
 
+  it('sends only the collection target when the caller params name a project or bucket', async () => {
+    mockFetch.mockReset().mockImplementation(collectionStub(() => []));
+    await fetchActivityCounts(request, cncf, query, {
+      ...starParams,
+      project: 'other',
+      bucketId: 99,
+    });
+
+    expect(pipeCalls()).toHaveLength(3);
+    for (const url of pipeCalls()) {
+      expect(url.searchParams.get('collectionSlug')).toBe('cncf');
+      expect(url.searchParams.has('project')).toBe(false);
+      expect(url.searchParams.get('bucketId')).toBe('3');
+      expect(url.searchParams.getAll('repos')).toEqual([repo]);
+    }
+  });
+
   it('returns the period summary and new counts per bucket, reading a missing count as 0', async () => {
-    const result = await fetchActivityCounts(request, 'kubernetes', query, starParams);
+    const result = await fetchActivityCounts(request, kubernetes, query, starParams);
 
     expect(result.summary).toMatchObject({ current: 6, previous: 3, changeValue: 3 });
     expect(result.data).toEqual([
@@ -105,7 +126,7 @@ describe('fetchActivityCounts', () => {
   it('reads the running total from activities_cumulative_count when countType=cumulative', async () => {
     const result = await fetchActivityCounts(
       request,
-      'kubernetes',
+      kubernetes,
       { ...query, countType: 'cumulative' },
       starParams,
     );
@@ -123,7 +144,12 @@ describe('fetchActivityCounts', () => {
   it('answers a zero summary and no buckets for an unknown slug after the bucket lookup alone', async () => {
     stub([]);
 
-    const result = await fetchActivityCounts(request, 'unknown', query, starParams);
+    const result = await fetchActivityCounts(
+      request,
+      projectTarget(request, 'unknown'),
+      query,
+      starParams,
+    );
 
     expect(calledUrls().map((url) => url.pathname)).toEqual([bucketsPath]);
     expect(result.summary).toMatchObject({ current: 0, previous: 0, changeValue: 0 });
