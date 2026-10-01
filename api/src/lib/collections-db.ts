@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { queryCm } from '../clients/postgres.js';
 import type { RequestLog } from '../clients/tinybird.js';
-import type { CollectionRow } from './collections.js';
+import type { CollectionRefRow, CollectionRow } from './collections.js';
 
 // Every route reads collections through this module, so the visibility rule lives here alone.
 // Private collections join once authentication supplies the caller's LFID (ADR-0007).
@@ -133,6 +133,23 @@ export async function findCollection(
     [slug],
   );
   return row ?? null;
+}
+
+// An unknown or deleted project matches no row, so it reads as a project without collections.
+export async function listProjectCollections(
+  request: RequestLog,
+  projectSlug: string,
+): Promise<CollectionRefRow[]> {
+  return queryCm<CollectionRefRow>(
+    request,
+    `SELECT DISTINCT c.name, c.slug, c."logoUrl"
+     FROM collections c
+     JOIN "collectionsInsightsProjects" cip ON cip."collectionId" = c.id AND cip."deletedAt" IS NULL
+     JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip."deletedAt" IS NULL
+     WHERE ip.slug = $1 AND ${visible}
+     ORDER BY c.name, c.slug`,
+    [projectSlug],
+  );
 }
 
 export interface CollectionMembers {

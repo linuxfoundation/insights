@@ -33,8 +33,10 @@ const prefix = projectPath('');
 // Routes outside a project skip the slug, bucket, repos and date cases.
 const globalPrefix = '/v1-alpha/';
 const globalGroups = new Set(['leaderboards']);
+// Routes that read Postgres rather than Tinybird; their own test files cover them.
+const postgresRoutes = new Set(['collections']);
 const routes = Object.entries(spec.paths).flatMap(([path, item]) => {
-  if (!item.get) {
+  if (!item.get || postgresRoutes.has(path.slice(prefix.length))) {
     return [];
   }
   if (path.startsWith(prefix)) {
