@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { Type, type Static } from '@sinclair/typebox';
 
-import { dataEnum, isString } from './security.js';
+import { dataEnum, isCount, isString } from './security.js';
 
 // The pipes return these rows as positional tuples, so each slot is checked by type before the
 // route names it. The columns are non-nullable in the pipes, so a null is a malformed row.
@@ -26,25 +26,27 @@ export type TopProjectTuple = [
   status: string,
 ];
 
+// Counts and the UInt64 software value must be non-negative safe integers; only the Float64
+// scores use the finite-number check.
 const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
 
 export const isTopCollectionTuple = (value: unknown): value is TopCollectionTuple =>
   Array.isArray(value) &&
   value.length === 5 &&
   isString(value[0]) &&
-  isNumber(value[1]) &&
+  isCount(value[1]) &&
   isString(value[2]) &&
-  isNumber(value[3]) &&
+  isCount(value[3]) &&
   isNumber(value[4]);
 
 export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   Array.isArray(value) &&
   value.length === 9 &&
   isString(value[0]) &&
-  isNumber(value[1]) &&
+  isCount(value[1]) &&
   isString(value[2]) &&
   isString(value[3]) &&
-  isNumber(value[4]) &&
+  isCount(value[4]) &&
   isNumber(value[5]) &&
   isNumber(value[6]) &&
   isString(value[7]) &&
@@ -53,9 +55,9 @@ export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
 export const TopCollection = Type.Object(
   {
     id: Type.String({ description: 'Identifier of the collection.' }),
-    count: Type.Number({ description: 'Contributors in the collection.' }),
+    count: Type.Integer({ minimum: 0, description: 'Contributors in the collection.' }),
     name: Type.String({ description: 'Display name of the collection.' }),
-    softwareValue: Type.Number({ description: 'Software value of the collection.' }),
+    softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the collection.' }),
     avgScore: Type.Number({ description: 'Average health score of the collection, from 0 to 1.' }),
   },
   { title: 'TopCollection' },
@@ -65,11 +67,11 @@ export type TopCollection = Static<typeof TopCollection>;
 export const TopProject = Type.Object(
   {
     id: Type.String({ description: 'Identifier of the project.' }),
-    count: Type.Number({ description: 'Contributors to the project.' }),
+    count: Type.Integer({ minimum: 0, description: 'Contributors to the project.' }),
     name: Type.String({ description: 'Display name of the project.' }),
     logoUrl: Type.String({ description: 'URL of the project logo.' }),
     description: Type.String({ description: 'Short description of the project.' }),
-    softwareValue: Type.Number({ description: 'Software value of the project.' }),
+    softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the project.' }),
     avgScore: Type.Number({ description: 'Average score of the project, from 0 to 1.' }),
     healthScore: Type.Number({ description: 'Health score of the project, from 0 to 100.' }),
     status: Type.String({ description: 'Lifecycle status of the project, for example `active`.' }),

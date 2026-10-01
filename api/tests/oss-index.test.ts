@@ -63,6 +63,9 @@ describe('tuple guards', () => {
     ['a null slot', ['c1', 12, null, 1500, 0.45]],
     ['a string count', ['c1', '12', 'n', 1500, 0.45]],
     ['a non-finite score', ['c1', 12, 'n', 1500, Number.NaN]],
+    ['a negative count', ['c1', -1, 'n', 1500, 0.45]],
+    ['a fractional count', ['c1', 1.5, 'n', 1500, 0.45]],
+    ['a fractional software value', ['c1', 12, 'n', 1500.5, 0.45]],
   ])('reject a collection tuple that is %s', (_label, value) => {
     expect(isTopCollectionTuple(value)).toBe(false);
   });
@@ -72,6 +75,9 @@ describe('tuple guards', () => {
     ['a null logo', ['p1', 30, 'n', null, 2400, 0.8, 86, 'd', 'active']],
     ['a numeric status', ['p1', 30, 'n', 'l', 2400, 0.8, 86, 'd', 1]],
     ['a string health score', ['p1', 30, 'n', 'l', 2400, 0.8, '86', 'd', 'active']],
+    ['a negative count', ['p1', -30, 'n', 'l', 2400, 0.8, 86, 'd', 'active']],
+    ['a fractional count', ['p1', 30.5, 'n', 'l', 2400, 0.8, 86, 'd', 'active']],
+    ['a negative software value', ['p1', 30, 'n', 'l', -2400, 0.8, 86, 'd', 'active']],
   ])('reject a project tuple that is %s', (_label, value) => {
     expect(isTopProjectTuple(value)).toBe(false);
   });
