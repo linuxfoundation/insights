@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchCountedPipe } from '../../../clients/tinybird.js';
+import { postCountedPipe } from '../../../clients/tinybird.js';
 import { findCollectionMembers } from '../../../lib/collections-db.js';
 import {
   CollectionProject,
@@ -86,7 +86,7 @@ const collectionProjectsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { pages, skip } = pipePages(page);
       const chunks = await Promise.all(
         pages.map((number) =>
-          fetchCountedPipe<CollectionProjectRow>(
+          postCountedPipe<CollectionProjectRow>(
             request,
             pipePath,
             {

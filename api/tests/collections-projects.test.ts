@@ -7,9 +7,9 @@ vi.mock('../src/lib/collections-db.js', () => ({ findCollectionMembers }));
 
 import { UpstreamUnavailableError } from '../src/lib/errors.js';
 import {
-  callsTo,
   mockFetch,
   pipeCalls,
+  postedParams,
   queryString,
   tinybirdResponse,
   tinybirdStub,
@@ -67,12 +67,13 @@ beforeEach(() => {
   reportedTotal = undefined;
   withTotal = true;
   mockFetch.mockImplementation(
-    tinybirdStub((url) => {
+    tinybirdStub((url, init) => {
       if (url.pathname !== pipePath) {
         throw new Error(`unexpected Tinybird call to ${url.pathname}`);
       }
-      const size = Number(url.searchParams.get('pageSize'));
-      const start = Number(url.searchParams.get('page')) * size;
+      const form = new URLSearchParams(String(init?.body ?? ''));
+      const size = Number(form.get('pageSize'));
+      const start = Number(form.get('page')) * size;
       const data = all.slice(start, start + size);
       return new Response(
         JSON.stringify({
@@ -100,7 +101,7 @@ const bodyOf = async (params: Record<string, string> = {}) => {
   return res.json<Body>();
 };
 const ids = (body: Body) => body.data.map((item) => item.id);
-const pipeParams = () => callsTo(pipePath)[0]!.searchParams;
+const pipeParams = () => postedParams(pipePath)[0]!;
 
 describe('collection lookup', () => {
   it('looks the collection up by slug', async () => {
@@ -130,6 +131,15 @@ describe('collection lookup', () => {
 });
 
 describe('Tinybird call', () => {
+  it('posts the params in the body and keeps the URL free of a query string', async () => {
+    await bodyOf();
+    const [url, init] = mockFetch.mock.calls.find(
+      (call) => new URL(String(call[0])).pathname === pipePath,
+    )!;
+    expect((init as RequestInit).method).toBe('POST');
+    expect(new URL(String(url)).search).toBe('');
+  });
+
   it('sends the members, default sort, first page and default pageSize', async () => {
     await bodyOf();
     expect(pipeCalls()).toHaveLength(1);
@@ -241,7 +251,7 @@ describe('paging', () => {
   it('keeps its position when pageSize changes between pages', async () => {
     const body = await bodyOf({ pageSize: '2', cursor: cursorFor(3) });
     expect(ids(body)).toEqual(['id-4', 'id-5']);
-    const pages = callsTo(pipePath).map((url) => url.searchParams.get('page'));
+    const pages = postedParams(pipePath).map((form) => form.get('page'));
     expect(pages).toEqual(['1', '2']);
   });
 
