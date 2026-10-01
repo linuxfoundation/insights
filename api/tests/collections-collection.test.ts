@@ -28,7 +28,7 @@ const row = {
   repositoryCount: 1,
   likeCount: 7,
   featuredProjects: [{ name: 'Kubernetes', slug: 'kubernetes', logoUrl: '' }],
-  projectIds: ['p1', 'p2'],
+  projectIds: ['8b1c2d3e-0000-4000-8000-000000000001', '8b1c2d3e-0000-4000-8000-000000000002'],
   repositoryUrls: ['https://github.com/cncf/landscape'],
 };
 
@@ -72,7 +72,7 @@ describe('GET /v1-alpha/collections/{slug}', () => {
       color: '#0094FF',
       createdAt: '2025-01-02T03:04:05.000Z',
       updatedAt: '2025-06-07T08:09:10.000Z',
-      projectIds: ['p1', 'p2'],
+      projectIds: ['8b1c2d3e-0000-4000-8000-000000000001', '8b1c2d3e-0000-4000-8000-000000000002'],
       repositoryUrls: ['https://github.com/cncf/landscape'],
     });
     expect(db.findCollectionDetail).toHaveBeenCalledWith(expect.anything(), 'cncf');
