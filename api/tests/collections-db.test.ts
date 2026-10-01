@@ -10,6 +10,7 @@ import {
   findCollectionMembers,
   listCollections,
   listProjectCollections,
+  listRepositoryCollections,
   type CollectionQuery,
 } from '../src/lib/collections-db.js';
 
@@ -113,6 +114,40 @@ describe('listProjectCollections', () => {
 
   it('returns an empty list for an unknown project', async () => {
     await expect(listProjectCollections(log, 'no-such-project')).resolves.toEqual([]);
+  });
+});
+
+describe('listRepositoryCollections', () => {
+  const url = 'https://github.com/kubernetes/kubernetes';
+
+  it('returns the public collections holding the repository, ordered by name', async () => {
+    queryCm.mockResolvedValue([{ name: 'CNCF', slug: 'cncf', logoUrl: null }]);
+
+    await expect(listRepositoryCollections(log, url)).resolves.toEqual([
+      { name: 'CNCF', slug: 'cncf', logoUrl: null },
+    ]);
+    expect(params()).toEqual([url]);
+    expect(normalized()).toContain(`AND ${visible}`);
+    expect(normalized()).toMatch(/ORDER BY c\.name, c\.slug$/);
+  });
+
+  it('matches the exact URL of a repository that is not deleted, through live direct memberships', async () => {
+    await listRepositoryCollections(log, url);
+
+    expect(normalized()).toContain('r.url = $1 AND r."deletedAt" IS NULL');
+    expect(normalized()).toContain('"collectionsRepositories" cr');
+    expect(normalized()).toContain('cr."deletedAt" IS NULL');
+    expect(normalized()).not.toContain('collectionsInsightsProjects');
+  });
+
+  it('returns null for an unknown repository', async () => {
+    queryCm.mockResolvedValue([]);
+    await expect(listRepositoryCollections(log, url)).resolves.toBeNull();
+  });
+
+  it('returns an empty list for a known repository in no public collection', async () => {
+    queryCm.mockResolvedValue([{ name: null, slug: null, logoUrl: null }]);
+    await expect(listRepositoryCollections(log, url)).resolves.toEqual([]);
   });
 });
 
