@@ -137,7 +137,6 @@ export const CollectionMemberships = Type.Object(
 );
 export type CollectionMemberships = Static<typeof CollectionMemberships>;
 
-// The columns of a collection reference query.
 export interface CollectionRefRow {
   name: string;
   slug: string;
