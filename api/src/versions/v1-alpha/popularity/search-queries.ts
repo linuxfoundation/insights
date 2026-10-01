@@ -3,9 +3,10 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe } from '../../../clients/tinybird.js';
 import { currentPeriod, toIsoUtc, toTinybirdRange, utcMidnight } from '../../../lib/period.js';
-import { DateRangeQuery, ProjectSlugParams } from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { DateRangeQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/search_volume.json';
 
@@ -61,25 +62,21 @@ const toMonth = (row: Row) => ({
 });
 
 const searchQueriesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/popularity/search-queries',
-    {
-      schema: {
-        tags: ['Popularity'],
-        summary: 'Get search queries',
-        description:
-          'Returns the monthly Google Search volume for the project name, one row per month, oldest first. The volume covers the whole project, so there is no repository filter. A month is included when its first day falls between `startDate` and `endDate`, both inclusive, so a month dated on `endDate` is part of the result. Without dates the range runs from 2010-01-01 to today. An unknown project returns an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: SearchQueries },
-      },
+  widgetRoutes(scope, {
+    path: 'popularity/search-queries',
+    schema: {
+      tags: ['Popularity'],
+      summary: 'Get search queries',
+      description:
+        'Returns the monthly Google Search volume for the project name, one row per month, oldest first. The volume covers the whole project, so there is no repository filter. A month is included when its first day falls between `startDate` and `endDate`, both inclusive, so a month dated on `endDate` is part of the result. Without dates the range runs from 2010-01-01 to today. An unknown project returns an empty `data` list.',
+      querystring: Query,
+      response: { 200: SearchQueries },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const range = toTinybirdRange(currentPeriod(request.query));
 
-      const rows = await withBucket(request, slug, (bucketId) =>
-        fetchPipe<Row>(request, pipePath, { project: slug, bucketId, ...range }, isRow),
+      const rows = await withTarget((target) =>
+        fetchPipe<Row>(request, pipePath, { ...target, ...range }, isRow),
       );
       if (!rows) {
         return { data: [] };
@@ -90,7 +87,7 @@ const searchQueriesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       months.sort((a, b) => (a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0));
       return { data: months };
     },
-  );
+  });
 };
 
 export default searchQueriesRoutes;

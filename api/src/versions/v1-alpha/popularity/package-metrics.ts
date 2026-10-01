@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   hasBucketBounds,
   resolvePeriods,
@@ -12,7 +12,8 @@ import {
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
-import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/package_metrics.json';
 
@@ -131,28 +132,23 @@ const toBucket = (row: SeriesRow & DateRange) => ({
 });
 
 const packageMetricsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/popularity/package-metrics',
-    {
-      schema: {
-        tags: ['Popularity'],
-        summary: 'Get package metrics',
-        description:
-          'Returns the downloads, Docker image downloads, Docker dependents, dependent packages and dependent repositories of the project packages, as a summary comparing the current period with the comparison period before it, plus one row per time bucket of the requested granularity. Pass `ecosystem` and `name` from the packages endpoint to read one package; without them every package of the project counts. Each daily record holds running totals: downloads and Docker downloads up to that day, and the dependents counted on that day. So the summary and the buckets take the highest value in their range rather than a sum. The summary takes the highest value any one matching package reported on a single day, while each bucket first adds up the matching packages per day and then takes the highest daily total. Records dated on `startDate` are left out: the period covers the days after `startDate` and before `endDate`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: PackageMetrics },
-      },
+  widgetRoutes(scope, {
+    path: 'popularity/package-metrics',
+    schema: {
+      tags: ['Popularity'],
+      summary: 'Get package metrics',
+      description:
+        'Returns the downloads, Docker image downloads, Docker dependents, dependent packages and dependent repositories of the project packages, as a summary comparing the current period with the comparison period before it, plus one row per time bucket of the requested granularity. Pass `ecosystem` and `name` from the packages endpoint to read one package; without them every package of the project counts. Each daily record holds running totals: downloads and Docker downloads up to that day, and the dependents counted on that day. So the summary and the buckets take the highest value in their range rather than a sum. The summary takes the highest value any one matching package reported on a single day, while each bucket first adds up the matching packages per day and then takes the highest daily total. Records dated on `startDate` are left out: the period covers the days after `startDate` and before `endDate`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list.',
+      querystring: Query,
+      response: { 200: PackageMetrics },
     },
-    async (request) => {
-      const { slug } = request.params;
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, ecosystem, name } = request.query;
       const { current, previous } = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const common = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           ecosystem: ecosystem || undefined,
           name: name || undefined,
@@ -184,7 +180,7 @@ const packageMetricsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         data: seriesRows.map(toBucket),
       };
     },
-  );
+  });
 };
 
 export default packageMetricsRoutes;
