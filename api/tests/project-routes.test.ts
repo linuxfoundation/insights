@@ -441,7 +441,7 @@ const collectionUrl = (
   slug = 'cncf',
 ) =>
   `${collectionOf(name).path.replace('{slug}', slug)}?${queryString({ ...validQuery(name), ...params })}`;
-const collectionGroups = ['contributors', 'development'];
+const collectionGroups = ['contributors', 'development', 'popularity'];
 const collectionExcluded = new Set<string>();
 const emptyCollection = collectionStub(() => []);
 // The module mock answers for the CM database: only these collections are public.
@@ -619,15 +619,21 @@ describe.each(collectionNames)('collection scope: %s', (name) => {
     });
   });
 
-  it('rejects a bad query with 400 before the collection lookup or Tinybird', async () => {
-    const bad = collectionDeclares(name, 'granularity')
-      ? { granularity: 'hourly' }
-      : { startDate: '2025-01-01T00:00:00Z' };
-    const res = await get(collectionUrl(name, bad));
-    expect(res.statusCode).toBe(400);
-    expect(collectionExists).not.toHaveBeenCalled();
-    expect(mockFetch).not.toHaveBeenCalled();
-  });
+  // A route without dates or granularity, such as the packages list, has no query to reject.
+  const bad = collectionDeclares(name, 'granularity')
+    ? { granularity: 'hourly' }
+    : collectionDeclares(name, 'startDate')
+      ? { startDate: '2025-01-01T00:00:00Z' }
+      : undefined;
+  it.runIf(bad)(
+    'rejects a bad query with 400 before the collection lookup or Tinybird',
+    async () => {
+      const res = await get(collectionUrl(name, bad));
+      expect(res.statusCode).toBe(400);
+      expect(collectionExists).not.toHaveBeenCalled();
+      expect(mockFetch).not.toHaveBeenCalled();
+    },
+  );
 
   describe('OpenAPI', () => {
     const operation = () => collectionOf(name).operation;

@@ -21,7 +21,7 @@ export interface PipeTarget {
 // Null when the project has no Tinybird bucket, which the handler answers with its empty result.
 export type WithTarget = <T>(query: (target: PipeTarget) => Promise<T>) => Promise<T | null>;
 
-// Exported for project routes that call a shared helper taking `WithTarget` outside `widgetRoutes`.
+// Exported so tests can hand a project `WithTarget` to helpers that take one.
 export function projectTarget(request: RequestLog, slug: string): WithTarget {
   return (query) => withBucket(request, slug, (bucketId) => query({ project: slug, bucketId }));
 }
@@ -49,9 +49,21 @@ const CollectionSlugParams = Type.Object({
 const collectionRules: [RegExp, string][] = [
   [/An unknown project(?:, or | or )a ([^,.]+?),? (returns|gets)/g, 'A $1 $2'],
   [/ ?An unknown project [^.]*\./g, ''],
+  [/ ?Empty for an unknown project\./g, ''],
+  [/\bthe whole project\b/g, 'the whole collection'],
   [/ ?`repos` narrows [^.]*\./g, ''],
   [/, or only in `repos` when given/g, ''],
   [/\bthe project endpoint\b/g, 'the endpoint of each member project'],
+  // Search volume and package peaks are taken per project, then summed across the collection.
+  [/\bfor the project name\b( that month)?/g, 'for the member project names$1, added up'],
+  [
+    /\bthe highest value any one matching package\b/g,
+    'the sum over member projects of the highest value any one of their matching packages',
+  ],
+  [
+    /\b(total of|using|depending on) one package( on a single day)?/g,
+    '$1 one package$2, summed over the member projects',
+  ],
   [/lists for the project\b/g, 'lists for a project of the collection'],
   [/\b([Tt])he project's/g, "$1he collection's"],
   [/\b([Tt])he project\b/g, '$1he collection'],
