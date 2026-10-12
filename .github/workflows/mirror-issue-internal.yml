@@ -32,7 +32,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ secrets.INSIGHTS_ISSUE_APP_ID }}
+          app-id: ${{ vars.INSIGHTS_ISSUE_APP_ID }}
           private-key: ${{ secrets.INSIGHTS_ISSUE_APP_PRIVATE_KEY }}
           owner: linuxfoundation
           repositories: cdp-insights-project
