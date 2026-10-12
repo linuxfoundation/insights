@@ -72,6 +72,7 @@ describe('createInternalIssue', () => {
   const calls: { url: string; body: Record<string, unknown> }[] = [];
   let graphqlErrors: { message: string }[] | undefined;
   let addItemFailures = 0;
+  let missingLabels: string[] = [];
 
   beforeEach(() => {
     Object.assign(runtimeConfig, {
@@ -86,9 +87,17 @@ describe('createInternalIssue', () => {
     calls.length = 0;
     graphqlErrors = undefined;
     addItemFailures = 0;
+    missingLabels = [];
     fetchMock.impl = vi.fn(async (url: string, opts: { body: Record<string, unknown> }) => {
       calls.push({ url, body: opts.body });
       if (url.endsWith('/access_tokens')) return { token: 'install-token' };
+      if (url.includes('/labels/')) {
+        const name = decodeURIComponent(url.split('/labels/')[1]!);
+        if (missingLabels.includes(name))
+          throw Object.assign(new Error('Not Found'), { status: 404 });
+        return { name };
+      }
+      if (url.endsWith('/labels')) return opts.body;
       if (url.endsWith('/issues')) return { html_url: 'https://gh/issue/1', node_id: 'ISSUE' };
       const query = String(opts.body.query);
       if (query.includes('projectV2(number')) {
@@ -126,20 +135,34 @@ describe('createInternalIssue', () => {
     expect(steps).toEqual([
       'https://api.github.com/app/installations/2/access_tokens',
       'projectV2(',
+      'https://api.github.com/repos/linuxfoundation/internal/labels/needs-triage',
+      'https://api.github.com/repos/linuxfoundation/internal/labels/Support',
       'https://api.github.com/repos/linuxfoundation/internal/issues',
       'addProjectV2ItemById',
       'updateProjectV2ItemFieldValue',
       'updateProjectV2ItemFieldValue',
     ]);
-    expect(calls[2]!.body).toMatchObject({
+    expect(calls.find((c) => c.url.endsWith('/issues'))!.body).toMatchObject({
       title: 'Title',
       body: 'Body',
       labels: ['needs-triage', 'Support'],
     });
-    expect(calls.slice(4).map((c) => c.body.variables)).toEqual([
+    expect(calls.slice(6).map((c) => c.body.variables)).toEqual([
       { projectId: 'PROJECT', itemId: 'ITEM', fieldId: 'TEAM', optionId: 'team-dq' },
       { projectId: 'PROJECT', itemId: 'ITEM', fieldId: 'STATUS', optionId: 'status-backlog' },
     ]);
+  });
+
+  test('creates labels the internal repo is missing before creating the issue', async () => {
+    missingLabels = ['Support'];
+
+    await createInternalIssue('Title', 'Body', ['needs-triage', 'Support']);
+
+    const created = calls.filter((c) => c.url.endsWith('/labels'));
+    expect(created.map((c) => c.body)).toEqual([{ name: 'Support', color: 'ededed' }]);
+    expect(calls.indexOf(created[0]!)).toBeLessThan(
+      calls.findIndex((c) => c.url.endsWith('/issues')),
+    );
   });
 
   test('fails before creating the issue when a project option is missing', async () => {

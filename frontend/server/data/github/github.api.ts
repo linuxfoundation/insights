@@ -176,6 +176,7 @@ export async function createInternalIssue(
     return { fieldId: field.id, optionId: option.id };
   });
 
+  await ensureLabels(token, githubInternalIssuesRepo, labels);
   const issue = await postIssue(token, githubInternalIssuesRepo, title, body, labels);
 
   // Both mutations are idempotent, so transient failures are retried. A final failure names the
@@ -203,6 +204,37 @@ export async function createInternalIssue(
   }
 
   return issue;
+}
+
+interface FetchFailure {
+  status?: number;
+  data?: { errors?: { code?: string }[] };
+}
+
+// Labels are per repository, so create any the target repo lacks before the issue references them.
+async function ensureLabels(token: string, repo: string, labels: string[]): Promise<void> {
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
+  for (const name of labels) {
+    try {
+      await $fetch(`https://api.github.com/repos/${repo}/labels/${encodeURIComponent(name)}`, {
+        headers,
+      });
+    } catch (error) {
+      if ((error as FetchFailure).status !== 404) throw error;
+      try {
+        await $fetch(`https://api.github.com/repos/${repo}/labels`, {
+          method: 'POST',
+          headers,
+          body: { name, color: 'ededed' },
+        });
+      } catch (createError) {
+        // A concurrent report may have just created it.
+        const { status, data } = createError as FetchFailure;
+        const exists = status === 422 && data?.errors?.some((e) => e.code === 'already_exists');
+        if (!exists) throw createError;
+      }
+    }
+  }
 }
 
 async function withRetry<T>(fn: () => Promise<T>, attempts = 3, delayMs = 500): Promise<T> {

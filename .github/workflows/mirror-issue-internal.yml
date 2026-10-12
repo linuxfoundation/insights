@@ -78,11 +78,18 @@ jobs:
               const text = candidate.body || '';
               return text.slice(text.lastIndexOf('\n---\n')).split('\n').includes(publicLine);
             };
-            const { data: found } = await github.rest.search.issuesAndPullRequests({
-              q: `repo:${owner}/${repo} is:issue in:body "${issue.html_url}"`,
-              per_page: 100,
+            // Newest issues first (search indexing lags new issues), then search for older copies.
+            const { data: recent } = await github.rest.issues.listForRepo({
+              owner, repo, state: 'all', sort: 'created', direction: 'desc', per_page: 100,
             });
-            let copy = found.items.find(isCopyOf);
+            let copy = recent.find(isCopyOf);
+            if (!copy) {
+              const { data: found } = await github.rest.search.issuesAndPullRequests({
+                q: `repo:${owner}/${repo} is:issue in:body "${issue.html_url}"`,
+                per_page: 100,
+              });
+              copy = found.items.find(isCopyOf);
+            }
 
             if (!copy) {
               const labels = [...new Set([...issue.labels.map((l) => l.name), process.env.INTERNAL_LABEL])];
@@ -93,7 +100,14 @@ jobs:
                 } catch (error) {
                   if (error.status !== 404) throw error;
                   const source = issue.labels.find((l) => l.name === name);
-                  await github.rest.issues.createLabel({ owner, repo, name, color: source?.color || 'ededed' });
+                  try {
+                    await github.rest.issues.createLabel({ owner, repo, name, color: source?.color || 'ededed' });
+                  } catch (createError) {
+                    // A concurrent run may have just created it.
+                    const exists = createError.status === 422
+                      && (createError.response?.data?.errors || []).some((e) => e.code === 'already_exists');
+                    if (!exists) throw createError;
+                  }
                 }
               }
               const body = [
