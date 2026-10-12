@@ -8,8 +8,8 @@ import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import type { ReportRequest } from '~~/types/report/requests.types';
 
 const REPORT_LABELS = ['needs-triage'];
-// Keep in sync with INTERNAL_LABEL in .github/workflows/mirror-issue-internal.yml
-const INTERNAL_LABELS = [...REPORT_LABELS, 'Support'];
+// Keep in sync with INTERNAL_LABELS in .github/workflows/mirror-issue-internal.yml
+const INTERNAL_LABELS = [...REPORT_LABELS, 'product-support'];
 
 export default defineEventHandler(async (event): Promise<string> => {
   const body: ReportRequest = await readBody(event);
