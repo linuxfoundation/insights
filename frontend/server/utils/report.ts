@@ -26,8 +26,8 @@ export function buildIssueBody(body: ReportRequest): string {
 }
 
 // Body of the internal (private repo) copy: the public body unchanged, then a footer with the
-// public issue link and the reporter. Keep the "Public issue: <url>" line format in sync with
-// .github/workflows/mirror-issue-internal.yml, which uses it to find this copy.
+// public issue link and the reporter. Keep the footer format in sync with
+// .github/workflows/mirror-issue-internal.yml, which builds the same footer for issues opened by hand.
 export function buildInternalIssueBody(
   issueBody: string,
   githubUrl: string,

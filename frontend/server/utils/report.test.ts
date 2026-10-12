@@ -42,7 +42,6 @@ describe('buildInternalIssueBody', () => {
     );
 
     expect(result.startsWith(issueBody)).toBe(true);
-    // The mirror workflow matches this exact line to find the internal copy.
     expect(result.split('\n')).toContain(
       'Public issue: https://github.com/linuxfoundation/insights/issues/1',
     );

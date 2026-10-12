@@ -8,6 +8,8 @@ import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import type { ReportRequest } from '~~/types/report/requests.types';
 
 const REPORT_LABELS = ['needs-triage'];
+// Keep in sync with INTERNAL_LABEL in .github/workflows/mirror-issue-internal.yml
+const INTERNAL_LABELS = [...REPORT_LABELS, 'Support'];
 
 export default defineEventHandler(async (event): Promise<string> => {
   const body: ReportRequest = await readBody(event);
@@ -33,7 +35,7 @@ export default defineEventHandler(async (event): Promise<string> => {
     await createInternalIssue(
       title,
       buildInternalIssueBody(issueBody, issueData?.html_url, lfid, email),
-      REPORT_LABELS,
+      INTERNAL_LABELS,
     );
   } catch (error) {
     logError('report', 'Failed to create internal copy of the issue', error);
