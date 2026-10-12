@@ -47,35 +47,14 @@ const collectionRow = (topProjects: unknown[][]) => ({
   topProjects,
 });
 
-// The upstream tuple drops its v1 health slot at index 6 in a later release, so both shapes must map.
-const layouts = [
-  { name: 'with the v1 health slot', v1: [99] },
-  { name: 'without the v1 health slot', v1: [] },
-];
-
-describe.each(layouts)('OSS index tuple mapping $name', ({ v1 }) => {
+describe('OSS index tuple mapping', () => {
   it('maps the collections tuple', async () => {
     mockFetchFromTinybird.mockResolvedValue({
       data: [
         collectionRow([
-          ['p1', 10, 'Proj', 'logo', 5, 1, ...v1, 'desc', 'proj', 'active', 71, 'healthy', 71, 100],
-          [
-            'p2',
-            10,
-            'Partial',
-            'logo',
-            5,
-            1,
-            ...v1,
-            'desc',
-            'part',
-            'active',
-            64,
-            'excellent',
-            85,
-            75,
-          ],
-          ['p3', 10, 'Korg', 'logo', 5, 1, ...v1, 'desc', 'korg', 'active', null, null, null, null],
+          ['p1', 10, 'Proj', 'logo', 5, 1, 'desc', 'proj', 'active', 71, 'healthy', 71, 100],
+          ['p2', 10, 'Partial', 'logo', 5, 1, 'desc', 'part', 'active', 64, 'excellent', 85, 75],
+          ['p3', 10, 'Korg', 'logo', 5, 1, 'desc', 'korg', 'active', null, null, null, null],
         ]),
       ],
     });
@@ -115,7 +94,7 @@ describe.each(layouts)('OSS index tuple mapping $name', ({ v1 }) => {
           {
             ...collectionRow([]),
             topCollections: [],
-            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, ...v1, 'desc', 40, 'fair', 40, 100]],
+            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 'desc', 40, 'fair', 40, 100]],
           },
         ],
       });
@@ -137,9 +116,7 @@ describe.each(layouts)('OSS index tuple mapping $name', ({ v1 }) => {
         {
           ...collectionRow([]),
           topCollections: [],
-          topProjects: [
-            ['p1', 10, 'Proj', 'logo', 5, 1, ...v1, 'desc', 'active', 22, 'critical', 22, 65],
-          ],
+          topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 'desc', 'active', 22, 'critical', 22, 65]],
         },
       ],
     });

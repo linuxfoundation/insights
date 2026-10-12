@@ -33,16 +33,13 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    const row = response.data?.[0];
-    if (!row) {
+    const project = response.data?.[0];
+    if (!project) {
       throw createError({
         statusCode: 404,
         statusMessage: 'Project not found',
       });
     }
-    const project = Object.fromEntries(
-      Object.entries(row).filter(([key]) => !legacyScoreFields.includes(key)),
-    ) as typeof row;
 
     return {
       ...project,

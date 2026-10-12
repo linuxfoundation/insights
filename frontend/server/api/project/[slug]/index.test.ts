@@ -36,7 +36,6 @@ const mockProjectRow = (row: Record<string, unknown>) =>
 describe('GET /api/project/[slug]', () => {
   it('serves the raw v2 score as healthScore', async () => {
     mockProjectRow({
-      healthScore: 87.5,
       healthScoreV2: 52,
       healthMaxScore: 65,
       healthLabel: 'excellent',

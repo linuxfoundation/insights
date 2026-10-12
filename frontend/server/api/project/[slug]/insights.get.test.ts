@@ -26,17 +26,12 @@ beforeEach(() => {
 const event = { context: { params: { slug: 'k8s' } } } as unknown as H3Event;
 
 describe('GET /api/project/[slug]/insights', () => {
-  it('serves the v2 score as healthScore and omits the v1 sub-scores', async () => {
+  it('serves the v2 score as healthScore', async () => {
     mockFetchFromTinybird.mockResolvedValue({
       data: [
         {
           slug: 'k8s',
           isLF: 1,
-          healthScore: 87.5,
-          contributorHealthScore: 90,
-          popularityHealthScore: 95,
-          developmentHealthScore: 80,
-          securityHealthScore: 85,
           healthScoreV2: 71,
           healthLabel: 'healthy',
           achievements: [],
@@ -47,10 +42,6 @@ describe('GET /api/project/[slug]/insights', () => {
     const res = await handler(event);
 
     expect(res).toMatchObject({ slug: 'k8s', healthScore: 71, healthLabel: 'healthy', isLF: true });
-    expect(res).not.toHaveProperty('contributorHealthScore');
-    expect(res).not.toHaveProperty('popularityHealthScore');
-    expect(res).not.toHaveProperty('developmentHealthScore');
-    expect(res).not.toHaveProperty('securityHealthScore');
   });
 
   it('returns a null healthScore for a project without a v2 score', async () => {

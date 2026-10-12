@@ -55,7 +55,6 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroupDe
       }),
       topProjects: item.topProjects.map((project) => {
         const [id, count, name, logo, softwareValue, avgScore] = project;
-        // Read the tail by distance from the end so it works with or without the upstream v1 health slot
         const [description, healthScoreV2, healthLabel, , healthMaxScore] = project.slice(-5);
         return {
           id: id as string,
