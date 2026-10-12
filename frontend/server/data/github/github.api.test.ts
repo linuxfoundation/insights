@@ -2,13 +2,27 @@
 // SPDX-License-Identifier: MIT
 import { generateKeyPairSync } from 'node:crypto';
 
+import { mockNuxtImport } from '@nuxt/test-utils/runtime';
 import { decodeJwt } from 'jose';
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { normalizePrivateKey, signAppJwt } from './github.api';
+import { createInternalIssue, normalizePrivateKey, signAppJwt } from './github.api';
 
 const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
 const pkcs8Pem = privateKey.export({ type: 'pkcs8', format: 'pem' }).toString();
+
+const { runtimeConfig, fetchMock } = vi.hoisted(() => ({
+  runtimeConfig: {} as Record<string, unknown>,
+  fetchMock: { impl: undefined as undefined | ((...args: unknown[]) => unknown) },
+}));
+// Overlay test values on the real config: the Nuxt test environment reads it while booting.
+mockNuxtImport('useRuntimeConfig', (original) => () => Object.assign(original(), runtimeConfig));
+mockNuxtImport(
+  '$fetch',
+  (original) =>
+    (...args: unknown[]) =>
+      (fetchMock.impl ?? original)(...(args as Parameters<typeof original>)),
+);
 
 describe('normalizePrivateKey', () => {
   test('passes through a raw PKCS8 PEM', () => {
@@ -41,5 +55,149 @@ describe('signAppJwt', () => {
 
     expect(typeof iss).toBe('string');
     expect(iss).toBe('123456');
+  });
+});
+
+describe('createInternalIssue', () => {
+  const project = {
+    id: 'PROJECT',
+    fields: {
+      nodes: [
+        { id: 'TEAM', name: 'Team', options: [{ id: 'team-dq', name: 'Data Quality / Support' }] },
+        { id: 'STATUS', name: 'Status', options: [{ id: 'status-backlog', name: 'Backlog' }] },
+        {},
+      ],
+    },
+  };
+  const calls: { url: string; body: Record<string, unknown> }[] = [];
+  let graphqlErrors: { message: string }[] | undefined;
+  let addItemFailures = 0;
+  let missingLabels: string[] = [];
+
+  beforeEach(() => {
+    Object.assign(runtimeConfig, {
+      githubAppId: '1',
+      githubAppInstallationId: '2',
+      githubAppPrivateKey: pkcs8Pem,
+      githubInternalIssuesRepo: 'linuxfoundation/internal',
+      githubInternalProjectNumber: 30,
+      githubInternalProjectTeam: 'Data Quality / Support',
+      githubInternalProjectStatus: 'Backlog',
+    });
+    calls.length = 0;
+    graphqlErrors = undefined;
+    addItemFailures = 0;
+    missingLabels = [];
+    fetchMock.impl = vi.fn(async (url: string, opts: { body: Record<string, unknown> }) => {
+      calls.push({ url, body: opts.body });
+      if (url.endsWith('/access_tokens')) return { token: 'install-token' };
+      if (url.includes('/labels/')) {
+        const name = decodeURIComponent(url.split('/labels/')[1]!);
+        if (missingLabels.includes(name))
+          throw Object.assign(new Error('Not Found'), { status: 404 });
+        return { name };
+      }
+      if (url.endsWith('/labels')) return opts.body;
+      if (url.endsWith('/issues')) return { html_url: 'https://gh/issue/1', node_id: 'ISSUE' };
+      const query = String(opts.body.query);
+      if (query.includes('projectV2(number')) {
+        return { data: { organization: { projectV2: project } }, errors: graphqlErrors };
+      }
+      if (query.includes('addProjectV2ItemById')) {
+        if (addItemFailures > 0) {
+          addItemFailures--;
+          return { data: null, errors: [{ message: 'Something went wrong' }] };
+        }
+        return {
+          data: { addProjectV2ItemById: { item: { id: 'ITEM' } } },
+          errors: graphqlErrors,
+        };
+      }
+      return { data: {}, errors: graphqlErrors };
+    });
+  });
+
+  afterEach(() => {
+    fetchMock.impl = undefined;
+  });
+
+  test('creates the issue, adds it to the project and sets Team and Status', async () => {
+    const issue = await createInternalIssue('Title', 'Body', ['needs-triage', 'Support']);
+
+    expect(issue.html_url).toBe('https://gh/issue/1');
+    const steps = calls.map((c) =>
+      c.url.endsWith('/graphql')
+        ? String(c.body.query).match(
+            /(projectV2\(|addProjectV2ItemById|updateProjectV2ItemFieldValue)/,
+          )?.[0]
+        : c.url,
+    );
+    expect(steps).toEqual([
+      'https://api.github.com/app/installations/2/access_tokens',
+      'projectV2(',
+      'https://api.github.com/repos/linuxfoundation/internal/labels/needs-triage',
+      'https://api.github.com/repos/linuxfoundation/internal/labels/Support',
+      'https://api.github.com/repos/linuxfoundation/internal/issues',
+      'addProjectV2ItemById',
+      'updateProjectV2ItemFieldValue',
+      'updateProjectV2ItemFieldValue',
+    ]);
+    expect(calls.find((c) => c.url.endsWith('/issues'))!.body).toMatchObject({
+      title: 'Title',
+      body: 'Body',
+      labels: ['needs-triage', 'Support'],
+    });
+    expect(calls.slice(6).map((c) => c.body.variables)).toEqual([
+      { projectId: 'PROJECT', itemId: 'ITEM', fieldId: 'TEAM', optionId: 'team-dq' },
+      { projectId: 'PROJECT', itemId: 'ITEM', fieldId: 'STATUS', optionId: 'status-backlog' },
+    ]);
+  });
+
+  test('creates labels the internal repo is missing before creating the issue', async () => {
+    missingLabels = ['Support'];
+
+    await createInternalIssue('Title', 'Body', ['needs-triage', 'Support']);
+
+    const created = calls.filter((c) => c.url.endsWith('/labels'));
+    expect(created.map((c) => c.body)).toEqual([{ name: 'Support', color: 'ededed' }]);
+    expect(calls.indexOf(created[0]!)).toBeLessThan(
+      calls.findIndex((c) => c.url.endsWith('/issues')),
+    );
+  });
+
+  test('fails before creating the issue when a project option is missing', async () => {
+    runtimeConfig.githubInternalProjectTeam = 'Unknown team';
+
+    await expect(createInternalIssue('Title', 'Body')).rejects.toThrow(
+      'Project field "Team" has no option "Unknown team"',
+    );
+    expect(calls.some((c) => c.url.endsWith('/issues'))).toBe(false);
+  });
+
+  test('surfaces GraphQL errors', async () => {
+    graphqlErrors = [{ message: 'Resource not accessible by integration' }];
+
+    await expect(createInternalIssue('Title', 'Body')).rejects.toThrow(
+      'GitHub GraphQL error: Resource not accessible by integration',
+    );
+    expect(calls.some((c) => c.url.endsWith('/issues'))).toBe(false);
+  });
+
+  test('retries project setup after a transient failure', async () => {
+    addItemFailures = 1;
+
+    const issue = await createInternalIssue('Title', 'Body');
+
+    expect(issue.html_url).toBe('https://gh/issue/1');
+    expect(calls.filter((c) => c.url.endsWith('/issues'))).toHaveLength(1);
+  });
+
+  test('names the created issue when project setup keeps failing', async () => {
+    addItemFailures = Number.POSITIVE_INFINITY;
+
+    await expect(createInternalIssue('Title', 'Body')).rejects.toThrow(
+      'Created https://gh/issue/1 but could not add it to the project: GitHub GraphQL error: Something went wrong',
+    );
+    expect(calls.filter((c) => c.url.endsWith('/issues'))).toHaveLength(1);
   });
 });

@@ -25,16 +25,14 @@ export function buildIssueBody(body: ReportRequest): string {
   return description.join('\n');
 }
 
-export function buildJiraDescription(
+// Keep the footer format in sync with .github/workflows/mirror-issue-internal.yml.
+export function buildInternalIssueBody(
   issueBody: string,
   githubUrl: string,
   lfid: string,
   email: string,
 ): string {
-  return [
-    issueBody,
-    '---',
-    `GitHub issue: ${githubUrl}`,
-    `Issue created by user: ${lfid} ${email}`,
-  ].join('\n\n');
+  return [issueBody, '---', `Public issue: ${githubUrl}`, `Reported by: ${lfid} (${email})`].join(
+    '\n\n',
+  );
 }
