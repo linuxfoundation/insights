@@ -41,6 +41,7 @@ export interface Project {
   rank: number;
   healthScoreV2: number | null;
   healthLabel: string | null;
+  healthMaxScore: number | null;
   communityPlatforms: string[];
   communityKeywords: string[];
   communityLanguages: string[];

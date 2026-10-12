@@ -143,6 +143,7 @@ SPDX-License-Identifier: MIT
                     <lfx-health-score
                       v-if="project.healthLabel"
                       :label="project.healthLabel"
+                      :health-max-score="project.healthMaxScore"
                     />
                     <span v-else>-</span>
                   </td>

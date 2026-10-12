@@ -18,6 +18,7 @@ interface MappedProject {
   description: string;
   healthScoreV2: number | null;
   healthLabel: string | null;
+  healthMaxScore: number | null;
 }
 type WithProjects = { topProjects: MappedProject[] };
 type Handler<T> = (event: H3Event) => Promise<T>;
@@ -47,18 +48,34 @@ const collectionRow = (topProjects: unknown[][]) => ({
 });
 
 describe('OSS index tuple mapping', () => {
-  it('maps the collections v2 triple from the tuple tail and ignores the v1 slot', async () => {
+  it('maps the collections v2 fields from the tuple tail and ignores the v1 slot', async () => {
     mockFetchFromTinybird.mockResolvedValue({
       data: [
         collectionRow([
-          ['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'proj', 'active', 71, 'healthy', 71],
-          ['p2', 10, 'Unscored', 'logo', 5, 1, 0, 'desc', 'korg', 'active', null, null, null],
+          ['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'proj', 'active', 71, 'healthy', 71, 100],
+          [
+            'p2',
+            10,
+            'Partial',
+            'logo',
+            5,
+            1,
+            99,
+            'desc',
+            'part',
+            'active',
+            64,
+            'excellent',
+            85,
+            75,
+          ],
+          ['p3', 10, 'Korg', 'logo', 5, 1, 0, 'desc', 'korg', 'active', null, null, null, null],
         ]),
       ],
     });
 
     const res = await collections({} as H3Event);
-    const [scoredProject, unscoredProject] = res.collections[0].topProjects;
+    const [scoredProject, partialProject, unscoredProject] = res.collections[0].topProjects;
 
     expect(scoredProject).toMatchObject({
       description: 'desc',
@@ -66,12 +83,22 @@ describe('OSS index tuple mapping', () => {
       status: 'active',
       healthScoreV2: 71,
       healthLabel: 'healthy',
+      healthMaxScore: 100,
     });
     expect(scoredProject).not.toHaveProperty('healthScore');
-    expect(unscoredProject).toMatchObject({ healthScoreV2: null, healthLabel: null });
+    expect(partialProject).toMatchObject({
+      healthScoreV2: 64,
+      healthLabel: 'excellent',
+      healthMaxScore: 75,
+    });
+    expect(unscoredProject).toMatchObject({
+      healthScoreV2: null,
+      healthLabel: null,
+      healthMaxScore: null,
+    });
   });
 
-  it('maps the categories v2 triple from the tuple tail', async () => {
+  it('maps the categories v2 fields from the tuple tail', async () => {
     mockFetchFromTinybird
       .mockResolvedValueOnce({ data: [{ id: 'g1', slug: 'group' }] })
       .mockResolvedValueOnce({
@@ -79,7 +106,7 @@ describe('OSS index tuple mapping', () => {
           {
             ...collectionRow([]),
             topCollections: [],
-            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 40, 'fair', 40]],
+            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 40, 'fair', 40, 100]],
           },
         ],
       });
@@ -90,16 +117,19 @@ describe('OSS index tuple mapping', () => {
       description: 'desc',
       healthScoreV2: 40,
       healthLabel: 'fair',
+      healthMaxScore: 100,
     });
   });
 
-  it('maps the groups v2 triple from the tuple tail', async () => {
+  it('maps the groups v2 fields from the tuple tail', async () => {
     mockFetchFromTinybird.mockResolvedValue({
       data: [
         {
           ...collectionRow([]),
           topCollections: [],
-          topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'active', 22, 'critical', 22]],
+          topProjects: [
+            ['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'active', 22, 'critical', 22, 100],
+          ],
         },
       ],
     });
@@ -111,6 +141,7 @@ describe('OSS index tuple mapping', () => {
       status: 'active',
       healthScoreV2: 22,
       healthLabel: 'critical',
+      healthMaxScore: 100,
     });
   });
 });
