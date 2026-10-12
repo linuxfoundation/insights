@@ -23,7 +23,7 @@ Code to record a new decision interactively.
 | [ADR-0007](./0007-collections-only-permission-check.md)          | Only Collections endpoints require a per-request permission check; groups 1–5 are public-data-only |                                |            |
 | [ADR-0008](./0008-typebox-code-first-openapi.md)                 | TypeBox for code-first OpenAPI schema generation                                                   |                                |            |
 | [ADR-0009](./0009-api-key-required-for-all-requests.md)          | Every request requires a valid API key; no anonymous access                                        |                                |            |
-| [ADR-0010](./0010-billing-bundled-with-lfx-membership.md)        | API access is bundled with LFX membership; no standalone billing in v1                             |                                |            |
+| [ADR-0010](./0010-billing-bundled-with-lfx-membership.md)        | API access is bundled with LFX membership; no standalone billing in v1                             | amended 2026-10-12             |            |
 | [ADR-0011](./0011-pagination-cursor-based.md)                    | Pagination is cursor-based with opaque base64url cursors                                           |                                |            |
 | [ADR-0012](./0012-url-port-strategy-hybrid.md)                   | URL porting strategy: port-as-is by default, rename only when genuinely misleading                 |                                |            |
 | [ADR-0013](./0013-origin-cache-only-private-cache-control.md)    | Responses are cached at the origin (Redis) only; `Cache-Control: private, max-age=0`               |                                |            |

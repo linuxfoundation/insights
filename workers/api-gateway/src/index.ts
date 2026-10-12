@@ -39,7 +39,6 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
     const orgTier = admins.includes(username)
       ? ADMIN_ORG_TIER
       : pickOrgTier(await deps.fetchMemberTiers(username, env));
-    if (!orgTier) return forbidden();
 
     entitlement = { accessToken: exchanged.access_token, orgTier } satisfies Entitlement;
     await deps.cache.put(key, entitlement, Math.min(exchanged.expires_in, ENTITLEMENT_TTL_SECONDS));
@@ -60,16 +59,6 @@ function notFound(): Response {
     message: 'Route not found',
   };
   return Response.json(body, { status: 404 });
-}
-
-function forbidden(): Response {
-  const body = {
-    statusCode: 403,
-    code: 'forbidden',
-    error: 'Forbidden',
-    message: 'An active LFX membership is required',
-  };
-  return Response.json(body, { status: 403 });
 }
 
 function unauthorized(): Response {
