@@ -16,7 +16,7 @@ env:
   INTERNAL_OWNER: linuxfoundation
   INTERNAL_REPO: lfx-cdp-insights-ops
   # Keep in sync with INTERNAL_LABELS in frontend/server/api/report/index.post.ts
-  INTERNAL_LABEL: Support
+  INTERNAL_LABELS: product-support,needs-triage
   PROJECT_NUMBER: 30
   PROJECT_TEAM: Data Quality / Support
   PROJECT_STATUS: Backlog
@@ -92,7 +92,7 @@ jobs:
             }
 
             if (!copy) {
-              const labels = [...new Set([...issue.labels.map((l) => l.name), process.env.INTERNAL_LABEL])];
+              const labels = [...new Set([...issue.labels.map((l) => l.name), ...process.env.INTERNAL_LABELS.split(',')])];
               // Labels are per repository: create any the internal repo lacks, keeping the source color.
               for (const name of labels) {
                 try {
