@@ -16,7 +16,7 @@ export default {
   githubAppId: '',
   githubAppInstallationId: '',
   githubAppPrivateKey: '',
-  githubInternalIssuesRepo: 'linuxfoundation/cdp-insights-project',
+  githubInternalIssuesRepo: 'linuxfoundation/lfx-cdp-insights-ops',
   githubInternalProjectNumber: 30,
   githubInternalProjectTeam: 'Data Quality / Support',
   githubInternalProjectStatus: 'Backlog',
