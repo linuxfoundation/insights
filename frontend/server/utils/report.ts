@@ -25,16 +25,16 @@ export function buildIssueBody(body: ReportRequest): string {
   return description.join('\n');
 }
 
-export function buildJiraDescription(
+// Body of the internal (private repo) copy: the public body unchanged, then a footer with the
+// public issue link and the reporter. Keep the "Public issue: <url>" line format in sync with
+// .github/workflows/mirror-issue-internal.yml, which uses it to find this copy.
+export function buildInternalIssueBody(
   issueBody: string,
   githubUrl: string,
   lfid: string,
   email: string,
 ): string {
-  return [
-    issueBody,
-    '---',
-    `GitHub issue: ${githubUrl}`,
-    `Issue created by user: ${lfid} ${email}`,
-  ].join('\n\n');
+  return [issueBody, '---', `Public issue: ${githubUrl}`, `Reported by: ${lfid} (${email})`].join(
+    '\n\n',
+  );
 }

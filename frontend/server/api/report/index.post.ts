@@ -1,16 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { createGitHubIssue } from '~~/server/data/github/github.api';
-import { createJiraIssue } from '~~/server/data/jira/jira.api';
+import { createGitHubIssue, createInternalIssue } from '~~/server/data/github/github.api';
 import { getAuthUsername } from '~~/server/utils/common';
 import { logError } from '~~/server/utils/log';
-import { buildIssueTitle, buildIssueBody, buildJiraDescription } from '~~/server/utils/report';
+import { buildIssueTitle, buildIssueBody, buildInternalIssueBody } from '~~/server/utils/report';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import type { ReportRequest } from '~~/types/report/requests.types';
 
+const REPORT_LABELS = ['needs-triage'];
+
 export default defineEventHandler(async (event): Promise<string> => {
   const body: ReportRequest = await readBody(event);
-  const config = useRuntimeConfig();
 
   const user = event.context.user as DecodedOidcToken | undefined;
   const lfid = user?.sub ? getAuthUsername(user.sub) : 'unknown';
@@ -21,23 +21,22 @@ export default defineEventHandler(async (event): Promise<string> => {
 
   let issueData: Awaited<ReturnType<typeof createGitHubIssue>>;
   try {
-    issueData = await createGitHubIssue(title, issueBody, ['needs-triage']);
+    issueData = await createGitHubIssue(title, issueBody, REPORT_LABELS);
   } catch (error) {
     logError('report', 'Failed to create GitHub issue', error);
     throw createError({ statusCode: 502, statusMessage: 'Failed to create GitHub issue' });
   }
 
-  // Jira mirror is best-effort: the report must succeed even if Jira is down
-  // or the DE project/service account isn't configured yet.
+  // Internal copy is best-effort: the report must succeed even if the private repo
+  // or the team project isn't reachable.
   try {
-    await createJiraIssue({
-      summary: title,
-      description: buildJiraDescription(issueBody, issueData?.html_url, lfid, email),
-      projectKey: config.jiraReportProjectKey,
-      assigneeAccountId: config.jiraReportAssigneeAccountId || undefined,
-    });
+    await createInternalIssue(
+      title,
+      buildInternalIssueBody(issueBody, issueData?.html_url, lfid, email),
+      REPORT_LABELS,
+    );
   } catch (error) {
-    console.error('[report] Failed to mirror issue to Jira', error);
+    logError('report', 'Failed to create internal copy of the issue', error);
   }
 
   return issueData?.html_url;

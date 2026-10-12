@@ -1,0 +1,145 @@
+# Copyright The Linux Foundation and each contributor to LFX.
+# SPDX-License-Identifier: MIT
+#
+# Every new issue in this repo gets an internal copy in the private team repo, added to the
+# team's GitHub project, plus a Slack notification.
+# - Issues opened by hand: this workflow creates the internal copy.
+# - Issues from the in-app "Report issue" form (opened by the app's bot): the app already
+#   created the internal copy with the reporter's details (frontend/server/api/report), so
+#   this workflow only looks it up for the Slack message.
+name: Mirror issue to internal tracker
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+
+env:
+  INTERNAL_OWNER: linuxfoundation
+  INTERNAL_REPO: cdp-insights-project
+  PROJECT_NUMBER: 30
+  PROJECT_TEAM: Data Quality / Support
+  PROJECT_STATUS: Backlog
+  REPORT_APP_BOT: lfx-insights-issue-reporter[bot]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.INSIGHTS_ISSUE_APP_ID }}
+          private-key: ${{ secrets.INSIGHTS_ISSUE_APP_PRIVATE_KEY }}
+          owner: linuxfoundation
+          repositories: cdp-insights-project
+
+      - name: Create or find internal copy
+        id: copy
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const issue = context.payload.issue;
+            const owner = process.env.INTERNAL_OWNER;
+            const repo = process.env.INTERNAL_REPO;
+            // Same line format as buildInternalIssueBody() in frontend/server/utils/report.ts
+            const publicLine = `Public issue: ${issue.html_url}`;
+
+            if (issue.user.login === process.env.REPORT_APP_BOT) {
+              // The app creates its copy right after the public issue; allow for a short delay.
+              for (let attempt = 0; attempt < 6; attempt++) {
+                if (attempt) await new Promise((r) => setTimeout(r, 10000));
+                const { data } = await github.rest.issues.listForRepo({
+                  owner, repo, state: 'all', sort: 'created', direction: 'desc', per_page: 50,
+                });
+                const copy = data.find((i) => (i.body || '').split('\n').includes(publicLine));
+                if (copy) {
+                  core.setOutput('internal_url', copy.html_url);
+                  return;
+                }
+              }
+              core.warning(`No internal copy found for ${issue.html_url}`);
+              return;
+            }
+
+            const body = [
+              issue.body || '',
+              '---',
+              publicLine,
+              `Reported by: GitHub user [${issue.user.login}](${issue.user.html_url})`,
+            ].join('\n\n');
+            const { data: copy } = await github.rest.issues.create({
+              owner, repo,
+              title: issue.title,
+              body,
+              labels: issue.labels.map((l) => l.name),
+            });
+            core.setOutput('internal_url', copy.html_url);
+
+            const { organization } = await github.graphql(
+              `query($owner: String!, $number: Int!) {
+                organization(login: $owner) { projectV2(number: $number) {
+                  id
+                  fields(first: 50) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } }
+                } }
+              }`,
+              { owner, number: Number(process.env.PROJECT_NUMBER) },
+            );
+            const project = organization.projectV2;
+            const { addProjectV2ItemById } = await github.graphql(
+              `mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) { item { id } }
+              }`,
+              { projectId: project.id, contentId: copy.node_id },
+            );
+            for (const [fieldName, optionName] of [
+              ['Team', process.env.PROJECT_TEAM],
+              ['Status', process.env.PROJECT_STATUS],
+            ]) {
+              const field = project.fields.nodes.find((f) => f.name === fieldName);
+              const option = field?.options?.find((o) => o.name === optionName);
+              if (!option) {
+                core.setFailed(`Project field "${fieldName}" has no option "${optionName}"`);
+                return;
+              }
+              await github.graphql(
+                `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: $projectId, itemId: $itemId, fieldId: $fieldId,
+                    value: { singleSelectOptionId: $optionId }
+                  }) { projectV2Item { id } }
+                }`,
+                { projectId: project.id, itemId: addProjectV2ItemById.item.id, fieldId: field.id, optionId: option.id },
+              );
+            }
+
+      - name: Notify Slack
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INSIGHTS_ISSUES_WEBHOOK_URL }}
+          INTERNAL_URL: ${{ steps.copy.outputs.internal_url }}
+        with:
+          script: |
+            if (!process.env.SLACK_WEBHOOK_URL) {
+              core.warning('SLACK_INSIGHTS_ISSUES_WEBHOOK_URL is not set; skipping Slack notification');
+              return;
+            }
+            const issue = context.payload.issue;
+            const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const lines = [
+              `New Insights issue: <${issue.html_url}|#${issue.number} ${escape(issue.title)}>`,
+              process.env.INTERNAL_URL
+                ? `Internal copy: ${process.env.INTERNAL_URL}`
+                : 'Internal copy: not created, check the workflow run',
+            ];
+            const res = await fetch(process.env.SLACK_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text: lines.join('\n') }),
+            });
+            if (!res.ok) core.setFailed(`Slack webhook returned ${res.status}`);

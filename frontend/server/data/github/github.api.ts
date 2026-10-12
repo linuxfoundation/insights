@@ -56,17 +56,20 @@ async function getInstallationToken(): Promise<string> {
   return token;
 }
 
-export async function createGitHubIssue(
+interface CreatedIssue {
+  html_url: string;
+  node_id: string;
+}
+
+async function postIssue(
+  token: string,
+  repo: string,
   title: string,
   body: string,
-  labels: string[] = [],
+  labels: string[],
   assignees: string[] = [],
-): Promise<{ html_url: string }> {
-  const token = await getInstallationToken();
-
-  const url = `https://api.github.com/repos/linuxfoundation/insights/issues`;
-
-  return await $fetch(url, {
+): Promise<CreatedIssue> {
+  return await $fetch(`https://api.github.com/repos/${repo}/issues`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -79,4 +82,106 @@ export async function createGitHubIssue(
       assignees,
     },
   });
+}
+
+export async function createGitHubIssue(
+  title: string,
+  body: string,
+  labels: string[] = [],
+  assignees: string[] = [],
+): Promise<CreatedIssue> {
+  const token = await getInstallationToken();
+  return await postIssue(token, 'linuxfoundation/insights', title, body, labels, assignees);
+}
+
+async function githubGraphql<T>(
+  token: string,
+  query: string,
+  variables: Record<string, unknown>,
+): Promise<T> {
+  const { data, errors } = await $fetch<{ data: T; errors?: { message: string }[] }>(
+    'https://api.github.com/graphql',
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: { query, variables },
+    },
+  );
+  if (errors?.length) {
+    throw new Error(`GitHub GraphQL error: ${errors.map((e) => e.message).join('; ')}`);
+  }
+  return data;
+}
+
+interface ProjectField {
+  id?: string;
+  name?: string;
+  options?: { id: string; name: string }[];
+}
+
+const PROJECT_QUERY = `query($owner: String!, $number: Int!) {
+  organization(login: $owner) {
+    projectV2(number: $number) {
+      id
+      fields(first: 50) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } }
+    }
+  }
+}`;
+
+const ADD_ITEM_MUTATION = `mutation($projectId: ID!, $contentId: ID!) {
+  addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) { item { id } }
+}`;
+
+const SET_FIELD_MUTATION = `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+  updateProjectV2ItemFieldValue(input: {
+    projectId: $projectId, itemId: $itemId, fieldId: $fieldId, value: { singleSelectOptionId: $optionId }
+  }) { projectV2Item { id } }
+}`;
+
+// Internal copy of a public report: same title/body/labels plus reporter details, filed in the
+// private team repo and added to the team's GitHub project with the configured field values.
+export async function createInternalIssue(
+  title: string,
+  body: string,
+  labels: string[] = [],
+): Promise<CreatedIssue> {
+  const {
+    githubInternalIssuesRepo,
+    githubInternalProjectNumber,
+    githubInternalProjectTeam,
+    githubInternalProjectStatus,
+  } = useRuntimeConfig();
+
+  const token = await getInstallationToken();
+  const issue = await postIssue(token, githubInternalIssuesRepo, title, body, labels);
+
+  const [owner] = githubInternalIssuesRepo.split('/');
+  const { organization } = await githubGraphql<{
+    organization: { projectV2: { id: string; fields: { nodes: ProjectField[] } } };
+  }>(token, PROJECT_QUERY, { owner, number: Number(githubInternalProjectNumber) });
+  const project = organization.projectV2;
+
+  const { addProjectV2ItemById } = await githubGraphql<{
+    addProjectV2ItemById: { item: { id: string } };
+  }>(token, ADD_ITEM_MUTATION, { projectId: project.id, contentId: issue.node_id });
+
+  const values: [string, string][] = [
+    ['Team', githubInternalProjectTeam],
+    ['Status', githubInternalProjectStatus],
+  ];
+  for (const [fieldName, optionName] of values) {
+    const field = project.fields.nodes.find((f) => f.name === fieldName);
+    const option = field?.options?.find((o) => o.name === optionName);
+    if (!field?.id || !option) {
+      throw new Error(`Project field "${fieldName}" has no option "${optionName}"`);
+    }
+    await githubGraphql(token, SET_FIELD_MUTATION, {
+      projectId: project.id,
+      itemId: addProjectV2ItemById.item.id,
+      fieldId: field.id,
+      optionId: option.id,
+    });
+  }
+
+  return issue;
 }

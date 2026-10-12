@@ -4,7 +4,7 @@ import { describe, test, expect } from 'vitest';
 
 import type { ReportRequest } from '~~/types/report/requests.types';
 
-import { buildIssueTitle, buildIssueBody, buildJiraDescription } from './report';
+import { buildIssueTitle, buildIssueBody, buildInternalIssueBody } from './report';
 
 const baseRequest: ReportRequest = {
   description: 'Numbers look wrong',
@@ -31,10 +31,10 @@ describe('buildIssueTitle', () => {
   });
 });
 
-describe('buildJiraDescription', () => {
-  test('appends the GitHub link and user attribution to the GitHub issue body', () => {
+describe('buildInternalIssueBody', () => {
+  test('keeps the public body and appends the public link and reporter', () => {
     const issueBody = buildIssueBody(baseRequest);
-    const result = buildJiraDescription(
+    const result = buildInternalIssueBody(
       issueBody,
       'https://github.com/linuxfoundation/insights/issues/1',
       'jdoe',
@@ -42,7 +42,10 @@ describe('buildJiraDescription', () => {
     );
 
     expect(result.startsWith(issueBody)).toBe(true);
-    expect(result).toContain('GitHub issue: https://github.com/linuxfoundation/insights/issues/1');
-    expect(result.endsWith('Issue created by user: jdoe jdoe@example.com')).toBe(true);
+    // The mirror workflow matches this exact line to find the internal copy.
+    expect(result.split('\n')).toContain(
+      'Public issue: https://github.com/linuxfoundation/insights/issues/1',
+    );
+    expect(result.endsWith('Reported by: jdoe (jdoe@example.com)')).toBe(true);
   });
 });
