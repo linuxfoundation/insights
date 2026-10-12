@@ -47,12 +47,18 @@ const collectionRow = (topProjects: unknown[][]) => ({
   topProjects,
 });
 
-describe('OSS index tuple mapping', () => {
-  it('maps the collections v2 fields from the tuple tail and ignores the v1 slot', async () => {
+// The upstream tuple drops its v1 health slot at index 6 in a later release, so both shapes must map.
+const layouts = [
+  { name: 'with the v1 health slot', v1: [99] },
+  { name: 'without the v1 health slot', v1: [] },
+];
+
+describe.each(layouts)('OSS index tuple mapping $name', ({ v1 }) => {
+  it('maps the collections tuple', async () => {
     mockFetchFromTinybird.mockResolvedValue({
       data: [
         collectionRow([
-          ['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'proj', 'active', 71, 'healthy', 71, 100],
+          ['p1', 10, 'Proj', 'logo', 5, 1, ...v1, 'desc', 'proj', 'active', 71, 'healthy', 71, 100],
           [
             'p2',
             10,
@@ -60,7 +66,7 @@ describe('OSS index tuple mapping', () => {
             'logo',
             5,
             1,
-            99,
+            ...v1,
             'desc',
             'part',
             'active',
@@ -69,7 +75,7 @@ describe('OSS index tuple mapping', () => {
             85,
             75,
           ],
-          ['p3', 10, 'Korg', 'logo', 5, 1, 0, 'desc', 'korg', 'active', null, null, null, null],
+          ['p3', 10, 'Korg', 'logo', 5, 1, ...v1, 'desc', 'korg', 'active', null, null, null, null],
         ]),
       ],
     });
@@ -78,6 +84,8 @@ describe('OSS index tuple mapping', () => {
     const [scoredProject, partialProject, unscoredProject] = res.collections[0].topProjects;
 
     expect(scoredProject).toMatchObject({
+      name: 'Proj',
+      avgScore: 1,
       description: 'desc',
       slug: 'proj',
       status: 'active',
@@ -87,6 +95,7 @@ describe('OSS index tuple mapping', () => {
     });
     expect(scoredProject).not.toHaveProperty('healthScore');
     expect(partialProject).toMatchObject({
+      slug: 'part',
       healthScoreV2: 64,
       healthLabel: 'excellent',
       healthMaxScore: 75,
@@ -98,7 +107,7 @@ describe('OSS index tuple mapping', () => {
     });
   });
 
-  it('maps the categories v2 fields from the tuple tail', async () => {
+  it('maps the categories tuple', async () => {
     mockFetchFromTinybird
       .mockResolvedValueOnce({ data: [{ id: 'g1', slug: 'group' }] })
       .mockResolvedValueOnce({
@@ -106,7 +115,7 @@ describe('OSS index tuple mapping', () => {
           {
             ...collectionRow([]),
             topCollections: [],
-            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 40, 'fair', 40, 100]],
+            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, ...v1, 'desc', 40, 'fair', 40, 100]],
           },
         ],
       });
@@ -114,6 +123,7 @@ describe('OSS index tuple mapping', () => {
     const res = await categories({} as H3Event);
 
     expect(res.categories[0].topProjects[0]).toMatchObject({
+      avgScore: 1,
       description: 'desc',
       healthScoreV2: 40,
       healthLabel: 'fair',
@@ -121,14 +131,14 @@ describe('OSS index tuple mapping', () => {
     });
   });
 
-  it('maps the groups v2 fields from the tuple tail', async () => {
+  it('maps the groups tuple', async () => {
     mockFetchFromTinybird.mockResolvedValue({
       data: [
         {
           ...collectionRow([]),
           topCollections: [],
           topProjects: [
-            ['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'active', 22, 'critical', 22, 100],
+            ['p1', 10, 'Proj', 'logo', 5, 1, ...v1, 'desc', 'active', 22, 'critical', 22, 65],
           ],
         },
       ],
@@ -137,11 +147,12 @@ describe('OSS index tuple mapping', () => {
     const res = await groups({} as H3Event);
 
     expect(res[0].topProjects[0]).toMatchObject({
+      avgScore: 1,
       description: 'desc',
       status: 'active',
       healthScoreV2: 22,
       healthLabel: 'critical',
-      healthMaxScore: 100,
+      healthMaxScore: 65,
     });
   });
 });

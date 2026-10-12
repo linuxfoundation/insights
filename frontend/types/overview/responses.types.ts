@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-export interface HealthScoreBase {
+export interface HealthScoreTinybird {
   activeContributors: number;
   activeContributorsBenchmark: number;
   contributorDependencyCount: number;
@@ -24,24 +24,8 @@ export interface HealthScoreBase {
   mergeLeadTimeBenchmark: number;
   activeDaysCount: number;
   activeDaysBenchmark: number;
-  contributionsOutsideWorkHours: number;
-  contributionsOutsideWorkHoursBenchmark: number;
   searchVolumeAverage: number;
   searchVolumeBenchmark: number;
-  securityPercentage: number;
-  contributorPercentage: number;
-  popularityPercentage: number;
-  developmentPercentage: number;
-  overallScore: number;
-}
-
-export interface HealthScoreTinybird extends HealthScoreBase {
-  securityCategoryPercentage: [string, number][];
-}
-
-export interface SecurityScore {
-  category: string;
-  percentage: number;
 }
 
 export interface BenchmarkScoreData {
@@ -149,12 +133,5 @@ export interface HealthScoreResults {
   pullRequests: BenchmarkScoreData;
   mergeLeadTime: BenchmarkScoreData;
   activeDays: BenchmarkScoreData;
-  contributionsOutsideWorkHours: BenchmarkScoreData;
   searchQueries: BenchmarkScoreData;
-  securityCategoryPercentage: SecurityScore[];
-  contributorPercentage: number;
-  popularityPercentage: number;
-  developmentPercentage: number;
-  securityPercentage: number;
-  overallScore: number;
 }

@@ -75,10 +75,6 @@
                   "maturity": "graduated",
                   "healthScore": 87,
                   "healthLabel": "excellent",
-                  "contributorHealthScore": 90,
-                  "popularityHealthScore": 95,
-                  "developmentHealthScore": 80,
-                  "securityHealthScore": 85,
                   "contributorCount": 12345,
                   "organizationCount": 456,
                   "softwareValue": 987654321,
@@ -181,10 +177,6 @@
           "isLF",
           "status",
           "healthScore",
-          "contributorHealthScore",
-          "popularityHealthScore",
-          "developmentHealthScore",
-          "securityHealthScore",
           "contributorCount",
           "organizationCount",
           "softwareValue",
@@ -250,9 +242,10 @@
           },
           "healthScore": {
             "type": "number",
+            "nullable": true,
             "minimum": 0,
             "maximum": 100,
-            "description": "Overall health score"
+            "description": "Overall Health Score v2. Null when fewer than 2 of the 3 health categories have data."
           },
           "healthLabel": {
             "type": "string",
@@ -266,30 +259,6 @@
               null
             ],
             "description": "Qualitative band for healthScore. Null if not yet computed for this project."
-          },
-          "contributorHealthScore": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 100,
-            "description": "Health score sub-dimension — contributor activity"
-          },
-          "popularityHealthScore": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 100,
-            "description": "Health score sub-dimension — popularity signals"
-          },
-          "developmentHealthScore": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 100,
-            "description": "Health score sub-dimension — development activity"
-          },
-          "securityHealthScore": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 100,
-            "description": "Health score sub-dimension — security posture"
           },
           "contributorCount": {
             "type": "integer",

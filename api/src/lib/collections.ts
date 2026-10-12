@@ -199,8 +199,8 @@ export type CollectionProject = Static<typeof CollectionProject>;
 
 type Score = number | null;
 
-// The project_repo_insights columns toCollectionProject keeps. The pipe's V1 health scores and
-// 365-day counts stay out because the collection page shows neither.
+// The project_repo_insights columns toCollectionProject keeps. The pipe's 365-day counts stay out
+// because the collection page does not show them.
 export interface CollectionProjectRow {
   id: string;
   type: string;

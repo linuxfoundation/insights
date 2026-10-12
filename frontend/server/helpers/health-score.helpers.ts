@@ -23,9 +23,7 @@ const healthScores: string[] = [
   'pull_requests',
   'merge_lead_time',
   'active_days',
-  'contributions_outside_work_hours',
   'search_volume',
-  'security',
 ];
 
 const quarterMetrics = ['active_contributors', 'retention'];
@@ -36,7 +34,6 @@ const yearlyMetrics = [
   'pull_requests',
   'merge_lead_time',
   'active_days',
-  'contributions_outside_work_hours',
   'search_volume',
 ];
 
@@ -79,69 +76,17 @@ const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
   return res.data?.[0];
 };
 
-const MAX_BENCHMARK_SCORE = 5;
-
-function calculatePercentage(benchmarks: number[]): number {
-  const sum = benchmarks.reduce((a, b) => a + b, 0);
-  const max = benchmarks.length * MAX_BENCHMARK_SCORE;
-  return max > 0 ? Math.round((sum / max) * 100) : 0;
-}
-
-function calculateCategoryPercentages(healthScore: HealthScoreTinybird): HealthScoreTinybird {
-  const contributorPercentage = calculatePercentage([
-    healthScore.activeContributorsBenchmark || 0,
-    healthScore.contributorDependencyBenchmark || 0,
-    healthScore.organizationDependencyBenchmark || 0,
-    healthScore.retentionBenchmark || 0,
-  ]);
-
-  const popularityPercentage = calculatePercentage([
-    healthScore.starsBenchmark || 0,
-    healthScore.forksBenchmark || 0,
-    healthScore.searchVolumeBenchmark || 0,
-  ]);
-
-  const developmentPercentage = calculatePercentage([
-    healthScore.issueResolutionBenchmark || 0,
-    healthScore.pullRequestsBenchmark || 0,
-    healthScore.mergeLeadTimeBenchmark || 0,
-    healthScore.activeDaysBenchmark || 0,
-    healthScore.contributionsOutsideWorkHoursBenchmark || 0,
-  ]);
-
-  const securityPercentage = healthScore.securityPercentage || 0;
-
-  const categories = [
-    contributorPercentage,
-    popularityPercentage,
-    developmentPercentage,
-    securityPercentage,
-  ];
-  const overallScore = Math.round(categories.reduce((a, b) => a + b, 0) / categories.length);
-
-  return {
-    ...healthScore,
-    contributorPercentage,
-    popularityPercentage,
-    developmentPercentage,
-    securityPercentage,
-    overallScore,
-  };
-}
-
 export const fetchHealthScoreMetrics = async (
   filter: HealthScoreFilters,
 ): Promise<HealthScoreTinybird> => {
   const data = await Promise.all(healthScores.map((name) => fetchHealthScore(name, filter)));
-  const merged = data.reduce(
+  return data.reduce(
     (mapped, scores) => ({
       ...mapped,
       ...scores,
     }),
     {} as HealthScoreTinybird,
   );
-
-  return calculateCategoryPercentages(merged);
 };
 
 export function createHealthScoreSchema(healthScore: HealthScoreTinybird): HealthScoreResults {
@@ -188,25 +133,9 @@ export function createHealthScoreSchema(healthScore: HealthScoreTinybird): Healt
       value: healthScore.activeDaysCount || 0,
       benchmark: healthScore.activeDaysBenchmark || 0,
     },
-    contributionsOutsideWorkHours: {
-      value: healthScore.contributionsOutsideWorkHours || 0,
-      benchmark: healthScore.contributionsOutsideWorkHoursBenchmark || 0,
-    },
     searchQueries: {
       value: healthScore.searchVolumeAverage || 0,
       benchmark: healthScore.searchVolumeBenchmark || 0,
     },
-    securityCategoryPercentage: (healthScore.securityCategoryPercentage || []).map((score) => {
-      const [category, percentage] = score;
-      return {
-        category,
-        percentage,
-      };
-    }),
-    contributorPercentage: healthScore.contributorPercentage || 0,
-    popularityPercentage: healthScore.popularityPercentage || 0,
-    developmentPercentage: healthScore.developmentPercentage || 0,
-    securityPercentage: healthScore.securityPercentage || 0,
-    overallScore: healthScore.overallScore || 0,
   };
 }

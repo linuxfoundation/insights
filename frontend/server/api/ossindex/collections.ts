@@ -50,10 +50,10 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
     const collections = res.data.map((item) => ({
       ...item,
       topProjects: item.topProjects.map((project) => {
-        const [id, count, name, logo, softwareValue, avgScore, , description, slug, status] =
-          project;
-        // v2 fields are the last four elements, so this read survives upstream dropping the v1 slot
-        const [healthScoreV2, healthLabel, , healthMaxScore] = project.slice(-4);
+        const [id, count, name, logo, softwareValue, avgScore] = project;
+        // Read the tail by distance from the end so it works with or without the upstream v1 health slot
+        const [description, slug, status, healthScoreV2, healthLabel, , healthMaxScore] =
+          project.slice(-7);
         return {
           id: id as string,
           count: count as number,

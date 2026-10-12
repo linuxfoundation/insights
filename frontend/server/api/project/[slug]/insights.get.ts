@@ -4,6 +4,14 @@ import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
 import type { ProjectInsightsTinybird } from '~~/types/project';
 
+// The pipe returns these v1 columns until it stops selecting them; the public response omits them.
+const legacyScoreFields = [
+  'contributorHealthScore',
+  'popularityHealthScore',
+  'developmentHealthScore',
+  'securityHealthScore',
+];
+
 export default defineEventHandler(async (event) => {
   const { slug } = event.context.params as Record<string, string>;
 
@@ -32,13 +40,16 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    const project = response.data?.[0];
-    if (!project) {
+    const row = response.data?.[0];
+    if (!row) {
       throw createError({
         statusCode: 404,
         statusMessage: 'Project not found',
       });
     }
+    const project = Object.fromEntries(
+      Object.entries(row).filter(([key]) => !legacyScoreFields.includes(key)),
+    ) as typeof row;
 
     return {
       ...project,

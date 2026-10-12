@@ -127,11 +127,6 @@ export interface ProjectInsightsTinybird {
   organizationDependencyCount: number;
   organizationDependencyPercentage: number;
   achievements: [string, number, number][];
-  healthScore: number;
-  contributorHealthScore: number;
-  popularityHealthScore: number;
-  developmentHealthScore: number;
-  securityHealthScore: number;
   healthScoreV2: number | null;
   healthLabel: string | null;
   lifecycleLabel: string | null;
@@ -171,11 +166,6 @@ export interface ProjectInsights {
   organizationDependencyCount: number;
   organizationDependencyPercentage: number;
   achievements: ProjectInsightsAchievement[];
-  healthScore: number;
-  contributorHealthScore: number;
-  popularityHealthScore: number;
-  developmentHealthScore: number;
-  securityHealthScore: number;
   healthScoreV2: number | null;
   healthLabel: string | null;
   lifecycleLabel: string | null;
