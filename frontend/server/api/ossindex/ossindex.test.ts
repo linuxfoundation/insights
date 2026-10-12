@@ -1,0 +1,116 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+import type { H3Event } from 'h3';
+import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
+
+const mockFetchFromTinybird = vi.fn();
+
+vi.mock('~~/server/data/tinybird/tinybird', () => ({
+  fetchFromTinybird: (...args: unknown[]) => mockFetchFromTinybird(...args),
+}));
+
+global.defineEventHandler = vi.fn((handler) => handler);
+global.createError = vi.fn((error) => error);
+global.getQuery = vi.fn(() => ({ categoryGroupSlug: 'group' }));
+
+interface MappedProject {
+  description: string;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
+}
+type WithProjects = { topProjects: MappedProject[] };
+type Handler<T> = (event: H3Event) => Promise<T>;
+
+let collections: Handler<{ collections: WithProjects[] }>;
+let categories: Handler<{ categories: WithProjects[] }>;
+let groups: Handler<WithProjects[]>;
+
+beforeAll(async () => {
+  collections = (await import('./collections')).default as unknown as typeof collections;
+  categories = (await import('./categories')).default as unknown as typeof categories;
+  groups = (await import('./groups')).default as unknown as typeof groups;
+});
+
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
+const collectionRow = (topProjects: unknown[][]) => ({
+  id: 'c1',
+  name: 'Collection',
+  slug: 'collection',
+  totalContributors: 1,
+  softwareValue: 1,
+  avgScore: 1,
+  topProjects,
+});
+
+describe('OSS index tuple mapping', () => {
+  it('maps the collections v2 triple from the tuple tail and ignores the v1 slot', async () => {
+    mockFetchFromTinybird.mockResolvedValue({
+      data: [
+        collectionRow([
+          ['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'proj', 'active', 71, 'healthy', 71],
+          ['p2', 10, 'Unscored', 'logo', 5, 1, 0, 'desc', 'korg', 'active', null, null, null],
+        ]),
+      ],
+    });
+
+    const res = await collections({} as H3Event);
+    const [scoredProject, unscoredProject] = res.collections[0].topProjects;
+
+    expect(scoredProject).toMatchObject({
+      description: 'desc',
+      slug: 'proj',
+      status: 'active',
+      healthScoreV2: 71,
+      healthLabel: 'healthy',
+    });
+    expect(scoredProject).not.toHaveProperty('healthScore');
+    expect(unscoredProject).toMatchObject({ healthScoreV2: null, healthLabel: null });
+  });
+
+  it('maps the categories v2 triple from the tuple tail', async () => {
+    mockFetchFromTinybird
+      .mockResolvedValueOnce({ data: [{ id: 'g1', slug: 'group' }] })
+      .mockResolvedValueOnce({
+        data: [
+          {
+            ...collectionRow([]),
+            topCollections: [],
+            topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 40, 'fair', 40]],
+          },
+        ],
+      });
+
+    const res = await categories({} as H3Event);
+
+    expect(res.categories[0].topProjects[0]).toMatchObject({
+      description: 'desc',
+      healthScoreV2: 40,
+      healthLabel: 'fair',
+    });
+  });
+
+  it('maps the groups v2 triple from the tuple tail', async () => {
+    mockFetchFromTinybird.mockResolvedValue({
+      data: [
+        {
+          ...collectionRow([]),
+          topCollections: [],
+          topProjects: [['p1', 10, 'Proj', 'logo', 5, 1, 99, 'desc', 'active', 22, 'critical', 22]],
+        },
+      ],
+    });
+
+    const res = await groups({} as H3Event);
+
+    expect(res[0].topProjects[0]).toMatchObject({
+      description: 'desc',
+      status: 'active',
+      healthScoreV2: 22,
+      healthLabel: 'critical',
+    });
+  });
+});

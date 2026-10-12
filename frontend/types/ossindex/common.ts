@@ -17,6 +17,7 @@ export interface OSSIndexTopProject {
   description: string;
   softwareValue: number;
   avgScore: number;
-  healthScore: number;
+  healthScoreV2: number | null;
+  healthLabel: string | null;
   status: string;
 }

@@ -86,8 +86,8 @@ SPDX-License-Identifier: MIT
           </td>
           <td>
             <lfx-health-score
-              v-if="project.healthScore > 0"
-              :score="project.healthScore"
+              v-if="project.healthLabel"
+              :label="project.healthLabel"
             />
             <span v-else>-</span>
           </td>
@@ -161,7 +161,7 @@ const sortMapping: Record<string, string> = {
   totalContributors: 'contributorCount_desc',
   softwareValue: 'softwareValue_desc',
   alphabetical: 'name_asc',
-  healthScore: 'healthScore_desc',
+  healthScore: 'healthScoreV2Normalized_desc',
 };
 
 const pageSize = 20;

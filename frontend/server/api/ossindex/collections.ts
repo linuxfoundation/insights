@@ -50,18 +50,10 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
     const collections = res.data.map((item) => ({
       ...item,
       topProjects: item.topProjects.map((project) => {
-        const [
-          id,
-          count,
-          name,
-          logo,
-          softwareValue,
-          avgScore,
-          healthScore,
-          description,
-          slug,
-          status,
-        ] = project;
+        const [id, count, name, logo, softwareValue, avgScore, , description, slug, status] =
+          project;
+        // v2 fields are the last three elements, so this read survives upstream dropping the v1 slot
+        const [healthScoreV2, healthLabel] = project.slice(-3);
         return {
           id: id as string,
           count: count as number,
@@ -71,7 +63,8 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
           description: description as string,
           softwareValue: softwareValue as number,
           avgScore: avgScore as number,
-          healthScore: healthScore as number,
+          healthScoreV2: (healthScoreV2 ?? null) as number | null,
+          healthLabel: (healthLabel ?? null) as string | null,
           status: status as string,
         };
       }),

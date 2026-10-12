@@ -2,13 +2,6 @@
 Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
-<!--
-  Labels below use the v2 health score convention (excellent/healthy/fair/concerning/critical,
-  see collection-health-score-pill.vue) for consistency with the rest of the app. The score
-  itself is still v1 here — osi-list-projects.vue and osi-list-collections.vue (this component's
-  only callers) read healthScore from projects_list/collections_oss_index, neither of which
-  carries v2 fields. Wiring these lists to v2 needs a data-layer follow-up.
--->
 <template>
   <lfx-tag
     v-if="props.unavailable"
@@ -17,31 +10,31 @@ SPDX-License-Identifier: MIT
     Unavailable
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 85"
+    v-else-if="band === 'excellent'"
     variation="positive-solid"
   >
     Excellent
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 70"
+    v-else-if="band === 'healthy'"
     variation="positive"
   >
     Healthy
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 50"
+    v-else-if="band === 'fair'"
     variation="accent"
   >
     Fair
   </lfx-tag>
   <lfx-tag
-    v-else-if="props.score >= 30"
+    v-else-if="band === 'concerning'"
     variation="warning"
   >
     Concerning
   </lfx-tag>
   <lfx-tag
-    v-else
+    v-else-if="band === 'critical'"
     variation="negative-solid"
   >
     Critical
@@ -49,12 +42,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import LfxTag from '~/components/uikit/tag/tag.vue';
 
+// The band comes from the server-side healthLabel, which already accounts for partial scores.
 const props = defineProps<{
-  score: number;
+  label: string;
   unavailable?: boolean;
 }>();
+
+const band = computed(() => props.label.toLowerCase());
 </script>
 
 <script lang="ts">

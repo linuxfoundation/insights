@@ -140,7 +140,11 @@ SPDX-License-Identifier: MIT
                   </td>
                   <td>${{ formatNumberShort(project.softwareValue) }}</td>
                   <td>
-                    <lfx-health-score :score="project.healthScore" />
+                    <lfx-health-score
+                      v-if="project.healthLabel"
+                      :label="project.healthLabel"
+                    />
+                    <span v-else>-</span>
                   </td>
                 </tr>
               </tbody>
