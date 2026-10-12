@@ -101,6 +101,7 @@ export interface ProjectTinybird {
   status: string;
   lastVulnerabilityScanStatus: string;
   maturity?: string;
+  healthScoreV2: number | null;
 }
 
 export interface ProjectInsightsAchievement {

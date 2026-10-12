@@ -92,6 +92,8 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
     ];
     return {
       ...project,
+      // External callers read healthScore, so it carries the raw v2 score.
+      healthScore: project.healthScoreV2,
       isLF: !!project.isLF,
       repositories,
       repositoryGroups: repositoryGroups.data || [],
