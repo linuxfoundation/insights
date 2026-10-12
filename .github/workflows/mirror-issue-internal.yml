@@ -14,7 +14,7 @@ permissions:
 
 env:
   INTERNAL_OWNER: linuxfoundation
-  INTERNAL_REPO: cdp-insights-project
+  INTERNAL_REPO: lfx-cdp-insights-ops
   # Keep in sync with INTERNAL_LABELS in frontend/server/api/report/index.post.ts
   INTERNAL_LABEL: Support
   PROJECT_NUMBER: 30
@@ -35,7 +35,7 @@ jobs:
           app-id: ${{ vars.INSIGHTS_ISSUE_APP_ID }}
           private-key: ${{ secrets.INSIGHTS_ISSUE_APP_PRIVATE_KEY }}
           owner: linuxfoundation
-          repositories: cdp-insights-project
+          repositories: lfx-cdp-insights-ops
 
       - name: Create internal copy
         uses: actions/github-script@v7
