@@ -245,7 +245,7 @@
             "nullable": true,
             "minimum": 0,
             "maximum": 100,
-            "description": "Overall Health Score v2. Null when fewer than 2 of the 3 health categories have data."
+            "description": "Health Score v2 in raw points. The maximum is 100 when all 3 health categories have data, and 60, 65 or 75 when one category is missing. Null when the project is unscored (fewer than 2 categories have data) or archived."
           },
           "healthLabel": {
             "type": "string",
