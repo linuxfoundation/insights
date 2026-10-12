@@ -138,8 +138,6 @@ const SET_FIELD_MUTATION = `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID
   }) { projectV2Item { id } }
 }`;
 
-// Internal copy of a public report: same title/body/labels plus reporter details, filed in the
-// private team repo and added to the team's GitHub project with the configured field values.
 export async function createInternalIssue(
   title: string,
   body: string,
@@ -153,33 +151,43 @@ export async function createInternalIssue(
   } = useRuntimeConfig();
 
   const token = await getInstallationToken();
-  const issue = await postIssue(token, githubInternalIssuesRepo, title, body, labels);
 
+  // Resolve the project fields before creating the issue, so a misconfigured project fails
+  // without leaving an issue outside the project.
   const [owner] = githubInternalIssuesRepo.split('/');
   const { organization } = await githubGraphql<{
-    organization: { projectV2: { id: string; fields: { nodes: ProjectField[] } } };
+    organization: { projectV2: { id: string; fields: { nodes: ProjectField[] } } | null };
   }>(token, PROJECT_QUERY, { owner, number: Number(githubInternalProjectNumber) });
   const project = organization.projectV2;
-
-  const { addProjectV2ItemById } = await githubGraphql<{
-    addProjectV2ItemById: { item: { id: string } };
-  }>(token, ADD_ITEM_MUTATION, { projectId: project.id, contentId: issue.node_id });
-
-  const values: [string, string][] = [
-    ['Team', githubInternalProjectTeam],
-    ['Status', githubInternalProjectStatus],
-  ];
-  for (const [fieldName, optionName] of values) {
+  if (!project) {
+    throw new Error(`Project ${owner}#${githubInternalProjectNumber} not found`);
+  }
+  const fieldValues = (
+    [
+      ['Team', githubInternalProjectTeam],
+      ['Status', githubInternalProjectStatus],
+    ] as const
+  ).map(([fieldName, optionName]) => {
     const field = project.fields.nodes.find((f) => f.name === fieldName);
     const option = field?.options?.find((o) => o.name === optionName);
     if (!field?.id || !option) {
       throw new Error(`Project field "${fieldName}" has no option "${optionName}"`);
     }
+    return { fieldId: field.id, optionId: option.id };
+  });
+
+  const issue = await postIssue(token, githubInternalIssuesRepo, title, body, labels);
+
+  const { addProjectV2ItemById } = await githubGraphql<{
+    addProjectV2ItemById: { item: { id: string } };
+  }>(token, ADD_ITEM_MUTATION, { projectId: project.id, contentId: issue.node_id });
+
+  for (const { fieldId, optionId } of fieldValues) {
     await githubGraphql(token, SET_FIELD_MUTATION, {
       projectId: project.id,
       itemId: addProjectV2ItemById.item.id,
-      fieldId: field.id,
-      optionId: option.id,
+      fieldId,
+      optionId,
     });
   }
 

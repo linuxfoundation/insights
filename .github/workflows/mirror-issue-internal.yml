@@ -1,10 +1,8 @@
 # Copyright The Linux Foundation and each contributor to LFX.
 # SPDX-License-Identifier: MIT
 #
-# Issues opened by hand in this repo get an internal copy in the private team repo, added to
-# the team's GitHub project. Issues from the in-app "Report issue" form (opened by the app's
-# bot) are skipped: the app creates their internal copy with the reporter's details
-# (frontend/server/api/report).
+# Copies issues opened by hand to the private team repo and project. Report-form issues are
+# skipped because the app copies them itself (see frontend/server/api/report).
 name: Mirror issue to internal tracker
 
 on:
@@ -46,19 +44,7 @@ jobs:
             const owner = process.env.INTERNAL_OWNER;
             const repo = process.env.INTERNAL_REPO;
 
-            // Same footer format as buildInternalIssueBody() in frontend/server/utils/report.ts
-            const body = [
-              issue.body || '',
-              '---',
-              `Public issue: ${issue.html_url}`,
-              `Reported by: GitHub user [${issue.user.login}](${issue.user.html_url})`,
-            ].join('\n\n');
-            const labels = [...new Set([...issue.labels.map((l) => l.name), process.env.INTERNAL_LABEL])];
-            const { data: copy } = await github.rest.issues.create({
-              owner, repo, title: issue.title, body, labels,
-            });
-            core.info(`Internal copy: ${copy.html_url}`);
-
+            // Resolve project fields first so a misconfigured project fails before any issue exists.
             const { organization } = await github.graphql(
               `query($owner: String!, $number: Int!) {
                 organization(login: $owner) { projectV2(number: $number) {
@@ -69,22 +55,56 @@ jobs:
               { owner, number: Number(process.env.PROJECT_NUMBER) },
             );
             const project = organization.projectV2;
+            if (!project) throw new Error(`Project ${owner}#${process.env.PROJECT_NUMBER} not found`);
+            const fieldValues = [
+              ['Team', process.env.PROJECT_TEAM],
+              ['Status', process.env.PROJECT_STATUS],
+            ].map(([fieldName, optionName]) => {
+              const field = project.fields.nodes.find((f) => f.name === fieldName);
+              const option = field?.options?.find((o) => o.name === optionName);
+              if (!option) throw new Error(`Project field "${fieldName}" has no option "${optionName}"`);
+              return { fieldId: field.id, optionId: option.id };
+            });
+
+            // Same footer format as buildInternalIssueBody() in frontend/server/utils/report.ts
+            const publicLine = `Public issue: ${issue.html_url}`;
+
+            // Reuse a copy made by an earlier attempt of this run so re-runs stay idempotent.
+            const { data: recent } = await github.rest.issues.listForRepo({
+              owner, repo, state: 'all', sort: 'created', direction: 'desc', per_page: 100,
+            });
+            let copy = recent.find((i) => (i.body || '').split('\n').includes(publicLine));
+
+            if (!copy) {
+              const labels = [...new Set([...issue.labels.map((l) => l.name), process.env.INTERNAL_LABEL])];
+              // Labels are per repository: create any the internal repo lacks, keeping the source color.
+              for (const name of labels) {
+                try {
+                  await github.rest.issues.getLabel({ owner, repo, name });
+                } catch (error) {
+                  if (error.status !== 404) throw error;
+                  const source = issue.labels.find((l) => l.name === name);
+                  await github.rest.issues.createLabel({ owner, repo, name, color: source?.color || 'ededed' });
+                }
+              }
+              const body = [
+                issue.body || '',
+                '---',
+                publicLine,
+                `Reported by: GitHub user [${issue.user.login}](${issue.user.html_url})`,
+              ].join('\n\n');
+              ({ data: copy } = await github.rest.issues.create({ owner, repo, title: issue.title, body, labels }));
+            }
+            core.info(`Internal copy: ${copy.html_url}`);
+
+            // Adding an item that is already in the project returns the existing item.
             const { addProjectV2ItemById } = await github.graphql(
               `mutation($projectId: ID!, $contentId: ID!) {
                 addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) { item { id } }
               }`,
               { projectId: project.id, contentId: copy.node_id },
             );
-            for (const [fieldName, optionName] of [
-              ['Team', process.env.PROJECT_TEAM],
-              ['Status', process.env.PROJECT_STATUS],
-            ]) {
-              const field = project.fields.nodes.find((f) => f.name === fieldName);
-              const option = field?.options?.find((o) => o.name === optionName);
-              if (!option) {
-                core.setFailed(`Project field "${fieldName}" has no option "${optionName}"`);
-                return;
-              }
+            for (const { fieldId, optionId } of fieldValues) {
               await github.graphql(
                 `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
                   updateProjectV2ItemFieldValue(input: {
@@ -92,6 +112,6 @@ jobs:
                     value: { singleSelectOptionId: $optionId }
                   }) { projectV2Item { id } }
                 }`,
-                { projectId: project.id, itemId: addProjectV2ItemById.item.id, fieldId: field.id, optionId: option.id },
+                { projectId: project.id, itemId: addProjectV2ItemById.item.id, fieldId, optionId },
               );
             }
