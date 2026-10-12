@@ -178,18 +178,40 @@ export async function createInternalIssue(
 
   const issue = await postIssue(token, githubInternalIssuesRepo, title, body, labels);
 
-  const { addProjectV2ItemById } = await githubGraphql<{
-    addProjectV2ItemById: { item: { id: string } };
-  }>(token, ADD_ITEM_MUTATION, { projectId: project.id, contentId: issue.node_id });
+  // Both mutations are idempotent, so transient failures are retried. A final failure names the
+  // created issue, because nothing else revisits report-form copies.
+  try {
+    await withRetry(async () => {
+      const { addProjectV2ItemById } = await githubGraphql<{
+        addProjectV2ItemById: { item: { id: string } };
+      }>(token, ADD_ITEM_MUTATION, { projectId: project.id, contentId: issue.node_id });
 
-  for (const { fieldId, optionId } of fieldValues) {
-    await githubGraphql(token, SET_FIELD_MUTATION, {
-      projectId: project.id,
-      itemId: addProjectV2ItemById.item.id,
-      fieldId,
-      optionId,
+      for (const { fieldId, optionId } of fieldValues) {
+        await githubGraphql(token, SET_FIELD_MUTATION, {
+          projectId: project.id,
+          itemId: addProjectV2ItemById.item.id,
+          fieldId,
+          optionId,
+        });
+      }
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Created ${issue.html_url} but could not add it to the project: ${reason}`, {
+      cause: error,
     });
   }
 
   return issue;
+}
+
+async function withRetry<T>(fn: () => Promise<T>, attempts = 3, delayMs = 500): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (attempt >= attempts) throw error;
+      await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
+    }
+  }
 }

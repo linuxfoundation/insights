@@ -71,6 +71,7 @@ describe('createInternalIssue', () => {
   };
   const calls: { url: string; body: Record<string, unknown> }[] = [];
   let graphqlErrors: { message: string }[] | undefined;
+  let addItemFailures = 0;
 
   beforeEach(() => {
     Object.assign(runtimeConfig, {
@@ -84,6 +85,7 @@ describe('createInternalIssue', () => {
     });
     calls.length = 0;
     graphqlErrors = undefined;
+    addItemFailures = 0;
     fetchMock.impl = vi.fn(async (url: string, opts: { body: Record<string, unknown> }) => {
       calls.push({ url, body: opts.body });
       if (url.endsWith('/access_tokens')) return { token: 'install-token' };
@@ -93,6 +95,10 @@ describe('createInternalIssue', () => {
         return { data: { organization: { projectV2: project } }, errors: graphqlErrors };
       }
       if (query.includes('addProjectV2ItemById')) {
+        if (addItemFailures > 0) {
+          addItemFailures--;
+          return { data: null, errors: [{ message: 'Something went wrong' }] };
+        }
         return {
           data: { addProjectV2ItemById: { item: { id: 'ITEM' } } },
           errors: graphqlErrors,
@@ -152,5 +158,23 @@ describe('createInternalIssue', () => {
       'GitHub GraphQL error: Resource not accessible by integration',
     );
     expect(calls.some((c) => c.url.endsWith('/issues'))).toBe(false);
+  });
+
+  test('retries project setup after a transient failure', async () => {
+    addItemFailures = 1;
+
+    const issue = await createInternalIssue('Title', 'Body');
+
+    expect(issue.html_url).toBe('https://gh/issue/1');
+    expect(calls.filter((c) => c.url.endsWith('/issues'))).toHaveLength(1);
+  });
+
+  test('names the created issue when project setup keeps failing', async () => {
+    addItemFailures = Number.POSITIVE_INFINITY;
+
+    await expect(createInternalIssue('Title', 'Body')).rejects.toThrow(
+      'Created https://gh/issue/1 but could not add it to the project: GitHub GraphQL error: Something went wrong',
+    );
+    expect(calls.filter((c) => c.url.endsWith('/issues'))).toHaveLength(1);
   });
 });

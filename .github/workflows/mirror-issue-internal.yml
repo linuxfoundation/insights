@@ -20,6 +20,8 @@ env:
   PROJECT_NUMBER: 30
   PROJECT_TEAM: Data Quality / Support
   PROJECT_STATUS: Backlog
+  # The app's bot account: it opens report-form issues and authors every internal copy.
+  APP_BOT: lfx-insights-issue-reporter[bot]
 
 jobs:
   mirror:
@@ -69,11 +71,18 @@ jobs:
             // Same footer format as buildInternalIssueBody() in frontend/server/utils/report.ts
             const publicLine = `Public issue: ${issue.html_url}`;
 
-            // Reuse a copy made by an earlier attempt of this run so re-runs stay idempotent.
-            const { data: recent } = await github.rest.issues.listForRepo({
-              owner, repo, state: 'all', sort: 'created', direction: 'desc', per_page: 100,
+            // Re-runs reuse the earlier copy. Only the app-written footer after the last separator
+            // counts, so a public body quoting another issue's URL cannot claim that issue's copy.
+            const isCopyOf = (candidate) => {
+              if (candidate.user?.login !== process.env.APP_BOT || candidate.pull_request) return false;
+              const text = candidate.body || '';
+              return text.slice(text.lastIndexOf('\n---\n')).split('\n').includes(publicLine);
+            };
+            const { data: found } = await github.rest.search.issuesAndPullRequests({
+              q: `repo:${owner}/${repo} is:issue in:body "${issue.html_url}"`,
+              per_page: 100,
             });
-            let copy = recent.find((i) => (i.body || '').split('\n').includes(publicLine));
+            let copy = found.items.find(isCopyOf);
 
             if (!copy) {
               const labels = [...new Set([...issue.labels.map((l) => l.name), process.env.INTERNAL_LABEL])];
