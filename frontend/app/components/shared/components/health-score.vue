@@ -8,17 +8,24 @@ SPDX-License-Identifier: MIT
     placement="top"
     class="inline-flex"
     :disabled="!partialNoteVisible"
+    :allow-pass-through="true"
   >
     <lfx-tag :variation="variation">
       {{ tagLabel }}
     </lfx-tag>
+    <span
+      v-if="partialNoteVisible"
+      class="sr-only"
+    >
+      {{ partialNote }}
+    </span>
     <template #content>
       <div class="max-w-xs text-xs leading-relaxed">
-        This Health Score is partial because the {{ missingCategoryName }} category is missing data for this project.
-        The score is computed from the remaining categories only.
+        {{ partialNote }}
       </div>
     </template>
   </lfx-tooltip>
+  <span v-else>-</span>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +59,11 @@ const tagLabel = computed(() => getHealthScoreV2Config(band.value, isPartial.val
 
 const missingCategoryName = computed(() => getMissingHealthCategoryNameFromMaxScore(props.healthMaxScore));
 const partialNoteVisible = computed(() => isPartial.value && !!missingCategoryName.value);
+const partialNote = computed(
+  () =>
+    `This Health Score is partial because the ${missingCategoryName.value} category is missing data for this project. ` +
+    'The score is computed from the remaining categories only.',
+);
 </script>
 
 <script lang="ts">

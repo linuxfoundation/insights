@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import HealthScore from '../health-score.vue';
 
@@ -47,6 +47,7 @@ describe('health-score.vue', () => {
 
       expect(wrapper.find('.c-tag').text()).toBe('Excellent');
       expect(wrapper.text()).not.toContain('partial');
+      expect(wrapper.find('.sr-only').exists()).toBe(false);
     },
   );
 
@@ -62,16 +63,48 @@ describe('health-score.vue', () => {
     expect(wrapper.text()).toContain(`the ${category} category is missing data`);
   });
 
+  it('gives screen readers the same partial explanation as the tooltip', () => {
+    const wrapper = mount(HealthScore, { props: { label: 'excellent', healthMaxScore: 65 } });
+
+    expect(wrapper.find('.c-tag').text()).toBe('Excellent*');
+    expect(wrapper.find('.sr-only').text()).toBe(
+      'This Health Score is partial because the Security & Supply Chain category is missing data for this project. ' +
+        'The score is computed from the remaining categories only.',
+    );
+  });
+
   it('wraps the tag in the real tooltip trigger', () => {
     const wrapper = mount(HealthScore, { props: { label: 'excellent', healthMaxScore: 75 } });
 
     expect(wrapper.find('.c-popover__trigger .c-tag').text()).toBe('Excellent*');
   });
 
-  it('renders nothing for an unknown label instead of defaulting to Critical', () => {
+  // The OSI lists navigate through a row click handler, so the tooltip must let clicks bubble.
+  it.each([
+    ['a partial', 75],
+    ['a full', 100],
+  ])('lets a click on %s score reach the parent row', async (_, max) => {
+    const onRowClick = vi.fn();
+    const wrapper = mount(
+      {
+        components: { HealthScore },
+        setup: () => ({ onRowClick, max }),
+        template:
+          '<table><tbody><tr @click="onRowClick"><td><health-score label="excellent" :health-max-score="max" /></td></tr></tbody></table>',
+      },
+      { attachTo: document.body },
+    );
+
+    await wrapper.find('.c-tag').trigger('click');
+
+    expect(onRowClick).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+  });
+
+  it('renders a dash for an unknown label instead of defaulting to Critical', () => {
     const wrapper = mountScore({ label: 'unknown', healthMaxScore: 75 });
 
     expect(wrapper.find('.c-tag').exists()).toBe(false);
-    expect(wrapper.text()).toBe('');
+    expect(wrapper.text()).toBe('-');
   });
 });
