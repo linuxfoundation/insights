@@ -26,13 +26,6 @@ describe('health-score.vue', () => {
     expect(wrapper.find('.c-tag--accent').exists()).toBe(true);
   });
 
-  it('renders the unavailable tag when unavailable is set', () => {
-    const wrapper = mount(HealthScore, { props: { label: 'critical', unavailable: true } });
-
-    expect(wrapper.text()).toContain('Unavailable');
-    expect(wrapper.find('.c-tag--negative-solid').exists()).toBe(false);
-  });
-
   it('renders nothing for an unknown label instead of defaulting to Critical', () => {
     const wrapper = mount(HealthScore, { props: { label: 'unknown' } });
 

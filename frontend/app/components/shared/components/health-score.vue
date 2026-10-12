@@ -4,13 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-tag
-    v-if="props.unavailable"
-    variation="default"
-  >
-    Unavailable
-  </lfx-tag>
-  <lfx-tag
-    v-else-if="band === 'excellent'"
+    v-if="band === 'excellent'"
     variation="positive-solid"
   >
     Excellent
@@ -49,7 +43,6 @@ import LfxTag from '~/components/uikit/tag/tag.vue';
 // The band comes from the server-side healthLabel, which already accounts for partial scores.
 const props = defineProps<{
   label: string;
-  unavailable?: boolean;
 }>();
 
 const band = computed(() => props.label.toLowerCase());
