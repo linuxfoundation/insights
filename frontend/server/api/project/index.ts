@@ -37,7 +37,11 @@ import type { Pagination } from '~~/types/shared/pagination';
  */
 export default defineEventHandler(async (event): Promise<Pagination<ProjectList> | Error> => {
   const query = getQuery(event);
-  const sort: string = (query?.sort as string) || 'name_asc';
+  // healthScore carries the raw v2 score, so external healthScore sorts order by that column.
+  const sort: string = ((query?.sort as string) || 'name_asc').replace(
+    /^healthScore_/,
+    'healthScoreV2_',
+  );
   const search: string = (query?.search as string) || undefined;
   const [orderByField, orderByDirection] = sort.split('_');
 
@@ -67,6 +71,7 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
 
     const projects = res.data.map((p: ProjectTinybird) => ({
       ...p,
+      healthScore: p.healthScoreV2 ?? null,
       isLF: !!p.isLF,
       repoData: undefined,
     }));
