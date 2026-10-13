@@ -12,14 +12,6 @@ export interface HealthScoreFilters {
   endDate?: DateTime;
 }
 
-// Tinybird returns these v1 columns until crowd.dev drops them; API responses omit them.
-export const legacyScoreFields = [
-  'contributorHealthScore',
-  'popularityHealthScore',
-  'developmentHealthScore',
-  'securityHealthScore',
-];
-
 const healthScores: string[] = [
   'active_contributors',
   'contributor_dependency',
