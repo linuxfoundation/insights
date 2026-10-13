@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 
 import HealthScore from '../health-score.vue';
@@ -73,10 +73,39 @@ describe('health-score.vue', () => {
     );
   });
 
-  it('wraps the tag in the real tooltip trigger', () => {
+  it('explains a partial score whose missing category is unknown', () => {
+    const generic =
+      'This Health Score is partial because some categories are missing data for this project. ' +
+      'The score is computed from the remaining categories only.';
+    const wrapper = mountScore({ label: 'healthy', healthMaxScore: 50 });
+
+    expect(wrapper.find('.c-tag').text()).toBe('Healthy*');
+    expect(wrapper.find('.sr-only').text()).toBe(generic);
+    expect(wrapper.find('[aria-hidden="true"]').text()).toBe(generic);
+  });
+
+  // The sr-only span is absolutely positioned, so the trigger contains it inside the table's scroll box.
+  it('wraps the tag in a positioned tooltip trigger', () => {
     const wrapper = mount(HealthScore, { props: { label: 'excellent', healthMaxScore: 75 } });
 
     expect(wrapper.find('.c-popover__trigger .c-tag').text()).toBe('Excellent*');
+    expect(wrapper.find('.c-popover__trigger').classes()).toContain('relative');
+  });
+
+  it('hides the open tooltip from screen readers so the sr-only text is announced once', async () => {
+    const wrapper = mount(HealthScore, {
+      props: { label: 'excellent', healthMaxScore: 60 },
+      attachTo: document.body,
+    });
+
+    await wrapper.find('.c-popover__trigger').trigger('mouseenter');
+    await flushPromises();
+
+    const tooltip = document.body.querySelector('.c-popover__content');
+    expect(tooltip?.textContent).toContain('the Maintainer Health category is missing data');
+    expect(tooltip?.querySelector('[aria-hidden="true"]')?.textContent).toBe(tooltip?.textContent);
+    expect(wrapper.find('.sr-only').attributes('aria-hidden')).toBeUndefined();
+    wrapper.unmount();
   });
 
   // The OSI lists navigate through a row click handler, so the tooltip must let clicks bubble.

@@ -6,21 +6,25 @@ SPDX-License-Identifier: MIT
   <lfx-tooltip
     v-if="variation"
     placement="top"
-    class="inline-flex"
-    :disabled="!partialNoteVisible"
+    class="relative inline-flex"
+    :disabled="!isPartial"
     :allow-pass-through="true"
   >
     <lfx-tag :variation="variation">
       {{ tagLabel }}
     </lfx-tag>
     <span
-      v-if="partialNoteVisible"
+      v-if="isPartial"
       class="sr-only"
     >
       {{ partialNote }}
     </span>
     <template #content>
-      <div class="max-w-xs text-xs leading-relaxed">
+      <!-- The sr-only span above is the announced copy, so the teleported tooltip stays silent. -->
+      <div
+        class="max-w-xs text-xs leading-relaxed"
+        aria-hidden="true"
+      >
         {{ partialNote }}
       </div>
     </template>
@@ -58,10 +62,11 @@ const isPartial = computed(() => isPartialHealthScore(props.healthMaxScore));
 const tagLabel = computed(() => getHealthScoreV2Config(band.value, isPartial.value).label);
 
 const missingCategoryName = computed(() => getMissingHealthCategoryNameFromMaxScore(props.healthMaxScore));
-const partialNoteVisible = computed(() => isPartial.value && !!missingCategoryName.value);
 const partialNote = computed(
   () =>
-    `This Health Score is partial because the ${missingCategoryName.value} category is missing data for this project. ` +
+    (missingCategoryName.value
+      ? `This Health Score is partial because the ${missingCategoryName.value} category is missing data for this project. `
+      : 'This Health Score is partial because some categories are missing data for this project. ') +
     'The score is computed from the remaining categories only.',
 );
 </script>
