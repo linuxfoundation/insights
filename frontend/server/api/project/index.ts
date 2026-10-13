@@ -39,8 +39,8 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
   const query = getQuery(event);
   // healthScore carries the raw v2 score, so external healthScore sorts order by that column.
   const sort: string = ((query?.sort as string) || 'name_asc').replace(
-    /^healthScore_/,
-    'healthScoreV2_',
+    /^healthScore(?=_|$)/,
+    'healthScoreV2',
   );
   const search: string = (query?.search as string) || undefined;
   const [orderByField, orderByDirection] = sort.split('_');

@@ -46,6 +46,8 @@ describe('GET /api/project', () => {
   it.each([
     ['healthScore_desc', 'healthScoreV2', 'desc'],
     ['healthScore_asc', 'healthScoreV2', 'asc'],
+    ['healthScore', 'healthScoreV2', undefined],
+    ['healthScoreV2Normalized', 'healthScoreV2Normalized', undefined],
     ['healthScoreV2Normalized_desc', 'healthScoreV2Normalized', 'desc'],
     ['contributorCount_desc', 'contributorCount', 'desc'],
   ])('sorts %s by %s %s', async (sort, orderByField, orderByDirection) => {
