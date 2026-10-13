@@ -44,6 +44,10 @@ beforeEach(() => {
         slug: 'k8s',
         isLF: 1,
         healthScore: 86,
+        contributorHealthScore: 90,
+        popularityHealthScore: 95,
+        developmentHealthScore: 80,
+        securityHealthScore: 85,
         healthScoreV2: 71,
         achievements: [],
       },
@@ -66,6 +70,17 @@ describe.each(['projects', 'project-repos'])('GET /api/collection/[slug]/%s', (r
 
     expect(res.data[0]).toMatchObject({ slug: 'k8s', healthScore: 71, healthScoreV2: 71 });
     expect(res.data[1]).toMatchObject({ type: 'repo', healthScore: null });
+  });
+
+  it.each([
+    'contributorHealthScore',
+    'popularityHealthScore',
+    'developmentHealthScore',
+    'securityHealthScore',
+  ])('omits the v1 %s', async (field) => {
+    const res = await handlers[route](event);
+
+    expect(res.data[0]).not.toHaveProperty(field);
   });
 
   it.each([

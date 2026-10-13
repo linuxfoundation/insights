@@ -3,6 +3,7 @@
 import type { Pool } from 'pg';
 
 import { postToTinybird } from '~~/server/data/tinybird/tinybird';
+import { legacyScoreFields } from '~~/server/helpers/health-score.helpers';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 import { getOptionalUser } from '~~/server/utils/jwt';
 import { paginationTotal, paginationHasMore } from '~~/server/utils/pagination';
@@ -91,7 +92,9 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
     );
 
     const data = response.data.map((project) => ({
-      ...project,
+      ...Object.fromEntries(
+        Object.entries(project).filter(([key]) => !legacyScoreFields.includes(key)),
+      ),
       healthScore: project.healthScoreV2 ?? null,
       isLF: !!project.isLF,
       achievements:

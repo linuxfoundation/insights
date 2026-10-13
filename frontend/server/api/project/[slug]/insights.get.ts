@@ -1,16 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { legacyScoreFields } from '~~/server/helpers/health-score.helpers';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
 import type { ProjectInsightsTinybird } from '~~/types/project';
-
-// The pipe returns these v1 columns until it stops selecting them; the public response omits them.
-const legacyScoreFields = [
-  'contributorHealthScore',
-  'popularityHealthScore',
-  'developmentHealthScore',
-  'securityHealthScore',
-];
 
 export default defineEventHandler(async (event) => {
   const { slug } = event.context.params as Record<string, string>;
