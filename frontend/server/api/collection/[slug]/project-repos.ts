@@ -117,6 +117,7 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
 
     const data = response.data.map((item) => ({
       ...item,
+      healthScore: item.healthScoreV2 ?? null,
       isLF: !!item.isLF,
       achievements:
         item.achievements?.map(([leaderboardType, rank, totalCount]) => ({
