@@ -28,7 +28,7 @@ beforeEach(() => {
       data: params.count
         ? [{ 'count(id)': 2 }]
         : [
-            { slug: 'k8s', isLF: 1, healthScore: 87.5, healthScoreV2: 52, healthMaxScore: 65 },
+            { slug: 'k8s', isLF: 1, healthScoreV2: 52, healthMaxScore: 65 },
             { slug: 'korg', isLF: 0, healthScoreV2: null, healthMaxScore: null },
           ],
     }),
