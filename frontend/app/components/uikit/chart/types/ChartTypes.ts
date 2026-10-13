@@ -5,12 +5,11 @@ import type {
   LineSeriesOption,
   MapSeriesOption,
   PieSeriesOption,
-  RadarSeriesOption,
 } from 'echarts/types/dist/shared';
 
 export interface ChartSeries {
   name: string;
-  type: 'line' | 'bar' | 'map' | 'scatter' | 'heatmap' | 'radar';
+  type: 'line' | 'bar' | 'map' | 'scatter' | 'heatmap';
   yAxisIndex: number;
   dataIndex: number;
   color?: string;
@@ -54,12 +53,7 @@ export interface CategoryData {
 }
 
 export type RawChartData = Record<string, string | number | boolean | null>;
-export type SeriesTypes =
-  | BarSeriesOption
-  | LineSeriesOption
-  | PieSeriesOption
-  | MapSeriesOption
-  | RadarSeriesOption;
+export type SeriesTypes = BarSeriesOption | LineSeriesOption | PieSeriesOption | MapSeriesOption;
 
 export interface TreeMapItem {
   id: string;

@@ -42,8 +42,9 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[]
         };
       }),
       topProjects: item.topProjects.map((project) => {
-        const [id, count, name, logo, softwareValue, avgScore, healthScore, description, status] =
-          project;
+        const [id, count, name, logo, softwareValue, avgScore, , description, status] = project;
+        // v2 fields are the last four elements, so this read survives upstream dropping the v1 slot
+        const [healthScoreV2, healthLabel, , healthMaxScore] = project.slice(-4);
         return {
           id: id as string,
           count: count as number,
@@ -52,7 +53,9 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[]
           description: description as string,
           softwareValue: softwareValue as number,
           avgScore: avgScore as number,
-          healthScore: healthScore as number,
+          healthScoreV2: (healthScoreV2 ?? null) as number | null,
+          healthLabel: (healthLabel ?? null) as string | null,
+          healthMaxScore: (healthMaxScore ?? null) as number | null,
           status: status as string,
         };
       }),

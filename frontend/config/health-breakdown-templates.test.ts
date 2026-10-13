@@ -6,6 +6,7 @@ import type { HealthBreakdownResults } from '../types/overview/responses.types';
 import {
   getLifecycleDescription,
   getMissingHealthCategoryName,
+  getMissingHealthCategoryNameFromMaxScore,
   getOpenVulnRow,
 } from './health-breakdown-templates';
 
@@ -113,5 +114,19 @@ describe('getMissingHealthCategoryName', () => {
 
   test('returns null when no category is missing', () => {
     expect(getMissingHealthCategoryName(35, 30, 20)).toBeNull();
+  });
+});
+
+describe('getMissingHealthCategoryNameFromMaxScore', () => {
+  test.each([
+    [60, 'Maintainer Health'],
+    [65, 'Security & Supply Chain'],
+    [75, 'Development Activity'],
+  ])('maps a healthMaxScore of %i to %s', (max, name) => {
+    expect(getMissingHealthCategoryNameFromMaxScore(max)).toBe(name);
+  });
+
+  test.each([100, 80, null, undefined])('returns null for a healthMaxScore of %s', (max) => {
+    expect(getMissingHealthCategoryNameFromMaxScore(max)).toBeNull();
   });
 });

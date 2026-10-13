@@ -94,6 +94,18 @@ export const getMissingHealthCategoryName = (
   return null;
 };
 
+// A partial healthMaxScore is 100 minus the missing category's weight (see project_insights_copy.pipe).
+const CATEGORY_NAME_BY_MAX_SCORE: Record<number, string> = {
+  60: CATEGORY_NAME.maintainer,
+  65: CATEGORY_NAME.security,
+  75: CATEGORY_NAME.development,
+};
+
+export const getMissingHealthCategoryNameFromMaxScore = (
+  healthMaxScore: number | null | undefined,
+): string | null =>
+  healthMaxScore != null ? (CATEGORY_NAME_BY_MAX_SCORE[healthMaxScore] ?? null) : null;
+
 const capitalize = (value: string): string =>
   value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : value;
 
