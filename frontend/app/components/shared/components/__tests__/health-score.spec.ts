@@ -90,6 +90,7 @@ describe('health-score.vue', () => {
 
     expect(wrapper.find('.c-popover__trigger .c-tag').text()).toBe('Excellent*');
     expect(wrapper.find('.c-popover__trigger').classes()).toContain('relative');
+    expect(wrapper.find('.c-popover__trigger .sr-only').exists()).toBe(true);
   });
 
   it('hides the open tooltip from screen readers so the sr-only text is announced once', async () => {
