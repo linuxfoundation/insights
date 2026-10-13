@@ -1,7 +1,7 @@
 # Health Score Explained
 
-<!-- TEMPORARILY HIDDEN (IN-1243): original intro described three assessments: "LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, these replace the previous single composite score and answer three distinct questions:" Re-enable by uncommenting and removing the two-assessment replacement below. -->
-LFX Insights surfaces **two independent assessments** for open source projects: a **Lifecycle state** and a **Health Score**. Together, these replace the previous single composite score and answer two distinct questions:
+<!-- TEMPORARILY HIDDEN (IN-1243): original intro described three assessments: "LFX Insights surfaces up to **three independent assessments** for open source projects: a **Lifecycle state**, a **Health Score**, and when applicable an **Impact Score**. Together, they answer three distinct questions:" Re-enable by uncommenting and removing the two-assessment replacement below. -->
+LFX Insights surfaces **two independent assessments** for open source projects: a **Lifecycle state** and a **Health Score**. Together, they answer two distinct questions:
 
 - **Lifecycle:** what state is this project in?
 - **Health Score:** how well-maintained is it?
@@ -299,31 +299,3 @@ For multi-repo projects, sub-signals in a `partial` coverage state are computed 
 ::: info
 Health Score comparisons across projects with different platform or data coverage are not directly comparable. A project with full GitHub and package data is scored on more signals than one on Gerrit with no published packages. Coverage details are always shown alongside the score.
 :::
-
-## How This Differs from the Previous Health Score
-
-::: info
-The original Insights Health Score was a single 0–100 value, computed as an equal-weight mean of four sub-scores: Contributors (25 pts), Popularity (25 pts), Development (25 pts), and Security and Best Practices (25 pts). The current methodology replaces that with independent assessments<!-- TEMPORARILY HIDDEN (IN-1243): originally "three independent assessments". Re-enable by uncommenting and restoring "three". --> and re-weighted health categories.
-:::
-
-| Aspect | Original Health Score | Current methodology |
-|---|---|---|
-| **Output** | Single score (0–100) | Two assessments: Lifecycle (state), Health Score (0–100)<!-- TEMPORARILY HIDDEN (IN-1243): cell originally read "Three assessments: Lifecycle (state), Health Score (0-100), Impact Score (0-100)". Re-enable by uncommenting and restoring the third assessment. --> |
-| **Health categories** | 4 equal categories at 25 pts each | 3 weighted categories: Maintainer (40), Security and Supply Chain (35), Development Activity (25) |
-| **Popularity** | Baked into Health Score as 25% of the total | Not baked into Health Score<!-- TEMPORARILY HIDDEN (IN-1243): cell originally read "Separate Impact Score; does not affect Health". Re-enable by uncommenting and restoring the Impact Score reference. --> |
-| **Lifecycle** | Not modeled | Six states: Active, Stable, Declining, Inert, Abandoned, Archived |
-| **Stable "done" libraries** | Penalized: low commits meant a low score | Lifecycle context added: a `Stable` classification signals low activity is intentional, but the Health Score formula still scores low-activity signals as low |
-| **Maintainer signal** | Contributor count only | Responsiveness, bus factor (curated plus observed), organizational diversity |
-| **Security** | OpenSSF Baseline pass/fail ratio | Open CVEs with severity weighting, security practices, OpenSSF Scorecard, dependency health, supply chain integrity |
-| **Missing data** | Returned unavailable if any sub-score was absent | Blocked sub-signals are imputed at the population median rate; full score requires ≥2 categories, 1 missing shows a partial indicator, ≥2 missing returns unavailable |
-| **Rating bands** | Excellent / Healthy / Stable / Unsteady / Critical | Excellent / Healthy / Fair / Concerning / Critical |
-
-### Why the original approach had gaps
-
-The previous model had several structural problems:
-
-- **Equal weighting ignored blast radius.** A project with a single maintainer and a critical open CVE could score the same as a project with ten maintainers and a clean security record, if their activity levels were similar.
-- **Popularity baked into health.** A massively downloaded project with a compromised or absent maintainer appeared healthy because download counts inflated the score.
-- **Stable libraries were penalized.** A mature utility with no bugs, no CVEs, and no need for active development scored near Critical simply because it had few recent commits.
-- **No lifecycle signal.** The model could not distinguish "abandoned with a high score" from "active with a high score," a critical difference for stewardship and dependency risk.
-- **Any missing sub-score returned unavailable.** Projects on GitLab or Gerrit, or projects without package data, often could not be scored at all.
