@@ -22,7 +22,8 @@ vi.mock('~~/server/utils/jwt', () => ({ getOptionalUser: () => null }));
 
 global.defineEventHandler = vi.fn((handler) => handler);
 global.createError = vi.fn((error) => error);
-global.getQuery = vi.fn(() => ({}));
+let query: Record<string, unknown> = {};
+global.getQuery = vi.fn(() => query);
 
 type Handler = (event: H3Event) => Promise<{ data: Record<string, unknown>[] }>;
 const handlers: Record<string, Handler> = {};
@@ -34,6 +35,7 @@ beforeAll(async () => {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  query = {};
   mockPostToTinybird.mockResolvedValue({
     rows: 2,
     data: [
@@ -64,5 +66,22 @@ describe.each(['projects', 'project-repos'])('GET /api/collection/[slug]/%s', (r
 
     expect(res.data[0]).toMatchObject({ slug: 'k8s', healthScore: 71, healthScoreV2: 71 });
     expect(res.data[1]).toMatchObject({ type: 'repo', healthScore: null });
+  });
+
+  it.each([
+    ['healthScore_desc', 'healthScoreV2', 'desc'],
+    ['healthScore_asc', 'healthScoreV2', 'asc'],
+    ['healthScore', 'healthScoreV2', 'desc'],
+    ['healthScoreV2Normalized_desc', 'healthScoreV2Normalized', 'desc'],
+    ['contributorCount_asc', 'contributorCount', 'asc'],
+  ])('sorts %s by %s %s', async (sort, orderByField, orderByDirection) => {
+    query = { sort };
+
+    await handlers[route](event);
+
+    expect(mockPostToTinybird).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ orderByField, orderByDirection }),
+    );
   });
 });

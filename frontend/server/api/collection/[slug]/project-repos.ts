@@ -39,7 +39,11 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
   const { slug } = event.context.params as Record<string, string>;
   const query = getQuery(event);
 
-  const sort: string = (query?.sort as string) || 'contributorCount_desc';
+  // healthScore carries the raw v2 score, so external healthScore sorts order by that column.
+  const sort: string = ((query?.sort as string) || 'contributorCount_desc').replace(
+    /^healthScore(?=_|$)/,
+    'healthScoreV2',
+  );
   const lastUnderscoreIndex = sort.lastIndexOf('_');
   const orderByField = lastUnderscoreIndex > 0 ? sort.substring(0, lastUnderscoreIndex) : sort;
   const orderByDirection =
