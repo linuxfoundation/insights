@@ -43,7 +43,6 @@ beforeEach(() => {
         type: 'project',
         slug: 'k8s',
         isLF: 1,
-        healthScore: 86,
         contributorHealthScore: 90,
         popularityHealthScore: 95,
         developmentHealthScore: 80,
