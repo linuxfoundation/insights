@@ -15,6 +15,7 @@ import {
 import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import { type DateRange, toTinybirdRange } from '../lib/period.js';
+import type { PipeTarget } from '../lib/widget-scope.js';
 import type { ActivityFilterQuery } from '../schemas/common.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 
@@ -65,11 +66,12 @@ function fetchGuarded<T>(
   params: TinybirdQuery,
   isRow: (row: T) => boolean,
   checkTotal: boolean,
+  method: 'fetch' | 'post' = 'fetch',
 ): Promise<{ rows: T[]; total: number | undefined }> {
   // A missing API_TB_* variable throws here, outside the 503 mapping, so it stays a 500.
   const client = getTinybirdClient();
   return fromTinybird(request, path, async () => {
-    const { data, rows_before_limit_at_least: total } = await client.fetch<T[]>(path, params);
+    const { data, rows_before_limit_at_least: total } = await client[method]<T[]>(path, params);
     if (!Array.isArray(data) || !data.every(isRow)) {
       throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
     }
@@ -89,6 +91,16 @@ export function fetchCountedPipe<T>(
   return fetchGuarded(request, path, params, isRow, true);
 }
 
+// POST keeps unbounded id lists out of the URL, which upstream proxies cap in length.
+export function postCountedPipe<T>(
+  request: RequestLog,
+  path: string,
+  params: TinybirdQuery,
+  isRow: (row: T) => boolean,
+): Promise<{ rows: T[]; total: number | undefined }> {
+  return fetchGuarded(request, path, params, isRow, true, 'post');
+}
+
 export async function fetchPipe<T>(
   request: RequestLog,
   path: string,
@@ -106,14 +118,12 @@ export function repoFilter(repos?: string[]): string[] | undefined {
 }
 
 export function activityFilterParams(
-  slug: string,
-  bucketId: number,
+  target: PipeTarget,
   query: Static<typeof ActivityFilterQuery>,
   current: DateRange,
 ): TinybirdQuery {
   return {
-    project: slug,
-    bucketId,
+    ...target,
     repos: repoFilter(query.repos),
     ...toTinybirdRange(current),
     platform: query.platform,

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { queryCm } from '../clients/postgres.js';
 import type { RequestLog } from '../clients/tinybird.js';
-import type { CollectionRow } from './collections.js';
+import type { CollectionRefRow, CollectionRow } from './collections.js';
 
 // Every route reads collections through this module, so the visibility rule lives here alone.
 // Private collections join once authentication supplies the caller's LFID (ADR-0007).
@@ -135,13 +135,62 @@ export async function findCollection(
   return row ?? null;
 }
 
+// An unknown or deleted project matches no row, so it reads as a project without collections.
+export async function listProjectCollections(
+  request: RequestLog,
+  projectSlug: string,
+): Promise<CollectionRefRow[]> {
+  return queryCm<CollectionRefRow>(
+    request,
+    `SELECT DISTINCT c.name, c.slug, c."logoUrl"
+     FROM collections c
+     JOIN "collectionsInsightsProjects" cip ON cip."collectionId" = c.id AND cip."deletedAt" IS NULL
+     JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId" AND ip."deletedAt" IS NULL
+     WHERE ip.slug = $1 AND ${visible}
+     ORDER BY c.name, c.slug`,
+    [projectSlug],
+  );
+}
+
+// Direct membership only, as in Nuxt. The LEFT JOINs give a known repository without public
+// collections one all-null row, so null means unknown and [] means none.
+export async function listRepositoryCollections(
+  request: RequestLog,
+  repositoryUrl: string,
+): Promise<CollectionRefRow[] | null> {
+  const rows = await queryCm<Partial<CollectionRefRow>>(
+    request,
+    `SELECT DISTINCT c.name, c.slug, c."logoUrl"
+     FROM repositories r
+     LEFT JOIN "collectionsRepositories" cr ON cr."repoId" = r.id AND cr."deletedAt" IS NULL
+     LEFT JOIN collections c ON c.id = cr."collectionId" AND ${visible}
+     WHERE r.url = $1 AND r."deletedAt" IS NULL
+     ORDER BY c.name, c.slug`,
+    [repositoryUrl],
+  );
+  if (rows.length === 0) {
+    return null;
+  }
+  return rows.filter((row): row is CollectionRefRow => row.slug != null);
+}
+
 export interface CollectionMembers {
   id: string;
   projectIds: string[];
   repositoryUrls: string[];
 }
 
-// What the Tinybird collection pipes take, and the slug lookup of the collection-scoped routes.
+// The slug check of the collection-scoped widget routes, which need no more than the answer.
+export async function collectionExists(request: RequestLog, slug: string): Promise<boolean> {
+  const rows = await queryCm<{ id: string }>(
+    request,
+    `SELECT c.id FROM collections c WHERE c.slug = $1 AND ${visible} LIMIT 1`,
+    [slug],
+  );
+  return rows.length > 0;
+}
+
+// What the Tinybird collection pipes take.
 export async function findCollectionMembers(
   request: RequestLog,
   slug: string,
@@ -152,6 +201,26 @@ export async function findCollectionMembers(
        COALESCE((SELECT array_agg(ip.id ORDER BY ip.id) ${memberProjects}), '{}') AS "projectIds",
        COALESCE((SELECT array_agg(r.url ORDER BY r.url) ${memberRepositories}), '{}') AS "repositoryUrls"
      FROM collections c
+     WHERE c.slug = $1 AND ${visible}`,
+    [slug],
+  );
+  return row ?? null;
+}
+
+export type CollectionDetailRow = CollectionRow & Omit<CollectionMembers, 'id'>;
+
+// One statement, so the row and its member lists come from the same snapshot.
+export async function findCollectionDetail(
+  request: RequestLog,
+  slug: string,
+): Promise<CollectionDetailRow | null> {
+  const [row] = await queryCm<CollectionDetailRow>(
+    request,
+    `SELECT ${collectionColumns},
+       COALESCE((SELECT array_agg(ip.id ORDER BY ip.id) ${memberProjects}), '{}') AS "projectIds",
+       COALESCE((SELECT array_agg(r.url ORDER BY r.url) ${memberRepositories}), '{}') AS "repositoryUrls"
+     FROM collections c
+     LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
      WHERE c.slug = $1 AND ${visible}`,
     [slug],
   );

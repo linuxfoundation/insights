@@ -3,9 +3,10 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import { resolvePeriods, toTinybirdRange } from '../../../lib/period.js';
-import { DateRangeQuery, nullableNumber, ProjectSlugParams } from '../../../schemas/common.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
+import { DateRangeQuery, nullableNumber, PeriodQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/pull_requests_review_time_by_size.json';
 
@@ -42,38 +43,47 @@ const ReviewTimeByPrSize = Type.Object({
   }),
 });
 
+const CollectionReviewTimeByPrSize = Type.Object({
+  data: Type.Array(ReviewTimeBucket, {
+    description:
+      'One entry per size bucket with at least one pull request first reviewed in the period, in ascending size order as the pipe returns them.',
+  }),
+});
+
+const measures =
+  'Returns, for each pull request size bucket, the number of pull requests whose first review happened in the period and their average review time in seconds. ' +
+  'Review time runs from the pull request being opened to its first review by someone other than the author. ' +
+  'Size is the number of lines changed in the pull request, in the buckets `1-9`, `10-59`, `60-99`, `100-499` and `500+`; a pull request with no recorded line count is left out. ' +
+  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`, applied to the first review timestamp; without dates it runs from 2010-01-01 to today. ' +
+  'Buckets come back in ascending size order, as the underlying pipe orders them, and a bucket with no pull request reviewed in the period is left out. ' +
+  'Covers GitHub and GitLab pull requests; Gerrit changesets are excluded.';
+
 const reviewTimeByPrSizeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/review-time-by-pr-size',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Review time by pull request size',
-        description:
-          'Returns, for each pull request size bucket, the number of pull requests whose first review happened in the period and their average review time in seconds. ' +
-          'Review time runs from the pull request being opened to its first review by someone other than the author. ' +
-          'Size is the number of lines changed in the pull request, in the buckets `1-9`, `10-59`, `60-99`, `100-499` and `500+`; a pull request with no recorded line count is left out. ' +
-          'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`, applied to the first review timestamp; without dates it runs from 2010-01-01 to today. ' +
-          'Buckets come back in ascending size order, as the underlying pipe orders them, and a bucket with no pull request reviewed in the period is left out. ' +
-          'Covers GitHub and GitLab pull requests; Gerrit changesets are excluded. An unknown project returns an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: DateRangeQuery,
-        response: { 200: ReviewTimeByPrSize },
-      },
+  widgetRoutes(scope, {
+    path: 'development/review-time-by-pr-size',
+    tags: ['Development'],
+    summary: 'Review time by pull request size',
+    project: {
+      description: measures + ' An unknown project returns an empty `data` list.',
+      querystring: DateRangeQuery,
+      response: ReviewTimeByPrSize,
     },
-    async (request) => {
-      const { slug } = request.params;
+    collection: {
+      description: measures,
+      querystring: PeriodQuery,
+      response: CollectionReviewTimeByPrSize,
+    },
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate } = request.query;
       // No comparison period: this only fills the default range and rejects an inverted one.
       const { current } = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) =>
+      const rows = await withTarget((target) =>
         fetchPipe<ReviewTimeRow>(
           request,
           pipePath,
           {
-            project: slug,
-            bucketId,
+            ...target,
             repos: repoFilter(repos),
             ...toTinybirdRange(current),
           },
@@ -88,7 +98,7 @@ const reviewTimeByPrSizeRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         })),
       };
     },
-  );
+  });
 };
 
 export default reviewTimeByPrSizeRoutes;

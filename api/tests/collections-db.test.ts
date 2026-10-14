@@ -6,9 +6,13 @@ const queryCm = vi.hoisted(() => vi.fn());
 vi.mock('../src/clients/postgres.js', () => ({ queryCm }));
 
 import {
+  collectionExists,
   findCollection,
+  findCollectionDetail,
   findCollectionMembers,
   listCollections,
+  listProjectCollections,
+  listRepositoryCollections,
   type CollectionQuery,
 } from '../src/lib/collections-db.js';
 
@@ -91,6 +95,64 @@ describe('findCollection', () => {
   });
 });
 
+describe('listProjectCollections', () => {
+  it('returns the public collections holding the project, ordered by name', async () => {
+    const rows = [{ name: 'CNCF', slug: 'cncf', logoUrl: null }];
+    queryCm.mockResolvedValue(rows);
+
+    await expect(listProjectCollections(log, 'kubernetes')).resolves.toEqual(rows);
+    expect(params()).toEqual(['kubernetes']);
+    expect(normalized()).toContain(`ip.slug = $1 AND ${visible}`);
+    expect(normalized()).toMatch(/ORDER BY c\.name, c\.slug$/);
+  });
+
+  it('matches live memberships of a project that is not deleted', async () => {
+    await listProjectCollections(log, 'kubernetes');
+
+    expect(normalized()).toContain('JOIN "collectionsInsightsProjects" cip');
+    expect(normalized()).toContain('cip."deletedAt" IS NULL');
+    expect(normalized()).toContain('ip."deletedAt" IS NULL');
+  });
+
+  it('returns an empty list for an unknown project', async () => {
+    await expect(listProjectCollections(log, 'no-such-project')).resolves.toEqual([]);
+  });
+});
+
+describe('listRepositoryCollections', () => {
+  const url = 'https://github.com/kubernetes/kubernetes';
+
+  it('returns the public collections holding the repository, ordered by name', async () => {
+    queryCm.mockResolvedValue([{ name: 'CNCF', slug: 'cncf', logoUrl: null }]);
+
+    await expect(listRepositoryCollections(log, url)).resolves.toEqual([
+      { name: 'CNCF', slug: 'cncf', logoUrl: null },
+    ]);
+    expect(params()).toEqual([url]);
+    expect(normalized()).toContain(`AND ${visible}`);
+    expect(normalized()).toMatch(/ORDER BY c\.name, c\.slug$/);
+  });
+
+  it('matches the exact URL of a repository that is not deleted, through live direct memberships', async () => {
+    await listRepositoryCollections(log, url);
+
+    expect(normalized()).toContain('r.url = $1 AND r."deletedAt" IS NULL');
+    expect(normalized()).toContain('"collectionsRepositories" cr');
+    expect(normalized()).toContain('cr."deletedAt" IS NULL');
+    expect(normalized()).not.toContain('collectionsInsightsProjects');
+  });
+
+  it('returns null for an unknown repository', async () => {
+    queryCm.mockResolvedValue([]);
+    await expect(listRepositoryCollections(log, url)).resolves.toBeNull();
+  });
+
+  it('returns an empty list for a known repository in no public collection', async () => {
+    queryCm.mockResolvedValue([{ name: null, slug: null, logoUrl: null }]);
+    await expect(listRepositoryCollections(log, url)).resolves.toEqual([]);
+  });
+});
+
 describe('findCollectionMembers', () => {
   it('returns the project ids and repository URLs of a public collection', async () => {
     const members = { id: 'a', projectIds: ['p1'], repositoryUrls: ['https://github.com/a/b'] };
@@ -103,5 +165,37 @@ describe('findCollectionMembers', () => {
 
   it('returns null for an unknown or private slug', async () => {
     await expect(findCollectionMembers(log, 'private-one')).resolves.toBeNull();
+  });
+});
+
+describe('findCollectionDetail', () => {
+  it('reads the row and both member lists in one public-only query', async () => {
+    await findCollectionDetail(log, 'cncf');
+
+    expect(queryCm).toHaveBeenCalledTimes(1);
+    expect(sql()).toContain(visible);
+    expect(sql()).toContain('"projectIds"');
+    expect(sql()).toContain('"repositoryUrls"');
+    expect(params()).toEqual(['cncf']);
+  });
+
+  it('returns null when no public collection matches', async () => {
+    await expect(findCollectionDetail(log, 'missing')).resolves.toBeNull();
+  });
+});
+
+describe('collectionExists', () => {
+  it('asks for one id of a public collection, by slug, without the member lists', async () => {
+    queryCm.mockResolvedValue([{ id: 'a' }]);
+
+    await expect(collectionExists(log, 'cncf')).resolves.toBe(true);
+    expect(sql()).toContain(`c.slug = $1 AND ${visible}`);
+    expect(normalized()).toContain('LIMIT 1');
+    expect(sql()).not.toContain('collectionsInsightsProjects');
+    expect(params()).toEqual(['cncf']);
+  });
+
+  it('is false for an unknown or private slug', async () => {
+    await expect(collectionExists(log, 'private-one')).resolves.toBe(false);
   });
 });

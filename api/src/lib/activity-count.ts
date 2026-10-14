@@ -4,7 +4,7 @@ import type { Static } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
 
-import { fetchPipe, repoFilter, withBucket, type RequestLog } from '../clients/tinybird.js';
+import { fetchPipe, repoFilter, type RequestLog } from '../clients/tinybird.js';
 import type { Granularity, PeriodSummary } from '../schemas/common.js';
 import {
   resolvePeriods,
@@ -13,6 +13,7 @@ import {
   toPeriodSummary,
   toTinybirdRange,
 } from './period.js';
+import type { WithTarget } from './widget-scope.js';
 
 interface SummaryRow {
   activityCount?: number;
@@ -40,10 +41,10 @@ interface ActivityCountResult {
   data: { startDate: string; endDate: string; count: number }[];
 }
 
-// project, bucketId and repos override same-named keys in pipeParams, so a caller cannot widen the scope.
+// The target and repos replace any scope keys in pipeParams, so a caller cannot widen the scope.
 export async function fetchActivityCounts(
   request: RequestLog,
-  slug: string,
+  withTarget: WithTarget,
   query: ActivityCountQuery,
   pipeParams: TinybirdQuery,
 ): Promise<ActivityCountResult> {
@@ -51,8 +52,15 @@ export async function fetchActivityCounts(
   const { current, previous } = resolvePeriods(startDate, endDate);
   const isCumulative = countType === 'cumulative';
 
-  const rows = await withBucket(request, slug, (bucketId) => {
-    const common = { ...pipeParams, project: slug, bucketId, repos: repoFilter(repos) };
+  const rows = await withTarget((target) => {
+    const common = {
+      ...pipeParams,
+      project: undefined,
+      collectionSlug: undefined,
+      bucketId: undefined,
+      ...target,
+      repos: repoFilter(repos),
+    };
     const currentRange = toTinybirdRange(current);
     const seriesPipe = isCumulative ? 'activities_cumulative_count' : 'activities_count';
 

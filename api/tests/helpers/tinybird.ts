@@ -8,9 +8,11 @@ import { getTinybirdClient } from '../../src/clients/tinybird.js';
 
 export const tinybirdHost = 'https://tinybird.test';
 export const bucketsPath = '/v0/pipes/project_buckets.json';
+export const collectionBucketsPath = '/v0/pipes/collection_buckets.json';
 export const projectPath = (subpath: string) => `/v1-alpha/projects/{slug}/${subpath}`;
 export const developmentPath = (name: string) => projectPath(`development/${name}`);
 export const contributorsPath = (name: string) => projectPath(`contributors/${name}`);
+export const collectionRoutePath = (subpath: string) => `/v1-alpha/collections/{slug}/${subpath}`;
 
 export const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -29,15 +31,31 @@ export const tinybirdResponse = (rows: unknown[]) =>
 export const tinybirdError = (status: number, body = 'tinybird internal detail') =>
   new Response(body, { status });
 
-export type PipeResponder = (url: URL) => unknown[] | Response | Promise<unknown[] | Response>;
+export type PipeResponder = (
+  url: URL,
+  init?: RequestInit,
+) => unknown[] | Response | Promise<unknown[] | Response>;
 
 // The bucket lookup answers `bucket`; every other call goes to `respond`, which returns rows,
 // a Response, or throws to act as a network error.
 export const tinybirdStub =
   (respond: PipeResponder, bucket: unknown[] = [{ bucketId: 7 }]) =>
-  async (input: unknown) => {
+  async (input: unknown, init?: RequestInit) => {
     const url = new URL(String(input));
     if (url.pathname === bucketsPath) {
+      return tinybirdResponse(bucket);
+    }
+    const result = await respond(url, init);
+    return result instanceof Response ? result : tinybirdResponse(result);
+  };
+
+// Collection routes leave the bucket lookup to the Tinybird client, which asks the
+// collection_buckets pipe for the `collectionSlug` it finds in the params.
+export const collectionStub =
+  (respond: PipeResponder, bucket: unknown[] = [{ bucketId: 3 }]) =>
+  async (input: unknown) => {
+    const url = new URL(String(input));
+    if (url.pathname === collectionBucketsPath) {
       return tinybirdResponse(bucket);
     }
     const result = await respond(url);
@@ -46,7 +64,15 @@ export const tinybirdStub =
 
 export const calledUrls = () => mockFetch.mock.calls.map((call) => new URL(String(call[0])));
 export const callsTo = (path: string) => calledUrls().filter((url) => url.pathname === path);
-export const pipeCalls = () => calledUrls().filter((url) => url.pathname !== bucketsPath);
+// Form-encoded params of every POST to `path`, in call order.
+export const postedParams = (path: string) =>
+  mockFetch.mock.calls
+    .filter((call) => new URL(String(call[0])).pathname === path)
+    .map((call) => new URLSearchParams(String((call[1] as RequestInit | undefined)?.body ?? '')));
+export const pipeCalls = () =>
+  calledUrls().filter(
+    (url) => url.pathname !== bucketsPath && url.pathname !== collectionBucketsPath,
+  );
 
 export function queryString(params: Record<string, string | string[] | undefined>): string {
   const search = new URLSearchParams();

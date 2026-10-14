@@ -20,9 +20,8 @@ export const ProjectSlugParams = Type.Object({
   slug: Type.String({ minLength: 1 }),
 });
 
-export const DateRangeQuery = Type.Object({
-  // Fastify's default Ajv coerces a single repos=x to ['x'] (coerceTypes: 'array').
-  repos: Type.Optional(Type.Array(Type.String(), { description: 'Repository URLs to filter by.' })),
+// The dates alone, for collection routes, which take no `repos`.
+export const PeriodQuery = Type.Object({
   startDate: Type.Optional(
     Type.String({
       format: 'date',
@@ -37,6 +36,12 @@ export const DateRangeQuery = Type.Object({
         'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets. The latest accepted day is today in UTC.',
     }),
   ),
+});
+
+export const DateRangeQuery = Type.Object({
+  // Fastify's default Ajv coerces a single repos=x to ['x'] (coerceTypes: 'array').
+  repos: Type.Optional(Type.Array(Type.String(), { description: 'Repository URLs to filter by.' })),
+  ...PeriodQuery.properties,
 });
 
 export const describe = <T extends TSchema>(schema: T, description: string): T => ({
@@ -57,13 +62,20 @@ export const Granularity = Type.Unsafe<`${Exclude<SharedGranularity, SharedGranu
   description: 'Width of each bucket in `data`.',
 });
 
-export const Platform =
+const pullRequestPlatform = (description: string) =>
   Type.Unsafe<`${ActivityPlatforms.GITHUB | ActivityPlatforms.GITLAB | ActivityPlatforms.GERRIT}`>({
     type: 'string',
     enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
-    description:
-      'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+    description,
   });
+
+export const Platform = pullRequestPlatform(
+  'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+);
+
+export const CollectionPlatform = pullRequestPlatform(
+  'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` that `GET /v1-alpha/projects/{slug}` returns for each member project; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+);
 
 export const ContributionFlags = Type.Object({
   includeCollaborations: Type.Optional(
@@ -101,6 +113,21 @@ export const ActivityFilterQuery = Type.Object({
   ...ContributionFlags.properties,
 });
 
+export const CollectionActivityPlatform = dataValue(
+  'Count only activity on this platform: one of the `platform`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for a project in the collection. A platform with no data returns empty results. Omit it to count activity on every platform.',
+);
+
+export const CollectionActivityType = dataValue(
+  'Count only activity of this type: one of the `key`s that `GET /v1-alpha/projects/{slug}/activity-types` lists for a project in the collection. A type with no data returns empty results. Omit it to count every type.',
+);
+
+export const CollectionActivityFilterQuery = Type.Object({
+  ...PeriodQuery.properties,
+  platform: Type.Optional(CollectionActivityPlatform),
+  activityType: Type.Optional(CollectionActivityType),
+  ...ContributionFlags.properties,
+});
+
 export const BucketBounds = Type.Object({
   startDate: Type.String({
     format: 'date-time',
@@ -114,6 +141,11 @@ export const BucketBounds = Type.Object({
 
 export const SeriesQuery = Type.Object({
   ...DateRangeQuery.properties,
+  granularity: Granularity,
+});
+
+export const CollectionSeriesQuery = Type.Object({
+  ...PeriodQuery.properties,
   granularity: Granularity,
 });
 
