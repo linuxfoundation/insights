@@ -6,6 +6,7 @@ const queryCm = vi.hoisted(() => vi.fn());
 vi.mock('../src/clients/postgres.js', () => ({ queryCm }));
 
 import {
+  collectionExists,
   findCollection,
   findCollectionDetail,
   findCollectionMembers,
@@ -180,5 +181,21 @@ describe('findCollectionDetail', () => {
 
   it('returns null when no public collection matches', async () => {
     await expect(findCollectionDetail(log, 'missing')).resolves.toBeNull();
+  });
+});
+
+describe('collectionExists', () => {
+  it('asks for one id of a public collection, by slug, without the member lists', async () => {
+    queryCm.mockResolvedValue([{ id: 'a' }]);
+
+    await expect(collectionExists(log, 'cncf')).resolves.toBe(true);
+    expect(sql()).toContain(`c.slug = $1 AND ${visible}`);
+    expect(normalized()).toContain('LIMIT 1');
+    expect(sql()).not.toContain('collectionsInsightsProjects');
+    expect(params()).toEqual(['cncf']);
+  });
+
+  it('is false for an unknown or private slug', async () => {
+    await expect(collectionExists(log, 'private-one')).resolves.toBe(false);
   });
 });

@@ -2,8 +2,15 @@
 // SPDX-License-Identifier: MIT
 import { Type, type TSchema } from '@sinclair/typebox';
 
-import { ActivityType, ContributionFlags, SeriesQuery } from '../schemas/common.js';
+import {
+  ActivityType,
+  CollectionActivityType,
+  CollectionSeriesQuery,
+  ContributionFlags,
+  SeriesQuery,
+} from '../schemas/common.js';
 import { toIsoUtc } from './period.js';
+import type { Scope } from './widget-scope.js';
 
 // contributor_retention and organization_retention take the same params and return the same
 // columns; only the entity they track (memberId vs organizationId) differs.
@@ -30,6 +37,12 @@ export const RetentionQuery = Type.Object({
   ...ContributionFlags.properties,
 });
 
+export const CollectionRetentionQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  activityType: Type.Optional(CollectionActivityType),
+  ...ContributionFlags.properties,
+});
+
 export function retentionBucket(noun: string): TSchema {
   return Type.Object({
     startDate: Type.String({
@@ -48,10 +61,15 @@ export function retentionBucket(noun: string): TSchema {
   });
 }
 
-export function retentionResponse(noun: string): TSchema {
+const retentionData: Record<Scope, string> = {
+  project:
+    'One entry per granularity bucket, ascending by `startDate`. An unknown project or a pipe with no data returns an empty list.',
+  collection:
+    'One entry per granularity bucket, ascending by `startDate`. A pipe with no data returns an empty list.',
+};
+
+export function retentionResponse(noun: string, scope: Scope): TSchema {
   return Type.Object({
-    data: Type.Array(retentionBucket(noun), {
-      description: `One entry per granularity bucket, ascending by \`startDate\`. An unknown project or a pipe with no data returns an empty list.`,
-    }),
+    data: Type.Array(retentionBucket(noun), { description: retentionData[scope] }),
   });
 }
