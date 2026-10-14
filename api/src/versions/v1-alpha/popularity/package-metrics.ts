@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   hasBucketBounds,
   resolvePeriods,
@@ -12,7 +12,8 @@ import {
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
-import { periodSummary, ProjectSlugParams, SeriesQuery } from '../../../schemas/common.js';
+import { type Scope, widgetRoutes } from '../../../lib/widget-scope.js';
+import { CollectionSeriesQuery, periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/package_metrics.json';
 
@@ -20,27 +21,47 @@ const metrics = {
   downloads: {
     column: 'downloadsCount',
     measure: 'Package downloads',
-    peak: 'Highest running download total of one package',
+    peak: {
+      project: 'Highest running download total of one package',
+      collection:
+        'Sum over the member projects of the highest running download total of one of their packages',
+    },
   },
   dockerDownloads: {
     column: 'dockerDownloadsCount',
     measure: 'Docker image downloads',
-    peak: 'Highest running Docker image download total of one package',
+    peak: {
+      project: 'Highest running Docker image download total of one package',
+      collection:
+        'Sum over the member projects of the highest running Docker image download total of one of their packages',
+    },
   },
   dockerDependents: {
     column: 'dockerDependentsCount',
     measure: 'Docker images using the package',
-    peak: 'Most Docker images using one package on a single day',
+    peak: {
+      project: 'Most Docker images using one package on a single day',
+      collection:
+        'Sum over the member projects of the most Docker images using one of their packages on a single day',
+    },
   },
   dependentPackages: {
     column: 'dependentPackagesCount',
     measure: 'Packages depending on it',
-    peak: 'Most packages depending on one package on a single day',
+    peak: {
+      project: 'Most packages depending on one package on a single day',
+      collection:
+        'Sum over the member projects of the most packages depending on one of their packages on a single day',
+    },
   },
   dependentRepos: {
     column: 'dependentReposCount',
     measure: 'Repositories depending on it',
-    peak: 'Most repositories depending on one package on a single day',
+    peak: {
+      project: 'Most repositories depending on one package on a single day',
+      collection:
+        'Sum over the member projects of the most repositories depending on one of their packages on a single day',
+    },
   },
 } as const;
 
@@ -82,35 +103,62 @@ const Query = Type.Object({
   ),
 });
 
-const PackageMetrics = Type.Object({
-  summary: Type.Object(
-    Object.fromEntries(
-      metricNames.map((metric) => [
-        metric,
-        periodSummary({ measure: metrics[metric].peak, unit: 'count', kind: 'integer' }),
-      ]),
-    ) as Record<Metric, ReturnType<typeof periodSummary>>,
-    {
+const CollectionQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  startDate: Query.properties.startDate,
+  ecosystem: Query.properties.ecosystem,
+  name: Type.Optional(
+    Type.String({
       description:
-        'One period summary per metric: the highest value any one matching package reported on a single day of the period.',
-    },
-  ),
-  data: Type.Array(
-    Type.Object({
-      startDate: Type.String({ format: 'date-time', description: 'Start of the bucket, UTC.' }),
-      endDate: Type.String({ format: 'date-time', description: 'End of the bucket, UTC.' }),
-      ...(Object.fromEntries(
-        metricNames.map((metric) => [
-          metric,
-          Type.Integer({
-            description: `${metrics[metric].measure}: the highest daily total across the matching packages in the bucket (count).`,
-          }),
-        ]),
-      ) as Record<Metric, ReturnType<typeof Type.Integer>>),
+        'Package name, as the packages endpoint lists it. Without it every package of the collection counts.',
     }),
-    { description: 'One row per time bucket of the requested granularity.' },
   ),
 });
+
+const summaryText: Record<Scope, string> = {
+  project:
+    'One period summary per metric: the highest value any one matching package reported on a single day of the period.',
+  collection:
+    'One period summary per metric: the sum over the member projects of the highest value any one of their matching packages reported on a single day of the period.',
+};
+
+const Bucket = Type.Object({
+  startDate: Type.String({ format: 'date-time', description: 'Start of the bucket, UTC.' }),
+  endDate: Type.String({ format: 'date-time', description: 'End of the bucket, UTC.' }),
+  ...(Object.fromEntries(
+    metricNames.map((metric) => [
+      metric,
+      Type.Integer({
+        description: `${metrics[metric].measure}: the highest daily total across the matching packages in the bucket (count).`,
+      }),
+    ]),
+  ) as Record<Metric, ReturnType<typeof Type.Integer>>),
+});
+
+const packageMetrics = (scope: Scope) =>
+  Type.Object({
+    summary: Type.Object(
+      Object.fromEntries(
+        metricNames.map((metric) => [
+          metric,
+          periodSummary({ measure: metrics[metric].peak[scope], unit: 'count', kind: 'integer' }),
+        ]),
+      ) as Record<Metric, ReturnType<typeof periodSummary>>,
+      { description: summaryText[scope] },
+    ),
+    data: Type.Array(Bucket, {
+      description: 'One row per time bucket of the requested granularity.',
+    }),
+  });
+
+const PackageMetrics = packageMetrics('project');
+const CollectionPackageMetrics = packageMetrics('collection');
+
+const runningTotals =
+  'Each daily record holds running totals: downloads and Docker downloads up to that day, and the dependents counted on that day. So the summary and the buckets take the highest value in their range rather than a sum.';
+
+const period =
+  'Records dated on `startDate` are left out: the period covers the days after `startDate` and before `endDate`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today.';
 
 const summarize = (current: MetricRow = {}, previous: MetricRow = {}, range: DateRange) =>
   Object.fromEntries(
@@ -131,28 +179,36 @@ const toBucket = (row: SeriesRow & DateRange) => ({
 });
 
 const packageMetricsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/popularity/package-metrics',
-    {
-      schema: {
-        tags: ['Popularity'],
-        summary: 'Get package metrics',
-        description:
-          'Returns the downloads, Docker image downloads, Docker dependents, dependent packages and dependent repositories of the project packages, as a summary comparing the current period with the comparison period before it, plus one row per time bucket of the requested granularity. Pass `ecosystem` and `name` from the packages endpoint to read one package; without them every package of the project counts. Each daily record holds running totals: downloads and Docker downloads up to that day, and the dependents counted on that day. So the summary and the buckets take the highest value in their range rather than a sum. The summary takes the highest value any one matching package reported on a single day, while each bucket first adds up the matching packages per day and then takes the highest daily total. Records dated on `startDate` are left out: the period covers the days after `startDate` and before `endDate`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. An unknown project returns zero counts and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: Query,
-        response: { 200: PackageMetrics },
-      },
+  widgetRoutes(scope, {
+    path: 'popularity/package-metrics',
+    tags: ['Popularity'],
+    summary: 'Get package metrics',
+    project: {
+      description:
+        'Returns the downloads, Docker image downloads, Docker dependents, dependent packages and dependent repositories of the project packages, as a summary comparing the current period with the comparison period before it, plus one row per time bucket of the requested granularity. Pass `ecosystem` and `name` from the packages endpoint to read one package; without them every package of the project counts. ' +
+        runningTotals +
+        ' The summary takes the highest value any one matching package reported on a single day, while each bucket first adds up the matching packages per day and then takes the highest daily total. ' +
+        period +
+        ' An unknown project returns zero counts and an empty `data` list.',
+      querystring: Query,
+      response: PackageMetrics,
     },
-    async (request) => {
-      const { slug } = request.params;
+    collection: {
+      description:
+        "Returns the downloads, Docker image downloads, Docker dependents, dependent packages and dependent repositories of the collection's packages, as a summary comparing the current period with the comparison period before it, plus one row per time bucket of the requested granularity. Pass `ecosystem` and `name` from the packages endpoint to read one package; without them every package of the collection counts. " +
+        runningTotals +
+        ' The summary adds up, over the member projects, the highest value any one of their matching packages reported on a single day, while each bucket first adds up the matching packages per day and then takes the highest daily total. ' +
+        period,
+      querystring: CollectionQuery,
+      response: CollectionPackageMetrics,
+    },
+    handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, ecosystem, name } = request.query;
       const { current, previous } = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, (bucketId) => {
+      const rows = await withTarget((target) => {
         const common = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           ecosystem: ecosystem || undefined,
           name: name || undefined,
@@ -184,7 +240,7 @@ const packageMetricsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         data: seriesRows.map(toBucket),
       };
     },
-  );
+  });
 };
 
 export default packageMetricsRoutes;

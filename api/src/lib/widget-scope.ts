@@ -23,7 +23,7 @@ export interface PipeTarget {
 // Null when the project has no Tinybird bucket, which the handler answers with its empty result.
 export type WithTarget = <T>(query: (target: PipeTarget) => Promise<T>) => Promise<T | null>;
 
-// Exported for project routes that call a shared helper taking `WithTarget` outside `widgetRoutes`.
+// Exported so tests can hand a project `WithTarget` to helpers that take one.
 export function projectTarget(request: RequestLog, slug: string): WithTarget {
   return (query) => withBucket(request, slug, (bucketId) => query({ project: slug, bucketId }));
 }

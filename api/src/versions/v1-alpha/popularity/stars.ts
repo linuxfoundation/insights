@@ -6,17 +6,22 @@ import { Type } from '@sinclair/typebox';
 import { ActivityTypes } from '@lfx-insights/types';
 
 import { fetchActivityCounts } from '../../../lib/activity-count.js';
-import { projectTarget } from '../../../lib/widget-scope.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
+  CollectionSeriesQuery,
   countType,
   periodSummary,
-  ProjectSlugParams,
   SeriesQuery,
 } from '../../../schemas/common.js';
 
 const StarsQuery = Type.Object({
   ...SeriesQuery.properties,
   countType: countType('the stars added'),
+});
+
+const CollectionStarsQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  countType: StarsQuery.properties.countType,
 });
 
 const StarsSummary = periodSummary({
@@ -42,38 +47,41 @@ const Stars = Type.Object({
   ),
 });
 
+const period =
+  'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const starsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/popularity/stars',
-    {
-      schema: {
-        tags: ['Popularity'],
-        summary: 'Get stars',
-        description:
-          'Returns the stars added to the project repositories per time bucket of the requested granularity, as new stars in each bucket or as a cumulative total, plus a summary comparing the stars added in the current period with the comparison period before it. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
-        params: ProjectSlugParams,
-        querystring: StarsQuery,
-        response: { 200: Stars },
-      },
+  widgetRoutes(scope, {
+    path: 'popularity/stars',
+    tags: ['Popularity'],
+    summary: 'Get stars',
+    project: {
+      description:
+        'Returns the stars added to the project repositories per time bucket of the requested granularity, as new stars in each bucket or as a cumulative total, plus a summary comparing the stars added in the current period with the comparison period before it. ' +
+        period +
+        ' An unknown project returns zero counts and an empty `data` list.',
+      querystring: StarsQuery,
+      response: Stars,
     },
-    async (request) => {
-      const { slug } = request.params;
+    collection: {
+      description:
+        "Returns the stars added to the collection's repositories per time bucket of the requested granularity, as new stars in each bucket or as a cumulative total, plus a summary comparing the stars added in the current period with the comparison period before it. " +
+        period,
+      querystring: CollectionStarsQuery,
+      response: Stars,
+    },
+    handler: async (request, withTarget) => {
       // Stars are not contributions, so onlyContributions=false lets the pipes count them.
-      const { summary, data } = await fetchActivityCounts(
-        request,
-        projectTarget(request, slug),
-        request.query,
-        {
-          activity_type: ActivityTypes.STARS,
-          onlyContributions: false,
-          includeCodeContributions: true,
-          includeCollaborations: true,
-          includeOtherContributions: true,
-        },
-      );
+      const { summary, data } = await fetchActivityCounts(request, withTarget, request.query, {
+        activity_type: ActivityTypes.STARS,
+        onlyContributions: false,
+        includeCodeContributions: true,
+        includeCollaborations: true,
+        includeOtherContributions: true,
+      });
       return { summary, data: data.map(({ count, ...bucket }) => ({ ...bucket, stars: count })) };
     },
-  );
+  });
 };
 
 export default starsRoutes;
