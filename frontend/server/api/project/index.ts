@@ -4,6 +4,8 @@ import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectInsightsTinybird, ProjectList, ProjectTinybird } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
 
+const MAX_HEALTH_BREAKDOWN_PAGE_SIZE = 100;
+
 /**
  * API Endpoint: /api/project
  * Method: GET
@@ -34,6 +36,7 @@ import type { Pagination } from '~~/types/shared/pagination';
  * - organizationCount (number): The count of organizations associated with the project.
  *
  * Errors:
+ * - 400: pageSize is over 100 when healthBreakdown is true.
  * - 500: Internal Server Error.
  */
 export default defineEventHandler(async (event): Promise<Pagination<ProjectList> | Error> => {
@@ -54,6 +57,13 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
   const healthScore: boolean | undefined = query?.healthScore === 'true' ? true : undefined;
   const healthBreakdown: boolean | undefined = query?.healthBreakdown === 'true' ? true : undefined;
 
+  if (healthBreakdown && pageSize > MAX_HEALTH_BREAKDOWN_PAGE_SIZE) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `pageSize must be at most ${MAX_HEALTH_BREAKDOWN_PAGE_SIZE} when healthBreakdown=true`,
+    });
+  }
+
   try {
     const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
       count,
@@ -68,11 +78,29 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
       onboarded: onboarded ? 'true' : undefined,
     });
 
-    let projects = res.data.map((p: ProjectTinybird) => ({
-      ...p,
-      isLF: !!p.isLF,
-      repoData: undefined,
-    }));
+    const insights =
+      res.data?.length > 0 && healthBreakdown
+        ? await fetchFromTinybird<ProjectInsightsTinybird[]>('/v0/pipes/project_insights.json', {
+            slugs: res.data.map((p: ProjectTinybird) => p.slug),
+            // project_insights returns 10 rows unless pageSize is set.
+            pageSize: res.data.length,
+          })
+        : undefined;
+
+    let projects = res.data.map((p: ProjectTinybird) => {
+      const breakdown = insights?.data.find((i) => i.slug === p.slug);
+      return {
+        ...p,
+        isLF: !!p.isLF,
+        repoData: undefined,
+        ...(insights && {
+          maintainerHealthScoreV2: breakdown?.maintainerHealthScoreV2 ?? null,
+          securitySupplyChainScoreV2: breakdown?.securitySupplyChainScoreV2 ?? null,
+          developmentActivityScoreV2: breakdown?.developmentActivityScoreV2 ?? null,
+          coveredCategoryCount: breakdown?.coveredCategoryCount ?? null,
+        }),
+      };
+    });
 
     if (res.data?.length > 0 && healthScore) {
       const projectSlugs = res.data.map((p: ProjectTinybird) => p.slug);
@@ -92,28 +120,6 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
           slug: undefined,
         },
       }));
-    }
-
-    if (res.data?.length > 0 && healthBreakdown) {
-      const projectSlugs = res.data.map((p: ProjectTinybird) => p.slug);
-      // project_insights returns 10 rows unless pageSize is set.
-      const insights = await fetchFromTinybird<ProjectInsightsTinybird[]>(
-        '/v0/pipes/project_insights.json',
-        {
-          slugs: projectSlugs,
-          pageSize: projectSlugs.length,
-        },
-      );
-      projects = projects.map((p) => {
-        const breakdown = insights.data.find((i) => i.slug === p.slug);
-        return {
-          ...p,
-          maintainerHealthScoreV2: breakdown?.maintainerHealthScoreV2 ?? null,
-          securitySupplyChainScoreV2: breakdown?.securitySupplyChainScoreV2 ?? null,
-          developmentActivityScoreV2: breakdown?.developmentActivityScoreV2 ?? null,
-          coveredCategoryCount: breakdown?.coveredCategoryCount ?? null,
-        };
-      });
     }
 
     type ProjectCount = { 'count(id)': number };

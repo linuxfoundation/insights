@@ -112,8 +112,20 @@ describe('GET /api/project healthBreakdown flag', () => {
     }
   });
 
-  it('returns null for missing projects and keeps null categories null', async () => {
-    projectRows = ['k8s', 'partial', 'unscored', 'missing'].map(projectRow);
+  it('fetches the slugs projects_list returned, not the requested slugs', async () => {
+    projectRows = ['a', 'c'].map(projectRow);
+    mockGetQuery.mockReturnValue({ slugs: ['a', 'b', 'c'], healthBreakdown: 'true' });
+
+    await handler({} as H3Event);
+
+    expect(mockFetchFromTinybird).toHaveBeenCalledWith('/v0/pipes/project_insights.json', {
+      slugs: ['a', 'c'],
+      pageSize: 2,
+    });
+  });
+
+  it('returns null for missing projects and passes null and 0 scores through', async () => {
+    projectRows = ['k8s', 'partial', 'zero', 'unscored', 'missing'].map(projectRow);
     insightsRows = [
       {
         slug: 'k8s',
@@ -130,11 +142,18 @@ describe('GET /api/project healthBreakdown flag', () => {
         coveredCategoryCount: 2,
       },
       {
+        slug: 'zero',
+        maintainerHealthScoreV2: 0,
+        securitySupplyChainScoreV2: 12,
+        developmentActivityScoreV2: 0,
+        coveredCategoryCount: 3,
+      },
+      {
         slug: 'unscored',
         maintainerHealthScoreV2: null,
         securitySupplyChainScoreV2: null,
         developmentActivityScoreV2: null,
-        coveredCategoryCount: null,
+        coveredCategoryCount: 0,
       },
     ];
     mockGetQuery.mockReturnValue({ healthBreakdown: 'true' });
@@ -142,17 +161,76 @@ describe('GET /api/project healthBreakdown flag', () => {
     const res = await handler({} as H3Event);
     const bySlug = Object.fromEntries(res.data.map((row) => [row.slug, row]));
 
+    expect(mockFetchFromTinybird).toHaveBeenCalledWith('/v0/pipes/project_insights.json', {
+      slugs: ['k8s', 'partial', 'zero', 'unscored', 'missing'],
+      pageSize: 5,
+    });
     expect(bySlug.partial).toMatchObject({
       maintainerHealthScoreV2: 40,
       securitySupplyChainScoreV2: null,
       developmentActivityScoreV2: 19,
       coveredCategoryCount: 2,
     });
-    for (const slug of ['unscored', 'missing']) {
-      for (const field of BREAKDOWN_FIELDS) {
-        expect(bySlug[slug]).toHaveProperty(field, null);
-      }
+    expect(bySlug.zero).toMatchObject({
+      maintainerHealthScoreV2: 0,
+      securitySupplyChainScoreV2: 12,
+      developmentActivityScoreV2: 0,
+      coveredCategoryCount: 3,
+    });
+    expect(bySlug.unscored).toMatchObject({
+      maintainerHealthScoreV2: null,
+      securitySupplyChainScoreV2: null,
+      developmentActivityScoreV2: null,
+      coveredCategoryCount: 0,
+    });
+    for (const field of BREAKDOWN_FIELDS) {
+      expect(bySlug.missing).toHaveProperty(field, null);
     }
+  });
+
+  it('skips project_insights on an empty page', async () => {
+    projectRows = [];
+    mockGetQuery.mockReturnValue({ slugs: ['nope'], healthBreakdown: 'true' });
+
+    const res = await handler({} as H3Event);
+
+    expect(calledPaths()).not.toContain('/v0/pipes/project_insights.json');
+    expect(res).toEqual({ page: 0, pageSize: 10, total: 0, data: [] });
+  });
+
+  it('responds 500 when project_insights fails', async () => {
+    const defaultImpl = mockFetchFromTinybird.getMockImplementation();
+    mockFetchFromTinybird.mockImplementation((path: string, params: Record<string, unknown>) =>
+      path === '/v0/pipes/project_insights.json'
+        ? Promise.reject(new Error('tinybird down'))
+        : defaultImpl?.(path, params),
+    );
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    mockGetQuery.mockReturnValue({ slugs: ['k8s'], healthBreakdown: 'true' });
+
+    await expect(handler({} as H3Event)).rejects.toMatchObject({ statusCode: 500 });
+    consoleError.mockRestore();
+  });
+
+  it('rejects pageSize over 100 with the flag before calling Tinybird', async () => {
+    mockGetQuery.mockReturnValue({ healthBreakdown: 'true', pageSize: '101' });
+
+    await expect(handler({} as H3Event)).rejects.toMatchObject({ statusCode: 400 });
+    expect(mockFetchFromTinybird).not.toHaveBeenCalled();
+  });
+
+  it('allows pageSize over 100 without the flag and 100 with it', async () => {
+    mockGetQuery.mockReturnValue({ pageSize: '101' });
+    await expect(handler({} as H3Event)).resolves.toMatchObject({ pageSize: 101 });
+    expect(mockFetchFromTinybird).toHaveBeenCalledWith(
+      '/v0/pipes/projects_list.json',
+      expect.objectContaining({ pageSize: 101 }),
+    );
+
+    mockFetchFromTinybird.mockClear();
+    mockGetQuery.mockReturnValue({ healthBreakdown: 'true', pageSize: '100' });
+    await expect(handler({} as H3Event)).resolves.toMatchObject({ pageSize: 100 });
+    expect(calledPaths()).toContain('/v0/pipes/project_insights.json');
   });
 
   it('keeps the healthScore flag unchanged, alone and together with healthBreakdown', async () => {

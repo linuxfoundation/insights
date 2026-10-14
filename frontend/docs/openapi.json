@@ -169,7 +169,7 @@
     "/api/project": {
       "get": {
         "summary": "List projects",
-        "description": "Returns a page of projects. Only the parameters and fields used to look up projects in batch by slug are documented here.\n\nThis endpoint is public and requires no authentication. Rate limiting applies (default: 200 requests per 60 seconds per IP address).\n",
+        "description": "Returns a page of projects. Only the parameters and fields used to look up projects in batch by slug are documented here.\n\nThis endpoint is public and requires no authentication. Rate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
         "operationId": "listProjects",
         "tags": [
           "Projects"
@@ -197,7 +197,7 @@
             "name": "pageSize",
             "in": "query",
             "required": false,
-            "description": "Number of projects per page. Set it to at least the number of slugs to get every slug in one page.\n",
+            "description": "Number of projects per page. Set it to at least the number of slugs to get every slug in one page. At most 100 when `healthBreakdown=true`.\n",
             "schema": {
               "type": "integer",
               "default": 10,
@@ -219,6 +219,29 @@
         "responses": {
           "200": {
             "description": "A page of projects",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "Maximum number of requests allowed per window",
+                "schema": {
+                  "type": "integer",
+                  "example": 200
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Number of requests remaining in the current window",
+                "schema": {
+                  "type": "integer",
+                  "example": 199
+                }
+              },
+              "X-RateLimit-Reset": {
+                "description": "Seconds until the rate limit window resets",
+                "schema": {
+                  "type": "integer",
+                  "example": 42
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -257,6 +280,35 @@
                       "coveredCategoryCount": 3
                     }
                   ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`pageSize` is over 100 while `healthBreakdown=true`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "statusMessage": "pageSize must be at most 100 when healthBreakdown=true"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 429,
+                  "statusMessage": "Too Many Requests",
+                  "message": "Rate limit exceeded. Please wait 42 seconds before trying again."
                 }
               }
             }
