@@ -196,3 +196,58 @@ export const sortQuery = Type.Object({
     ),
   ),
 });
+
+// The collections pipe inserts the project slug before status.
+export type CollectionProjectTuple = [
+  ...head: ProjectHead,
+  slug: string,
+  status: string,
+  ...health: HealthTail,
+];
+
+export const isCollectionProjectTuple = (value: unknown): value is CollectionProjectTuple =>
+  Array.isArray(value) &&
+  value.length >= 14 &&
+  isProjectHead(value) &&
+  isString(value[8]) &&
+  isString(value[9]) &&
+  isHealthTail(value, 10);
+
+export const CollectionProject = Type.Object(
+  {
+    ...TopProject.properties,
+    slug: Type.String({ description: 'URL slug of the project.' }),
+  },
+  { title: 'CollectionProject' },
+);
+export type CollectionProject = Static<typeof CollectionProject>;
+
+export const toCollectionProject = ([
+  id,
+  count,
+  name,
+  logo,
+  softwareValue,
+  avgScore,
+  ,
+  description,
+  slug,
+  status,
+  healthScore,
+  healthLabel,
+  ,
+  healthMaxScore,
+]: CollectionProjectTuple): CollectionProject => ({
+  id,
+  count,
+  name,
+  slug,
+  logoUrl: logo,
+  description,
+  softwareValue,
+  avgScore,
+  healthScore,
+  healthLabel: healthLabel as CollectionProject['healthLabel'],
+  healthMaxScore,
+  status,
+});

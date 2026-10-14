@@ -3,10 +3,12 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  isCollectionProjectTuple,
   isTopCollectionTuple,
   isCategoryTopProjectTuple,
   isTopProjectTuple,
   toCategoryTopProject,
+  toCollectionProject,
   toTopCollection,
   toTopProject,
 } from '../src/lib/oss-index.js';
@@ -162,5 +164,67 @@ describe('tuple guards', () => {
     ['a null health score with a maximum', [...projectTuple.slice(0, 9), null, null, null, 100]],
   ])('reject a project tuple that is %s', (_label, value) => {
     expect(isTopProjectTuple(value)).toBe(false);
+  });
+});
+
+const collectionProjectTuple = [
+  'p1',
+  30,
+  'Node.js',
+  'https://logo.test/n.png',
+  2400,
+  0.8,
+  86,
+  'Runtime',
+  'nodejs-node',
+  'active',
+  74,
+  'healthy',
+  74,
+  100,
+];
+const withCollectionSlot = (index: number, value: unknown) =>
+  collectionProjectTuple.map((slot, i) => (i === index ? value : slot));
+
+describe('collection project tuple', () => {
+  it.each([
+    ['a scored', collectionProjectTuple],
+    ['an unscored', [...collectionProjectTuple.slice(0, 10), null, null, null, null]],
+  ])('is accepted with %s health tail', (_label, value) => {
+    expect(isCollectionProjectTuple(value)).toBe(true);
+  });
+
+  it.each([
+    ['not an array', 'x'],
+    ['the groups tuple', projectTuple],
+    ['without the health fields', collectionProjectTuple.slice(0, 10)],
+    ['a null slug', withCollectionSlot(8, null)],
+    ['a numeric status', withCollectionSlot(9, 1)],
+    ['a null logo', withCollectionSlot(3, null)],
+    ['a string v1 health score', withCollectionSlot(6, '86')],
+    ['an unknown health label', withCollectionSlot(11, 'great')],
+    [
+      'a health score above its maximum',
+      [...collectionProjectTuple.slice(0, 10), 80, 'healthy', 100, 75],
+    ],
+  ])('is rejected when %s', (_label, value) => {
+    expect(isCollectionProjectTuple(value)).toBe(false);
+  });
+
+  it('is mapped with the slug, logo renamed to logoUrl and the v2 health fields', () => {
+    expect(toCollectionProject(collectionProjectTuple as never)).toEqual({
+      id: 'p1',
+      count: 30,
+      name: 'Node.js',
+      slug: 'nodejs-node',
+      logoUrl: 'https://logo.test/n.png',
+      description: 'Runtime',
+      softwareValue: 2400,
+      avgScore: 0.8,
+      healthScore: 74,
+      healthLabel: 'healthy',
+      healthMaxScore: 100,
+      status: 'active',
+    });
   });
 });
