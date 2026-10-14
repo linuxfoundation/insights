@@ -6,6 +6,7 @@ import {
   callsTo,
   mockFetch,
   pipeCalls,
+  resolveSchema,
   tinybirdStub,
   useApp,
   type OpenApiDoc,
@@ -159,6 +160,8 @@ describe('GET /v1-alpha/oss-index/categories', () => {
       row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd', null, null, null, null]] }),
     ],
     ['a negative totalContributors', row({ totalContributors: -1 })],
+    ['a negative avgScore', row({ avgScore: -0.1 })],
+    ['an avgScore above 1', row({ avgScore: 1.1 })],
     ['a fractional softwareValue', row({ softwareValue: 1.5 })],
     [
       'a fractional project count',
@@ -183,5 +186,12 @@ describe('GET /v1-alpha/oss-index/categories', () => {
     const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
     const op = spec.paths[route]?.get as { tags?: string[] } | undefined;
     expect(op?.tags).toEqual(['OSS Index']);
+  });
+
+  it('publishes the 0 to 1 bounds the row guard enforces on avgScore', async () => {
+    const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
+    const ok = spec.paths[route]?.get?.responses['200']?.content['application/json']?.schema;
+    const category = resolveSchema(spec, resolveSchema(spec, ok)?.properties?.categories?.items);
+    expect(category?.properties?.avgScore).toMatchObject({ minimum: 0, maximum: 1 });
   });
 });

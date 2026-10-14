@@ -59,7 +59,7 @@ const isProjectHead = (value: unknown[]) =>
   isString(value[2]) &&
   isString(value[3]) &&
   isCount(value[4]) &&
-  inRange(value[5], 1) &&
+  inRange(value[5] as number, 1) &&
   isNumber(value[6]) &&
   isString(value[7]);
 
