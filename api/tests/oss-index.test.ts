@@ -4,7 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 import {
   isTopCollectionTuple,
+  isCategoryTopProjectTuple,
   isTopProjectTuple,
+  toCategoryTopProject,
   toTopCollection,
   toTopProject,
 } from '../src/lib/oss-index.js';
@@ -64,6 +66,51 @@ describe('toTopProject', () => {
       healthLabel: null,
       healthMaxScore: null,
     });
+  });
+});
+
+// The categories pipe sends the project tuple without its status slot.
+const categoryProjectTuple = [...projectTuple.slice(0, 8), ...projectTuple.slice(9)];
+const withCategorySlot = (index: number, value: unknown) =>
+  categoryProjectTuple.map((slot, i) => (i === index ? value : slot));
+
+describe('toCategoryTopProject', () => {
+  it('names each tuple slot, renames logo to logoUrl and takes the v2 health fields', () => {
+    expect(toCategoryTopProject(categoryProjectTuple as never)).toEqual({
+      id: 'p1',
+      count: 30,
+      name: 'Node.js',
+      logoUrl: 'https://logo.test/n.png',
+      description: 'Runtime',
+      softwareValue: 2400,
+      avgScore: 0.8,
+      healthScore: 74,
+      healthLabel: 'healthy',
+      healthMaxScore: 100,
+    });
+  });
+});
+
+describe('isCategoryTopProjectTuple', () => {
+  it.each([
+    ['a scored', categoryProjectTuple],
+    ['an unscored', [...categoryProjectTuple.slice(0, 8), null, null, null, null]],
+  ])('accepts a twelve slot tuple with %s health tail', (_label, value) => {
+    expect(isCategoryTopProjectTuple(value)).toBe(true);
+  });
+
+  it.each([
+    ['too short', categoryProjectTuple.slice(0, 11)],
+    ['without the health fields', categoryProjectTuple.slice(0, 8)],
+    ['a null logo', withCategorySlot(3, null)],
+    ['a string v1 health score', withCategorySlot(6, '86')],
+    ['an unknown health label', withCategorySlot(9, 'great')],
+    [
+      'a health score above its maximum',
+      [...categoryProjectTuple.slice(0, 8), 80, 'healthy', 100, 75],
+    ],
+  ])('rejects a tuple that is %s', (_label, value) => {
+    expect(isCategoryTopProjectTuple(value)).toBe(false);
   });
 });
 
