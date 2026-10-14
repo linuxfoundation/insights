@@ -188,6 +188,29 @@ describe('GET /api/project healthBreakdown flag', () => {
     }
   });
 
+  it('passes category scores through when coveredCategoryCount is null (archived shape)', async () => {
+    projectRows = [projectRow('archived')];
+    insightsRows = [
+      {
+        slug: 'archived',
+        maintainerHealthScoreV2: 20,
+        securitySupplyChainScoreV2: 24,
+        developmentActivityScoreV2: 8,
+        coveredCategoryCount: null,
+      },
+    ];
+    mockGetQuery.mockReturnValue({ slugs: ['archived'], healthBreakdown: 'true' });
+
+    const res = await handler({} as H3Event);
+
+    expect(res.data[0]).toMatchObject({
+      maintainerHealthScoreV2: 20,
+      securitySupplyChainScoreV2: 24,
+      developmentActivityScoreV2: 8,
+      coveredCategoryCount: null,
+    });
+  });
+
   it('skips project_insights on an empty page', async () => {
     projectRows = [];
     mockGetQuery.mockReturnValue({ slugs: ['nope'], healthBreakdown: 'true' });
