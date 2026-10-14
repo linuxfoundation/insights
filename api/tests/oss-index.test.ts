@@ -20,7 +20,13 @@ const projectTuple = [
   86,
   'Runtime',
   'active',
+  74,
+  'healthy',
+  74,
+  100,
 ];
+const withSlot = (index: number, value: unknown) =>
+  projectTuple.map((slot, i) => (i === index ? value : slot));
 
 describe('toTopCollection', () => {
   it('names each tuple slot', () => {
@@ -35,7 +41,7 @@ describe('toTopCollection', () => {
 });
 
 describe('toTopProject', () => {
-  it('names each tuple slot and renames logo to logoUrl', () => {
+  it('names each tuple slot, renames logo to logoUrl and takes the v2 health fields', () => {
     expect(toTopProject(projectTuple as never)).toEqual({
       id: 'p1',
       count: 30,
@@ -44,8 +50,19 @@ describe('toTopProject', () => {
       description: 'Runtime',
       softwareValue: 2400,
       avgScore: 0.8,
-      healthScore: 86,
+      healthScore: 74,
+      healthLabel: 'healthy',
+      healthMaxScore: 100,
       status: 'active',
+    });
+  });
+
+  it('keeps null v2 health fields for an unscored project', () => {
+    const unscored = [...projectTuple.slice(0, 9), null, null, null, null];
+    expect(toTopProject(unscored as never)).toMatchObject({
+      healthScore: null,
+      healthLabel: null,
+      healthMaxScore: null,
     });
   });
 });
@@ -54,8 +71,8 @@ describe('tuple guards', () => {
   it('accept well-formed tuples', () => {
     expect(isTopCollectionTuple(collectionTuple)).toBe(true);
     expect(isTopProjectTuple(projectTuple)).toBe(true);
-    expect(isTopProjectTuple([...projectTuple, 74, 'healthy', 74, 100])).toBe(true);
-    expect(isTopProjectTuple([...projectTuple, null, null, null, null])).toBe(true);
+    expect(isTopProjectTuple([...projectTuple.slice(0, 9), null, null, null, null])).toBe(true);
+    expect(isTopProjectTuple([...projectTuple.slice(0, 9), 64, 'excellent', 85, 75])).toBe(true);
   });
 
   it.each([
@@ -73,13 +90,18 @@ describe('tuple guards', () => {
   });
 
   it.each([
-    ['too short', projectTuple.slice(0, 8)],
-    ['a null logo', ['p1', 30, 'n', null, 2400, 0.8, 86, 'd', 'active']],
-    ['a numeric status', ['p1', 30, 'n', 'l', 2400, 0.8, 86, 'd', 1]],
-    ['a string health score', ['p1', 30, 'n', 'l', 2400, 0.8, '86', 'd', 'active']],
-    ['a negative count', ['p1', -30, 'n', 'l', 2400, 0.8, 86, 'd', 'active']],
-    ['a fractional count', ['p1', 30.5, 'n', 'l', 2400, 0.8, 86, 'd', 'active']],
-    ['a negative software value', ['p1', 30, 'n', 'l', -2400, 0.8, 86, 'd', 'active']],
+    ['too short', projectTuple.slice(0, 12)],
+    ['without the health fields', projectTuple.slice(0, 9)],
+    ['a null logo', withSlot(3, null)],
+    ['a numeric status', withSlot(8, 1)],
+    ['a string v1 health score', withSlot(6, '86')],
+    ['a negative count', withSlot(1, -30)],
+    ['a fractional count', withSlot(1, 30.5)],
+    ['a negative software value', withSlot(4, -2400)],
+    ['an unknown health label', withSlot(10, 'great')],
+    ['a health score above its maximum', [...projectTuple.slice(0, 9), 80, 'healthy', 100, 75]],
+    ['a health maximum no category set gives', withSlot(12, 90)],
+    ['a string scaled health score', withSlot(11, '74')],
   ])('reject a project tuple that is %s', (_label, value) => {
     expect(isTopProjectTuple(value)).toBe(false);
   });

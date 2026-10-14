@@ -85,7 +85,9 @@ describe('GET /v1-alpha/oss-index/groups', () => {
               description: 'Runtime',
               softwareValue: 24048486264,
               avgScore: 0,
-              healthScore: 86,
+              healthScore: 74,
+              healthLabel: 'healthy',
+              healthMaxScore: 100,
               status: 'active',
             },
           ],
@@ -140,10 +142,17 @@ describe('GET /v1-alpha/oss-index/groups', () => {
     ['a negative collection tuple count', row({ topCollections: [['c1', -1, 'n', 1, 1]] })],
     [
       'a fractional project tuple count',
-      row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd', 's']] }),
+      row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd', 's', null, null, null, null]] }),
     ],
     ['a short project tuple', row({ topProjects: [['p1', 1, 'n']] })],
-    ['a null project logo', row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd', 's']] })],
+    [
+      'a project tuple without health fields',
+      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 's']] }),
+    ],
+    [
+      'a null project logo',
+      row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd', 's', null, null, null, null]] }),
+    ],
   ])('answers 503 upstream_unavailable for %s', async (_label, bad) => {
     rows = [bad];
     const res = await get(route);

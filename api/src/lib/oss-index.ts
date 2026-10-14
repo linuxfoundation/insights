@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: MIT
 import { Type, type Static } from '@sinclair/typebox';
 
+import { nullableNumber } from '../schemas/common.js';
+import { HealthLabel, isHealthScore } from './overview.js';
 import { dataEnum, isCount, isString } from './security.js';
 
-// The pipes return positional tuples, so each slot the route names is type-checked and a null there
-// is malformed. Project tuples end in unread nullable health v2 slots, hence the minimum length.
+// The pipes return positional tuples, so each slot is type-checked before the route names it. Project
+// tuples keep the v1 health score, which the API drops, and end in the nullable v2 health fields.
 export type TopCollectionTuple = [
   id: string,
   count: number,
@@ -21,14 +23,19 @@ export type TopProjectTuple = [
   logo: string,
   softwareValue: number,
   avgScore: number,
-  healthScore: number,
+  v1HealthScore: number,
   description: string,
   status: string,
+  healthScore: number | null,
+  healthLabel: string | null,
+  scaledHealthScore: number | null,
+  healthMaxScore: number | null,
 ];
 
 // Counts and the UInt64 software value must be non-negative safe integers; only the Float64
 // scores use the finite-number check.
 const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
+const isNullableNumber = (value: unknown) => value === null || isNumber(value);
 
 export const isTopCollectionTuple = (value: unknown): value is TopCollectionTuple =>
   Array.isArray(value) &&
@@ -41,7 +48,7 @@ export const isTopCollectionTuple = (value: unknown): value is TopCollectionTupl
 
 export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   Array.isArray(value) &&
-  value.length >= 9 &&
+  value.length >= 13 &&
   isString(value[0]) &&
   isCount(value[1]) &&
   isString(value[2]) &&
@@ -50,7 +57,9 @@ export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   isNumber(value[5]) &&
   isNumber(value[6]) &&
   isString(value[7]) &&
-  isString(value[8]);
+  isString(value[8]) &&
+  isHealthScore(value[9], value[10], value[12]) &&
+  isNullableNumber(value[11]);
 
 export const TopCollection = Type.Object(
   {
@@ -73,7 +82,13 @@ export const TopProject = Type.Object(
     description: Type.String({ description: 'Short description of the project.' }),
     softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the project.' }),
     avgScore: Type.Number({ description: 'Average score of the project, from 0 to 1.' }),
-    healthScore: Type.Number({ description: 'Health score of the project, from 0 to 100.' }),
+    healthScore: nullableNumber(
+      'Health score, the sum of the three category scores, from 0 to `healthMaxScore`. Null when fewer than two categories have data.',
+    ),
+    healthLabel: HealthLabel,
+    healthMaxScore: nullableNumber(
+      'Highest score the covered categories allow: 60, 65, 75 or 100. Null when unknown.',
+    ),
     status: Type.String({ description: 'Lifecycle status of the project, for example `active`.' }),
   },
   { title: 'TopProject' },
@@ -95,9 +110,13 @@ export const toTopProject = ([
   logo,
   softwareValue,
   avgScore,
-  healthScore,
+  ,
   description,
   status,
+  healthScore,
+  healthLabel,
+  ,
+  healthMaxScore,
 ]: TopProjectTuple): TopProject => ({
   id,
   count,
@@ -107,6 +126,8 @@ export const toTopProject = ([
   softwareValue,
   avgScore,
   healthScore,
+  healthLabel: healthLabel as TopProject['healthLabel'],
+  healthMaxScore,
   status,
 });
 

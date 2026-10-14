@@ -4,7 +4,7 @@ import { Type, type Static, type TSchema } from '@sinclair/typebox';
 
 import { nullableEnum, nullableNumber, nullableString } from '../schemas/common.js';
 import { LeaderboardType } from './leaderboards.js';
-import { HealthLabel, ImpactLabel, LifecycleLabel } from './overview.js';
+import { HealthLabel, ImpactLabel, isHealthScore, LifecycleLabel } from './overview.js';
 import { dataEnum, enumGuard, isCount, isString } from './security.js';
 
 // OpenAPI 3.0 has no type 'null', so a nullable object carries `nullable` like the scalars in schemas/common.ts.
@@ -267,15 +267,12 @@ export interface CollectionProjectRow {
 
 const isProjectType = enumGuard(CollectionProjectType);
 const isStatus = enumGuard(ProjectStatus);
-const isHealthLabel = enumGuard(HealthLabel);
 const isLifecycleLabel = enumGuard(LifecycleLabel);
 const isImpactLabel = enumGuard(ImpactLabel);
 const isLeaderboardType = enumGuard(LeaderboardType);
 
 const upTo = (value: unknown, max: number) =>
   value === null || (isCount(value) && (value as number) <= max);
-// The maxima the pipe derives from the covered categories.
-const healthMaxScores = new Set<unknown>([60, 65, 75, 100, null]);
 const isPercentage = (value: unknown) => Number.isFinite(value);
 
 const isAchievement = (value: unknown) =>
@@ -310,12 +307,7 @@ export const isCollectionProjectRow = (row: unknown): row is CollectionProjectRo
     isPercentage(candidate.organizationDependencyPercentage) &&
     Array.isArray(candidate.achievements) &&
     candidate.achievements.every(isAchievement) &&
-    upTo(candidate.healthScoreV2, 100) &&
-    isHealthLabel(candidate.healthLabel) &&
-    healthMaxScores.has(candidate.healthMaxScore) &&
-    (candidate.healthScoreV2 === null ||
-      candidate.healthMaxScore === null ||
-      (candidate.healthScoreV2 as number) <= (candidate.healthMaxScore as number)) &&
+    isHealthScore(candidate.healthScoreV2, candidate.healthLabel, candidate.healthMaxScore) &&
     upTo(candidate.maintainerHealthScoreV2, 40) &&
     upTo(candidate.securitySupplyChainScoreV2, 35) &&
     upTo(candidate.developmentActivityScoreV2, 25) &&
