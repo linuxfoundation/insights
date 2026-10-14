@@ -34,7 +34,22 @@ const row = (overrides: Record<string, unknown> = {}) => ({
   avgScore: 0.41,
   projectCount: 171,
   topProjects: [
-    ['p1', 13759, 'Istio', 'https://logo.test/i.png', 475232855, 0, 83, 'Mesh', 'istio', 'active'],
+    [
+      'p1',
+      13759,
+      'Istio',
+      'https://logo.test/i.png',
+      475232855,
+      0,
+      83,
+      'Mesh',
+      'istio',
+      'active',
+      74,
+      'healthy',
+      74,
+      100,
+    ],
   ],
   ...overrides,
 });

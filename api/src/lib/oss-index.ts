@@ -214,7 +214,7 @@ export type CollectionProjectTuple = [
 
 export const isCollectionProjectTuple = (value: unknown): value is CollectionProjectTuple =>
   Array.isArray(value) &&
-  value.length === 10 &&
+  value.length >= 10 &&
   isString(value[0]) &&
   isCount(value[1]) &&
   isString(value[2]) &&

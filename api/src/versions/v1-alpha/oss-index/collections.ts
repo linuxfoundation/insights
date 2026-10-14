@@ -132,7 +132,7 @@ const collectionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         description:
           'Returns collections with their totals and leading projects. `categorySlug` and `categoryGroupId` narrow the list, ' +
           'and `sort` orders it by contributors or by software value. With `categorySlug`, the response also includes that category. ' +
-          'Pages follow position, as the Pagination guide describes. A final page that holds exactly `pageSize` collections still returns a `nextCursor`, and the page it points to is empty.',
+          'Pages follow position, as the Pagination guide describes. A final page that holds exactly `pageSize` collections may still return a `nextCursor`, and the page it points to is then empty.',
         querystring: Query,
         response: { 200: Collections },
       },

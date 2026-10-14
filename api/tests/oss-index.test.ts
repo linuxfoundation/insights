@@ -186,9 +186,15 @@ describe('collection project tuple', () => {
   });
 
   it.each([
+    ['a scored 14 slot tuple', [...collectionProjectTuple, 74, 'healthy', 74, 100]],
+    ['an unscored 14 slot tuple', [...collectionProjectTuple, null, null, null, null]],
+  ])('is accepted with %s', (_label, value) => {
+    expect(isCollectionProjectTuple(value)).toBe(true);
+  });
+
+  it.each([
     ['not an array', 'x'],
     ['the 9 slot tuple', projectTuple],
-    ['too long', [...collectionProjectTuple, 1]],
     ['a null slug', [...collectionProjectTuple.slice(0, 8), null, 'active']],
     ['a numeric status', [...collectionProjectTuple.slice(0, 9), 1]],
     ['a null logo', ['p1', 30, 'n', null, 1, 1, 1, 'd', 's', 'active']],
