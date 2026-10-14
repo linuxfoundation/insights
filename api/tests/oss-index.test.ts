@@ -92,8 +92,14 @@ describe('isCategoryTopProjectTuple', () => {
   });
 
   it.each([
+    ['a scored', [...categoryProjectTuple, 74, 'healthy', 74, 100]],
+    ['an unscored', [...categoryProjectTuple, null, null, null, null]],
+  ])('accepts a twelve slot tuple with %s health tail', (_label, value) => {
+    expect(isCategoryTopProjectTuple(value)).toBe(true);
+  });
+
+  it.each([
     ['too short', projectTuple.slice(0, 7)],
-    ['nine slots', projectTuple],
     ['a null logo', ['p1', 30, 'n', null, 2400, 0.8, 86, 'd']],
     ['a string health score', ['p1', 30, 'n', 'l', 2400, 0.8, '86', 'd']],
   ])('rejects a tuple that is %s', (_label, value) => {

@@ -31,7 +31,22 @@ const row = (overrides: Record<string, unknown> = {}) => ({
   softwareValue: 22334455569,
   avgScore: 0.255,
   topCollections: [['c1', 292599, 'Container Engines', 14653059859, 0.29]],
-  topProjects: [['p1', 119387, 'Kubernetes', 'https://logo.test/k.png', 6002018897, 0, 86, 'K8s']],
+  topProjects: [
+    [
+      'p1',
+      119387,
+      'Kubernetes',
+      'https://logo.test/k.png',
+      6002018897,
+      0,
+      86,
+      'K8s',
+      74,
+      'healthy',
+      74,
+      100,
+    ],
+  ],
   ...overrides,
 });
 
@@ -133,7 +148,6 @@ describe('GET /v1-alpha/oss-index/categories', () => {
     ['a non-array topProjects', row({ topProjects: 'x' })],
     ['a malformed collection tuple', row({ topCollections: [['c1', 1, null, 1, 1]] })],
     ['a short project tuple', row({ topProjects: [['p1', 1, 'n']] })],
-    ['a nine slot project tuple', row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 's']] })],
     ['a null project logo', row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd']] })],
     ['a negative totalContributors', row({ totalContributors: -1 })],
     ['a fractional softwareValue', row({ softwareValue: 1.5 })],
