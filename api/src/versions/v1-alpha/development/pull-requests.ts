@@ -5,7 +5,7 @@ import { Type, type Static } from '@sinclair/typebox';
 
 import { ActivityTypes } from '@lfx-insights/types';
 
-import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
+import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
   hasBucketBounds,
@@ -14,10 +14,11 @@ import {
   toTinybirdRange,
   type DateRange,
 } from '../../../lib/period.js';
+import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
+  CollectionSeriesQuery,
   nullableNumber,
   periodSummary,
-  ProjectSlugParams,
   SeriesQuery,
 } from '../../../schemas/common.js';
 
@@ -138,29 +139,33 @@ function toPullRequests(rows: PipeRows, current: DateRange): PullRequests {
   };
 }
 
+const measures =
+  'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
-  scope.get(
-    '/projects/:slug/development/pull-requests',
-    {
-      schema: {
-        tags: ['Development'],
-        summary: 'Get pull request activity',
-        description:
-          'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list after the project lookup alone; a known project makes up to 11 Tinybird calls: ten concurrent pipe queries, plus one project lookup when the process has no cached bucket for the slug.',
-        params: ProjectSlugParams,
-        querystring: SeriesQuery,
-        response: { 200: PullRequests },
-      },
+  widgetRoutes(scope, {
+    path: 'development/pull-requests',
+    tags: ['Development'],
+    summary: 'Get pull request activity',
+    project: {
+      description:
+        measures +
+        ' An unknown project returns zero counts and an empty `data` list after the project lookup alone; a known project makes up to 11 Tinybird calls: ten concurrent pipe queries, plus one project lookup when the process has no cached bucket for the slug.',
+      querystring: SeriesQuery,
+      response: PullRequests,
     },
-    async (request) => {
-      const { slug } = request.params;
+    collection: {
+      description: measures,
+      querystring: CollectionSeriesQuery,
+      response: PullRequests,
+    },
+    handler: async (request, withTarget) => {
       const { startDate, endDate, repos, granularity } = request.query;
       const { current, previous } = resolvePeriods(startDate, endDate);
 
-      const rows = await withBucket(request, slug, async (bucketId): Promise<PipeRows> => {
+      const rows = await withTarget(async (target): Promise<PipeRows> => {
         const base = {
-          project: slug,
-          bucketId,
+          ...target,
           repos: repoFilter(repos),
           onlyContributions: false,
           includeCodeContributions: true,
@@ -230,7 +235,7 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       }
       return toPullRequests(rows, current);
     },
-  );
+  });
 };
 
 export default pullRequestRoutes;

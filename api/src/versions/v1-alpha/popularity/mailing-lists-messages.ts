@@ -6,6 +6,7 @@ import { Type } from '@sinclair/typebox';
 import { ActivityPlatforms, ActivityTypes } from '@lfx-insights/types';
 
 import { fetchActivityCounts } from '../../../lib/activity-count.js';
+import { projectTarget } from '../../../lib/widget-scope.js';
 import {
   countType,
   periodSummary,
@@ -58,13 +59,18 @@ const mailingListsMessagesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { slug } = request.params;
       // Mirrors the widget, which leaves includeOtherContributions unset for messages.
-      const { summary, data } = await fetchActivityCounts(request, slug, request.query, {
-        activity_type: ActivityTypes.MESSAGE,
-        platform: ActivityPlatforms.GROUPS_IO,
-        onlyContributions: false,
-        includeCodeContributions: true,
-        includeCollaborations: true,
-      });
+      const { summary, data } = await fetchActivityCounts(
+        request,
+        projectTarget(request, slug),
+        request.query,
+        {
+          activity_type: ActivityTypes.MESSAGE,
+          platform: ActivityPlatforms.GROUPS_IO,
+          onlyContributions: false,
+          includeCodeContributions: true,
+          includeCollaborations: true,
+        },
+      );
       return {
         summary,
         data: data.map(({ count, ...bucket }) => ({ ...bucket, messages: count })),

@@ -62,13 +62,20 @@ export const Granularity = Type.Unsafe<`${Exclude<SharedGranularity, SharedGranu
   description: 'Width of each bucket in `data`.',
 });
 
-export const Platform =
+const pullRequestPlatform = (description: string) =>
   Type.Unsafe<`${ActivityPlatforms.GITHUB | ActivityPlatforms.GITLAB | ActivityPlatforms.GERRIT}`>({
     type: 'string',
     enum: [ActivityPlatforms.GITHUB, ActivityPlatforms.GITLAB, ActivityPlatforms.GERRIT],
-    description:
-      'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+    description,
   });
+
+export const Platform = pullRequestPlatform(
+  'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` the project endpoint returns; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+);
+
+export const CollectionPlatform = pullRequestPlatform(
+  'Count only pull requests from this platform: `github` pull requests, `gitlab` merge requests or `gerrit` changesets. These are the pull request platforms among the `connectedPlatforms` that `GET /v1-alpha/projects/{slug}` returns for each member project; other values there, such as `git`, get a 400. When omitted, all three are counted together.',
+);
 
 export const ContributionFlags = Type.Object({
   includeCollaborations: Type.Optional(
