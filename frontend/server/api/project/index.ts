@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
-import type { ProjectList, ProjectTinybird } from '~~/types/project';
+import type { ProjectInsightsTinybird, ProjectList, ProjectTinybird } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
 
 /**
@@ -16,6 +16,7 @@ import type { Pagination } from '~~/types/shared/pagination';
  * - count (boolean, optional): Whether to include the total count of projects (default: false).
  * - isLf (boolean, optional): If a project belongs to lf (default: false).
  * - collectionSlug (string, optional): The slug of the collection to filter projects by.
+ * - healthBreakdown (boolean, optional): Adds the Health Score v2 category scores to each project (default: false).
  *
  * Response:
  * - page (number): The current page number in the response.
@@ -51,6 +52,7 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
 
   const slugs = Array.isArray(query.slugs) ? query.slugs : query.slugs ? [query.slugs] : undefined;
   const healthScore: boolean | undefined = query?.healthScore === 'true' ? true : undefined;
+  const healthBreakdown: boolean | undefined = query?.healthBreakdown === 'true' ? true : undefined;
 
   try {
     const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
@@ -90,6 +92,28 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
           slug: undefined,
         },
       }));
+    }
+
+    if (res.data?.length > 0 && healthBreakdown) {
+      const projectSlugs = res.data.map((p: ProjectTinybird) => p.slug);
+      // project_insights returns 10 rows unless pageSize is set.
+      const insights = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+        '/v0/pipes/project_insights.json',
+        {
+          slugs: projectSlugs,
+          pageSize: projectSlugs.length,
+        },
+      );
+      projects = projects.map((p) => {
+        const breakdown = insights.data.find((i) => i.slug === p.slug);
+        return {
+          ...p,
+          maintainerHealthScoreV2: breakdown?.maintainerHealthScoreV2 ?? null,
+          securitySupplyChainScoreV2: breakdown?.securitySupplyChainScoreV2 ?? null,
+          developmentActivityScoreV2: breakdown?.developmentActivityScoreV2 ?? null,
+          coveredCategoryCount: breakdown?.coveredCategoryCount ?? null,
+        };
+      });
     }
 
     type ProjectCount = { 'count(id)': number };
