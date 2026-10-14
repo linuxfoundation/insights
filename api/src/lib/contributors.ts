@@ -66,3 +66,11 @@ export const Contributor = Type.Object({
     description: "The contributor's verified GitHub usernames. Empty when they have none.",
   }),
 });
+
+export const CollectionContributor = Type.Object({
+  ...Contributor.properties,
+  roles: Type.Array(Type.String(), {
+    description:
+      "Roles the contributor holds in the collection's repositories: `maintainer` or `contributor`, as read from files such as MAINTAINERS, CODEOWNERS and CONTRIBUTORS. A role counts whatever the period, including one that has ended. Empty when they hold none.",
+  }),
+});

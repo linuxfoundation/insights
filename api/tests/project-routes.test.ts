@@ -430,11 +430,14 @@ describe.each(names)('%s', (name) => {
 
 // The collection variant of every route that registers one, through the widget-scope helper.
 const collectionPrefix = collectionRoutePath('');
-const collectionRoutes = Object.entries(spec.paths).flatMap(([path, item]) =>
-  item.get && path.startsWith(collectionPrefix)
-    ? [{ name: path.slice(collectionPrefix.length), path, operation: item.get }]
-    : [],
-);
+// Routes of the collection itself, which have no project counterpart and their own test files.
+const collectionOwnRoutes = new Set(['metrics', 'projects']);
+const collectionRoutes = Object.entries(spec.paths).flatMap(([path, item]) => {
+  const name = path.slice(collectionPrefix.length);
+  return item.get && path.startsWith(collectionPrefix) && !collectionOwnRoutes.has(name)
+    ? [{ name, path, operation: item.get }]
+    : [];
+});
 const collectionNames = collectionRoutes.map((route) => route.name).sort();
 const collectionOf = (name: string) => collectionRoutes.find((route) => route.name === name)!;
 const collectionDeclares = (name: string, param: string) =>
@@ -646,6 +649,29 @@ describe.each(collectionNames)('collection scope: %s', (name) => {
       const slug = operation().parameters?.find((param) => param.name === 'slug');
       expect(slug?.required).toBe(true);
       expect(operation().description).toContain('unknown or private collection');
+    });
+
+    // The wording differs by scope, so only the structure is compared.
+    const shape = (node: unknown): unknown =>
+      Array.isArray(node)
+        ? node.map(shape)
+        : node !== null && typeof node === 'object'
+          ? Object.fromEntries(
+              Object.entries(node)
+                .filter(
+                  ([key, value]) =>
+                    !(['description', 'title'].includes(key) && typeof value === 'string'),
+                )
+                .map(([key, value]) => [key, shape(value)]),
+            )
+          : node;
+
+    it('takes the parameters and returns the response of the project route, less `repos`', () => {
+      const project = operationOf(name);
+      expect(shape(operation().parameters)).toEqual(
+        shape(project.parameters?.filter((param) => param.name !== 'repos')),
+      );
+      expect(shape(operation().responses)).toEqual(shape(project.responses));
     });
 
     it('reads as a collection, with no project wording left over', () => {

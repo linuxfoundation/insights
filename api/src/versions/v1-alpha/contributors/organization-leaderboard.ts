@@ -14,10 +14,20 @@ import {
 import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { currentPeriod } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { ActivityFilterQuery, paginated, PaginationQuery } from '../../../schemas/common.js';
+import {
+  ActivityFilterQuery,
+  CollectionActivityFilterQuery,
+  paginated,
+  PaginationQuery,
+} from '../../../schemas/common.js';
 
 const Query = Type.Object({
   ...ActivityFilterQuery.properties,
+  ...PaginationQuery.properties,
+});
+
+const CollectionQuery = Type.Object({
+  ...CollectionActivityFilterQuery.properties,
   ...PaginationQuery.properties,
 });
 
@@ -25,20 +35,35 @@ const OrganizationLeaderboard = paginated(Organization, {
   data: 'Up to `pageSize` organizations, ranked by contributions, most first. An unknown project gets an empty list.',
 });
 
+const CollectionOrganizationLeaderboard = paginated(Organization, {
+  data: 'Up to `pageSize` organizations, ranked by contributions, most first.',
+});
+
+const ranking =
+  'Organizations with the same count are ordered by an internal organization ID, so tied organizations keep their order from one page to the next. ' +
+  'Pages follow rank position, as the Pagination guide describes: an organization whose rank changes between your requests can be skipped or repeated. ' +
+  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today.';
+
 const organizationLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'contributors/organization-leaderboard',
-    schema: {
-      tags: ['Contributors'],
-      summary: 'Get the organization leaderboard',
+    tags: ['Contributors'],
+    summary: 'Get the organization leaderboard',
+    project: {
       description:
         "Returns the organizations contributing to the project, ranked by their contributions in the period, most first, with each one's contribution count and share, one page at a time. " +
-        'Organizations with the same count are ordered by an internal organization ID, so tied organizations keep their order from one page to the next. ' +
-        'Pages follow rank position, as the Pagination guide describes: an organization whose rank changes between your requests can be skipped or repeated. ' +
-        'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
-        'An unknown project returns an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
+        ranking +
+        ' An unknown project returns an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
       querystring: Query,
-      response: { 200: OrganizationLeaderboard },
+      response: OrganizationLeaderboard,
+    },
+    collection: {
+      description:
+        "Returns the organizations contributing to the collection, ranked by their contributions in the period, most first, with each one's contribution count and share, one page at a time. " +
+        ranking +
+        ' Organization identity fields are provisional in /v1-alpha.',
+      querystring: CollectionQuery,
+      response: CollectionOrganizationLeaderboard,
     },
     handler: async (request, withTarget) => {
       const current = currentPeriod(request.query);

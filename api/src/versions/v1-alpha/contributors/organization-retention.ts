@@ -5,6 +5,7 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import { resolvePeriods, toTinybirdRange } from '../../../lib/period.js';
 import {
+  CollectionRetentionQuery,
   isRetentionRow,
   RetentionQuery,
   retentionResponse,
@@ -15,22 +16,35 @@ import { widgetRoutes } from '../../../lib/widget-scope.js';
 
 const pipePath = '/v0/pipes/organization_retention.json';
 
-const OrganizationRetention = retentionResponse('organization');
+const OrganizationRetention = retentionResponse('organization', 'project');
+const CollectionOrganizationRetention = retentionResponse('organization', 'collection');
+
+const measure =
+  "Returns, per granularity bucket, the share of the previous bucket's organizations that were active again in this bucket. " +
+  'Activity counts the kinds the contribution flags select, as on the other Contributors endpoints, so stars and forks never count. ' +
+  'The comparison is bucket over bucket, not against the whole period.';
+
+const period =
+  'Without dates the period runs from 2010-01-01 to today, and it runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const organizationRetentionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'contributors/organization-retention',
-    schema: {
-      tags: ['Contributors'],
-      summary: 'Get organization retention',
+    tags: ['Contributors'],
+    summary: 'Get organization retention',
+    project: {
       description:
-        "Returns, per granularity bucket, the share of the previous bucket's organizations that were active again in this bucket. " +
-        'Activity counts the kinds the contribution flags select, as on the other Contributors endpoints, so stars and forks never count. ' +
-        'The comparison is bucket over bucket, not against the whole period. `repos` narrows it to those repositories. ' +
-        'Without dates the period runs from 2010-01-01 to today, and it runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. ' +
-        'An unknown project returns an empty `data` list.',
+        measure +
+        ' `repos` narrows it to those repositories. ' +
+        period +
+        ' An unknown project returns an empty `data` list.',
       querystring: RetentionQuery,
-      response: { 200: OrganizationRetention },
+      response: OrganizationRetention,
+    },
+    collection: {
+      description: `${measure} ${period}`,
+      querystring: CollectionRetentionQuery,
+      response: CollectionOrganizationRetention,
     },
     handler: async (request, withTarget) => {
       const {

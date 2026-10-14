@@ -16,6 +16,7 @@ import {
 import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
   BucketBounds,
+  CollectionSeriesQuery,
   ContributionFlags,
   periodSummary,
   SeriesQuery,
@@ -37,6 +38,11 @@ interface SeriesRow {
 
 const ActiveContributorsQuery = Type.Object({
   ...SeriesQuery.properties,
+  ...ContributionFlags.properties,
+});
+
+const CollectionActiveContributorsQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
   ...ContributionFlags.properties,
 });
 
@@ -72,16 +78,38 @@ const ActiveContributors = Type.Object({
   }),
 });
 
+const CollectionActiveContributors = Type.Object({
+  ...ActiveContributors.properties,
+  maintainerCount: Type.Integer({
+    description:
+      'People listed in a maintainer file of a repository in the collection, such as MAINTAINERS, CODEOWNERS or CONTRIBUTORS, at some point in the current period, whatever role the file gives them, contributor included (count). It counts from the maintainer files alone, so activity and the contribution flags leave it unchanged.',
+  }),
+});
+
+const counting =
+  'Returns the number of active contributors in the period against the comparison period before it, the maintainer and reviewer counts in the period, and the active contributors per bucket. An active contributor is a person with at least one activity in the period of a kind the contribution flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true.';
+
+const period =
+  'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const activeContributorsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'contributors/active-contributors',
-    schema: {
-      tags: ['Contributors'],
-      summary: 'Get active contributors',
+    tags: ['Contributors'],
+    summary: 'Get active contributors',
+    project: {
       description:
-        'Returns the number of active contributors in the period against the comparison period before it, the maintainer and reviewer counts in the period, and the active contributors per bucket. An active contributor is a person with at least one activity in the period of a kind the contribution flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true. `repos` narrows every count to those repositories. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+        counting +
+        ' `repos` narrows every count to those repositories. ' +
+        period +
+        ' An unknown project returns zero counts and an empty `data` list.',
       querystring: ActiveContributorsQuery,
-      response: { 200: ActiveContributors },
+      response: ActiveContributors,
+    },
+    collection: {
+      description: `${counting} ${period}`,
+      querystring: CollectionActiveContributorsQuery,
+      response: CollectionActiveContributors,
     },
     handler: async (request, withTarget) => {
       const {

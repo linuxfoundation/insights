@@ -5,6 +5,7 @@ import { Type } from '@sinclair/typebox';
 
 import { activityFilterParams, fetchPipe } from '../../../clients/tinybird.js';
 import {
+  CollectionContributor,
   Contributor,
   type ContributorRow,
   contributorsLeaderboardPath,
@@ -15,10 +16,20 @@ import {
 import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { currentPeriod } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { ActivityFilterQuery, paginated, PaginationQuery } from '../../../schemas/common.js';
+import {
+  ActivityFilterQuery,
+  CollectionActivityFilterQuery,
+  paginated,
+  PaginationQuery,
+} from '../../../schemas/common.js';
 
 const Query = Type.Object({
   ...ActivityFilterQuery.properties,
+  ...PaginationQuery.properties,
+});
+
+const CollectionQuery = Type.Object({
+  ...CollectionActivityFilterQuery.properties,
   ...PaginationQuery.properties,
 });
 
@@ -26,20 +37,35 @@ const ContributorLeaderboard = paginated(Contributor, {
   data: 'Up to `pageSize` contributors, ranked by contributions, most first. An unknown project gets an empty list.',
 });
 
+const CollectionContributorLeaderboard = paginated(CollectionContributor, {
+  data: 'Up to `pageSize` contributors, ranked by contributions, most first.',
+});
+
+const ranking =
+  'Contributors with the same count are ordered by an internal contributor ID, so tied contributors keep their order from one page to the next. ' +
+  'Pages follow rank position, as the Pagination guide describes: a contributor whose rank changes between your requests can be skipped or repeated. ' +
+  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today.';
+
 const contributorLeaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'contributors/contributor-leaderboard',
-    schema: {
-      tags: ['Contributors'],
-      summary: 'Get the contributor leaderboard',
+    tags: ['Contributors'],
+    summary: 'Get the contributor leaderboard',
+    project: {
       description:
         "Returns the project's contributors ranked by their contributions in the period, most first, with each one's contribution count and share, one page at a time. " +
-        'Contributors with the same count are ordered by an internal contributor ID, so tied contributors keep their order from one page to the next. ' +
-        'Pages follow rank position, as the Pagination guide describes: a contributor whose rank changes between your requests can be skipped or repeated. ' +
-        'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
-        'An unknown project returns an empty `data` list. Contributor identity fields are provisional in /v1-alpha.',
+        ranking +
+        ' An unknown project returns an empty `data` list. Contributor identity fields are provisional in /v1-alpha.',
       querystring: Query,
-      response: { 200: ContributorLeaderboard },
+      response: ContributorLeaderboard,
+    },
+    collection: {
+      description:
+        "Returns the collection's contributors ranked by their contributions in the period, most first, with each one's contribution count and share, one page at a time. " +
+        ranking +
+        ' Contributor identity fields are provisional in /v1-alpha.',
+      querystring: CollectionQuery,
+      response: CollectionContributorLeaderboard,
     },
     handler: async (request, withTarget) => {
       const current = currentPeriod(request.query);

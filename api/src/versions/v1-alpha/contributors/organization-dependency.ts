@@ -14,7 +14,7 @@ import {
 } from '../../../lib/organizations.js';
 import { currentPeriod } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { ActivityFilterQuery } from '../../../schemas/common.js';
+import { ActivityFilterQuery, CollectionActivityFilterQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/organization_dependency.json';
 
@@ -65,21 +65,41 @@ const OrganizationDependency = Type.Object({
   }),
 });
 
+const CollectionOrganizationDependency = Type.Object({
+  topOrganizations: TopOrganizations,
+  otherOrganizations: OtherOrganizations,
+  data: Type.Array(Organization, {
+    description:
+      'The five organizations with the most contributions in the period, most first, ranked as the organization leaderboard ranks them. Fewer when the period has fewer organizations.',
+  }),
+});
+
+const topGroup =
+  'The top group is the smallest set of organizations, taken from the most contributions down, whose shares together reach 51% of the contributions attributed to organizations in the period; its share is their running total at that point, so it is usually a little above 51%. ' +
+  'Only the 10 organizations with the most contributions are considered: when together they hold less than 51%, the top group is those 10 and its share stays below 51%. ' +
+  'The top five are ranked by contributions, most first, and organizations with the same count are ordered by an internal organization ID, as in the organization leaderboard. ' +
+  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today.';
+
 const organizationDependencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'contributors/organization-dependency',
-    schema: {
-      tags: ['Contributors'],
-      summary: 'Get the organization dependency',
+    tags: ['Contributors'],
+    summary: 'Get the organization dependency',
+    project: {
       description:
         "Returns the project's organization dependency in the period: how many organizations make up the top group and their combined share of contributions, the count and share of all other organizations, and the five organizations with the most contributions. " +
-        'The top group is the smallest set of organizations, taken from the most contributions down, whose shares together reach 51% of the contributions attributed to organizations in the period; its share is their running total at that point, so it is usually a little above 51%. ' +
-        'Only the 10 organizations with the most contributions are considered: when together they hold less than 51%, the top group is those 10 and its share stays below 51%. ' +
-        'The top five are ranked by contributions, most first, and organizations with the same count are ordered by an internal organization ID, as in the organization leaderboard. ' +
-        'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`; without dates it runs from 2010-01-01 to today. ' +
-        'An unknown project, or a period without matching contributions, returns zero counts and shares and an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
+        topGroup +
+        ' An unknown project, or a period without matching contributions, returns zero counts and shares and an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
       querystring: ActivityFilterQuery,
-      response: { 200: OrganizationDependency },
+      response: OrganizationDependency,
+    },
+    collection: {
+      description:
+        "Returns the collection's organization dependency in the period: how many organizations make up the top group and their combined share of contributions, the count and share of all other organizations, and the five organizations with the most contributions. " +
+        topGroup +
+        ' A period without matching contributions returns zero counts and shares and an empty `data` list. Organization identity fields are provisional in /v1-alpha.',
+      querystring: CollectionActivityFilterQuery,
+      response: CollectionOrganizationDependency,
     },
     handler: async (request, withTarget) => {
       const current = currentPeriod(request.query);
