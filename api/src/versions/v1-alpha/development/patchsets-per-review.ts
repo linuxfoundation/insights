@@ -14,7 +14,11 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { nullablePeriodSummary, SeriesQuery } from '../../../schemas/common.js';
+import {
+  CollectionSeriesQuery,
+  nullablePeriodSummary,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 interface SummaryRow {
   patchsetsPerReview?: number | null;
@@ -39,6 +43,11 @@ const PatchsetsPerReviewQuery = Type.Object({
         'Statistic the pipe computes over the patchset counts of the Gerrit changesets in each period and bucket, and so what `summary` and every `value` hold: `median` (the default, as in the Insights widget) or `average`.',
     }),
   ),
+});
+
+const CollectionPatchsetsPerReviewQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  stat: PatchsetsPerReviewQuery.properties.stat,
 });
 
 const PatchsetsPerReviewSummary = nullablePeriodSummary({
@@ -77,19 +86,27 @@ const PatchsetsPerReview = Type.Object({
   ),
 });
 
+const measures =
+  'Returns the number of patchsets a Gerrit changeset needed during review, as the median or the average per `stat`: a `summary` comparing the current period with the comparison period before it, and one `value` per time bucket of the requested granularity in `data`. Patchsets are a Gerrit concept, so the data covers Gerrit changesets only, each counted by the day it was opened and only when it carries a patchset count. ' +
+  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
+  'A period without such a changeset has a null summary value, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket without one has `value` 0.';
+
 const patchsetsPerReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/patchsets-per-review',
-    schema: {
-      tags: ['Development'],
-      summary: 'Patchsets per review',
+    tags: ['Development'],
+    summary: 'Patchsets per review',
+    project: {
       description:
-        'Returns the number of patchsets a Gerrit changeset needed during review, as the median or the average per `stat`: a `summary` comparing the current period with the comparison period before it, and one `value` per time bucket of the requested granularity in `data`. Patchsets are a Gerrit concept, so the data covers Gerrit changesets only, each counted by the day it was opened and only when it carries a patchset count. ' +
-        'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
-        'A period without such a changeset has a null summary value, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket without one has `value` 0. ' +
-        'An unknown project returns a null summary with the requested period bounds and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
+        measures +
+        ' An unknown project returns a null summary with the requested period bounds and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
       querystring: PatchsetsPerReviewQuery,
-      response: { 200: PatchsetsPerReview },
+      response: PatchsetsPerReview,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionPatchsetsPerReviewQuery,
+      response: PatchsetsPerReview,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, stat = 'median' } = request.query;

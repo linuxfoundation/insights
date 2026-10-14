@@ -16,6 +16,8 @@ import {
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
 import {
+  CollectionPlatform,
+  CollectionSeriesQuery,
   nullablePeriodSummary,
   periodSummary,
   Platform,
@@ -48,6 +50,11 @@ const isRow = (row: SummaryRow) =>
 const Query = Type.Object({
   ...SeriesQuery.properties,
   platform: Type.Optional(Platform),
+});
+
+const CollectionQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  platform: Type.Optional(CollectionPlatform),
 });
 
 const ReviewEfficiencySummary = nullablePeriodSummary({
@@ -114,19 +121,33 @@ const counts = (rows: SummaryRow[]): Counts => ({
 // Unclamped: the pipe counts closed as a subset of opened, so above 100 means bad upstream data.
 const efficiency = ({ opened, closed }: Counts) => (opened > 0 ? (closed / opened) * 100 : null);
 
+const measures =
+  'Returns the pull requests opened in the period that have since been closed, as a percentage of all pull requests opened in the period (`efficiencyPercentage`), against the comparison period before it; the opened and closed counts as their own summaries; and both counts per bucket. Closed means the pull request has a resolution time in the pipe, merged or closed, at any time up to now, so an older period has had longer to close its pull requests. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and because `closed` counts a subset of `opened` it runs from 0 to 100. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null.';
+
+const period =
+  'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ.';
+
 const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/review-efficiency',
-    schema: {
-      tags: ['Development'],
-      summary: 'Review efficiency',
+    tags: ['Development'],
+    summary: 'Review efficiency',
+    project: {
       description:
-        'Returns the pull requests opened in the period that have since been closed, as a percentage of all pull requests opened in the period (`efficiencyPercentage`), against the comparison period before it; the opened and closed counts as their own summaries; and both counts per bucket. Closed means the pull request has a resolution time in the pipe, merged or closed, at any time up to now, so an older period has had longer to close its pull requests. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and because `closed` counts a subset of `opened` it runs from 0 to 100. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null. ' +
-        'Pull requests cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without `platform` the pipe applies no platform filter and counts pull requests from every platform the project has pull request data for. `granularity` has no default and must be sent. ' +
-        'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
-        'An unknown project returns a null efficiency, zero counts and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
+        measures +
+        ' Pull requests cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` on the project endpoint can list further platforms, such as `git`, and those get a 400 here. Without `platform` the pipe applies no platform filter and counts pull requests from every platform the project has pull request data for. `granularity` has no default and must be sent. ' +
+        period +
+        ' An unknown project returns a null efficiency, zero counts and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
       querystring: Query,
-      response: { 200: ReviewEfficiency },
+      response: ReviewEfficiency,
+    },
+    collection: {
+      description:
+        measures +
+        ' Pull requests cover GitHub pull requests, GitLab merge requests and Gerrit changesets. `platform` narrows the counts to one of them; `connectedPlatforms` from `GET /v1-alpha/projects/{slug}` can list further platforms for a member project, such as `git`, and those get a 400 here. Without `platform` the pipe applies no platform filter and counts pull requests from every platform the collection has pull request data for. `granularity` has no default and must be sent. ' +
+        period,
+      querystring: CollectionQuery,
+      response: ReviewEfficiency,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, platform } = request.query;

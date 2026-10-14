@@ -13,7 +13,12 @@ import {
   type DateRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { ContributionFlags, DateRangeQuery, periodSummary } from '../../../schemas/common.js';
+import {
+  ContributionFlags,
+  DateRangeQuery,
+  PeriodQuery,
+  periodSummary,
+} from '../../../schemas/common.js';
 
 interface HeatmapRow {
   weekday: number;
@@ -25,6 +30,11 @@ const pipePath = '/v0/pipes/activity_heatmap_by_weekday_and_2hours_blocks.json';
 
 const Query = Type.Object({
   ...DateRangeQuery.properties,
+  ...ContributionFlags.properties,
+});
+
+const CollectionQuery = Type.Object({
+  ...PeriodQuery.properties,
   ...ContributionFlags.properties,
 });
 
@@ -68,6 +78,14 @@ const ContributionsOutsideWorkHours = Type.Object({
   }),
 });
 
+const CollectionContributionsOutsideWorkHours = Type.Object({
+  ...ContributionsOutsideWorkHours.properties,
+  data: Type.Array(HeatmapCell, {
+    description:
+      'Heatmap of the current period: the full grid of 7 weekdays by 12 two-hour blocks, ordered by weekday then hour, with `contributions: 0` for a block with no activity.',
+  }),
+});
+
 const isWeekend = (row: HeatmapRow) => row.weekday >= 6;
 const isWeekdayOutsideWorkHours = (row: HeatmapRow) =>
   row.weekday <= 5 && (row.twoHoursBlock >= 18 || row.twoHoursBlock < 8);
@@ -75,20 +93,26 @@ const sum = (rows: HeatmapRow[]) => rows.reduce((total, row) => total + row.acti
 // A period with no contributions has a zero share, as the Nuxt widget reports.
 const share = (part: number, total: number) => (total === 0 ? 0 : (part / total) * 100);
 
+const measures =
+  'Returns the heatmap of contributions by weekday and 2-hour block for the current period, the share of contributions made outside work hours for the current and the previous period, and that share split into weekdays and weekends. ' +
+  'Outside work hours means Monday to Friday from 18:00 to 08:00, plus all of Saturday and Sunday. ' +
+  "Weekdays and hours are in each contributor's local time: the activity timestamp is shifted by an offset derived from the contributor's profile country or location, and contributors without a mappable location are left out. " +
+  '`startDate` and `endDate` filter on the original UTC timestamps: the period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Counts cover git, GitHub, GitLab and Gerrit activity, and the underlying dataset is rebuilt once a day.';
+
 const contributionsOutsideWorkHoursRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/contributions-outside-work-hours',
-    schema: {
-      tags: ['Development'],
-      summary: 'Contributions outside work hours',
-      description:
-        'Returns the heatmap of contributions by weekday and 2-hour block for the current period, the share of contributions made outside work hours for the current and the previous period, and that share split into weekdays and weekends. ' +
-        'Outside work hours means Monday to Friday from 18:00 to 08:00, plus all of Saturday and Sunday. ' +
-        "Weekdays and hours are in each contributor's local time: the activity timestamp is shifted by an offset derived from the contributor's profile country or location, and contributors without a mappable location are left out. " +
-        '`startDate` and `endDate` filter on the original UTC timestamps: the period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Counts cover git, GitHub, GitLab and Gerrit activity, and the underlying dataset is rebuilt once a day. ' +
-        'An unknown project returns zero shares and an empty heatmap.',
+    tags: ['Development'],
+    summary: 'Contributions outside work hours',
+    project: {
+      description: measures + ' An unknown project returns zero shares and an empty heatmap.',
       querystring: Query,
-      response: { 200: ContributionsOutsideWorkHours },
+      response: ContributionsOutsideWorkHours,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionQuery,
+      response: CollectionContributionsOutsideWorkHours,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, includeCollaborations, includeCodeContributions } =

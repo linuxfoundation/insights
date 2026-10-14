@@ -14,7 +14,13 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { nullablePeriodSummary, Platform, SeriesQuery } from '../../../schemas/common.js';
+import {
+  CollectionPlatform,
+  CollectionSeriesQuery,
+  nullablePeriodSummary,
+  Platform,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 interface SummaryRow {
   medianTimeToReviewSeconds?: number | null;
@@ -40,6 +46,11 @@ const pipePath = '/v0/pipes/median_time_to_review.json';
 const MedianTimeToReviewQuery = Type.Object({
   ...SeriesQuery.properties,
   platform: Type.Optional(Platform),
+});
+
+const CollectionMedianTimeToReviewQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  platform: Type.Optional(CollectionPlatform),
 });
 
 const durationSummary = (measure: string, title: string) =>
@@ -80,20 +91,28 @@ const MedianTimeToReview = Type.Object({
   }),
 });
 
+const measures =
+  'Returns the median time from a pull request being opened to its first review, in seconds, as a summary for the current period against the comparison period before it (`summary`) and per bucket of the requested granularity (`data`). The period selects pull requests by the day they were opened. Only pull requests with a positive time to review count, so a first review recorded in the same second the pull request was opened is left out. ' +
+  '`platform` narrows the pull requests to one source platform; when omitted, GitHub pull requests, GitLab merge requests and Gerrit changesets are counted together. ' +
+  'A period without such a pull request has a null median, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket without such a pull request reports 0. `granularity` has no default and must be sent. ' +
+  'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const medianTimeToReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/median-time-to-review',
-    schema: {
-      tags: ['Development'],
-      summary: 'Get median time to review',
+    tags: ['Development'],
+    summary: 'Get median time to review',
+    project: {
       description:
-        'Returns the median time from a pull request being opened to its first review, in seconds, as a summary for the current period against the comparison period before it (`summary`) and per bucket of the requested granularity (`data`). The period selects pull requests by the day they were opened. Only pull requests with a positive time to review count, so a first review recorded in the same second the pull request was opened is left out. ' +
-        '`platform` narrows the pull requests to one source platform; when omitted, GitHub pull requests, GitLab merge requests and Gerrit changesets are counted together. ' +
-        'A period without such a pull request has a null median, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket without such a pull request reports 0. `granularity` has no default and must be sent. ' +
-        'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. ' +
-        'An unknown project returns a null summary and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
+        measures +
+        ' An unknown project returns a null summary and an empty `data` list after the project lookup alone; a known project makes three concurrent pipe calls, plus one project lookup when the process has no cached bucket for the slug.',
       querystring: MedianTimeToReviewQuery,
-      response: { 200: MedianTimeToReview },
+      response: MedianTimeToReview,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionMedianTimeToReviewQuery,
+      response: MedianTimeToReview,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity, platform } = request.query;

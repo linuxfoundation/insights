@@ -15,7 +15,7 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { periodSummary, SeriesQuery } from '../../../schemas/common.js';
+import { CollectionSeriesQuery, periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/activities_count.json';
 
@@ -64,16 +64,23 @@ const CodeReviews = Type.Object({
   }),
 });
 
+const measures =
+  'Returns the code reviews in the period against the comparison period before it, and the code reviews in each bucket. A code review is one of these activities: a GitHub pull request review (`pull_request-reviewed`), a GitLab merge request approval or change request (`merge_request-review-approved`, `merge_request-review-changes-requested`), or a Gerrit changeset or patchset comment (`changeset_comment-created`, `patchset_comment-created`). The two Gerrit comment types also count as review comments, so this endpoint and `review-comments` overlap on them. `granularity` has no default and must be sent. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const codeReviewsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/code-reviews',
-    schema: {
-      tags: ['Development'],
-      summary: 'Get code reviews',
-      description:
-        'Returns the code reviews in the period against the comparison period before it, and the code reviews in each bucket. A code review is one of these activities: a GitHub pull request review (`pull_request-reviewed`), a GitLab merge request approval or change request (`merge_request-review-approved`, `merge_request-review-changes-requested`), or a Gerrit changeset or patchset comment (`changeset_comment-created`, `patchset_comment-created`). The two Gerrit comment types also count as review comments, so this endpoint and `review-comments` overlap on them. `granularity` has no default and must be sent. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+    tags: ['Development'],
+    summary: 'Get code reviews',
+    project: {
+      description: measures + ' An unknown project returns zero counts and an empty `data` list.',
       querystring: SeriesQuery,
-      response: { 200: CodeReviews },
+      response: CodeReviews,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionSeriesQuery,
+      response: CodeReviews,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity } = request.query;

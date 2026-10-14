@@ -15,7 +15,7 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { periodSummary, SeriesQuery } from '../../../schemas/common.js';
+import { CollectionSeriesQuery, periodSummary, SeriesQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/activities_count.json';
 
@@ -55,16 +55,23 @@ const ReviewComments = Type.Object({
   }),
 });
 
+const measures =
+  'Returns the review comments made in the period against the comparison period before it, and the review comments in each bucket. A review comment is an activity of type `pull_request-comment`, `pull_request-review-thread-comment`, `merge_request-comment`, `changeset_comment-created` or `patchset_comment-created`; the last two are also counted by the `code-reviews` endpoint, so the two overlap on Gerrit comments. `granularity` is required: a request without it is rejected with 400, unlike the Insights UI, which defaults it to quarterly. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const reviewCommentsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/review-comments',
-    schema: {
-      tags: ['Development'],
-      summary: 'Get review comments',
-      description:
-        'Returns the review comments made in the period against the comparison period before it, and the review comments in each bucket. A review comment is an activity of type `pull_request-comment`, `pull_request-review-thread-comment`, `merge_request-comment`, `changeset_comment-created` or `patchset_comment-created`; the last two are also counted by the `code-reviews` endpoint, so the two overlap on Gerrit comments. `granularity` is required: a request without it is rejected with 400, unlike the Insights UI, which defaults it to quarterly. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+    tags: ['Development'],
+    summary: 'Get review comments',
+    project: {
+      description: measures + ' An unknown project returns zero counts and an empty `data` list.',
       querystring: SeriesQuery,
-      response: { 200: ReviewComments },
+      response: ReviewComments,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionSeriesQuery,
+      response: ReviewComments,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity } = request.query;

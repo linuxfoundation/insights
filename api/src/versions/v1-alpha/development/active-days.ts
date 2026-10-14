@@ -14,7 +14,12 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { ContributionFlags, periodSummary, SeriesQuery } from '../../../schemas/common.js';
+import {
+  CollectionSeriesQuery,
+  ContributionFlags,
+  periodSummary,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/active_days.json';
 
@@ -31,6 +36,11 @@ interface SeriesRow {
 
 const ActiveDaysQuery = Type.Object({
   ...SeriesQuery.properties,
+  includeCollaborations: ContributionFlags.properties.includeCollaborations,
+});
+
+const CollectionActiveDaysQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
   includeCollaborations: ContributionFlags.properties.includeCollaborations,
 });
 
@@ -66,16 +76,23 @@ const ActiveDays = Type.Object({
   }),
 });
 
+const measures =
+  'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends the day before `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/active-days',
-    schema: {
-      tags: ['Development'],
-      summary: 'Get active days',
-      description:
-        'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends the day before `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zeros and an empty `data` list.',
+    tags: ['Development'],
+    summary: 'Get active days',
+    project: {
+      description: measures + ' An unknown project returns zeros and an empty `data` list.',
       querystring: ActiveDaysQuery,
-      response: { 200: ActiveDays },
+      response: ActiveDays,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionActiveDaysQuery,
+      response: ActiveDays,
     },
     handler: async (request, withTarget) => {
       const {

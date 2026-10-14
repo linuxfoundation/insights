@@ -7,11 +7,21 @@ import { ActivityTypes } from '@lfx-insights/types';
 
 import { fetchActivityCounts } from '../../../lib/activity-count.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { countType, periodSummary, SeriesQuery } from '../../../schemas/common.js';
+import {
+  CollectionSeriesQuery,
+  countType,
+  periodSummary,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const CommitActivitiesQuery = Type.Object({
   ...SeriesQuery.properties,
   countType: countType('the commits made'),
+});
+
+const CollectionCommitActivitiesQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  countType: CommitActivitiesQuery.properties.countType,
 });
 
 const CommitSummary = periodSummary({
@@ -36,16 +46,23 @@ const CommitActivities = Type.Object({
   ),
 });
 
+const measures =
+  'Returns commit counts per time bucket of the requested granularity, as new commits in each bucket or as a cumulative total, plus a summary comparing the current period with the comparison period before it. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/commit-activities',
-    schema: {
-      tags: ['Development'],
-      summary: 'Get commit activities',
-      description:
-        'Returns commit counts per time bucket of the requested granularity, as new commits in each bucket or as a cumulative total, plus a summary comparing the current period with the comparison period before it. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+    tags: ['Development'],
+    summary: 'Get commit activities',
+    project: {
+      description: measures + ' An unknown project returns zero counts and an empty `data` list.',
       querystring: CommitActivitiesQuery,
-      response: { 200: CommitActivities },
+      response: CommitActivities,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionCommitActivitiesQuery,
+      response: CommitActivities,
     },
     handler: async (request, withTarget) => {
       const { summary, data } = await fetchActivityCounts(request, withTarget, request.query, {

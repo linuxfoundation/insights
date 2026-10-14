@@ -15,7 +15,12 @@ import {
   toTinybirdRange,
 } from '../../../lib/period.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { nullableNumber, periodSummary, SeriesQuery } from '../../../schemas/common.js';
+import {
+  CollectionSeriesQuery,
+  nullableNumber,
+  periodSummary,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const activitiesCountPath = '/v0/pipes/activities_count.json';
 const resolveVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
@@ -92,16 +97,23 @@ function mergeBuckets(
   return [...buckets.values()].sort((a, b) => a.startDate.localeCompare(b.startDate));
 }
 
+const measures =
+  'Returns the issues closed in the period against the comparison period before it, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'development/issues-resolution',
-    schema: {
-      tags: ['Development'],
-      summary: 'Get issue resolution',
-      description:
-        'Returns the issues closed in the period against the comparison period before it, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+    tags: ['Development'],
+    summary: 'Get issue resolution',
+    project: {
+      description: measures + ' An unknown project returns zero counts and an empty `data` list.',
       querystring: SeriesQuery,
-      response: { 200: IssuesResolution },
+      response: IssuesResolution,
+    },
+    collection: {
+      description: measures,
+      querystring: CollectionSeriesQuery,
+      response: IssuesResolution,
     },
     handler: async (request, withTarget) => {
       const { repos, startDate, endDate, granularity } = request.query;
