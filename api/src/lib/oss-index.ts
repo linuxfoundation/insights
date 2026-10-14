@@ -4,7 +4,7 @@ import { Type, type Static } from '@sinclair/typebox';
 
 import { nullableNumber } from '../schemas/common.js';
 import { HealthLabel, isHealthScore } from './overview.js';
-import { dataEnum, isCount, isString } from './security.js';
+import { dataEnum, inRange, isCount, isString } from './security.js';
 
 // The pipes return positional tuples, so each slot is type-checked before the route names it. Project
 // tuples keep the v1 health score, which the API drops, and end in the nullable v2 health fields.
@@ -32,8 +32,8 @@ export type TopProjectTuple = [
   healthMaxScore: number | null,
 ];
 
-// Counts and the UInt64 software value must be non-negative safe integers; only the Float64
-// scores use the finite-number check.
+// Counts and the UInt64 software value must be non-negative safe integers. The 0-1 averages use
+// inRange; the dropped v1 score only needs a finite number.
 const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
 const isNullableNumber = (value: unknown) => value === null || isNumber(value);
 
@@ -44,7 +44,7 @@ export const isTopCollectionTuple = (value: unknown): value is TopCollectionTupl
   isCount(value[1]) &&
   isString(value[2]) &&
   isCount(value[3]) &&
-  isNumber(value[4]);
+  inRange(value[4], 1);
 
 export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   Array.isArray(value) &&
@@ -54,7 +54,7 @@ export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   isString(value[2]) &&
   isString(value[3]) &&
   isCount(value[4]) &&
-  isNumber(value[5]) &&
+  inRange(value[5], 1) &&
   isNumber(value[6]) &&
   isString(value[7]) &&
   isString(value[8]) &&
@@ -67,7 +67,11 @@ export const TopCollection = Type.Object(
     count: Type.Integer({ minimum: 0, description: 'Contributors in the collection.' }),
     name: Type.String({ description: 'Display name of the collection.' }),
     softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the collection.' }),
-    avgScore: Type.Number({ description: 'Average health score of the collection, from 0 to 1.' }),
+    avgScore: Type.Number({
+      minimum: 0,
+      maximum: 1,
+      description: 'Average health score of the collection, from 0 to 1.',
+    }),
   },
   { title: 'TopCollection' },
 );
@@ -81,7 +85,11 @@ export const TopProject = Type.Object(
     logoUrl: Type.String({ description: 'URL of the project logo.' }),
     description: Type.String({ description: 'Short description of the project.' }),
     softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the project.' }),
-    avgScore: Type.Number({ description: 'Average score of the project, from 0 to 1.' }),
+    avgScore: Type.Number({
+      minimum: 0,
+      maximum: 1,
+      description: 'Average score of the project, from 0 to 1.',
+    }),
     healthScore: nullableNumber(
       'Health score, the sum of the three category scores, from 0 to `healthMaxScore`. Null when fewer than two categories have data.',
     ),

@@ -15,7 +15,7 @@ import {
   type TopCollectionTuple,
   type TopProjectTuple,
 } from '../../../lib/oss-index.js';
-import { isCount, isString } from '../../../lib/security.js';
+import { inRange, isCount, isString } from '../../../lib/security.js';
 
 const pipePath = '/v0/pipes/category_groups_oss_index.json';
 
@@ -32,8 +32,6 @@ interface Row {
   topProjects: TopProjectTuple[];
 }
 
-const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
-
 const isRow = (row: Row) =>
   isString(row.id) &&
   isString(row.name) &&
@@ -41,7 +39,7 @@ const isRow = (row: Row) =>
   isString(row.slug) &&
   isCount(row.totalContributors) &&
   isCount(row.softwareValue) &&
-  isNumber(row.avgScore) &&
+  inRange(row.avgScore, 1) &&
   isCount(row.projectCount) &&
   Array.isArray(row.topCollections) &&
   row.topCollections.every(isTopCollectionTuple) &&
@@ -67,7 +65,11 @@ const OssIndexGroup = Type.Object(
     slug: Type.String({ description: 'URL slug of the category group.' }),
     totalContributors: Type.Integer({ minimum: 0, description: 'Contributors across the group.' }),
     softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the group.' }),
-    avgScore: Type.Number({ description: 'Average health score of the group, from 0 to 1.' }),
+    avgScore: Type.Number({
+      minimum: 0,
+      maximum: 1,
+      description: 'Average health score of the group, from 0 to 1.',
+    }),
     projectCount: Type.Integer({ minimum: 0, description: 'Projects in the group.' }),
     topCollections: Type.Array(TopCollection, {
       description: 'Leading collections of the group, ordered by contributors.',

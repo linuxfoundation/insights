@@ -229,6 +229,33 @@ describe('response', () => {
     expect(body.data[0]).not.toHaveProperty('healthScoreV2');
   });
 
+  it.each([
+    ['a score with a null label', { healthScoreV2: 77, healthLabel: null }],
+    [
+      'a label with a null score',
+      { healthScoreV2: null, healthLabel: 'healthy', healthMaxScore: null },
+    ],
+    [
+      'a maximum with a null score',
+      { healthScoreV2: null, healthLabel: null, healthMaxScore: 100 },
+    ],
+  ])('answers 503 for %s', async (_label, patch) => {
+    all = [{ ...row(1), ...patch }];
+    const res = await get(route);
+    expect(res.statusCode).toBe(503);
+  });
+
+  it('accepts a repo row with a score and no maximum', async () => {
+    all = [{ ...row(1, 'repo'), healthScoreV2: 61, healthLabel: 'fair', healthMaxScore: null }];
+    const body = await bodyOf();
+    expect(body.data[0]).toMatchObject({
+      type: 'repo',
+      healthScore: 61,
+      healthLabel: 'fair',
+      healthMaxScore: null,
+    });
+  });
+
   it('answers 503 for rows of an unexpected shape', async () => {
     mockFetch.mockImplementation(async () => tinybirdResponse([{ id: 'x' }]));
     const res = await get(route);

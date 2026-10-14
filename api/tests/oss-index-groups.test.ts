@@ -8,6 +8,7 @@ import {
   pipeCalls,
   tinybirdStub,
   useApp,
+  resolveSchema,
   type OpenApiDoc,
 } from './helpers/tinybird.js';
 
@@ -149,6 +150,12 @@ describe('GET /v1-alpha/oss-index/groups', () => {
       'a project tuple without health fields',
       row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 's']] }),
     ],
+    ['a negative avgScore', row({ avgScore: -0.1 })],
+    ['an avgScore above 1', row({ avgScore: 1.1 })],
+    [
+      'a project tuple with a score and no label',
+      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 's', 74, null, 74, 100]] }),
+    ],
     [
       'a null project logo',
       row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd', 's', null, null, null, null]] }),
@@ -164,5 +171,17 @@ describe('GET /v1-alpha/oss-index/groups', () => {
     const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
     const op = spec.paths[route]?.get as { tags?: string[] } | undefined;
     expect(op?.tags).toEqual(['OSS Index']);
+  });
+
+  it('publishes the 0 to 1 bounds the row guard enforces on every avgScore', async () => {
+    const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
+    const ok = spec.paths[route]?.get?.responses['200']?.content['application/json']?.schema;
+    const group = resolveSchema(spec, resolveSchema(spec, ok)?.properties?.data?.items)?.properties;
+    const bounds = { minimum: 0, maximum: 1 };
+    expect(group?.avgScore).toMatchObject(bounds);
+    const nested = (key: string) =>
+      resolveSchema(spec, resolveSchema(spec, group?.[key]?.items)?.properties?.avgScore);
+    expect(nested('topCollections')).toMatchObject(bounds);
+    expect(nested('topProjects')).toMatchObject(bounds);
   });
 });

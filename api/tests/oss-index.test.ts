@@ -73,6 +73,7 @@ describe('tuple guards', () => {
     expect(isTopProjectTuple(projectTuple)).toBe(true);
     expect(isTopProjectTuple([...projectTuple.slice(0, 9), null, null, null, null])).toBe(true);
     expect(isTopProjectTuple([...projectTuple.slice(0, 9), 64, 'excellent', 85, 75])).toBe(true);
+    expect(isTopProjectTuple([...projectTuple.slice(0, 9), 61, 'fair', 61, null])).toBe(true);
   });
 
   it.each([
@@ -85,6 +86,8 @@ describe('tuple guards', () => {
     ['a negative count', ['c1', -1, 'n', 1500, 0.45]],
     ['a fractional count', ['c1', 1.5, 'n', 1500, 0.45]],
     ['a fractional software value', ['c1', 12, 'n', 1500.5, 0.45]],
+    ['a negative score', ['c1', 12, 'n', 1500, -0.1]],
+    ['a score above 1', ['c1', 12, 'n', 1500, 1.1]],
   ])('reject a collection tuple that is %s', (_label, value) => {
     expect(isTopCollectionTuple(value)).toBe(false);
   });
@@ -102,6 +105,14 @@ describe('tuple guards', () => {
     ['a health score above its maximum', [...projectTuple.slice(0, 9), 80, 'healthy', 100, 75]],
     ['a health maximum no category set gives', withSlot(12, 90)],
     ['a string scaled health score', withSlot(11, '74')],
+    ['a negative average score', withSlot(5, -0.1)],
+    ['an average score above 1', withSlot(5, 1.1)],
+    ['a health score with a null label', [...projectTuple.slice(0, 9), 74, null, 74, 100]],
+    [
+      'a null health score with a label',
+      [...projectTuple.slice(0, 9), null, 'healthy', null, null],
+    ],
+    ['a null health score with a maximum', [...projectTuple.slice(0, 9), null, null, null, 100]],
   ])('reject a project tuple that is %s', (_label, value) => {
     expect(isTopProjectTuple(value)).toBe(false);
   });

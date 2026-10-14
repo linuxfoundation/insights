@@ -15,12 +15,17 @@ const isHealthLabel = enumGuard(HealthLabel);
 // The maxima the pipes derive from the covered categories.
 const healthMaxScores = new Set<unknown>([60, 65, 75, 100, null]);
 
-// The v2 health score with its band and maximum, as the project pipes send them.
+// The v2 health score, band and maximum. The band is null exactly when the score is, and repo
+// records carry a score without a maximum.
 export const isHealthScore = (score: unknown, label: unknown, maxScore: unknown) =>
-  (score === null || (isCount(score) && (score as number) <= 100)) &&
-  isHealthLabel(label) &&
-  healthMaxScores.has(maxScore) &&
-  (score === null || maxScore === null || (score as number) <= (maxScore as number));
+  score === null
+    ? label === null && maxScore === null
+    : isCount(score) &&
+      (score as number) <= 100 &&
+      label !== null &&
+      isHealthLabel(label) &&
+      healthMaxScores.has(maxScore) &&
+      (maxScore === null || (score as number) <= (maxScore as number));
 
 export const LifecycleLabel = nullableEnum(
   ['active', 'stable', 'declining', 'inert', 'abandoned', 'archived'] as const,
