@@ -3,12 +3,29 @@
 import { Type, type TObject } from '@sinclair/typebox';
 
 import { nullableEnum } from '../schemas/common.js';
+import { enumGuard, isCount } from './security.js';
 
 // Values are exposed as the data holds them, matching the Overview tab.
 export const HealthLabel = nullableEnum(
   ['excellent', 'healthy', 'fair', 'concerning', 'critical'] as const,
   'Band of the health score. Null when the score is null.',
 );
+
+const isHealthLabel = enumGuard(HealthLabel);
+// The maxima the pipes derive from the covered categories.
+const healthMaxScores = new Set<unknown>([60, 65, 75, 100, null]);
+
+// The v2 health score, band and maximum. The band is null exactly when the score is, and repo
+// records carry a score without a maximum.
+export const isHealthScore = (score: unknown, label: unknown, maxScore: unknown) =>
+  score === null
+    ? label === null && maxScore === null
+    : isCount(score) &&
+      (score as number) <= 100 &&
+      label !== null &&
+      isHealthLabel(label) &&
+      healthMaxScores.has(maxScore) &&
+      (maxScore === null || (score as number) <= (maxScore as number));
 
 export const LifecycleLabel = nullableEnum(
   ['active', 'stable', 'declining', 'inert', 'abandoned', 'archived'] as const,
