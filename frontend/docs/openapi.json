@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "LFX Insights Public API",
-    "description": "Public read-only endpoints that LF web properties can use to embed LFX Insights\nproject stats without requiring authentication.\n\nHealth scores use Health Score v2. If your integration was built on v1, see the [migration guide](/docs/api/health-score-v2-migration/).\n\nOnly the endpoints listed here are supported. Other `/api` routes, such as `/api/project/{slug}`\nand `/api/widget/*`, are internal and can change without notice.\n",
+    "description": "Public read-only endpoints that LF web properties can use to embed LFX Insights\nproject stats without requiring authentication.\n\nUse the Health Score v2 fields (`healthScoreV2`, `healthMaxScore`, `healthLabel`). `healthScore` and the\nHealth Score v1 fields are soon to be deprecated. If your integration was built on v1, see the [migration guide](/docs/api/health-score-v2-migration/).\n\nOnly the endpoints listed here are supported. Other `/api` routes, such as `/api/project/{slug}`\nand `/api/widget/*`, are internal and can change without notice.\n",
     "version": "1.0.0"
   },
   "servers": [
@@ -15,7 +15,7 @@
     "/api/project/{slug}/insights": {
       "get": {
         "summary": "Get project insights",
-        "description": "Returns health and activity metrics for a project.\n\n`healthScore` is the Health Score v2 total, out of `healthMaxScore`. It is null for unscored projects.\nThe four v1 category scores are deprecated. See the [migration guide](/docs/api/health-score-v2-migration/).\n\nThis endpoint is public and requires no authentication.\n\nRate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
+        "description": "Returns health and activity metrics for a project.\n\n`healthScoreV2` is the Health Score v2 total, out of `healthMaxScore`. It is null for unscored projects.\n`healthScore` and the four v1 category scores are soon to be deprecated. See the [migration guide](/docs/api/health-score-v2-migration/).\n\nThis endpoint is public and requires no authentication.\n\nRate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
         "operationId": "getProjectInsight",
         "tags": [
           "Projects"
@@ -359,6 +359,11 @@
           "healthLabel",
           "healthScoreV2",
           "healthMaxScore",
+          "maintainerHealthScoreV2",
+          "securitySupplyChainScoreV2",
+          "developmentActivityScoreV2",
+          "coveredCategoryCount",
+          "lifecycleLabel",
           "contributorHealthScore",
           "popularityHealthScore",
           "developmentHealthScore",
@@ -427,15 +432,19 @@
             "example": "graduated"
           },
           "healthScore": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
-            "description": "Health Score v2 total, in points out of `healthMaxScore`. Same value as `healthScoreV2`. Null when the project is unscored (fewer than 2 categories covered), archived, or one of a few special projects (e.g. the Linux kernel). Held the v1 score, out of 100, before Health Score v2."
+            "description": "(Soon to be deprecated) Use `healthScoreV2`. Currently returns the same value as `healthScoreV2`."
           },
           "healthLabel": {
-            "type": "string",
-            "nullable": true,
+            "type": [
+              "string",
+              "null"
+            ],
             "enum": [
               "excellent",
               "healthy",
@@ -444,18 +453,22 @@
               "critical",
               null
             ],
-            "description": "Health Score v2 band of `healthScore * 100 / healthMaxScore`. Display this instead of grading `healthScore` yourself. Null whenever `healthScore` is null."
+            "description": "Health Score v2 band of `healthScoreV2 * 100 / healthMaxScore`. Display this instead of grading `healthScoreV2` yourself. Null whenever `healthScoreV2` is null."
           },
           "healthScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
-            "description": "Same value as `healthScore`."
+            "description": "Health Score v2 total, in points out of `healthMaxScore`. Null when the project is unscored (fewer than 2 categories covered), archived, or one of a few special projects (e.g. the Linux kernel)."
           },
           "healthMaxScore": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "enum": [
               100,
               75,
@@ -463,39 +476,49 @@
               60,
               null
             ],
-            "description": "Points available for `healthScore`: 100 when all 3 categories are covered, or 60, 65 or 75 when Maintainer Health, Security & Supply Chain or Development Activity is missing. Null whenever `healthScore` is null."
+            "description": "Points available for `healthScoreV2`: 100 when all 3 categories are covered, or 60, 65 or 75 when Maintainer Health, Security & Supply Chain or Development Activity is missing. Null whenever `healthScoreV2` is null."
           },
           "maintainerHealthScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 40,
             "description": "Health Score v2 Maintainer Health category score. Null when the project has no value for this category."
           },
           "securitySupplyChainScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 35,
             "description": "Health Score v2 Security & Supply Chain category score. Null when the project has no value for this category."
           },
           "developmentActivityScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 25,
             "description": "Health Score v2 Development Activity category score. Null when the project has no value for this category."
           },
           "coveredCategoryCount": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 3,
-            "description": "Number of the 3 Health Score v2 categories that have a score. Null when the count is not available, including for archived projects and a few special projects (e.g. the Linux kernel), which can still have category scores. Treat a null `healthScore` or `healthLabel` as unscored instead of inferring it from the category scores."
+            "description": "Number of the 3 Health Score v2 categories that have a score. Null when the count is not available, including for archived projects and a few special projects (e.g. the Linux kernel), which can still have category scores. Treat a null `healthScoreV2` or `healthLabel` as unscored instead of inferring it from the category scores."
           },
           "lifecycleLabel": {
-            "type": "string",
-            "nullable": true,
+            "type": [
+              "string",
+              "null"
+            ],
             "enum": [
               "active",
               "stable",
@@ -508,36 +531,40 @@
             "description": "Project lifecycle state, assessed independently of the Health Score. Null when not computed for this project."
           },
           "contributorHealthScore": {
-            "type": "number",
-            "nullable": true,
+            "type": [
+              "number",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
-            "deprecated": true,
-            "description": "Deprecated v1 contributor score. Does not add up to `healthScore`. Use `maintainerHealthScoreV2`."
+            "description": "(Soon to be deprecated) Health Score v1 contributor score. Does not add up to `healthScoreV2`. Use `maintainerHealthScoreV2`."
           },
           "popularityHealthScore": {
-            "type": "number",
-            "nullable": true,
+            "type": [
+              "number",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
-            "deprecated": true,
-            "description": "Deprecated v1 popularity score. v2 has no popularity category. Use `starsLast365Days` and `forksLast365Days`."
+            "description": "(Soon to be deprecated) Health Score v1 popularity score. v2 has no popularity category. Use `starsLast365Days` and `forksLast365Days`."
           },
           "developmentHealthScore": {
-            "type": "number",
-            "nullable": true,
+            "type": [
+              "number",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
-            "deprecated": true,
-            "description": "Deprecated v1 development score. Does not add up to `healthScore`. Use `developmentActivityScoreV2`."
+            "description": "(Soon to be deprecated) Health Score v1 development score. Does not add up to `healthScoreV2`. Use `developmentActivityScoreV2`."
           },
           "securityHealthScore": {
-            "type": "number",
-            "nullable": true,
+            "type": [
+              "number",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
-            "deprecated": true,
-            "description": "Deprecated v1 security score. Does not add up to `healthScore`. Use `securitySupplyChainScoreV2`."
+            "description": "(Soon to be deprecated) Health Score v1 security score. Does not add up to `healthScoreV2`. Use `securitySupplyChainScoreV2`."
           },
           "contributorCount": {
             "type": "integer",
@@ -651,15 +678,19 @@
             "description": "URL slug used to identify the project"
           },
           "healthScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
             "description": "Overall Health Score v2, in points out of `healthMaxScore`. Always returned. Null when the project is unscored (fewer than 2 categories covered), archived, or one of a few special projects (e.g. the Linux kernel)."
           },
           "healthMaxScore": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "enum": [
               100,
               75,
@@ -670,8 +701,10 @@
             "description": "Points available for `healthScoreV2`: 100 when all 3 categories are covered, or 60, 65 or 75 when Maintainer Health, Security & Supply Chain or Development Activity is missing. Always returned. Null whenever `healthScoreV2` is null."
           },
           "healthLabel": {
-            "type": "string",
-            "nullable": true,
+            "type": [
+              "string",
+              "null"
+            ],
             "enum": [
               "excellent",
               "healthy",
@@ -683,36 +716,46 @@
             "description": "Band of `healthScoreV2Normalized`. Use it for display instead of grading the raw `healthScoreV2`. Always returned. Null whenever `healthScoreV2` is null."
           },
           "healthScoreV2Normalized": {
-            "type": "number",
-            "nullable": true,
+            "type": [
+              "number",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 100,
             "description": "`healthScoreV2 * 100 / healthMaxScore` on a 0-100 scale, for sorting and comparing partial and full scores. Always returned. Null whenever `healthScoreV2` is null."
           },
           "maintainerHealthScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 40,
             "description": "Health Score v2 Maintainer Health category score. Returned when `healthBreakdown=true`. Null when the project has no value for this category."
           },
           "securitySupplyChainScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 35,
             "description": "Health Score v2 Security & Supply Chain category score. Returned when `healthBreakdown=true`. Null when the project has no value for this category."
           },
           "developmentActivityScoreV2": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 25,
             "description": "Health Score v2 Development Activity category score. Returned when `healthBreakdown=true`. Null when the project has no value for this category."
           },
           "coveredCategoryCount": {
-            "type": "integer",
-            "nullable": true,
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0,
             "maximum": 3,
             "description": "Number of the 3 Health Score v2 categories that have a score. Returned when `healthBreakdown=true`. Null when the count is not available, including for archived projects and a few special projects (e.g. the Linux kernel), which can still have category scores. Treat a null `healthScoreV2` or `healthLabel` as unscored instead of inferring it from the category scores."
