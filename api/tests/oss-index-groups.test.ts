@@ -25,7 +25,21 @@ const row = (overrides: Record<string, unknown> = {}) => ({
   projectCount: 5279,
   topCollections: [['c1', 726549, 'Frontend', 1917065599, 0.45]],
   topProjects: [
-    ['p1', 315948, 'Node.js', 'https://logo.test/n.png', 24048486264, 0, 86, 'Runtime', 'active'],
+    [
+      'p1',
+      315948,
+      'Node.js',
+      'https://logo.test/n.png',
+      24048486264,
+      0,
+      86,
+      'Runtime',
+      'active',
+      74,
+      'healthy',
+      74,
+      100,
+    ],
   ],
   ...overrides,
 });

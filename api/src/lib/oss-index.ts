@@ -4,8 +4,8 @@ import { Type, type Static } from '@sinclair/typebox';
 
 import { dataEnum, isCount, isString } from './security.js';
 
-// The pipes return these rows as positional tuples, so each slot is checked by type before the
-// route names it. The columns are non-nullable in the pipes, so a null is a malformed row.
+// The pipes return positional tuples, so each slot the route names is type-checked and a null there
+// is malformed. Project tuples end in unread nullable health v2 slots, hence the minimum length.
 export type TopCollectionTuple = [
   id: string,
   count: number,
@@ -41,7 +41,7 @@ export const isTopCollectionTuple = (value: unknown): value is TopCollectionTupl
 
 export const isTopProjectTuple = (value: unknown): value is TopProjectTuple =>
   Array.isArray(value) &&
-  value.length === 9 &&
+  value.length >= 9 &&
   isString(value[0]) &&
   isCount(value[1]) &&
   isString(value[2]) &&

@@ -54,6 +54,8 @@ describe('tuple guards', () => {
   it('accept well-formed tuples', () => {
     expect(isTopCollectionTuple(collectionTuple)).toBe(true);
     expect(isTopProjectTuple(projectTuple)).toBe(true);
+    expect(isTopProjectTuple([...projectTuple, 74, 'healthy', 74, 100])).toBe(true);
+    expect(isTopProjectTuple([...projectTuple, null, null, null, null])).toBe(true);
   });
 
   it.each([
