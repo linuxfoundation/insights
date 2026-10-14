@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "LFX Insights Public API",
-    "description": "Public read-only endpoints that LF web properties can use to embed LFX Insights\nproject stats without requiring authentication.\n\nUse the Health Score v2 fields (`healthScoreV2`, `healthMaxScore`, `healthLabel`). `healthScore` and the\nHealth Score v1 fields are soon to be deprecated. If your integration was built on v1, see the [migration guide](/docs/api/health-score-v2-migration/).\n\nOnly the endpoints listed here are supported. Other `/api` routes, such as `/api/project/{slug}`\nand `/api/widget/*`, are internal and can change without notice.\n",
+    "description": "Public read-only endpoints that LF web properties can use to embed LFX Insights\nproject stats without requiring authentication.\n\nUse the Health Score v2 fields (`healthScoreV2`, `healthMaxScore`, `healthLabel`).\nIf your integration was built on v1, see the [migration guide](/docs/api/health-score-v2-migration/).\n\nOnly the endpoints listed here are supported. Other `/api` routes, such as `/api/project/{slug}`\nand `/api/widget/*`, are internal and can change without notice.\n",
     "version": "1.0.0"
   },
   "servers": [
