@@ -575,7 +575,7 @@
             "nullable": true,
             "minimum": 0,
             "maximum": 100,
-            "description": "Overall Health Score v2, in points out of `healthMaxScore`. Always returned. Null when the project is unscored (fewer than 2 categories covered) or archived."
+            "description": "Overall Health Score v2, in points out of `healthMaxScore`. Always returned. Null when the project is unscored (fewer than 2 categories covered), archived, or one of a few special projects (e.g. the Linux kernel)."
           },
           "healthMaxScore": {
             "type": "integer",
@@ -587,7 +587,7 @@
               60,
               null
             ],
-            "description": "Points available for `healthScoreV2`: 100 when all 3 categories are covered, or 60, 65 or 75 when Maintainer Health, Security & Supply Chain or Development Activity is missing. Always returned. Null when the project is unscored."
+            "description": "Points available for `healthScoreV2`: 100 when all 3 categories are covered, or 60, 65 or 75 when Maintainer Health, Security & Supply Chain or Development Activity is missing. Always returned. Null whenever `healthScoreV2` is null."
           },
           "healthLabel": {
             "type": "string",
@@ -600,14 +600,14 @@
               "critical",
               null
             ],
-            "description": "Band of `healthScoreV2Normalized`. Use it for display instead of grading the raw `healthScoreV2`. Always returned. Null when the project is unscored."
+            "description": "Band of `healthScoreV2Normalized`. Use it for display instead of grading the raw `healthScoreV2`. Always returned. Null whenever `healthScoreV2` is null."
           },
           "healthScoreV2Normalized": {
             "type": "number",
             "nullable": true,
             "minimum": 0,
             "maximum": 100,
-            "description": "`healthScoreV2 * 100 / healthMaxScore` on a 0-100 scale, for sorting and comparing partial and full scores. Always returned. Null when the project is unscored."
+            "description": "`healthScoreV2 * 100 / healthMaxScore` on a 0-100 scale, for sorting and comparing partial and full scores. Always returned. Null whenever `healthScoreV2` is null."
           },
           "maintainerHealthScoreV2": {
             "type": "integer",
