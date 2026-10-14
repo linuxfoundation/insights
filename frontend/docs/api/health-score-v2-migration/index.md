@@ -1,7 +1,7 @@
 # Migrating to Health Score v2
 
 ::: warning
-`healthScore` and the Health Score v1 fields are soon to be deprecated.
+`healthScore` and the Health Score v1 fields are soon to be deprecated. Use this guide to move to the latest fields.
 :::
 
 LFX Insights scores projects with Health Score v2. Integrations should read `healthScoreV2` and the other v2 fields. The endpoint URLs don't change. For how v2 is calculated, see [Health Score Explained](/metrics/health-score/).
