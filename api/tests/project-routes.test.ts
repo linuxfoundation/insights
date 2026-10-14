@@ -32,7 +32,7 @@ await discovery.close();
 const prefix = projectPath('');
 // Routes outside a project skip the slug, bucket, repos and date cases.
 const globalPrefix = '/v1-alpha/';
-const globalGroups = new Set(['leaderboards']);
+const globalGroups = new Set(['leaderboards', 'categories']);
 const routes = Object.entries(spec.paths).flatMap(([path, item]) => {
   if (!item.get) {
     return [];
@@ -60,6 +60,7 @@ const groupTags: Record<string, string> = {
   security: 'Security',
   overview: 'Overview',
   leaderboards: 'Leaderboards',
+  categories: 'Collections',
 };
 const tagOf = (name: string) =>
   scoped(name) && !name.includes('/') ? 'Projects' : groupTags[name.split('/')[0]];
@@ -91,8 +92,9 @@ const rankedRows = (count: number) =>
     contributionPercentage: 1,
   }));
 
-// These pipes page by page number rather than limit and offset, so their own files test paging.
-const pagesByNumber = new Set(['security/vulnerabilities', 'leaderboards/{type}']);
+// These pipes page by page number rather than limit and offset (categories pages groups after one
+// full read), so their own files test paging.
+const pagesByNumber = new Set(['security/vulnerabilities', 'leaderboards/{type}', 'categories']);
 
 const { get } = useApp();
 const emptyRows = tinybirdStub(() => []);
