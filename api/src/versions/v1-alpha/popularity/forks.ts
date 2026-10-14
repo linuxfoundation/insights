@@ -7,11 +7,21 @@ import { ActivityTypes } from '@lfx-insights/types';
 
 import { fetchActivityCounts } from '../../../lib/activity-count.js';
 import { widgetRoutes } from '../../../lib/widget-scope.js';
-import { countType, periodSummary, SeriesQuery } from '../../../schemas/common.js';
+import {
+  CollectionSeriesQuery,
+  countType,
+  periodSummary,
+  SeriesQuery,
+} from '../../../schemas/common.js';
 
 const ForksQuery = Type.Object({
   ...SeriesQuery.properties,
   countType: countType('the forks created'),
+});
+
+const CollectionForksQuery = Type.Object({
+  ...CollectionSeriesQuery.properties,
+  countType: ForksQuery.properties.countType,
 });
 
 const ForksSummary = periodSummary({
@@ -37,16 +47,28 @@ const Forks = Type.Object({
   ),
 });
 
+const period =
+  'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+
 const forksRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'popularity/forks',
-    schema: {
-      tags: ['Popularity'],
-      summary: 'Get forks',
+    tags: ['Popularity'],
+    summary: 'Get forks',
+    project: {
       description:
-        'Returns the forks created from the project repositories per time bucket of the requested granularity, as new forks in each bucket or as a cumulative total, plus a summary comparing the forks created in the current period with the comparison period before it. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. An unknown project returns zero counts and an empty `data` list.',
+        'Returns the forks created from the project repositories per time bucket of the requested granularity, as new forks in each bucket or as a cumulative total, plus a summary comparing the forks created in the current period with the comparison period before it. ' +
+        period +
+        ' An unknown project returns zero counts and an empty `data` list.',
       querystring: ForksQuery,
-      response: { 200: Forks },
+      response: Forks,
+    },
+    collection: {
+      description:
+        "Returns the forks created from the collection's repositories per time bucket of the requested granularity, as new forks in each bucket or as a cumulative total, plus a summary comparing the forks created in the current period with the comparison period before it. " +
+        period,
+      querystring: CollectionForksQuery,
+      response: Forks,
     },
     handler: async (request, withTarget) => {
       // Forks are not contributions, so onlyContributions=false lets the pipes count them.

@@ -38,16 +38,36 @@ const Query = Type.Object({
   ),
 });
 
+const monthBounds = {
+  startDate: Type.String({ format: 'date-time', description: 'First day of the month, UTC.' }),
+  endDate: Type.String({ format: 'date-time', description: 'Last day of the month, UTC.' }),
+};
+
 const SearchQueries = Type.Object({
   data: Type.Array(
     Type.Object({
-      startDate: Type.String({ format: 'date-time', description: 'First day of the month, UTC.' }),
-      endDate: Type.String({ format: 'date-time', description: 'Last day of the month, UTC.' }),
+      ...monthBounds,
       queryCount: Type.Integer({ description: 'Google searches for the project name that month.' }),
     }),
     { description: 'One row per month, oldest first. Empty for an unknown project.' },
   ),
 });
+
+const CollectionSearchQueries = Type.Object({
+  data: Type.Array(
+    Type.Object({
+      ...monthBounds,
+      queryCount: Type.Integer({
+        description:
+          "Google searches for the names of the collection's projects that month, added up.",
+      }),
+    }),
+    { description: 'One row per month, oldest first.' },
+  ),
+});
+
+const monthRange =
+  'A month is included when its first day falls between `startDate` and `endDate`, both inclusive, so a month dated on `endDate` is part of the result. Without dates the range runs from 2010-01-01 to today.';
 
 const lastDayOfMonth = (day: string) => {
   const date = new Date(utcMidnight(day));
@@ -64,13 +84,22 @@ const toMonth = (row: Row) => ({
 const searchQueriesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'popularity/search-queries',
-    schema: {
-      tags: ['Popularity'],
-      summary: 'Get search queries',
+    tags: ['Popularity'],
+    summary: 'Get search queries',
+    project: {
       description:
-        'Returns the monthly Google Search volume for the project name, one row per month, oldest first. The volume covers the whole project, so there is no repository filter. A month is included when its first day falls between `startDate` and `endDate`, both inclusive, so a month dated on `endDate` is part of the result. Without dates the range runs from 2010-01-01 to today. An unknown project returns an empty `data` list.',
+        'Returns the monthly Google Search volume for the project name, one row per month, oldest first. The volume covers the whole project, so there is no repository filter. ' +
+        monthRange +
+        ' An unknown project returns an empty `data` list.',
       querystring: Query,
-      response: { 200: SearchQueries },
+      response: SearchQueries,
+    },
+    collection: {
+      description:
+        "Returns the monthly Google Search volume for the names of the collection's projects, added up, one row per month, oldest first. The volume covers the whole collection, so there is no repository filter. " +
+        monthRange,
+      querystring: Query,
+      response: CollectionSearchQueries,
     },
     handler: async (request, withTarget) => {
       const range = toTinybirdRange(currentPeriod(request.query));

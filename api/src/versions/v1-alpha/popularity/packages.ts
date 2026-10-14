@@ -35,35 +35,53 @@ const Query = Type.Object({
   ),
 });
 
-const Packages = Type.Object({
-  data: Type.Array(
-    Type.Object({
-      name: Type.String({
-        description: 'Package name. Pass it as `name` on the package metrics endpoint.',
-      }),
-      ecosystem: Type.String({
-        description:
-          'Package ecosystem, such as `npm` or `pypi`. Pass it as `ecosystem` on the package metrics endpoint.',
-      }),
-      repo: Type.String({ description: 'URL of the repository the package is published from.' }),
-    }),
-    {
-      description:
-        'One entry per package and repository, sorted by `ecosystem`, `name`, then `repo`. Empty for an unknown project.',
-    },
-  ),
+const CollectionQuery = Type.Object({
+  search: Query.properties.search,
 });
+
+const Package = Type.Object({
+  name: Type.String({
+    description: 'Package name. Pass it as `name` on the package metrics endpoint.',
+  }),
+  ecosystem: Type.String({
+    description:
+      'Package ecosystem, such as `npm` or `pypi`. Pass it as `ecosystem` on the package metrics endpoint.',
+  }),
+  repo: Type.String({ description: 'URL of the repository the package is published from.' }),
+});
+
+const listing = 'One entry per package and repository, sorted by `ecosystem`, `name`, then `repo`.';
+
+const Packages = Type.Object({
+  data: Type.Array(Package, { description: `${listing} Empty for an unknown project.` }),
+});
+
+const CollectionPackages = Type.Object({
+  data: Type.Array(Package, { description: listing }),
+});
+
+const lookup =
+  'Pass a package `ecosystem` and `name` to the package metrics endpoint to read its downloads and dependents. `search` keeps the packages whose name or ecosystem contains it, ignoring case. A package published from several repositories appears once per repository. The whole list comes in one response, sorted by `ecosystem`, `name`, then `repo`, comparing character codes.';
 
 const packagesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
     path: 'popularity/packages',
-    schema: {
-      tags: ['Popularity'],
-      summary: 'List packages',
+    tags: ['Popularity'],
+    summary: 'List packages',
+    project: {
       description:
-        'Returns the packages published from the project repositories, with their ecosystem and repository. Pass a package `ecosystem` and `name` to the package metrics endpoint to read its downloads and dependents. `search` keeps the packages whose name or ecosystem contains it, ignoring case. A package published from several repositories appears once per repository. The whole list comes in one response, sorted by `ecosystem`, `name`, then `repo`, comparing character codes. An unknown project returns an empty `data` list.',
+        'Returns the packages published from the project repositories, with their ecosystem and repository. ' +
+        lookup +
+        ' An unknown project returns an empty `data` list.',
       querystring: Query,
-      response: { 200: Packages },
+      response: Packages,
+    },
+    collection: {
+      description:
+        "Returns the packages published from the collection's repositories, with their ecosystem and repository. " +
+        lookup,
+      querystring: CollectionQuery,
+      response: CollectionPackages,
     },
     handler: async (request, withTarget) => {
       const { repos, search } = request.query;
