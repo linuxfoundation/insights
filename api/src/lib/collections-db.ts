@@ -152,6 +152,28 @@ export async function listProjectCollections(
   );
 }
 
+// Direct membership only, as in Nuxt. The LEFT JOINs give a known repository without public
+// collections one all-null row, so null means unknown and [] means none.
+export async function listRepositoryCollections(
+  request: RequestLog,
+  repositoryUrl: string,
+): Promise<CollectionRefRow[] | null> {
+  const rows = await queryCm<Partial<CollectionRefRow>>(
+    request,
+    `SELECT DISTINCT c.name, c.slug, c."logoUrl"
+     FROM repositories r
+     LEFT JOIN "collectionsRepositories" cr ON cr."repoId" = r.id AND cr."deletedAt" IS NULL
+     LEFT JOIN collections c ON c.id = cr."collectionId" AND ${visible}
+     WHERE r.url = $1 AND r."deletedAt" IS NULL
+     ORDER BY c.name, c.slug`,
+    [repositoryUrl],
+  );
+  if (rows.length === 0) {
+    return null;
+  }
+  return rows.filter((row): row is CollectionRefRow => row.slug != null);
+}
+
 export interface CollectionMembers {
   id: string;
   projectIds: string[];
