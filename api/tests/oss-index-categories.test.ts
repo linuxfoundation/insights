@@ -96,7 +96,9 @@ describe('GET /v1-alpha/oss-index/categories', () => {
               description: 'K8s',
               softwareValue: 6002018897,
               avgScore: 0,
-              healthScore: 86,
+              healthScore: 74,
+              healthLabel: 'healthy',
+              healthMaxScore: 100,
             },
           ],
         },
@@ -148,10 +150,20 @@ describe('GET /v1-alpha/oss-index/categories', () => {
     ['a non-array topProjects', row({ topProjects: 'x' })],
     ['a malformed collection tuple', row({ topCollections: [['c1', 1, null, 1, 1]] })],
     ['a short project tuple', row({ topProjects: [['p1', 1, 'n']] })],
-    ['a null project logo', row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd']] })],
+    [
+      'a project tuple without health fields',
+      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd']] }),
+    ],
+    [
+      'a null project logo',
+      row({ topProjects: [['p1', 1, 'n', null, 1, 1, 1, 'd', null, null, null, null]] }),
+    ],
     ['a negative totalContributors', row({ totalContributors: -1 })],
     ['a fractional softwareValue', row({ softwareValue: 1.5 })],
-    ['a fractional project count', row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd']] })],
+    [
+      'a fractional project count',
+      row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd', null, null, null, null]] }),
+    ],
   ])('answers 503 upstream_unavailable for %s', async (_label, bad) => {
     rows = [bad];
     const res = await get(`${route}?categoryGroupSlug=${slug}`);
