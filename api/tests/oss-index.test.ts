@@ -178,32 +178,40 @@ const collectionProjectTuple = [
   'Runtime',
   'nodejs-node',
   'active',
+  74,
+  'healthy',
+  74,
+  100,
 ];
+const withCollectionSlot = (index: number, value: unknown) =>
+  collectionProjectTuple.map((slot, i) => (i === index ? value : slot));
 
 describe('collection project tuple', () => {
-  it('is accepted when well formed', () => {
-    expect(isCollectionProjectTuple(collectionProjectTuple)).toBe(true);
-  });
-
   it.each([
-    ['a scored 14 slot tuple', [...collectionProjectTuple, 74, 'healthy', 74, 100]],
-    ['an unscored 14 slot tuple', [...collectionProjectTuple, null, null, null, null]],
-  ])('is accepted with %s', (_label, value) => {
+    ['a scored', collectionProjectTuple],
+    ['an unscored', [...collectionProjectTuple.slice(0, 10), null, null, null, null]],
+  ])('is accepted with %s health tail', (_label, value) => {
     expect(isCollectionProjectTuple(value)).toBe(true);
   });
 
   it.each([
     ['not an array', 'x'],
-    ['the 9 slot tuple', projectTuple],
-    ['a null slug', [...collectionProjectTuple.slice(0, 8), null, 'active']],
-    ['a numeric status', [...collectionProjectTuple.slice(0, 9), 1]],
-    ['a null logo', ['p1', 30, 'n', null, 1, 1, 1, 'd', 's', 'active']],
-    ['a string health score', ['p1', 30, 'n', 'l', 1, 1, '86', 'd', 's', 'active']],
+    ['the groups tuple', projectTuple],
+    ['without the health fields', collectionProjectTuple.slice(0, 10)],
+    ['a null slug', withCollectionSlot(8, null)],
+    ['a numeric status', withCollectionSlot(9, 1)],
+    ['a null logo', withCollectionSlot(3, null)],
+    ['a string v1 health score', withCollectionSlot(6, '86')],
+    ['an unknown health label', withCollectionSlot(11, 'great')],
+    [
+      'a health score above its maximum',
+      [...collectionProjectTuple.slice(0, 10), 80, 'healthy', 100, 75],
+    ],
   ])('is rejected when %s', (_label, value) => {
     expect(isCollectionProjectTuple(value)).toBe(false);
   });
 
-  it('is mapped with the slug and logo renamed to logoUrl', () => {
+  it('is mapped with the slug, logo renamed to logoUrl and the v2 health fields', () => {
     expect(toCollectionProject(collectionProjectTuple as never)).toEqual({
       id: 'p1',
       count: 30,
@@ -213,7 +221,9 @@ describe('collection project tuple', () => {
       description: 'Runtime',
       softwareValue: 2400,
       avgScore: 0.8,
-      healthScore: 86,
+      healthScore: 74,
+      healthLabel: 'healthy',
+      healthMaxScore: 100,
       status: 'active',
     });
   });

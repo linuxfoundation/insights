@@ -94,7 +94,9 @@ describe('GET /v1-alpha/oss-index/collections', () => {
               description: 'Mesh',
               softwareValue: 475232855,
               avgScore: 0,
-              healthScore: 83,
+              healthScore: 74,
+              healthLabel: 'healthy',
+              healthMaxScore: 100,
               status: 'active',
             },
           ],
@@ -272,18 +274,26 @@ describe('malformed rows', () => {
     ['a missing project count', row({ projectCount: undefined })],
     ['a non-array topProjects', row({ topProjects: 'x' })],
     [
-      'the 9 slot project tuple',
-      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 'active']] }),
+      'the groups project tuple',
+      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 'active', null, null, null, null]] }),
+    ],
+    [
+      'a project tuple without health fields',
+      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', 's', 'active']] }),
     ],
     [
       'a null project slug',
-      row({ topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', null, 'active']] }),
+      row({
+        topProjects: [['p1', 1, 'n', 'l', 1, 1, 1, 'd', null, 'active', null, null, null, null]],
+      }),
     ],
     ['a negative totalContributors', row({ totalContributors: -1 })],
     ['a fractional projectCount', row({ projectCount: 2.5 })],
     [
       'a fractional project count',
-      row({ topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd', 's', 'active']] }),
+      row({
+        topProjects: [['p1', 1.5, 'n', 'l', 1, 1, 1, 'd', 's', 'active', null, null, null, null]],
+      }),
     ],
   ])('answers 503 upstream_unavailable for %s', async (_label, bad) => {
     rows = [bad];

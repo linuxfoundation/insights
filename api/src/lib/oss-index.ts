@@ -197,34 +197,21 @@ export const sortQuery = Type.Object({
   ),
 });
 
-// The collections pipe inserts the project slug before status, so its tuples cannot reuse the
-// positional checks of the 9 slot shape.
+// The collections pipe inserts the project slug before status.
 export type CollectionProjectTuple = [
-  id: string,
-  count: number,
-  name: string,
-  logo: string,
-  softwareValue: number,
-  avgScore: number,
-  healthScore: number,
-  description: string,
+  ...head: ProjectHead,
   slug: string,
   status: string,
+  ...health: HealthTail,
 ];
 
 export const isCollectionProjectTuple = (value: unknown): value is CollectionProjectTuple =>
   Array.isArray(value) &&
-  value.length >= 10 &&
-  isString(value[0]) &&
-  isCount(value[1]) &&
-  isString(value[2]) &&
-  isString(value[3]) &&
-  isCount(value[4]) &&
-  isNumber(value[5]) &&
-  isNumber(value[6]) &&
-  isString(value[7]) &&
+  value.length >= 14 &&
+  isProjectHead(value) &&
   isString(value[8]) &&
-  isString(value[9]);
+  isString(value[9]) &&
+  isHealthTail(value, 10);
 
 export const CollectionProject = Type.Object(
   {
@@ -242,10 +229,14 @@ export const toCollectionProject = ([
   logo,
   softwareValue,
   avgScore,
-  healthScore,
+  ,
   description,
   slug,
   status,
+  healthScore,
+  healthLabel,
+  ,
+  healthMaxScore,
 ]: CollectionProjectTuple): CollectionProject => ({
   id,
   count,
@@ -256,5 +247,7 @@ export const toCollectionProject = ([
   softwareValue,
   avgScore,
   healthScore,
+  healthLabel: healthLabel as CollectionProject['healthLabel'],
+  healthMaxScore,
   status,
 });
