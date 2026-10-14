@@ -4,7 +4,7 @@
 `healthScore` and the Health Score v1 fields are soon to be deprecated. Use this guide to move to the latest fields.
 :::
 
-LFX Insights scores projects with Health Score v2. Integrations should read `healthScoreV2` and the other v2 fields. The endpoint URLs don't change. For how v2 is calculated, see [Health Score Explained](/metrics/health-score/).
+LFX Insights scores projects with Health Score v2. Integrations should read `healthScoreV2` and the other v2 fields from `GET /api/project/{slug}/insights` or `GET /api/project`. Don't use the internal `/api/project/{slug}` endpoint; it isn't part of the public API and still returns the v1 score. For how v2 is calculated, see [Health Score Explained](/metrics/health-score/).
 
 ## Fields
 
