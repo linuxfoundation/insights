@@ -165,6 +165,174 @@
           }
         }
       }
+    },
+    "/api/project": {
+      "get": {
+        "summary": "List projects",
+        "description": "Returns a page of projects. Only the parameters and fields used to look up projects in batch by slug are documented here.\n\nThis endpoint is public and requires no authentication. Rate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
+        "operationId": "listProjects",
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "slugs",
+            "in": "query",
+            "required": false,
+            "description": "Project slugs to return. Repeat the parameter (`slugs=k8s&slugs=korg`) or join the slugs with commas (`slugs=k8s,korg`).\n",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "k8s",
+                "korg"
+              ]
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Number of projects per page. Set it to at least the number of slugs to get every slug in one page. At most 100 when `healthBreakdown=true`, so split more than 100 slugs into requests of at most 100 each.\n",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "example": 50
+            }
+          },
+          {
+            "name": "healthBreakdown",
+            "in": "query",
+            "required": false,
+            "description": "When `true`, each project includes its Health Score v2 category scores and `coveredCategoryCount`.\n",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of projects",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "Maximum number of requests allowed per window",
+                "schema": {
+                  "type": "integer",
+                  "example": 200
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Number of requests remaining in the current window",
+                "schema": {
+                  "type": "integer",
+                  "example": 199
+                }
+              },
+              "X-RateLimit-Reset": {
+                "description": "Seconds until the rate limit window resets",
+                "schema": {
+                  "type": "integer",
+                  "example": 42
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Current page number"
+                    },
+                    "pageSize": {
+                      "type": "integer",
+                      "description": "Number of projects per page"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of matching projects"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProjectListItem"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "page": 0,
+                  "pageSize": 50,
+                  "total": 1,
+                  "data": [
+                    {
+                      "slug": "k8s",
+                      "healthScoreV2": 71,
+                      "healthMaxScore": 100,
+                      "healthLabel": "healthy",
+                      "healthScoreV2Normalized": 71,
+                      "maintainerHealthScoreV2": 31,
+                      "securitySupplyChainScoreV2": 25,
+                      "developmentActivityScoreV2": 15,
+                      "coveredCategoryCount": 3
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`pageSize` is over 100 while `healthBreakdown=true`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "statusMessage": "pageSize must be at most 100 when healthBreakdown=true"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 429,
+                  "statusMessage": "Too Many Requests",
+                  "message": "Rate limit exceeded. Please wait 42 seconds before trying again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 500,
+                  "statusMessage": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -384,6 +552,90 @@
           "totalCount": {
             "type": "integer",
             "description": "Total number of projects in that leaderboard"
+          }
+        }
+      },
+      "ProjectListItem": {
+        "type": "object",
+        "description": "A project in the list. Other project fields are returned but not documented here.",
+        "required": [
+          "slug",
+          "healthScoreV2",
+          "healthMaxScore",
+          "healthLabel",
+          "healthScoreV2Normalized"
+        ],
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "URL slug used to identify the project"
+          },
+          "healthScoreV2": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Overall Health Score v2, in points out of `healthMaxScore`. Always returned. Null when the project is unscored (fewer than 2 categories covered), archived, or one of a few special projects (e.g. the Linux kernel)."
+          },
+          "healthMaxScore": {
+            "type": "integer",
+            "nullable": true,
+            "enum": [
+              100,
+              75,
+              65,
+              60,
+              null
+            ],
+            "description": "Points available for `healthScoreV2`: 100 when all 3 categories are covered, or 60, 65 or 75 when Maintainer Health, Security & Supply Chain or Development Activity is missing. Always returned. Null whenever `healthScoreV2` is null."
+          },
+          "healthLabel": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "excellent",
+              "healthy",
+              "fair",
+              "concerning",
+              "critical",
+              null
+            ],
+            "description": "Band of `healthScoreV2Normalized`. Use it for display instead of grading the raw `healthScoreV2`. Always returned. Null whenever `healthScoreV2` is null."
+          },
+          "healthScoreV2Normalized": {
+            "type": "number",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "`healthScoreV2 * 100 / healthMaxScore` on a 0-100 scale, for sorting and comparing partial and full scores. Always returned. Null whenever `healthScoreV2` is null."
+          },
+          "maintainerHealthScoreV2": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 40,
+            "description": "Health Score v2 Maintainer Health category score. Returned when `healthBreakdown=true`. Null when the project has no value for this category."
+          },
+          "securitySupplyChainScoreV2": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 35,
+            "description": "Health Score v2 Security & Supply Chain category score. Returned when `healthBreakdown=true`. Null when the project has no value for this category."
+          },
+          "developmentActivityScoreV2": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 25,
+            "description": "Health Score v2 Development Activity category score. Returned when `healthBreakdown=true`. Null when the project has no value for this category."
+          },
+          "coveredCategoryCount": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 3,
+            "description": "Number of the 3 Health Score v2 categories that have a score. Returned when `healthBreakdown=true`. Null when the count is not available, including for archived projects and a few special projects (e.g. the Linux kernel), which can still have category scores. Treat a null `healthScoreV2` or `healthLabel` as unscored instead of inferring it from the category scores."
           }
         }
       },

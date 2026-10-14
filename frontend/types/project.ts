@@ -71,6 +71,10 @@ export interface ProjectList {
   contributorCount: number;
   organizationCount: number;
   repositories: string[];
+  maintainerHealthScoreV2?: number | null;
+  securitySupplyChainScoreV2?: number | null;
+  developmentActivityScoreV2?: number | null;
+  coveredCategoryCount?: number | null;
 }
 
 export type ProjectRepoData = [url: string, score: number, rank: number];
