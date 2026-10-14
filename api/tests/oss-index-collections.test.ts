@@ -6,6 +6,7 @@ import {
   callsTo,
   mockFetch,
   pipeCalls,
+  resolveSchema,
   tinybirdStub,
   useApp,
   type OpenApiDoc,
@@ -288,6 +289,8 @@ describe('malformed rows', () => {
       }),
     ],
     ['a negative totalContributors', row({ totalContributors: -1 })],
+    ['a negative avgScore', row({ avgScore: -0.1 })],
+    ['an avgScore above 1', row({ avgScore: 1.1 })],
     ['a fractional projectCount', row({ projectCount: 2.5 })],
     [
       'a fractional project count',
@@ -312,5 +315,12 @@ describe('OpenAPI', () => {
     expect(names).toEqual(
       expect.arrayContaining(['categorySlug', 'categoryGroupId', 'sort', 'cursor', 'pageSize']),
     );
+  });
+
+  it('publishes the 0 to 1 bounds the row guard enforces on avgScore', async () => {
+    const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
+    const ok = spec.paths[route]?.get?.responses['200']?.content['application/json']?.schema;
+    const collection = resolveSchema(spec, resolveSchema(spec, ok)?.properties?.data?.items);
+    expect(collection?.properties?.avgScore).toMatchObject({ minimum: 0, maximum: 1 });
   });
 });

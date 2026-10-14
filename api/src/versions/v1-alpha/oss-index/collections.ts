@@ -13,7 +13,7 @@ import {
   type CollectionProjectTuple,
 } from '../../../lib/oss-index.js';
 import { pipePages, requestedPage, toCountedPage } from '../../../lib/pagination.js';
-import { isCount, isString } from '../../../lib/security.js';
+import { inRange, isCount, isString } from '../../../lib/security.js';
 import { PaginationQuery, paginated } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/collections_oss_index.json';
@@ -40,15 +40,13 @@ interface CategoryRow {
   categoryGroupType: string;
 }
 
-const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
-
 const isRow = (row: Row) =>
   isString(row.id) &&
   isString(row.name) &&
   isString(row.slug) &&
   isCount(row.totalContributors) &&
   isCount(row.softwareValue) &&
-  isNumber(row.avgScore) &&
+  inRange(row.avgScore, 1) &&
   isCount(row.projectCount) &&
   Array.isArray(row.topProjects) &&
   row.topProjects.every(isCollectionProjectTuple);
@@ -87,6 +85,8 @@ const OssIndexCollection = Type.Object(
     }),
     softwareValue: Type.Integer({ minimum: 0, description: 'Software value of the collection.' }),
     avgScore: Type.Number({
+      minimum: 0,
+      maximum: 1,
       description: 'Average health score of the collection, from 0 to 1.',
     }),
     projectCount: Type.Integer({ minimum: 0, description: 'Projects in the collection.' }),
