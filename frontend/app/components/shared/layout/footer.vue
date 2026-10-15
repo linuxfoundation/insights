@@ -84,8 +84,12 @@ SPDX-License-Identifier: MIT
                 </a>
                 <div
                   v-else
+                  role="button"
+                  tabindex="0"
                   class="text-sm leading-7 hover:underline whitespace-nowrap cursor-pointer"
                   @click="link.click()"
+                  @keydown.enter.prevent="link.click()"
+                  @keydown.space.prevent="link.click()"
                 >
                   {{ link.name }}
                 </div>

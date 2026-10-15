@@ -66,7 +66,7 @@ watch(pagePath, () => {
 
 <style lang="scss" scoped>
 .cookie-settings {
-  color: #5b6367;
+  color: var(--vp-c-text-2);
 
   &:hover {
     @apply underline;
