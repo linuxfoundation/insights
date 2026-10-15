@@ -1,8 +1,10 @@
 # ADR-0006: API credentials are PATs exchanged for short-lived JWTs via Auth0 Custom Token Exchange
 
 **Date**: 2026-08-05
-**Status**: accepted
+**Status**: accepted, amended 2026-10-12
 **Deciders**: Eric Searcy, Jordan Evans, Robert Detjens, Jonathan Reimer, Joana Maia, Anil Bostanci
+
+> Amended 2026-10-12: issuance in step 1 is gated on a LaunchDarkly access flag in Self-Serve instead of a Tier endpoint check. Steps 4 and 5 below assume the Tier endpoint returns an organization. When it returns none, the Worker forwards the request with the JWT and without the org and tier headers, and the limiter's key and pool for that caller are defined at T-019. See [ADR-0010](./0010-billing-bundled-with-lfx-membership.md).
 
 ## Context
 
