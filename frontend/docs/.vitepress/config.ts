@@ -14,6 +14,14 @@ export default defineConfig({
       'link',
       { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' },
     ], // Adjust the path if you use a different favicon format
+    [
+      'script',
+      {
+        src: 'https://transcend-cdn.com/cm/f484e2d0-ad2e-43a9-9d64-d07f6fa20966/airgap.js',
+        'data-cfasync': 'false',
+        'data-prompt': 'auto',
+      },
+    ],
     ['script', { src: 'https://kit.fontawesome.com/d65f54d9ea.js' }],
     [
       'script',

@@ -85,6 +85,12 @@ export default {
     },
   ],
   script: [
+    // Transcend cookie consent manager. Loads synchronously so it runs before Google Analytics.
+    {
+      src: 'https://transcend-cdn.com/cm/f484e2d0-ad2e-43a9-9d64-d07f6fa20966/airgap.js',
+      'data-cfasync': 'false',
+      'data-prompt': 'auto',
+    },
     // Using fontawesome like this instead of installing plugins - load async
     { src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous', async: true },
   ],

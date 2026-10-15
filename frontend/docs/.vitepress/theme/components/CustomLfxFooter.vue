@@ -14,11 +14,16 @@ SPDX-License-Identifier: MIT
       }"
     >
       <client-only>
-        <lfx-footer
-          cookie-tracking
-          class="pt-10 md:pt-16 pb-5 md:pb-8 px-0"
-        />
+        <!-- cookie-tracking omitted: it makes lfx-ui-core load Osano, replaced by Transcend (see config head) -->
+        <lfx-footer class="pt-10 md:pt-16 pb-5 md:pb-8 px-0" />
       </client-only>
+      <a
+        href="#"
+        class="cookie-settings block pb-5 md:pb-8 text-xs"
+        @click.prevent="openCookieSettings"
+      >
+        Cookie settings
+      </a>
     </div>
   </div>
 </template>
@@ -32,6 +37,13 @@ const { page } = useData();
 const pagePath = computed(() => page.value.filePath);
 
 const hasSidebar = ref(false);
+
+const openCookieSettings = () => {
+  // Transcend airgap.js API, loaded via the config head scripts
+  (
+    window as Window & { transcend?: { showConsentManager?: () => void } }
+  ).transcend?.showConsentManager?.();
+};
 
 // Only import the UI core library on the client side
 onMounted(async () => {
@@ -53,6 +65,14 @@ watch(pagePath, () => {
 </script>
 
 <style lang="scss" scoped>
+.cookie-settings {
+  color: #5b6367;
+
+  &:hover {
+    @apply underline;
+  }
+}
+
 .copyright {
   color: #808b91;
   a {
