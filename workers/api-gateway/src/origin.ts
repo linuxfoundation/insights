@@ -17,8 +17,10 @@ export function buildOriginRequest(request: Request, env: Env, entitlement: Enti
   const clientIp = request.headers.get('cf-connecting-ip');
   if (clientIp) headers.set(CLIENT_IP_HEADER, clientIp);
 
-  headers.set(ORG_HEADER, entitlement.orgTier.orgId);
-  headers.set(TIER_HEADER, entitlement.orgTier.tier);
+  if (entitlement.orgTier) {
+    headers.set(ORG_HEADER, entitlement.orgTier.orgId);
+    headers.set(TIER_HEADER, entitlement.orgTier.tier);
+  }
 
   return new Request(target, {
     method: request.method,

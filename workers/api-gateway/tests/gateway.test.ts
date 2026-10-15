@@ -126,13 +126,20 @@ describe('api gateway', () => {
     expect(headers.get('x-client-ip')).toBeNull();
   });
 
-  it('rejects a caller without an active membership and caches nothing', async () => {
-    const { deps } = setup(async () => []);
-    const response = await handle(apiRequest(), env, deps);
+  it('forwards a caller without an active membership without org and tier headers', async () => {
+    const { deps, forwarded } = setup(async () => []);
+    const clientHeaders = { 'x-tier': 'platinum', 'x-org-id': 'someone-else' };
+    const response = await handle(apiRequest(clientHeaders), env, deps);
+    await handle(apiRequest(clientHeaders), env, deps);
 
-    expect(response.status).toBe(403);
-    expect(deps.callOrigin).not.toHaveBeenCalled();
-    expect(deps.cache.entries.size).toBe(0);
+    expect(response.status).toBe(200);
+    const headers = forwarded().headers;
+    expect(usernameFromJwt(headers.get('authorization')!.replace('Bearer ', ''))).toBe('stub-user');
+    expect(headers.get('x-tier')).toBeNull();
+    expect(headers.get('x-org-id')).toBeNull();
+    expect(deps.fetchMemberTiers).toHaveBeenCalledTimes(1);
+    const [cached] = deps.cache.entries.values();
+    expect(cached?.orgTier).toBeNull();
   });
 
   it('keeps the origin host for a path starting with //', async () => {

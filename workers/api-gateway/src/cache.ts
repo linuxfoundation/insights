@@ -6,7 +6,8 @@ export const ENTITLEMENT_TTL_SECONDS = 600;
 
 export interface Entitlement {
   accessToken: string;
-  orgTier: OrgTier;
+  // null when the caller holds no active membership; the request is forwarded without org and tier headers.
+  orgTier: OrgTier | null;
 }
 
 export interface EntitlementCache {
