@@ -1,6 +1,6 @@
 # Insights Public API: Project Plan
 
-> Draft plan for review. Not yet broken out into Jira tickets. Once we agree on the shape, every "T-XXX" line below maps cleanly to a single Jira task and every "Epic" maps to an epic / milestone.
+> Draft plan for review. Not yet broken out into GitHub issues. Once we agree on the shape, every "T-XXX" line below maps cleanly to a single issue in `linuxfoundation/lfx-cdp-insights-ops` and every "Epic" maps to a parent issue / milestone.
 
 ## 1. Context
 
@@ -162,7 +162,7 @@ Each decision below has a full pros/cons analysis and a recommendation. We are c
 
 ---
 
-## 4. Epics / Milestones for Jira
+## 4. Epics / Milestones
 
 Recommended ordering: **E1 → E2 → E3 (in parallel with E4, E5) → E6 → E7 (Development) → E8 (Contributors) → ...**
 
