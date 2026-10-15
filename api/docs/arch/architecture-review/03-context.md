@@ -41,7 +41,7 @@ _Avoid:_ plan, subscription
 ## API Shape
 
 **Endpoint Group**
-A logical cluster of related endpoints released together (Development, Contributors, Popularity, Security & Best Practices, Overviews, Collections, Leaderboard). Each group maps to a Jira epic. Endpoints within a group are promoted through launch stages independently.
+A logical cluster of related endpoints released together (Development, Contributors, Popularity, Security & Best Practices, Overviews, Collections, Leaderboard). Each group maps to a parent issue in `linuxfoundation/lfx-cdp-insights-ops`. Endpoints within a group are promoted through launch stages independently.
 _Avoid:_ phase, module, domain
 
 **Breaking Change**

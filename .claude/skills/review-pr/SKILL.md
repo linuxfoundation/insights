@@ -3,7 +3,7 @@ name: review-pr
 description: >
   Review a pull request against Insights architecture standards — fetches PR
   diff, verifies previous comments are addressed, validates PR metadata (title,
-  branch, JIRA, size), runs a code-standards check against every file in
+  branch, issue reference, size), runs a code-standards check against every file in
   `.claude/rules/` and `.claude/hooks/guard-protected-files.sh`, and drafts
   inline review comments with suggested fixes. NEVER auto-posts comments or
   submits reviews — always presents a draft in the terminal for user approval
@@ -73,7 +73,7 @@ Glob `.claude/rules/*.md` and read every rule file. At time of writing this incl
 
 - `always-use-uikit.md` — uikit component usage rules
 - `pnpm-workspace-commands.md` — pnpm workspace conventions
-- `commit-workflow.md` — PR title format, branch naming, JIRA, signing
+- `commit-workflow.md` — PR title format, branch naming, issue tracking, signing
 
 ### Load the protected-files hook
 
@@ -143,12 +143,12 @@ Validates PR metadata against `commit-workflow.md`.
 
 ### Checks
 
-1. **PR title format** — must match `type: description` (Conventional Commits), all lowercase, no JIRA ticket in title. A scope is optional.
+1. **PR title format** — must match `type: description` (Conventional Commits), all lowercase, no issue reference in title. A scope is optional.
    - Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
-2. **Branch name format** — should match `<type>/IN-<number>` (e.g. `feat/IN-123`). Flag as NIT if non-conforming but otherwise well-formed.
+2. **Branch name format** — should match `<type>/issue-<issue-number>-short-description` (e.g. `feat/issue-123-token-refresh`). Flag as NIT if non-conforming but otherwise well-formed.
 
-3. **JIRA ticket reference** — at least one commit message or the PR body should reference an `IN-XXX` ticket. Extract with `grep -oE 'IN-[0-9]+'`. If none, flag SHOULD FIX.
+3. **Issue reference** — the PR body should link the tracking issue with `Closes` or `Refs`. Strip HTML comments from the body first, then extract with `grep -oE '(Closes|Refs) linuxfoundation/lfx-cdp-insights-ops#[0-9]+'`. If none, flag SHOULD FIX. If the body uses a bare `Closes #<number>` / `Refs #<number>` instead, flag SHOULD FIX: it points at a `linuxfoundation/insights` issue, not the tracker. Other bare `#<number>` mentions (e.g. related insights PRs) are fine. Commit-body references are checked by `/preflight`.
 
 4. **Branch rebased on main**:
 
@@ -163,13 +163,13 @@ Validates PR metadata against `commit-workflow.md`.
 Build a findings table:
 
 ```markdown
-| Check           | Status | Detail                          |
-| --------------- | ------ | ------------------------------- |
-| PR title format | PASS   | `feat(auth): add token refresh` |
-| Branch name     | PASS   | `feat/IN-1234`                  |
-| JIRA ticket     | PASS   | Found IN-1234 in commits        |
-| Branch rebased  | PASS   | origin/main is an ancestor      |
-| PR size         | PASS   | 342 additions                   |
+| Check           | Status | Detail                                         |
+| --------------- | ------ | ---------------------------------------------- |
+| PR title format | PASS   | `feat(auth): add token refresh`                |
+| Branch name     | PASS   | `feat/issue-123-token-refresh`                 |
+| Issue reference | PASS   | Found linuxfoundation/lfx-cdp-insights-ops#123 |
+| Branch rebased  | PASS   | origin/main is an ancestor                     |
+| PR size         | PASS   | 342 additions                                  |
 ```
 
 ---

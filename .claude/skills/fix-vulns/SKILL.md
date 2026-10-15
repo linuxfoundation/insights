@@ -1,8 +1,8 @@
 ---
 name: fix-vulns
 description: >
-  Automated triage and fixing of Dependabot security vulnerabilities
-  (IN-1189). Starts by asking which scope to tackle (critical, high,
+  Automated triage and fixing of Dependabot security vulnerabilities.
+  Starts by asking which scope to tackle (critical, high,
   medium/low, or specific advisories) with checkboxes. Fetches open alerts,
   dedupes them, classifies each by origin (submodule vs local, dev-only vs
   runtime), then fans out one break-risk agent per package that must PROVE the

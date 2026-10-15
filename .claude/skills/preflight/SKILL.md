@@ -21,14 +21,14 @@ Before running any validation, check the state of the working tree:
 ```bash
 git status
 git diff --stat origin/main...HEAD
-git log --format="%h %s%n%b" origin/main...HEAD
+git log --format="%h %s%n%b" origin/main..HEAD
 ```
 
 **Evaluate:**
 
 - **Uncommitted changes?** — Ask the contributor: commit now or stash?
 - **No commits ahead of main?** — The branch has nothing to validate. Ask if they're on the right branch.
-- **Commit messages missing JIRA ticket?** — Flag commits that don't include `IN-` references inline in the description.
+- **Commits missing an issue reference?** — Flag commits whose body lacks `Refs linuxfoundation/lfx-cdp-insights-ops#<number>`.
 - **Commits missing `--signoff`?** — Flag any commits without `Signed-off-by:` lines.
 
 Resolve any issues before proceeding.
@@ -130,13 +130,13 @@ If protected files appear in the diff, warn the contributor and ask them to reve
 
 ```bash
 git status
-git log --format="%h %s%n%b" origin/main...HEAD
+git log --format="%h %s%n%b" origin/main..HEAD
 ```
 
 - **All changes committed?** — If not, remind them to commit.
 - **Commit messages follow conventions?** — `type: description` format per `commit-workflow.md`. Scope is optional. Valid types include `feat`, `fix`, `docs`, `chore`, `refactor`, `build`, etc.
 - **`--signoff` on all commits?** — Every commit must have `Signed-off-by:`.
-- **JIRA ticket referenced?** — Commit messages should include `IN-` references inline in the description.
+- **Issue referenced?** — Commit bodies should include `Refs linuxfoundation/lfx-cdp-insights-ops#<number>` per `commit-workflow.md`.
 
 ## Check 8: Change Summary
 
