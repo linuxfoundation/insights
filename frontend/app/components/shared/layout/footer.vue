@@ -84,8 +84,12 @@ SPDX-License-Identifier: MIT
                 </a>
                 <div
                   v-else
+                  role="button"
+                  tabindex="0"
                   class="text-sm leading-7 hover:underline whitespace-nowrap cursor-pointer"
                   @click="link.click()"
+                  @keydown.enter.prevent="link.click()"
+                  @keydown.space.prevent="link.click()"
                 >
                   {{ link.name }}
                 </div>
@@ -95,10 +99,8 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <client-only>
-        <lfx-footer
-          cookie-tracking
-          class="footer !p-0 !text-left max-w-190"
-        />
+        <!-- cookie-tracking omitted: it makes lfx-ui-core load Osano, replaced by Transcend (setup/head.ts) -->
+        <lfx-footer class="footer !p-0 !text-left max-w-190" />
       </client-only>
     </div>
   </footer>
