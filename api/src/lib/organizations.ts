@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { Type } from '@sinclair/typebox';
 
+import { fetchPipe, type RequestLog } from '../clients/tinybird.js';
+import { isString } from './security.js';
+
 export const organizationsLeaderboardPath = '/v0/pipes/organizations_leaderboard.json';
 
 export interface OrganizationRow {
@@ -46,3 +49,51 @@ export const Organization = Type.Object({
       "The organization's share of the contributions attributed to any organization in the period that match the filters, in percent, rounded to two decimals. Contributions without an organization are left out, so the shares of all organizations add up to about 100.",
   }),
 });
+
+export const OrganizationParams = Type.Object({
+  slug: Type.String({
+    minLength: 1,
+    description:
+      "The organization's slug, as in its organization page URL `https://insights.linuxfoundation.org/organization/{slug}` and in the `slug` the organization leaderboards return.",
+  }),
+});
+
+const profilePath = '/v0/pipes/org_page_profile.json';
+
+export interface OrganizationProfileRow {
+  displayName: string;
+  logo: string;
+  employeeCount: string;
+  industry: string;
+  description: string;
+  website: string | null;
+  domain: string | null;
+  membership: string | null;
+}
+
+const isOptionalString = (value: unknown) => value === null || isString(value);
+
+const isOrganizationProfileRow = (row: OrganizationProfileRow) =>
+  isString(row.displayName) &&
+  isString(row.logo) &&
+  isString(row.employeeCount) &&
+  isString(row.industry) &&
+  isString(row.description) &&
+  isOptionalString(row.website) &&
+  isOptionalString(row.domain) &&
+  isOptionalString(row.membership);
+
+// The pipe has no row for an unknown slug or for an organization whose affiliation is blocked, so
+// null answers both and the organization routes return 404 for them.
+export async function findOrganizationProfile(
+  request: RequestLog,
+  slug: string,
+): Promise<OrganizationProfileRow | null> {
+  const [row] = await fetchPipe<OrganizationProfileRow>(
+    request,
+    profilePath,
+    { orgSlug: slug },
+    isOrganizationProfileRow,
+  );
+  return row ?? null;
+}
