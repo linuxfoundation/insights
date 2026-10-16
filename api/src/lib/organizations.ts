@@ -3,7 +3,9 @@
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, type RequestLog } from '../clients/tinybird.js';
-import { isString } from './security.js';
+import { NotFoundError } from './errors.js';
+import { toIsoUtc } from './period.js';
+import { isCount, isString } from './security.js';
 
 export const organizationsLeaderboardPath = '/v0/pipes/organizations_leaderboard.json';
 
@@ -96,4 +98,37 @@ export async function findOrganizationProfile(
     isOrganizationProfileRow,
   );
   return row ?? null;
+}
+
+export interface OrganizationYear {
+  startDate: string;
+  endDate: string;
+  count: number;
+}
+
+const isDay = (value: unknown) => isString(value) && /^\d{4}-\d{2}-\d{2}$/.test(value as string);
+
+// The yearly series behind the organization page charts have one row per calendar year with data,
+// oldest first. An empty series is also what an unknown organization gets, which the profile tells
+// apart.
+export async function fetchOrganizationYears(
+  request: RequestLog,
+  slug: string,
+  pipePath: string,
+  countField: string,
+): Promise<OrganizationYear[]> {
+  const rows = await fetchPipe<Record<string, unknown>>(
+    request,
+    pipePath,
+    { orgSlug: slug },
+    (row) => isDay(row.startDate) && isDay(row.endDate) && isCount(row[countField]),
+  );
+  if (rows.length === 0 && !(await findOrganizationProfile(request, slug))) {
+    throw new NotFoundError('Organization not found');
+  }
+  return rows.map((row) => ({
+    startDate: toIsoUtc(row.startDate as string),
+    endDate: toIsoUtc(row.endDate as string),
+    count: row[countField] as number,
+  }));
 }
