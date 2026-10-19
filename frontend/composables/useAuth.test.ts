@@ -28,6 +28,14 @@ describe('silent login attempt flag (OPS-839)', () => {
     expect(getSilentLoginAttempted()).toBe(false);
   });
 
+  it('reads a future timestamp as not attempted', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-19T10:00:00Z'));
+    localStorage.setItem(KEY, new Date('2026-10-19T11:00:00Z').getTime().toString());
+
+    expect(getSilentLoginAttempted()).toBe(false);
+  });
+
   it('reads a legacy "true" value as not attempted', () => {
     localStorage.setItem(KEY, 'true');
 

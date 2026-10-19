@@ -35,7 +35,8 @@ const SILENT_LOGIN_ATTEMPT_TTL_MS = 15 * 60 * 1000;
 export const getSilentLoginAttempted = (): boolean => {
   if (!process.client) return false;
   const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
-  return Date.now() - attemptedAt < SILENT_LOGIN_ATTEMPT_TTL_MS;
+  const age = Date.now() - attemptedAt;
+  return age >= 0 && age < SILENT_LOGIN_ATTEMPT_TTL_MS;
 };
 
 export const setSilentLoginAttempted = (value: boolean): void => {

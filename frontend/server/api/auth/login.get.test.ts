@@ -49,6 +49,15 @@ describe('GET /api/auth/login error handling (OPS-839)', () => {
     expect(mockSendRedirect).toHaveBeenCalledWith({}, '/project/linux');
   });
 
+  it('redirects a failed silent browser request with an unsafe redirectTo to the root', async () => {
+    mockGetQuery.mockReturnValue({ silent: 'true', redirectTo: '//evil.com' });
+    mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
+
+    await handler({} as H3Event);
+
+    expect(mockSendRedirect).toHaveBeenCalledWith({}, '/');
+  });
+
   it('still throws a 500 for a failed non-silent request', async () => {
     mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
     mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));

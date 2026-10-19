@@ -38,10 +38,13 @@ export default defineNuxtPlugin(() => {
 
   setRefreshAuth(refreshAuth);
 
+  // asyncData sets data before status, so the watchEffect below sets this before the status watcher runs
+  let silentLoginStarted = false;
+
   watch(
     status,
     (s) => {
-      if (s === 'success' || s === 'error') {
+      if ((s === 'success' || s === 'error') && !silentLoginStarted) {
         isAuthReady.value = true;
         isAuthLoading.value = false;
       }
@@ -66,6 +69,7 @@ export default defineNuxtPlugin(() => {
       rawUrl.searchParams.delete('auth');
       const currentPath = rawUrl.pathname + (rawUrl.search || '') + (rawUrl.hash || '');
       setSilentLoginAttempted(true);
+      silentLoginStarted = true;
       login(currentPath, true);
     }
 
