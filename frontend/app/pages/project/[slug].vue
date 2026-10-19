@@ -56,6 +56,8 @@ const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !
 
 onServerPrefetch(async () => {
   await suspense();
+  // Watchers don't re-fire during SSR, so sync the store flag the client will hydrate with.
+  isProjectLoading.value = isLoading.value;
   if (isError.value) {
     // On rate limit, don't throw — let SWR serve stale cached content
     const statusCode = (error.value as { statusCode?: number })?.statusCode;
