@@ -27,7 +27,7 @@ export const setRefreshAuth = (fn: () => Promise<unknown>) => {
   refreshAuthFn = fn;
 };
 
-const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
+export const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
 // Matches the silent auth_pkce cookie maxAge in server/api/auth/login.get.ts
 const SILENT_LOGIN_ATTEMPT_TTL_MS = 2 * 60 * 1000;
 
