@@ -19,7 +19,6 @@ describe('login.vue before and after the initial auth check (OPS-839)', () => {
   it('shows neither "Log in" nor the avatar until auth is ready, then "Log in" when unauthenticated', async () => {
     const wrapper = await mountSuspended(LfxAuthLogin);
 
-    // fails before fix: "Log in" rendered immediately, even for users about to be authenticated
     expect(wrapper.text()).not.toContain('Log in');
     expect(wrapper.findComponent(LfxAvatar).exists()).toBe(false);
 

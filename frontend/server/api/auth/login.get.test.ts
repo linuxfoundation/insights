@@ -46,7 +46,6 @@ describe('GET /api/auth/login error handling (OPS-839)', () => {
 
     await handler({} as H3Event);
 
-    // fails before fix: the error was rethrown as a 500 instead of redirecting
     expect(mockSendRedirect).toHaveBeenCalledWith({}, '/project/linux');
   });
 

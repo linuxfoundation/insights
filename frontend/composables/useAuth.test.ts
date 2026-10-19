@@ -24,13 +24,11 @@ describe('silent login attempt flag (OPS-839)', () => {
 
     expect(getSilentLoginAttempted()).toBe(true);
 
-    // fails before fix: the flag never expired, so a failed attempt blocked retries forever
     vi.setSystemTime(new Date('2026-10-19T10:16:00Z'));
     expect(getSilentLoginAttempted()).toBe(false);
   });
 
   it('reads a legacy "true" value as not attempted', () => {
-    // fails before fix: the old check was `=== 'true'`
     localStorage.setItem(KEY, 'true');
 
     expect(getSilentLoginAttempted()).toBe(false);
@@ -40,7 +38,6 @@ describe('silent login attempt flag (OPS-839)', () => {
     setSilentLoginAttempted(true);
     setSilentLoginAttempted(false);
 
-    // fails before fix: the key was kept with the value 'false'
     expect(localStorage.getItem(KEY)).toBeNull();
     expect(getSilentLoginAttempted()).toBe(false);
   });
@@ -69,7 +66,6 @@ describe('login() navigation (OPS-839)', () => {
   it('silent login navigates straight to the endpoint with redirectTo, without a fetch', async () => {
     await login('/project/linux?tab=health', true);
 
-    // fails before fix: silent login fetched JSON first and never set the URL
     expect(loginEndpoint).not.toHaveBeenCalled();
     expect(location.href).toBe(
       '/api/auth/login?silent=true&redirectTo=%2Fproject%2Flinux%3Ftab%3Dhealth',

@@ -31,8 +31,7 @@ const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
 // Matches the auth_pkce cookie maxAge in server/api/auth/login.get.ts
 const SILENT_LOGIN_ATTEMPT_TTL_MS = 15 * 60 * 1000;
 
-// Stores the attempt timestamp so a failed silent login is retried after the TTL.
-// Legacy 'true' values are NaN here and read as not attempted.
+// Stores attempt time so failed silent logins retry after the TTL; legacy 'true' reads as not attempted
 export const getSilentLoginAttempted = (): boolean => {
   if (!process.client) return false;
   const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
