@@ -77,49 +77,28 @@ describe('Pull Requests Data Source', () => {
     // The granularity should not be sent in the summary queries, so we remove it here and add it when necessary in
     // the generateQuery function.
     delete filter.granularity;
-    const generateQuery = (
-      activityTypes: ActivityTypes[],
-      isSummary: boolean,
-      dates: DateRange,
-    ) => ({
+    const generateQuery = (state: string, isSummary: boolean, dates: DateRange) => ({
       ...filter,
-      activity_types: activityTypes,
+      state,
       startDate: dates.from,
       endDate: dates.to,
       ...(!isSummary && { granularity: Granularity.WEEKLY }),
     });
 
     // These are the queries the data source should send to Tinybird, in this order.
-    const openedPRsActivities = [
-      ActivityTypes.PULL_REQUEST_OPENED,
-      ActivityTypes.MERGE_REQUEST_OPENED,
-      ActivityTypes.CHANGESET_CREATED,
-    ];
-    const mergedPRsActivities = [
-      ActivityTypes.PULL_REQUEST_MERGED,
-      ActivityTypes.MERGE_REQUEST_MERGED,
-      ActivityTypes.CHANGESET_MERGED,
-    ];
-    const closedPRsActivities = [
-      ActivityTypes.PULL_REQUEST_CLOSED,
-      ActivityTypes.MERGE_REQUEST_CLOSED,
-      ActivityTypes.CHANGESET_CLOSED,
-      ActivityTypes.CHANGESET_ABANDONED,
-    ];
-
     const expectedQueries = [
       // Summaries
-      generateQuery(openedPRsActivities, true, dates.current),
-      generateQuery(openedPRsActivities, true, dates.previous),
-      generateQuery(mergedPRsActivities, true, dates.current),
-      generateQuery(mergedPRsActivities, true, dates.previous),
-      generateQuery(closedPRsActivities, true, dates.current),
-      generateQuery(closedPRsActivities, true, dates.previous),
+      generateQuery('opened', true, dates.current),
+      generateQuery('opened', true, dates.previous),
+      generateQuery('merged', true, dates.current),
+      generateQuery('merged', true, dates.previous),
+      generateQuery('closed', true, dates.current),
+      generateQuery('closed', true, dates.previous),
 
       // Time series data
-      generateQuery(openedPRsActivities, false, dates.current),
-      generateQuery(mergedPRsActivities, false, dates.current),
-      generateQuery(closedPRsActivities, false, dates.current),
+      generateQuery('opened', false, dates.current),
+      generateQuery('merged', false, dates.current),
+      generateQuery('closed', false, dates.current),
 
       // Pull request resolution velocity
       {
@@ -135,47 +114,47 @@ describe('Pull Requests Data Source', () => {
     expect(mockFetchFromTinybird).toHaveBeenCalledTimes(expectedQueries.length);
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[0],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[1],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       3,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[2],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       4,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[3],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       5,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[4],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       6,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[5],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       7,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[6],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       8,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[7],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       9,
-      '/v0/pipes/activities_count.json',
+      '/v0/pipes/pull_requests_count.json',
       expectedQueries[8],
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
@@ -184,12 +163,12 @@ describe('Pull Requests Data Source', () => {
       expectedQueries[9],
     );
 
-    const currentOpenedCount = mockCurrentOpenedPRsSummary.data[0]?.activityCount || 0;
-    const previousOpenedCount = mockPreviousOpenedPRsSummary.data[0]?.activityCount || 0;
-    const currentMergedCount = mockCurrentMergedPRsSummary.data[0]?.activityCount || 0;
-    const previousMergedCount = mockPreviousMergedPRsSummary.data[0]?.activityCount || 0;
-    const currentClosedCount = mockCurrentClosedPRsSummary.data[0]?.activityCount || 0;
-    const previousClosedCount = mockPreviousClosedPRsSummary.data[0]?.activityCount || 0;
+    const currentOpenedCount = mockCurrentOpenedPRsSummary.data[0]?.pullRequestCount || 0;
+    const previousOpenedCount = mockPreviousOpenedPRsSummary.data[0]?.pullRequestCount || 0;
+    const currentMergedCount = mockCurrentMergedPRsSummary.data[0]?.pullRequestCount || 0;
+    const previousMergedCount = mockPreviousMergedPRsSummary.data[0]?.pullRequestCount || 0;
+    const currentClosedCount = mockCurrentClosedPRsSummary.data[0]?.pullRequestCount || 0;
+    const previousClosedCount = mockPreviousClosedPRsSummary.data[0]?.pullRequestCount || 0;
     const currentTotalCount = currentOpenedCount;
     const previousTotalCount = previousOpenedCount;
     const totalPercentageChange = calculatePercentageChange(currentTotalCount, previousTotalCount);
@@ -243,9 +222,9 @@ describe('Pull Requests Data Source', () => {
       data: mockOpenedPullRequests.data.map((item, index) => ({
         startDate: item.startDate,
         endDate: item.endDate,
-        open: item.activityCount,
-        merged: mockMergedPullRequests.data[index].activityCount,
-        closed: mockClosedPullRequests.data[index].activityCount,
+        open: item.pullRequestCount,
+        merged: mockMergedPullRequests.data[index].pullRequestCount,
+        closed: mockClosedPullRequests.data[index].pullRequestCount,
       })),
     };
 

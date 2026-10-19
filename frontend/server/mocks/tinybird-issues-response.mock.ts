@@ -3,13 +3,13 @@
 export const mockCurrentSummaryData = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'issueCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 100,
+      issueCount: 100,
     },
   ],
   rows: 1,
@@ -23,13 +23,13 @@ export const mockCurrentSummaryData = {
 export const mockPreviousSummaryData = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'issueCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 50,
+      issueCount: 50,
     },
   ],
   rows: 1,
@@ -51,7 +51,7 @@ export const mockIssuesOpened = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'issueCount',
       type: 'UInt64',
     },
   ],
@@ -59,22 +59,22 @@ export const mockIssuesOpened = {
     {
       startDate: '2023-03-01',
       endDate: '2023-03-31',
-      activityCount: 12,
+      issueCount: 12,
     },
     {
       startDate: '2023-04-01',
       endDate: '2023-04-30',
-      activityCount: 3,
+      issueCount: 3,
     },
     {
       startDate: '2023-05-01',
       endDate: '2023-05-31',
-      activityCount: 8,
+      issueCount: 8,
     },
     {
       startDate: '2023-06-01',
       endDate: '2023-06-30',
-      activityCount: 93,
+      issueCount: 93,
     },
   ],
   rows: 13,
@@ -96,7 +96,7 @@ export const mockIssuesClosed = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'issueCount',
       type: 'UInt64',
     },
   ],
@@ -104,22 +104,22 @@ export const mockIssuesClosed = {
     {
       startDate: '2023-03-01',
       endDate: '2023-03-31',
-      activityCount: 8,
+      issueCount: 8,
     },
     {
       startDate: '2023-04-01',
       endDate: '2023-04-30',
-      activityCount: 1,
+      issueCount: 1,
     },
     {
       startDate: '2023-05-01',
       endDate: '2023-05-31',
-      activityCount: 6,
+      issueCount: 6,
     },
     {
       startDate: '2023-06-01',
       endDate: '2023-06-30',
-      activityCount: 6,
+      issueCount: 6,
     },
   ],
   rows: 13,
@@ -141,7 +141,7 @@ export const mockIssueResolutionVelocity = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'issueCount',
       type: 'UInt64',
     },
   ],

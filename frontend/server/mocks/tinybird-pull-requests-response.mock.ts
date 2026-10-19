@@ -3,13 +3,13 @@
 export const mockCurrentOpenedPRsSummary = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 100,
+      pullRequestCount: 100,
     },
   ],
   rows: 1,
@@ -23,13 +23,13 @@ export const mockCurrentOpenedPRsSummary = {
 export const mockPreviousOpenedPRsSummary = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 50,
+      pullRequestCount: 50,
     },
   ],
   rows: 1,
@@ -43,13 +43,13 @@ export const mockPreviousOpenedPRsSummary = {
 export const mockCurrentMergedPRsSummary = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 25,
+      pullRequestCount: 25,
     },
   ],
   rows: 1,
@@ -63,13 +63,13 @@ export const mockCurrentMergedPRsSummary = {
 export const mockPreviousMergedPRsSummary = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 50,
+      pullRequestCount: 50,
     },
   ],
   rows: 1,
@@ -83,13 +83,13 @@ export const mockPreviousMergedPRsSummary = {
 export const mockCurrentClosedPRsSummary = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 10,
+      pullRequestCount: 10,
     },
   ],
   rows: 1,
@@ -103,13 +103,13 @@ export const mockCurrentClosedPRsSummary = {
 export const mockPreviousClosedPRsSummary = {
   meta: [
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
   data: [
     {
-      activityCount: 5,
+      pullRequestCount: 5,
     },
   ],
   rows: 1,
@@ -131,7 +131,7 @@ export const mockOpenedPullRequests = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
@@ -139,22 +139,22 @@ export const mockOpenedPullRequests = {
     {
       startDate: '2023-03-01',
       endDate: '2023-03-31',
-      activityCount: 11,
+      pullRequestCount: 11,
     },
     {
       startDate: '2023-04-01',
       endDate: '2023-04-30',
-      activityCount: 4,
+      pullRequestCount: 4,
     },
     {
       startDate: '2023-05-01',
       endDate: '2023-05-31',
-      activityCount: 7,
+      pullRequestCount: 7,
     },
     {
       startDate: '2023-06-01',
       endDate: '2023-06-30',
-      activityCount: 21,
+      pullRequestCount: 21,
     },
   ],
   rows: 13,
@@ -176,7 +176,7 @@ export const mockMergedPullRequests = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
@@ -184,22 +184,22 @@ export const mockMergedPullRequests = {
     {
       startDate: '2023-03-01',
       endDate: '2023-03-31',
-      activityCount: 8,
+      pullRequestCount: 8,
     },
     {
       startDate: '2023-04-01',
       endDate: '2023-04-30',
-      activityCount: 1,
+      pullRequestCount: 1,
     },
     {
       startDate: '2023-05-01',
       endDate: '2023-05-31',
-      activityCount: 6,
+      pullRequestCount: 6,
     },
     {
       startDate: '2023-06-01',
       endDate: '2023-06-30',
-      activityCount: 6,
+      pullRequestCount: 6,
     },
   ],
   rows: 13,
@@ -221,7 +221,7 @@ export const mockClosedPullRequests = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],
@@ -229,22 +229,22 @@ export const mockClosedPullRequests = {
     {
       startDate: '2023-03-01',
       endDate: '2023-03-31',
-      activityCount: 2,
+      pullRequestCount: 2,
     },
     {
       startDate: '2023-04-01',
       endDate: '2023-04-30',
-      activityCount: 1,
+      pullRequestCount: 1,
     },
     {
       startDate: '2023-05-01',
       endDate: '2023-05-31',
-      activityCount: 3,
+      pullRequestCount: 3,
     },
     {
       startDate: '2023-06-01',
       endDate: '2023-06-30',
-      activityCount: 2,
+      pullRequestCount: 2,
     },
   ],
   rows: 13,
@@ -266,7 +266,7 @@ export const mockPullRequestsVelocity = {
       type: 'Nullable(Date)',
     },
     {
-      name: 'activityCount',
+      name: 'pullRequestCount',
       type: 'UInt64',
     },
   ],

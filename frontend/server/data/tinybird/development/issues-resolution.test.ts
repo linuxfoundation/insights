@@ -60,8 +60,8 @@ describe('Issues Resolution Data Source', () => {
 
     const result = await fetchIssuesResolution(filter);
 
-    const currentCumulativeCount = mockCurrentSummaryData.data[0]?.activityCount || 0;
-    const previousCumulativeCount = mockPreviousSummaryData.data[0]?.activityCount || 0;
+    const currentCumulativeCount = mockCurrentSummaryData.data[0]?.issueCount || 0;
+    const previousCumulativeCount = mockPreviousSummaryData.data[0]?.issueCount || 0;
 
     const expectedResult: IssuesResolution = {
       summary: {

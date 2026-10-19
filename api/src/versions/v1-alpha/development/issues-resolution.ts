@@ -4,7 +4,6 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type, type Static } from '@sinclair/typebox';
 
 import type { TinybirdQuery } from '@lfx-insights/tinybird-client';
-import { ActivityTypes } from '@lfx-insights/types';
 
 import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
@@ -22,14 +21,14 @@ import {
   SeriesQuery,
 } from '../../../schemas/common.js';
 
-const activitiesCountPath = '/v0/pipes/activities_count.json';
+const issuesCountPath = '/v0/pipes/issues_count.json';
 const resolveVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
-interface ActivityCountSummaryRow {
-  activityCount?: number;
+interface IssueCountSummaryRow {
+  issueCount?: number;
 }
 
-interface ActivityCountBucketRow extends ActivityCountSummaryRow {
+interface IssueCountBucketRow extends IssueCountSummaryRow {
   startDate: string;
   endDate: string;
 }
@@ -74,11 +73,11 @@ const IssuesResolution = Type.Object({
 });
 
 function mergeBuckets(
-  opened: ActivityCountBucketRow[],
-  closed: ActivityCountBucketRow[],
+  opened: IssueCountBucketRow[],
+  closed: IssueCountBucketRow[],
 ): IssuesResolutionBucket[] {
   const buckets = new Map<string, IssuesResolutionBucket>();
-  const bucketFor = ({ startDate, endDate }: ActivityCountBucketRow) => {
+  const bucketFor = ({ startDate, endDate }: IssueCountBucketRow) => {
     const key = `${startDate}|${endDate}`;
     let bucket = buckets.get(key);
     if (!bucket) {
@@ -92,8 +91,8 @@ function mergeBuckets(
     }
     return bucket;
   };
-  for (const row of opened) bucketFor(row).totalIssues = row.activityCount ?? 0;
-  for (const row of closed) bucketFor(row).closedIssues = row.activityCount ?? 0;
+  for (const row of opened) bucketFor(row).totalIssues = row.issueCount ?? 0;
+  for (const row of closed) bucketFor(row).closedIssues = row.issueCount ?? 0;
   return [...buckets.values()].sort((a, b) => a.startDate.localeCompare(b.startDate));
 }
 
@@ -129,16 +128,18 @@ const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
           includeCollaborations: true,
           ...toTinybirdRange({ startDate, endDate }),
         };
-        const closedFilter = { ...filter, activity_type: ActivityTypes.ISSUES_CLOSED };
+        // issues_count counts each issue once, from the issue lifecycle data, so an issue closed by
+        // a bot (e.g. a stale bot) still counts as closed.
+        const closedFilter = { ...filter, state: 'closed' };
         const count = (query: TinybirdQuery) =>
-          fetchPipe<ActivityCountSummaryRow>(request, activitiesCountPath, query);
+          fetchPipe<IssueCountSummaryRow>(request, issuesCountPath, query);
         const series = (query: TinybirdQuery) =>
-          fetchPipe<ActivityCountBucketRow>(request, activitiesCountPath, query, hasBucketBounds);
+          fetchPipe<IssueCountBucketRow>(request, issuesCountPath, query, hasBucketBounds);
 
         return Promise.all([
           count(closedFilter),
           count({ ...closedFilter, ...toTinybirdRange(previous) }),
-          series({ ...filter, activity_type: ActivityTypes.ISSUES_OPENED, granularity }),
+          series({ ...filter, state: 'opened', granularity }),
           series({ ...closedFilter, granularity }),
           fetchPipe<ResolveVelocityRow>(request, resolveVelocityPath, filter),
         ]);
@@ -154,8 +155,8 @@ const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       return {
         summary: {
           ...toPeriodSummary(
-            currentSummary[0]?.activityCount ?? 0,
-            previousSummary[0]?.activityCount ?? 0,
+            currentSummary[0]?.issueCount ?? 0,
+            previousSummary[0]?.issueCount ?? 0,
             current,
           ),
           avgResolveTimeSeconds: velocity[0]?.averageIssueResolveVelocitySeconds ?? null,
