@@ -8,6 +8,13 @@ import mentorship from '~/config/menu/tools/mentorship';
 import organizationDashboard from '~/config/menu/tools/organization-dashboard';
 import projectControlCenter from '~/config/menu/tools/project-control-center';
 
+declare global {
+  interface Window {
+    // Transcend airgap.js API, loaded in setup/head.ts
+    transcend?: { showConsentManager?: () => void };
+  }
+}
+
 export interface FooterMenuLink {
   link?: string;
   route?: LfxRoutes;
@@ -60,6 +67,10 @@ export const lfxFooterMenu: FooterMenuSection[] = [
       {
         name: 'Join discussions',
         link: 'https://github.com/linuxfoundation/insights/discussions',
+      },
+      {
+        name: 'Cookie settings',
+        click: () => window.transcend?.showConsentManager?.(),
       },
     ],
   },
