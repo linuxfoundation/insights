@@ -9,6 +9,30 @@ import { toSafeRelativePath } from '../utils/redirect';
 // Underscore-prefixed segments are framework routes (/_nuxt, /__nuxt_error, /_og, /_ipx, /__sitemap__).
 const NON_PAGE_SEGMENTS = new Set(['api', 'auth', 'callback', 'embed', 'docs', 'blog']);
 
+// Sites on the shared LF SSO, whose visitors likely hold an Auth0 session. Others keep the client path to spare LCP.
+const LF_SSO_DOMAINS = ['linuxfoundation.org', 'openprofile.dev', 'lfx.dev'];
+
+function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return '';
+  }
+}
+
+// Insights and the Auth0 host are excluded so auth round trips never bounce again.
+function isFromOtherLfSite(event: H3Event): boolean {
+  const refererHost = hostOf(getHeader(event, 'referer') ?? '');
+  const { appUrl, auth0Domain } = useRuntimeConfig(event).public;
+  const excluded = [
+    'insights.linuxfoundation.org',
+    hostOf(appUrl),
+    hostOf(`https://${auth0Domain.replace(/^https?:\/\//, '')}`),
+  ];
+  if (!refererHost || excluded.includes(refererHost)) return false;
+  return LF_SSO_DOMAINS.some((d) => refererHost === d || refererHost.endsWith(`.${d}`));
+}
+
 function isPagePath(pathname: string): boolean {
   const segments = pathname.split('/');
   const first = segments[1] ?? '';
@@ -30,6 +54,7 @@ function shouldBounce(event: H3Event): boolean {
 
   const [pathname = '/', search = ''] = event.path.split('?');
   if (!isPagePath(pathname)) return false;
+  if (!isFromOtherLfSite(event)) return false;
 
   // A refresh token is renewed by /api/auth/user, and auth_pkce means a login is in flight or just failed.
   if (

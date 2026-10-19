@@ -3,10 +3,19 @@
 // Node's Request keeps the sec-fetch-* headers that the browser-like test environment strips.
 // @vitest-environment node
 
+import { mockNuxtImport } from '@nuxt/test-utils/runtime';
 import { createApp, eventHandler, toWebHandler, type EventHandler } from 'h3';
 import { describe, it, expect, vi, beforeAll } from 'vitest';
 
+const runtimeConfig = {
+  public: {
+    appUrl: 'https://insights.linuxfoundation.org',
+    auth0Domain: 'sso.linuxfoundation.org',
+  },
+};
+
 global.defineEventHandler = vi.fn((handler) => handler);
+mockNuxtImport('useRuntimeConfig', () => () => runtimeConfig);
 
 const CHROME_UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36';
@@ -15,6 +24,7 @@ const navigationHeaders = {
   'user-agent': CHROME_UA,
   'sec-fetch-mode': 'navigate',
   'sec-fetch-dest': 'document',
+  referer: 'https://openprofile.dev/',
 };
 
 let request: (path: string, init?: RequestInit) => Promise<Response>;
@@ -125,5 +135,67 @@ describe('silent SSO before render', () => {
     '/blog/post',
   ])('does not bounce the non-page route %s', async (path) => {
     await expectNoBounce(navigate(path));
+  });
+});
+
+describe('silent SSO referrer scoping', () => {
+  it.each([
+    'https://openprofile.dev/',
+    'https://openprofile.dev/profile',
+    'https://lfx.linuxfoundation.org/',
+    'https://mentorship.lfx.linuxfoundation.org/',
+    'https://linuxfoundation.org/',
+    'https://app.lfx.dev/',
+  ])('bounces a visitor arriving from %s', async (referer) => {
+    const res = await navigate('/leaderboards', { referer });
+
+    expect(res.status).toBe(302);
+  });
+
+  it('does not bounce a visitor without a referrer', async () => {
+    await expectNoBounce(
+      request('/leaderboards', {
+        headers: {
+          'user-agent': CHROME_UA,
+          'sec-fetch-mode': 'navigate',
+          'sec-fetch-dest': 'document',
+        },
+      }),
+    );
+  });
+
+  it.each([
+    'https://www.google.com/',
+    'https://insights.linuxfoundation.org/',
+    'https://sso.linuxfoundation.org/',
+    'https://evil-linuxfoundation.org/',
+    'https://linuxfoundation.org.evil.com/',
+    'https://openprofile.dev.evil.com/',
+    'not a url',
+    'openprofile.dev',
+  ])('does not bounce a visitor arriving from %s', async (referer) => {
+    await expectNoBounce(navigate('/leaderboards', { referer }));
+  });
+
+  it('excludes an Auth0 domain configured with a scheme', async () => {
+    runtimeConfig.public.auth0Domain = 'https://sso.linuxfoundation.org';
+    try {
+      await expectNoBounce(
+        navigate('/leaderboards', { referer: 'https://sso.linuxfoundation.org/' }),
+      );
+    } finally {
+      runtimeConfig.public.auth0Domain = 'sso.linuxfoundation.org';
+    }
+  });
+
+  it('excludes the configured app host', async () => {
+    runtimeConfig.public.appUrl = 'https://insights-staging.linuxfoundation.org';
+    try {
+      await expectNoBounce(
+        navigate('/leaderboards', { referer: 'https://insights-staging.linuxfoundation.org/' }),
+      );
+    } finally {
+      runtimeConfig.public.appUrl = 'https://insights.linuxfoundation.org';
+    }
   });
 });
