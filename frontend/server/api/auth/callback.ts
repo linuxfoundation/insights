@@ -45,7 +45,9 @@ export default defineEventHandler(async (event) => {
       if (
         error === 'login_required' ||
         error === 'interaction_required' ||
-        error === 'consent_required'
+        error === 'consent_required' ||
+        error === 'account_selection_required' ||
+        error === 'access_denied'
       ) {
         // Silent authentication failed — the user is not authenticated.
         // Redirect back to the original page without appending ?auth=success (they

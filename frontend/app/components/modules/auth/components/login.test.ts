@@ -10,7 +10,7 @@ import { authState, isAuthReady } from '~~/composables/useAuth';
 
 import LfxAuthLogin from './login.vue';
 
-describe('login.vue before and after the initial auth check (OPS-839)', () => {
+describe('login.vue before and after the initial auth check', () => {
   beforeEach(() => {
     authState.value = { isAuthenticated: false, user: null };
     isAuthReady.value = false;

@@ -28,8 +28,8 @@ export const setRefreshAuth = (fn: () => Promise<unknown>) => {
 };
 
 const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
-// Matches the auth_pkce cookie maxAge in server/api/auth/login.get.ts
-const SILENT_LOGIN_ATTEMPT_TTL_MS = 15 * 60 * 1000;
+// Matches the silent auth_pkce cookie maxAge in server/api/auth/login.get.ts
+const SILENT_LOGIN_ATTEMPT_TTL_MS = 2 * 60 * 1000;
 
 // Stores attempt time so failed silent logins retry after the TTL; legacy 'true' reads as not attempted
 export const getSilentLoginAttempted = (): boolean => {
@@ -50,9 +50,7 @@ export const setSilentLoginAttempted = (value: boolean): void => {
 
 export const login = async (redirectTo?: string, silent?: boolean) => {
   isAuthLoading.value = true;
-  // Only reset the silent-login-attempted flag for explicit (non-silent) logins.
-  // For silent logins the flag must remain set so auth.client.ts can detect a failed
-  // silent-auth cycle and stop retrying on the next page load.
+  // Explicit logins clear the flag; silent ones keep it so a failed attempt waits out the TTL
   if (!silent) {
     setSilentLoginAttempted(false);
   }
@@ -104,8 +102,8 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
 
 export const logout = async () => {
   isAuthLoading.value = true;
-  // Reset silent login flag for next time
-  setSilentLoginAttempted(false);
+  // Mark it attempted so the post-logout landing doesn't bounce through Auth0 again
+  setSilentLoginAttempted(true);
   try {
     const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
       method: 'POST',

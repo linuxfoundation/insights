@@ -38,7 +38,8 @@ export default defineEventHandler(async (event) => {
       secure: isProduction,
       sameSite: 'lax' as const,
       path: '/',
-      maxAge: 60 * 15, // 15 minutes
+      // Silent attempts get a short window, matching SILENT_LOGIN_ATTEMPT_TTL_MS in useAuth.ts
+      maxAge: query.silent === 'true' ? 60 * 2 : 60 * 15,
       // Don't set domain for production - let browser handle it automatically
       // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
       ...(!isProduction && { domain: 'localhost' }),
@@ -98,7 +99,14 @@ export default defineEventHandler(async (event) => {
     console.error('Auth login error:', error);
     // A failed silent attempt should not strand the user on a 500 page
     if (query.silent === 'true' && isBrowserRequest) {
-      return sendRedirect(event, getSafeRedirectUrl(query.redirectTo as string | undefined));
+      const fallbackUrl = new URL(
+        getSafeRedirectUrl(query.redirectTo as string | undefined),
+        'https://placeholder.example',
+      );
+      return sendRedirect(
+        event,
+        fallbackUrl.pathname + (fallbackUrl.search || '') + (fallbackUrl.hash || ''),
+      );
     }
     throw createError({
       statusCode: 500,

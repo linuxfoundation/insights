@@ -38,28 +38,33 @@ export default defineNuxtPlugin(() => {
 
   setRefreshAuth(refreshAuth);
 
-  // asyncData sets data before status, so the watchEffect below sets this before the status watcher runs
   let silentLoginStarted = false;
 
-  watch(
-    status,
-    (s) => {
-      if ((s === 'success' || s === 'error') && !silentLoginStarted) {
-        isAuthReady.value = true;
-        isAuthLoading.value = false;
-      }
-    },
-    { immediate: true },
-  );
+  // A bfcache restore leaves the page as it was mid-redirect, so drop the pending placeholder
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted && silentLoginStarted) {
+      silentLoginStarted = false;
+      isAuthReady.value = true;
+      isAuthLoading.value = false;
+    }
+  });
 
   watchEffect(() => {
+    const isSettled = status.value === 'success' || status.value === 'error';
     if (!userData.value) return;
 
     isAuthLoading.value = false;
     authState.value = userData.value;
 
     // Attempt silent login if suggested by the server and not already attempted
-    if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
+    // Framed embeds can't keep the Lax auth cookies cross-site, so the round trip would replace the widget
+    const isFramed = window.self !== window.top;
+    if (
+      userData.value.shouldAttemptSilentLogin &&
+      process.client &&
+      !isFramed &&
+      !getSilentLoginAttempted()
+    ) {
       // Strip the ?auth param before passing the path as redirectTo so it cannot
       // accumulate (&auth=success&auth=success…) across silent-login redirect cycles.
       const rawUrl = new URL(
@@ -81,6 +86,11 @@ export default defineNuxtPlugin(() => {
       if (!collectionsStore.isLikedCollectionsLoaded) {
         collectionsStore.fetchAndSetLikedCollections();
       }
+    }
+
+    if (isSettled && !silentLoginStarted) {
+      isAuthReady.value = true;
+      isAuthLoading.value = false;
     }
   });
 

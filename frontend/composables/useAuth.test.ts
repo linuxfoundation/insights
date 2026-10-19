@@ -4,11 +4,11 @@
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getSilentLoginAttempted, login, setSilentLoginAttempted } from './useAuth';
+import { getSilentLoginAttempted, login, logout, setSilentLoginAttempted } from './useAuth';
 
 const KEY = 'lfx-silent-login-attempted';
 
-describe('silent login attempt flag (OPS-839)', () => {
+describe('silent login attempt flag', () => {
   beforeEach(() => {
     localStorage.clear();
   });
@@ -17,14 +17,15 @@ describe('silent login attempt flag (OPS-839)', () => {
     vi.useRealTimers();
   });
 
-  it('reads true right after an attempt and false once 15 minutes have passed', () => {
+  it('reads true just under 2 minutes after an attempt and false at 2 minutes', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-10-19T10:00:00Z'));
     setSilentLoginAttempted(true);
 
+    vi.setSystemTime(new Date('2026-10-19T10:01:59Z'));
     expect(getSilentLoginAttempted()).toBe(true);
 
-    vi.setSystemTime(new Date('2026-10-19T10:16:00Z'));
+    vi.setSystemTime(new Date('2026-10-19T10:02:00Z'));
     expect(getSilentLoginAttempted()).toBe(false);
   });
 
@@ -51,7 +52,7 @@ describe('silent login attempt flag (OPS-839)', () => {
   });
 });
 
-describe('login() navigation (OPS-839)', () => {
+describe('login() navigation', () => {
   const loginEndpoint = vi.fn();
   let location: { href: string };
 
@@ -92,5 +93,30 @@ describe('login() navigation (OPS-839)', () => {
 
     expect(loginEndpoint).toHaveBeenCalledTimes(1);
     expect(location.href).toBe('https://auth0.example/authorize');
+  });
+});
+
+describe('logout()', () => {
+  let location: { href: string };
+
+  beforeEach(() => {
+    localStorage.clear();
+    registerEndpoint('/api/auth/logout', {
+      method: 'POST',
+      handler: () => ({ success: true, logoutUrl: '/?auth=logout' }),
+    });
+    location = { href: 'http://localhost:3000/' };
+    vi.stubGlobal('location', location);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('marks silent login as attempted so the logout landing does not retry it', async () => {
+    await logout();
+
+    expect(location.href).toBe('/?auth=logout');
+    expect(getSilentLoginAttempted()).toBe(true);
   });
 });

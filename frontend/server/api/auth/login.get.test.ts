@@ -8,13 +8,14 @@ const mockDiscovery = vi.fn();
 const mockSendRedirect = vi.fn();
 const mockGetQuery = vi.fn();
 const mockGetHeader = vi.fn();
+const mockSetCookie = vi.fn();
 
 vi.mock('openid-client', () => ({
   discovery: (...args: unknown[]) => mockDiscovery(...args),
   randomState: vi.fn(),
   randomPKCECodeVerifier: vi.fn(),
   calculatePKCECodeChallenge: vi.fn(),
-  buildAuthorizationUrl: vi.fn(),
+  buildAuthorizationUrl: vi.fn(() => new URL('https://auth0.example/authorize')),
 }));
 
 global.defineEventHandler = vi.fn((handler) => handler);
@@ -22,6 +23,7 @@ global.useRuntimeConfig = vi.fn(() => ({ public: { auth0Domain: 'auth0.example' 
 global.getQuery = mockGetQuery;
 global.getHeader = mockGetHeader;
 global.sendRedirect = mockSendRedirect;
+global.setCookie = mockSetCookie;
 global.createError = vi.fn((error) => error);
 
 let handler: (event: H3Event) => Promise<unknown>;
@@ -39,7 +41,7 @@ beforeEach(() => {
 const browserHeaders = (name: string) =>
   ({ 'user-agent': 'Mozilla/5.0', accept: 'text/html,application/xhtml+xml' })[name];
 
-describe('GET /api/auth/login error handling (OPS-839)', () => {
+describe('GET /api/auth/login error handling', () => {
   it('redirects a failed silent browser request back to its redirectTo path', async () => {
     mockGetQuery.mockReturnValue({ silent: 'true', redirectTo: '/project/linux' });
     mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
@@ -58,11 +60,52 @@ describe('GET /api/auth/login error handling (OPS-839)', () => {
     expect(mockSendRedirect).toHaveBeenCalledWith({}, '/');
   });
 
+  it.each(['/\\evil.com', '/%5Cevil.com'])(
+    'keeps a failed silent redirect to %s on this origin',
+    async (redirectTo) => {
+      mockGetQuery.mockReturnValue({ silent: 'true', redirectTo });
+      mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
+
+      await handler({} as H3Event);
+
+      const location = mockSendRedirect.mock.calls[0][1] as string;
+      expect(new URL(location, 'https://insights.example').host).toBe('insights.example');
+    },
+  );
+
   it('still throws a 500 for a failed non-silent request', async () => {
     mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
     mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
 
     await expect(handler({} as H3Event)).rejects.toMatchObject({ statusCode: 500 });
     expect(mockSendRedirect).not.toHaveBeenCalled();
+  });
+});
+
+describe('GET /api/auth/login cookie lifetime', () => {
+  const maxAgeOf = (name: string) =>
+    mockSetCookie.mock.calls.find(([, cookieName]) => cookieName === name)?.[3].maxAge;
+
+  beforeEach(() => {
+    mockDiscovery.mockResolvedValue({});
+    mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
+  });
+
+  it('gives silent attempts a 2 minute window', async () => {
+    mockGetQuery.mockReturnValue({ silent: 'true', redirectTo: '/project/linux' });
+
+    await handler({} as H3Event);
+
+    expect(maxAgeOf('auth_pkce')).toBe(120);
+    expect(maxAgeOf('auth_redirect_to')).toBe(120);
+  });
+
+  it('keeps 15 minutes for interactive login', async () => {
+    mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
+
+    await handler({} as H3Event);
+
+    expect(maxAgeOf('auth_pkce')).toBe(900);
+    expect(maxAgeOf('auth_redirect_to')).toBe(900);
   });
 });

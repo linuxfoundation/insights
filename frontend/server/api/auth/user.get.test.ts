@@ -55,4 +55,13 @@ describe('GET /api/auth/user silent login suggestion', () => {
 
     expect((await handler({} as H3Event)).shouldAttemptSilentLogin).toBe(false);
   });
+
+  it.each([
+    'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36 (compatible; Google-InspectionTool/1.0;)',
+    'Mozilla/5.0 (compatible; GoogleOther)',
+  ])('does not suggest silent login to Google tool agent %s', async (userAgent) => {
+    withUserAgent(userAgent);
+
+    expect((await handler({} as H3Event)).shouldAttemptSilentLogin).toBe(false);
+  });
 });
