@@ -38,6 +38,9 @@ const stubAllEnv = () => {
   stubCmEnv();
   vi.stubEnv('API_TB_TOKEN', 'token');
   vi.stubEnv('API_TB_HOST', 'https://tinybird.test');
+  vi.stubEnv('API_AUTH0_ISSUER_URL', 'https://auth.test/');
+  vi.stubEnv('API_AUTH0_AUDIENCE', 'https://api.test/');
+  vi.stubEnv('API_AUTH_DISABLED', '');
 };
 
 const log = { log: { error: vi.fn() } } as never;
@@ -97,14 +100,29 @@ describe('health routes', () => {
     stubAllEnv();
     vi.stubEnv('API_CM_DB_PASSWORD', '');
     vi.stubEnv('API_TB_TOKEN', '');
+    vi.stubEnv('API_AUTH0_AUDIENCE', '');
 
     const response = await app.inject({ method: 'GET', url: '/health/ready' });
 
     expect(response.statusCode).toBe(503);
     expect(response.json()).toEqual({
       status: 'unavailable',
-      missingConfig: ['API_CM_DB_PASSWORD', 'API_TB_TOKEN'],
+      missingConfig: ['API_CM_DB_PASSWORD', 'API_TB_TOKEN', 'API_AUTH0_AUDIENCE'],
       invalidConfig: [],
+    });
+  });
+
+  it('is not ready while token verification is switched off', async () => {
+    stubAllEnv();
+    vi.stubEnv('API_AUTH_DISABLED', 'true');
+
+    const response = await app.inject({ method: 'GET', url: '/health/ready' });
+
+    expect(response.statusCode).toBe(503);
+    expect(response.json()).toEqual({
+      status: 'unavailable',
+      missingConfig: [],
+      invalidConfig: ['API_AUTH_DISABLED'],
     });
   });
 

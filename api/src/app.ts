@@ -8,7 +8,9 @@ import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import Fastify, { type FastifyInstance } from 'fastify';
+import type { JWTVerifyGetKey } from 'jose';
 
+import { authenticate } from './auth.js';
 import { healthRoutes } from './health.js';
 import { notFoundHandler } from './lib/errors.js';
 import { applyLifecycle } from './versions/lifecycle.js';
@@ -17,6 +19,7 @@ import { specVersionFor, versionRegistry, type ApiVersion } from './versions/reg
 export interface BuildAppOptions {
   docsRoot?: string;
   versions?: readonly ApiVersion[];
+  authKeys?: JWTVerifyGetKey;
 }
 
 const defaultDocsRoot = fileURLToPath(new URL('../docs/site/.vitepress/dist', import.meta.url));
@@ -119,11 +122,18 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     };
   };
 
+  app.decorateRequest('username', null);
+
   for (const entry of versions) {
     await app.register(
       async (scope) => {
         applyLifecycle(scope, entry.lifecycle);
-        await scope.register(entry.plugin);
+        // A child scope keeps the spec route below public (ADR-0009). preValidation runs after the
+        // version's onRequest headers (ADR-0013) and before schema validation.
+        await scope.register(async (data) => {
+          data.addHook('preValidation', authenticate(options.authKeys));
+          await data.register(entry.plugin);
+        });
         // The route set is fixed once the app is ready, so the document is derived once per version.
         let cached: ReturnType<typeof versionedDoc> | undefined;
         scope.get(

@@ -97,6 +97,9 @@ importers:
       fastify:
         specifier: ^5.0.0
         version: 5.12.3
+      jose:
+        specifier: ^6.2.12
+        version: 6.2.12
     devDependencies:
       '@scalar/api-reference':
         specifier: ^1.68.0

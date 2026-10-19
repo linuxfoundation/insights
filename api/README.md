@@ -27,6 +27,10 @@ pnpm --filter @lfx-insights/api dev
 
 `src/env.ts` loads `api/.env` at startup; variables already set in the environment take precedence, so deployments keep using real env vars.
 
+## Authentication
+
+Every route under `/v1` and `/v1-alpha` except `openapi.json` needs the Auth0 access token the Cloudflare Worker forwards ([ADR-0006](./docs/arch/adr/0006-pat-token-exchange-for-api-credentials.md), [ADR-0009](./docs/arch/adr/0009-api-key-required-for-all-requests.md)). Set `API_AUTH0_ISSUER_URL` to the token's exact `iss`, trailing slash included, and `API_AUTH0_AUDIENCE` to the public API's Auth0 identifier. `API_AUTH_DISABLED=true` skips verification for local development; readiness answers `503` while it is set, so a deployment never serves traffic with it.
+
 ## Scripts
 
 | Command          | Description                                                                   |
