@@ -198,7 +198,11 @@ describe('auth plugin tab return', () => {
 
   const refresh = vi.fn();
 
-  const runPlugin = async (initial: Record<string, unknown>, refreshed = initial) => {
+  const runPlugin = async (
+    initial: Record<string, unknown>,
+    refreshed = initial,
+    refreshedStatus = 'success',
+  ) => {
     const addListener = vi.spyOn(document, 'addEventListener');
     const data = ref(initial);
     const status = ref('success');
@@ -206,7 +210,7 @@ describe('auth plugin tab return', () => {
       status.value = 'pending';
       await Promise.resolve();
       data.value = refreshed;
-      status.value = 'success';
+      status.value = refreshedStatus;
     });
     vi.mocked(useAsyncData).mockReturnValue({
       data,
@@ -354,6 +358,43 @@ describe('auth plugin tab return', () => {
 
     expect(login).not.toHaveBeenCalled();
     expect(authState.value.isAuthenticated).toBe(true);
+  });
+
+  it('skips the silent login when the refresh fails', async () => {
+    const handler = await runPlugin(anonymous, anonymous, 'error');
+
+    await hideFor(handler, 60_000);
+
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('skips the silent login when this tab starts an interactive login mid-refresh', async () => {
+    const actual =
+      await vi.importActual<typeof import('~~/composables/useAuth')>('~~/composables/useAuth');
+    let rejectFetch: (error: Error) => void = () => {};
+    vi.stubGlobal(
+      '$fetch',
+      vi.fn(() => new Promise((_resolve, reject) => (rejectFetch = reject))),
+    );
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const handler = await runPlugin(anonymous);
+
+    visibility = 'hidden';
+    handler(new Event('visibilitychange'));
+    vi.setSystemTime(Date.now() + 60_000);
+    visibility = 'visible';
+    handler(new Event('visibilitychange'));
+    actual.login('/x');
+    await flush();
+
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(login).not.toHaveBeenCalled();
+
+    // A failed interactive login clears the flag, so later tests start clean
+    rejectFetch(new Error('aborted'));
+    await flush();
+    vi.unstubAllGlobals();
   });
 
   it('ignores a return for a crawler', async () => {

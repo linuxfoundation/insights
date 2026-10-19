@@ -57,11 +57,16 @@ export const setSilentLoginAttempted = (value: boolean): void => {
   }
 };
 
+// Set for the rest of the page once an explicit login starts, so a tab-return retry can't overwrite its auth_pkce
+let interactiveLoginStarted = false;
+export const isInteractiveLoginStarted = () => interactiveLoginStarted;
+
 export const login = async (redirectTo?: string, silent?: boolean) => {
   isAuthLoading.value = true;
   // Explicit logins clear the flag; silent ones keep it so a failed attempt waits out the TTL
   if (!silent) {
     setSilentLoginAttempted(false);
+    interactiveLoginStarted = true;
   }
   try {
     let currentPath = redirectTo || '/';
@@ -102,10 +107,12 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
       }
     } else {
       isAuthLoading.value = false;
+      interactiveLoginStarted = false;
     }
   } catch (error) {
     console.error('Login error:', error);
     isAuthLoading.value = false;
+    interactiveLoginStarted = false;
   }
 };
 

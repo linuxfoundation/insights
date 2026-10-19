@@ -12,6 +12,7 @@ import {
   setRefreshAuth,
   getSilentLoginAttempted,
   setSilentLoginAttempted,
+  isInteractiveLoginStarted,
   login,
   SILENT_LOGIN_ATTEMPTED_KEY,
 } from '~~/composables/useAuth';
@@ -109,7 +110,10 @@ export default defineNuxtPlugin(() => {
     // Re-read first so a session or an interactive login from another tab wins over a new redirect
     syncingFromOtherTab = true;
     await refreshAuth();
+    // A failed fetch falls back to anonymous defaults, and an in-tab login predates this read's cookies
     if (
+      status.value !== 'success' ||
+      isInteractiveLoginStarted() ||
       userData.value?.isAuthenticated ||
       userData.value?.interactiveLoginInFlight ||
       silentLoginStarted ||
