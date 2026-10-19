@@ -47,8 +47,8 @@ that window if a token may have been compromised.
 
 ## What determines your rate limit
 
-Your organization's LFX membership tier determines your rate limit, and that limit is
-shared across everyone in your organization using the API. See the quickstart's
+Every user gets the same rate limit: 30 requests per second. The limit belongs to your LFID,
+so all of your PATs share it. See the quickstart's
 [rate limit section](/#watch-your-rate-limit) for how limits are enforced and reported.
 
 ## Common mistakes

@@ -62,8 +62,8 @@ list of error codes you may encounter.
 
 ## 4. Watch your rate limit {#watch-your-rate-limit}
 
-Every PAT is tied to your organization's LFX membership tier, and that tier determines
-your rate limit pool. Once you hit your limit, the API responds with
+You can make up to 30 requests per second, shared across all of your PATs. Once you hit
+that limit, the API responds with
 `429 Too Many Requests` and a `Retry-After` header
 telling you how long to wait before trying again. Rate-limit accounting is returned on
 every response via `X-RateLimit-*` headers so you can back off before you ever see a 429.
