@@ -18,6 +18,15 @@ export class UnauthorizedError extends Error {
   }
 }
 
+export class RateLimitedError extends Error {
+  readonly statusCode = 429;
+  readonly code = 'rate_limit_exceeded';
+
+  constructor(limit: number) {
+    super(`Rate limit of ${limit} requests per second exceeded`);
+  }
+}
+
 // The message is fixed so an upstream's own error text or status never reaches the caller.
 export class UpstreamUnavailableError extends Error {
   readonly statusCode = 503;
