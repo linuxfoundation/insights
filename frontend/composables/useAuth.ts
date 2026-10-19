@@ -27,33 +27,39 @@ export const setRefreshAuth = (fn: () => Promise<unknown>) => {
   refreshAuthFn = fn;
 };
 
-// Helper functions for localStorage access with client-side checks
+const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
+// Matches the silent auth_pkce cookie maxAge in server/api/auth/login.get.ts
+const SILENT_LOGIN_ATTEMPT_TTL_MS = 2 * 60 * 1000;
+
+// Stores attempt time so failed silent logins retry after the TTL; legacy 'true' reads as not attempted
 export const getSilentLoginAttempted = (): boolean => {
   if (!process.client) return false;
-  return localStorage.getItem('lfx-silent-login-attempted') === 'true';
+  try {
+    const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
+    const age = Date.now() - attemptedAt;
+    return age >= 0 && age < SILENT_LOGIN_ATTEMPT_TTL_MS;
+  } catch {
+    // Blocked storage can't record attempts, so report one to avoid retrying every load
+    return true;
+  }
 };
 
 export const setSilentLoginAttempted = (value: boolean): void => {
   if (!process.client) return;
-  localStorage.setItem('lfx-silent-login-attempted', value.toString());
-};
-
-// TODO: revert this once we have tested the discovery page
-export const getWasUserLoggedIn = (): boolean => {
-  if (!process.client) return false;
-  return localStorage.getItem('lfx-user-logged-in') === 'true';
-};
-
-export const setWasUserLoggedIn = (value: boolean): void => {
-  if (!process.client) return;
-  localStorage.setItem('lfx-user-logged-in', value.toString());
+  try {
+    if (value) {
+      localStorage.setItem(SILENT_LOGIN_ATTEMPTED_KEY, Date.now().toString());
+    } else {
+      localStorage.removeItem(SILENT_LOGIN_ATTEMPTED_KEY);
+    }
+  } catch {
+    // Storage blocked or full; the server-side auth_pkce cookie still limits retries
+  }
 };
 
 export const login = async (redirectTo?: string, silent?: boolean) => {
   isAuthLoading.value = true;
-  // Only reset the silent-login-attempted flag for explicit (non-silent) logins.
-  // For silent logins the flag must remain set so auth.client.ts can detect a failed
-  // silent-auth cycle and stop retrying on the next page load.
+  // Explicit logins clear the flag; silent ones keep it so a failed attempt waits out the TTL
   if (!silent) {
     setSilentLoginAttempted(false);
   }
@@ -67,6 +73,14 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
       } catch {
         currentPath = '/';
       }
+    }
+
+    // Silent login navigates straight to the endpoint, which redirects to Auth0 (skips the JSON hop)
+    if (silent && process.client) {
+      const params = new URLSearchParams({ silent: 'true' });
+      if (currentPath !== '/') params.set('redirectTo', currentPath);
+      window.location.href = `/api/auth/login?${params.toString()}`;
+      return;
     }
 
     // Call the login API endpoint to get the Auth0 authorization URL
@@ -97,8 +111,8 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
 
 export const logout = async () => {
   isAuthLoading.value = true;
-  // Reset silent login flag for next time
-  setSilentLoginAttempted(false);
+  // Mark it attempted so the post-logout landing doesn't bounce through Auth0 again
+  setSilentLoginAttempted(true);
   try {
     const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
       method: 'POST',
@@ -121,8 +135,6 @@ export const logout = async () => {
       } else {
         await navigateTo(response.logoutUrl, { external: true });
       }
-
-      setWasUserLoggedIn(false);
     }
   } catch (error) {
     console.error('Logout error:', error);

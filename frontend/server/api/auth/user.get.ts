@@ -15,7 +15,11 @@ export default defineEventHandler(async (event) => {
       const userAgent = getHeader(event, 'user-agent') || '';
       const referer = getHeader(event, 'referer') || '';
 
-      const isBrowserRequest = userAgent.includes('Mozilla');
+      const isBrowserRequest =
+        userAgent.includes('Mozilla') &&
+        !/bot|crawl|spider|slurp|lighthouse|headlesschrome|synthetics|google-inspectiontool|googleother/i.test(
+          userAgent,
+        );
       const isNotCallback = !referer.includes('/api/auth/callback');
 
       const silentLoginPkce = getCookie(event, 'auth_pkce');

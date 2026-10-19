@@ -4,8 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div>
+    <div
+      v-if="!isReady"
+      class="h-9 min-w-24"
+    />
     <lfx-button
-      v-if="!isAuthenticated"
+      v-else-if="!isAuthenticated"
       type="transparent"
       class="!rounded-full text-nowrap !text-brand-500 min-w-24"
       :disabled="isLoading"
@@ -76,7 +80,7 @@ import { useAuth } from '~~/composables/useAuth';
 
 import { useAuthStore } from '../store/auth.store';
 
-const { isAuthenticated, user, isLoading, login, logout } = useAuth();
+const { isAuthenticated, user, isLoading, isReady, login, logout } = useAuth();
 const authStore = useAuthStore();
 
 const isOpen = ref(false);

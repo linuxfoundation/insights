@@ -13,7 +13,7 @@ import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { getAuthUsername } from '../../utils/common';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
-import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
+import { isValidRedirectUrl, toSafeRelativePath } from '../../utils/redirect';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
@@ -33,9 +33,26 @@ export default defineEventHandler(async (event) => {
       getHeader(event, 'user-agent'),
     );
   }
-  const redirectTo = getSafeRedirectUrl(rawRedirectTo);
+  const redirectTo = toSafeRelativePath(rawRedirectTo);
 
   try {
+    // Get stored PKCE data (state + code verifier) from cookie
+    const pkceCookie = getCookie(event, 'auth_pkce');
+    let storedState: string | undefined;
+    let codeVerifier: string | undefined;
+    let isSilentAttempt = false;
+
+    if (pkceCookie) {
+      try {
+        const pkceData = JSON.parse(pkceCookie);
+        storedState = pkceData.state;
+        codeVerifier = pkceData.codeVerifier;
+        isSilentAttempt = pkceData.silent === true;
+      } catch {
+        // Invalid cookie format
+      }
+    }
+
     // Handle Auth0 errors (including silent authentication failures)
     if (query.error) {
       const error = query.error as string;
@@ -45,17 +62,16 @@ export default defineEventHandler(async (event) => {
       if (
         error === 'login_required' ||
         error === 'interaction_required' ||
-        error === 'consent_required'
+        error === 'consent_required' ||
+        error === 'account_selection_required' ||
+        // An interactive denial is a real error the user should see
+        (error === 'access_denied' && isSilentAttempt)
       ) {
         // Silent authentication failed — the user is not authenticated.
         // Redirect back to the original page without appending ?auth=success (they
         // aren't logged in) and without any stale ?auth param so the client-side
         // guard (getSilentLoginAttempted) can terminate the retry cycle cleanly.
-        const silentFailUrl = new URL(redirectTo, 'https://placeholder.example');
-        silentFailUrl.searchParams.delete('auth');
-        const cleanSilentRedirect =
-          silentFailUrl.pathname + (silentFailUrl.search || '') + (silentFailUrl.hash || '');
-        await sendRedirect(event, cleanSilentRedirect || '/');
+        await sendRedirect(event, redirectTo);
         return;
       }
 
@@ -64,20 +80,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 400,
         statusMessage: `Authentication error: ${error} - ${errorDescription}`,
       });
-    }
-    // Get stored PKCE data (state + code verifier) from cookie
-    const pkceCookie = getCookie(event, 'auth_pkce');
-    let storedState: string | undefined;
-    let codeVerifier: string | undefined;
-
-    if (pkceCookie) {
-      try {
-        const pkceData = JSON.parse(pkceCookie);
-        storedState = pkceData.state;
-        codeVerifier = pkceData.codeVerifier;
-      } catch {
-        // Invalid cookie format
-      }
     }
 
     if (!query.code || !codeVerifier) {
@@ -200,16 +202,11 @@ export default defineEventHandler(async (event) => {
     }
 
     // Redirect to the original page or home with auth success flag.
-    // Strip any pre-existing ?auth param from redirectTo first to prevent
-    // accumulation (&auth=success&auth=success…) across redirect cycles.
-    const successUrl = new URL(redirectTo, 'https://placeholder.example');
-    successUrl.searchParams.delete('auth');
-    const cleanRedirectTo =
-      successUrl.pathname + (successUrl.search || '') + (successUrl.hash || '');
+    // redirectTo has any stale ?auth param stripped, so it cannot accumulate across cycles.
     const finalRedirect =
-      !cleanRedirectTo || cleanRedirectTo === '/'
+      redirectTo === '/'
         ? '/?auth=success'
-        : `${cleanRedirectTo}${cleanRedirectTo.includes('?') ? '&' : '?'}auth=success`;
+        : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
 
     await sendRedirect(event, finalRedirect);
   } catch (error) {
