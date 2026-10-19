@@ -29,6 +29,19 @@ describe('silent login attempt flag', () => {
     expect(getSilentLoginAttempted()).toBe(false);
   });
 
+  it('checks a custom window when one is given', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-19T10:00:00Z'));
+    setSilentLoginAttempted(true);
+
+    vi.setSystemTime(new Date('2026-10-19T10:00:29Z'));
+    expect(getSilentLoginAttempted(30_000)).toBe(true);
+
+    vi.setSystemTime(new Date('2026-10-19T10:00:30Z'));
+    expect(getSilentLoginAttempted(30_000)).toBe(false);
+    expect(getSilentLoginAttempted()).toBe(true);
+  });
+
   it('reads a future timestamp as not attempted', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-10-19T10:00:00Z'));
@@ -127,10 +140,10 @@ describe('logout()', () => {
     vi.unstubAllGlobals();
   });
 
-  it('marks silent login as attempted so the logout landing does not retry it', async () => {
+  it('leaves no silent login flag so a later load can pick up a new SSO session', async () => {
     await logout();
 
     expect(location.href).toBe('/?auth=logout');
-    expect(getSilentLoginAttempted()).toBe(true);
+    expect(localStorage.getItem(KEY)).toBeNull();
   });
 });

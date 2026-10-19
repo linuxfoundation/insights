@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { defineNuxtPlugin, useAsyncData, useRoute, navigateTo } from 'nuxt/app';
-import { watch, watchEffect, nextTick } from 'vue';
+import { watch, nextTick } from 'vue';
 
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import {
@@ -43,6 +43,23 @@ export default defineNuxtPlugin(() => {
   let silentLoginStarted = false;
   // A cross-tab re-read only adopts a session, so it can't clobber another tab's pending login
   let syncingFromOtherTab = false;
+  // Auth0 just ended the SSO session, so a silent login from the logout landing can only fail
+  let isLogoutLanding = new URLSearchParams(window.location.search).get('auth') === 'logout';
+
+  // Framed embeds can't keep the Lax auth cookies cross-site, so the round trip would replace the widget
+  const isFramed = window.self !== window.top;
+  // Crawler renderers can replay a cached /api/auth/user that still says to log in
+  const isBot = botUserAgentPattern.test(navigator.userAgent);
+
+  // Strip ?auth so redirectTo can't accumulate (&auth=success&auth=success…) across silent-login cycles
+  const currentPathWithoutAuth = () => {
+    const rawUrl = new URL(
+      window.location.pathname + window.location.search + window.location.hash,
+      window.location.origin,
+    );
+    rawUrl.searchParams.delete('auth');
+    return rawUrl.pathname + (rawUrl.search || '') + (rawUrl.hash || '');
+  };
 
   // A bfcache restore leaves the page as it was mid-redirect, so drop the pending placeholder
   window.addEventListener('pageshow', (event) => {
@@ -67,57 +84,79 @@ export default defineNuxtPlugin(() => {
     }
   });
 
-  watchEffect(() => {
+  // A user who logged in elsewhere while this tab sat in the background gets picked up on return
+  let hiddenAt = 0;
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      hiddenAt = Date.now();
+      return;
+    }
+    const hiddenFor = hiddenAt ? Date.now() - hiddenAt : 0;
+    hiddenAt = 0;
     const isSettled = status.value === 'success' || status.value === 'error';
-    if (!userData.value) return;
-
-    isAuthLoading.value = false;
-    authState.value = userData.value;
-
-    // Attempt silent login if suggested by the server and not already attempted
-    // Framed embeds can't keep the Lax auth cookies cross-site, so the round trip would replace the widget
-    const isFramed = window.self !== window.top;
-    // Crawler renderers can replay a cached /api/auth/user that still says to log in
-    const isBot = botUserAgentPattern.test(navigator.userAgent);
-    // Only decide on a settled fetch, so a pending refresh can't act on stale data
     if (
-      isSettled &&
-      userData.value.shouldAttemptSilentLogin &&
-      process.client &&
-      !isFramed &&
-      !isBot &&
-      !syncingFromOtherTab &&
-      !getSilentLoginAttempted()
+      hiddenFor < 10_000 ||
+      !isSettled ||
+      userData.value?.isAuthenticated ||
+      silentLoginStarted ||
+      isFramed ||
+      isBot ||
+      getSilentLoginAttempted(30_000)
     ) {
-      // Strip the ?auth param before passing the path as redirectTo so it cannot
-      // accumulate (&auth=success&auth=success…) across silent-login redirect cycles.
-      const rawUrl = new URL(
-        window.location.pathname + window.location.search + window.location.hash,
-        window.location.origin,
-      );
-      rawUrl.searchParams.delete('auth');
-      const currentPath = rawUrl.pathname + (rawUrl.search || '') + (rawUrl.hash || '');
-      setSilentLoginAttempted(true);
-      silentLoginStarted = true;
-      login(currentPath, true);
+      return;
     }
-    if (isSettled) syncingFromOtherTab = false;
-
-    if (userData.value.isAuthenticated) {
-      setSilentLoginAttempted(false);
-
-      // Fetch liked collections when user is authenticated
-      const collectionsStore = useCollectionsStore();
-      if (!collectionsStore.isLikedCollectionsLoaded) {
-        collectionsStore.fetchAndSetLikedCollections();
-      }
-    }
-
-    if (isSettled && !silentLoginStarted) {
-      isAuthReady.value = true;
-      isAuthLoading.value = false;
-    }
+    setSilentLoginAttempted(true);
+    silentLoginStarted = true;
+    login(currentPathWithoutAuth(), true);
   });
+
+  // Watching only the fetch result keeps store writes (logout clearing liked collections) from re-running this
+  watch(
+    [status, userData],
+    () => {
+      const isSettled = status.value === 'success' || status.value === 'error';
+      if (!userData.value) return;
+
+      isAuthLoading.value = false;
+      authState.value = userData.value;
+
+      // Only decide on a settled fetch, so a pending refresh can't act on stale data
+      if (
+        isSettled &&
+        userData.value.shouldAttemptSilentLogin &&
+        process.client &&
+        !isFramed &&
+        !isBot &&
+        !syncingFromOtherTab &&
+        !isLogoutLanding &&
+        !getSilentLoginAttempted()
+      ) {
+        setSilentLoginAttempted(true);
+        silentLoginStarted = true;
+        login(currentPathWithoutAuth(), true);
+      }
+      if (isSettled) {
+        syncingFromOtherTab = false;
+        isLogoutLanding = false;
+      }
+
+      if (userData.value.isAuthenticated) {
+        setSilentLoginAttempted(false);
+
+        // Fetch liked collections when user is authenticated
+        const collectionsStore = useCollectionsStore();
+        if (!collectionsStore.isLikedCollectionsLoaded) {
+          collectionsStore.fetchAndSetLikedCollections();
+        }
+      }
+
+      if (isSettled && !silentLoginStarted) {
+        isAuthReady.value = true;
+        isAuthLoading.value = false;
+      }
+    },
+    { immediate: true },
+  );
 
   const route = useRoute();
 

@@ -3,10 +3,10 @@
 
 import { useAsyncData } from 'nuxt/app';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { nextTick, ref } from 'vue';
+import { nextTick, reactive, ref } from 'vue';
 
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
-import { login, SILENT_LOGIN_ATTEMPTED_KEY } from '~~/composables/useAuth';
+import { login, setSilentLoginAttempted, SILENT_LOGIN_ATTEMPTED_KEY } from '~~/composables/useAuth';
 
 import authPlugin from './auth.client';
 
@@ -134,6 +134,171 @@ describe('auth plugin cross-tab sync', () => {
     data.value = { isAuthenticated: false, user: null, shouldAttemptSilentLogin: true };
     status.value = 'success';
     await nextTick();
+
+    expect(login).not.toHaveBeenCalled();
+  });
+});
+
+describe('auth plugin after logout', () => {
+  const runPlugin = async (initial: Record<string, unknown>) => {
+    vi.mocked(useAsyncData).mockReturnValue({
+      data: ref(initial),
+      status: ref('success'),
+      refresh: vi.fn(),
+    } as unknown as ReturnType<typeof useAsyncData>);
+
+    (authPlugin as unknown as () => void)();
+    await nextTick();
+  };
+
+  beforeEach(() => {
+    localStorage.clear();
+    vi.mocked(login).mockClear();
+  });
+
+  afterEach(() => {
+    window.history.replaceState(null, '', '/');
+  });
+
+  it('does not start a silent login on the logout landing', async () => {
+    window.history.replaceState(null, '', '/?auth=logout');
+
+    await runPlugin({ isAuthenticated: false, user: null, shouldAttemptSilentLogin: true });
+
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('keeps the flag and skips the refetch when liked collections are cleared', async () => {
+    const store = reactive({
+      isLikedCollectionsLoaded: true,
+      fetchAndSetLikedCollections: vi.fn(),
+    });
+    vi.mocked(useCollectionsStore).mockReturnValue(
+      store as unknown as ReturnType<typeof useCollectionsStore>,
+    );
+    await runPlugin({ isAuthenticated: true, user: { sub: 'u1' } });
+
+    setSilentLoginAttempted(true);
+    store.isLikedCollectionsLoaded = false;
+    await nextTick();
+
+    expect(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY)).not.toBeNull();
+    expect(store.fetchAndSetLikedCollections).not.toHaveBeenCalled();
+  });
+});
+
+describe('auth plugin tab return', () => {
+  const NOW = new Date('2026-10-19T10:00:00Z').getTime();
+  let visibility: DocumentVisibilityState = 'visible';
+
+  const runPlugin = async (initial: Record<string, unknown>) => {
+    const addListener = vi.spyOn(document, 'addEventListener');
+    vi.mocked(useAsyncData).mockReturnValue({
+      data: ref(initial),
+      status: ref('success'),
+      refresh: vi.fn(),
+    } as unknown as ReturnType<typeof useAsyncData>);
+
+    (authPlugin as unknown as () => void)();
+    await nextTick();
+
+    const call = addListener.mock.calls.find(([type]) => type === 'visibilitychange');
+    addListener.mockRestore();
+    return call?.[1] as EventListener;
+  };
+
+  // Calls this run's handler directly so listeners left by earlier plugin runs stay out of it
+  const hideFor = (handler: EventListener, ms: number) => {
+    visibility = 'hidden';
+    handler(new Event('visibilitychange'));
+    vi.setSystemTime(Date.now() + ms);
+    visibility = 'visible';
+    handler(new Event('visibilitychange'));
+  };
+
+  const anonymous = { isAuthenticated: false, user: null, shouldAttemptSilentLogin: false };
+
+  beforeEach(() => {
+    localStorage.clear();
+    vi.mocked(login).mockClear();
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(NOW);
+    visibility = 'visible';
+    vi.spyOn(document, 'visibilityState', 'get').mockImplementation(() => visibility);
+    window.history.replaceState(null, '', '/project/linux');
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    window.history.replaceState(null, '', '/');
+  });
+
+  it('starts one silent login after 10s hidden when the last attempt is old', async () => {
+    vi.setSystemTime(NOW - 60_000);
+    setSilentLoginAttempted(true);
+    vi.setSystemTime(NOW);
+    const handler = await runPlugin(anonymous);
+
+    hideFor(handler, 10_000);
+
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(login).toHaveBeenCalledWith('/project/linux', true);
+    expect(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY)).toBe(String(NOW + 10_000));
+  });
+
+  it('starts a silent login on return when no attempt is recorded', async () => {
+    const handler = await runPlugin(anonymous);
+
+    hideFor(handler, 10_000);
+
+    expect(login).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores a return after less than 10s hidden', async () => {
+    const handler = await runPlugin(anonymous);
+
+    hideFor(handler, 9_999);
+
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('ignores a return when the last attempt is under 30s old', async () => {
+    const handler = await runPlugin(anonymous);
+    setSilentLoginAttempted(true);
+
+    hideFor(handler, 29_000);
+
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('ignores a return when already authenticated', async () => {
+    vi.mocked(useCollectionsStore).mockReturnValue({
+      isLikedCollectionsLoaded: true,
+    } as unknown as ReturnType<typeof useCollectionsStore>);
+    const handler = await runPlugin({ isAuthenticated: true, user: { sub: 'u1' } });
+
+    hideFor(handler, 60_000);
+
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('ignores a return inside a frame', async () => {
+    vi.spyOn(window, 'top', 'get').mockReturnValue({} as Window);
+    const handler = await runPlugin(anonymous);
+
+    hideFor(handler, 60_000);
+
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('ignores a return for a crawler', async () => {
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
+      'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    );
+    const handler = await runPlugin(anonymous);
+
+    hideFor(handler, 60_000);
 
     expect(login).not.toHaveBeenCalled();
   });

@@ -32,12 +32,12 @@ export const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
 const SILENT_LOGIN_ATTEMPT_TTL_MS = 2 * 60 * 1000;
 
 // Stores attempt time so failed silent logins retry after the TTL; legacy 'true' reads as not attempted
-export const getSilentLoginAttempted = (): boolean => {
+export const getSilentLoginAttempted = (withinMs = SILENT_LOGIN_ATTEMPT_TTL_MS): boolean => {
   if (!process.client) return false;
   try {
     const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
     const age = Date.now() - attemptedAt;
-    return age >= 0 && age < SILENT_LOGIN_ATTEMPT_TTL_MS;
+    return age >= 0 && age < withinMs;
   } catch {
     // Blocked storage can't record attempts, so report one to avoid retrying every load
     return true;
@@ -111,8 +111,6 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
 
 export const logout = async () => {
   isAuthLoading.value = true;
-  // Mark it attempted so the post-logout landing doesn't bounce through Auth0 again
-  setSilentLoginAttempted(true);
   try {
     const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
       method: 'POST',
