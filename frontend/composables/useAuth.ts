@@ -27,26 +27,25 @@ export const setRefreshAuth = (fn: () => Promise<unknown>) => {
   refreshAuthFn = fn;
 };
 
-// Helper functions for localStorage access with client-side checks
+const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
+// Matches the auth_pkce cookie maxAge in server/api/auth/login.get.ts
+const SILENT_LOGIN_ATTEMPT_TTL_MS = 15 * 60 * 1000;
+
+// Stores the attempt timestamp so a failed silent login is retried after the TTL.
+// Legacy 'true' values are NaN here and read as not attempted.
 export const getSilentLoginAttempted = (): boolean => {
   if (!process.client) return false;
-  return localStorage.getItem('lfx-silent-login-attempted') === 'true';
+  const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
+  return Date.now() - attemptedAt < SILENT_LOGIN_ATTEMPT_TTL_MS;
 };
 
 export const setSilentLoginAttempted = (value: boolean): void => {
   if (!process.client) return;
-  localStorage.setItem('lfx-silent-login-attempted', value.toString());
-};
-
-// TODO: revert this once we have tested the discovery page
-export const getWasUserLoggedIn = (): boolean => {
-  if (!process.client) return false;
-  return localStorage.getItem('lfx-user-logged-in') === 'true';
-};
-
-export const setWasUserLoggedIn = (value: boolean): void => {
-  if (!process.client) return;
-  localStorage.setItem('lfx-user-logged-in', value.toString());
+  if (value) {
+    localStorage.setItem(SILENT_LOGIN_ATTEMPTED_KEY, Date.now().toString());
+  } else {
+    localStorage.removeItem(SILENT_LOGIN_ATTEMPTED_KEY);
+  }
 };
 
 export const login = async (redirectTo?: string, silent?: boolean) => {
@@ -67,6 +66,14 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
       } catch {
         currentPath = '/';
       }
+    }
+
+    // Silent login navigates straight to the endpoint, which redirects to Auth0 (skips the JSON hop)
+    if (silent && process.client) {
+      const params = new URLSearchParams({ silent: 'true' });
+      if (currentPath !== '/') params.set('redirectTo', currentPath);
+      window.location.href = `/api/auth/login?${params.toString()}`;
+      return;
     }
 
     // Call the login API endpoint to get the Auth0 authorization URL
@@ -121,8 +128,6 @@ export const logout = async () => {
       } else {
         await navigateTo(response.logoutUrl, { external: true });
       }
-
-      setWasUserLoggedIn(false);
     }
   } catch (error) {
     console.error('Logout error:', error);

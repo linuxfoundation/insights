@@ -17,6 +17,9 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
   const isProduction = process.env.NUXT_APP_ENV === 'production';
+  const userAgent = getHeader(event, 'user-agent') || '';
+  const acceptHeader = getHeader(event, 'accept') || '';
+  const isBrowserRequest = userAgent.includes('Mozilla') && acceptHeader.includes('text/html');
 
   try {
     // Discover Auth0 configuration
@@ -81,11 +84,8 @@ export default defineEventHandler(async (event) => {
     });
 
     // Return the authorization URL for client-side redirect
-    const userAgent = getHeader(event, 'user-agent') || '';
-    const acceptHeader = getHeader(event, 'accept') || '';
-
     // If this is a browser request (not API call), redirect directly
-    if (userAgent.includes('Mozilla') && acceptHeader.includes('text/html')) {
+    if (isBrowserRequest) {
       await sendRedirect(event, authorizationUrl.toString());
     } else {
       // If this is an API call, return JSON
@@ -96,6 +96,10 @@ export default defineEventHandler(async (event) => {
     }
   } catch (error) {
     console.error('Auth login error:', error);
+    // A failed silent attempt should not strand the user on a 500 page
+    if (query.silent === 'true' && isBrowserRequest) {
+      return sendRedirect(event, getSafeRedirectUrl(query.redirectTo as string | undefined));
+    }
     throw createError({
       statusCode: 500,
       statusMessage: 'Authentication error',

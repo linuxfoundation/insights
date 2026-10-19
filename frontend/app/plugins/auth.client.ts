@@ -12,8 +12,6 @@ import {
   setRefreshAuth,
   getSilentLoginAttempted,
   setSilentLoginAttempted,
-  getWasUserLoggedIn,
-  setWasUserLoggedIn,
   login,
 } from '~~/composables/useAuth';
 import type { AuthData } from '~~/types/auth/auth-user.types';
@@ -58,12 +56,7 @@ export default defineNuxtPlugin(() => {
     authState.value = userData.value;
 
     // Attempt silent login if suggested by the server and not already attempted
-    if (
-      userData.value.shouldAttemptSilentLogin &&
-      process.client &&
-      !getSilentLoginAttempted() &&
-      getWasUserLoggedIn() // Only attempt silent login if the user has logged in previously
-    ) {
+    if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
       // Strip the ?auth param before passing the path as redirectTo so it cannot
       // accumulate (&auth=success&auth=success…) across silent-login redirect cycles.
       const rawUrl = new URL(
@@ -78,7 +71,6 @@ export default defineNuxtPlugin(() => {
 
     if (userData.value.isAuthenticated) {
       setSilentLoginAttempted(false);
-      setWasUserLoggedIn(true);
 
       // Fetch liked collections when user is authenticated
       const collectionsStore = useCollectionsStore();
