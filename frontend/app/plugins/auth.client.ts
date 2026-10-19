@@ -13,6 +13,7 @@ import {
   getSilentLoginAttempted,
   setSilentLoginAttempted,
   login,
+  SILENT_LOGIN_ATTEMPTED_KEY,
 } from '~~/composables/useAuth';
 import { botUserAgentPattern } from '~~/config/bot-user-agent';
 import type { AuthData } from '~~/types/auth/auth-user.types';
@@ -40,6 +41,8 @@ export default defineNuxtPlugin(() => {
   setRefreshAuth(refreshAuth);
 
   let silentLoginStarted = false;
+  // A cross-tab re-read only adopts a session, so it can't clobber another tab's pending login
+  let syncingFromOtherTab = false;
 
   // A bfcache restore leaves the page as it was mid-redirect, so drop the pending placeholder
   window.addEventListener('pageshow', (event) => {
@@ -48,6 +51,18 @@ export default defineNuxtPlugin(() => {
       isAuthReady.value = true;
       isAuthLoading.value = false;
       // The forward entry may have finished the silent login, so re-read the session
+      refreshAuth();
+    }
+  });
+
+  // Another tab clears the flag once it authenticates, so pick up the shared session cookies
+  window.addEventListener('storage', (event) => {
+    if (
+      event.key === SILENT_LOGIN_ATTEMPTED_KEY &&
+      event.newValue === null &&
+      !userData.value?.isAuthenticated
+    ) {
+      syncingFromOtherTab = true;
       refreshAuth();
     }
   });
@@ -71,6 +86,7 @@ export default defineNuxtPlugin(() => {
       process.client &&
       !isFramed &&
       !isBot &&
+      !syncingFromOtherTab &&
       !getSilentLoginAttempted()
     ) {
       // Strip the ?auth param before passing the path as redirectTo so it cannot
@@ -85,6 +101,7 @@ export default defineNuxtPlugin(() => {
       silentLoginStarted = true;
       login(currentPath, true);
     }
+    if (isSettled) syncingFromOtherTab = false;
 
     if (userData.value.isAuthenticated) {
       setSilentLoginAttempted(false);
