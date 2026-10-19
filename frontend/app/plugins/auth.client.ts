@@ -14,6 +14,7 @@ import {
   setSilentLoginAttempted,
   login,
 } from '~~/composables/useAuth';
+import { botUserAgentPattern } from '~~/config/bot-user-agent';
 import type { AuthData } from '~~/types/auth/auth-user.types';
 
 declare const window: Window & typeof globalThis;
@@ -61,12 +62,15 @@ export default defineNuxtPlugin(() => {
     // Attempt silent login if suggested by the server and not already attempted
     // Framed embeds can't keep the Lax auth cookies cross-site, so the round trip would replace the widget
     const isFramed = window.self !== window.top;
+    // Crawler renderers can replay a cached /api/auth/user that still says to log in
+    const isBot = botUserAgentPattern.test(navigator.userAgent);
     // Only decide on a settled fetch, so a pending refresh can't act on stale data
     if (
       isSettled &&
       userData.value.shouldAttemptSilentLogin &&
       process.client &&
       !isFramed &&
+      !isBot &&
       !getSilentLoginAttempted()
     ) {
       // Strip the ?auth param before passing the path as redirectTo so it cannot

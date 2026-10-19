@@ -4,6 +4,9 @@
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+const nonProductionDisallow = isDevelopment ? [] : ['/'];
+
 export default {
-  disallow: isProduction || isDevelopment ? [] : ['/'],
+  // Keeps crawlers off the silent SSO redirect that public pages can trigger
+  disallow: isProduction ? ['/api/auth/'] : nonProductionDisallow,
 };

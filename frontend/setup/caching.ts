@@ -59,7 +59,7 @@ export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
-    '/api/auth/**': { prerender: false, index: false, cache: false },
+    '/api/auth/**': { prerender: false, index: false, cache: false, headers: noCacheHeaders },
     '/_og/**': { cache: false },
     // The `/**` catch-all cache rule below wraps every route in Nitro's cachedEventHandler,
     // which turns @nuxt/image's legitimate 404 (missing source file) into a cached 500 for
