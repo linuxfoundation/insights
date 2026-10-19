@@ -264,11 +264,14 @@ const getMaintainerDescription = (band: CategoryBand, signals: HealthBreakdownRe
     signals.medianIssueResponseS !== null
       ? ` No response to issues in over ${formatDays(signals.medianIssueResponseS)}.`
       : '';
-  // A low score can come from responsiveness alone, so only claim no maintainer when none was found
+  const isUnresponsive =
+    !!signals.responsivenessAvailable &&
+    signals.responsivenessScore !== null &&
+    signals.responsivenessScore < 5;
   const maintainerDetail =
     maintainerCount === 0
       ? 'No active maintainer.'
-      : `${maintainerCount === 1 ? 'A single active maintainer' : `Only ${maintainerCount} active maintainers`}, with little or no response to issues and PRs.`;
+      : `${maintainerCount === 1 ? 'A single active maintainer' : `Only ${maintainerCount} active maintainers`}${isUnresponsive ? ', with little or no response to issues and PRs' : ''}.`;
   return `${maintainerDetail}${responseDetail} There is no succession plan in place.`;
 };
 

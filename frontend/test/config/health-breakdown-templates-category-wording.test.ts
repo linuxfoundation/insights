@@ -20,12 +20,39 @@ describe('maintainer category text in the lowest band', () => {
     expect(result).toBe('No active maintainer. There is no succession plan in place.');
   });
 
-  test('names the single maintainer instead of saying there is none', () => {
-    const signals = { ...baseSignals, busFactorCount: 1 };
+  test('names the single maintainer and their low responsiveness', () => {
+    const signals = {
+      ...baseSignals,
+      busFactorCount: 1,
+      responsivenessAvailable: true,
+      responsivenessScore: 0,
+    };
     const result = getCategoryDescription('maintainer', 4, true, signals);
     expect(result).toBe(
       'A single active maintainer, with little or no response to issues and PRs. There is no succession plan in place.',
     );
+  });
+
+  test('does not claim low responsiveness when the maintainer responds quickly', () => {
+    const signals = {
+      ...baseSignals,
+      busFactorCount: 1,
+      responsivenessAvailable: true,
+      responsivenessScore: 12,
+    };
+    const result = getCategoryDescription('maintainer', 15, true, signals);
+    expect(result).toBe('A single active maintainer. There is no succession plan in place.');
+  });
+
+  test('does not claim low responsiveness when responsiveness is unavailable', () => {
+    const signals = {
+      ...baseSignals,
+      busFactorCount: 1,
+      responsivenessAvailable: false,
+      responsivenessScore: null,
+    };
+    const result = getCategoryDescription('maintainer', 4, true, signals);
+    expect(result).toBe('A single active maintainer. There is no succession plan in place.');
   });
 
   test('counts several maintainers', () => {
