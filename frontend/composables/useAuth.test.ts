@@ -50,6 +50,20 @@ describe('silent login attempt flag', () => {
     expect(localStorage.getItem(KEY)).toBeNull();
     expect(getSilentLoginAttempted()).toBe(false);
   });
+
+  it('treats blocked storage as attempted and does not throw', () => {
+    const blocked = () => {
+      throw new DOMException('blocked', 'SecurityError');
+    };
+    const getItem = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(blocked);
+    const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(blocked);
+
+    expect(() => setSilentLoginAttempted(true)).not.toThrow();
+    expect(getSilentLoginAttempted()).toBe(true);
+
+    getItem.mockRestore();
+    setItem.mockRestore();
+  });
 });
 
 describe('login() navigation', () => {

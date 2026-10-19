@@ -34,17 +34,26 @@ const SILENT_LOGIN_ATTEMPT_TTL_MS = 2 * 60 * 1000;
 // Stores attempt time so failed silent logins retry after the TTL; legacy 'true' reads as not attempted
 export const getSilentLoginAttempted = (): boolean => {
   if (!process.client) return false;
-  const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
-  const age = Date.now() - attemptedAt;
-  return age >= 0 && age < SILENT_LOGIN_ATTEMPT_TTL_MS;
+  try {
+    const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
+    const age = Date.now() - attemptedAt;
+    return age >= 0 && age < SILENT_LOGIN_ATTEMPT_TTL_MS;
+  } catch {
+    // Blocked storage can't record attempts, so report one to avoid retrying every load
+    return true;
+  }
 };
 
 export const setSilentLoginAttempted = (value: boolean): void => {
   if (!process.client) return;
-  if (value) {
-    localStorage.setItem(SILENT_LOGIN_ATTEMPTED_KEY, Date.now().toString());
-  } else {
-    localStorage.removeItem(SILENT_LOGIN_ATTEMPTED_KEY);
+  try {
+    if (value) {
+      localStorage.setItem(SILENT_LOGIN_ATTEMPTED_KEY, Date.now().toString());
+    } else {
+      localStorage.removeItem(SILENT_LOGIN_ATTEMPTED_KEY);
+    }
+  } catch {
+    // Storage blocked or full; the server-side auth_pkce cookie still limits retries
   }
 };
 

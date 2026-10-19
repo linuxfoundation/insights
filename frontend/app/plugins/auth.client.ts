@@ -61,7 +61,9 @@ export default defineNuxtPlugin(() => {
     // Attempt silent login if suggested by the server and not already attempted
     // Framed embeds can't keep the Lax auth cookies cross-site, so the round trip would replace the widget
     const isFramed = window.self !== window.top;
+    // Only decide on a settled fetch, so a pending refresh can't act on stale data
     if (
+      isSettled &&
       userData.value.shouldAttemptSilentLogin &&
       process.client &&
       !isFramed &&
