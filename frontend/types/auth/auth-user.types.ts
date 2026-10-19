@@ -17,4 +17,5 @@ export interface AuthData {
   isAuthenticated: boolean;
   user: User | null;
   shouldAttemptSilentLogin?: boolean;
+  interactiveLoginInFlight?: boolean;
 }

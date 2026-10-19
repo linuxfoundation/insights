@@ -32,12 +32,12 @@ export const SILENT_LOGIN_ATTEMPTED_KEY = 'lfx-silent-login-attempted';
 const SILENT_LOGIN_ATTEMPT_TTL_MS = 2 * 60 * 1000;
 
 // Stores attempt time so failed silent logins retry after the TTL; legacy 'true' reads as not attempted
-export const getSilentLoginAttempted = (): boolean => {
+export const getSilentLoginAttempted = (withinMs = SILENT_LOGIN_ATTEMPT_TTL_MS): boolean => {
   if (!process.client) return false;
   try {
     const attemptedAt = Number(localStorage.getItem(SILENT_LOGIN_ATTEMPTED_KEY));
     const age = Date.now() - attemptedAt;
-    return age >= 0 && age < SILENT_LOGIN_ATTEMPT_TTL_MS;
+    return age >= 0 && age < withinMs;
   } catch {
     // Blocked storage can't record attempts, so report one to avoid retrying every load
     return true;
@@ -57,11 +57,19 @@ export const setSilentLoginAttempted = (value: boolean): void => {
   }
 };
 
+// Set for the rest of the page once an explicit login starts, so a tab-return retry can't overwrite its auth_pkce
+let interactiveLoginStarted = false;
+export const isInteractiveLoginStarted = () => interactiveLoginStarted;
+export const resetInteractiveLoginStarted = () => {
+  interactiveLoginStarted = false;
+};
+
 export const login = async (redirectTo?: string, silent?: boolean) => {
   isAuthLoading.value = true;
   // Explicit logins clear the flag; silent ones keep it so a failed attempt waits out the TTL
   if (!silent) {
     setSilentLoginAttempted(false);
+    interactiveLoginStarted = true;
   }
   try {
     let currentPath = redirectTo || '/';
@@ -102,17 +110,17 @@ export const login = async (redirectTo?: string, silent?: boolean) => {
       }
     } else {
       isAuthLoading.value = false;
+      interactiveLoginStarted = false;
     }
   } catch (error) {
     console.error('Login error:', error);
     isAuthLoading.value = false;
+    interactiveLoginStarted = false;
   }
 };
 
 export const logout = async () => {
   isAuthLoading.value = true;
-  // Mark it attempted so the post-logout landing doesn't bounce through Auth0 again
-  setSilentLoginAttempted(true);
   try {
     const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
       method: 'POST',
