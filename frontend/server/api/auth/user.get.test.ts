@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { H3Event } from 'h3';
+import { getCookie, type H3Event } from 'h3';
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 
 const mockGetHeader = vi.fn();
@@ -18,7 +18,9 @@ vi.mock('~~/server/utils/auth-refresh', () => ({
 global.defineEventHandler = vi.fn((handler) => handler);
 global.getHeader = mockGetHeader;
 
-let handler: (event: H3Event) => Promise<{ shouldAttemptSilentLogin?: boolean }>;
+let handler: (
+  event: H3Event,
+) => Promise<{ shouldAttemptSilentLogin?: boolean; interactiveLoginInFlight?: boolean }>;
 
 beforeAll(async () => {
   handler = (await import('./user.get')).default as unknown as typeof handler;
@@ -63,5 +65,27 @@ describe('GET /api/auth/user silent login suggestion', () => {
     withUserAgent(userAgent);
 
     expect((await handler({} as H3Event)).shouldAttemptSilentLogin).toBe(false);
+  });
+});
+
+describe('GET /api/auth/user interactive login in flight', () => {
+  const withPkce = (value: string | undefined) => vi.mocked(getCookie).mockReturnValue(value);
+
+  it('flags an interactive login pkce cookie', async () => {
+    withPkce(JSON.stringify({ state: 's', codeVerifier: 'v', silent: false }));
+
+    expect((await handler({} as H3Event)).interactiveLoginInFlight).toBe(true);
+  });
+
+  it('does not flag a silent login pkce cookie', async () => {
+    withPkce(JSON.stringify({ state: 's', codeVerifier: 'v', silent: true }));
+
+    expect((await handler({} as H3Event)).interactiveLoginInFlight).toBeUndefined();
+  });
+
+  it('does not flag a request without a pkce cookie', async () => {
+    withPkce(undefined);
+
+    expect((await handler({} as H3Event)).interactiveLoginInFlight).toBeUndefined();
   });
 });

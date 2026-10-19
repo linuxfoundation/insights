@@ -26,10 +26,19 @@ export default defineEventHandler(async (event) => {
       const shouldAttemptSilentLogin =
         isBrowserRequest && isNotCallback && !hasAttemptedSilentLogin;
 
+      let isSilentPkce = false;
+      try {
+        isSilentPkce = !!silentLoginPkce && JSON.parse(silentLoginPkce).silent === true;
+      } catch {
+        // Unreadable cookie counts as interactive so other tabs leave it alone
+      }
+      const interactiveLoginInFlight = !!silentLoginPkce && !isSilentPkce;
+
       return {
         isAuthenticated: false,
         user: null,
         shouldAttemptSilentLogin,
+        ...(interactiveLoginInFlight && { interactiveLoginInFlight }),
       };
     }
 

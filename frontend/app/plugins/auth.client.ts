@@ -85,8 +85,9 @@ export default defineNuxtPlugin(() => {
   });
 
   // A user who logged in elsewhere while this tab sat in the background gets picked up on return
-  let hiddenAt = 0;
-  document.addEventListener('visibilitychange', () => {
+  // A tab opened in the background never fires the hidden event, so count from load
+  let hiddenAt = document.visibilityState === 'hidden' ? Date.now() : 0;
+  document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'hidden') {
       hiddenAt = Date.now();
       return;
@@ -101,6 +102,17 @@ export default defineNuxtPlugin(() => {
       silentLoginStarted ||
       isFramed ||
       isBot ||
+      getSilentLoginAttempted(30_000)
+    ) {
+      return;
+    }
+    // Re-read first so a session or an interactive login from another tab wins over a new redirect
+    syncingFromOtherTab = true;
+    await refreshAuth();
+    if (
+      userData.value?.isAuthenticated ||
+      userData.value?.interactiveLoginInFlight ||
+      silentLoginStarted ||
       getSilentLoginAttempted(30_000)
     ) {
       return;

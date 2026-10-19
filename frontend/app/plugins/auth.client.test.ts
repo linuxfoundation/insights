@@ -6,7 +6,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick, reactive, ref } from 'vue';
 
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
-import { login, setSilentLoginAttempted, SILENT_LOGIN_ATTEMPTED_KEY } from '~~/composables/useAuth';
+import {
+  authState,
+  login,
+  setSilentLoginAttempted,
+  SILENT_LOGIN_ATTEMPTED_KEY,
+} from '~~/composables/useAuth';
 
 import authPlugin from './auth.client';
 
@@ -191,12 +196,22 @@ describe('auth plugin tab return', () => {
   const NOW = new Date('2026-10-19T10:00:00Z').getTime();
   let visibility: DocumentVisibilityState = 'visible';
 
-  const runPlugin = async (initial: Record<string, unknown>) => {
+  const refresh = vi.fn();
+
+  const runPlugin = async (initial: Record<string, unknown>, refreshed = initial) => {
     const addListener = vi.spyOn(document, 'addEventListener');
+    const data = ref(initial);
+    const status = ref('success');
+    refresh.mockReset().mockImplementation(async () => {
+      status.value = 'pending';
+      await Promise.resolve();
+      data.value = refreshed;
+      status.value = 'success';
+    });
     vi.mocked(useAsyncData).mockReturnValue({
-      data: ref(initial),
-      status: ref('success'),
-      refresh: vi.fn(),
+      data,
+      status,
+      refresh,
     } as unknown as ReturnType<typeof useAsyncData>);
 
     (authPlugin as unknown as () => void)();
@@ -207,13 +222,20 @@ describe('auth plugin tab return', () => {
     return call?.[1] as EventListener;
   };
 
+  const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+  const show = async (handler: EventListener) => {
+    visibility = 'visible';
+    handler(new Event('visibilitychange'));
+    await flush();
+  };
+
   // Calls this run's handler directly so listeners left by earlier plugin runs stay out of it
-  const hideFor = (handler: EventListener, ms: number) => {
+  const hideFor = async (handler: EventListener, ms: number) => {
     visibility = 'hidden';
     handler(new Event('visibilitychange'));
     vi.setSystemTime(Date.now() + ms);
-    visibility = 'visible';
-    handler(new Event('visibilitychange'));
+    await show(handler);
   };
 
   const anonymous = { isAuthenticated: false, user: null, shouldAttemptSilentLogin: false };
@@ -240,7 +262,7 @@ describe('auth plugin tab return', () => {
     vi.setSystemTime(NOW);
     const handler = await runPlugin(anonymous);
 
-    hideFor(handler, 10_000);
+    await hideFor(handler, 10_000);
 
     expect(login).toHaveBeenCalledTimes(1);
     expect(login).toHaveBeenCalledWith('/project/linux', true);
@@ -250,7 +272,7 @@ describe('auth plugin tab return', () => {
   it('starts a silent login on return when no attempt is recorded', async () => {
     const handler = await runPlugin(anonymous);
 
-    hideFor(handler, 10_000);
+    await hideFor(handler, 10_000);
 
     expect(login).toHaveBeenCalledTimes(1);
   });
@@ -258,7 +280,7 @@ describe('auth plugin tab return', () => {
   it('ignores a return after less than 10s hidden', async () => {
     const handler = await runPlugin(anonymous);
 
-    hideFor(handler, 9_999);
+    await hideFor(handler, 9_999);
 
     expect(login).not.toHaveBeenCalled();
   });
@@ -267,7 +289,7 @@ describe('auth plugin tab return', () => {
     const handler = await runPlugin(anonymous);
     setSilentLoginAttempted(true);
 
-    hideFor(handler, 29_000);
+    await hideFor(handler, 29_000);
 
     expect(login).not.toHaveBeenCalled();
   });
@@ -278,7 +300,7 @@ describe('auth plugin tab return', () => {
     } as unknown as ReturnType<typeof useCollectionsStore>);
     const handler = await runPlugin({ isAuthenticated: true, user: { sub: 'u1' } });
 
-    hideFor(handler, 60_000);
+    await hideFor(handler, 60_000);
 
     expect(login).not.toHaveBeenCalled();
   });
@@ -287,9 +309,51 @@ describe('auth plugin tab return', () => {
     vi.spyOn(window, 'top', 'get').mockReturnValue({} as Window);
     const handler = await runPlugin(anonymous);
 
-    hideFor(handler, 60_000);
+    await hideFor(handler, 60_000);
 
     expect(login).not.toHaveBeenCalled();
+  });
+
+  it('starts a silent login on the first return of a page that loaded hidden', async () => {
+    visibility = 'hidden';
+    const handler = await runPlugin(anonymous);
+    vi.setSystemTime(NOW + 10_000);
+
+    await show(handler);
+
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(login).toHaveBeenCalledWith('/project/linux', true);
+  });
+
+  it('re-reads the session and starts exactly one silent login when still anonymous', async () => {
+    const handler = await runPlugin(anonymous, { ...anonymous, shouldAttemptSilentLogin: true });
+
+    await hideFor(handler, 60_000);
+
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(login).toHaveBeenCalledWith('/project/linux', true);
+  });
+
+  it('leaves an interactive login in another tab alone', async () => {
+    const handler = await runPlugin(anonymous, { ...anonymous, interactiveLoginInFlight: true });
+
+    await hideFor(handler, 60_000);
+
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(login).not.toHaveBeenCalled();
+  });
+
+  it('adopts a session another tab finished without bouncing', async () => {
+    vi.mocked(useCollectionsStore).mockReturnValue({
+      isLikedCollectionsLoaded: true,
+    } as unknown as ReturnType<typeof useCollectionsStore>);
+    const handler = await runPlugin(anonymous, { isAuthenticated: true, user: { sub: 'u1' } });
+
+    await hideFor(handler, 60_000);
+
+    expect(login).not.toHaveBeenCalled();
+    expect(authState.value.isAuthenticated).toBe(true);
   });
 
   it('ignores a return for a crawler', async () => {
@@ -298,7 +362,7 @@ describe('auth plugin tab return', () => {
     );
     const handler = await runPlugin(anonymous);
 
-    hideFor(handler, 60_000);
+    await hideFor(handler, 60_000);
 
     expect(login).not.toHaveBeenCalled();
   });
