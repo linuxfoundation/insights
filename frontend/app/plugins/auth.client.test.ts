@@ -397,6 +397,33 @@ describe('auth plugin tab return', () => {
     vi.unstubAllGlobals();
   });
 
+  it('clears an unfinished interactive login when the page is restored from bfcache', async () => {
+    const actual =
+      await vi.importActual<typeof import('~~/composables/useAuth')>('~~/composables/useAuth');
+    let rejectFetch: (error: Error) => void = () => {};
+    vi.stubGlobal(
+      '$fetch',
+      vi.fn(() => new Promise((_resolve, reject) => (rejectFetch = reject))),
+    );
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const addWindowListener = vi.spyOn(window, 'addEventListener');
+    await runPlugin(anonymous);
+    const pageshow = addWindowListener.mock.calls.find(
+      ([type]) => (type as string) === 'pageshow',
+    )?.[1] as EventListener | undefined;
+
+    actual.login('/x');
+    expect(actual.isInteractiveLoginStarted()).toBe(true);
+
+    pageshow?.(Object.assign(new Event('pageshow'), { persisted: true }));
+
+    expect(actual.isInteractiveLoginStarted()).toBe(false);
+
+    rejectFetch(new Error('aborted'));
+    await flush();
+    vi.unstubAllGlobals();
+  });
+
   it('ignores a return for a crawler', async () => {
     vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
       'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',

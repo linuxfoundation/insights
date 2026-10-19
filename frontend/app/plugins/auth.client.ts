@@ -13,6 +13,7 @@ import {
   getSilentLoginAttempted,
   setSilentLoginAttempted,
   isInteractiveLoginStarted,
+  resetInteractiveLoginStarted,
   login,
   SILENT_LOGIN_ATTEMPTED_KEY,
 } from '~~/composables/useAuth';
@@ -64,6 +65,8 @@ export default defineNuxtPlugin(() => {
 
   // A bfcache restore leaves the page as it was mid-redirect, so drop the pending placeholder
   window.addEventListener('pageshow', (event) => {
+    // A restored page never finished its interactive login, so let tab-return retries run again
+    if (event.persisted) resetInteractiveLoginStarted();
     if (event.persisted && silentLoginStarted) {
       silentLoginStarted = false;
       isAuthReady.value = true;
