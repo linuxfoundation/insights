@@ -73,12 +73,26 @@ describe('GET /api/auth/login error handling', () => {
     },
   );
 
+  it('leaves a silent auth_pkce guard when a silent browser request fails', async () => {
+    mockGetQuery.mockReturnValue({ silent: 'true', redirectTo: '/project/linux' });
+    mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
+
+    await handler({} as H3Event);
+
+    const [, name, value, options] = mockSetCookie.mock.calls[0];
+    expect(name).toBe('auth_pkce');
+    expect(JSON.parse(value)).toEqual({ silent: true });
+    expect(options).toMatchObject({ httpOnly: true, sameSite: 'lax', path: '/', maxAge: 120 });
+    expect(mockSendRedirect).toHaveBeenCalledWith({}, '/project/linux');
+  });
+
   it('still throws a 500 for a failed non-silent request', async () => {
     mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
     mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
 
     await expect(handler({} as H3Event)).rejects.toMatchObject({ statusCode: 500 });
     expect(mockSendRedirect).not.toHaveBeenCalled();
+    expect(mockSetCookie).not.toHaveBeenCalled();
   });
 });
 

@@ -21,6 +21,18 @@ export default defineEventHandler(async (event) => {
   const acceptHeader = getHeader(event, 'accept') || '';
   const isBrowserRequest = userAgent.includes('Mozilla') && acceptHeader.includes('text/html');
 
+  const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'lax' as const,
+    path: '/',
+    // Silent attempts get a short window, matching SILENT_LOGIN_ATTEMPT_TTL_MS in useAuth.ts
+    maxAge: query.silent === 'true' ? 60 * 2 : 60 * 15,
+    // Don't set domain for production - let browser handle it automatically
+    // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
+    ...(!isProduction && { domain: 'localhost' }),
+  };
+
   try {
     // Discover Auth0 configuration
     const authConfig = await discovery(
@@ -32,18 +44,6 @@ export default defineEventHandler(async (event) => {
     const state = randomState();
     const codeVerifier = randomPKCECodeVerifier();
     const codeChallenge = await calculatePKCECodeChallenge(codeVerifier);
-
-    const cookieOptions = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'lax' as const,
-      path: '/',
-      // Silent attempts get a short window, matching SILENT_LOGIN_ATTEMPT_TTL_MS in useAuth.ts
-      maxAge: query.silent === 'true' ? 60 * 2 : 60 * 15,
-      // Don't set domain for production - let browser handle it automatically
-      // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
-      ...(!isProduction && { domain: 'localhost' }),
-    };
 
     // Store state and code verifier together in a single cookie to prevent
     // race conditions where concurrent login flows overwrite each other's code verifier
@@ -104,6 +104,8 @@ export default defineEventHandler(async (event) => {
     console.error('Auth login error:', error);
     // A failed silent attempt should not strand the user on a 500 page
     if (query.silent === 'true' && isBrowserRequest) {
+      // auth_pkce is the loop guard for silent-sso.ts and /api/auth/user, so an early failure still sets it.
+      setCookie(event, 'auth_pkce', JSON.stringify({ silent: true }), cookieOptions);
       return sendRedirect(event, toSafeRelativePath(query.redirectTo as string | undefined));
     }
     throw createError({
