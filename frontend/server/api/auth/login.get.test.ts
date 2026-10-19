@@ -60,7 +60,7 @@ describe('GET /api/auth/login error handling', () => {
     expect(mockSendRedirect).toHaveBeenCalledWith({}, '/');
   });
 
-  it.each(['/\\evil.com', '/%5Cevil.com'])(
+  it.each(['/\\evil.com', '/%5Cevil.com', '/.//evil.com', '/%2e//evil.com', '/./\\evil.com'])(
     'keeps a failed silent redirect to %s on this origin',
     async (redirectTo) => {
       mockGetQuery.mockReturnValue({ silent: 'true', redirectTo });
@@ -107,5 +107,21 @@ describe('GET /api/auth/login cookie lifetime', () => {
 
     expect(maxAgeOf('auth_pkce')).toBe(900);
     expect(maxAgeOf('auth_redirect_to')).toBe(900);
+  });
+});
+
+describe('GET /api/auth/login cookie contents', () => {
+  beforeEach(() => {
+    mockDiscovery.mockResolvedValue({});
+    mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
+  });
+
+  it('stores a dot-segment redirectTo as a same-origin path', async () => {
+    mockGetQuery.mockReturnValue({ silent: 'true', redirectTo: '/.//evil.com' });
+
+    await handler({} as H3Event);
+
+    const stored = mockSetCookie.mock.calls.find(([, name]) => name === 'auth_redirect_to')?.[2];
+    expect(stored).toBe('/');
   });
 });

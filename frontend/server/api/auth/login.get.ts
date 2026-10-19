@@ -11,7 +11,7 @@ import {
 import { Pool } from 'pg';
 
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
-import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
+import { isValidRedirectUrl, toSafeRelativePath } from '../../utils/redirect';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
           );
         }
       }
-      const safeRedirectTo = getSafeRedirectUrl(redirectTo);
+      const safeRedirectTo = toSafeRelativePath(redirectTo);
       setCookie(event, 'auth_redirect_to', safeRedirectTo, cookieOptions);
     }
 
@@ -99,14 +99,7 @@ export default defineEventHandler(async (event) => {
     console.error('Auth login error:', error);
     // A failed silent attempt should not strand the user on a 500 page
     if (query.silent === 'true' && isBrowserRequest) {
-      const fallbackUrl = new URL(
-        getSafeRedirectUrl(query.redirectTo as string | undefined),
-        'https://placeholder.example',
-      );
-      return sendRedirect(
-        event,
-        fallbackUrl.pathname + (fallbackUrl.search || '') + (fallbackUrl.hash || ''),
-      );
+      return sendRedirect(event, toSafeRelativePath(query.redirectTo as string | undefined));
     }
     throw createError({
       statusCode: 500,

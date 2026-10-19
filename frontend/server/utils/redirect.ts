@@ -89,3 +89,13 @@ export function getSafeRedirectUrl(
   }
   return fallback;
 }
+
+// Same-origin path minus `auth`; checked after parsing since `/.//x` normalizes to `//x`.
+export function toSafeRelativePath(url: string | undefined | null): string {
+  const parsed = new URL(getSafeRedirectUrl(url), 'https://placeholder.example');
+  if (parsed.searchParams.has('auth')) {
+    parsed.searchParams.delete('auth');
+  }
+  const path = parsed.pathname + parsed.search + parsed.hash;
+  return path.startsWith('//') || path.startsWith('/\\') ? DEFAULT_REDIRECT : path;
+}

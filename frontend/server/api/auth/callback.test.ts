@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { mockNuxtImport } from '@nuxt/test-utils/runtime';
 import type { H3Event } from 'h3';
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 
@@ -8,16 +9,37 @@ const mockSendRedirect = vi.fn();
 const mockGetQuery = vi.fn();
 const mockGetCookie = vi.fn();
 
+vi.mock('openid-client', () => ({
+  discovery: vi.fn(async () => ({})),
+  authorizationCodeGrant: vi.fn(async () => ({ id_token: 'id-token', expires_in: 60 })),
+}));
+vi.mock('jwt-decode', () => ({ jwtDecode: vi.fn(() => ({ sub: 'auth0|user' })) }));
+vi.mock('jsonwebtoken', () => ({ default: { sign: vi.fn(() => 'signed') } }));
+
 global.defineEventHandler = vi.fn((handler) => handler);
-global.useRuntimeConfig = vi.fn(() => ({ public: {} })) as never;
+const { runtimeConfig } = vi.hoisted(() => ({
+  runtimeConfig: {
+    auth0ClientSecret: 'secret',
+    lfxAuth0TokenClaimGroupKey: 'claims',
+    public: { auth0Domain: 'auth0.example', auth0RedirectUri: 'https://insights.example/cb' },
+  },
+}));
+// Overlay test values on the real config: the Nuxt test environment reads it while booting.
+mockNuxtImport('useRuntimeConfig', (original) => () => {
+  const config = original();
+  return { ...config, ...runtimeConfig, public: { ...config.public, ...runtimeConfig.public } };
+});
 global.getQuery = mockGetQuery;
 global.getCookie = mockGetCookie;
 global.getHeader = vi.fn();
+global.getRequestURL = vi.fn(() => new URL('https://insights.example/cb?code=c&state=s'));
+global.setCookie = vi.fn();
 global.deleteCookie = vi.fn();
 global.sendRedirect = mockSendRedirect;
 global.createError = vi.fn((error) => error);
 
 let handler: (event: H3Event) => Promise<unknown>;
+let cookies: Record<string, string | undefined>;
 
 beforeAll(async () => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -26,10 +48,13 @@ beforeAll(async () => {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mockGetCookie.mockImplementation((_event, name: string) =>
-    name === 'auth_redirect_to' ? '/project/linux?auth=success' : undefined,
-  );
+  cookies = { auth_redirect_to: '/project/linux?auth=success' };
+  mockGetCookie.mockImplementation((_event, name: string) => cookies[name]);
 });
+
+const location = () => mockSendRedirect.mock.calls[0][1] as string;
+const isSameOrigin = (url: string) =>
+  new URL(url, 'https://insights.example').host === 'insights.example';
 
 describe('GET /api/auth/callback silent authentication errors', () => {
   it.each([
@@ -51,5 +76,38 @@ describe('GET /api/auth/callback silent authentication errors', () => {
 
     await expect(handler({ context: {} } as H3Event)).rejects.toMatchObject({ statusCode: 400 });
     expect(mockSendRedirect).not.toHaveBeenCalled();
+  });
+});
+
+describe('GET /api/auth/callback redirect target', () => {
+  const evilTargets = ['/.//evil.com', '/%2e//evil.com', '/./\\evil.com', '/\\evil.com'];
+
+  it.each(evilTargets)('keeps a silent failure redirect to %s on this origin', async (target) => {
+    cookies.auth_redirect_to = target;
+    mockGetQuery.mockReturnValue({ error: 'login_required' });
+
+    await handler({ context: {} } as H3Event);
+
+    expect(isSameOrigin(location())).toBe(true);
+  });
+
+  it.each(evilTargets)('keeps a successful login redirect to %s on this origin', async (target) => {
+    cookies.auth_redirect_to = target;
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    await handler({ context: {} } as H3Event);
+
+    expect(isSameOrigin(location())).toBe(true);
+    expect(location()).toContain('auth=success');
+  });
+
+  it('appends auth=success to the original page after login', async () => {
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    await handler({ context: {} } as H3Event);
+
+    expect(location()).toBe('/project/linux?auth=success');
   });
 });
