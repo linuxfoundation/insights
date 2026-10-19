@@ -155,6 +155,7 @@ describe('rate limiting', () => {
         const limited = await get('/v1-alpha/whoami', jdoe, gold);
 
         expect(limited.statusCode).toBe(429);
+        expect(limited.headers['x-ratelimit-limit']).toBe('35');
         expect(limited.json()).toMatchObject({
           message: 'Rate limit of 35 requests per second exceeded',
         });
@@ -163,6 +164,44 @@ describe('rate limiting', () => {
     } finally {
       RATE_LIMITS.premium = premium;
     }
+  });
+
+  it('reports the limit, the requests left and the reset on every response', async () => {
+    const rateHeaders = (response: Awaited<ReturnType<typeof get>>) => ({
+      limit: response.headers['x-ratelimit-limit'],
+      remaining: response.headers['x-ratelimit-remaining'],
+      reset: response.headers['x-ratelimit-reset'],
+      retryAfter: response.headers['retry-after'],
+    });
+
+    await atDate(t0, async () => {
+      expect(rateHeaders(await get('/v1-alpha/whoami', jdoe))).toEqual({
+        limit: '30',
+        remaining: '29',
+        reset: '1',
+        retryAfter: undefined,
+      });
+      await statuses(29, jdoe);
+
+      const limited = await get('/v1-alpha/whoami', jdoe);
+
+      expect(limited.statusCode).toBe(429);
+      expect(rateHeaders(limited)).toEqual({
+        limit: '30',
+        remaining: '0',
+        reset: '1',
+        retryAfter: '1',
+      });
+    });
+  });
+
+  it('sends no rate limit headers when it lets a request through unchecked', async () => {
+    redis.state.ready = false;
+
+    const response = await get('/v1-alpha/whoami', jdoe);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers['x-ratelimit-limit']).toBeUndefined();
   });
 
   it('frees requests as the window slides past them', async () => {
