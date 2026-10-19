@@ -47,7 +47,12 @@ export default defineEventHandler(async (event) => {
 
     // Store state and code verifier together in a single cookie to prevent
     // race conditions where concurrent login flows overwrite each other's code verifier
-    setCookie(event, 'auth_pkce', JSON.stringify({ state, codeVerifier }), cookieOptions);
+    setCookie(
+      event,
+      'auth_pkce',
+      JSON.stringify({ state, codeVerifier, silent: query.silent === 'true' }),
+      cookieOptions,
+    );
 
     // Store redirect URL if provided (validated to prevent open redirect)
     const redirectTo = query.redirectTo as string;

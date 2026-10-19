@@ -46,6 +46,8 @@ export default defineNuxtPlugin(() => {
       silentLoginStarted = false;
       isAuthReady.value = true;
       isAuthLoading.value = false;
+      // The forward entry may have finished the silent login, so re-read the session
+      refreshAuth();
     }
   });
 

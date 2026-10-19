@@ -111,9 +111,28 @@ describe('GET /api/auth/login cookie lifetime', () => {
 });
 
 describe('GET /api/auth/login cookie contents', () => {
+  const pkceOf = () =>
+    JSON.parse(mockSetCookie.mock.calls.find(([, name]) => name === 'auth_pkce')?.[2]);
+
   beforeEach(() => {
     mockDiscovery.mockResolvedValue({});
     mockGetHeader.mockImplementation((_event, name: string) => browserHeaders(name));
+  });
+
+  it('marks a silent attempt in the auth_pkce cookie', async () => {
+    mockGetQuery.mockReturnValue({ silent: 'true' });
+
+    await handler({} as H3Event);
+
+    expect(pkceOf().silent).toBe(true);
+  });
+
+  it('leaves an interactive attempt unmarked', async () => {
+    mockGetQuery.mockReturnValue({});
+
+    await handler({} as H3Event);
+
+    expect(pkceOf().silent).toBe(false);
   });
 
   it('stores a dot-segment redirectTo as a same-origin path', async () => {

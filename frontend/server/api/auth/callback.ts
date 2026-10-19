@@ -36,6 +36,23 @@ export default defineEventHandler(async (event) => {
   const redirectTo = toSafeRelativePath(rawRedirectTo);
 
   try {
+    // Get stored PKCE data (state + code verifier) from cookie
+    const pkceCookie = getCookie(event, 'auth_pkce');
+    let storedState: string | undefined;
+    let codeVerifier: string | undefined;
+    let isSilentAttempt = false;
+
+    if (pkceCookie) {
+      try {
+        const pkceData = JSON.parse(pkceCookie);
+        storedState = pkceData.state;
+        codeVerifier = pkceData.codeVerifier;
+        isSilentAttempt = pkceData.silent === true;
+      } catch {
+        // Invalid cookie format
+      }
+    }
+
     // Handle Auth0 errors (including silent authentication failures)
     if (query.error) {
       const error = query.error as string;
@@ -47,7 +64,8 @@ export default defineEventHandler(async (event) => {
         error === 'interaction_required' ||
         error === 'consent_required' ||
         error === 'account_selection_required' ||
-        error === 'access_denied'
+        // An interactive denial is a real error the user should see
+        (error === 'access_denied' && isSilentAttempt)
       ) {
         // Silent authentication failed — the user is not authenticated.
         // Redirect back to the original page without appending ?auth=success (they
@@ -62,20 +80,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 400,
         statusMessage: `Authentication error: ${error} - ${errorDescription}`,
       });
-    }
-    // Get stored PKCE data (state + code verifier) from cookie
-    const pkceCookie = getCookie(event, 'auth_pkce');
-    let storedState: string | undefined;
-    let codeVerifier: string | undefined;
-
-    if (pkceCookie) {
-      try {
-        const pkceData = JSON.parse(pkceCookie);
-        storedState = pkceData.state;
-        codeVerifier = pkceData.codeVerifier;
-      } catch {
-        // Invalid cookie format
-      }
     }
 
     if (!query.code || !codeVerifier) {

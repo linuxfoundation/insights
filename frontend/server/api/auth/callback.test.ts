@@ -62,13 +62,29 @@ describe('GET /api/auth/callback silent authentication errors', () => {
     'interaction_required',
     'consent_required',
     'account_selection_required',
-    'access_denied',
   ])('redirects %s back to the original page', async (error) => {
     mockGetQuery.mockReturnValue({ error });
 
     await handler({ context: {} } as H3Event);
 
     expect(mockSendRedirect).toHaveBeenCalledWith({ context: {} }, '/project/linux');
+  });
+
+  it('redirects access_denied back when the attempt was silent', async () => {
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v', silent: true });
+    mockGetQuery.mockReturnValue({ error: 'access_denied' });
+
+    await handler({ context: {} } as H3Event);
+
+    expect(mockSendRedirect).toHaveBeenCalledWith({ context: {} }, '/project/linux');
+  });
+
+  it('fails access_denied with a 400 when the attempt was interactive', async () => {
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v', silent: false });
+    mockGetQuery.mockReturnValue({ error: 'access_denied', error_description: 'denied' });
+
+    await expect(handler({ context: {} } as H3Event)).rejects.toMatchObject({ statusCode: 400 });
+    expect(mockSendRedirect).not.toHaveBeenCalled();
   });
 
   it('still fails other Auth0 errors with a 400', async () => {
