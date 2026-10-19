@@ -110,6 +110,12 @@ describe('silent SSO before render', () => {
     await expectNoBounce(navigate('/leaderboards', headers));
   });
 
+  it('does not bounce again after a silent login that failed before reaching Auth0', async () => {
+    const guard = encodeURIComponent(JSON.stringify({ silent: true }));
+
+    await expectNoBounce(navigate('/leaderboards', { cookie: `auth_pkce=${guard}` }));
+  });
+
   it.each(['logout', 'success'])('does not bounce the auth=%s landing', async (value) => {
     await expectNoBounce(navigate(`/leaderboards?auth=${value}`));
   });
