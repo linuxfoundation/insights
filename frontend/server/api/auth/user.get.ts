@@ -3,6 +3,7 @@
 
 import { getCookie } from 'h3';
 
+import { botUserAgentPattern } from '~~/config/bot-user-agent';
 import { verifyOrRefreshOidcToken } from '~~/server/utils/auth-refresh';
 
 export default defineEventHandler(async (event) => {
@@ -16,10 +17,7 @@ export default defineEventHandler(async (event) => {
       const referer = getHeader(event, 'referer') || '';
 
       const isBrowserRequest =
-        userAgent.includes('Mozilla') &&
-        !/bot|crawl|spider|slurp|lighthouse|headlesschrome|synthetics|google-inspectiontool|googleother/i.test(
-          userAgent,
-        );
+        userAgent.includes('Mozilla') && !botUserAgentPattern.test(userAgent);
       const isNotCallback = !referer.includes('/api/auth/callback');
 
       const silentLoginPkce = getCookie(event, 'auth_pkce');

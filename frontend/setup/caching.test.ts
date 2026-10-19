@@ -35,6 +35,14 @@ describe('caching configuration', () => {
     expect(rule?.prerender).toBe(false);
   });
 
+  test('applies no-cache headers to /api/auth/** so stale silent login hints are never reused', async () => {
+    const cachingConfig = await loadCachingConfig('production');
+    const rule = cachingConfig.routeRules['/api/auth/**'];
+
+    expect(rule?.cache).toBe(false);
+    expect(rule?.headers?.['cache-control']).toBe(noCacheHeader);
+  });
+
   test('applies no-cache headers to /api/project/**/security/** endpoints', async () => {
     const cachingConfig = await loadCachingConfig('production');
     const rule = cachingConfig.routeRules['/api/project/**/security/**'];
