@@ -4,7 +4,7 @@ import type { Env } from './env';
 
 const EXPIRY_MARGIN_MS = 60_000;
 const ASSERTION_TTL_SECONDS = 60;
-const ASSERTION_TYPE = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer';
+export const ASSERTION_TYPE = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer';
 
 let cached: { token: string; expiresAt: number } | undefined;
 
@@ -32,7 +32,7 @@ export async function m2mToken(env: Env): Promise<string> {
   return cached.token;
 }
 
-async function clientAssertion(env: Env): Promise<string> {
+export async function clientAssertion(env: Env): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: 'RS256', typ: 'JWT' };
   const claims = {
