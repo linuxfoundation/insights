@@ -6,7 +6,7 @@
 
 > Amended 2026-10-12: issuance in step 1 is gated on a LaunchDarkly access flag in Self-Serve instead of a Tier endpoint check. Steps 4 and 5 below assume the Tier endpoint returns an organization. When it returns none, the Worker forwards the request with the JWT and without the org and tier headers, and the limiter's key and pool for that caller are defined at T-019. See [ADR-0010](./0010-billing-bundled-with-lfx-membership.md).
 
-> Amended 2026-10-19: in step 5 the rate-limit key is the LFID from the verified JWT, not the organization, and every caller gets the same limit. The org and tier headers stay in place but decide nothing until a per-tier matrix lands. See [ADR-0023](./0023-flat-per-lfid-rate-limit.md).
+> Amended 2026-10-19: in step 5 the rate-limit key is the LFID from the verified JWT, not the organization, and every caller gets the same N requests per second, with N starting at 30. The org and tier headers stay in place and decide nothing for now; they decide limits again when LFX members get a more relaxed limit later. See [ADR-0023](./0023-flat-per-lfid-rate-limit.md).
 
 ## Context
 
