@@ -9,6 +9,13 @@ import type {
   ProjectTinybird,
 } from '~~/types/project';
 
+// Some projects store a bare X handle instead of a profile URL.
+const toXUrl = (value: string): string => {
+  const trimmed = value.trim();
+  if (/^(?:https?:\/\/)?(?:www\.)?(?:x\.com|twitter\.com)\b/i.test(trimmed)) return trimmed;
+  return `https://x.com/${trimmed.replace(/^@/, '')}`;
+};
+
 /**
  * API Endpoint: /api/projects/{slug}
  * Method: GET
@@ -88,7 +95,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       ...(project.website ? [{ name: 'Website', url: project.website }] : []),
       ...(project.linkedin ? [{ name: 'Linkedin', url: project.linkedin }] : []),
       ...(project.github ? [{ name: 'Github', url: project.github }] : []),
-      ...(project.twitter ? [{ name: 'X', url: project.twitter }] : []),
+      ...(project.twitter ? [{ name: 'X', url: toXUrl(project.twitter) }] : []),
     ];
     return {
       ...project,
