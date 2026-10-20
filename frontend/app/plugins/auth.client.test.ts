@@ -527,4 +527,63 @@ describe('auth plugin focus check', () => {
     vi.advanceTimersByTime(1);
     expect(frames()).toHaveLength(0);
   });
+
+  describe('on page load after a recent silent attempt', () => {
+    const attemptedAgo = (ms: number) =>
+      localStorage.setItem(SILENT_LOGIN_ATTEMPTED_KEY, String(NOW - ms));
+
+    it('checks in a hidden iframe while the auth_pkce guard blocks the redirect', async () => {
+      attemptedAgo(19_000);
+
+      await runPlugin(anonymous);
+
+      expect(frames()).toHaveLength(1);
+      expect(frames()[0]?.getAttribute('src')).toBe(FRAME_SRC);
+      expect(refresh).not.toHaveBeenCalled();
+      expect(login).not.toHaveBeenCalled();
+    });
+
+    it('checks in a hidden iframe when the server would allow the redirect', async () => {
+      attemptedAgo(19_000);
+
+      await runPlugin({ ...anonymous, shouldAttemptSilentLogin: true });
+
+      expect(frames()).toHaveLength(1);
+      expect(login).not.toHaveBeenCalled();
+    });
+
+    it('skips the landing right after a failed silent attempt', async () => {
+      attemptedAgo(2_000);
+
+      await runPlugin(anonymous);
+
+      expect(frames()).toHaveLength(0);
+    });
+
+    it('skips the logout landing', async () => {
+      attemptedAgo(19_000);
+      window.history.replaceState(null, '', '/?auth=logout');
+
+      await runPlugin(anonymous);
+
+      expect(frames()).toHaveLength(0);
+      expect(login).not.toHaveBeenCalled();
+    });
+
+    it('leaves a load without a recent attempt to the full-page silent login', async () => {
+      await runPlugin(anonymous);
+
+      expect(frames()).toHaveLength(0);
+    });
+
+    it('adds no second iframe when focus follows the load check', async () => {
+      attemptedAgo(19_000);
+      const handlers = await runPlugin(anonymous);
+
+      await focus(handlers);
+
+      expect(refresh).not.toHaveBeenCalled();
+      expect(frames()).toHaveLength(1);
+    });
+  });
 });
