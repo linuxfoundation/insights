@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { createHmac } from 'node:crypto';
+
 import type { H3Event } from 'h3';
 import { getCookie, setCookie, deleteCookie } from 'h3';
 import jwt from 'jsonwebtoken';
@@ -10,7 +12,12 @@ import { discovery, refreshTokenGrant } from 'openid-client';
 import type { DecodedIdToken, DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 import { isSessionRevoked } from './backchannel-logout';
-import { hasLfxInsightsPermission, isLfInsightsTeamMember } from './jwt';
+import {
+  hasLfxInsightsPermission,
+  isLfInsightsTeamMember,
+  isRefreshCookiePayload,
+  REFRESH_COOKIE_TYP,
+} from './jwt';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 
@@ -33,17 +40,28 @@ interface RefreshSession {
   auth_time?: number;
 }
 
+// A key derived apart from the session cookie's, so neither cookie verifies as the other.
+const refreshCookieKey = () =>
+  createHmac('sha256', useRuntimeConfig().auth0ClientSecret)
+    .update('insights-refresh-cookie')
+    .digest();
+
 // The session rides with the refresh token so revocation can be checked without calling Auth0.
 export const signRefreshCookie = (session: RefreshSession) =>
-  jwt.sign(session, useRuntimeConfig().auth0ClientSecret, { algorithm: 'HS256' });
+  jwt.sign({ ...session, typ: REFRESH_COOKIE_TYP }, refreshCookieKey(), {
+    algorithm: 'HS256',
+    expiresIn: 60 * 60 * 24 * 30,
+  });
 
 // Cookies set before the session was attached hold the raw Auth0 token.
 const readRefreshCookie = (value: string): RefreshSession => {
   try {
-    const payload = jwt.verify(value, useRuntimeConfig().auth0ClientSecret, {
-      algorithms: ['HS256'],
-    });
-    if (typeof payload === 'object' && typeof payload.rt === 'string') {
+    const payload = jwt.verify(value, refreshCookieKey(), { algorithms: ['HS256'] });
+    if (
+      typeof payload === 'object' &&
+      isRefreshCookiePayload(payload) &&
+      typeof payload.rt === 'string'
+    ) {
       return payload as RefreshSession;
     }
   } catch {
@@ -220,7 +238,7 @@ export const verifyOrRefreshOidcToken = async (
       // original_id_token instead (never present in new tokens). Treat those as stale
       // and fall through to refresh so the cookie is re-minted with the new claims.
       // Removable once all pre-deploy tokens have expired.
-      if (!('original_id_token' in decoded)) {
+      if (!('original_id_token' in decoded) && !isRefreshCookiePayload(decoded)) {
         if (await isSessionRevoked(decoded)) {
           clearAuthCookies(event);
           return null;

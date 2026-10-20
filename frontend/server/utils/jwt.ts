@@ -8,6 +8,12 @@ import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 import { isSessionRevoked } from './backchannel-logout';
 
+export const REFRESH_COOKIE_TYP = 'insights-refresh';
+
+// Refresh-cookie payloads must never pass as a session, even if both cookies ever share a key.
+export const isRefreshCookiePayload = (payload: object) =>
+  (payload as { typ?: unknown }).typ === REFRESH_COOKIE_TYP;
+
 /**
  * Auth middleware for static jwt - supports both Authorization header and auth query parameter
  * @param event - H3 event object
@@ -70,7 +76,7 @@ export async function getOptionalUser(event: H3Event): Promise<DecodedOidcToken 
     return null;
   }
 
-  return (await isSessionRevoked(decoded)) ? null : decoded;
+  return isRefreshCookiePayload(decoded) || (await isSessionRevoked(decoded)) ? null : decoded;
 }
 
 /**

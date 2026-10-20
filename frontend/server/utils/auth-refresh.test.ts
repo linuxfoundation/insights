@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import { refreshTokenGrant } from 'openid-client';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { verifyOrRefreshOidcToken } from './auth-refresh';
+import { signRefreshCookie, verifyOrRefreshOidcToken } from './auth-refresh';
 
 vi.mock('h3', async (importOriginal) => ({
   ...(await importOriginal<typeof import('h3')>()),
@@ -52,7 +52,7 @@ const mint = (claims: object) =>
     secret,
   );
 const refreshCookie = (rt = 'rt-1') =>
-  jwt.sign({ rt, sub: 'auth0|u', sid: 'sid-1', auth_time: loggedInAt }, secret);
+  signRefreshCookie({ rt, sub: 'auth0|u', sid: 'sid-1', auth_time: loggedInAt });
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -125,7 +125,8 @@ describe('verifyOrRefreshOidcToken back-channel revocation', () => {
       sid: 'sid-1',
       auth_time: loggedInAt,
     });
-    expect(jwt.verify(setCookieValue('insights_refresh_token')!, secret)).toMatchObject({
+    expect(jwt.decode(setCookieValue('insights_refresh_token')!)).toMatchObject({
+      typ: 'insights-refresh',
       rt: 'rt-next',
       sub: 'auth0|u',
       sid: 'sid-1',
@@ -148,5 +149,43 @@ describe('verifyOrRefreshOidcToken back-channel revocation', () => {
     expect(refreshTokenGrant).toHaveBeenCalledTimes(1);
     expect(setCookieValue('insights_oidc_token')).toBeUndefined();
     expectAuthCookiesCleared();
+  });
+});
+
+describe('session and refresh cookies cannot stand in for each other', () => {
+  it('rejects a refresh wrapper presented as the session cookie', async () => {
+    cookies.insights_oidc_token = refreshCookie('rt-swap');
+
+    expect(await verifyOrRefreshOidcToken(event)).toBeNull();
+  });
+
+  it('rejects a session cookie carrying the refresh purpose claim', async () => {
+    cookies.insights_oidc_token = mint({ typ: 'insights-refresh' });
+
+    expect(await verifyOrRefreshOidcToken(event)).toBeNull();
+  });
+
+  it('reads a session-key token in the refresh cookie as an opaque legacy value', async () => {
+    const forged = jwt.sign(
+      { typ: 'insights-refresh', rt: 'inner', sub: 'auth0|u', sid: 'sid-1', auth_time: loggedInAt },
+      secret,
+    );
+    cookies.insights_refresh_token = forged;
+
+    await verifyOrRefreshOidcToken(event);
+
+    expect(refreshTokenGrant).toHaveBeenCalledWith(expect.anything(), forged);
+  });
+
+  it('does not trust an expired refresh wrapper', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(Date.now() - 31 * 24 * 60 * 60 * 1000);
+    const expired = refreshCookie('rt-old');
+    vi.useRealTimers();
+    cookies.insights_refresh_token = expired;
+
+    await verifyOrRefreshOidcToken(event);
+
+    expect(refreshTokenGrant).toHaveBeenCalledWith(expect.anything(), expired);
   });
 });

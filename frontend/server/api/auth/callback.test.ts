@@ -135,7 +135,13 @@ describe('GET /api/auth/callback redirect target', () => {
 
     const signed = vi.mocked(jwt.sign).mock.calls.map(([payload]) => payload);
     expect(signed).toContainEqual(expect.objectContaining({ sid: 'sid-1', auth_time: 1000 }));
-    expect(signed).toContainEqual({ rt: 'rt-1', sub: 'auth0|user', sid: 'sid-1', auth_time: 1000 });
+    expect(signed).toContainEqual({
+      typ: 'insights-refresh',
+      rt: 'rt-1',
+      sub: 'auth0|user',
+      sid: 'sid-1',
+      auth_time: 1000,
+    });
     expect(global.setCookie).toHaveBeenCalledWith(
       expect.anything(),
       'insights_refresh_token',
