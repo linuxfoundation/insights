@@ -35,8 +35,9 @@ export default defineEventHandler(async (event) => {
     );
   }
   const redirectTo = toSafeRelativePath(rawRedirectTo);
-  // The fetch header still flags the background check after another tab's login overwrote auth_pkce
-  let isFrame = getHeader(event, 'sec-fetch-dest') === 'iframe';
+  // Fetch metadata says where this response renders, since another flow may have overwritten auth_pkce
+  const fetchDest = getHeader(event, 'sec-fetch-dest');
+  let isFrame = fetchDest === 'iframe';
 
   try {
     // Get stored PKCE data (state + code verifier) from cookie
@@ -51,7 +52,7 @@ export default defineEventHandler(async (event) => {
         storedState = pkceData.state;
         codeVerifier = pkceData.codeVerifier;
         isSilentAttempt = pkceData.silent === true;
-        isFrame ||= pkceData.frame === true;
+        isFrame ||= !fetchDest && pkceData.frame === true;
       } catch {
         // Invalid cookie format
       }
@@ -229,13 +230,14 @@ export default defineEventHandler(async (event) => {
     }
 
     console.error('Auth callback error:', error);
+    // A background check leaves the cookies alone because a newer login in another tab may own them
+    if (isFrame) return ssoFrameResponse(event, 'none');
 
     // Clean up all auth cookies on unrecoverable error
     deleteCookie(event, 'auth_pkce');
     deleteCookie(event, 'auth_redirect_to');
     deleteCookie(event, 'insights_oidc_token');
     deleteCookie(event, 'insights_refresh_token');
-    if (isFrame) return ssoFrameResponse(event, 'none');
 
     let errorMessage = 'Authentication callback error';
     let errorCode = 500;

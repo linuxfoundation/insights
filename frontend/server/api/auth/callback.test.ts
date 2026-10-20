@@ -136,7 +136,11 @@ describe('GET /api/auth/callback background frame check', () => {
 
   // Runs the page script against a fake parent to capture exactly what it posts, and where
   const postedBy = (body: unknown) => {
-    const script = /<script>([\s\S]*)<\/script>/.exec(String(body))?.[1] ?? '';
+    const html = String(body);
+    const open = '<script>';
+    const start = html.indexOf(open);
+    expect(start).toBeGreaterThan(-1);
+    const script = html.slice(start + open.length, html.indexOf('</script>', start));
     const postMessage = vi.fn();
     new Function('window', script)({
       parent: { postMessage },
@@ -211,6 +215,42 @@ describe('GET /api/auth/callback background frame check', () => {
     expect(globalThis.deleteCookie).not.toHaveBeenCalled();
   });
 
+  const fetchDest = (value: string) =>
+    mockGetHeader.mockImplementation((_event, name: string) =>
+      name === 'sec-fetch-dest' ? value : undefined,
+    );
+
+  it('restarts login for a top-level callback whose auth_pkce a frame check overwrote', async () => {
+    cookies.auth_pkce = JSON.stringify({ ...JSON.parse(framePkce), state: 'other' });
+    fetchDest('document');
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    const body = await handler({ context: {} } as H3Event);
+
+    expect(body).toBeUndefined();
+    expect(mockSendRedirect).toHaveBeenCalledWith({ context: {} }, '/api/auth/login');
+    expect(globalThis.setResponseHeaders).not.toHaveBeenCalled();
+  });
+
+  it('redirects a top-level silent failure even when auth_pkce says frame', async () => {
+    cookies.auth_pkce = framePkce;
+    fetchDest('document');
+    mockGetQuery.mockReturnValue({ error: 'login_required' });
+
+    await handler({ context: {} } as H3Event);
+
+    expect(mockSendRedirect).toHaveBeenCalledWith({ context: {} }, '/project/linux');
+  });
+
+  it('trusts the frame flag in auth_pkce when the browser sends no fetch metadata', async () => {
+    cookies.auth_pkce = JSON.stringify({ ...JSON.parse(framePkce), state: 'other' });
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    const body = await handler({ context: {} } as H3Event);
+
+    expectFrameAnswer(body, 'none');
+  });
+
   it('posts none when the frame arrives without its auth_pkce cookie', async () => {
     mockGetHeader.mockImplementation((_event, name: string) =>
       name === 'sec-fetch-dest' ? 'iframe' : undefined,
@@ -223,16 +263,23 @@ describe('GET /api/auth/callback background frame check', () => {
   });
 
   it.each([
-    ['a reused code', { code: 'OAUTH_RESPONSE_BODY_ERROR', error: 'invalid_grant' }],
-    ['a token exchange failure', new Error('boom')],
-  ])('posts none instead of an error page for %s', async (_label, failure) => {
-    const { authorizationCodeGrant } = await import('openid-client');
-    vi.mocked(authorizationCodeGrant).mockRejectedValueOnce(failure);
+    [
+      'a reused code',
+      'authorizationCodeGrant',
+      { code: 'OAUTH_RESPONSE_BODY_ERROR', error: 'invalid_grant' },
+    ],
+    ['a token exchange failure', 'authorizationCodeGrant', new Error('boom')],
+    ['a discovery failure', 'discovery', new Error('auth0 unreachable')],
+  ] as const)('posts none and keeps every cookie for %s', async (_label, step, failure) => {
+    const openid = await import('openid-client');
+    vi.mocked(openid[step]).mockRejectedValueOnce(failure);
     cookies.auth_pkce = framePkce;
     mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
 
     const body = await handler({ context: {} } as H3Event);
 
     expectFrameAnswer(body, 'none');
+    expect(globalThis.deleteCookie).not.toHaveBeenCalled();
+    expect(globalThis.setCookie).not.toHaveBeenCalled();
   });
 });
