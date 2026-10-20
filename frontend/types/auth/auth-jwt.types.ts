@@ -14,6 +14,8 @@ export interface DecodedOidcToken {
   aud: string;
   iat: number;
   exp: number;
+  sid?: string;
+  auth_time?: number;
   username?: string;
   intercomJwt?: string;
   hasLfxInsightsPermission?: boolean;

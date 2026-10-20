@@ -11,6 +11,7 @@ import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 
 import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { signRefreshCookie } from '../../utils/auth-refresh';
 import { getAuthUsername } from '../../utils/common';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, toSafeRelativePath } from '../../utils/redirect';
@@ -153,6 +154,8 @@ export default defineEventHandler(async (event) => {
       picture: decodedIdToken.picture,
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
+      sid: decodedIdToken.sid as string | undefined,
+      auth_time: (decodedIdToken.auth_time as number | undefined) ?? Math.floor(Date.now() / 1000),
       iss: config.public.auth0Domain,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
@@ -203,7 +206,14 @@ export default defineEventHandler(async (event) => {
 
     // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
-      setCookie(event, 'insights_refresh_token', tokenResponse.refresh_token, {
+      const { sub, sid, auth_time } = oidcTokenPayload;
+      const refreshCookie = signRefreshCookie({
+        rt: tokenResponse.refresh_token,
+        sub,
+        sid,
+        auth_time,
+      });
+      setCookie(event, 'insights_refresh_token', refreshCookie, {
         ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
       });

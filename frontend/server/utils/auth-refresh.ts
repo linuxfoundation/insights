@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { createHmac } from 'node:crypto';
+
 import type { H3Event } from 'h3';
 import { getCookie, setCookie, deleteCookie } from 'h3';
 import jwt from 'jsonwebtoken';
@@ -9,7 +11,13 @@ import { discovery, refreshTokenGrant } from 'openid-client';
 
 import type { DecodedIdToken, DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
-import { hasLfxInsightsPermission, isLfInsightsTeamMember } from './jwt';
+import { isSessionRevoked } from './backchannel-logout';
+import {
+  hasLfxInsightsPermission,
+  isLfInsightsTeamMember,
+  isRefreshCookiePayload,
+  REFRESH_COOKIE_TYP,
+} from './jwt';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 
@@ -25,11 +33,48 @@ interface RawRefresh {
   expiresIn: number;
 }
 
+interface RefreshSession {
+  rt: string;
+  sub?: string;
+  sid?: string;
+  auth_time?: number;
+}
+
+// A key derived apart from the session cookie's, so neither cookie verifies as the other.
+const refreshCookieKey = () =>
+  createHmac('sha256', useRuntimeConfig().auth0ClientSecret)
+    .update('insights-refresh-cookie')
+    .digest();
+
+// The session rides with the refresh token so revocation can be checked without calling Auth0.
+export const signRefreshCookie = (session: RefreshSession) =>
+  jwt.sign({ ...session, typ: REFRESH_COOKIE_TYP }, refreshCookieKey(), {
+    algorithm: 'HS256',
+    expiresIn: 60 * 60 * 24 * 30,
+  });
+
+// Cookies set before the session was attached hold the raw Auth0 token.
+const readRefreshCookie = (value: string): RefreshSession => {
+  try {
+    const payload = jwt.verify(value, refreshCookieKey(), { algorithms: ['HS256'] });
+    if (
+      typeof payload === 'object' &&
+      isRefreshCookiePayload(payload) &&
+      typeof payload.rt === 'string'
+    ) {
+      return payload as RefreshSession;
+    }
+  } catch {
+    // Legacy raw token.
+  }
+  return { rt: value };
+};
+
 // Dedup concurrent refreshes for the same refresh token to avoid races against
 // Auth0 refresh-token rotation (the second concurrent call would otherwise be rejected).
 const inFlightRefreshes = new Map<string, Promise<RawRefresh | null>>();
 
-const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null> => {
+const callAuth0Refresh = async (session: RefreshSession): Promise<RawRefresh | null> => {
   const config = useRuntimeConfig();
 
   if (!config.auth0ClientSecret) {
@@ -43,7 +88,7 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       config.public.auth0ClientId,
     );
 
-    const tokenResponse = await refreshTokenGrant(authConfig, refreshToken);
+    const tokenResponse = await refreshTokenGrant(authConfig, session.rt);
 
     if (!tokenResponse.id_token) {
       console.error('Refresh token grant returned no id_token');
@@ -61,6 +106,8 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       picture: decodedIdToken.picture,
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
+      sid: session.sid ?? (decodedIdToken.sid as string | undefined),
+      auth_time: session.auth_time ?? (decodedIdToken.auth_time as number | undefined),
       iss: config.public.auth0Domain,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + expiresIn,
@@ -107,7 +154,9 @@ const setRefreshedCookies = (event: H3Event, result: RawRefresh) => {
   setCookie(event, 'insights_oidc_token', result.oidcToken, tokenCookieOptions);
 
   if (result.newRefreshToken) {
-    setCookie(event, 'insights_refresh_token', result.newRefreshToken, {
+    const { sub, sid, auth_time } = result.decoded;
+    const refreshCookie = signRefreshCookie({ rt: result.newRefreshToken, sub, sid, auth_time });
+    setCookie(event, 'insights_refresh_token', refreshCookie, {
       ...tokenCookieOptions,
       maxAge: 60 * 60 * 24 * 30,
     });
@@ -133,22 +182,29 @@ const clearAuthCookies = (event: H3Event) => {
  * On failure: clears auth cookies and returns null.
  */
 export const refreshOidcToken = async (event: H3Event): Promise<RefreshResult | null> => {
-  const refreshToken = getCookie(event, 'insights_refresh_token');
-  if (!refreshToken) {
+  const refreshCookie = getCookie(event, 'insights_refresh_token');
+  if (!refreshCookie) {
     return null;
   }
 
-  let promise = inFlightRefreshes.get(refreshToken);
+  const session = readRefreshCookie(refreshCookie);
+  const { rt, sub, sid, auth_time } = session;
+  if (sub && (await isSessionRevoked({ sub, sid, auth_time }))) {
+    clearAuthCookies(event);
+    return null;
+  }
+
+  let promise = inFlightRefreshes.get(rt);
   if (!promise) {
-    promise = callAuth0Refresh(refreshToken).finally(() => {
-      inFlightRefreshes.delete(refreshToken);
+    promise = callAuth0Refresh(session).finally(() => {
+      inFlightRefreshes.delete(rt);
     });
-    inFlightRefreshes.set(refreshToken, promise);
+    inFlightRefreshes.set(rt, promise);
   }
 
   const result = await promise;
 
-  if (!result) {
+  if (!result || (await isSessionRevoked(result.decoded))) {
     clearAuthCookies(event);
     return null;
   }
@@ -182,7 +238,11 @@ export const verifyOrRefreshOidcToken = async (
       // original_id_token instead (never present in new tokens). Treat those as stale
       // and fall through to refresh so the cookie is re-minted with the new claims.
       // Removable once all pre-deploy tokens have expired.
-      if (!('original_id_token' in decoded)) {
+      if (!('original_id_token' in decoded) && !isRefreshCookiePayload(decoded)) {
+        if (await isSessionRevoked(decoded)) {
+          clearAuthCookies(event);
+          return null;
+        }
         return decoded;
       }
     } catch (error) {
