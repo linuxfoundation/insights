@@ -4,7 +4,7 @@ API access is included in the user's existing LFX membership tier. There is no s
 
 > Amended 2026-10-12: the request-time fail-closed rule under "Where membership is enforced" was dropped. The Worker forwards a caller the Tier endpoint returns no organization for, without org and tier headers, instead of answering `403`. Issuance in Self-Serve is gated on a LaunchDarkly access flag alone, so membership now shapes rate limits only.
 
-> Amended 2026-10-19: for now rate limits do not depend on membership either. Every caller, with or without an organization, gets the same N requests per second keyed by LFID, with N starting at 30, per [ADR-0023](./0023-flat-per-lfid-rate-limit.md). LFX members get a more relaxed limit later.
+> Amended 2026-10-20: callers whose organization holds an LFX membership get the premium tier, and everyone else gets basic. The tiers differ in rate limit and in access to the organization endpoints, per [ADR-0023](./0023-basic-and-premium-tiers.md).
 
 ## Where membership is enforced
 
