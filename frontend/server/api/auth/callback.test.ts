@@ -118,6 +118,32 @@ describe('GET /api/auth/callback redirect target', () => {
     expect(location()).toContain('auth=success');
   });
 
+  it('wraps the refresh token with the session it belongs to', async () => {
+    const { jwtDecode } = await import('jwt-decode');
+    const { authorizationCodeGrant } = await import('openid-client');
+    const jwt = (await import('jsonwebtoken')).default;
+    vi.mocked(jwtDecode).mockReturnValueOnce({ sub: 'auth0|user', sid: 'sid-1', auth_time: 1000 });
+    vi.mocked(authorizationCodeGrant).mockResolvedValueOnce({
+      id_token: 'id-token',
+      expires_in: 60,
+      refresh_token: 'rt-1',
+    } as never);
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    await handler({ context: {} } as H3Event);
+
+    const signed = vi.mocked(jwt.sign).mock.calls.map(([payload]) => payload);
+    expect(signed).toContainEqual(expect.objectContaining({ sid: 'sid-1', auth_time: 1000 }));
+    expect(signed).toContainEqual({ rt: 'rt-1', sub: 'auth0|user', sid: 'sid-1', auth_time: 1000 });
+    expect(global.setCookie).toHaveBeenCalledWith(
+      expect.anything(),
+      'insights_refresh_token',
+      'signed',
+      expect.anything(),
+    );
+  });
+
   it('keeps the Auth0 session id in the minted cookie', async () => {
     const { jwtDecode } = await import('jwt-decode');
     const jwt = (await import('jsonwebtoken')).default;

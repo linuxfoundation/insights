@@ -123,7 +123,14 @@ describe('session revocation store', () => {
     await expect(isSessionRevoked({ ...token, sid: 'sid-2' })).resolves.toBe(false);
   });
 
-  it('flags tokens issued before a sub-wide logout only', async () => {
+  it('flags sessions authenticated before a sub-wide logout only', async () => {
+    store.set('auth:revoked_sub:auth0|u', 2000);
+
+    await expect(isSessionRevoked({ ...token, auth_time: 1500, iat: 2500 })).resolves.toBe(true);
+    await expect(isSessionRevoked({ ...token, auth_time: 2500, iat: 2500 })).resolves.toBe(false);
+  });
+
+  it('falls back to iat for cookies minted without auth_time', async () => {
     store.set('auth:revoked_sub:auth0|u', 2000);
 
     await expect(isSessionRevoked({ ...token, iat: 1500 })).resolves.toBe(true);

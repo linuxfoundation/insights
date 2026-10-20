@@ -54,16 +54,23 @@ export async function revokeSession({ sid, sub }: LogoutClaims): Promise<void> {
 }
 
 export async function isSessionRevoked(
-  token: Pick<DecodedOidcToken, 'sid' | 'sub' | 'iat'>,
+  session: Pick<DecodedOidcToken, 'sub' | 'sid' | 'auth_time'> & { iat?: number },
 ): Promise<boolean> {
   if (!useRuntimeConfig().redisUrl) {
     return false;
   }
 
   try {
-    const keys = [revokedSubKey(token.sub), ...(token.sid ? [revokedSidKey(token.sid)] : [])];
+    const keys = [revokedSubKey(session.sub), ...(session.sid ? [revokedSidKey(session.sid)] : [])];
     const [subLogout, sidLogout] = await useStorage('redis').getItems(keys);
-    return sidLogout?.value != null || Number(subLogout?.value ?? 0) >= token.iat;
+    // Cookies minted before auth_time was stored fall back to their issue time.
+    const authenticatedAt = session.auth_time ?? session.iat;
+    return (
+      sidLogout?.value != null ||
+      (subLogout?.value != null &&
+        authenticatedAt !== undefined &&
+        Number(subLogout.value) >= authenticatedAt)
+    );
   } catch (error) {
     // Fail open: a Redis outage should not sign every user out.
     console.error('Session revocation lookup failed:', error);
