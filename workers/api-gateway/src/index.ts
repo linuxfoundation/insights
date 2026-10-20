@@ -30,7 +30,7 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
   const key = await hashPat(pat, env.PAT_HASH_SALT);
   let entitlement = await deps.cache.get(key);
   if (!entitlement) {
-    const exchanged = await deps.exchangePat(pat, env);
+    const exchanged = await deps.exchangePat(pat, request.headers.get('cf-connecting-ip'), env);
     if (!exchanged) return unauthorized();
     const username = usernameFromJwt(exchanged.access_token);
     if (!username) return unauthorized();

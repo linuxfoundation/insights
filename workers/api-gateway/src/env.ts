@@ -10,8 +10,7 @@ export interface Env {
   M2M_AUDIENCE: string;
   M2M_CLIENT_ID: string;
   M2M_PRIVATE_KEY: string;
+  INSIGHTS_API_AUDIENCE: string;
   LD_SDK_KEY: string;
   LD_FLAG_URL: string;
-  STUB_PAT: string;
-  STUB_USERNAME: string;
 }
