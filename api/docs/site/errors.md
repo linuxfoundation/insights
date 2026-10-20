@@ -50,7 +50,7 @@ Date and timestamp values are always **ISO-8601** strings in UTC, for example
 | `401`       | `unauthorized`         | The `Authorization` header is missing, malformed, or the token is invalid or expired.                                                              |
 | `403`       | `tier_forbidden`       | Your membership tier does not have access to this endpoint (reserved for future per-endpoint tier gating; every v1 endpoint is open to all tiers). |
 | `404`       | `not_found`            | The requested resource does not exist.                                                                                                             |
-| `429`       | `rate_limit_exceeded`  | You have exceeded your rate limit of 30 requests per second. See `Retry-After`.                                                                    |
+| `429`       | `rate_limit_exceeded`  | You have exceeded your rate limit. See `Retry-After`.                                                                                              |
 | `503`       | `upstream_unavailable` | An upstream data source is unavailable and no cached response could be served.                                                                     |
 
 This list grows over time as new endpoints ship; check `docsUrl` on any error you don't
