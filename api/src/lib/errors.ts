@@ -18,6 +18,15 @@ export class UnauthorizedError extends Error {
   }
 }
 
+export class TierForbiddenError extends Error {
+  readonly statusCode = 403;
+  readonly code = 'tier_forbidden';
+
+  constructor() {
+    super('This endpoint requires the premium tier');
+  }
+}
+
 export class RateLimitedError extends Error {
   readonly statusCode = 429;
   readonly code = 'rate_limit_exceeded';
