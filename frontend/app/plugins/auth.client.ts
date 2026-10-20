@@ -117,6 +117,29 @@ export default defineNuxtPlugin(() => {
     }
   });
 
+  // Callers pass a fresh anonymous /api/auth/user result; an in-tab login predates that read's cookies
+  const openSsoFrame = () => {
+    if (
+      isInteractiveLoginStarted() ||
+      userData.value?.isAuthenticated ||
+      userData.value?.interactiveLoginInFlight ||
+      ssoFrame ||
+      silentLoginStarted ||
+      getSilentLoginAttempted(15_000)
+    ) {
+      return;
+    }
+    lastSsoCheckAt = Date.now();
+    setSilentLoginAttempted(true);
+    ssoFrame = document.createElement('iframe');
+    ssoFrame.hidden = true;
+    ssoFrame.tabIndex = -1;
+    ssoFrame.setAttribute('aria-hidden', 'true');
+    ssoFrame.src = '/api/auth/login?silent=true&mode=frame';
+    document.body.appendChild(ssoFrame);
+    ssoFrameTimeout = setTimeout(removeSsoFrame, 20_000);
+  };
+
   const checkSsoInFrame = async () => {
     const isSettled = status.value === 'success' || status.value === 'error';
     if (
@@ -135,26 +158,9 @@ export default defineNuxtPlugin(() => {
     // Re-read first so a session or an interactive login from another tab wins over a new check
     syncingFromOtherTab = true;
     await refreshAuth();
-    // A failed fetch falls back to anonymous defaults, and an in-tab login predates this read's cookies
-    if (
-      status.value !== 'success' ||
-      isInteractiveLoginStarted() ||
-      userData.value?.isAuthenticated ||
-      userData.value?.interactiveLoginInFlight ||
-      ssoFrame ||
-      silentLoginStarted ||
-      getSilentLoginAttempted(15_000)
-    ) {
-      return;
-    }
-    setSilentLoginAttempted(true);
-    ssoFrame = document.createElement('iframe');
-    ssoFrame.hidden = true;
-    ssoFrame.tabIndex = -1;
-    ssoFrame.setAttribute('aria-hidden', 'true');
-    ssoFrame.src = '/api/auth/login?silent=true&mode=frame';
-    document.body.appendChild(ssoFrame);
-    ssoFrameTimeout = setTimeout(removeSsoFrame, 20_000);
+    // A failed fetch falls back to anonymous defaults
+    if (status.value !== 'success') return;
+    openSsoFrame();
   };
 
   window.addEventListener('focus', checkSsoInFrame);
@@ -175,17 +181,21 @@ export default defineNuxtPlugin(() => {
       // Only decide on a settled fetch, so a pending refresh can't act on stale data
       if (
         isSettled &&
-        userData.value.shouldAttemptSilentLogin &&
+        !userData.value.isAuthenticated &&
         process.client &&
         !isFramed &&
         !isBot &&
         !syncingFromOtherTab &&
-        !isLogoutLanding &&
-        !getSilentLoginAttempted()
+        !isLogoutLanding
       ) {
-        setSilentLoginAttempted(true);
-        silentLoginStarted = true;
-        login(currentPathWithoutAuth(), true);
+        if (userData.value.shouldAttemptSilentLogin && !getSilentLoginAttempted()) {
+          setSilentLoginAttempted(true);
+          silentLoginStarted = true;
+          login(currentPathWithoutAuth(), true);
+        } else if (status.value === 'success' && getSilentLoginAttempted()) {
+          // A recent attempt (and its 120s auth_pkce guard) blocks the redirect; the frame can't loop
+          openSsoFrame();
+        }
       }
       if (isSettled) {
         syncingFromOtherTab = false;
