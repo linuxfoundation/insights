@@ -88,29 +88,51 @@ export default defineNuxtPlugin(() => {
     }
   });
 
-  // A user who logged in elsewhere while this tab sat in the background gets picked up on return
-  // A tab opened in the background never fires the hidden event, so count from load
-  let hiddenAt = document.visibilityState === 'hidden' ? Date.now() : 0;
-  document.addEventListener('visibilitychange', async () => {
-    if (document.visibilityState === 'hidden') {
-      hiddenAt = Date.now();
-      return;
-    }
-    const hiddenFor = hiddenAt ? Date.now() - hiddenAt : 0;
-    hiddenAt = 0;
-    const isSettled = status.value === 'success' || status.value === 'error';
+  // A user who logged in on another LF site gets picked up on return without reloading this page
+  let ssoFrame: HTMLIFrameElement | null = null;
+  let ssoFrameTimeout: ReturnType<typeof setTimeout> | undefined;
+  let lastSsoCheckAt = 0;
+
+  const removeSsoFrame = () => {
+    clearTimeout(ssoFrameTimeout);
+    ssoFrame?.remove();
+    ssoFrame = null;
+  };
+
+  // The callback page posts the result, so only its own frame on this origin is trusted
+  window.addEventListener('message', (event) => {
     if (
-      hiddenFor < 10_000 ||
-      !isSettled ||
-      userData.value?.isAuthenticated ||
-      silentLoginStarted ||
-      isFramed ||
-      isBot ||
-      getSilentLoginAttempted(30_000)
+      !ssoFrame ||
+      event.origin !== window.location.origin ||
+      event.source !== ssoFrame.contentWindow ||
+      event.data?.type !== 'insights-sso'
     ) {
       return;
     }
-    // Re-read first so a session or an interactive login from another tab wins over a new redirect
+    removeSsoFrame();
+    if (event.data.result === 'success') {
+      setSilentLoginAttempted(false);
+      syncingFromOtherTab = true;
+      refreshAuth();
+    }
+  });
+
+  const checkSsoInFrame = async () => {
+    const isSettled = status.value === 'success' || status.value === 'error';
+    if (
+      !isSettled ||
+      Date.now() - lastSsoCheckAt < 15_000 ||
+      userData.value?.isAuthenticated ||
+      ssoFrame ||
+      silentLoginStarted ||
+      isFramed ||
+      isBot ||
+      isInteractiveLoginStarted()
+    ) {
+      return;
+    }
+    lastSsoCheckAt = Date.now();
+    // Re-read first so a session or an interactive login from another tab wins over a new check
     syncingFromOtherTab = true;
     await refreshAuth();
     // A failed fetch falls back to anonymous defaults, and an in-tab login predates this read's cookies
@@ -119,14 +141,25 @@ export default defineNuxtPlugin(() => {
       isInteractiveLoginStarted() ||
       userData.value?.isAuthenticated ||
       userData.value?.interactiveLoginInFlight ||
+      ssoFrame ||
       silentLoginStarted ||
-      getSilentLoginAttempted(30_000)
+      getSilentLoginAttempted(15_000)
     ) {
       return;
     }
     setSilentLoginAttempted(true);
-    silentLoginStarted = true;
-    login(currentPathWithoutAuth(), true);
+    ssoFrame = document.createElement('iframe');
+    ssoFrame.hidden = true;
+    ssoFrame.tabIndex = -1;
+    ssoFrame.setAttribute('aria-hidden', 'true');
+    ssoFrame.src = '/api/auth/login?silent=true&mode=frame';
+    document.body.appendChild(ssoFrame);
+    ssoFrameTimeout = setTimeout(removeSsoFrame, 20_000);
+  };
+
+  window.addEventListener('focus', checkSsoInFrame);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkSsoInFrame();
   });
 
   // Watching only the fetch result keeps store writes (logout clearing liked collections) from re-running this

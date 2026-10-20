@@ -14,6 +14,7 @@ import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { getAuthUsername } from '../../utils/common';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, toSafeRelativePath } from '../../utils/redirect';
+import { ssoFrameResponse } from '../../utils/sso-frame';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
@@ -34,6 +35,8 @@ export default defineEventHandler(async (event) => {
     );
   }
   const redirectTo = toSafeRelativePath(rawRedirectTo);
+  // The fetch header still flags the background check after another tab's login overwrote auth_pkce
+  let isFrame = getHeader(event, 'sec-fetch-dest') === 'iframe';
 
   try {
     // Get stored PKCE data (state + code verifier) from cookie
@@ -48,6 +51,7 @@ export default defineEventHandler(async (event) => {
         storedState = pkceData.state;
         codeVerifier = pkceData.codeVerifier;
         isSilentAttempt = pkceData.silent === true;
+        isFrame ||= pkceData.frame === true;
       } catch {
         // Invalid cookie format
       }
@@ -55,6 +59,7 @@ export default defineEventHandler(async (event) => {
 
     // Handle Auth0 errors (including silent authentication failures)
     if (query.error) {
+      if (isFrame) return ssoFrameResponse(event, 'none');
       const error = query.error as string;
       const errorDescription = query.error_description as string;
 
@@ -85,6 +90,7 @@ export default defineEventHandler(async (event) => {
     if (!query.code || !codeVerifier) {
       // Stale or missing PKCE cookie (direct navigation to callback, bot crawl, etc.)
       // Restart the login flow rather than showing an error page.
+      if (isFrame) return ssoFrameResponse(event, 'none');
       deleteCookie(event, 'auth_pkce');
       return sendRedirect(event, '/api/auth/login');
     }
@@ -92,6 +98,7 @@ export default defineEventHandler(async (event) => {
     // Validate state from cookie against URL to prevent CSRF and detect concurrent login races
     if (!storedState || storedState !== query.state) {
       // State mismatch: multi-tab login or cookie race — restart cleanly.
+      if (isFrame) return ssoFrameResponse(event, 'none');
       deleteCookie(event, 'auth_pkce');
       return sendRedirect(event, '/api/auth/login');
     }
@@ -201,6 +208,8 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    if (isFrame) return ssoFrameResponse(event, 'success');
+
     // Redirect to the original page or home with auth success flag.
     // redirectTo has any stale ?auth param stripped, so it cannot accumulate across cycles.
     const finalRedirect =
@@ -214,6 +223,7 @@ export default defineEventHandler(async (event) => {
     // Restart the login flow rather than surfacing a 500.
     const oauthError = error as { code?: string; error?: string };
     if (oauthError?.code === 'OAUTH_RESPONSE_BODY_ERROR' && oauthError?.error === 'invalid_grant') {
+      if (isFrame) return ssoFrameResponse(event, 'none');
       deleteCookie(event, 'auth_pkce');
       return sendRedirect(event, '/api/auth/login');
     }
@@ -225,6 +235,7 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_redirect_to');
     deleteCookie(event, 'insights_oidc_token');
     deleteCookie(event, 'insights_refresh_token');
+    if (isFrame) return ssoFrameResponse(event, 'none');
 
     let errorMessage = 'Authentication callback error';
     let errorCode = 500;

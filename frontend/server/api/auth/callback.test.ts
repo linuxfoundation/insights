@@ -31,10 +31,12 @@ mockNuxtImport('useRuntimeConfig', (original) => () => {
 });
 global.getQuery = mockGetQuery;
 global.getCookie = mockGetCookie;
-global.getHeader = vi.fn();
+const mockGetHeader = vi.fn();
+global.getHeader = mockGetHeader;
 global.getRequestURL = vi.fn(() => new URL('https://insights.example/cb?code=c&state=s'));
 global.setCookie = vi.fn();
 global.deleteCookie = vi.fn();
+global.setResponseHeaders = vi.fn();
 global.sendRedirect = mockSendRedirect;
 global.createError = vi.fn((error) => error);
 
@@ -48,6 +50,7 @@ beforeAll(async () => {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mockGetHeader.mockReset();
   cookies = { auth_redirect_to: '/project/linux?auth=success' };
   mockGetCookie.mockImplementation((_event, name: string) => cookies[name]);
 });
@@ -125,5 +128,111 @@ describe('GET /api/auth/callback redirect target', () => {
     await handler({ context: {} } as H3Event);
 
     expect(location()).toBe('/project/linux?auth=success');
+  });
+});
+
+describe('GET /api/auth/callback background frame check', () => {
+  const framePkce = JSON.stringify({ state: 's', codeVerifier: 'v', silent: true, frame: true });
+
+  // Runs the page script against a fake parent to capture exactly what it posts, and where
+  const postedBy = (body: unknown) => {
+    const script = /<script>([\s\S]*)<\/script>/.exec(String(body))?.[1] ?? '';
+    const postMessage = vi.fn();
+    new Function('window', script)({
+      parent: { postMessage },
+      location: { origin: 'https://insights.example' },
+    });
+    return postMessage.mock.calls;
+  };
+
+  const expectFrameAnswer = (body: unknown, result: 'success' | 'none') => {
+    expect(postedBy(body)).toEqual([
+      [{ type: 'insights-sso', result }, 'https://insights.example'],
+    ]);
+    expect(globalThis.setResponseHeaders).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        'cache-control': 'no-store',
+        'content-type': 'text/html; charset=utf-8',
+      }),
+    );
+    expect(mockSendRedirect).not.toHaveBeenCalled();
+  };
+
+  it('sets the session and posts success to its own origin', async () => {
+    const { authorizationCodeGrant } = await import('openid-client');
+    vi.mocked(authorizationCodeGrant).mockResolvedValueOnce({
+      id_token: 'id-token',
+      refresh_token: 'refresh-token',
+      access_token: 'access-token',
+      expires_in: 60,
+    } as never);
+    cookies.auth_pkce = framePkce;
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    const body = await handler({ context: {} } as H3Event);
+
+    expectFrameAnswer(body, 'success');
+    expect(globalThis.setCookie).toHaveBeenCalledWith(
+      expect.anything(),
+      'insights_oidc_token',
+      'signed',
+      expect.anything(),
+    );
+    for (const secret of ['signed', 'id-token', 'refresh-token', 'access-token', 'c']) {
+      expect(String(body)).not.toContain(`"${secret}"`);
+    }
+    expect(String(body)).not.toMatch(/token/i);
+  });
+
+  it.each(['login_required', 'consent_required', 'server_error'])(
+    'posts none for %s and keeps the silent guard',
+    async (error) => {
+      cookies.auth_pkce = framePkce;
+      mockGetQuery.mockReturnValue({ error, error_description: 'x' });
+
+      const body = await handler({ context: {} } as H3Event);
+
+      expectFrameAnswer(body, 'none');
+      expect(globalThis.deleteCookie).not.toHaveBeenCalledWith(expect.anything(), 'auth_pkce');
+    },
+  );
+
+  it('posts none instead of restarting login when another tab replaced auth_pkce', async () => {
+    cookies.auth_pkce = JSON.stringify({ state: 'other', codeVerifier: 'v', silent: false });
+    mockGetHeader.mockImplementation((_event, name: string) =>
+      name === 'sec-fetch-dest' ? 'iframe' : undefined,
+    );
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    const body = await handler({ context: {} } as H3Event);
+
+    expectFrameAnswer(body, 'none');
+    expect(globalThis.deleteCookie).not.toHaveBeenCalled();
+  });
+
+  it('posts none when the frame arrives without its auth_pkce cookie', async () => {
+    mockGetHeader.mockImplementation((_event, name: string) =>
+      name === 'sec-fetch-dest' ? 'iframe' : undefined,
+    );
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    const body = await handler({ context: {} } as H3Event);
+
+    expectFrameAnswer(body, 'none');
+  });
+
+  it.each([
+    ['a reused code', { code: 'OAUTH_RESPONSE_BODY_ERROR', error: 'invalid_grant' }],
+    ['a token exchange failure', new Error('boom')],
+  ])('posts none instead of an error page for %s', async (_label, failure) => {
+    const { authorizationCodeGrant } = await import('openid-client');
+    vi.mocked(authorizationCodeGrant).mockRejectedValueOnce(failure);
+    cookies.auth_pkce = framePkce;
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    const body = await handler({ context: {} } as H3Event);
+
+    expectFrameAnswer(body, 'none');
   });
 });
