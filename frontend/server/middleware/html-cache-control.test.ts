@@ -14,8 +14,10 @@ const respond = async (
   accept: string,
   statusCode: number,
   headers: Record<string, string>,
+  url = '/',
 ): Promise<ServerResponse> => {
   const req = new IncomingMessage(new Socket());
+  req.url = url;
   req.headers = { accept };
   const res = new ServerResponse(req);
   await handler(createEvent(req, res));
@@ -58,6 +60,26 @@ describe('html cache-control middleware', () => {
     });
 
     expect(res.getHeader('cache-control')).toBe('max-age=3600');
+  });
+
+  it('leaves a 304 from an API route opened in the browser alone', async () => {
+    const res = await respond(
+      NAVIGATION_ACCEPT,
+      304,
+      { 'cache-control': 'public, max-age=86400, s-maxage=86400' },
+      '/api/project',
+    );
+
+    expect(res.getHeader('cache-control')).toBe('public, max-age=86400, s-maxage=86400');
+  });
+
+  it('leaves a 304 that declares a non-HTML type alone', async () => {
+    const res = await respond(NAVIGATION_ACCEPT, 304, {
+      'content-type': 'application/json',
+      'cache-control': 'public, max-age=86400, s-maxage=86400',
+    });
+
+    expect(res.getHeader('cache-control')).toBe('public, max-age=86400, s-maxage=86400');
   });
 
   it('leaves data fetches alone', async () => {

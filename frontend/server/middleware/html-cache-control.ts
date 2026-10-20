@@ -6,15 +6,18 @@ import { defineEventHandler, getRequestHeader } from 'h3';
 export const HTML_CACHE_CONTROL = 'no-cache';
 
 export default defineEventHandler((event) => {
-  if (!getRequestHeader(event, 'accept')?.includes('text/html')) return;
+  if (event.path.startsWith('/api/') || !getRequestHeader(event, 'accept')?.includes('text/html')) {
+    return;
+  }
 
   const res = event.node.res;
   const originalWriteHead = res.writeHead.bind(res);
   res.writeHead = ((statusCode: number, ...args: unknown[]) => {
-    const isHtml = String(res.getHeader('content-type') ?? '').includes('text/html');
+    const contentType = String(res.getHeader('content-type') ?? '');
     const cacheControl = String(res.getHeader('cache-control') ?? '');
-    // A 304 for a cached page carries max-age too, which would restart the browser's 24h window
-    if ((isHtml || statusCode === 304) && !cacheControl.includes('no-store')) {
+    // A 304 for a cached page carries max-age and no content-type, and would restart the 24h window
+    const isPage = contentType.includes('text/html') || (statusCode === 304 && !contentType);
+    if (isPage && !cacheControl.includes('no-store')) {
       res.setHeader('cache-control', HTML_CACHE_CONTROL);
     }
     // oxlint-disable-next-line typescript/no-explicit-any
