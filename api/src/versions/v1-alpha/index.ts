@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import autoload from '@fastify/autoload';
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
+import { premiumOnly } from '../../tier.js';
 import activityTypeRoutes from './activity-types.js';
 import projectRoutes from './projects.js';
 import repositoryGroupRoutes from './repository-groups.js';
@@ -36,7 +37,13 @@ const v1AlphaRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     // @fastify/autoload throws ENOENT for a missing folder, so a lost development/ fails startup.
     // Git and tsc drop empty folders, so the other groups are skipped until their first route lands.
     if (group === 'development' || existsSync(dir)) {
-      await scope.register(autoload, { dir, dirNameRoutePrefix: false, forceESM: true });
+      await scope.register(async (groupScope) => {
+        // Only premium callers can use the organization endpoints (ADR-0023).
+        if (group === 'organizations') {
+          groupScope.addHook('preValidation', premiumOnly);
+        }
+        await groupScope.register(autoload, { dir, dirNameRoutePrefix: false, forceESM: true });
+      });
     }
   }
 };
