@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { buildApp } from '../src/app.js';
 import { USERNAME_CLAIM } from '../src/auth.js';
+import { RATE_LIMITS } from '../src/rate-limit.js';
 import { audience, issuer, localKeys, sign, useAuthApp, whoami } from './helpers/auth.js';
 import { atDate } from './helpers/tinybird.js';
 
@@ -117,10 +118,14 @@ describe('rate limiting', () => {
     asmith = `Bearer ${await sign({ claims: { [USERNAME_CLAIM]: 'asmith' } })}`;
   });
 
-  const statuses = async (count: number, authorization: string) => {
+  const statuses = async (
+    count: number,
+    authorization: string,
+    headers?: Record<string, string>,
+  ) => {
     const result: number[] = [];
     for (let i = 0; i < count; i += 1) {
-      result.push((await get('/v1-alpha/whoami', authorization)).statusCode);
+      result.push((await get('/v1-alpha/whoami', authorization, headers)).statusCode);
     }
     return result;
   };
@@ -136,6 +141,28 @@ describe('rate limiting', () => {
     });
     expect(redis.state.clients.map(({ url }) => url)).toEqual([redisUrl]);
     expect([...redis.sets.keys()]).toEqual(['insights-api:ratelimit:jdoe']);
+  });
+
+  it('gives a caller the Worker sends a tier for the premium limit', async () => {
+    const { premium } = RATE_LIMITS;
+    // Both tiers start at 30, so premium is raised here to tell them apart.
+    RATE_LIMITS.premium = 35;
+    try {
+      await atDate(t0, async () => {
+        const gold = { 'x-tier': 'gold' };
+        expect(await statuses(35, jdoe, gold)).toEqual(Array(35).fill(200));
+
+        const limited = await get('/v1-alpha/whoami', jdoe, gold);
+
+        expect(limited.statusCode).toBe(429);
+        expect(limited.json()).toMatchObject({
+          message: 'Rate limit of 35 requests per second exceeded',
+        });
+        expect(await statuses(31, asmith)).toEqual([...Array(30).fill(200), 429]);
+      });
+    } finally {
+      RATE_LIMITS.premium = premium;
+    }
   });
 
   it('frees requests as the window slides past them', async () => {

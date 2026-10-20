@@ -33,7 +33,7 @@ Every route under `/v1` and `/v1-alpha` except `openapi.json` needs the Auth0 ac
 
 ## Rate limiting
 
-Each LFID gets 30 requests per second over a sliding window (ADR-0023), counted in the Redis at `API_REDIS_URL`. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
+Each LFID gets a number of requests per second over a sliding window, set by its tier (ADR-0023): premium when the Worker forwards an `x-tier` header, basic otherwise. Both limits are 30 until load tests set them, in `src/rate-limit.ts`. Requests are counted in the Redis at `API_REDIS_URL`. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
 
 ## Scripts
 

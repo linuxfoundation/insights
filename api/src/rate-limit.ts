@@ -6,9 +6,11 @@ import type { FastifyBaseLogger, FastifyRequest } from 'fastify';
 
 import { getRedisClient, type RedisClient } from './clients/redis.js';
 import { RateLimitedError } from './lib/errors.js';
+import { tierOf, type Tier } from './tier.js';
 
-// Requests per LFID over a sliding one-second window (ADR-0023).
-export const RATE_LIMIT = 30;
+// Requests per LFID over a sliding one-second window, by tier (ADR-0023). Both stay at 30 until load
+// tests set them.
+export const RATE_LIMITS: Record<Tier, number> = { basic: 30, premium: 30 };
 const WINDOW_MS = 1000;
 // A Redis that keeps the connection open but stops answering would otherwise hold every request.
 const CHECK_TIMEOUT_MS = 200;
@@ -60,8 +62,9 @@ export function rateLimit(log: FastifyBaseLogger) {
       request.log.error({ err }, 'Rate limit check failed, request allowed');
       return;
     }
-    if (count > RATE_LIMIT) {
-      throw new RateLimitedError(RATE_LIMIT);
+    const limit = RATE_LIMITS[tierOf(request)];
+    if (count > limit) {
+      throw new RateLimitedError(limit);
     }
   };
 }

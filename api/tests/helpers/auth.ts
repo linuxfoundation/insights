@@ -76,6 +76,10 @@ export function useAuthApp(options: BuildAppOptions, env: Record<string, string>
     vi.unstubAllEnvs();
   });
 
-  return (url: string, authorization?: string) =>
-    app.inject({ method: 'GET', url, headers: authorization ? { authorization } : {} });
+  return (url: string, authorization?: string, headers: Record<string, string> = {}) =>
+    app.inject({
+      method: 'GET',
+      url,
+      headers: authorization ? { ...headers, authorization } : headers,
+    });
 }
