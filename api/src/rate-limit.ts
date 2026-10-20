@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto';
 
 import type { FastifyBaseLogger, FastifyRequest } from 'fastify';
 
-import { getRedisClient, type RedisClient } from './clients/redis.js';
+import { dropRedisClient, getRedisClient, type RedisClient } from './clients/redis.js';
 import { RateLimitedError } from './lib/errors.js';
 import { tierOf, type Tier } from './tier.js';
 
@@ -15,10 +15,14 @@ const WINDOW_MS = 1000;
 // A Redis that keeps the connection open but stops answering would otherwise hold every request.
 const CHECK_TIMEOUT_MS = 200;
 
-async function withTimeout<T>(work: Promise<T>, ms: number): Promise<T> {
+// The timed-out work keeps running, so onTimeout is where the caller abandons it.
+async function withTimeout<T>(work: Promise<T>, ms: number, onTimeout: () => void): Promise<T> {
   let timer: NodeJS.Timeout | undefined;
   const deadline = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => reject(new Error(`Redis did not answer within ${ms} ms`)), ms);
+    timer = setTimeout(() => {
+      reject(new Error(`Redis did not answer within ${ms} ms`));
+      onTimeout();
+    }, ms);
   });
   try {
     return await Promise.race([work, deadline]);
@@ -54,9 +58,12 @@ export function rateLimit(log: FastifyBaseLogger) {
       if (!redis.isReady) {
         return;
       }
+      // A connection that stops answering would collect one unanswered MULTI per request, so it is
+      // dropped and the next request reconnects.
       count = await withTimeout(
         countRequest(redis, request.username, Date.now()),
         CHECK_TIMEOUT_MS,
+        () => dropRedisClient(redis),
       );
     } catch (err: unknown) {
       request.log.error({ err }, 'Rate limit check failed, request allowed');

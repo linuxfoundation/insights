@@ -26,11 +26,19 @@ export function getRedisClient(log: FastifyBaseLogger): RedisClient {
   return client;
 }
 
-// destroy() drops queued commands, which close() would wait on while Redis is unresponsive.
 export async function closeRedis(): Promise<void> {
-  const current = client;
-  client = undefined;
-  if (current?.isOpen) {
-    current.destroy();
+  if (client) {
+    dropRedisClient(client);
+  }
+}
+
+// destroy() drops queued commands, which close() would wait on while Redis is unresponsive. A newer
+// client that already replaced `stale` stays in use.
+export function dropRedisClient(stale: RedisClient): void {
+  if (client === stale) {
+    client = undefined;
+  }
+  if (stale.isOpen) {
+    stale.destroy();
   }
 }

@@ -203,6 +203,17 @@ describe('rate limiting', () => {
     expect(redis.state.multis).toBe(1);
   });
 
+  it('drops a connection that stops answering, so unanswered checks cannot pile up', async () => {
+    await statuses(1, jdoe);
+    const clients = redis.state.clients.length;
+    const { destroyed } = redis.state;
+    redis.state.hang = true;
+
+    expect(await statuses(3, jdoe)).toEqual([200, 200, 200]);
+    expect(redis.state.destroyed).toBe(destroyed + 3);
+    expect(redis.state.clients).toHaveLength(clients + 2);
+  });
+
   it('skips the limit while auth is disabled', async () => {
     vi.stubEnv('API_AUTH_DISABLED', 'true');
 
