@@ -59,10 +59,18 @@ recognize, since it points at the current, authoritative reference for that code
 ## Rate limit responses
 
 When you exceed your rate limit, the API returns `429` with `code: rate_limit_exceeded`, plus a
-`Retry-After` header telling you how many seconds to wait. Every response, whether
-successful or not, also includes `X-RateLimit-*` headers so you can track your remaining
-budget and back off before hitting the limit. See the quickstart's [rate limit
+`Retry-After` header telling you how many seconds to wait. Responses to authenticated
+requests, successful or not, also carry `X-RateLimit-*` headers so you can track your
+remaining budget and back off before hitting the limit. A response can occasionally arrive
+without them, so treat them as optional. See the quickstart's [rate limit
 section](/#watch-your-rate-limit) for more detail.
+
+| Header                  | Meaning                                                         |
+| ----------------------- | --------------------------------------------------------------- |
+| `X-RateLimit-Limit`     | Requests you can make per second.                               |
+| `X-RateLimit-Remaining` | Requests left in the current one-second window.                 |
+| `X-RateLimit-Reset`     | Seconds until the window has room for another request.          |
+| `Retry-After`           | On `429` only: seconds to wait before sending the next request. |
 
 ## Caching headers on error responses
 
