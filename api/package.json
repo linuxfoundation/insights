@@ -23,6 +23,7 @@
     "@lfx-insights/postgres-client": "workspace:*",
     "@lfx-insights/tinybird-client": "workspace:*",
     "@lfx-insights/types": "workspace:*",
+    "@redis/client": "^6.2.1",
     "@sinclair/typebox": "^0.34.0",
     "fastify": "^5.0.0",
     "jose": "^6.2.12"

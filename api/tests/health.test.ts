@@ -41,6 +41,7 @@ const stubAllEnv = () => {
   vi.stubEnv('API_AUTH0_ISSUER_URL', 'https://auth.test/');
   vi.stubEnv('API_AUTH0_AUDIENCE', 'https://api.test/');
   vi.stubEnv('API_AUTH_DISABLED', '');
+  vi.stubEnv('API_REDIS_URL', 'redis://cache.test:6379');
 };
 
 const log = { log: { error: vi.fn() } } as never;
@@ -101,13 +102,14 @@ describe('health routes', () => {
     vi.stubEnv('API_CM_DB_PASSWORD', '');
     vi.stubEnv('API_TB_TOKEN', '');
     vi.stubEnv('API_AUTH0_AUDIENCE', '');
+    vi.stubEnv('API_REDIS_URL', '');
 
     const response = await app.inject({ method: 'GET', url: '/health/ready' });
 
     expect(response.statusCode).toBe(503);
     expect(response.json()).toEqual({
       status: 'unavailable',
-      missingConfig: ['API_CM_DB_PASSWORD', 'API_TB_TOKEN', 'API_AUTH0_AUDIENCE'],
+      missingConfig: ['API_CM_DB_PASSWORD', 'API_TB_TOKEN', 'API_AUTH0_AUDIENCE', 'API_REDIS_URL'],
       invalidConfig: [],
     });
   });

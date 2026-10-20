@@ -1,44 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { FastifyInstance } from 'fastify';
-import { createLocalJWKSet, exportJWK, generateKeyPair, SignJWT, type JWTPayload } from 'jose';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { generateKeyPair, SignJWT } from 'jose';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { buildApp, type BuildAppOptions } from '../src/app.js';
 import { USERNAME_CLAIM } from '../src/auth.js';
+import { audience, issuer, jwks, localKeys, sign, useAuthApp, whoami } from './helpers/auth.js';
 import { mockFetch, type OpenApiDoc } from './helpers/tinybird.js';
 
-const issuer = 'https://auth.test/';
-const audience = 'https://api.test/';
-const kid = 'test-key';
-
-const { publicKey, privateKey } = await generateKeyPair('RS256');
 const otherKey = (await generateKeyPair('RS256')).privateKey;
-const jwks = { keys: [{ ...(await exportJWK(publicKey)), kid, alg: 'RS256' }] };
-const localKeys = createLocalJWKSet(jwks);
-
-interface TokenOptions {
-  claims?: JWTPayload;
-  iss?: string;
-  aud?: string;
-  exp?: string | number;
-  key?: CryptoKey;
-}
-
-const sign = ({
-  claims = {},
-  iss = issuer,
-  aud = audience,
-  exp = '5m',
-  key = privateKey,
-}: TokenOptions = {}) =>
-  new SignJWT({ [USERNAME_CLAIM]: 'jdoe', ...claims })
-    .setProtectedHeader({ alg: 'RS256', kid })
-    .setIssuer(iss)
-    .setAudience(aud)
-    .setIssuedAt()
-    .setExpirationTime(exp)
-    .sign(key);
 
 const unauthorizedBody = {
   statusCode: 401,
@@ -46,42 +15,6 @@ const unauthorizedBody = {
   error: 'Unauthorized',
   message: 'A valid personal access token is required',
 };
-
-const whoami: BuildAppOptions['versions'] = [
-  {
-    prefix: '/v1-alpha',
-    plugin: async (scope) => {
-      scope.get('/whoami', async (request) => ({ username: request.username }));
-    },
-  },
-];
-
-function useAuthApp(options: BuildAppOptions) {
-  let app: FastifyInstance;
-
-  beforeAll(async () => {
-    app = await buildApp(options);
-    await app.ready();
-  });
-
-  afterAll(async () => {
-    await app.close();
-  });
-
-  beforeEach(() => {
-    vi.stubEnv('API_AUTH_DISABLED', '');
-    vi.stubEnv('API_AUTH0_ISSUER_URL', issuer);
-    vi.stubEnv('API_AUTH0_AUDIENCE', audience);
-    mockFetch.mockReset();
-  });
-
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
-
-  return (url: string, authorization?: string) =>
-    app.inject({ method: 'GET', url, headers: authorization ? { authorization } : {} });
-}
 
 describe('access token verification', () => {
   const get = useAuthApp({ versions: whoami, authKeys: localKeys });

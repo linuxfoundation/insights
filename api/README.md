@@ -31,6 +31,10 @@ pnpm --filter @lfx-insights/api dev
 
 Every route under `/v1` and `/v1-alpha` except `openapi.json` needs the Auth0 access token the Cloudflare Worker forwards ([ADR-0006](./docs/arch/adr/0006-pat-token-exchange-for-api-credentials.md), [ADR-0009](./docs/arch/adr/0009-api-key-required-for-all-requests.md)). Set `API_AUTH0_ISSUER_URL` to the token's exact `iss`, trailing slash included, and `API_AUTH0_AUDIENCE` to the public API's Auth0 identifier. `API_AUTH_DISABLED=true` skips verification for local development; readiness answers `503` while it is set, so a deployment never serves traffic with it.
 
+## Rate limiting
+
+Each LFID gets a number of requests per second over a sliding window, set by its tier (ADR-0023): premium when the Worker forwards an `x-tier` header, basic otherwise. Both limits are 30 until load tests set them, in `src/rate-limit.ts`. Requests are counted in the Redis at `API_REDIS_URL`. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
+
 ## Scripts
 
 | Command          | Description                                                                   |
