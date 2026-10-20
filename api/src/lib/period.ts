@@ -30,6 +30,15 @@ const parseDay = (day: string) => new Date(utcMidnight(day));
 const formatDay = (date: Date) => date.toISOString().slice(0, 10);
 const addDays = (date: Date, days: number) => new Date(date.getTime() + days * dayMs);
 
+// Date rolls an impossible day like 2024-02-31 into the next month, so the round trip must match.
+export function isCalendarDay(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const date = parseDay(value);
+  return !Number.isNaN(date.getTime()) && formatDay(date) === value;
+}
+
 // Tinybird returns Date columns as YYYY-MM-DD and DateTime columns as YYYY-MM-DD HH:mm:ss, both
 // UTC. Both land in the T..Z shape toPeriodSummary writes, so every date in a body has one format.
 export function toIsoUtc(value: string): string {
