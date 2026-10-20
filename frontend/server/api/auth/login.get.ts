@@ -12,6 +12,7 @@ import { Pool } from 'pg';
 
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { isValidRedirectUrl, toSafeRelativePath } from '../../utils/redirect';
+import { ssoFrameResponse } from '../../utils/sso-frame';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -20,6 +21,7 @@ export default defineEventHandler(async (event) => {
   const userAgent = getHeader(event, 'user-agent') || '';
   const acceptHeader = getHeader(event, 'accept') || '';
   const isBrowserRequest = userAgent.includes('Mozilla') && acceptHeader.includes('text/html');
+  const isFrame = query.silent === 'true' && query.mode === 'frame';
 
   const cookieOptions = {
     httpOnly: true,
@@ -50,7 +52,12 @@ export default defineEventHandler(async (event) => {
     setCookie(
       event,
       'auth_pkce',
-      JSON.stringify({ state, codeVerifier, silent: query.silent === 'true' }),
+      JSON.stringify({
+        state,
+        codeVerifier,
+        silent: query.silent === 'true',
+        ...(isFrame && { frame: true }),
+      }),
       cookieOptions,
     );
 
@@ -106,6 +113,7 @@ export default defineEventHandler(async (event) => {
     if (query.silent === 'true' && isBrowserRequest) {
       // auth_pkce is the loop guard for silent-sso.ts and /api/auth/user, so an early failure still sets it.
       setCookie(event, 'auth_pkce', JSON.stringify({ silent: true }), cookieOptions);
+      if (isFrame) return ssoFrameResponse(event, 'none');
       return sendRedirect(event, toSafeRelativePath(query.redirectTo as string | undefined));
     }
     throw createError({
