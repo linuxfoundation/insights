@@ -103,6 +103,8 @@ describe('GET /v1-alpha/organizations/{slug}/contributions', () => {
     ['a negative count', { activityCount: -1 }],
     ['a string count', { activityCount: '1200' }],
     ['a date-time start', { startDate: '2017-01-01 00:00:00' }],
+    ['an impossible month', { startDate: '2017-13-01' }],
+    ['an impossible day', { endDate: '2017-02-31' }],
     ['a missing end', { endDate: null }],
   ])('returns 503 for %s', async (_name, change) => {
     years = [{ startDate: '2017-01-01', endDate: '2017-12-31', activityCount: 1200, ...change }];
