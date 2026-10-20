@@ -145,6 +145,7 @@ export default defineEventHandler(async (event) => {
       picture: decodedIdToken.picture,
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
+      sid: decodedIdToken.sid as string | undefined,
       iss: config.public.auth0Domain,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),

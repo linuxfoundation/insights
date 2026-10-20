@@ -51,7 +51,7 @@ export default defineEventHandler(async (event): Promise<ProjectCollectionsRespo
   }
 
   try {
-    const user = getOptionalUser(event);
+    const user = await getOptionalUser(event);
     const ssoUserId: string | null = user?.sub ?? null;
 
     const projectResult = await cmDbPool.query(

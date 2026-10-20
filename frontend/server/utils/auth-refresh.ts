@@ -9,6 +9,7 @@ import { discovery, refreshTokenGrant } from 'openid-client';
 
 import type { DecodedIdToken, DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
+import { isSessionRevoked } from './backchannel-logout';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from './jwt';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
@@ -61,6 +62,7 @@ const callAuth0Refresh = async (refreshToken: string): Promise<RawRefresh | null
       picture: decodedIdToken.picture,
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
+      sid: decodedIdToken.sid as string | undefined,
       iss: config.public.auth0Domain,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + expiresIn,
@@ -148,7 +150,7 @@ export const refreshOidcToken = async (event: H3Event): Promise<RefreshResult | 
 
   const result = await promise;
 
-  if (!result) {
+  if (!result || (await isSessionRevoked(result.decoded))) {
     clearAuthCookies(event);
     return null;
   }
@@ -183,6 +185,10 @@ export const verifyOrRefreshOidcToken = async (
       // and fall through to refresh so the cookie is re-minted with the new claims.
       // Removable once all pre-deploy tokens have expired.
       if (!('original_id_token' in decoded)) {
+        if (await isSessionRevoked(decoded)) {
+          clearAuthCookies(event);
+          return null;
+        }
         return decoded;
       }
     } catch (error) {

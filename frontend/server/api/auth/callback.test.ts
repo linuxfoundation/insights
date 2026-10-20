@@ -118,6 +118,18 @@ describe('GET /api/auth/callback redirect target', () => {
     expect(location()).toContain('auth=success');
   });
 
+  it('keeps the Auth0 session id in the minted cookie', async () => {
+    const { jwtDecode } = await import('jwt-decode');
+    const jwt = (await import('jsonwebtoken')).default;
+    vi.mocked(jwtDecode).mockReturnValueOnce({ sub: 'auth0|user', sid: 'sid-1' });
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    await handler({ context: {} } as H3Event);
+
+    expect(vi.mocked(jwt.sign).mock.calls[0]![0]).toMatchObject({ sid: 'sid-1' });
+  });
+
   it('appends auth=success to the original page after login', async () => {
     cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
     mockGetQuery.mockReturnValue({ code: 'c', state: 's' });

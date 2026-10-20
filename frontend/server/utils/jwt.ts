@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken';
 
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
+import { isSessionRevoked } from './backchannel-logout';
+
 /**
  * Auth middleware for static jwt - supports both Authorization header and auth query parameter
  * @param event - H3 event object
@@ -52,20 +54,23 @@ export async function auth(event: H3Event): Promise<void> {
  * Intended for endpoints that are publicly accessible but can personalize
  * their response when the caller is authenticated.
  */
-export function getOptionalUser(event: H3Event): DecodedOidcToken | null {
+export async function getOptionalUser(event: H3Event): Promise<DecodedOidcToken | null> {
   const oidcToken = getCookie(event, 'insights_oidc_token');
   if (!oidcToken) {
     return null;
   }
 
+  let decoded: DecodedOidcToken;
   try {
     const config = useRuntimeConfig();
-    return jwt.verify(oidcToken, config.auth0ClientSecret, {
+    decoded = jwt.verify(oidcToken, config.auth0ClientSecret, {
       algorithms: ['HS256'],
     }) as DecodedOidcToken;
   } catch {
     return null;
   }
+
+  return (await isSessionRevoked(decoded)) ? null : decoded;
 }
 
 /**
