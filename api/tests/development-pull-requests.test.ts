@@ -16,21 +16,21 @@ import {
 const route = '/v1-alpha/projects/kubernetes/development/pull-requests';
 const rangeQuery = 'startDate=2025-01-01&endDate=2025-03-31&granularity=weekly';
 
-const activitiesPath = '/v0/pipes/activities_count.json';
+const countPath = '/v0/pipes/pull_requests_count.json';
 const velocityPath = '/v0/pipes/pull_requests_average_resolve_velocity.json';
 
-const openedTypes = 'pull_request-opened,merge_request-opened,changeset-created';
-const mergedTypes = 'pull_request-merged,merge_request-merged,changeset-merged';
-const closedTypes = 'pull_request-closed,merge_request-closed,changeset-closed,changeset-abandoned';
-const activityGroups = [openedTypes, mergedTypes, closedTypes];
+const openedState = 'opened';
+const mergedState = 'merged';
+const closedState = 'closed';
+const states = [openedState, mergedState, closedState];
 
 const currentRange = { startDate: '2025-01-01 00:00:00', endDate: '2025-03-31 00:00:00' };
 const previousRange = { startDate: '2024-10-01 00:00:00', endDate: '2024-12-31 00:00:00' };
 
 const summaryCounts: Record<string, { current: number; previous: number }> = {
-  [openedTypes]: { current: 100, previous: 50 },
-  [mergedTypes]: { current: 25, previous: 40 },
-  [closedTypes]: { current: 10, previous: 5 },
+  [openedState]: { current: 100, previous: 50 },
+  [mergedState]: { current: 25, previous: 40 },
+  [closedState]: { current: 10, previous: 5 },
 };
 
 const bucketBounds = [
@@ -39,26 +39,26 @@ const bucketBounds = [
   ['2025-01-13', '2025-01-19'],
 ];
 const seriesCounts: Record<string, number[]> = {
-  [openedTypes]: [11, 4, 7],
-  [mergedTypes]: [8, 1, 6],
-  [closedTypes]: [2, 1, 3],
+  [openedState]: [11, 4, 7],
+  [mergedState]: [8, 1, 6],
+  [closedState]: [2, 1, 3],
 };
 const resolveSeconds = 7_451_999;
 
 function defaultRows(url: URL): object[] {
   const params = url.searchParams;
   switch (url.pathname) {
-    case activitiesPath: {
-      const types = params.get('activity_types') ?? '';
+    case countPath: {
+      const types = params.get('state') ?? '';
       if (params.has('granularity')) {
         return bucketBounds.map(([startDate, endDate], index) => ({
           startDate,
           endDate,
-          activityCount: seriesCounts[types]?.[index],
+          pullRequestCount: seriesCounts[types]?.[index],
         }));
       }
       const period = params.get('startDate') === currentRange.startDate ? 'current' : 'previous';
-      return [{ activityCount: summaryCounts[types]?.[period] }];
+      return [{ pullRequestCount: summaryCounts[types]?.[period] }];
     }
     case velocityPath:
       return [{ averagePullRequestResolveVelocitySeconds: resolveSeconds }];
@@ -72,7 +72,7 @@ const tinybird = (rowsFor: (url: URL) => object[] = defaultRows, bucket?: object
 
 const describeCall = (url: URL) => ({
   pipe: url.pathname,
-  activityTypes: url.searchParams.get('activity_types'),
+  state: url.searchParams.get('state'),
   granularity: url.searchParams.get('granularity'),
   startDate: url.searchParams.get('startDate'),
   endDate: url.searchParams.get('endDate'),
@@ -164,8 +164,8 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
     mockFetch.mockImplementation(
       tinybird((url) => {
         const rows = defaultRows(url);
-        const types = url.searchParams.get('activity_types');
-        return url.searchParams.has('granularity') && types === mergedTypes
+        const types = url.searchParams.get('state');
+        return url.searchParams.has('granularity') && types === mergedState
           ? rows.slice(0, 2)
           : rows;
       }),
@@ -179,7 +179,7 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
     mockFetch.mockImplementation(
       tinybird((url) => {
         const rows = defaultRows(url);
-        const isOpenedSeries = url.searchParams.get('activity_types') === openedTypes;
+        const isOpenedSeries = url.searchParams.get('state') === openedState;
         return url.searchParams.has('granularity') && !isOpenedSeries
           ? rows.filter((_, index) => index !== 1)
           : rows;
@@ -203,8 +203,7 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
       tinybird((url) => {
         const rows = defaultRows(url);
         const isOpenedSeries =
-          url.searchParams.has('granularity') &&
-          url.searchParams.get('activity_types') === openedTypes;
+          url.searchParams.has('granularity') && url.searchParams.get('state') === openedState;
         return isOpenedSeries ? rows.filter((_, index) => index !== 1) : rows;
       }),
     );
@@ -239,14 +238,13 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
     mockFetch.mockImplementation(
       tinybird((url) => {
         const isOpenedSeries =
-          url.searchParams.has('granularity') &&
-          url.searchParams.get('activity_types') === openedTypes;
+          url.searchParams.has('granularity') && url.searchParams.get('state') === openedState;
         return isOpenedSeries
           ? [
               {
                 startDate: '2025-01-01 00:00:00',
                 endDate: '2025-01-05 23:59:59',
-                activityCount: 11,
+                pullRequestCount: 11,
               },
             ]
           : defaultRows(url);
@@ -267,7 +265,7 @@ describe('GET /v1-alpha/projects/{slug}/development/pull-requests (AC1)', () => 
 });
 
 describe('Tinybird calls (AC2, AC3)', () => {
-  it('makes the ten pipe calls with the common filter, activity groups and ranges', async () => {
+  it('makes the ten pipe calls with the common filter, pull request states and ranges', async () => {
     await get(`${route}?${rangeQuery}`);
 
     for (const url of pipeCalls()) {
@@ -278,19 +276,19 @@ describe('Tinybird calls (AC2, AC3)', () => {
       expect(url.searchParams.get('includeCollaborations')).toBe('true');
     }
 
-    const summaries = activityGroups.flatMap((activityTypes) => [
-      { pipe: activitiesPath, activityTypes, granularity: null, ...currentRange },
-      { pipe: activitiesPath, activityTypes, granularity: null, ...previousRange },
+    const summaries = states.flatMap((state) => [
+      { pipe: countPath, state, granularity: null, ...currentRange },
+      { pipe: countPath, state, granularity: null, ...previousRange },
     ]);
-    const series = activityGroups.map((activityTypes) => ({
-      pipe: activitiesPath,
-      activityTypes,
+    const series = states.map((state) => ({
+      pipe: countPath,
+      state,
       granularity: 'weekly',
       ...currentRange,
     }));
     const velocity = {
       pipe: velocityPath,
-      activityTypes: null,
+      state: null,
       granularity: null,
       ...currentRange,
     };
@@ -430,8 +428,8 @@ describe('response shape (AC12)', () => {
         if (url.pathname === velocityPath) {
           return rows.map((row) => ({ ...row, sampleSize: 42 }));
         }
-        if (url.pathname === activitiesPath && url.searchParams.has('granularity')) {
-          return rows.map((row) => ({ ...row, cumulativeActivityCount: 999 }));
+        if (url.pathname === countPath && url.searchParams.has('granularity')) {
+          return rows.map((row) => ({ ...row, pullRequestsInWindow: 999 }));
         }
         return rows;
       }),

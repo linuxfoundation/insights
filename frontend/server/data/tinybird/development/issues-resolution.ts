@@ -1,6 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityTypes } from '@lfx-insights/types';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { IssuesResolution, IssuesResolutionData } from '~~/types/development/responses.types';
 
@@ -8,44 +7,54 @@ import type { ActivityCountFilter } from '../../types';
 import { fetchFromTinybird } from '../tinybird';
 
 // This is the data part of the response from Tinybird
-type TinybirdActivityCountData = {
+type TinybirdIssueCountData = {
   startDate: string;
   endDate: string;
-  activityCount?: number;
-  cumulativeActivityCount?: number;
+  issueCount?: number;
 };
 
-type TinybirdActivityCountSummary = {
-  activityCount: number;
+type TinybirdIssueCountSummary = {
+  issueCount: number;
 };
 
 type TinybirdIssueResolutionVelocityData = {
   averageIssueResolveVelocitySeconds: number;
 };
 
+// The lifecycle timestamp issues_count counts by. It counts each issue once, from the issue
+// lifecycle data, so an issue closed by a bot (e.g. a stale bot) still counts as closed.
+type IssueState = 'opened' | 'closed';
+
 function getTinybirdQueries(filter: ActivityCountFilter) {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
+
+  const opened: IssueState = 'opened';
+  const closed: IssueState = 'closed';
 
   return {
     currentSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.ISSUES_CLOSED,
+      activity_type: undefined,
+      state: closed,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
     },
     previousSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.ISSUES_CLOSED,
+      activity_type: undefined,
+      state: closed,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
       endDate: dates.previous.to,
     },
     issuesOpenedQuery: {
       ...filter,
-      activity_type: ActivityTypes.ISSUES_OPENED,
+      activity_type: undefined,
+      state: opened,
     },
     issuesClosedQuery: {
       ...filter,
-      activity_type: ActivityTypes.ISSUES_CLOSED,
+      activity_type: undefined,
+      state: closed,
     },
     issueResolutionVelocityQuery: {
       ...filter,
@@ -66,8 +75,8 @@ export async function fetchIssuesResolution(
     issueResolutionVelocityQuery,
   } = getTinybirdQueries(filter);
 
-  const summariesPath = '/v0/pipes/activities_count.json';
-  const dataPath = '/v0/pipes/activities_count.json';
+  const summariesPath = '/v0/pipes/issues_count.json';
+  const dataPath = '/v0/pipes/issues_count.json';
   const issueResolutionVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
   const [
@@ -77,18 +86,18 @@ export async function fetchIssuesResolution(
     issuesClosed,
     issueResolutionVelocity,
   ] = await Promise.all([
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(summariesPath, currentSummaryQuery),
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(summariesPath, previousSummaryQuery),
-    fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, issuesOpenedQuery),
-    fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, issuesClosedQuery),
+    fetchFromTinybird<TinybirdIssueCountSummary[]>(summariesPath, currentSummaryQuery),
+    fetchFromTinybird<TinybirdIssueCountSummary[]>(summariesPath, previousSummaryQuery),
+    fetchFromTinybird<TinybirdIssueCountData[]>(dataPath, issuesOpenedQuery),
+    fetchFromTinybird<TinybirdIssueCountData[]>(dataPath, issuesClosedQuery),
     fetchFromTinybird<TinybirdIssueResolutionVelocityData[]>(
       issueResolutionVelocityPath,
       issueResolutionVelocityQuery,
     ),
   ]);
 
-  const currentCumulativeCount = currentSummaryData.data[0]?.activityCount || 0;
-  const previousCumulativeCount = previousSummaryData.data[0]?.activityCount || 0;
+  const currentCumulativeCount = currentSummaryData.data[0]?.issueCount || 0;
+  const previousCumulativeCount = previousSummaryData.data[0]?.issueCount || 0;
   const percentageChange = calculatePercentageChange(
     currentCumulativeCount,
     previousCumulativeCount,
@@ -114,10 +123,10 @@ export async function fetchIssuesResolution(
 }
 
 export function mergeRanges(
-  array1: TinybirdActivityCountData[],
-  array2: TinybirdActivityCountData[],
+  array1: TinybirdIssueCountData[],
+  array2: TinybirdIssueCountData[],
 ): IssuesResolutionData[] {
-  const getKey = (r: TinybirdActivityCountData) => `${r.startDate}_${r.endDate}`;
+  const getKey = (r: TinybirdIssueCountData) => `${r.startDate}_${r.endDate}`;
 
   const map1 = new Map(array1.map((r) => [getKey(r), r]));
   const map2 = new Map(array2.map((r) => [getKey(r), r]));
@@ -133,8 +142,8 @@ export function mergeRanges(
       return {
         dateFrom: startDate,
         dateTo: endDate,
-        totalIssues: r1?.activityCount ?? 0,
-        closedIssues: r2?.activityCount ?? 0,
+        totalIssues: r1?.issueCount ?? 0,
+        closedIssues: r2?.issueCount ?? 0,
       };
     })
     .sort((a, b) => a.dateFrom.localeCompare(b.dateFrom));

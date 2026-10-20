@@ -3,7 +3,9 @@
 This section explains the development activity metrics tracked by LFX Insights. These metrics help assess <b>how actively and efficiently an open source project is being developed and maintained</b>.
 
 :::info Please note
-The Development metrics include actions performed by bots. We include bot activities because they often represent important automated processes in modern development workflows (such as automated testing, dependency updates, and CI/CD processes). Excluding these would result in incomplete data for development activity analysis. Bot actions are excluded from all other metric categories.
+The pull request and issue metrics in Development include actions performed by bots: Issues Resolution, Pull Requests, Merge Lead Time, Review Time by Pull Request Size, Median time to review, Median time to close, Review efficiency and Patchsets per review. We include bot activities because they often represent important automated processes in modern development workflows (such as automated testing, dependency updates, merge bots and stale-issue bots). Excluding these would result in incomplete data. For example, a pull request merged by a merge bot counts as merged, and an issue closed by a stale bot counts as closed.
+
+Commit Activities, Active Days, Contribution Time Distribution and Code Review Engagement describe what people do, so they exclude bots. Bot actions are also excluded from all other metric categories.
 :::
 
 ## Issues Resolution

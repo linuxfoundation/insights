@@ -182,7 +182,7 @@ Counts commits authored in the last 6 months on the cleaned activity stream (bot
 
 #### 3.3 Issue Resolution (max 7 pts)
 
-Combines two independent measures over the last 12 months: how many issues were resolved, and how quickly. Only non-bot activity is included. Points from each component are added together.
+Combines two independent measures over the last 12 months: how many issues were resolved, and how quickly. Issues opened or closed by bots are included, so an issue a stale bot closes counts as closed. Points from each component are added together.
 
 **Close ratio** (max 4 pts) — issues closed relative to issues opened:
 
@@ -200,7 +200,7 @@ Gerrit repositories do not ingest issue data. This sub-signal is blocked for Ger
 
 #### 3.4 PR Merge Health (max 5 pts)
 
-Combines two independent measures over the last 12 months: what fraction of pull requests were merged rather than abandoned, and how quickly. Points from each component are added together. For Gerrit projects, changesets and patchsets are mapped to the same metrics.
+Combines two independent measures over the last 12 months: what fraction of pull requests were merged rather than abandoned, and how quickly. Pull requests opened, merged or closed by bots are included, so a pull request a merge bot merges counts as merged. Points from each component are added together. For Gerrit projects, changesets and patchsets are mapped to the same metrics.
 
 **Merge ratio** (max 3 pts) — merged pull requests relative to all closed pull requests:
 

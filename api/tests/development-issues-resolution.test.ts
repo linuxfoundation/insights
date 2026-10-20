@@ -21,7 +21,7 @@ const route = '/v1-alpha/projects/kubernetes/development/issues-resolution';
 const k8sRepo = 'https://github.com/kubernetes/kubernetes';
 const websiteRepo = 'https://github.com/kubernetes/website';
 
-const activitiesPath = '/v0/pipes/activities_count.json';
+const issuesCountPath = '/v0/pipes/issues_count.json';
 const velocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
 // The request range and the previous range resolvePeriods derives from it (the UI's 90d preset).
@@ -45,17 +45,17 @@ const july = { startDate: '2025-07-01', endDate: '2025-07-31' };
 const august = { startDate: '2025-08-01', endDate: '2025-08-31' };
 
 const defaultRows: PipeRows = {
-  currentSummary: [{ activityCount: 100 }],
-  previousSummary: [{ activityCount: 50 }],
+  currentSummary: [{ issueCount: 100 }],
+  previousSummary: [{ issueCount: 50 }],
   opened: [
-    { ...june, activityCount: 12, cumulativeActivityCount: 12 },
-    { ...july, activityCount: 3, cumulativeActivityCount: 15 },
-    { ...august, activityCount: 8, cumulativeActivityCount: 23 },
+    { ...june, issueCount: 12 },
+    { ...july, issueCount: 3 },
+    { ...august, issueCount: 8 },
   ],
   closed: [
-    { ...june, activityCount: 8 },
-    { ...july, activityCount: 1 },
-    { ...august, activityCount: 6 },
+    { ...june, issueCount: 8 },
+    { ...july, issueCount: 1 },
+    { ...august, issueCount: 6 },
   ],
   velocity: [{ averageIssueResolveVelocitySeconds: 7451999 }],
 };
@@ -65,9 +65,9 @@ function pipeRows(url: URL, rows: PipeRows): object[] {
   switch (url.pathname) {
     case velocityPath:
       return rows.velocity;
-    case activitiesPath: {
+    case issuesCountPath: {
       if (params.has('granularity')) {
-        return params.get('activity_type') === 'issues-opened' ? rows.opened : rows.closed;
+        return params.get('state') === 'opened' ? rows.opened : rows.closed;
       }
       const start = params.get('startDate');
       return start === null || start === tinybirdDay(range.startDate)
@@ -89,18 +89,18 @@ function paramsOf(predicate: (url: URL) => boolean): URLSearchParams {
   return url!.searchParams;
 }
 
-const seriesParams = (activityType: string) =>
+const seriesParams = (state: string) =>
   paramsOf(
     (url) =>
-      url.pathname === activitiesPath &&
+      url.pathname === issuesCountPath &&
       url.searchParams.has('granularity') &&
-      url.searchParams.get('activity_type') === activityType,
+      url.searchParams.get('state') === state,
   );
 
 const summaryParams = (startDate: string | null) =>
   paramsOf(
     (url) =>
-      url.pathname === activitiesPath &&
+      url.pathname === issuesCountPath &&
       !url.searchParams.has('granularity') &&
       url.searchParams.get('startDate') === startDate,
   );
@@ -181,10 +181,10 @@ describe('response shape (AC1)', () => {
 });
 
 describe('Tinybird calls (AC2)', () => {
-  it('makes four activities_count calls and one velocity call', async () => {
+  it('makes four issues_count calls and one velocity call', async () => {
     await get(withQuery(defaultQuery));
     expect(pipeCalls()).toHaveLength(5);
-    expect(callsTo(activitiesPath)).toHaveLength(4);
+    expect(callsTo(issuesCountPath)).toHaveLength(4);
     expect(callsTo(velocityPath)).toHaveLength(1);
     for (const url of pipeCalls()) {
       expect(url.origin).toBe(tinybirdHost);
@@ -204,29 +204,29 @@ describe('Tinybird calls (AC2)', () => {
     }
   });
 
-  it('sends the per-call activity type, granularity and dates', async () => {
+  it('sends the per-call state, granularity and dates', async () => {
     await get(withQuery(defaultQuery));
 
     const currentSummary = summaryParams(tinybirdDay(range.startDate));
-    expect(currentSummary.get('activity_type')).toBe('issues-closed');
+    expect(currentSummary.get('state')).toBe('closed');
     expect(currentSummary.get('endDate')).toBe(tinybirdDay(range.endDate));
 
     const previousSummary = summaryParams(tinybirdDay(previousRange.startDate));
-    expect(previousSummary.get('activity_type')).toBe('issues-closed');
+    expect(previousSummary.get('state')).toBe('closed');
     expect(previousSummary.get('endDate')).toBe(tinybirdDay(previousRange.endDate));
 
-    const opened = seriesParams('issues-opened');
+    const opened = seriesParams('opened');
     expect(opened.get('granularity')).toBe('monthly');
     expect(opened.get('startDate')).toBe(tinybirdDay(range.startDate));
     expect(opened.get('endDate')).toBe(tinybirdDay(range.endDate));
 
-    const closed = seriesParams('issues-closed');
+    const closed = seriesParams('closed');
     expect(closed.get('granularity')).toBe('monthly');
     expect(closed.get('startDate')).toBe(tinybirdDay(range.startDate));
     expect(closed.get('endDate')).toBe(tinybirdDay(range.endDate));
 
     const velocity = velocityParams();
-    expect(velocity.has('activity_type')).toBe(false);
+    expect(velocity.has('state')).toBe(false);
     expect(velocity.has('granularity')).toBe(false);
     expect(velocity.get('startDate')).toBe(tinybirdDay(range.startDate));
     expect(velocity.get('endDate')).toBe(tinybirdDay(range.endDate));
@@ -245,8 +245,8 @@ describe('omitted dates (AC3)', () => {
 
     for (const params of [
       summaryParams(null),
-      seriesParams('issues-opened'),
-      seriesParams('issues-closed'),
+      seriesParams('opened'),
+      seriesParams('closed'),
       velocityParams(),
     ]) {
       expect(params.has('startDate')).toBe(false);
@@ -261,8 +261,8 @@ describe('merge and summary edge cases (AC4)', () => {
   it('gives 0 for the series a bucket is missing from', async () => {
     serveTinybird({
       ...defaultRows,
-      opened: [{ ...june, activityCount: 12 }],
-      closed: [{ ...july, activityCount: 1 }],
+      opened: [{ ...june, issueCount: 12 }],
+      closed: [{ ...july, issueCount: 1 }],
     });
     const res = await get(withQuery(defaultQuery));
     expect(res.json().data).toEqual([
@@ -285,12 +285,12 @@ describe('merge and summary edge cases (AC4)', () => {
     serveTinybird({
       ...defaultRows,
       opened: [
-        { ...august, activityCount: 8 },
-        { ...june, activityCount: 12 },
+        { ...august, issueCount: 8 },
+        { ...june, issueCount: 12 },
       ],
       closed: [
-        { ...july, activityCount: 1 },
-        { ...june, activityCount: 8 },
+        { ...july, issueCount: 1 },
+        { ...june, issueCount: 8 },
       ],
     });
     const res = await get(withQuery(defaultQuery));
@@ -312,8 +312,8 @@ describe('merge and summary edge cases (AC4)', () => {
   it('reports a drop as a negative percentageChange', async () => {
     serveTinybird({
       ...defaultRows,
-      currentSummary: [{ activityCount: 50 }],
-      previousSummary: [{ activityCount: 100 }],
+      currentSummary: [{ issueCount: 50 }],
+      previousSummary: [{ issueCount: 100 }],
     });
     const res = await get(withQuery(defaultQuery));
     expect(res.json().summary).toMatchObject({

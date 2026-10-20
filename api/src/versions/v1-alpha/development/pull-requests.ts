@@ -3,8 +3,6 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type, type Static } from '@sinclair/typebox';
 
-import { ActivityTypes } from '@lfx-insights/types';
-
 import { fetchPipe, repoFilter } from '../../../clients/tinybird.js';
 import {
   resolvePeriods,
@@ -23,7 +21,7 @@ import {
 } from '../../../schemas/common.js';
 
 interface SummaryRow {
-  activityCount?: number;
+  pullRequestCount?: number;
 }
 
 interface SeriesRow extends SummaryRow {
@@ -48,25 +46,12 @@ interface PipeRows {
   velocity: VelocityRow[];
 }
 
-const activitiesPath = '/v0/pipes/activities_count.json';
+const countPath = '/v0/pipes/pull_requests_count.json';
 const velocityPath = '/v0/pipes/pull_requests_average_resolve_velocity.json';
 
-const openedTypes = [
-  ActivityTypes.PULL_REQUEST_OPENED,
-  ActivityTypes.MERGE_REQUEST_OPENED,
-  ActivityTypes.CHANGESET_CREATED,
-];
-const mergedTypes = [
-  ActivityTypes.PULL_REQUEST_MERGED,
-  ActivityTypes.MERGE_REQUEST_MERGED,
-  ActivityTypes.CHANGESET_MERGED,
-];
-const closedTypes = [
-  ActivityTypes.PULL_REQUEST_CLOSED,
-  ActivityTypes.MERGE_REQUEST_CLOSED,
-  ActivityTypes.CHANGESET_CLOSED,
-  ActivityTypes.CHANGESET_ABANDONED,
-];
+// The lifecycle timestamp pull_requests_count counts by. It counts each pull request once, from the
+// PR lifecycle data, so a merge done by a bot account still counts as merged.
+type PullRequestState = 'opened' | 'merged' | 'closed';
 
 const pullRequestSummary = (title: string, verb: string) =>
   periodSummary({
@@ -104,8 +89,8 @@ type Bucket = PullRequests['data'][number];
 function toPullRequests(rows: PipeRows, current: DateRange): PullRequests {
   const summarize = (currentRows: SummaryRow[], previousRows: SummaryRow[]) =>
     toPeriodSummary(
-      currentRows[0]?.activityCount ?? 0,
-      previousRows[0]?.activityCount ?? 0,
+      currentRows[0]?.pullRequestCount ?? 0,
+      previousRows[0]?.pullRequestCount ?? 0,
       current,
     );
 
@@ -122,7 +107,7 @@ function toPullRequests(rows: PipeRows, current: DateRange): PullRequests {
         merged: 0,
         closed: 0,
       };
-      bucket[count] = row.activityCount ?? 0;
+      bucket[count] = row.pullRequestCount ?? 0;
       buckets.set(startDate, bucket);
     }
   };
@@ -173,17 +158,13 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         };
         const currentRange = toTinybirdRange(current);
         const previousRange = toTinybirdRange(previous);
-        const countActivities = (activityTypes: ActivityTypes[], range: Partial<DateRange>) =>
-          fetchPipe<SummaryRow>(request, activitiesPath, {
-            ...base,
-            ...range,
-            activity_types: activityTypes,
-          });
-        const bucketActivities = (activityTypes: ActivityTypes[]) =>
+        const countPullRequests = (state: PullRequestState, range: Partial<DateRange>) =>
+          fetchPipe<SummaryRow>(request, countPath, { ...base, ...range, state });
+        const bucketPullRequests = (state: PullRequestState) =>
           fetchPipe<SeriesRow>(
             request,
-            activitiesPath,
-            { ...base, ...currentRange, activity_types: activityTypes, granularity },
+            countPath,
+            { ...base, ...currentRange, state, granularity },
             hasBucketBounds,
           );
 
@@ -199,15 +180,15 @@ const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
           closedSeries,
           velocity,
         ] = await Promise.all([
-          countActivities(openedTypes, currentRange),
-          countActivities(openedTypes, previousRange),
-          countActivities(mergedTypes, currentRange),
-          countActivities(mergedTypes, previousRange),
-          countActivities(closedTypes, currentRange),
-          countActivities(closedTypes, previousRange),
-          bucketActivities(openedTypes),
-          bucketActivities(mergedTypes),
-          bucketActivities(closedTypes),
+          countPullRequests('opened', currentRange),
+          countPullRequests('opened', previousRange),
+          countPullRequests('merged', currentRange),
+          countPullRequests('merged', previousRange),
+          countPullRequests('closed', currentRange),
+          countPullRequests('closed', previousRange),
+          bucketPullRequests('opened'),
+          bucketPullRequests('merged'),
+          bucketPullRequests('closed'),
           fetchPipe<VelocityRow>(request, velocityPath, { ...base, ...currentRange }),
         ]);
         return {
