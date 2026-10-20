@@ -260,11 +260,19 @@ const getMaintainerDescription = (band: CategoryBand, signals: HealthBreakdownRe
         : `contributors across ${orgCount} organizations`;
     return `${teamDetail} with slow response times, no contributor growth, and ${orgDetail}.`;
   }
+  const isUnresponsive =
+    !!signals.responsivenessAvailable &&
+    signals.responsivenessScore !== null &&
+    signals.responsivenessScore < 5;
   const responseDetail =
-    signals.medianIssueResponseS !== null
+    isUnresponsive && signals.medianIssueResponseS !== null
       ? ` No response to issues in over ${formatDays(signals.medianIssueResponseS)}.`
       : '';
-  return `No active maintainer.${responseDetail} There is no succession plan in place.`;
+  const maintainerDetail =
+    maintainerCount === 0
+      ? 'No active maintainer.'
+      : `${maintainerCount === 1 ? 'A single active maintainer' : `Only ${maintainerCount} active maintainers`}${isUnresponsive ? ', with little or no response to issues and PRs' : ''}.`;
+  return `${maintainerDetail}${responseDetail} There is no succession plan in place.`;
 };
 
 const getSecurityDescription = (band: CategoryBand, signals: HealthBreakdownResults): string => {
@@ -305,14 +313,21 @@ const getSecurityDescription = (band: CategoryBand, signals: HealthBreakdownResu
 };
 
 const getDevelopmentDescription = (band: CategoryBand, signals: HealthBreakdownResults): string => {
+  // Releases come from package registries only, so a repo without a published package has no release data
+  const hasReleaseData = !!signals.releaseCadenceAvailable;
+
   if (band === 'success') {
-    const releaseDetail =
-      signals.daysSinceLatest !== null && signals.daysSinceLatest >= 0
+    const releaseDetail = !hasReleaseData
+      ? 'Active commit stream. No release data is available.'
+      : signals.daysSinceLatest !== null && signals.daysSinceLatest >= 0
         ? `Active commit stream, with the last release ${Math.round(signals.daysSinceLatest)} days ago.`
         : 'Active commit stream and a healthy release cadence.';
     return `${releaseDetail} Issue triage is keeping pace with incoming reports.`;
   }
   if (band === 'warning') {
+    if (!hasReleaseData) {
+      return 'No release data is available. Some commit activity continues, but other development signals are weak.';
+    }
     const releaseDetail =
       signals.daysSinceLatest !== null && signals.daysSinceLatest > 365
         ? `No release in over ${Math.floor(signals.daysSinceLatest / 365)} year${Math.floor(signals.daysSinceLatest / 365) === 1 ? '' : 's'}.`
@@ -323,7 +338,9 @@ const getDevelopmentDescription = (band: CategoryBand, signals: HealthBreakdownR
     signals.commitsLast6m !== null && signals.commitsLast6m === 0
       ? 'No commits in the past six months.'
       : 'Minimal commit activity in the past six months.';
-  return `${commitDetail} Releases and issue resolution have both stalled.`;
+  return hasReleaseData
+    ? `${commitDetail} Releases and issue resolution have both stalled.`
+    : `${commitDetail} Issue resolution has stalled, and no release data is available.`;
 };
 
 export const getCategoryDescription = (
