@@ -16,7 +16,11 @@ interface OpenApiDoc {
   openapi: string;
   info: { version: string };
   paths: Record<string, unknown>;
-  components?: { schemas?: Record<string, { title?: string }> };
+  components?: {
+    schemas?: Record<string, { title?: string }>;
+    securitySchemes?: Record<string, unknown>;
+  };
+  security?: Record<string, string[]>[];
 }
 
 const pingVersion = (prefix: string): ApiVersion => ({
@@ -112,6 +116,19 @@ describe('served per-version spec (AC2)', () => {
     expect(spec.openapi).toMatch(/^3\./);
     expect(spec.info.version).toBe('1.0.0');
     expect(Object.keys(spec.paths)).toEqual(['/v1/ping']);
+  });
+
+  it('declares bearer auth for every operation in each version', async () => {
+    app = await buildApp({ versions: [pingVersion('/v1'), schemaVersion('/v2', 'V2Thing')] });
+    await app.ready();
+
+    for (const url of ['/v1/openapi.json', '/v2/openapi.json']) {
+      const spec = await getSpec(app, url);
+      expect(spec.security).toEqual([{ bearerAuth: [] }]);
+      expect(spec.components?.securitySchemes).toEqual({
+        bearerAuth: expect.objectContaining({ type: 'http', scheme: 'bearer' }),
+      });
+    }
   });
 });
 

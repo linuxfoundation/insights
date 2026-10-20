@@ -100,6 +100,17 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
       },
       // Omitted servers means same-origin per the OpenAPI spec.
       ...(publicUrl ? { servers: [{ url: publicUrl }] } : {}),
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            description: 'A personal access token (`lfi_...`) from LFX Developer Settings.',
+          },
+        },
+      },
+      // Covers every documented route; the spec, health and docs routes are public and hidden.
+      security: [{ bearerAuth: [] }],
     },
   });
 
