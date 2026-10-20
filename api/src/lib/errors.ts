@@ -8,6 +8,16 @@ export class NotFoundError extends Error {
   readonly code = 'not_found';
 }
 
+// Same message as the Worker's 401, which is the one callers normally see.
+export class UnauthorizedError extends Error {
+  readonly statusCode = 401;
+  readonly code = 'unauthorized';
+
+  constructor() {
+    super('A valid personal access token is required');
+  }
+}
+
 // The message is fixed so an upstream's own error text or status never reaches the caller.
 export class UpstreamUnavailableError extends Error {
   readonly statusCode = 503;

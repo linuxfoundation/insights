@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { FastifyPluginAsync } from 'fastify';
 
+import { authDisabled, authEnv } from './auth.js';
 import { closeCmPool, cmDbEnv, cmDbPort } from './clients/postgres.js';
 import { tinybirdEnv } from './clients/tinybird.js';
 import { missingEnv } from './env.js';
@@ -14,12 +15,16 @@ export const healthRoutes: FastifyPluginAsync = async (scope) => {
   scope.get('/health/live', { schema: { hide: true } }, async () => ({ status: 'ok' }));
 
   scope.get('/health/ready', { schema: { hide: true } }, async (_request, reply) => {
-    const missing = missingEnv([...cmDbEnv, ...tinybirdEnv]);
+    const missing = missingEnv([...cmDbEnv, ...tinybirdEnv, ...authEnv]);
     const invalidConfig: string[] = [];
     try {
       cmDbPort();
     } catch {
       invalidConfig.push('API_CM_DB_PORT');
+    }
+    // The switch is for local development, so a pod that has it never turns ready.
+    if (authDisabled()) {
+      invalidConfig.push('API_AUTH_DISABLED');
     }
     if (missing.length > 0 || invalidConfig.length > 0) {
       reply.code(503);
