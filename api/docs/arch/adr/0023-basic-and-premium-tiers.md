@@ -12,7 +12,7 @@
 
 We will have two public tiers, basic and premium.
 
-- **Who gets which tier**: premium is for callers whose organization holds an LFX membership, as the Tier endpoint reports it. Basic is for everyone else, including callers without an organization. The API maps the member-service tier classes to these two tiers.
+- **Who gets which tier**: premium is for callers whose organization holds an LFX membership, as the Tier endpoint reports it, and for the LFIDs the Worker gives its `admin` tier. Basic is for everyone else, including callers without an organization. The API reads this from the tier header: any tier the Worker forwards maps to premium, and a request without one is basic.
 - **Rate limits**: each tier has a flat limit of requests per second, keyed by the LFID in the verified access token's `http://lfx.dev/claims/username` claim. Basic gets N, starting at a provisional 30. Premium gets a much higher limit; until load tests settle both numbers, it is also N.
 - **Organization endpoints**: only premium callers can use `/organizations/{slug}` and the routes under it. A basic caller gets `403` with `code: tier_forbidden`, as ADR-0005 defines. Every other endpoint stays open to both tiers.
 
