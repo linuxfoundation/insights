@@ -39,9 +39,24 @@ describe('maintainer category text in the lowest band', () => {
       busFactorCount: 1,
       responsivenessAvailable: true,
       responsivenessScore: 12,
+      medianIssueResponseS: 2 * 86400,
     };
     const result = getCategoryDescription('maintainer', 15, true, signals);
     expect(result).toBe('A single active maintainer. There is no succession plan in place.');
+  });
+
+  test('adds the slow response time for an unresponsive maintainer', () => {
+    const signals = {
+      ...baseSignals,
+      busFactorCount: 1,
+      responsivenessAvailable: true,
+      responsivenessScore: 0,
+      medianIssueResponseS: 120 * 86400,
+    };
+    const result = getCategoryDescription('maintainer', 4, true, signals);
+    expect(result).toContain(
+      'with little or no response to issues and PRs. No response to issues in over',
+    );
   });
 
   test('does not claim low responsiveness when responsiveness is unavailable', () => {

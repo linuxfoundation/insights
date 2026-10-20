@@ -260,14 +260,14 @@ const getMaintainerDescription = (band: CategoryBand, signals: HealthBreakdownRe
         : `contributors across ${orgCount} organizations`;
     return `${teamDetail} with slow response times, no contributor growth, and ${orgDetail}.`;
   }
-  const responseDetail =
-    signals.medianIssueResponseS !== null
-      ? ` No response to issues in over ${formatDays(signals.medianIssueResponseS)}.`
-      : '';
   const isUnresponsive =
     !!signals.responsivenessAvailable &&
     signals.responsivenessScore !== null &&
     signals.responsivenessScore < 5;
+  const responseDetail =
+    isUnresponsive && signals.medianIssueResponseS !== null
+      ? ` No response to issues in over ${formatDays(signals.medianIssueResponseS)}.`
+      : '';
   const maintainerDetail =
     maintainerCount === 0
       ? 'No active maintainer.'
