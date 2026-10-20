@@ -31,7 +31,7 @@ The LFX organization tied to a User's API access, resolved by the Worker from th
 _Avoid_: tenant, workspace, team
 
 **Tier**:
-A named LFX membership level attached to an Organization that controls the rate-limit pool size. Known tiers in ascending order: Silver, Gold, Platinum (exact hierarchy and rate-limit numbers confirmed at T-091). In v1, tiers affect only rate limits; endpoint-level gating is reserved for future versions.
+Basic or premium, per ADR-0023. Premium is for Users whose Organization holds an LFX membership, as the LFX Tier endpoint reports it; basic is for everyone else. The tier sets the rate limit, and only premium can use the organization endpoints.
 _Avoid_: plan, subscription
 
 ### API Shape
@@ -87,7 +87,7 @@ _Avoid_: stable, released, GA
 ## Example dialogue
 
 > **Dev:** "Should I check the User's tier before returning a response?"
-> **Domain expert:** "In v1, no. All tiers see all endpoints. Tier only affects the Rate-limit Pool size. If the org's pool is exhausted you return 429; if a future endpoint requires a higher tier you return 403 `tier_forbidden`. Don't conflate the two."
+> **Domain expert:** "Only on the organization endpoints, and their route group does it for you: a basic caller gets 403 `tier_forbidden`. Everywhere else the tier only sets the rate limit, and going over it returns 429. Don't conflate the two."
 
 ## Conventions
 
