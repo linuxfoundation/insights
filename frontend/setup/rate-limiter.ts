@@ -56,6 +56,11 @@ const rateLimiterConfig: RateLimiterConfig = {
   // Routes to exclude from rate limiting
   exclusions: [
     {
+      // Auth0 posts every logout from a few shared egress IPs, which the auth rule would throttle.
+      route: '/api/auth/backchannel-logout',
+      methods: ['POST'],
+    },
+    {
       route: '/api/community/*',
     },
     {

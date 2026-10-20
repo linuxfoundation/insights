@@ -11,9 +11,11 @@ import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 
 import { InsightsSsoUserRepository } from '../../repo/insightsSsoUser.repo';
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
+import { signRefreshCookie } from '../../utils/auth-refresh';
 import { getAuthUsername } from '../../utils/common';
 import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, toSafeRelativePath } from '../../utils/redirect';
+import { ssoFrameResponse } from '../../utils/sso-frame';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
@@ -34,6 +36,9 @@ export default defineEventHandler(async (event) => {
     );
   }
   const redirectTo = toSafeRelativePath(rawRedirectTo);
+  // Fetch metadata says where this response renders, since another flow may have overwritten auth_pkce
+  const fetchDest = getHeader(event, 'sec-fetch-dest');
+  let isFrame = fetchDest === 'iframe';
 
   try {
     // Get stored PKCE data (state + code verifier) from cookie
@@ -48,6 +53,7 @@ export default defineEventHandler(async (event) => {
         storedState = pkceData.state;
         codeVerifier = pkceData.codeVerifier;
         isSilentAttempt = pkceData.silent === true;
+        isFrame ||= !fetchDest && pkceData.frame === true;
       } catch {
         // Invalid cookie format
       }
@@ -55,6 +61,7 @@ export default defineEventHandler(async (event) => {
 
     // Handle Auth0 errors (including silent authentication failures)
     if (query.error) {
+      if (isFrame) return ssoFrameResponse(event, 'none');
       const error = query.error as string;
       const errorDescription = query.error_description as string;
 
@@ -85,6 +92,7 @@ export default defineEventHandler(async (event) => {
     if (!query.code || !codeVerifier) {
       // Stale or missing PKCE cookie (direct navigation to callback, bot crawl, etc.)
       // Restart the login flow rather than showing an error page.
+      if (isFrame) return ssoFrameResponse(event, 'none');
       deleteCookie(event, 'auth_pkce');
       return sendRedirect(event, '/api/auth/login');
     }
@@ -92,6 +100,7 @@ export default defineEventHandler(async (event) => {
     // Validate state from cookie against URL to prevent CSRF and detect concurrent login races
     if (!storedState || storedState !== query.state) {
       // State mismatch: multi-tab login or cookie race — restart cleanly.
+      if (isFrame) return ssoFrameResponse(event, 'none');
       deleteCookie(event, 'auth_pkce');
       return sendRedirect(event, '/api/auth/login');
     }
@@ -145,6 +154,8 @@ export default defineEventHandler(async (event) => {
       picture: decodedIdToken.picture,
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
+      sid: decodedIdToken.sid as string | undefined,
+      auth_time: (decodedIdToken.auth_time as number | undefined) ?? Math.floor(Date.now() / 1000),
       iss: config.public.auth0Domain,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
@@ -195,11 +206,20 @@ export default defineEventHandler(async (event) => {
 
     // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
-      setCookie(event, 'insights_refresh_token', tokenResponse.refresh_token, {
+      const { sub, sid, auth_time } = oidcTokenPayload;
+      const refreshCookie = signRefreshCookie({
+        rt: tokenResponse.refresh_token,
+        sub,
+        sid,
+        auth_time,
+      });
+      setCookie(event, 'insights_refresh_token', refreshCookie, {
         ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
+
+    if (isFrame) return ssoFrameResponse(event, 'success');
 
     // Redirect to the original page or home with auth success flag.
     // redirectTo has any stale ?auth param stripped, so it cannot accumulate across cycles.
@@ -214,11 +234,14 @@ export default defineEventHandler(async (event) => {
     // Restart the login flow rather than surfacing a 500.
     const oauthError = error as { code?: string; error?: string };
     if (oauthError?.code === 'OAUTH_RESPONSE_BODY_ERROR' && oauthError?.error === 'invalid_grant') {
+      if (isFrame) return ssoFrameResponse(event, 'none');
       deleteCookie(event, 'auth_pkce');
       return sendRedirect(event, '/api/auth/login');
     }
 
     console.error('Auth callback error:', error);
+    // A background check leaves the cookies alone because a newer login in another tab may own them
+    if (isFrame) return ssoFrameResponse(event, 'none');
 
     // Clean up all auth cookies on unrecoverable error
     deleteCookie(event, 'auth_pkce');

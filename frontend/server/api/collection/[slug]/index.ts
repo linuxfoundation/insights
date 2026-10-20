@@ -34,7 +34,7 @@ export default defineEventHandler(async (event): Promise<Collection | Error> => 
 
   try {
     const repo = new CommunityCollectionRepository(cmDbPool);
-    const user = getOptionalUser(event);
+    const user = await getOptionalUser(event);
     const collection = await repo.findBySlug(slug, user?.sub ?? null);
 
     if (!collection) {

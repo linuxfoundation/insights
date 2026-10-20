@@ -12,8 +12,6 @@ import type { NuxtApp } from 'nuxt/app';
 import { defineNuxtPlugin, useState } from 'nuxt/app';
 // Nuxt 3 app aliases
 
-const SSR_DEHYDRATE_WAIT_TIMEOUT_MS = 5000;
-
 export default defineNuxtPlugin((nuxt: NuxtApp) => {
   const vueQueryState = useState<DehydratedState | null>('vue-query');
 
@@ -48,29 +46,9 @@ export default defineNuxtPlugin((nuxt: NuxtApp) => {
   nuxt.vueApp.use(VueQueryPlugin, options);
 
   if (import.meta.server) {
-    nuxt.hooks.hook('app:rendered', async () => {
-      // useQuery() never hooks into Vue's onServerPrefetch, so renderToString()
-      // resolves without waiting for any in-flight queryFn — by the time this hook
-      // runs, a query that's still fetching is stuck at status 'pending', which
-      // neither the default predicate nor the 'error' check below ever matches.
-      // Wait for whatever's still fetching so dehydrate() sees its settled
-      // success/error state instead of a permanently 'pending' one. This wait is
-      // global to every query on the page, so it's raced against a timeout — a
-      // genuinely hung upstream fetch (not just a fast failure) must not be able
-      // to stall the SSR response for the whole page indefinitely; a query still
-      // fetching past the timeout just dehydrates as 'pending' and finishes
-      // client-side instead, same as pre-fix behavior.
-      await Promise.race([
-        Promise.allSettled(
-          queryClient
-            .getQueryCache()
-            .getAll()
-            .filter((query) => query.state.fetchStatus === 'fetching')
-            .map((query) => query.promise),
-        ),
-        new Promise((resolve) => setTimeout(resolve, SSR_DEHYDRATE_WAIT_TIMEOUT_MS)),
-      ]);
-
+    // Dehydrate synchronously so the payload matches the rendered HTML. Awaiting in-flight queries
+    // here hydrates them as settled over markup that was rendered as pending.
+    nuxt.hooks.hook('app:rendered', () => {
       // Default dehydration only serializes successful queries, so a query that failed
       // server-side is dropped from the payload and the client never learns it errored —
       // it stays stuck on its initial pending/loading markup. Also dehydrate error queries

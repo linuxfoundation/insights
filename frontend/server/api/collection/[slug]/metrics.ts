@@ -43,7 +43,7 @@ export default defineEventHandler(async (event): Promise<CollectionMetrics> => {
   }
 
   const repo = new CommunityCollectionRepository(cmDbPool);
-  const user = getOptionalUser(event);
+  const user = await getOptionalUser(event);
   const result = await repo.findProjectIdsBySlug(slug, user?.sub ?? null);
 
   if (!result) {
