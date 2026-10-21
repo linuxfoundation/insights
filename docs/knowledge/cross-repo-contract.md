@@ -133,8 +133,10 @@ in CDP's database. A CDP migration that renames or drops any of these tables or 
 breaks Insights at runtime, and Insights has no migration of its own that would reveal it:
 `database/migrations/` only covers the Insights database.
 
-Insights' own Postgres is separate, reached through `getInsightsDbPool()` and the
-`INSIGHTS_DB_*` variables. `chat`, events and security-audit data live there.
+Insights' own Postgres is separate, and its configuration uses two prefixes for the same
+database. The Nuxt server reaches it through `getInsightsDbPool()`, which reads the
+`insightsDb*` runtime config keys, set in deployment through `NUXT_INSIGHTS_DB_*`. The workers
+read `INSIGHTS_DB_*` directly. Pointing the database somewhere new means changing both. `chat`, events and security-audit data live there.
 
 ## 3. Tinybird
 

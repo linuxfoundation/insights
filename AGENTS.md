@@ -153,9 +153,10 @@ for server state, ECharts for charts, Auth0 for authentication, Vitest and Happy
 
 ## Data
 
-Postgres has separate read and write hosts, configured through `INSIGHTS_DB_WRITE_HOST`,
-`INSIGHTS_DB_READ_HOST`, `INSIGHTS_DB_PORT`, `INSIGHTS_DB_USERNAME`, `INSIGHTS_DB_PASSWORD`
-and `INSIGHTS_DB_DATABASE`.
+Postgres has separate read and write hosts. The workers configure them through `INSIGHTS_DB_*`
+(`WRITE_HOST`, `READ_HOST`, `PORT`, `USERNAME`, `PASSWORD`, `DATABASE`). The Nuxt server reads the
+`insightsDb*` keys in `frontend/setup/runtime-config.ts`, which deployments set through
+`NUXT_INSIGHTS_DB_*`.
 
 Migrations are Flyway, run in Docker. `database/create_migration.sh <name>` writes a new
 `V<epoch>__<name>.sql`; `database/migrate.sh` applies them. Use the `/db-migrate` skill.
