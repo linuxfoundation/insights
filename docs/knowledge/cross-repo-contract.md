@@ -138,18 +138,21 @@ Insights' own Postgres is separate, reached through `getInsightsDbPool()` and th
 
 ## 3. Tinybird
 
-Both products read the same Tinybird workspace. Insights has three clients, configured through
-two sets of variable names:
+Both products read the same Tinybird workspace. Insights has four clients, using three tokens:
 
-| Client                 | Configuration                                                                                                                                            |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Nuxt server            | `NUXT_TINYBIRD_BASE_URL`, `NUXT_TINYBIRD_TOKEN`                                                                                                          |
-| `search_volume_worker` | the same `NUXT_TINYBIRD_*` names, read in `src/search-volume/tinybird.ts`; the base URL falls back to `https://api.us-west-2.aws.tinybird.co` when unset |
-| Public API             | `API_TB_HOST`, `API_TB_TOKEN`, in `api/src/clients/tinybird.ts`                                                                                          |
+| Client                 | Configuration                                                                                                                                                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nuxt server            | `NUXT_TINYBIRD_BASE_URL`, `NUXT_TINYBIRD_TOKEN`                                                                                                                                                                                              |
+| `search_volume_worker` | the same `NUXT_TINYBIRD_*` names, read in `src/search-volume/tinybird.ts`; the base URL falls back to `https://api.us-west-2.aws.tinybird.co` when unset                                                                                     |
+| Public API             | `API_TB_HOST`, `API_TB_TOKEN`, in `api/src/clients/tinybird.ts`                                                                                                                                                                              |
+| Chat (`DataCopilot`)   | its own token, `NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN`, with `NUXT_TINYBIRD_BASE_URL` and the same hard-coded fallback host; read in `frontend/lib/chat/data-copilot.ts` and `instructions.ts`, started from `server/api/chat/stream.ts` |
 
-Moving or rotating the Tinybird connection means updating all three deployments. Because the
-worker falls back to a hard-coded host, a missing `NUXT_TINYBIRD_BASE_URL` there points it at
-that host rather than failing.
+Moving or rotating the Tinybird connection means updating every row above, including the chat's
+separate token, which is easy to miss because it shares the base URL with the Nuxt server. The
+chat token also reaches the workspace through Tinybird's MCP server (`mcp.tinybird.co`), so its
+scope bounds what the chat model can query. Because the
+worker and the chat fall back to a hard-coded host, a missing `NUXT_TINYBIRD_BASE_URL` points
+them at that host rather than failing.
 
 Roughly thirty pipe endpoints under `/v0/pipes/` are referenced from `api/` and `libs/`, and
 `search_volume_worker` adds `projects_list`. The ones from `api/` and `libs/` include
