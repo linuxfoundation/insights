@@ -119,7 +119,7 @@ The authoritative list of protected files is maintained in `.claude/hooks/guard-
 git diff --name-only origin/main...HEAD
 
 # Extract the protected path patterns from the hook
-grep -E "^\s+(frontend/|\.husky/|\.oxlintrc|\.oxfmtrc|CLAUDE|\.claude/|scripts/|COPYRIGHT|package\.json|pnpm-lock)" .claude/hooks/guard-protected-files.sh
+grep -E "^\s+(frontend/|\.husky/|\.oxlintrc|\.oxfmtrc|AGENTS|\.claude/|scripts/|COPYRIGHT|package\.json|pnpm-lock)" .claude/hooks/guard-protected-files.sh
 ```
 
 For each changed file, check whether it matches any `case` pattern or glob (`[[ ... == glob ]]`) in the hook. If it does, flag it — those files should NOT be modified without code owner approval.

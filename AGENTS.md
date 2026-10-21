@@ -94,7 +94,7 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
 - API architecture decisions: `api/docs/arch/adr/`. Format is enforced by
   `.claude/rules/adr-format.md`; use the `/adr` skill to add one.
 - API reference: built with VitePress from `api/docs/site/`, served by the API itself.
-- Auth setup: `AUTH_CONFIGURATION.md`.
+- Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.
 
 ## API conventions
