@@ -114,7 +114,7 @@ Where the queries live:
   part of the contract.
 
 To find every caller before a schema change, search for `cmDbPool` under `frontend/server`,
-`getCmPool` under `api/src`, and `cmDbStore` under `workers/`.
+`queryCm` and `getCmPool` under `api/src`, and `cmDbStore` under `workers/`.
 
 ### Tables insights writes
 
@@ -153,8 +153,8 @@ chat token also reaches the workspace through Tinybird's MCP server (`mcp.tinybi
 scope bounds what the chat model can query. `NUXT_TINYBIRD_BASE_URL` is not handled the same way everywhere, so set it explicitly. The worker,
 and the chat's pipe calls and bucket lookup, fall back to `https://api.us-west-2.aws.tinybird.co`
 when it is unset and silently use that host. The chat's text-to-SQL path
-(`executeTextToSqlInstructions()`) and its MCP connection use the variable as is, so leaving it
-unset makes those fail.
+(`executeTextToSqlInstructions()`) and its MCP connection use the variable as is: left unset, they build `undefined/v0/sql` and an MCP
+URL with `host=undefined`, and fail.
 
 Roughly thirty pipe endpoints under `/v0/pipes/` are referenced from `api/` and `libs/`, and
 `search_volume_worker` adds `projects_list`. The ones from `api/` and `libs/` include
