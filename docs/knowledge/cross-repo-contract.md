@@ -138,23 +138,26 @@ Insights' own Postgres is separate, reached through `getInsightsDbPool()` and th
 
 ## 3. Tinybird
 
-Both products read the same Tinybird workspace. Insights has two clients, each with its own
-settings:
+Both products read the same Tinybird workspace. Insights has three clients, configured through
+two sets of variable names:
 
-| Client      | Configuration                                                   |
-| ----------- | --------------------------------------------------------------- |
-| Nuxt server | `NUXT_TINYBIRD_BASE_URL`, `NUXT_TINYBIRD_TOKEN`                 |
-| Public API  | `API_TB_HOST`, `API_TB_TOKEN`, in `api/src/clients/tinybird.ts` |
+| Client                 | Configuration                                                                                                                                            |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nuxt server            | `NUXT_TINYBIRD_BASE_URL`, `NUXT_TINYBIRD_TOKEN`                                                                                                          |
+| `search_volume_worker` | the same `NUXT_TINYBIRD_*` names, read in `src/search-volume/tinybird.ts`; the base URL falls back to `https://api.us-west-2.aws.tinybird.co` when unset |
+| Public API             | `API_TB_HOST`, `API_TB_TOKEN`, in `api/src/clients/tinybird.ts`                                                                                          |
 
-Moving or rotating the Tinybird connection means changing both sets.
+Moving or rotating the Tinybird connection means updating all three deployments. Because the
+worker falls back to a hard-coded host, a missing `NUXT_TINYBIRD_BASE_URL` there points it at
+that host rather than failing.
 
-Roughly thirty pipe endpoints under `/v0/pipes/` are referenced from `api/` and `libs/`,
-including `activities_count`, `active_contributors`, `contributors_leaderboard`,
-`contributor_retention`, `organizations_geo_distribution`, `collection_insights_aggregate`,
+Roughly thirty pipe endpoints under `/v0/pipes/` are referenced from `api/` and `libs/`, and
+`search_volume_worker` adds `projects_list`. The ones from `api/` and `libs/` include
+`activities_count`, `active_contributors`, `contributors_leaderboard`, `contributor_retention`, `organizations_geo_distribution`, `collection_insights_aggregate`,
 `categories_oss_index`, `package_metrics` and `median_time_to_review`.
 
 A pipe is a contract: renaming one, changing its parameters, or changing the shape of its result
-breaks the Insights endpoint that calls it. The datasources behind these pipes are fed from CDP
+breaks the Insights endpoint or worker that calls it. The datasources behind these pipes are fed from CDP
 activity data, so a change to what CDP emits changes what Insights reports, without any code
 change on this side.
 
