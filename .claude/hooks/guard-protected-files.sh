@@ -94,7 +94,7 @@ case "$FILE_PATH" in
     warn "Oxlint configuration — changes affect code quality rules for the project." ;;
   .oxfmtrc*)
     warn "Oxfmt configuration — changes affect code formatting standards." ;;
-  CLAUDE.md)
+  AGENTS.md)
     warn "Project instructions — changes affect AI assistant behavior for all users." ;;
   .claude/settings.json)
     warn "Claude Code settings — changes affect permissions and hooks for all users." ;;
