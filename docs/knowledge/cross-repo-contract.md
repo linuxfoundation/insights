@@ -7,12 +7,12 @@ share, so a change on either side can be made deliberately rather than discovere
 Insights owns this page because it owns the submodule pin, the sparse checkout, the init script
 and the deploy workflows, and because breakage lands here first.
 
-| Surface             | Direction                     | Coupling                                                 |
-| ------------------- | ----------------------------- | -------------------------------------------------------- |
-| Shared library code | insights imports from CDP     | Source, through a git submodule                          |
-| CDP Postgres        | insights reads **and writes** | Direct SQL from three components, no API in between      |
-| Tinybird            | both query the same workspace | Named pipe endpoints                                     |
-| Temporal            | insights starts CDP workflows | Workflow names, task queues, arguments and payload codec |
+| Surface             | Direction                                  | Coupling                                                 |
+| ------------------- | ------------------------------------------ | -------------------------------------------------------- |
+| Shared library code | insights imports from CDP                  | Source, through a git submodule                          |
+| CDP Postgres        | insights reads **and writes**              | Direct SQL from three components, no API in between      |
+| Tinybird            | insights reads pipes and writes `mentions` | Named pipe endpoints and one shared datasource schema    |
+| Temporal            | insights starts CDP workflows              | Workflow names, task queues, arguments and payload codec |
 
 ## 1. Shared library code
 
@@ -161,6 +161,23 @@ breaks the Insights endpoint or worker that calls it. The datasources behind the
 activity data, so a change to what CDP emits changes what Insights reports, without any code
 change on this side.
 
+### Insights writes to `mentions`
+
+The Nuxt route `frontend/server/api/community/[slug].post.ts` appends rows to the `mentions`
+datasource through the client's `ingest()`, which posts to `/v0/events` with
+`NUXT_TINYBIRD_TOKEN`.
+
+That datasource is defined in CDP, in `services/libs/tinybird/datasources/mentions.datasource`,
+and CDP's Octolens connector writes to it as well. Insights is a second producer into a schema
+it does not own. The route builds each record from a hand-maintained list of fields so that
+extra columns are not sent to quarantine; that list is an unversioned copy of CDP's schema.
+
+So a CDP change that renames, removes or retypes a `mentions` column breaks community-mention
+ingestion from Insights, independently of any pipe. Rows that no longer match go to Tinybird
+quarantine rather than failing the request, so the break is silent. The token also has to keep
+append rights on `mentions`: swapping `NUXT_TINYBIRD_TOKEN` for a read-only token stops
+ingestion while every read keeps working.
+
 ## 4. Temporal
 
 ### Insights starts CDP workflows
@@ -203,6 +220,8 @@ On the CDP side:
 - Renaming or dropping any table or column listed in section 2, or adding a `NOT NULL` column
   without a default to a table insights inserts into. Check all three consumers.
 - Renaming a Tinybird pipe, changing its parameters, or changing its result shape.
+- Renaming, removing or retyping a column of the `mentions` datasource, or narrowing the token
+  Insights uses so it can no longer append to it.
 - Renaming either workflow in section 4, moving it to another task queue, changing its
   arguments, or changing the payload codec or its key handling.
 - Removing or renaming anything in the sparse list in `init-submodules.sh`, which would make the
@@ -215,6 +234,8 @@ On the insights side:
 - Writing to a CDP table not already listed in section 2, or adding a new component that
   connects to CDP's Postgres.
 - Starting a further CDP workflow.
+- Writing to another CDP-defined Tinybird datasource, or adding fields to the `mentions` record
+  that CDP's schema does not define.
 
 ## Who to tell
 
