@@ -67,7 +67,7 @@ Before opening a PR, run the `/preflight` skill.
 
 Insights depends on the Community Data Platform across four surfaces, none of them a versioned
 API: shared library code through this submodule, CDP's Postgres (which Insights both reads and
-writes), a shared Tinybird workspace, and a shared Temporal data converter. The full picture is
+writes), a shared Tinybird workspace, and Temporal workflows that Insights starts on CDP workers. The full picture is
 in [`docs/knowledge/cross-repo-contract.md`](docs/knowledge/cross-repo-contract.md); read it
 before changing anything that crosses the boundary.
 
