@@ -65,7 +65,12 @@ Before opening a PR, run the `/preflight` skill.
 
 ## The crowd.dev submodule
 
-Insights consumes the Community Data Platform through a git submodule, not an API.
+Insights depends on the Community Data Platform across four surfaces, none of them a versioned
+API: shared library code through this submodule, CDP's Postgres (which Insights both reads and
+writes), a shared Tinybird workspace, and a shared Temporal data converter. The full picture is
+in [`docs/knowledge/cross-repo-contract.md`](docs/knowledge/cross-repo-contract.md); read it
+before changing anything that crosses the boundary.
+
 `submodules/crowd.dev` tracks `CrowdDotDev/crowd.dev` and its libraries are linked into the
 workspace as `@crowd/*` packages.
 
@@ -80,6 +85,10 @@ telemetry  temporal  types
 
 Nothing else from crowd.dev is on disk, documentation included. To read anything outside that
 list, add it to the sparse list or clone crowd.dev separately.
+
+Only `workers/` imports `@crowd/*`. `api/`, `frontend/` and `libs/` import none of it, so the
+real coupling is far narrower than the sparse list suggests; the contract doc lists the exact
+symbols.
 
 Two facts worth knowing before you change anything that touches `@crowd/*`:
 
@@ -96,6 +105,8 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
 - API reference: built with VitePress from `api/docs/site/`, served by the API itself.
 - Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.
+- What Insights shares with CDP, and what breaks it:
+  [`docs/knowledge/cross-repo-contract.md`](docs/knowledge/cross-repo-contract.md).
 
 ## API conventions
 
