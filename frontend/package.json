@@ -103,7 +103,7 @@
     "storybook": "9.1.2",
     "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3",
-    "vite": "^8.2.2",
+    "vite": "^8.2.4",
     "vitepress-openapi": "^0.2.4",
     "vitest": "^4.1.11"
   },
