@@ -21,7 +21,7 @@ The review is backed by these living sources of truth — always pull current co
 
 - `.claude/rules/*.md` — all project rules
 - `.claude/hooks/guard-protected-files.sh` — the authoritative protected-files list
-- `CLAUDE.md` — project conventions
+- `AGENTS.md` — project conventions
 
 ---
 
@@ -97,7 +97,7 @@ Prompt for the agent:
 > 1. `.claude/rules/*.md` — glob and read all rule files
 > 2. `.claude/skills/review-pr/references/frontend-checklist.md` — for files under `frontend/app/`
 > 3. `.claude/skills/review-pr/references/backend-checklist.md` — for files under `frontend/server/`
-> 4. `CLAUDE.md` — project conventions
+> 4. `AGENTS.md` — project conventions
 >
 > Also read `.claude/hooks/guard-protected-files.sh` and parse its `case`/`if` patterns. For every changed file matching a protected pattern, emit a NIT finding with the hook's warning reason.
 >
