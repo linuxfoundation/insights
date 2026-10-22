@@ -188,9 +188,11 @@ jobs:
   deploy-api-gateway:
     needs: [changes, deploy-api]
     # Waits for the API when both changed, so the Worker never reaches an API older than itself.
+    # A dispatch that selects the gateway still runs when the API deploy fails, so a Worker fix can ship during an API outage.
     if: >-
       !cancelled() && needs.changes.outputs.gateway == 'true' &&
-      (needs.deploy-api.result == 'success' || needs.deploy-api.result == 'skipped')
+      (needs.deploy-api.result == 'success' || needs.deploy-api.result == 'skipped' ||
+      (github.event_name == 'workflow_dispatch' && inputs.service == 'api-gateway'))
     runs-on: ubuntu-latest
     environment:
       name: production-api-gateway
