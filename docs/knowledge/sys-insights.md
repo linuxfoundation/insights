@@ -54,8 +54,9 @@ All four crossings into CDP are described in [`cross-repo-contract.md`](cross-re
 `.github/workflows/production-deploy.yaml` and `staging-deploy.yaml` are manual
 (`workflow_dispatch`) and take one service at a time: `frontend`, `package-downloads-worker`,
 `search-volume-worker` or `vulnerability-enrichment-worker`. Each builds the image, sets it on the
-matching Kubernetes deployment in the `insights` namespace, and after a frontend deploy flushes
-the Redis page cache.
+matching Kubernetes deployment in the `insights` namespace. Only the production workflow then
+flushes the Redis page cache after a frontend deploy; staging does not, so a staging frontend can
+keep serving cached pages after a successful rollout.
 
 Two components are not in those workflows:
 
