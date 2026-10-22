@@ -251,12 +251,3 @@ above should be raised with the Insights team before it merges, and an insights 
 widens the surface should be raised with the CDP team.
 
 Naming an owner on each side is still open.
-
-## Open questions
-
-- Is the floating submodule resolution at deploy time intended, or should deploys use the
-  recorded commit?
-- Should the CDP tables insights writes move behind an API, or is shared ownership of those
-  tables deliberate?
-- Should the Nuxt server use CDP's codec from `@crowd/temporal` instead of its own copy?
-- Who owns this contract on each side?
