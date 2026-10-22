@@ -1,3 +1,21 @@
+---
+type: contract
+slug: contract-insights-cdp
+name: Cross-repo contract between Insights and CDP
+repo: insights
+owner: Insights team
+depends_on: [sys-cdp, flow-activities]
+used_by: [sys-insights, runbook-local-setup]
+sources:
+  - init-submodules.sh
+  - pnpm-workspace.yaml
+  - frontend/server/utils/db.ts
+  - frontend/server/utils/temporal.ts
+  - api/src/clients/postgres.ts
+  - api/src/clients/tinybird.ts
+  - workers/temporal/base/src/worker.ts
+---
+
 # Cross-repo contract: insights and crowd.dev
 
 LFX Insights depends on the Community Data Platform (CDP, `CrowdDotDev/crowd.dev`) across four
