@@ -30,7 +30,7 @@ on:
 permissions:
   contents: read
 
-# Whole runs queue in push order, so change detection sees the previous run's deployment and an older commit never deploys over a newer one.
+# Runs never overlap, so change detection always sees the deployment the previous run recorded.
 concurrency:
   group: public-api-deploy
   cancel-in-progress: false
@@ -46,18 +46,19 @@ jobs:
       gateway: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api') || steps.diff.outputs.gateway == 'true' }}
     steps:
       - name: Checkout code
-        if: github.event_name == 'push'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Each service is compared with the commit its environment last deployed successfully, so a change whose run was superseded in the queue, or whose deploy failed, is picked up by the next run.
+      # Each service is compared with the commit its environment last deployed successfully, so changes from a superseded, failed or replaced run are picked up by the next run, push or dispatch.
       - name: Detect changed services
         id: diff
-        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # A dispatch from another branch would ship that branch's code to production.
+          [ "$GITHUB_REF" = refs/heads/main ] || { echo "::error::Run this workflow from main"; exit 1; }
+
           last_deployed() {
             local deployments id sha
             deployments=$(gh api "repos/$GITHUB_REPOSITORY/deployments?environment=$1&per_page=30" --jq '.[] | "\(.id) \(.sha)"' 2>/dev/null || true)
@@ -77,6 +78,12 @@ jobs:
             if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
               echo "No usable successful deployment (base '$base'), deploying" >&2
               echo true
+              return
+            fi
+            # Runs can queue out of push order, so a first attempt at a commit the deployment already contains is skipped; re-running a run still deploys its commit for rollback.
+            if [ "$GITHUB_RUN_ATTEMPT" = 1 ] && git merge-base --is-ancestor "$GITHUB_SHA" "$base"; then
+              echo "$GITHUB_SHA is already contained in $base, skipping" >&2
+              echo false
               return
             fi
             echo "Comparing against $base" >&2
