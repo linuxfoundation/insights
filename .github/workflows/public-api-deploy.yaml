@@ -30,6 +30,11 @@ on:
 permissions:
   contents: read
 
+# Whole runs queue in push order, so change detection sees the previous run's deployment and an older commit never deploys over a newer one.
+concurrency:
+  group: public-api-deploy
+  cancel-in-progress: false
+
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -88,9 +93,6 @@ jobs:
     environment:
       name: production-api
       url: ${{ vars.API_PUBLIC_URL }}
-    concurrency:
-      group: production-api
-      cancel-in-progress: false
     env:
       ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
       ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
@@ -164,7 +166,7 @@ jobs:
           [ -n "$PODS" ] || { echo "::error::No pods run $IMAGE"; exit 1; }
           for POD in $PODS; do
             kubectl exec -n insights "$POD" -c api -- node -e "
-              fetch('http://127.0.0.1:4000/health/ready').then(
+              fetch('http://127.0.0.1:4000/health/ready', { signal: AbortSignal.timeout(10000) }).then(
                 async (res) => { console.log('$POD', res.status, await res.text()); process.exit(res.ok ? 0 : 1); },
                 (err) => { console.error('$POD', err.message); process.exit(1); },
               );"
@@ -186,9 +188,6 @@ jobs:
     environment:
       name: production-api-gateway
       url: ${{ vars.API_PUBLIC_URL }}
-    concurrency:
-      group: production-api-gateway
-      cancel-in-progress: false
     defaults:
       run:
         working-directory: workers/api-gateway
@@ -226,7 +225,7 @@ jobs:
         env:
           API_PUBLIC_URL: ${{ vars.API_PUBLIC_URL }}
         run: |
-          HEADERS=$(curl -s -o /dev/null -D - "${API_PUBLIC_URL%/}/")
+          HEADERS=$(curl -sS --connect-timeout 10 --max-time 30 -o /dev/null -D - "${API_PUBLIC_URL%/}/")
           echo "$HEADERS" | head -1
           echo "$HEADERS" | head -1 | grep -q ' 401' || { echo "::error::Expected 401 from the Worker"; exit 1; }
           echo "$HEADERS" | grep -qi '^www-authenticate: Bearer' || { echo "::error::401 did not come from the Worker"; exit 1; }
