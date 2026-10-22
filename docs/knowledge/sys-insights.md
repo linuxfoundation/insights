@@ -61,7 +61,7 @@ keep serving cached pages after a successful rollout.
 Two components are not in those workflows:
 
 - **`api/`** has a `Dockerfile`, but neither deploy workflow offers it.
-- **`workers/api-gateway/`** deploys with `pnpm deploy` (`wrangler deploy --env production`) from
+- **`workers/api-gateway/`** deploys with `pnpm run deploy` (`wrangler deploy --env production`) from
   its own directory. No workflow runs it.
 
 Both workflows run `init-submodules.sh`, so every build resolves `submodules/crowd.dev` to CDP's
