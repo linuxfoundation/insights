@@ -35,6 +35,10 @@ Every route under `/v1` and `/v1-alpha` except `openapi.json` needs the Auth0 ac
 
 Each LFID gets a number of requests per second over a sliding window, set by its tier (ADR-0023): premium when the Worker forwards an `x-tier` header, basic otherwise. Both limits are 30 until load tests set them, in `src/rate-limit.ts`. Requests are counted in the Redis at `API_REDIS_URL`. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
 
+## Deployment
+
+A merge to `main` deploys the API to production through the Public API Deploy workflow (`.github/workflows/public-api-deploy.yaml`) when `api/`, the libs it builds from, or the lockfile differ from the commit the `production-api` environment last deployed successfully, so a failed or superseded deploy is retried by the next run. Every new pod must then answer `200` on `/health/ready`, or the workflow rolls the deployment back. Each run is recorded under the `production-api` environment in the repository's Deployments.
+
 ## Scripts
 
 | Command          | Description                                                                   |
