@@ -7,6 +7,9 @@ This is the entry point for agents and for anyone new to the repo. Claude Code, 
 other tools all read this file, so it is the only one. Area-specific rules live in
 `.claude/rules/`; repeatable workflows live in `.claude/skills/`.
 
+Deeper notes on what each component does, how Insights depends on CDP and local setup are in
+[`docs/knowledge/`](docs/knowledge/README.md).
+
 ## Repository layout
 
 A pnpm monorepo. Node 24 (`.nvmrc`), pnpm 10.18.2.
