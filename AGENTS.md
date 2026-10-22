@@ -65,7 +65,12 @@ Before opening a PR, run the `/preflight` skill.
 
 ## The crowd.dev submodule
 
-Insights consumes the Community Data Platform through a git submodule, not an API.
+Insights depends on the Community Data Platform across four surfaces, none of them a versioned
+API: shared library code through this submodule, CDP's Postgres (which Insights both reads and
+writes), a shared Tinybird workspace, and Temporal workflows that Insights starts on CDP workers. The full picture is
+in [`docs/knowledge/cross-repo-contract.md`](docs/knowledge/cross-repo-contract.md); read it
+before changing anything that crosses the boundary.
+
 `submodules/crowd.dev` tracks `CrowdDotDev/crowd.dev` and its libraries are linked into the
 workspace as `@crowd/*` packages.
 
@@ -80,6 +85,10 @@ telemetry  temporal  types
 
 Nothing else from crowd.dev is on disk, documentation included. To read anything outside that
 list, add it to the sparse list or clone crowd.dev separately.
+
+Only `workers/` imports `@crowd/*`. `api/`, `frontend/` and `libs/` import none of it, so the
+real coupling is far narrower than the sparse list suggests; the contract doc lists the exact
+symbols.
 
 Two facts worth knowing before you change anything that touches `@crowd/*`:
 
@@ -96,6 +105,8 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
 - API reference: built with VitePress from `api/docs/site/`, served by the API itself.
 - Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.
+- What Insights shares with CDP, and what breaks it:
+  [`docs/knowledge/cross-repo-contract.md`](docs/knowledge/cross-repo-contract.md).
 
 ## API conventions
 
@@ -142,9 +153,10 @@ for server state, ECharts for charts, Auth0 for authentication, Vitest and Happy
 
 ## Data
 
-Postgres has separate read and write hosts, configured through `INSIGHTS_DB_WRITE_HOST`,
-`INSIGHTS_DB_READ_HOST`, `INSIGHTS_DB_PORT`, `INSIGHTS_DB_USERNAME`, `INSIGHTS_DB_PASSWORD`
-and `INSIGHTS_DB_DATABASE`.
+Postgres has separate read and write hosts. The workers configure them through `INSIGHTS_DB_*`
+(`WRITE_HOST`, `READ_HOST`, `PORT`, `USERNAME`, `PASSWORD`, `DATABASE`). The Nuxt server reads the
+`insightsDb*` keys in `frontend/setup/runtime-config.ts`, which deployments set through
+`NUXT_INSIGHTS_DB_*`.
 
 Migrations are Flyway, run in Docker. `database/create_migration.sh <name>` writes a new
 `V<epoch>__<name>.sql`; `database/migrate.sh` applies them. Use the `/db-migrate` skill.
