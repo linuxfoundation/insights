@@ -11,7 +11,7 @@ The `production` environment in `wrangler.jsonc` reaches the API through the `IN
 
 ## Deployment
 
-A merge to `main` that touches the Worker deploys it through the Public API Deploy workflow (`.github/workflows/public-api-deploy.yaml`), after the API when both changed. A request without a PAT must then get the Worker's `401`, or the workflow rolls back to the previous version. Each run is recorded under the `production-api-gateway` environment in the repository's Deployments.
+A merge to `main` deploys the Worker through the Public API Deploy workflow (`.github/workflows/public-api-deploy.yaml`) when its paths differ from the commit the `production-api-gateway` environment last deployed successfully, so a failed or superseded deploy is retried by the next run. It deploys after the API when both changed. A request without a PAT must then get the Worker's `401`, or the workflow rolls back to the previous version. Each run is recorded under the `production-api-gateway` environment in the repository's Deployments.
 
 ## Local development
 

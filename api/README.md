@@ -37,7 +37,7 @@ Each LFID gets a number of requests per second over a sliding window, set by its
 
 ## Deployment
 
-A merge to `main` that touches `api/`, the libs it builds from, or the lockfile deploys the API to production through the Public API Deploy workflow (`.github/workflows/public-api-deploy.yaml`). Every new pod must then answer `200` on `/health/ready`, or the workflow rolls the deployment back. Each run is recorded under the `production-api` environment in the repository's Deployments.
+A merge to `main` deploys the API to production through the Public API Deploy workflow (`.github/workflows/public-api-deploy.yaml`) when `api/`, the libs it builds from, or the lockfile differ from the commit the `production-api` environment last deployed successfully, so a failed or superseded deploy is retried by the next run. Every new pod must then answer `200` on `/health/ready`, or the workflow rolls the deployment back. Each run is recorded under the `production-api` environment in the repository's Deployments.
 
 ## Scripts
 

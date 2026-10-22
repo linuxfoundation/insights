@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-    # Union of the per-service filters in the changes job; keep both in sync.
+    # Union of the pathspecs in the changes job; keep both in sync.
     paths:
       - "api/**"
       - "libs/types/**"
@@ -13,6 +13,8 @@ on:
       - "workers/api-gateway/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
+      - "!api/README.md"
+      - "!workers/api-gateway/README.md"
   workflow_dispatch:
     inputs:
       service:
@@ -31,31 +33,53 @@ permissions:
 jobs:
   changes:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: read
     outputs:
-      api: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api-gateway') || steps.filter.outputs.api == 'true' }}
-      gateway: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api') || steps.filter.outputs.gateway == 'true' }}
+      api: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api-gateway') || steps.diff.outputs.api == 'true' }}
+      gateway: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api') || steps.diff.outputs.gateway == 'true' }}
     steps:
       - name: Checkout code
         if: github.event_name == 'push'
         uses: actions/checkout@v4
-
-      - name: Detect changed services
-        id: filter
-        if: github.event_name == 'push'
-        uses: dorny/paths-filter@v3
         with:
-          filters: |
-            api:
-              - "api/**"
-              - "libs/types/**"
-              - "libs/postgres-client/**"
-              - "libs/tinybird-client/**"
-              - "pnpm-lock.yaml"
-              - "pnpm-workspace.yaml"
-            gateway:
-              - "workers/api-gateway/**"
-              - "pnpm-lock.yaml"
-              - "pnpm-workspace.yaml"
+          fetch-depth: 0
+
+      # Each service is compared with the commit its environment last deployed successfully, so a change whose run was superseded in the queue, or whose deploy failed, is picked up by the next run.
+      - name: Detect changed services
+        id: diff
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          last_deployed() {
+            local deployments id sha
+            deployments=$(gh api "repos/$GITHUB_REPOSITORY/deployments?environment=$1&per_page=30" --jq '.[] | "\(.id) \(.sha)"' 2>/dev/null || true)
+            while read -r id sha; do
+              [ -n "$id" ] || continue
+              if gh api "repos/$GITHUB_REPOSITORY/deployments/$id/statuses" --jq '.[].state' 2>/dev/null | grep -qx success; then
+                echo "$sha"
+                return
+              fi
+            done <<< "$deployments"
+          }
+
+          changed() {
+            local base
+            base=$(last_deployed "$1")
+            shift
+            if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              echo "No usable successful deployment (base '$base'), deploying" >&2
+              echo true
+              return
+            fi
+            echo "Comparing against $base" >&2
+            if [ -n "$(git diff --name-only "$base" "$GITHUB_SHA" -- "$@")" ]; then echo true; else echo false; fi
+          }
+
+          echo "api=$(changed production-api api ':!api/README.md' libs/types libs/postgres-client libs/tinybird-client pnpm-lock.yaml pnpm-workspace.yaml)" >> "$GITHUB_OUTPUT"
+          echo "gateway=$(changed production-api-gateway workers/api-gateway ':!workers/api-gateway/README.md' pnpm-lock.yaml pnpm-workspace.yaml)" >> "$GITHUB_OUTPUT"
 
   deploy-api:
     needs: changes
@@ -120,6 +144,7 @@ jobs:
           app-env: production
           dockerfile: api/Dockerfile
           image-name: insights-api
+          run-unique-tag: "true"
 
       - name: Update Deployment Image
         run: |
