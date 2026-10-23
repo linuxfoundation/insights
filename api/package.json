@@ -34,6 +34,6 @@
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",
     "vitepress": "^1.6.4",
-    "vitest": "^3.0.0"
+    "vitest": "^4.1.11"
   }
 }
