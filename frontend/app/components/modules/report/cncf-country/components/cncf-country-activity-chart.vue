@@ -44,11 +44,20 @@ const chartSeries = computed<ChartSeries[]>(() => [
   },
 ]);
 
-const chartConfig = computed(() =>
-  getLineAreaChartConfig(chartData.value, chartSeries.value, props.granularity, (value: number) =>
+const chartConfig = computed(() => {
+  const config = getLineAreaChartConfig(chartData.value, chartSeries.value, props.granularity, (value: number) =>
     formatNumberShort(value),
-  ),
-);
+  );
+
+  // The default y-axis bounds divide by the data range, which is NaN for a flat series.
+  const values = props.data.map((point) => point[props.metric]);
+  const max = Math.max(...values);
+  if (values.length && max === Math.min(...values)) {
+    config.yAxis = { ...config.yAxis, min: 0, max: Math.max(1, max * 2) };
+  }
+
+  return config;
+});
 </script>
 
 <script lang="ts">
