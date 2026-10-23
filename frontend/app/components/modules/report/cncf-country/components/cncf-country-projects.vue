@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
           <th>Project</th>
           <th class="w-2/5" />
           <th class="text-right">Contributors</th>
-          <th class="text-right">Contributions</th>
+          <th class="text-right">Code contributions</th>
         </tr>
       </thead>
       <tbody>

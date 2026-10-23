@@ -15,7 +15,7 @@ const country = { code: 'FR', name: 'France', adjective: 'French' };
 
 const title = 'Cloud Native in France | LFX Insights';
 const description =
-  'Explore contributions to CNCF projects from people in France and from organizations with French HQ. Powered by the Linux Foundation.';
+  'Explore code contributions to CNCF projects from people in France and from organizations with French HQ. Powered by the Linux Foundation.';
 
 useSeoMeta({
   title,

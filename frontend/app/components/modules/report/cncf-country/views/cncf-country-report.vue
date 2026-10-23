@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
           Cloud Native in {{ country.name }}
         </h1>
         <p class="text-body-2 md:text-body-1 text-neutral-600">
-          Contributions to CNCF projects from people in {{ country.name }} and from organizations with
+          Code contributions to CNCF projects from people in {{ country.name }} and from organizations with
           {{ country.adjective }} HQ.
         </p>
       </div>
@@ -207,8 +207,8 @@ SPDX-License-Identifier: MIT
     <p class="text-body-2 text-neutral-500 border-t border-neutral-200 pt-4">
       Methodology: a contributor is in {{ country.name }} when the country on their profile, or else their location,
       names {{ country.name }}. An organization has {{ country.adjective }} HQ when its record places its headquarters
-      in {{ country.name }}. Contributions are code and collaboration activities in CNCF projects over the selected
-      period.
+      in {{ country.name }}. Code contributions are code activities, such as commits and pull requests, in CNCF projects
+      over the selected period.
     </p>
   </div>
 </template>
@@ -271,7 +271,7 @@ const selectedOption = computed(
 
 const activityTabs = [
   { value: 'contributorCount', label: 'Contributors' },
-  { value: 'contributionCount', label: 'Contributions' },
+  { value: 'contributionCount', label: 'Code contributions' },
   { value: 'organizationCount', label: 'Organizations' },
 ];
 const activityMetric = ref<CncfCountryActivityMetric>('contributorCount');
@@ -323,9 +323,9 @@ const topProjects = computed(() =>
 
 const kpiCards = computed(() => [
   { label: 'Active contributors', value: formatNumber(summary.value?.contributorCount ?? 0) },
-  { label: 'Contributions', value: formatNumberShort(summary.value?.contributionCount ?? 0) },
+  { label: 'Code contributions', value: formatNumberShort(summary.value?.contributionCount ?? 0) },
   {
-    label: `Organizations with ${props.country.adjective} HQ active`,
+    label: `Active Organizations with ${props.country.adjective} HQ`,
     value: formatNumber(summary.value?.organizationCount ?? 0),
   },
 ]);

@@ -34,14 +34,11 @@ const EMPTY_SUMMARY: CncfCountrySummary = {
   abroadAtCountryOrganizationCount: 0,
 };
 
-// The report counts collaborations (reviews, issues, comments) next to code, unlike the
-// code-only default of `activityTypes_filtered`.
+// The report counts code contributions only, the default of `activityTypes_filtered`.
 const contributionParams = (filter: CncfCountryFilter) => ({
   countryCode: filter.countryCode,
   startDate: filter.startDate,
   endDate: filter.endDate,
-  includeCodeContributions: true,
-  includeCollaborations: true,
 });
 
 export async function fetchCncfCountrySummary(

@@ -46,7 +46,7 @@ describe('CNCF country fetchers', () => {
     }));
   });
 
-  test('summary counts collaborations and returns the single pipe row', async () => {
+  test('summary sends only the country and period and returns the single pipe row', async () => {
     const { fetchCncfCountrySummary } = await import('./cncf-country');
     const summary = {
       contributorCount: 1386,
@@ -62,11 +62,7 @@ describe('CNCF country fetchers', () => {
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/collection_country_summary.json',
-      {
-        ...filter,
-        includeCodeContributions: true,
-        includeCollaborations: true,
-      },
+      filter,
     );
     expect(result).toEqual(summary);
   });

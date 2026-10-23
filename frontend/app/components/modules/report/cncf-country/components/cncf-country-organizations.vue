@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
           <th>Organization</th>
           <th class="text-right">Contributors</th>
           <th class="text-right">In {{ countryName }}</th>
-          <th class="text-right">Contributions</th>
+          <th class="text-right">Code contributions</th>
         </tr>
       </thead>
       <tbody>
