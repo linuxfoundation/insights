@@ -42,10 +42,13 @@ CDP is published under two GitHub names, `CrowdDotDev/crowd.dev` and
 points at the first, while day-to-day development pushes to the second.
 
 The checkout is **sparse**. `init-submodules.sh` fetches `services/archetypes`,
-`services/base.tsconfig.json`, and seventeen libraries: `audit-logs`, `common`,
+`services/base.tsconfig.json`, and eighteen libraries: `audit-logs`, `common`,
 `common_services`, `data-access-layer`, `database`, `integrations`, `logging`, `nango`,
 `opensearch`, `questdb`, `queue`, `redis`, `slack`, `snowflake`, `telemetry`, `temporal`,
-`types`. Nothing else from CDP is on disk, its documentation included.
+`test-kit`, `types`. Nothing else from CDP is on disk, its documentation included.
+
+CDP packages take shared versions from `catalog:`. The `catalog` in insights'
+`pnpm-workspace.yaml` supplies them, so it has to list every name those packages use.
 
 ### Direct imports
 
@@ -82,8 +85,9 @@ The repository records a fixed submodule commit, but **the deploy path does not 
 with `git submodule add -b main`, which resolves `main` to its current tip.
 `.github/workflows/production-deploy.yaml` and `staging-deploy.yaml` both run that script.
 
-The gap is already wide: the recorded pin sits around PR #3863 while CDP `main` is past #5067.
-Nothing fails, because no build uses the recorded commit.
+The worker Dockerfiles install with `--frozen-lockfile`, so a CDP change to any `package.json`
+in the sparse set fails the next worker build until the lockfile is regenerated against the new
+tip. When regenerating, bump the recorded pin to that tip so the two stay in step.
 
 Two consequences:
 
