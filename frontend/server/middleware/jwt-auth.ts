@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
   // Public report routes that don't require authentication
   const publicReportRoutes = [
     '/api/report/cncf/geo-distribution',
+    '/api/report/cncf/country',
     '/api/report/ai-code-tracker',
     '/api/report/agentic-ai-momentum',
     '/api/report/health-score-coverage',
