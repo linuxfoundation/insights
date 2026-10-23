@@ -151,6 +151,12 @@ SPDX-License-Identifier: MIT
       >
         Error loading data. Please try again.
       </div>
+      <div
+        v-else-if="!topProjects.length"
+        class="text-neutral-500"
+      >
+        No data available for the selected period.
+      </div>
       <lfx-cncf-country-projects
         v-else
         :projects="topProjects"
@@ -184,6 +190,12 @@ SPDX-License-Identifier: MIT
       >
         Error loading data. Please try again.
       </div>
+      <div
+        v-else-if="!organizations?.data.length"
+        class="text-neutral-500"
+      >
+        No data available for the selected period.
+      </div>
       <lfx-cncf-country-organizations
         v-else
         :organizations="organizations?.data ?? []"
@@ -203,7 +215,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { DateTime } from 'luxon';
-import { computed, ref, type ComputedRef } from 'vue';
+import { computed, onServerPrefetch, ref, type ComputedRef } from 'vue';
 
 import LfxCncfCountryActivityChart from '~/components/modules/report/cncf-country/components/cncf-country-activity-chart.vue';
 import LfxCncfCountryOrganizations from '~/components/modules/report/cncf-country/components/cncf-country-organizations.vue';
@@ -275,12 +287,14 @@ const {
   data: summary,
   status: summaryStatus,
   error: summaryError,
+  suspense: summarySuspense,
 } = CNCF_COUNTRY_REPORT_API_SERVICE.fetchSummary(params);
 
 const {
   data: timeseries,
   status: timeseriesStatus,
   error: timeseriesError,
+  suspense: timeseriesSuspense,
 } = CNCF_COUNTRY_REPORT_API_SERVICE.fetchTimeseries(
   computed(() => ({ ...params.value, granularity: selectedOption.value.granularity })),
 );
@@ -289,13 +303,19 @@ const {
   data: projects,
   status: projectsStatus,
   error: projectsError,
+  suspense: projectsSuspense,
 } = CNCF_COUNTRY_REPORT_API_SERVICE.fetchProjects(computed(() => ({ ...params.value, limit: TOP_PROJECTS + 1 })));
 
 const {
   data: organizations,
   status: organizationsStatus,
   error: organizationsError,
+  suspense: organizationsSuspense,
 } = CNCF_COUNTRY_REPORT_API_SERVICE.fetchOrganizations(computed(() => ({ ...params.value, limit: 10 })));
+
+onServerPrefetch(async () => {
+  await Promise.all([summarySuspense(), timeseriesSuspense(), projectsSuspense(), organizationsSuspense()]);
+});
 
 const topProjects = computed(() =>
   (projects.value?.data ?? []).filter((project) => project.slug !== COLLECTION_PROJECT_SLUG).slice(0, TOP_PROJECTS),
