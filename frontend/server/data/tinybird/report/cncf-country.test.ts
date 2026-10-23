@@ -93,6 +93,25 @@ describe('CNCF country fetchers', () => {
     );
   });
 
+  test('timeseries drops the period that starts on the exclusive endDate', async () => {
+    const { fetchCncfCountryTimeseries } = await import('./cncf-country');
+    const point = { endDate: '', contributorCount: 1, contributionCount: 1, organizationCount: 1 };
+    mockFetchFromTinybird.mockResolvedValueOnce({
+      data: [
+        { ...point, startDate: '2026-09-01' },
+        { ...point, startDate: '2026-10-01' },
+      ],
+    });
+
+    const result = await fetchCncfCountryTimeseries({
+      ...filter,
+      endDate: DateTime.fromISO('2026-10-01'),
+      granularity: 'monthly',
+    });
+
+    expect(result.data.map((p) => p.startDate)).toEqual(['2026-09-01']);
+  });
+
   test('organizations maps the rows returned by the pipe', async () => {
     const { fetchCncfCountryOrganizations } = await import('./cncf-country');
     mockFetchFromTinybird.mockResolvedValueOnce({

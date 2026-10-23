@@ -57,6 +57,12 @@ SPDX-License-Identifier: MIT
           width="60%"
         />
         <span
+          v-else-if="summaryError || !summary"
+          class="text-body-2 text-negative-500"
+        >
+          Unavailable
+        </span>
+        <span
           v-else
           class="text-heading-3 md:text-heading-2 font-bold text-neutral-900"
         >
@@ -225,13 +231,15 @@ const TOP_PROJECTS = 8;
 
 const now = DateTime.local();
 
+// endDate is exclusive: the pipes filter `timestamp < endDate` at midnight, so it is the day
+// after the last day shown.
 const dateOptions = [
   {
     key: 'past12months',
     label: 'Past 12 months',
     granularity: 'monthly',
     startDate: now.minus({ months: 12 }).startOf('month').toFormat('yyyy-MM-dd'),
-    endDate: now.minus({ months: 1 }).endOf('month').toFormat('yyyy-MM-dd'),
+    endDate: now.startOf('month').toFormat('yyyy-MM-dd'),
     description: `${now.minus({ months: 12 }).toFormat('MMM yyyy')} -> ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
   },
   {
@@ -239,7 +247,7 @@ const dateOptions = [
     label: 'Past 10 years',
     granularity: 'yearly',
     startDate: now.minus({ years: 10 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: now.startOf('year').minus({ days: 1 }).toFormat('yyyy-MM-dd'),
+    endDate: now.startOf('year').toFormat('yyyy-MM-dd'),
     description: `${now.minus({ years: 10 }).toFormat('yyyy')} -> ${now.minus({ years: 1 }).toFormat('yyyy')}`,
   },
 ];

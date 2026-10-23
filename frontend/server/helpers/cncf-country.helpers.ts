@@ -22,9 +22,19 @@ export function parseCncfCountryFilter(query: Record<string, unknown>): CncfCoun
 
   return {
     countryCode,
-    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
-    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+    startDate: parseDate(query.startDate, 'startDate'),
+    endDate: parseDate(query.endDate, 'endDate'),
   };
+}
+
+function parseDate(value: unknown, field: string): DateTime | undefined {
+  if (value === undefined || value === '') return undefined;
+
+  const date = typeof value === 'string' ? DateTime.fromISO(value) : undefined;
+  if (!date?.isValid) {
+    throw createError({ statusCode: 400, statusMessage: `Invalid ${field}: ${value}` });
+  }
+  return date;
 }
 
 export function parseLimit(value: unknown, fallback: number, max = 50): number {

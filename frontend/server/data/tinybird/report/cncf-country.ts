@@ -63,7 +63,9 @@ export async function fetchCncfCountryTimeseries(
     { ...contributionParams(filter), granularity: filter.granularity },
   );
 
-  return { data: result.data };
+  // endDate is exclusive, but generate_timeseries includes the period that starts on it.
+  const end = filter.endDate?.toFormat('yyyy-MM-dd');
+  return { data: end ? result.data.filter((point) => point.startDate < end) : result.data };
 }
 
 export async function fetchCncfCountryProjects(
