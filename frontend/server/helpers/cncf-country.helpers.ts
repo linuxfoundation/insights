@@ -4,16 +4,17 @@ import { DateTime } from 'luxon';
 
 import type { CncfCountryFilter } from '~~/server/data/tinybird/report/cncf-country';
 
-const COUNTRY_CODE_PATTERN = /^[A-Z]{2}$/;
+// Countries with a report page; add a code here when a new country page ships.
+const SUPPORTED_COUNTRY_CODES = new Set(['FR']);
 
 /**
  * Reads the country and period shared by every CNCF country report route, rejecting a
- * country code that is not ISO 3166-1 alpha-2.
+ * country that has no report.
  */
 export function parseCncfCountryFilter(query: Record<string, unknown>): CncfCountryFilter {
   const countryCode = String(query.countryCode ?? '').toUpperCase();
 
-  if (!COUNTRY_CODE_PATTERN.test(countryCode)) {
+  if (!SUPPORTED_COUNTRY_CODES.has(countryCode)) {
     throw createError({
       statusCode: 400,
       statusMessage: `Invalid countryCode: ${query.countryCode}`,
