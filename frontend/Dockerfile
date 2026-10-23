@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-ARG NODE_VERSION=24
+ARG NODE_VERSION=24.22.1
 
 # ============================================
 # Base stage: Node with pnpm via corepack
