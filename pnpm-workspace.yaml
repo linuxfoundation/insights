@@ -88,5 +88,5 @@ overrides:
   brace-expansion@2: ">=2.1.6 <3" # same GHSAs (2.x line)
   brace-expansion@5: ">=5.0.11 <6" # same GHSAs (5.x line)
   launch-editor: ">=2.14.2 <3" # GHSA-587h-7wmj-h5pm
-  vite@7: ">=7.3.7 <8" # GHSA-587h-7wmj-h5pm (7.x line; 5.x vitepress line deferred, needs-human — major hop)
+  vite@7: ">=7.3.7 <8" # GHSA-587h-7wmj-h5pm (7.x line; 5.x vitepress line deferred, needs-human: major hop)
   vite@8: ">=8.2.4 <9" # GHSA-587h-7wmj-h5pm (8.x line)
