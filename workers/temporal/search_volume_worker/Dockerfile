@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24
+ARG NODE_VERSION=24.22.1
 ARG PNPM_VERSION=10.12.4
 ARG PNPM_CACHE_DIR=/tmp/insights-search-volume-worker-pnpm-cache
 
