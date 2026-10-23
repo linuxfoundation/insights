@@ -11,12 +11,24 @@ SPDX-License-Identifier: MIT
       />
     </client-only>
   </div>
+  <ul
+    class="sr-only"
+    :aria-label="`${label} per period`"
+  >
+    <li
+      v-for="period in periods"
+      :key="period.key"
+    >
+      {{ period.label }}: {{ period.value }}
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
+import { DateTime } from 'luxon';
 import { computed } from 'vue';
 
-import { formatNumberShort } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
@@ -43,6 +55,14 @@ const chartSeries = computed<ChartSeries[]>(() => [
     color: lfxColors.brand[500],
   },
 ]);
+
+const periods = computed(() =>
+  props.data.map((point) => ({
+    key: point.startDate,
+    label: DateTime.fromISO(point.startDate).toFormat(props.granularity === 'yearly' ? 'yyyy' : 'MMM yyyy'),
+    value: formatNumber(point[props.metric]),
+  })),
+);
 
 const chartConfig = computed(() => {
   const config = getLineAreaChartConfig(chartData.value, chartSeries.value, props.granularity, (value: number) =>
