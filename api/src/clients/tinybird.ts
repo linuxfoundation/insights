@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { Static } from '@sinclair/typebox';
 import tracer from 'dd-trace';
-import type { FastifyRequest } from 'fastify';
+import type { FastifyBaseLogger, FastifyRequest } from 'fastify';
 
 import {
   createTinybirdClient,
@@ -29,6 +29,31 @@ const bucketsPath = '/v0/pipes/project_buckets.json';
 export type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
+let clientLog: FastifyBaseLogger | undefined;
+
+// buildApp hands over its logger, so the client's own lines reach Datadog as pino JSON with a level
+// and trace IDs instead of bare console output on stderr.
+export function useTinybirdLog(log: FastifyBaseLogger): void {
+  clientLog = log;
+}
+
+// The client writes its events as JSON strings and everything else as plain text.
+const toLog = (level: 'warn' | 'error') => (line: string) => {
+  if (!clientLog) {
+    console[level](line);
+    return;
+  }
+  if (line.startsWith('{')) {
+    try {
+      const { message, ...fields } = JSON.parse(line) as { message?: string };
+      clientLog[level](fields, message);
+      return;
+    } catch {
+      // Logged as plain text below.
+    }
+  }
+  clientLog[level](line);
+};
 
 // Errors already counted, so a failure shared by every caller of one bucket lookup counts once.
 const countedErrors = new WeakSet<object>();
@@ -52,6 +77,7 @@ export function getTinybirdClient(): TinybirdClient {
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
       bucketCache: createInMemoryBucketCache(),
+      logger: { warn: toLog('warn'), error: toLog('error') },
       // One span, duration sample and error count per request the client sends, queue wait and
       // retries inside, so a cached bucket adds nothing to the pipe's figures.
       wrapRequest: timedRequest,
