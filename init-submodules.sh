@@ -40,4 +40,5 @@ git sparse-checkout set \
   /services/libs/questdb \
   /services/libs/queue \
   /services/libs/redis \
+  /services/libs/test-kit \
   /services/archetypes
