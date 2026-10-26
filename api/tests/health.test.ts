@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import tracer from 'dd-trace';
 import type { FastifyInstance } from 'fastify';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -163,7 +164,7 @@ describe('getCmPool', () => {
     stubCmEnv();
     pg.query.mockResolvedValue({ rows: [] });
 
-    await queryCm(log, 'SELECT 1');
+    await queryCm(log, 'SELECT 1', [], 'test');
 
     expect(pg.options).toEqual([
       {
@@ -182,7 +183,7 @@ describe('getCmPool', () => {
     vi.stubEnv('API_CM_DB_PORT', '');
     pg.query.mockResolvedValue({ rows: [] });
 
-    await queryCm(log, 'SELECT 1');
+    await queryCm(log, 'SELECT 1', [], 'test');
 
     expect(pg.options[0]).toMatchObject({ port: 5432 });
   });
@@ -193,7 +194,7 @@ describe('getCmPool', () => {
     vi.stubEnv('API_CM_DB_PORT', '6543');
     pg.query.mockResolvedValue({ rows: [] });
 
-    await queryCm(log, 'SELECT 1');
+    await queryCm(log, 'SELECT 1', [], 'test');
 
     expect(pg.options[0]).toMatchObject({ port: 6543, ssl: false });
   });
@@ -204,7 +205,9 @@ describe('queryCm', () => {
     stubCmEnv();
     vi.stubEnv('API_CM_DB_PORT', 'abc');
 
-    await expect(queryCm(log, 'SELECT 1')).rejects.toBeInstanceOf(UpstreamUnavailableError);
+    await expect(queryCm(log, 'SELECT 1', [], 'test')).rejects.toBeInstanceOf(
+      UpstreamUnavailableError,
+    );
     expect(pg.options).toEqual([]);
   });
 
@@ -213,7 +216,7 @@ describe('queryCm', () => {
     pg.query.mockResolvedValue({ rows: [{ id: 'a' }] });
 
     await expect(
-      queryCm(log, 'SELECT id FROM collections WHERE slug = $1', ['cncf']),
+      queryCm(log, 'SELECT id FROM collections WHERE slug = $1', ['cncf'], 'test'),
     ).resolves.toEqual([{ id: 'a' }]);
     expect(pg.query).toHaveBeenCalledWith('SELECT id FROM collections WHERE slug = $1', ['cncf']);
   });
@@ -222,11 +225,30 @@ describe('queryCm', () => {
     stubCmEnv();
     pg.query.mockRejectedValue(new Error('relation "collections" does not exist'));
 
-    await expect(queryCm(log, 'SELECT 1')).rejects.toBeInstanceOf(UpstreamUnavailableError);
+    await expect(queryCm(log, 'SELECT 1', [], 'test')).rejects.toBeInstanceOf(
+      UpstreamUnavailableError,
+    );
+  });
+
+  it('times each query by name and outcome', async () => {
+    const distribution = vi.spyOn(tracer.dogstatsd, 'distribution');
+    stubCmEnv();
+    pg.query.mockResolvedValueOnce({ rows: [] }).mockRejectedValueOnce(new Error('down'));
+
+    await queryCm(log, 'SELECT 1', [], 'findCollection');
+    await expect(queryCm(log, 'SELECT 1', [], 'findCollection')).rejects.toThrow();
+
+    expect(distribution.mock.calls.map(([name, , tags]) => [name, tags])).toEqual([
+      ['insights.api.postgres.duration', { query_name: 'findCollection', outcome: 'ok' }],
+      ['insights.api.postgres.duration', { query_name: 'findCollection', outcome: 'error' }],
+    ]);
+    distribution.mockRestore();
   });
 
   it('turns missing configuration into a 503', async () => {
-    await expect(queryCm(log, 'SELECT 1')).rejects.toBeInstanceOf(UpstreamUnavailableError);
+    await expect(queryCm(log, 'SELECT 1', [], 'test')).rejects.toBeInstanceOf(
+      UpstreamUnavailableError,
+    );
     expect(pg.options).toEqual([]);
   });
 });

@@ -6,9 +6,12 @@ import type { FastifyRequest } from 'fastify';
 
 import {
   createTinybirdClient,
+  TinybirdClientError,
   TinybirdInvalidResponseError,
+  TinybirdProjectNotFoundError,
   TinybirdQueueFullError,
   TinybirdQueueTimeoutError,
+  TinybirdUnavailableError,
   type TinybirdClient,
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
@@ -17,6 +20,7 @@ import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import { type DateRange, toTinybirdRange } from '../lib/period.js';
 import type { PipeTarget } from '../lib/widget-scope.js';
+import { count, gauge, statusClass, timing } from '../metrics.js';
 import type { ActivityFilterQuery } from '../schemas/common.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 
@@ -49,9 +53,25 @@ export function getTinybirdClient(): TinybirdClient {
           },
           send,
         ),
+      // Gauges in place of the client's status log line every 8 seconds.
+      onQueueStatus: ({ active, queued, effectiveLimit }) => {
+        gauge('concurrency', active, { state: 'active' });
+        gauge('concurrency', queued, { state: 'queued' });
+        gauge('concurrency', effectiveLimit, { state: 'limit' });
+      },
     });
   }
   return client;
+}
+
+function tinybirdErrorType(err: unknown): string {
+  if (err instanceof TinybirdQueueFullError) return 'queue_full';
+  if (err instanceof TinybirdQueueTimeoutError) return 'queue_timeout';
+  if (err instanceof TinybirdInvalidResponseError) return 'invalid_response';
+  if (err instanceof TinybirdProjectNotFoundError) return 'not_found';
+  if (err instanceof TinybirdUnavailableError) return 'unavailable';
+  if (err instanceof TinybirdClientError) return 'http';
+  return 'network';
 }
 
 // Every Tinybird failure becomes a 503, logged once per pipe call with the pipe path, so
@@ -61,9 +81,18 @@ async function fromTinybird<T>(
   path: string,
   call: () => Promise<T>,
 ): Promise<T> {
+  const started = performance.now();
   try {
-    return await call();
+    const result = await call();
+    timing('tinybird.duration', performance.now() - started, { pipe: path, status_class: '2xx' });
+    return result;
   } catch (err: unknown) {
+    const failedClass = err instanceof TinybirdClientError ? statusClass(err.statusCode) : 'error';
+    timing('tinybird.duration', performance.now() - started, {
+      pipe: path,
+      status_class: failedClass,
+    });
+    count('tinybird.errors', { pipe: path, error_type: tinybirdErrorType(err) });
     if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
       request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
     } else {

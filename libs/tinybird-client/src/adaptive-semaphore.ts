@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from './errors.js';
 import { DEFAULT_LATENCY_MONITOR_OPTIONS, LatencyMonitor } from './latency-monitor.js';
-import type { LatencyBackoffOptions, TinybirdLogger } from './types.js';
+import type { LatencyBackoffOptions, TinybirdLogger, TinybirdQueueStatus } from './types.js';
 
 const DEFAULT_LATENCY_BACKOFF_RATIO = 1.4;
 const DEFAULT_LATENCY_RECOVERY_RATIO = 1.2;
@@ -54,6 +54,7 @@ export class AdaptiveSemaphore {
     private maxQueueSize: number,
     private logger: TinybirdLogger = console,
     latencyBackoff: LatencyBackoffOptions | false = {},
+    private onStatus?: (status: TinybirdQueueStatus) => void,
   ) {
     this.effectiveLimit = limit;
     this.rateLimitCeiling = limit;
@@ -68,6 +69,15 @@ export class AdaptiveSemaphore {
     this.latencyDecreaseFactor = options.decreaseFactor ?? DEFAULT_LATENCY_DECREASE_FACTOR;
 
     setInterval(() => {
+      if (this.onStatus) {
+        this.onStatus({
+          active: this.count,
+          queued: this.queue.length,
+          effectiveLimit: this.effectiveLimit,
+          limit: this.limit,
+        });
+        return;
+      }
       this.logger.warn(
         JSON.stringify({
           message: 'tinybird_queue_status',
