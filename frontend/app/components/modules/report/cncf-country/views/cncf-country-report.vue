@@ -103,11 +103,14 @@ SPDX-License-Identifier: MIT
     <lfx-card class="p-4 md:p-6">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">Activity over time</h2>
-        <lfx-tabs
-          v-model="activityMetric"
-          :tabs="activityTabs"
-          width-type="inline"
-        />
+        <div class="max-w-full overflow-x-auto">
+          <lfx-tabs
+            v-model="activityMetric"
+            :tabs="activityTabs"
+            width-type="inline"
+            class="!w-max"
+          />
+        </div>
       </div>
       <lfx-skeleton
         v-if="timeseriesStatus === 'pending'"
