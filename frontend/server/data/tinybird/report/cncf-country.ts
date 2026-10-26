@@ -45,7 +45,7 @@ export async function fetchCncfCountrySummary(
   filter: CncfCountryFilter,
 ): Promise<CncfCountrySummary> {
   const result = await fetchFromTinybird<CncfCountrySummary[]>(
-    '/v0/pipes/collection_country_summary.json',
+    '/v0/pipes/cncf_country_summary.json',
     contributionParams(filter),
   );
 
@@ -56,7 +56,7 @@ export async function fetchCncfCountryTimeseries(
   filter: CncfCountryFilter & { granularity: string },
 ): Promise<CncfCountryTimeseriesResponse> {
   const result = await fetchFromTinybird<CncfCountryTimeseriesResponse['data']>(
-    '/v0/pipes/collection_country_activity_timeseries.json',
+    '/v0/pipes/cncf_country_activity_timeseries.json',
     { ...contributionParams(filter), granularity: filter.granularity },
   );
 
@@ -69,7 +69,7 @@ export async function fetchCncfCountryProjects(
   filter: CncfCountryFilter & { limit: number },
 ): Promise<CncfCountryProjectsResponse> {
   const result = await fetchFromTinybird<CncfCountryProjectsResponse['data']>(
-    '/v0/pipes/collection_country_top_projects.json',
+    '/v0/pipes/cncf_country_top_projects.json',
     { ...contributionParams(filter), limit: filter.limit },
   );
 
@@ -86,7 +86,7 @@ export async function fetchCncfCountryOrganizations(
   filter: CncfCountryFilter & { limit: number },
 ): Promise<CncfCountryOrganizationsResponse> {
   const result = await fetchFromTinybird<TinybirdCncfCountryOrganization[]>(
-    '/v0/pipes/collection_country_top_organizations.json',
+    '/v0/pipes/cncf_country_top_organizations.json',
     { ...contributionParams(filter), limit: filter.limit },
   );
 

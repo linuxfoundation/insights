@@ -61,7 +61,7 @@ describe('CNCF country fetchers', () => {
     const result = await fetchCncfCountrySummary(filter);
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
-      '/v0/pipes/collection_country_summary.json',
+      '/v0/pipes/cncf_country_summary.json',
       filter,
     );
     expect(result).toEqual(summary);
@@ -84,7 +84,7 @@ describe('CNCF country fetchers', () => {
     await fetchCncfCountryTimeseries({ ...filter, granularity: 'yearly' });
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
-      '/v0/pipes/collection_country_activity_timeseries.json',
+      '/v0/pipes/cncf_country_activity_timeseries.json',
       expect.objectContaining({ countryCode: 'FR', granularity: 'yearly' }),
     );
   });
@@ -117,7 +117,7 @@ describe('CNCF country fetchers', () => {
     const result = await fetchCncfCountryOrganizations({ ...filter, limit: 5 });
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
-      '/v0/pipes/collection_country_top_organizations.json',
+      '/v0/pipes/cncf_country_top_organizations.json',
       expect.objectContaining({ limit: 5 }),
     );
     expect(result.data[0]?.headquarteredInCountry).toBe(true);
