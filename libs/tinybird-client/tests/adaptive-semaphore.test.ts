@@ -32,6 +32,28 @@ describe('AdaptiveSemaphore', () => {
     vi.restoreAllMocks();
   });
 
+  describe('queue status', () => {
+    it('logs the status every 8 seconds by default', () => {
+      const sem = new AdaptiveSemaphore(2, 10);
+      void sem.acquire(1_000);
+
+      vi.advanceTimersByTime(8_000);
+
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('tinybird_queue_status'));
+    });
+
+    it('hands the status to onStatus in place of the log line', () => {
+      const onStatus = vi.fn();
+      const sem = new AdaptiveSemaphore(2, 10, console, {}, onStatus);
+      void sem.acquire(1_000);
+
+      vi.advanceTimersByTime(8_000);
+
+      expect(onStatus).toHaveBeenCalledWith({ active: 1, queued: 0, effectiveLimit: 2, limit: 2 });
+      expect(console.warn).not.toHaveBeenCalled();
+    });
+  });
+
   describe('acquire()', () => {
     it('returns false when a slot is immediately available', async () => {
       const sem = new AdaptiveSemaphore(2, 10);

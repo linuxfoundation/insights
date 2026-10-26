@@ -5,6 +5,7 @@ import { createRemoteJWKSet, errors, jwtVerify, type JWTVerifyGetKey } from 'jos
 
 import { requiredEnv } from './env.js';
 import { UnauthorizedError, UpstreamUnavailableError } from './lib/errors.js';
+import { count } from './metrics.js';
 
 // The issuer is the token's exact `iss`, trailing slash included; its key set sits under it.
 export const authEnv = ['API_AUTH0_ISSUER_URL', 'API_AUTH0_AUDIENCE'] as const;
@@ -41,7 +42,11 @@ function isKeySetFailure(err: unknown): boolean {
   );
 }
 
-function unauthorized(reply: FastifyReply): never {
+// A revoked PAT never gets this far: the Worker fails its token exchange (ADR-0006).
+type AuthFailure = 'missing' | 'expired' | 'invalid_jwt';
+
+function unauthorized(reply: FastifyReply, reason: AuthFailure): never {
+  count('auth.failures', { reason });
   reply.header('www-authenticate', 'Bearer');
   throw new UnauthorizedError();
 }
@@ -54,7 +59,7 @@ export function authenticate(keys?: JWTVerifyGetKey) {
     }
     const token = /^Bearer (\S+)$/i.exec(request.headers.authorization ?? '')?.[1];
     if (!token) {
-      unauthorized(reply);
+      unauthorized(reply, 'missing');
     }
 
     let username: unknown;
@@ -71,13 +76,14 @@ export function authenticate(keys?: JWTVerifyGetKey) {
         request.log.error({ err }, 'Access token verification unavailable');
         throw new UpstreamUnavailableError();
       }
-      request.log.warn({ reason: (err as errors.JOSEError).code }, 'Access token rejected');
-      unauthorized(reply);
+      const code = (err as errors.JOSEError).code;
+      request.log.warn({ reason: code }, 'Access token rejected');
+      unauthorized(reply, code === 'ERR_JWT_EXPIRED' ? 'expired' : 'invalid_jwt');
     }
 
     if (typeof username !== 'string' || username === '') {
       request.log.warn({ reason: 'missing username claim' }, 'Access token rejected');
-      unauthorized(reply);
+      unauthorized(reply, 'invalid_jwt');
     }
     request.username = username;
   };

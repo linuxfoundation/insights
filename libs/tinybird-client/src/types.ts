@@ -34,6 +34,14 @@ export interface TinybirdLogger {
   error(message: string): void;
 }
 
+/** Request queue snapshot the client takes every few seconds. */
+export interface TinybirdQueueStatus {
+  active: number;
+  queued: number;
+  effectiveLimit: number;
+  limit: number;
+}
+
 /**
  * Minimal storage interface for the bucket-ID cache.
  * Implementors can wrap Redis, an in-memory map, or anything else.
@@ -71,6 +79,8 @@ export interface TinybirdClientConfig {
   logger?: TinybirdLogger;
   /** Optional hook around each request, e.g. to trace it. Omit to send requests as they are. */
   wrapRequest?: TinybirdRequestWrapper;
+  /** Receives the queue snapshot in place of the periodic `tinybird_queue_status` log line. */
+  onQueueStatus?: (status: TinybirdQueueStatus) => void;
 }
 
 export interface TinybirdClient {

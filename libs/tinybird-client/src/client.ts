@@ -119,7 +119,13 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
   const baseUrl = stripTrailingSlashes(rawBaseUrl);
   const logger: TinybirdLogger = config.logger ?? console;
-  const semaphore = new AdaptiveSemaphore(maxConcurrent, maxQueueSize, logger, latencyBackoff);
+  const semaphore = new AdaptiveSemaphore(
+    maxConcurrent,
+    maxQueueSize,
+    logger,
+    latencyBackoff,
+    config.onQueueStatus,
+  );
   const bucketCache = createBucketCache(bucketCacheStorage, logger);
 
   const authHeaders = { Authorization: `Bearer ${token}` };

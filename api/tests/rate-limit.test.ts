@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import tracer from 'dd-trace';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { buildApp } from '../src/app.js';
@@ -141,6 +142,20 @@ describe('rate limiting', () => {
     });
     expect(redis.state.clients.map(({ url }) => url)).toEqual([redisUrl]);
     expect([...redis.sets.keys()]).toEqual(['insights-api:ratelimit:jdoe']);
+  });
+
+  it('counts each rejection by tier and endpoint', async () => {
+    const increment = vi.spyOn(tracer.dogstatsd, 'increment');
+    await atDate(t0, async () => {
+      await statuses(31, jdoe);
+    });
+
+    expect(
+      increment.mock.calls.filter(([name]) => name === 'insights.api.ratelimit.rejections'),
+    ).toEqual([
+      ['insights.api.ratelimit.rejections', 1, { tier: 'basic', endpoint: '/v1-alpha/whoami' }],
+    ]);
+    increment.mockRestore();
   });
 
   it('gives a caller the Worker sends a tier for the premium limit', async () => {

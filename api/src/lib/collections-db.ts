@@ -117,6 +117,7 @@ export async function listCollections(
      ORDER BY ${orderClause(query.sort)}
      LIMIT $${params.length - 1} OFFSET $${params.length}`,
     params,
+    'listCollections',
   );
 }
 
@@ -131,6 +132,7 @@ export async function findCollection(
      LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
      WHERE c.slug = $1 AND ${visible}`,
     [slug],
+    'findCollection',
   );
   return row ?? null;
 }
@@ -149,6 +151,7 @@ export async function listProjectCollections(
      WHERE ip.slug = $1 AND ${visible}
      ORDER BY c.name, c.slug`,
     [projectSlug],
+    'listProjectCollections',
   );
 }
 
@@ -167,6 +170,7 @@ export async function listRepositoryCollections(
      WHERE r.url = $1 AND r."deletedAt" IS NULL
      ORDER BY c.name, c.slug`,
     [repositoryUrl],
+    'listRepositoryCollections',
   );
   if (rows.length === 0) {
     return null;
@@ -186,6 +190,7 @@ export async function collectionExists(request: RequestLog, slug: string): Promi
     request,
     `SELECT c.id FROM collections c WHERE c.slug = $1 AND ${visible} LIMIT 1`,
     [slug],
+    'collectionExists',
   );
   return rows.length > 0;
 }
@@ -203,6 +208,7 @@ export async function findCollectionMembers(
      FROM collections c
      WHERE c.slug = $1 AND ${visible}`,
     [slug],
+    'findCollectionMembers',
   );
   return row ?? null;
 }
@@ -223,6 +229,7 @@ export async function findCollectionDetail(
      LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
      WHERE c.slug = $1 AND ${visible}`,
     [slug],
+    'findCollectionDetail',
   );
   return row ?? null;
 }

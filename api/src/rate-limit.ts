@@ -6,6 +6,7 @@ import type { FastifyBaseLogger, FastifyReply, FastifyRequest } from 'fastify';
 
 import { dropRedisClient, getRedisClient, type RedisClient } from './clients/redis.js';
 import { RateLimitedError } from './lib/errors.js';
+import { count as countMetric } from './metrics.js';
 import { tierOf, type Tier } from './tier.js';
 
 // Requests per LFID over a sliding one-second window, by tier (ADR-0023). Both stay at 30 until load
@@ -73,13 +74,18 @@ export function rateLimit(log: FastifyBaseLogger) {
       request.log.error({ err }, 'Rate limit check failed, request allowed');
       return;
     }
-    const limit = RATE_LIMITS[tierOf(request)];
+    const tier = tierOf(request);
+    const limit = RATE_LIMITS[tier];
     reply.headers({
       'x-ratelimit-limit': limit,
       'x-ratelimit-remaining': Math.max(0, limit - count),
       'x-ratelimit-reset': RESET_SECONDS,
     });
     if (count > limit) {
+      countMetric('ratelimit.rejections', {
+        tier,
+        endpoint: request.routeOptions.url ?? 'unmatched',
+      });
       reply.header('retry-after', RESET_SECONDS);
       throw new RateLimitedError(limit);
     }
