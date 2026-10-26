@@ -57,6 +57,7 @@ vi.mock('@redis/client', () => ({ createClient: () => redis.client }));
 const increment = vi.spyOn(tracer.dogstatsd, 'increment');
 
 const organizationRoute = '/v1-alpha/organizations/microsoft';
+const projectRoute = '/v1-alpha/projects/kubernetes';
 const premium = { 'x-tier': 'gold' };
 const microsoftRow = {
   id: '0f7c5c1e-0000-4000-8000-000000000001',
@@ -69,6 +70,7 @@ const microsoftRow = {
   domain: '',
   membership: 'Platinum',
 };
+const kubernetesRow = { slug: 'kubernetes', name: 'Kubernetes' };
 
 const lookups = () =>
   increment.mock.calls
@@ -231,6 +233,17 @@ describe('response cache', () => {
 
     mockFetch.mockImplementation(tinybirdStub(() => [microsoftRow]));
     expect((await get(organizationRoute, token, premium)).statusCode).toBe(200);
+  });
+
+  it('never caches a body the response schema rejects', async () => {
+    mockFetch.mockImplementation(tinybirdStub(() => [{ slug: 'kubernetes' }]));
+    expect((await get(projectRoute, token)).statusCode).toBe(500);
+    expect(redis.sets).toEqual([]);
+
+    mockFetch.mockImplementation(tinybirdStub(() => [kubernetesRow]));
+    const recovered = await get(projectRoute, token);
+    expect(recovered.statusCode).toBe(200);
+    expect(recovered.json()).toMatchObject({ name: 'Kubernetes' });
   });
 
   it('serves from Tinybird while Redis is not ready', async () => {

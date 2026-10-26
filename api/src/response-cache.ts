@@ -53,9 +53,8 @@ const sortedKeys = (value: unknown): unknown => {
   return value;
 };
 
-// Built from the validated params and only the query params the route declares, since the schemas
-// let unknown params through and each one would otherwise add an entry. The build in the key means
-// a deploy never serves a response an older build produced.
+// Only declared query params count, since the schemas let unknown ones through and each would add
+// an entry. The build keeps a deploy from serving a response an older build produced.
 export function cacheKey(
   routeUrl: string,
   params: unknown,
@@ -131,9 +130,11 @@ export function cacheResponses(log: FastifyBaseLogger) {
       if (reply.statusCode !== 200) {
         return body;
       }
+      // Serialized with the route's response schema before the write, so a body the schema rejects
+      // fails this request instead of every request until the entry expires.
+      const entry = reply.serialize(body);
       try {
-        const entry = JSON.stringify(body);
-        if (entry && Buffer.byteLength(entry) <= MAX_ENTRY_BYTES) {
+        if (typeof entry === 'string' && Buffer.byteLength(entry) <= MAX_ENTRY_BYTES) {
           await withTimeout(
             redis.set(key, entry, { expiration: { type: 'EX', value: ttl } }),
             REDIS_TIMEOUT_MS,
