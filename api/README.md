@@ -35,6 +35,10 @@ Every route under `/v1` and `/v1-alpha` except `openapi.json` needs the Auth0 ac
 
 Each LFID gets a number of requests per second over a sliding window, set by its tier (ADR-0023): premium when the Worker forwards an `x-tier` header, basic otherwise. Both limits are 30 until load tests set them, in `src/rate-limit.ts`. Requests are counted in the Redis at `API_REDIS_URL`. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
 
+## Telemetry
+
+The API reports to the Datadog agent on its node through `dd-trace`, as the other services in its cluster do (ADR-0024). `src/instrumentation.ts` loads ahead of the app through `node --import`, as the `start` script and the Dockerfile do, and stays off until `DD_AGENT_HOST` is set; the standard `DD_*` variables configure the rest, with `insights-api` as the default service name. Each request is a `fastify.request` trace named by route template, which gives APM latency, hits and errors per endpoint, and its root span carries the caller's LFID as `usr.id` and their tier as `usr.tier`. The `insights.api.requests` DogStatsD counter counts authenticated requests by route, status, LFID and tier. Health probes are not traced. Logs stay on stdout, and `dd-trace` adds `dd.trace_id` and `dd.span_id` to each line. To print spans locally, build, then run `DD_AGENT_HOST=127.0.0.1 DD_TRACE_EXPERIMENTAL_EXPORTER=log pnpm start`.
+
 ## Deployment
 
 A merge to `main` deploys the API to production through the Public API Deploy workflow (`.github/workflows/public-api-deploy.yaml`) when `api/`, the libs it builds from, or the lockfile differ from the commit the `production-api` environment last deployed successfully, so a failed or superseded deploy is retried by the next run. Every new pod must then answer `200` on `/health/ready`, or the workflow rolls the deployment back. Each run is recorded under the `production-api` environment in the repository's Deployments.

@@ -14,6 +14,7 @@ import { authenticate } from './auth.js';
 import { healthRoutes } from './health.js';
 import { notFoundHandler } from './lib/errors.js';
 import { rateLimit } from './rate-limit.js';
+import { countRequest, tagCaller } from './telemetry.js';
 import { applyLifecycle } from './versions/lifecycle.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from './versions/registry.js';
 
@@ -144,7 +145,9 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
         // version's onRequest headers (ADR-0013) and before schema validation.
         await scope.register(async (data) => {
           data.addHook('preValidation', authenticate(options.authKeys));
+          data.addHook('preValidation', tagCaller);
           data.addHook('preValidation', rateLimit(app.log));
+          data.addHook('onResponse', countRequest);
           await data.register(entry.plugin);
         });
         // The route set is fixed once the app is ready, so the document is derived once per version.

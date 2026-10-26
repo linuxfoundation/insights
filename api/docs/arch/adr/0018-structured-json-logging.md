@@ -1,5 +1,7 @@
 # Structured JSON logging via pino; log levels follow LFX-0002
 
+> Amended 2026-10-26: trace correlation comes from `dd-trace`'s log injection, which adds a `dd` object (`trace_id`, `span_id`, `service`, `env`, `version`) to each line in place of the OpenTelemetry mixin fields. See [ADR-0024](./0024-dd-trace-to-node-datadog-agent.md).
+
 The API service uses pino for structured JSON logging. Every log line is a single valid JSON object. No leading or trailing characters, no literal newlines (escaped newlines inside JSON string values are fine). Logs go to stdout (pino default). The Datadog agent DaemonSet running on each cluster node picks them up via `containerCollectAll: true`. It tails the container runtime log files and ships them to Datadog Logs automatically, with no log routing through the otel-collector sidecar. This inherits the LFX platform standard from [lfx-architecture-decisions/0002](https://github.com/linuxfoundation/lfx-architecture-decisions/blob/main/decisions/0002-structured-json-logging.md), so any future LFX service we integrate with reads logs in the same shape.
 
 ## Log levels

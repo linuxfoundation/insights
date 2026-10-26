@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "node dist/server.js",
+    "start": "node --import ./dist/instrumentation.js dist/server.js",
     "build": "tsc -p tsconfig.build.json && vitepress build docs/site",
     "tsc-check": "tsc --noEmit",
     "test": "vitest run",
@@ -25,6 +25,7 @@
     "@lfx-insights/types": "workspace:*",
     "@redis/client": "^6.2.1",
     "@sinclair/typebox": "^0.34.0",
+    "dd-trace": "^6.20.1",
     "fastify": "^5.0.0",
     "jose": "^6.2.12"
   },
