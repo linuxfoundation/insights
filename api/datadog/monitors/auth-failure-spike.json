@@ -1,0 +1,17 @@
+{
+  "name": "[Insights API] Auth failure spike",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:insights.api.auth.failures{service:insights-api,env:production}.as_count() > 50",
+  "message": "{{#is_alert}}{{value}} requests reached the public API with a missing, expired or invalid token in the last 5 minutes.{{/is_alert}}{{#is_warning}}{{value}} requests reached the public API with a missing, expired or invalid token in the last 5 minutes.{{/is_warning}}{{#is_recovery}}Auth failures are back under their threshold.{{/is_recovery}}\n\nThe Worker answers callers without a PAT itself, so failures here point at the token exchange or the Worker. The `reason` tag says which.\n\nInsights API dashboard: api/datadog/dashboard.json in the insights repo.\n@slack-insights-critical-alerts",
+  "tags": ["env:production", "service:insights-api", "insights"],
+  "priority": 2,
+  "options": {
+    "thresholds": {
+      "critical": 50,
+      "warning": 10
+    },
+    "notify_no_data": false,
+    "require_full_window": false,
+    "include_tags": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "[Insights API] 5xx rate above 5%",
+  "type": "query alert",
+  "query": "sum(last_10m):100 * sum:trace.fastify.request.errors{service:insights-api,env:production}.as_count() / sum:trace.fastify.request.hits{service:insights-api,env:production}.as_count() > 5",
+  "message": "{{#is_alert}}{{value}}% of public API requests answered 5xx over the last 10 minutes.{{/is_alert}}{{#is_warning}}{{value}}% of public API requests answered 5xx over the last 10 minutes.{{/is_warning}}{{#is_recovery}}The public API 5xx rate is back under its threshold.{{/is_recovery}}\n\nAPM shows which endpoints fail, and a 503 usually means Tinybird or Postgres was unavailable.\n\nInsights API dashboard: api/datadog/dashboard.json in the insights repo.\n@slack-insights-critical-alerts",
+  "tags": ["env:production", "service:insights-api", "insights"],
+  "priority": 2,
+  "options": {
+    "thresholds": {
+      "critical": 5,
+      "warning": 2
+    },
+    "notify_no_data": false,
+    "require_full_window": false,
+    "include_tags": true
+  }
+}

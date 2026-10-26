@@ -1,0 +1,17 @@
+{
+  "name": "[Insights API] Rate-limit rejection spike",
+  "type": "query alert",
+  "query": "sum(last_5m):sum:insights.api.ratelimit.rejections{service:insights-api,env:production}.as_count() > 500",
+  "message": "{{#is_alert}}The public API answered {{value}} requests with 429 in the last 5 minutes.{{/is_alert}}{{#is_warning}}The public API answered {{value}} requests with 429 in the last 5 minutes.{{/is_warning}}{{#is_recovery}}Rate-limit rejections are back under their threshold.{{/is_recovery}}\n\nThe dashboard's Callers section shows which LFIDs are hitting the limit.\n\nInsights API dashboard: api/datadog/dashboard.json in the insights repo.\n@slack-insights-critical-alerts",
+  "tags": ["env:production", "service:insights-api", "insights"],
+  "priority": 3,
+  "options": {
+    "thresholds": {
+      "critical": 500,
+      "warning": 100
+    },
+    "notify_no_data": false,
+    "require_full_window": false,
+    "include_tags": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "[Insights API] Tinybird failure rate above 10%",
+  "type": "query alert",
+  "query": "sum(last_10m):100 * sum:insights.api.tinybird.errors{service:insights-api,env:production}.as_count() / count:insights.api.tinybird.duration{service:insights-api,env:production}.as_count() > 10",
+  "message": "{{#is_alert}}{{value}}% of the public API's Tinybird calls failed over the last 10 minutes.{{/is_alert}}{{#is_warning}}{{value}}% of the public API's Tinybird calls failed over the last 10 minutes.{{/is_warning}}{{#is_recovery}}The Tinybird failure rate is back under its threshold.{{/is_recovery}}\n\nThe `error_type` tag on `insights.api.tinybird.errors` separates a full local queue from Tinybird errors and network failures.\n\nInsights API dashboard: api/datadog/dashboard.json in the insights repo.\n@slack-insights-critical-alerts",
+  "tags": ["env:production", "service:insights-api", "insights"],
+  "priority": 2,
+  "options": {
+    "thresholds": {
+      "critical": 10,
+      "warning": 5
+    },
+    "notify_no_data": false,
+    "require_full_window": false,
+    "include_tags": true
+  }
+}
