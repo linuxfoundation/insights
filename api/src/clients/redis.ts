@@ -42,3 +42,23 @@ export function dropRedisClient(stale: RedisClient): void {
     stale.destroy();
   }
 }
+
+// The timed-out work keeps running, so onTimeout is where the caller abandons it.
+export async function withTimeout<T>(
+  work: Promise<T>,
+  ms: number,
+  onTimeout: () => void,
+): Promise<T> {
+  let timer: NodeJS.Timeout | undefined;
+  const deadline = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => {
+      reject(new Error(`Redis did not answer within ${ms} ms`));
+      onTimeout();
+    }, ms);
+  });
+  try {
+    return await Promise.race([work, deadline]);
+  } finally {
+    clearTimeout(timer);
+  }
+}

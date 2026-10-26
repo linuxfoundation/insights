@@ -14,6 +14,7 @@ import { authenticate } from './auth.js';
 import { healthRoutes } from './health.js';
 import { notFoundHandler } from './lib/errors.js';
 import { rateLimit } from './rate-limit.js';
+import { cacheResponses } from './response-cache.js';
 import { recordRequest, tagCaller } from './telemetry.js';
 import { applyLifecycle } from './versions/lifecycle.js';
 import { specVersionFor, versionRegistry, type ApiVersion } from './versions/registry.js';
@@ -148,6 +149,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
           data.addHook('preValidation', tagCaller);
           data.addHook('preValidation', rateLimit(app.log));
           data.addHook('onResponse', recordRequest);
+          data.addHook('onRoute', cacheResponses(app.log));
           await data.register(entry.plugin);
         });
         // The route set is fixed once the app is ready, so the document is derived once per version.
