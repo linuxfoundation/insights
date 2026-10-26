@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Static } from '@sinclair/typebox';
+import tracer from 'dd-trace';
 import type { FastifyRequest } from 'fastify';
 
 import {
@@ -45,9 +46,12 @@ async function fromTinybird<T>(
   request: RequestLog,
   path: string,
   call: () => Promise<T>,
+  bucketId?: TinybirdQuery[string],
 ): Promise<T> {
   try {
-    return await call();
+    // One span per pipe call, local queue wait and retry included, so APM times Tinybird per pipe.
+    const tags = bucketId === undefined ? { pipe: path } : { pipe: path, bucket_id: bucketId };
+    return await tracer.trace('tinybird.query', { resource: path, tags }, () => call());
   } catch (err: unknown) {
     if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
       request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
@@ -70,16 +74,21 @@ function fetchGuarded<T>(
 ): Promise<{ rows: T[]; total: number | undefined }> {
   // A missing API_TB_* variable throws here, outside the 503 mapping, so it stays a 500.
   const client = getTinybirdClient();
-  return fromTinybird(request, path, async () => {
-    const { data, rows_before_limit_at_least: total } = await client[method]<T[]>(path, params);
-    if (!Array.isArray(data) || !data.every(isRow)) {
-      throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
-    }
-    if (checkTotal && total !== undefined && !(Number.isSafeInteger(total) && total >= 0)) {
-      throw new TinybirdInvalidResponseError('Tinybird returned an unexpected row total');
-    }
-    return { rows: data, total };
-  });
+  return fromTinybird(
+    request,
+    path,
+    async () => {
+      const { data, rows_before_limit_at_least: total } = await client[method]<T[]>(path, params);
+      if (!Array.isArray(data) || !data.every(isRow)) {
+        throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
+      }
+      if (checkTotal && total !== undefined && !(Number.isSafeInteger(total) && total >= 0)) {
+        throw new TinybirdInvalidResponseError('Tinybird returned an unexpected row total');
+      }
+      return { rows: data, total };
+    },
+    params.bucketId,
+  );
 }
 
 export function fetchCountedPipe<T>(

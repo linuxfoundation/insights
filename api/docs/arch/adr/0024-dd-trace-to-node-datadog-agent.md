@@ -12,8 +12,8 @@ ADR-0019 instrumented the API with the OpenTelemetry SDK and an `opentelemetry-c
 
 We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics to the Datadog agent on the pod's node, as the crowd.dev services do. This amends ADR-0019 and the trace correlation section of ADR-0018:
 
-- `dd-trace` traces each request as `fastify.request`, named by route template, with its Postgres and outbound HTTP calls beneath it. Health probes are not traced.
-- The caller's LFID and tier go on the trace's root span through `tracer.setUser`, as `usr.id` and `usr.tier`. The `insights.api.requests` DogStatsD counter counts authenticated requests by route, status, LFID and tier.
+- `dd-trace` traces each request as `fastify.request`, named by route template, with its Postgres and outbound HTTP calls beneath it. Each Tinybird pipe call is a `tinybird.query` span named by pipe and tagged with its bucket. Health probes are not traced.
+- The caller's LFID and tier go on the trace's root span through `tracer.setUser`, as `usr.id` and `usr.tier`. Per-caller views come from span queries, and custom metrics go to the agent's DogStatsD port with low-cardinality tags only.
 - Log lines carry `dd.trace_id` and `dd.span_id` from `dd-trace`'s log injection, in place of OpenTelemetry's `trace_id` and `span_id`.
 - The request ID is the Datadog trace ID: 128-bit, logged as 32-char hex. Inbound W3C `traceparent` is still honoured, and outbound calls carry it alongside `x-datadog-*` headers.
 - Sampling follows the `dd-trace` default, which the agent tunes per service. APM trace metrics (hits, errors, latency percentiles) count every request whatever is sampled.
@@ -46,5 +46,5 @@ We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics
 
 ### Risks
 
-- The LFID tag gives the counter one series per caller, route and status, so its cost grows with adoption. Revisit before general availability; dropping `usr.id` from the counter leaves per-caller analysis to trace search on `@usr.id`.
-- DogStatsD aggregates in-process for 10 seconds, so a rollout can drop up to 10 seconds of a pod's counts. Accepted at current volume.
+- Datadog indexes a sample of spans by default, so per-caller counts from span queries are approximate. A retention filter that keeps every span of this service makes them exact, at current volume for little cost.
+- DogStatsD aggregates in-process for 10 seconds, so a rollout can drop up to 10 seconds of a pod's custom metrics. Accepted at current volume.
