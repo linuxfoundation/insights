@@ -1,0 +1,524 @@
+{
+  "title": "Insights API",
+  "description": "Public API traffic, latency and errors per endpoint, per tier and per caller, with Tinybird, Postgres, auth and rate-limit health. Source: api/datadog/dashboard.json in the insights repo.",
+  "layout_type": "ordered",
+  "template_variables": [
+    {
+      "name": "env",
+      "prefix": "env",
+      "available_values": [],
+      "defaults": ["production"]
+    }
+  ],
+  "widgets": [
+    {
+      "definition": {
+        "type": "group",
+        "title": "Overview",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "type": "query_value",
+              "title": "Requests",
+              "autoscale": true,
+              "precision": 0,
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "hits",
+                      "query": "sum:trace.fastify.request.hits{service:insights-api,$env}.as_count()",
+                      "aggregator": "sum"
+                    }
+                  ],
+                  "formulas": [{ "formula": "hits" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "query_value",
+              "title": "5xx rate",
+              "autoscale": false,
+              "precision": 2,
+              "custom_unit": "%",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "errors",
+                      "query": "sum:trace.fastify.request.errors{service:insights-api,$env}.as_count()",
+                      "aggregator": "sum"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "hits",
+                      "query": "sum:trace.fastify.request.hits{service:insights-api,$env}.as_count()",
+                      "aggregator": "sum"
+                    }
+                  ],
+                  "formulas": [{ "formula": "100 * errors / hits" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "query_value",
+              "title": "p95 latency",
+              "autoscale": true,
+              "precision": 3,
+              "custom_unit": "s",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "p95",
+                      "query": "p95:trace.fastify.request{service:insights-api,$env}",
+                      "aggregator": "avg"
+                    }
+                  ],
+                  "formulas": [{ "formula": "p95" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Requests by status class",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "bars",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "requests",
+                      "query": "sum:insights.api.request.count{service:insights-api,$env} by {status_class}.as_count()"
+                    }
+                  ],
+                  "formulas": [{ "formula": "requests" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Latency percentiles (s)",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "line",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "p50",
+                      "query": "p50:trace.fastify.request{service:insights-api,$env}"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "p95",
+                      "query": "p95:trace.fastify.request{service:insights-api,$env}"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "p99",
+                      "query": "p99:trace.fastify.request{service:insights-api,$env}"
+                    }
+                  ],
+                  "formulas": [
+                    { "formula": "p50", "alias": "p50" },
+                    { "formula": "p95", "alias": "p95" },
+                    { "formula": "p99", "alias": "p99" }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "group",
+        "title": "Endpoints",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "type": "query_table",
+              "title": "Requests, 5xx rate and latency by endpoint",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "hits",
+                      "query": "sum:trace.fastify.request.hits{service:insights-api,$env} by {resource_name}.as_count()",
+                      "aggregator": "sum"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "errors",
+                      "query": "sum:trace.fastify.request.errors{service:insights-api,$env} by {resource_name}.as_count()",
+                      "aggregator": "sum"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "p50",
+                      "query": "p50:trace.fastify.request{service:insights-api,$env} by {resource_name}",
+                      "aggregator": "avg"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "p95",
+                      "query": "p95:trace.fastify.request{service:insights-api,$env} by {resource_name}",
+                      "aggregator": "avg"
+                    },
+                    {
+                      "data_source": "metrics",
+                      "name": "p99",
+                      "query": "p99:trace.fastify.request{service:insights-api,$env} by {resource_name}",
+                      "aggregator": "avg"
+                    }
+                  ],
+                  "formulas": [
+                    {
+                      "formula": "hits",
+                      "alias": "Requests",
+                      "limit": { "count": 100, "order": "desc" }
+                    },
+                    { "formula": "100 * errors / hits", "alias": "5xx %" },
+                    { "formula": "p50", "alias": "p50 (s)" },
+                    { "formula": "p95", "alias": "p95 (s)" },
+                    { "formula": "p99", "alias": "p99 (s)" }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "p95 latency, slowest 10 endpoints (s)",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "line",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "p95",
+                      "query": "p95:trace.fastify.request{service:insights-api,$env} by {resource_name}"
+                    }
+                  ],
+                  "formulas": [{ "formula": "top(p95, 10, 'mean', 'desc')" }]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "group",
+        "title": "Tiers",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Requests by tier",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "bars",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "requests",
+                      "query": "sum:insights.api.request.count{service:insights-api,$env} by {tier}.as_count()"
+                    }
+                  ],
+                  "formulas": [{ "formula": "requests" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Average latency by tier (ms)",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "line",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "latency",
+                      "query": "avg:insights.api.request.duration{service:insights-api,$env} by {tier}"
+                    }
+                  ],
+                  "formulas": [{ "formula": "latency" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "toplist",
+              "title": "Rate-limit rejections by tier and endpoint",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "rejections",
+                      "query": "sum:insights.api.ratelimit.rejections{service:insights-api,$env} by {tier,endpoint}.as_count()",
+                      "aggregator": "sum"
+                    }
+                  ],
+                  "formulas": [
+                    { "formula": "rejections", "limit": { "count": 10, "order": "desc" } }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "group",
+        "title": "Callers",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "type": "note",
+              "content": "Callers come from APM spans tagged with `usr.id` (the LFID), so their counts follow span retention. Add a retention filter that keeps every `service:insights-api` span for exact numbers.",
+              "background_color": "white",
+              "font_size": "14",
+              "text_align": "left",
+              "show_tick": false,
+              "has_padding": true
+            }
+          },
+          {
+            "definition": {
+              "type": "toplist",
+              "title": "Top 10 callers by requests",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "spans",
+                      "name": "requests",
+                      "search": {
+                        "query": "service:insights-api operation_name:fastify.request $env"
+                      },
+                      "indexes": ["trace-search"],
+                      "compute": { "aggregation": "count" },
+                      "group_by": [
+                        {
+                          "facet": "@usr.id",
+                          "limit": 10,
+                          "sort": { "aggregation": "count", "order": "desc" }
+                        }
+                      ]
+                    }
+                  ],
+                  "formulas": [{ "formula": "requests", "limit": { "count": 10, "order": "desc" } }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "query_table",
+              "title": "Requests by caller and endpoint",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "spans",
+                      "name": "requests",
+                      "search": {
+                        "query": "service:insights-api operation_name:fastify.request $env"
+                      },
+                      "indexes": ["trace-search"],
+                      "compute": { "aggregation": "count" },
+                      "group_by": [
+                        {
+                          "facet": "@usr.id",
+                          "limit": 25,
+                          "sort": { "aggregation": "count", "order": "desc" }
+                        },
+                        {
+                          "facet": "resource_name",
+                          "limit": 20,
+                          "sort": { "aggregation": "count", "order": "desc" }
+                        }
+                      ]
+                    }
+                  ],
+                  "formulas": [
+                    {
+                      "formula": "requests",
+                      "alias": "Requests",
+                      "limit": { "count": 100, "order": "desc" }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "group",
+        "title": "Tinybird",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Average duration, slowest 10 pipes (ms)",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "line",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "duration",
+                      "query": "avg:insights.api.tinybird.duration{service:insights-api,$env} by {pipe}"
+                    }
+                  ],
+                  "formulas": [{ "formula": "top(duration, 10, 'mean', 'desc')" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "toplist",
+              "title": "Failures by pipe and type",
+              "requests": [
+                {
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "errors",
+                      "query": "sum:insights.api.tinybird.errors{service:insights-api,$env} by {pipe,error_type}.as_count()",
+                      "aggregator": "sum"
+                    }
+                  ],
+                  "formulas": [{ "formula": "errors", "limit": { "count": 10, "order": "desc" } }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Request queue",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "line",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "queue",
+                      "query": "max:insights.api.concurrency{service:insights-api,$env} by {state}"
+                    }
+                  ],
+                  "formulas": [{ "formula": "queue" }]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "group",
+        "title": "Auth and Postgres",
+        "layout_type": "ordered",
+        "widgets": [
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Auth failures by reason",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "bars",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "failures",
+                      "query": "sum:insights.api.auth.failures{service:insights-api,$env} by {reason}.as_count()"
+                    }
+                  ],
+                  "formulas": [{ "formula": "failures" }]
+                }
+              ]
+            }
+          },
+          {
+            "definition": {
+              "type": "timeseries",
+              "title": "Postgres average duration by query (ms)",
+              "show_legend": true,
+              "requests": [
+                {
+                  "response_format": "timeseries",
+                  "display_type": "line",
+                  "queries": [
+                    {
+                      "data_source": "metrics",
+                      "name": "duration",
+                      "query": "avg:insights.api.postgres.duration{service:insights-api,$env} by {query_name,outcome}"
+                    }
+                  ],
+                  "formulas": [{ "formula": "duration" }]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
