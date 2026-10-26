@@ -62,6 +62,7 @@ describe('per-version export output (AC5)', () => {
     }
   });
 
+  // Exports twice, and each export cold-starts the app in a tsx child process.
   it('removes stale artifacts for versions that are no longer registered', () => {
     const outDir = join(tmpRoot, 'stale');
     runExport([outDir]);
@@ -79,7 +80,7 @@ describe('per-version export output (AC5)', () => {
     for (const prefix of registeredPrefixes) {
       expect(existsSync(join(outDir, `${prefix.slice(1)}.json`))).toBe(true);
     }
-  });
+  }, 15_000);
 
   it('exports structurally valid per-version OpenAPI 3.x documents', () => {
     const outDir = join(tmpRoot, 'valid');
