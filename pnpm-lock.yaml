@@ -202,8 +202,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0(prettier@3.9.6)
       '@modelcontextprotocol/sdk':
-        specifier: ^1.30.0
-        version: 1.30.0(zod@4.5.4)
+        specifier: ^1.32.0
+        version: 1.32.2(zod@4.5.4)
       '@nuxt/image':
         specifier: ^2.1.0
         version: 2.1.0(@types/node@26.4.1)(magic-string@1.2.3)(magicast@0.5.4)(oxc-parser@0.143.0)(rolldown@1.2.15)(unplugin@3.3.0(esbuild@0.25.12)(rolldown@1.2.15)(rollup@4.63.1)(vite@8.3.5(@types/node@26.4.1)(esbuild@0.25.12)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(webpack@5.110.3(esbuild@0.25.12)(lightningcss@1.33.0)(postcss@8.5.31)(sharp@0.35.5(@types/node@26.4.1))))(unstorage@1.17.5(@azure/identity@4.13.0)(@azure/storage-blob@12.26.0)(aws4fetch@1.0.20)(db0@0.3.4)(ioredis@5.11.1))
@@ -3708,8 +3708,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@modelcontextprotocol/sdk@1.30.0':
-    resolution: {integrity: sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+UwH72z0lqaRbjr9hqGz0eITA==}
+  '@modelcontextprotocol/sdk@1.32.2':
+    resolution: {integrity: sha512-SWsVtH/0vULSQStoZ6xxH2K09Li8fXYTMC64ZeogCdpZ3XSi1eCPOByV1OpuJxuI3OcmHhosDWYyii07tpPsLw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cfworker/json-schema': ^4.1.1
@@ -15915,7 +15915,7 @@ snapshots:
       '@types/react': 18.3.23
       react: 19.2.8
 
-  '@modelcontextprotocol/sdk@1.30.0(zod@4.5.4)':
+  '@modelcontextprotocol/sdk@1.32.2(zod@4.5.4)':
     dependencies:
       '@hono/node-server': 1.19.17(hono@4.13.7)
       ajv: 8.20.0
