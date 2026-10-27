@@ -64,7 +64,8 @@ const segments = computed(() => {
     },
     {
       key: 'abroad-at-country-organization',
-      label: `Abroad, at an organization with ${props.countryAdjective} HQ`,
+      // Counts everyone not located in the country, including contributors with no location.
+      label: `Abroad or location unknown, at an organization with ${props.countryAdjective} HQ`,
       value: props.summary.abroadAtCountryOrganizationCount,
       barClass: 'bg-brand-800',
     },
