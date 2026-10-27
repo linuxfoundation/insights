@@ -25,11 +25,16 @@ SPDX-License-Identifier: MIT
             <span class="text-body-1 font-semibold text-neutral-900">{{ row.label }}</span>
             <span class="text-heading-4 font-bold text-neutral-900">{{ row.value }}</span>
           </div>
-          <lfx-progress-bar
-            :values="[row.share]"
-            :color="row.color"
-            hide-empty
-          />
+          <div
+            class="h-2 rounded-full bg-neutral-100 overflow-hidden"
+            role="img"
+            :aria-label="`${row.label}: ${row.value}, ${row.note}`"
+          >
+            <div
+              class="h-full rounded-full min-w-1"
+              :style="{ width: `${row.share}%`, backgroundColor: row.color }"
+            />
+          </div>
           <span class="text-body-2 text-neutral-500">{{ row.note }}</span>
         </div>
       </div>
@@ -38,6 +43,19 @@ SPDX-License-Identifier: MIT
         <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
           {{ countryName }}'s share over time
         </p>
+        <div class="flex flex-wrap gap-5 text-body-2 text-neutral-700">
+          <span
+            v-for="series in chartSeries"
+            :key="series.name"
+            class="inline-flex items-center gap-2"
+          >
+            <span
+              class="w-5 h-0.5 rounded-full"
+              :style="{ backgroundColor: series.color }"
+            />
+            {{ series.name }}
+          </span>
+        </div>
         <div class="h-[260px]">
           <client-only>
             <lfx-chart
@@ -70,8 +88,6 @@ import { formatNumber, formatNumberShort } from '~/components/shared/utils/forma
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
-import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
 import type { CncfCountryComparisonCounts, CncfCountryComparisonResponse } from '~~/types/report/cncf-country.types';
@@ -93,6 +109,13 @@ const metric = ref<Metric>('Contributor');
 
 const regionName = computed(() => props.comparison.regionName);
 
+// One color per place, shared by the bars, the chart lines, the legend and the tooltip.
+const PLACE_COLORS = {
+  world: lfxColors.neutral[500],
+  region: lfxColors.brand[400],
+  country: lfxColors.brand[600],
+};
+
 const counts = (source: CncfCountryComparisonCounts) => ({
   country: source[`country${metric.value}Count`],
   region: source[`region${metric.value}Count`],
@@ -113,23 +136,23 @@ const worldNote = computed(
     })[metric.value],
 );
 
-const rows = computed<{ label: string; value: string; share: number; note: string; color: ProgressBarType }[]>(() => {
+const rows = computed<{ label: string; value: string; share: number; note: string; color: string }[]>(() => {
   const { country, region, world } = counts(props.comparison.totals);
   return [
-    { label: 'World', value: formatCount(world), share: 100, note: worldNote.value, color: 'normal' },
+    { label: 'World', value: formatCount(world), share: 100, note: worldNote.value, color: PLACE_COLORS.world },
     {
       label: regionName.value,
       value: formatCount(region),
       share: percent(region, world),
       note: `${formatShare(percent(region, world))} of the world`,
-      color: 'normal',
+      color: PLACE_COLORS.region,
     },
     {
       label: props.countryName,
       value: formatCount(country),
       share: percent(country, world),
       note: `${formatShare(percent(country, world))} of the world · ${formatShare(percent(country, region))} of ${regionName.value}`,
-      color: 'normal',
+      color: PLACE_COLORS.country,
     },
   ];
 });
@@ -163,14 +186,14 @@ const chartSeries = computed<ChartSeries[]>(() => [
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 0,
-    color: lfxColors.brand[500],
+    color: PLACE_COLORS.region,
   },
   {
     name: 'Share of the world',
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 1,
-    color: lfxColors.neutral[700],
+    color: PLACE_COLORS.world,
   },
 ]);
 
@@ -185,15 +208,26 @@ const chartConfig = computed(() => {
   );
   // Shares sit far below 100%, so start the axis at 0 instead of the default data-driven bounds.
   config.yAxis = { ...config.yAxis, min: 0, max: undefined };
+  // The shared series style picks its own palette for points and areas; pin every part to the line color.
+  config.series = (config.series as Record<string, unknown>[]).map((series, index) => {
+    const color = chartSeries.value[index]?.color;
+    return {
+      ...series,
+      color,
+      lineStyle: { ...(series.lineStyle as object), color },
+      itemStyle: { ...(series.itemStyle as object), color },
+      areaStyle: { opacity: 0 },
+    };
+  });
   // The shared tooltip prints bare numbers; these values are percentages.
   config.tooltip = {
     ...config.tooltip,
     formatter: (paramsRaw: unknown) => {
       const params = (Array.isArray(paramsRaw) ? paramsRaw : [paramsRaw]) as {
         dataIndex: number;
+        seriesIndex: number;
         seriesName: string;
         value: number;
-        color: string;
       }[];
       const period = periods.value[params[0]?.dataIndex ?? 0]?.label ?? '';
       const lines = params
@@ -201,7 +235,7 @@ const chartConfig = computed(() => {
           (p) => `<div style="display: flex; justify-content: space-between; gap: 16px; min-width: 180px;
             font-size: 12px; color: ${lfxColors.neutral[900]};">
             <span><span style="display: inline-block; width: 8px; height: 8px; border-radius: 100%;
-              margin-right: 4px; background-color: ${p.color};"></span>${p.seriesName}</span>
+              margin-right: 4px; background-color: ${chartSeries.value[p.seriesIndex]?.color};"></span>${p.seriesName}</span>
             <span style="font-weight: 500;">${formatShare(p.value)}</span>
           </div>`,
         )
