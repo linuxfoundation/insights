@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { buildApp, type BuildAppOptions } from '../src/app.js';
 import { fetchPipe, useTinybirdLog } from '../src/clients/tinybird.js';
 import { useAuthApp } from './helpers/auth.js';
-import { mockFetch, tinybirdHost } from './helpers/tinybird.js';
+import { mockFetch, tinybirdError, tinybirdHost } from './helpers/tinybird.js';
 
 const projects: BuildAppOptions['versions'] = [
   {
@@ -37,6 +37,20 @@ describe('Tinybird client logging', () => {
       'tinybird_request_error',
     );
     expect(log.warn).not.toHaveBeenCalled();
+  });
+
+  it('renames the upstream HTTP status so it cannot override the log level', async () => {
+    const log = { warn: vi.fn(), error: vi.fn() };
+    useTinybirdLog(log as never);
+    mockFetch.mockImplementation(async () => tinybirdError(503));
+
+    expect((await get('/v1-alpha/projects/kubernetes/stars')).statusCode).toBe(503);
+
+    expect(log.error).toHaveBeenCalledWith(
+      expect.objectContaining({ pipe: '/v0/pipes/stars.json', httpStatus: 503 }),
+      'tinybird_request_error',
+    );
+    expect(log.error.mock.calls[0]?.[0]).not.toHaveProperty('status');
   });
 });
 

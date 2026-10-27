@@ -45,8 +45,13 @@ const toLog = (level: 'warn' | 'error') => (line: string) => {
   }
   if (line.startsWith('{')) {
     try {
-      const { message, ...fields } = JSON.parse(line) as { message?: string };
-      clientLog[level](fields, message);
+      // Datadog reads a top-level status as the log severity, so the upstream HTTP status gets
+      // its own name.
+      const { message, status, ...fields } = JSON.parse(line) as {
+        message?: string;
+        status?: number;
+      };
+      clientLog[level](status === undefined ? fields : { ...fields, httpStatus: status }, message);
       return;
     } catch {
       // Logged as plain text below.
