@@ -124,7 +124,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
   const authHeaders = { Authorization: `Bearer ${token}` };
 
-  async function throttled<T>(
+  async function withThrottle<T>(
     path: string,
     params: TinybirdQuery,
     skipThrottle: boolean,
@@ -202,13 +202,13 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     }
   }
 
-  function withThrottle<T>(
+  function dispatch<T>(
     path: string,
     params: TinybirdQuery,
     skipThrottle: boolean,
     send: () => Promise<Response>,
   ): Promise<TinybirdResponse<T>> {
-    const execute = () => throttled<T>(path, params, skipThrottle, send);
+    const execute = () => withThrottle<T>(path, params, skipThrottle, send);
     return wrapRequest ? wrapRequest(path, params, execute) : execute();
   }
 
@@ -265,7 +265,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = qs ? `${baseUrl}${path}?${qs}` : `${baseUrl}${path}`;
     const skipThrottle = SKIP_THROTTLE_PATHS.has(path);
 
-    return withThrottle<T>(path, query, skipThrottle, () =>
+    return dispatch<T>(path, query, skipThrottle, () =>
       fetchWithRetry(url, { headers: authHeaders }, GET_RETRY_COUNT),
     );
   }
@@ -277,7 +277,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = `${baseUrl}${path}`;
     const body = buildBodyString(params);
 
-    return withThrottle<T>(path, params, false, () =>
+    return dispatch<T>(path, params, false, () =>
       fetch(url, {
         method: 'POST',
         headers: { ...authHeaders, 'Content-Type': 'application/x-www-form-urlencoded' },
