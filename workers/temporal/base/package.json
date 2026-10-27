@@ -14,9 +14,9 @@
     "@crowd/slack": "workspace:*",
     "@crowd/telemetry": "workspace:*",
     "@crowd/temporal": "workspace:*",
-    "@temporalio/activity": "~1.11.8",
-    "@temporalio/worker": "~1.11.8",
-    "@temporalio/workflow": "~1.11.8"
+    "@temporalio/activity": "catalog:",
+    "@temporalio/worker": "catalog:",
+    "@temporalio/workflow": "catalog:"
   },
   "devDependencies": {
     "@types/config": "^4.4.0",

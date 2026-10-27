@@ -16,6 +16,10 @@ inputs:
     description: Extra build args (newline-separated KEY=VALUE)
     required: false
     default: ""
+  run-unique-tag:
+    description: Include the workflow run id in the tag so a new run at an already deployed commit still gets a new tag
+    required: false
+    default: "false"
 
 outputs:
   image:
@@ -31,6 +35,10 @@ runs:
       run: |
         SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-6)
         IMAGE_VERSION="${SHORT_SHA}.${{ github.run_attempt }}"
+        # kubectl set image starts no rollout when the tag is unchanged.
+        if [ "${{ inputs.run-unique-tag }}" = "true" ]; then
+          IMAGE_VERSION="${SHORT_SHA}.${{ github.run_id }}.${{ github.run_attempt }}"
+        fi
         IMAGE_TAG="sjc.ocir.io/axbydjxa5zuh/${{ inputs.image-name }}:${IMAGE_VERSION}"
         echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_OUTPUT
         echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT

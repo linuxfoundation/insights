@@ -1,0 +1,247 @@
+name: Public API Deploy
+
+on:
+  push:
+    branches:
+      - main
+    # Union of the pathspecs in the changes job; keep both in sync.
+    paths:
+      - "api/**"
+      - "libs/types/**"
+      - "libs/postgres-client/**"
+      - "libs/tinybird-client/**"
+      - "workers/api-gateway/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "!api/README.md"
+      - "!workers/api-gateway/README.md"
+  workflow_dispatch:
+    inputs:
+      service:
+        description: Service to redeploy
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - api
+          - api-gateway
+
+permissions:
+  contents: read
+
+# Runs never overlap, so change detection always sees the deployment the previous run recorded.
+concurrency:
+  group: public-api-deploy
+  cancel-in-progress: false
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: read
+    outputs:
+      api: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api-gateway') || steps.diff.outputs.api == 'true' }}
+      gateway: ${{ (github.event_name == 'workflow_dispatch' && inputs.service != 'api') || steps.diff.outputs.gateway == 'true' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Each service is compared with the commit its environment last deployed successfully, so changes from a superseded, failed or replaced run are picked up by the next run, push or dispatch.
+      - name: Detect changed services
+        id: diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A dispatch from another branch would ship that branch's code to production.
+          [ "$GITHUB_REF" = refs/heads/main ] || { echo "::error::Run this workflow from main"; exit 1; }
+
+          last_deployed() {
+            local deployments id sha
+            deployments=$(gh api "repos/$GITHUB_REPOSITORY/deployments?environment=$1&per_page=30" --jq '.[] | "\(.id) \(.sha)"' 2>/dev/null || true)
+            while read -r id sha; do
+              [ -n "$id" ] || continue
+              if gh api "repos/$GITHUB_REPOSITORY/deployments/$id/statuses" --jq '.[].state' 2>/dev/null | grep -qx success; then
+                echo "$sha"
+                return
+              fi
+            done <<< "$deployments"
+          }
+
+          changed() {
+            local base
+            base=$(last_deployed "$1")
+            shift
+            if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              echo "No usable successful deployment (base '$base'), deploying" >&2
+              echo true
+              return
+            fi
+            # Runs can queue out of push order, so a first attempt at a commit the deployment already contains is skipped; re-running a run still deploys its commit for rollback.
+            if [ "$GITHUB_RUN_ATTEMPT" = 1 ] && git merge-base --is-ancestor "$GITHUB_SHA" "$base"; then
+              echo "$GITHUB_SHA is already contained in $base, skipping" >&2
+              echo false
+              return
+            fi
+            echo "Comparing against $base" >&2
+            if [ -n "$(git diff --name-only "$base" "$GITHUB_SHA" -- "$@")" ]; then echo true; else echo false; fi
+          }
+
+          echo "api=$(changed production-api api ':!api/README.md' libs/types libs/postgres-client libs/tinybird-client pnpm-lock.yaml pnpm-workspace.yaml)" >> "$GITHUB_OUTPUT"
+          echo "gateway=$(changed production-api-gateway workers/api-gateway ':!workers/api-gateway/README.md' pnpm-lock.yaml pnpm-workspace.yaml)" >> "$GITHUB_OUTPUT"
+
+  deploy-api:
+    needs: changes
+    if: needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: production-api
+      url: ${{ vars.API_PUBLIC_URL }}
+    env:
+      ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
+      ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
+      ORACLE_USER: ${{ secrets.ORACLE_USER }}
+      ORACLE_TENANT: ${{ secrets.ORACLE_TENANT }}
+      ORACLE_REGION: ${{ secrets.ORACLE_REGION }}
+      ORACLE_FINGERPRINT: ${{ secrets.ORACLE_FINGERPRINT }}
+      ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
+      ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
+      ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OCI CLI and Kubectl
+        run: |
+          # Install OCI CLI
+          curl -sL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh | bash -s -- --accept-all-defaults
+          echo "$HOME/bin" >> $GITHUB_PATH
+          export PATH="$HOME/bin:$PATH"
+
+          # Configure OCI CLI
+          mkdir -p ~/.oci
+          echo "${{ env.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user=${{ env.ORACLE_USER }}
+          fingerprint=${{ env.ORACLE_FINGERPRINT }}
+          key_file=$HOME/.oci/oci_api_key.pem
+          tenancy=${{ env.ORACLE_TENANT }}
+          region=${{ env.ORACLE_REGION }}
+          pass_phrase=${{ env.ORACLE_KEY_PASSPHRASE }}
+          EOF
+          chmod 600 ~/.oci/config
+
+          # Get kubeconfig
+          $HOME/bin/oci ce cluster create-kubeconfig \
+            --cluster-id ${{ env.ORACLE_CLUSTER }} \
+            --file $HOME/.kube/config \
+            --region ${{ env.ORACLE_REGION }} \
+            --token-version 2.0.0 \
+            --kube-endpoint PUBLIC_ENDPOINT \
+            --overwrite
+
+      - name: Build docker image
+        uses: ./.github/actions/build-docker-image
+        id: build-docker-image
+        with:
+          app-env: production
+          dockerfile: api/Dockerfile
+          image-name: insights-api
+          run-unique-tag: "true"
+
+      - name: Update Deployment Image
+        run: |
+          kubectl set image deployment/insights-api-dpl \
+            api=${{ steps.build-docker-image.outputs.image }} \
+            -n insights
+
+      # The pod probes only check the TCP port, so readiness is confirmed through /health/ready on every new pod.
+      - name: Wait for rollout and readiness
+        id: rollout
+        env:
+          IMAGE: ${{ steps.build-docker-image.outputs.image }}
+        run: |
+          kubectl rollout status deployment/insights-api-dpl -n insights --timeout=300s
+          PODS=$(kubectl get pods -n insights -l app=insights-api -o json \
+            | jq -r --arg image "$IMAGE" '.items[] | select(.metadata.deletionTimestamp == null and .spec.containers[0].image == $image) | .metadata.name')
+          [ -n "$PODS" ] || { echo "::error::No pods run $IMAGE"; exit 1; }
+          for POD in $PODS; do
+            kubectl exec -n insights "$POD" -c api -- node -e "
+              fetch('http://127.0.0.1:4000/health/ready', { signal: AbortSignal.timeout(10000) }).then(
+                async (res) => { console.log('$POD', res.status, await res.text()); process.exit(res.ok ? 0 : 1); },
+                (err) => { console.error('$POD', err.message); process.exit(1); },
+              );"
+          done
+
+      - name: Roll back
+        if: failure() && steps.rollout.outcome == 'failure'
+        run: |
+          kubectl rollout undo deployment/insights-api-dpl -n insights
+          kubectl rollout status deployment/insights-api-dpl -n insights --timeout=300s
+
+  deploy-api-gateway:
+    needs: [changes, deploy-api]
+    # Waits for the API when both changed, so the Worker never reaches an API older than itself.
+    # A dispatch that selects the gateway still runs when the API deploy fails, so a Worker fix can ship during an API outage.
+    if: >-
+      !cancelled() && needs.changes.outputs.gateway == 'true' &&
+      (needs.deploy-api.result == 'success' || needs.deploy-api.result == 'skipped' ||
+      (github.event_name == 'workflow_dispatch' && inputs.service == 'api-gateway'))
+    runs-on: ubuntu-latest
+    environment:
+      name: production-api-gateway
+      url: ${{ vars.API_PUBLIC_URL }}
+    defaults:
+      run:
+        working-directory: workers/api-gateway
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.2
+
+      # Wrangler needs Node 22 or later.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        working-directory: .
+        run: pnpm install --filter @lfx-insights/api-gateway
+
+      - name: Test
+        run: pnpm test
+
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm run deploy --message "${GITHUB_SHA::8}"
+
+      # A request without a PAT is answered by the Worker itself, so this confirms the new version serves without calling Auth0.
+      - name: Smoke check
+        id: smoke
+        env:
+          API_PUBLIC_URL: ${{ vars.API_PUBLIC_URL }}
+        run: |
+          HEADERS=$(curl -sS --connect-timeout 10 --max-time 30 -o /dev/null -D - "${API_PUBLIC_URL%/}/")
+          echo "$HEADERS" | head -1
+          echo "$HEADERS" | head -1 | grep -q ' 401' || { echo "::error::Expected 401 from the Worker"; exit 1; }
+          echo "$HEADERS" | grep -qi '^www-authenticate: Bearer' || { echo "::error::401 did not come from the Worker"; exit 1; }
+
+      - name: Roll back
+        if: failure() && steps.smoke.outcome == 'failure'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec wrangler rollback --env production --yes --message "smoke check failed for ${GITHUB_SHA::8}"

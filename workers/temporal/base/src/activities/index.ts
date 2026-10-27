@@ -14,10 +14,10 @@ async function telemetryDistribution(
   telemetry.distribution(name, value, tags);
 }
 
-async function slackNotify(message: string, persona: SlackPersona) {
+async function slackNotify(message: string, persona: `${SlackPersona}`) {
   // Accept string to allow workflow code to pass string literals without importing enum
   await sendSlackNotificationAsync(
-    SlackChannel.ALERTS,
+    SlackChannel.INSIGHTS_ALERTS,
     persona as SlackPersona,
     'Temporal Alert',
     message,

@@ -9,6 +9,21 @@ packages:
   - "api"
   - "libs/*"
 
+# crowd.dev packages declare these as `catalog:`, so every name they use must be listed here.
+# Versions follow crowd.dev's own pnpm-workspace.yaml; the workers share the Temporal entries.
+catalog:
+  "@temporalio/activity": ~1.17.2
+  "@temporalio/client": ~1.17.2
+  "@temporalio/common": ~1.17.2
+  "@temporalio/proto": ~1.17.2
+  "@temporalio/worker": ~1.17.2
+  "@temporalio/workflow": ~1.17.2
+  "@types/node": ^24.13.3
+  axios: ^1.20.0
+  config: ^3.3.12
+  pg-promise: ^11.4.3
+  tsx: ^4.20.3
+
 supportedArchitectures:
   os:
     - current
@@ -28,11 +43,10 @@ packageExtensions:
 overrides:
   h3@1: ">=1.15.11 <2" # floor only; nuxt 4.5 pulls the latest 1.x itself
   form-data: ">=4.0.4" # GHSA-fjxv-7rqg-78g4
-  shell-quote: ">=1.8.4" # GHSA-w7jw-789q-3m8p
+  shell-quote: ">=1.11.0 <2" # GHSA-w7jw-789q-3m8p, GHSA-pqg4-j6r4-53mv
   protobufjs@7: ">=7.5.5 <8" # GHSA-xq3m-2v4x-88gg (7.x line only; @temporalio >=1.23 needs 8.x)
-  simple-git: ">=3.32.3" # GHSA-r275-fr43-pm7q
-  fast-xml-parser@5: ">=5.7.0" # GHSA-m7jm-9gc2-mpf2 (5.x line only; 4.x deferred, needs-human)
-  "@grpc/grpc-js": ">=1.13.5 <2" # GHSA-5375-pq7m-f5r2, GHSA-99f4-grh7-6pcq
+  fast-xml-parser@5: ">=5.10.1" # GHSA-m7jm-9gc2-mpf2, GHSA-8r6m-32jq-jx6q (5.x line only; 4.x deferred, needs-human)
+  "@grpc/grpc-js": ">=1.14.5 <2" # GHSA-5375-pq7m-f5r2, GHSA-99f4-grh7-6pcq, GHSA-m9gg-hp2v-232j
   "@hono/node-server": ">=1.19.10 <2" # GHSA-wc8c-qw6v-h7f6
   "@isaacs/brace-expansion": ">=5.0.1 <6" # GHSA-7h2j-956f-4vf2
   hono: ">=4.12.25 <5" # GHSA-88fw-hqm2-52qc and stacked hono CVEs
@@ -62,3 +76,17 @@ overrides:
   lodash: ">=4.18.1 <5" # GHSA stacked (<=4.17.23); 4.18.0 is npm-deprecated "bad release", use 4.18.1
   terser-webpack-plugin: ">=5.6.1 <6" # dev-only (webpack's own minifier dep); 5.3.17+ dropped serialize-javascript entirely, removing the vulnerable pin
   serialize-javascript: ">=7.0.5 <8" # GHSA (CVE-2026-34043); @rollup/plugin-terser@0.4.4 declares ^6.0.1 but only calls the stable default export, API unchanged across the major
+  proxy-addr: ">=2.0.8 <3" # GHSA-jqcg-44mw-7w3h
+  "@nuxt/devtools": "3.4.3" # GHSA-x6jw-m9v5-85vh, GHSA-v5rq-49vh-5v5c (3.4.3 drops simple-git; 3.4.4 needs @nuxt/kit ^4.6.1)
+  "@storybook/vue3": "9.1.21" # GHSA-f2ph-cmg5-wxc8 (@storybook-vue/nuxt@9.0.1 exact-pins 9.1.2; keep in lockstep with storybook core)
+  "@storybook/builder-vite": "9.1.21" # same
+  "@storybook/vue3-vite": "9.1.21" # same
+  devalue@5: ">=5.9.3 <6" # GHSA-r9w8-h9r3-54w4, GHSA-mcm9-63f2-9j32, GHSA-j22f-vq7h-c4qm, GHSA-x5rw-q4pp-hg5g
+  sharp: ">=0.35.5 <0.36" # GHSA-wq5f-xc86-pv6w
+  source-map-js: ">=1.2.2 <2" # GHSA-68fv-2mgg-jv7q
+  brace-expansion@1: ">=1.1.20 <2" # GHSA-qhr7-859c-m2p7, GHSA-6j4f-fj2g-mc7p (1.x line)
+  brace-expansion@2: ">=2.1.6 <3" # same GHSAs (2.x line)
+  brace-expansion@5: ">=5.0.11 <6" # same GHSAs (5.x line)
+  launch-editor: ">=2.14.2 <3" # GHSA-587h-7wmj-h5pm
+  vite@7: ">=7.3.7 <8" # GHSA-587h-7wmj-h5pm (7.x line; 5.x vitepress line deferred, needs-human: major hop)
+  vite@8: ">=8.3.3 <9" # GHSA-587h-7wmj-h5pm (8.x line; 8.3.0-8.3.2 also affected, patched in 8.3.3)
