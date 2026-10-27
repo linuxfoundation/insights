@@ -63,3 +63,27 @@ export interface CncfCountryOrganization {
 export interface CncfCountryOrganizationsResponse {
   data: CncfCountryOrganization[];
 }
+
+// Counts for the country, its region and the world; only records with a known location count.
+export interface CncfCountryComparisonCounts {
+  countryContributorCount: number;
+  regionContributorCount: number;
+  worldContributorCount: number;
+  countryContributionCount: number;
+  regionContributionCount: number;
+  worldContributionCount: number;
+  countryOrganizationCount: number;
+  regionOrganizationCount: number;
+  worldOrganizationCount: number;
+}
+
+export interface CncfCountryComparisonPoint extends CncfCountryComparisonCounts {
+  startDate: string;
+  endDate: string;
+}
+
+export interface CncfCountryComparisonResponse {
+  regionName: string;
+  totals: CncfCountryComparisonCounts;
+  data: CncfCountryComparisonPoint[];
+}

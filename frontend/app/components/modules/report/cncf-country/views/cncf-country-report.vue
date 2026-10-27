@@ -140,6 +140,45 @@ SPDX-License-Identifier: MIT
 
     <lfx-card class="p-4 md:p-6 flex flex-col gap-4">
       <div>
+        <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">
+          {{ country.name }} in context
+        </h2>
+        <p class="text-body-2 text-neutral-500">
+          {{ country.adjective }} activity compared with {{ comparison?.regionName ?? 'its region' }} and the world
+        </p>
+      </div>
+      <lfx-skeleton
+        v-if="comparisonStatus === 'pending'"
+        height="320px"
+        width="100%"
+      />
+      <div
+        v-else-if="comparisonError || !comparison"
+        class="text-negative-500"
+      >
+        Error loading data. Please try again.
+      </div>
+      <div
+        v-else-if="!comparison.totals.worldContributorCount"
+        class="text-neutral-500"
+      >
+        No data available for the selected period.
+      </div>
+      <lfx-cncf-country-comparison
+        v-else
+        :comparison="comparison"
+        :country-name="country.name"
+        :granularity="selectedOption.granularity"
+      />
+      <p class="text-body-2 text-neutral-500">
+        Compared by location only: contributors by their profile country, or else location, and organizations by their
+        HQ, so {{ country.name }} here excludes {{ country.adjective }}-HQ staff based abroad. Shares are of what has a
+        known location.
+      </p>
+    </lfx-card>
+
+    <lfx-card class="p-4 md:p-6 flex flex-col gap-4">
+      <div>
         <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">Top projects</h2>
         <p class="text-body-2 text-neutral-500">CNCF projects by {{ country.adjective }} contributors</p>
       </div>
@@ -221,6 +260,7 @@ import { DateTime } from 'luxon';
 import { computed, onServerPrefetch, ref, type ComputedRef } from 'vue';
 
 import LfxCncfCountryActivityChart from '~/components/modules/report/cncf-country/components/cncf-country-activity-chart.vue';
+import LfxCncfCountryComparison from '~/components/modules/report/cncf-country/components/cncf-country-comparison.vue';
 import LfxCncfCountryOrganizations from '~/components/modules/report/cncf-country/components/cncf-country-organizations.vue';
 import LfxCncfCountryProjects from '~/components/modules/report/cncf-country/components/cncf-country-projects.vue';
 import LfxCncfCountrySplit from '~/components/modules/report/cncf-country/components/cncf-country-split.vue';
@@ -316,8 +356,23 @@ const {
   suspense: organizationsSuspense,
 } = CNCF_COUNTRY_REPORT_API_SERVICE.fetchOrganizations(computed(() => ({ ...params.value, limit: 10 })));
 
+const {
+  data: comparison,
+  status: comparisonStatus,
+  error: comparisonError,
+  suspense: comparisonSuspense,
+} = CNCF_COUNTRY_REPORT_API_SERVICE.fetchComparison(
+  computed(() => ({ ...params.value, granularity: selectedOption.value.granularity })),
+);
+
 onServerPrefetch(async () => {
-  await Promise.all([summarySuspense(), timeseriesSuspense(), projectsSuspense(), organizationsSuspense()]);
+  await Promise.all([
+    summarySuspense(),
+    timeseriesSuspense(),
+    projectsSuspense(),
+    organizationsSuspense(),
+    comparisonSuspense(),
+  ]);
 });
 
 const topProjects = computed(() =>

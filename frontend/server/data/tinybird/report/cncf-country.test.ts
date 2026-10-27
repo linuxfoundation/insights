@@ -122,4 +122,44 @@ describe('CNCF country fetchers', () => {
     );
     expect(result.data[0]?.headquarteredInCountry).toBe(true);
   });
+
+  test('comparison fetches totals and the series with the region codes', async () => {
+    const { fetchCncfCountryComparison } = await import('./cncf-country');
+    const counts = {
+      countryContributorCount: 714,
+      regionContributorCount: 6322,
+      worldContributorCount: 21187,
+      countryContributionCount: 1,
+      regionContributionCount: 1,
+      worldContributionCount: 1,
+      countryOrganizationCount: 198,
+      regionOrganizationCount: 1729,
+      worldOrganizationCount: 5023,
+    };
+    mockFetchFromTinybird.mockResolvedValueOnce({ data: [counts] }).mockResolvedValueOnce({
+      data: [
+        { ...counts, startDate: '2026-09-01', endDate: '2026-09-30' },
+        { ...counts, startDate: '2026-10-01', endDate: '2026-10-31' },
+      ],
+    });
+
+    const result = await fetchCncfCountryComparison({
+      ...filter,
+      endDate: DateTime.fromISO('2026-10-01'),
+      region: { name: 'Europe', codes: ['FR', 'DE'] },
+      granularity: 'monthly',
+    });
+
+    expect(mockFetchFromTinybird).toHaveBeenCalledWith(
+      '/v0/pipes/cncf_country_comparison.json',
+      expect.objectContaining({ countryCode: 'FR', regionCodes: ['FR', 'DE'] }),
+    );
+    expect(mockFetchFromTinybird).toHaveBeenCalledWith(
+      '/v0/pipes/cncf_country_comparison.json',
+      expect.objectContaining({ granularity: 'monthly' }),
+    );
+    expect(result.regionName).toBe('Europe');
+    expect(result.totals.countryContributorCount).toBe(714);
+    expect(result.data.map((p) => p.startDate)).toEqual(['2026-09-01']);
+  });
 });

@@ -3,6 +3,9 @@
 import type { DateTime } from 'luxon';
 
 import type {
+  CncfCountryComparisonCounts,
+  CncfCountryComparisonPoint,
+  CncfCountryComparisonResponse,
   CncfCountryOrganization,
   CncfCountryOrganizationsResponse,
   CncfCountryProjectsResponse,
@@ -91,4 +94,40 @@ export async function fetchCncfCountryOrganizations(
   );
 
   return { data: mapCncfCountryOrganizations(result.data) };
+}
+
+const EMPTY_COMPARISON: CncfCountryComparisonCounts = {
+  countryContributorCount: 0,
+  regionContributorCount: 0,
+  worldContributorCount: 0,
+  countryContributionCount: 0,
+  regionContributionCount: 0,
+  worldContributionCount: 0,
+  countryOrganizationCount: 0,
+  regionOrganizationCount: 0,
+  worldOrganizationCount: 0,
+};
+
+export async function fetchCncfCountryComparison(
+  filter: CncfCountryFilter & { region: { name: string; codes: string[] }; granularity: string },
+): Promise<CncfCountryComparisonResponse> {
+  const params = { ...contributionParams(filter), regionCodes: filter.region.codes };
+  const [totals, series] = await Promise.all([
+    fetchFromTinybird<CncfCountryComparisonCounts[]>(
+      '/v0/pipes/cncf_country_comparison.json',
+      params,
+    ),
+    fetchFromTinybird<CncfCountryComparisonPoint[]>('/v0/pipes/cncf_country_comparison.json', {
+      ...params,
+      granularity: filter.granularity,
+    }),
+  ]);
+
+  // endDate is exclusive, but generate_timeseries includes the period that starts on it.
+  const end = filter.endDate?.toFormat('yyyy-MM-dd');
+  return {
+    regionName: filter.region.name,
+    totals: totals.data[0] ?? EMPTY_COMPARISON,
+    data: end ? series.data.filter((point) => point.startDate < end) : series.data,
+  };
 }

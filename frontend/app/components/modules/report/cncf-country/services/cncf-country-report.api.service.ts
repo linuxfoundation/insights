@@ -5,6 +5,7 @@ import { type ComputedRef, computed } from 'vue';
 
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
+  CncfCountryComparisonResponse,
   CncfCountryOrganizationsResponse,
   CncfCountryProjectsResponse,
   CncfCountryQueryParams,
@@ -58,6 +59,14 @@ class CncfCountryReportApiService {
     return useCountryQuery<CncfCountryOrganizationsResponse>(
       TanstackKey.CNCF_COUNTRY_ORGANIZATIONS,
       '/api/report/cncf/country/organizations',
+      computed(() => ({ ...params.value })),
+    );
+  }
+
+  fetchComparison(params: ComputedRef<CncfCountryTimeseriesQueryParams>) {
+    return useCountryQuery<CncfCountryComparisonResponse>(
+      TanstackKey.CNCF_COUNTRY_COMPARISON,
+      '/api/report/cncf/country/comparison',
       computed(() => ({ ...params.value })),
     );
   }
