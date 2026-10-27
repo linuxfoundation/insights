@@ -4,9 +4,16 @@ import tracer from 'dd-trace';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { BuildAppOptions } from '../src/app.js';
-import { fetchPipe } from '../src/clients/tinybird.js';
+import { fetchPipe, withBucket } from '../src/clients/tinybird.js';
 import { localKeys, sign, useAuthApp } from './helpers/auth.js';
-import { mockFetch, tinybirdError, tinybirdHost, tinybirdResponse } from './helpers/tinybird.js';
+import {
+  bucketsPath,
+  mockFetch,
+  tinybirdError,
+  tinybirdHost,
+  tinybirdResponse,
+  tinybirdStub,
+} from './helpers/tinybird.js';
 
 // The tracer is never initialized under test, so these spy on its no-op DogStatsD client.
 const increment = vi.spyOn(tracer.dogstatsd, 'increment');
@@ -22,6 +29,12 @@ const projects: BuildAppOptions['versions'] = [
       scope.get('/projects/:slug/stars', async (request) =>
         fetchPipe(request, pipePath, { slug: (request.params as { slug: string }).slug }),
       );
+      scope.get('/projects/:slug/bucketed', async (request) => {
+        const { slug } = request.params as { slug: string };
+        return withBucket(request, slug, (bucketId) =>
+          fetchPipe(request, pipePath, { project: slug, bucketId }),
+        );
+      });
     },
   },
 ];
@@ -105,5 +118,21 @@ describe('custom metrics', () => {
     expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
       [1, { pipe: pipePath, error_type: 'http' }],
     ]);
+  });
+
+  it('times a bucket lookup once, however many requests it serves from cache', async () => {
+    mockFetch.mockImplementation(tinybirdStub(() => []));
+    const token = `Bearer ${await sign()}`;
+
+    await get('/v1-alpha/projects/metrics-bucket/bucketed', token);
+    await get('/v1-alpha/projects/metrics-bucket/bucketed', token);
+
+    const durations = calls(distribution, 'insights.api.tinybird.duration');
+    const tagged = (pipe: string) =>
+      durations.filter(([, tags]) => (tags as { pipe: string }).pipe === pipe);
+    expect(tagged(bucketsPath)).toEqual([
+      [expect.any(Number), { pipe: bucketsPath, status_class: '2xx' }],
+    ]);
+    expect(tagged(pipePath)).toHaveLength(2);
   });
 });
