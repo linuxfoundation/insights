@@ -1,5 +1,10 @@
 packages:
   - "submodules/crowd.dev/services/libs/*"
+  # Not in the init-submodules.sh sparse checkout. Dependabot checks out the whole
+  # submodule, so without these it adds them to pnpm-lock.yaml.
+  - "!submodules/crowd.dev/services/libs/connectors"
+  - "!submodules/crowd.dev/services/libs/anthropic-aws"
+  - "!submodules/crowd.dev/services/libs/project-onboarding"
   - "submodules/crowd.dev/services/archetypes/*"
   - "workers"
   - "workers/*"
