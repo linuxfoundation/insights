@@ -10,7 +10,11 @@ ADR-0019 instrumented the API with the OpenTelemetry SDK and an `opentelemetry-c
 
 ## Decision
 
-We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics to the Datadog agent on the pod's node, as the crowd.dev services do. This amends ADR-0019 and the trace correlation section of ADR-0018:
+We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics to the Datadog agent on the pod's node, as the crowd.dev services do.
+
+The main reason is to keep one observability machinery in the cluster. The crowd.dev services already report through `dd-trace` and the node agent, so an OpenTelemetry pipeline for the API alone would add a second machinery for the same traces, metrics and logs in the same cluster, with its own setup to configure, operate and debug. Moving to OpenTelemetry stays open as a later decision for the whole cluster at once.
+
+This amends ADR-0019 and the trace correlation section of ADR-0018:
 
 - `dd-trace` traces each request as `fastify.request`, named by route template, with its Postgres and outbound HTTP calls beneath it. Each Tinybird pipe call is a `tinybird.query` span named by pipe and tagged with its bucket. Health probes are not traced.
 - The caller's LFID and tier go on the trace's root span through `tracer.setUser`, as `usr.id` and `usr.tier`. Per-caller views come from span queries, and custom metrics go to the agent's DogStatsD port with low-cardinality tags only.
@@ -30,7 +34,7 @@ We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics
 
 - **Pros**: follows LFX-0003; no sidecar.
 - **Cons**: enabling the agent's OTLP receiver restarts the agent on every node, including those running the crowd.dev production services. The OpenTelemetry Node SDK spans about ten 0.x packages, several of which were renamed or deprecated while this was being built.
-- **Why not**: its main gain is portability, and we have no plans for a second backend.
+- **Why not**: it adds a second telemetry machinery beside `dd-trace` in the same cluster. Its main gain is portability, which a cluster-wide move to OpenTelemetry would deliver for every service together.
 
 ## Consequences
 
