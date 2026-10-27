@@ -74,7 +74,7 @@ SPDX-License-Identifier: MIT
     <lfx-card class="p-4 md:p-6 flex flex-col gap-4">
       <div>
         <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">
-          Who counts as {{ country.adjective }}
+          Where {{ country.adjective }} contributors are based
         </h2>
         <p class="text-body-2 text-neutral-500">
           A contributor counts when they live in {{ country.name }}, work for an organization with
