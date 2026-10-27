@@ -316,7 +316,7 @@
           {
             "definition": {
               "type": "note",
-              "content": "Callers come from APM spans tagged with `usr.id` (the LFID), so their counts follow span retention. Add a retention filter that keeps every `service:insights-api` span for exact numbers.",
+              "content": "Callers come from APM spans tagged with `usr.id` (the LFID), so their counts are approximate: they follow trace sampling and span retention. Exact numbers need a tracer sampling rule that keeps every `insights-api` trace and a retention filter that indexes every `service:insights-api` span.",
               "background_color": "white",
               "font_size": "14",
               "text_align": "left",

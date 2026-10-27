@@ -8,4 +8,4 @@ Dashboard and monitor definitions for the public API, kept here so changes go th
 
 - Overview, Endpoints: APM trace metrics for `fastify.request`, so latency percentiles and 5xx rates per endpoint cost no custom metrics.
 - Tiers, Tinybird, Auth and Postgres: the `insights.api.*` DogStatsD metrics (see the Telemetry section of `api/README.md`).
-- Callers: span queries grouped by `@usr.id`. Datadog keeps a sample of spans, so add a retention filter that keeps every `service:insights-api` span for exact per-caller counts.
+- Callers: span queries grouped by `@usr.id`, so the counts are approximate. A retention filter only indexes spans that were ingested, so exact per-caller counts need a tracer sampling rule that keeps every `insights-api` trace as well as a retention filter that keeps every `service:insights-api` span.
