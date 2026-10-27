@@ -46,5 +46,5 @@ We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics
 
 ### Risks
 
-- Datadog indexes a sample of spans by default, so per-caller counts from span queries are approximate. A retention filter that keeps every span of this service makes them exact, at current volume for little cost.
+- Per-caller counts come from span queries, so they are approximate by default: Datadog ingests the traces the agent's sampling rates keep (about 10 per second per agent), then indexes a sample of those. Exact counts need both a tracer sampling rule that keeps every `insights-api` trace (`DD_TRACE_SAMPLING_RULES`, within `DD_TRACE_RATE_LIMIT`) and a retention filter that indexes every span of this service, which costs little at current volume.
 - DogStatsD aggregates in-process for 10 seconds, so a rollout can drop up to 10 seconds of a pod's custom metrics. Accepted at current volume.
