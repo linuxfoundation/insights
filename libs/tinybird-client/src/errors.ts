@@ -41,8 +41,8 @@ export class TinybirdInvalidResponseError extends TinybirdClientError {
 }
 
 export class TinybirdUnavailableError extends TinybirdClientError {
-  constructor(message = 'Tinybird is currently unavailable') {
-    super(503, message);
+  constructor(message = 'Tinybird is currently unavailable', options?: ErrorOptions) {
+    super(503, message, options);
     this.name = 'TinybirdUnavailableError';
   }
 }

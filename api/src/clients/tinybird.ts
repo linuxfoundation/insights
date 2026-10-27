@@ -30,6 +30,19 @@ export type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
 
+// Errors already counted, so a failure shared by every caller of one bucket lookup counts once.
+const countedErrors = new WeakSet<object>();
+
+function alreadyCounted(err: unknown): boolean {
+  if (typeof err !== 'object' || err === null) return false;
+  return countedErrors.has(err) || alreadyCounted((err as { cause?: unknown }).cause);
+}
+
+function countError(path: string, err: unknown): void {
+  count('tinybird.errors', { pipe: path, error_type: tinybirdErrorType(err) });
+  if (typeof err === 'object' && err !== null) countedErrors.add(err);
+}
+
 export const tinybirdEnv = ['API_TB_TOKEN', 'API_TB_HOST'] as const;
 
 // Built on first use, so importing this module never needs the API_TB_* variables.
@@ -39,8 +52,8 @@ export function getTinybirdClient(): TinybirdClient {
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
       bucketCache: createInMemoryBucketCache(),
-      // One span and one duration sample per request the client sends, queue wait and retries
-      // inside, so a bucket served from cache adds nothing to the pipe's distribution.
+      // One span, duration sample and error count per request the client sends, queue wait and
+      // retries inside, so a cached bucket adds nothing to the pipe's figures.
       wrapRequest: timedRequest,
       // Gauges in place of the client's status log line every 8 seconds.
       onQueueStatus: ({ active, queued, effectiveLimit }) => {
@@ -78,6 +91,7 @@ async function timedRequest<T>(
       pipe: path,
       status_class: err instanceof TinybirdClientError ? statusClass(err.statusCode) : 'error',
     });
+    countError(path, err);
     throw err;
   }
 }
@@ -93,7 +107,8 @@ function tinybirdErrorType(err: unknown): string {
 }
 
 // Every Tinybird failure becomes a 503, logged once per pipe call with the pipe path, so
-// Tinybird's own status never reaches the caller.
+// Tinybird's own status never reaches the caller. Errors the request hook never saw are counted
+// here, once each.
 async function fromTinybird<T>(
   request: RequestLog,
   path: string,
@@ -102,7 +117,9 @@ async function fromTinybird<T>(
   try {
     return await call();
   } catch (err: unknown) {
-    count('tinybird.errors', { pipe: path, error_type: tinybirdErrorType(err) });
+    if (!alreadyCounted(err)) {
+      countError(path, err);
+    }
     if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
       request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
     } else {

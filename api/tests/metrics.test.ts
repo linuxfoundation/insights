@@ -1,13 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import tracer from 'dd-trace';
+import type { FastifyBaseLogger } from 'fastify';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { BuildAppOptions } from '../src/app.js';
 import { fetchPipe, withBucket } from '../src/clients/tinybird.js';
+import { UpstreamUnavailableError } from '../src/lib/errors.js';
 import { localKeys, sign, useAuthApp } from './helpers/auth.js';
 import {
   bucketsPath,
+  collectionBucketsPath,
   mockFetch,
   tinybirdError,
   tinybirdHost,
@@ -28,6 +31,19 @@ const projects: BuildAppOptions['versions'] = [
       scope.get('/projects/:slug', async (request) => ({ username: request.username }));
       scope.get('/projects/:slug/stars', async (request) =>
         fetchPipe(request, pipePath, { slug: (request.params as { slug: string }).slug }),
+      );
+      scope.get('/projects/:slug/collection-scoped', async (request) =>
+        fetchPipe(request, pipePath, {
+          collectionSlug: (request.params as { slug: string }).slug,
+        }),
+      );
+      scope.get('/projects/:slug/guarded', async (request) =>
+        fetchPipe<{ count: number }>(
+          request,
+          pipePath,
+          { slug: (request.params as { slug: string }).slug },
+          (row) => typeof row.count === 'number',
+        ),
       );
       scope.get('/projects/:slug/bucketed', async (request) => {
         const { slug } = request.params as { slug: string };
@@ -134,5 +150,93 @@ describe('custom metrics', () => {
       [expect.any(Number), { pipe: bucketsPath, status_class: '2xx' }],
     ]);
     expect(tagged(pipePath)).toHaveLength(2);
+  });
+
+  it('counts a failed bucket lookup once, however many callers share it', async () => {
+    mockFetch.mockImplementation(async () => tinybirdError(500));
+    const request = { log: { error: vi.fn(), warn: vi.fn() } } as unknown as {
+      log: FastifyBaseLogger;
+    };
+
+    const results = await Promise.allSettled([
+      withBucket(request, 'shared-failure', () => Promise.resolve(1)),
+      withBucket(request, 'shared-failure', () => Promise.resolve(1)),
+    ]);
+
+    expect(results.map((result) => result.status)).toEqual(['rejected', 'rejected']);
+    for (const result of results) {
+      expect((result as PromiseRejectedResult).reason).toBeInstanceOf(UpstreamUnavailableError);
+    }
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: bucketsPath, error_type: 'http' }],
+    ]);
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: bucketsPath, status_class: '5xx' }],
+    ]);
+  });
+
+  it('counts a malformed shared bucket lookup once', async () => {
+    mockFetch.mockImplementation(async () => tinybirdResponse([{ bucketId: 'x' }]));
+    const request = { log: { error: vi.fn(), warn: vi.fn() } } as unknown as {
+      log: FastifyBaseLogger;
+    };
+
+    const results = await Promise.allSettled([
+      withBucket(request, 'shared-malformed', () => Promise.resolve(1)),
+      withBucket(request, 'shared-malformed', () => Promise.resolve(1)),
+    ]);
+
+    expect(results.map((result) => result.status)).toEqual(['rejected', 'rejected']);
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: bucketsPath, error_type: 'invalid_response' }],
+    ]);
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: bucketsPath, status_class: '2xx' }],
+    ]);
+  });
+
+  it('attributes a failed collection bucket lookup to the bucket pipe', async () => {
+    mockFetch.mockImplementation(async () => tinybirdError(500));
+
+    const res = await get(
+      '/v1-alpha/projects/failing-collection/collection-scoped',
+      `Bearer ${await sign()}`,
+    );
+
+    expect(res.statusCode).toBe(503);
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: collectionBucketsPath, error_type: 'http' }],
+    ]);
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: collectionBucketsPath, status_class: '5xx' }],
+    ]);
+  });
+
+  it('counts rows of an unexpected shape once, against the pipe that returned them', async () => {
+    mockFetch.mockImplementation(async () => tinybirdResponse([{ count: 'x' }]));
+
+    const res = await get('/v1-alpha/projects/bad-rows/guarded', `Bearer ${await sign()}`);
+
+    expect(res.statusCode).toBe(503);
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: pipePath, status_class: '2xx' }],
+    ]);
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: pipePath, error_type: 'invalid_response' }],
+    ]);
+  });
+
+  it('counts a bucket lookup network failure once, as the request that failed', async () => {
+    mockFetch.mockRejectedValue(new TypeError('fetch failed'));
+
+    const res = await get('/v1-alpha/projects/offline/bucketed', `Bearer ${await sign()}`);
+
+    expect(res.statusCode).toBe(503);
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: bucketsPath, error_type: 'network' }],
+    ]);
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: bucketsPath, status_class: 'error' }],
+    ]);
   });
 });
