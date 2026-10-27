@@ -83,7 +83,7 @@
                       "data_source": "metrics",
                       "name": "p95",
                       "query": "p95:trace.fastify.request{service:insights-api,$env}",
-                      "aggregator": "avg"
+                      "aggregator": "percentile"
                     }
                   ],
                   "formulas": [{ "formula": "p95" }]
@@ -180,19 +180,19 @@
                       "data_source": "metrics",
                       "name": "p50",
                       "query": "p50:trace.fastify.request{service:insights-api,$env} by {resource_name}",
-                      "aggregator": "avg"
+                      "aggregator": "percentile"
                     },
                     {
                       "data_source": "metrics",
                       "name": "p95",
                       "query": "p95:trace.fastify.request{service:insights-api,$env} by {resource_name}",
-                      "aggregator": "avg"
+                      "aggregator": "percentile"
                     },
                     {
                       "data_source": "metrics",
                       "name": "p99",
                       "query": "p99:trace.fastify.request{service:insights-api,$env} by {resource_name}",
-                      "aggregator": "avg"
+                      "aggregator": "percentile"
                     }
                   ],
                   "formulas": [
