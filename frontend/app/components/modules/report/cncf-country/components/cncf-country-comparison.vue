@@ -185,6 +185,30 @@ const chartConfig = computed(() => {
   );
   // Shares sit far below 100%, so start the axis at 0 instead of the default data-driven bounds.
   config.yAxis = { ...config.yAxis, min: 0, max: undefined };
+  // The shared tooltip prints bare numbers; these values are percentages.
+  config.tooltip = {
+    ...config.tooltip,
+    formatter: (paramsRaw: unknown) => {
+      const params = (Array.isArray(paramsRaw) ? paramsRaw : [paramsRaw]) as {
+        dataIndex: number;
+        seriesName: string;
+        value: number;
+        color: string;
+      }[];
+      const period = periods.value[params[0]?.dataIndex ?? 0]?.label ?? '';
+      const lines = params
+        .map(
+          (p) => `<div style="display: flex; justify-content: space-between; gap: 16px; min-width: 180px;
+            font-size: 12px; color: ${lfxColors.neutral[900]};">
+            <span><span style="display: inline-block; width: 8px; height: 8px; border-radius: 100%;
+              margin-right: 4px; background-color: ${p.color};"></span>${p.seriesName}</span>
+            <span style="font-weight: 500;">${formatShare(p.value)}</span>
+          </div>`,
+        )
+        .join('');
+      return `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${period}</div>${lines}`;
+    },
+  };
   return config;
 });
 </script>
