@@ -39,20 +39,9 @@ export function getTinybirdClient(): TinybirdClient {
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
       bucketCache: createInMemoryBucketCache(),
-      // One span per request the client sends, queue wait and retries inside, so cache hits
-      // never count as pipe calls.
-      wrapRequest: (path, params, send) =>
-        tracer.trace(
-          'tinybird.query',
-          {
-            resource: path,
-            tags:
-              params.bucketId === undefined
-                ? { pipe: path }
-                : { pipe: path, bucket_id: params.bucketId },
-          },
-          send,
-        ),
+      // One span and one duration sample per request the client sends, queue wait and retries
+      // inside, so a bucket served from cache adds nothing to the pipe's distribution.
+      wrapRequest: timedRequest,
       // Gauges in place of the client's status log line every 8 seconds.
       onQueueStatus: ({ active, queued, effectiveLimit }) => {
         gauge('concurrency', active, { state: 'active' });
@@ -62,6 +51,35 @@ export function getTinybirdClient(): TinybirdClient {
     });
   }
   return client;
+}
+
+async function timedRequest<T>(
+  path: string,
+  params: TinybirdQuery,
+  send: () => Promise<T>,
+): Promise<T> {
+  const started = performance.now();
+  try {
+    const result = await tracer.trace(
+      'tinybird.query',
+      {
+        resource: path,
+        tags:
+          params.bucketId === undefined
+            ? { pipe: path }
+            : { pipe: path, bucket_id: params.bucketId },
+      },
+      send,
+    );
+    timing('tinybird.duration', performance.now() - started, { pipe: path, status_class: '2xx' });
+    return result;
+  } catch (err: unknown) {
+    timing('tinybird.duration', performance.now() - started, {
+      pipe: path,
+      status_class: err instanceof TinybirdClientError ? statusClass(err.statusCode) : 'error',
+    });
+    throw err;
+  }
 }
 
 function tinybirdErrorType(err: unknown): string {
@@ -81,17 +99,9 @@ async function fromTinybird<T>(
   path: string,
   call: () => Promise<T>,
 ): Promise<T> {
-  const started = performance.now();
   try {
-    const result = await call();
-    timing('tinybird.duration', performance.now() - started, { pipe: path, status_class: '2xx' });
-    return result;
+    return await call();
   } catch (err: unknown) {
-    const failedClass = err instanceof TinybirdClientError ? statusClass(err.statusCode) : 'error';
-    timing('tinybird.duration', performance.now() - started, {
-      pipe: path,
-      status_class: failedClass,
-    });
     count('tinybird.errors', { pipe: path, error_type: tinybirdErrorType(err) });
     if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
       request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
