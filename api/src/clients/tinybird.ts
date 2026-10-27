@@ -89,11 +89,22 @@ async function timedRequest<T>(
   } catch (err: unknown) {
     timing('tinybird.duration', performance.now() - started, {
       pipe: path,
-      status_class: err instanceof TinybirdClientError ? statusClass(err.statusCode) : 'error',
+      status_class: durationStatusClass(err),
     });
     countError(path, err);
     throw err;
   }
+}
+
+// Queue rejections and malformed bodies carry synthetic status codes. A rejected request never
+// left the process and a body is parsed only after a 2xx, so neither is a Tinybird 5xx.
+function durationStatusClass(err: unknown): string {
+  if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
+    return 'error';
+  }
+  if (err instanceof TinybirdInvalidResponseError) return '2xx';
+  if (err instanceof TinybirdClientError) return statusClass(err.statusCode);
+  return 'error';
 }
 
 function tinybirdErrorType(err: unknown): string {

@@ -226,6 +226,45 @@ describe('custom metrics', () => {
     ]);
   });
 
+  it('keeps a malformed 2xx body in the 2xx class', async () => {
+    mockFetch.mockImplementation(async () => new Response('not json', { status: 200 }));
+
+    const res = await get('/v1-alpha/projects/bad-body/stars', `Bearer ${await sign()}`);
+
+    expect(res.statusCode).toBe(503);
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: pipePath, status_class: '2xx' }],
+    ]);
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: pipePath, error_type: 'invalid_response' }],
+    ]);
+  });
+
+  it('times a request the local queue rejected as an error', async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    mockFetch.mockImplementation(() => gate.then(() => tinybirdResponse([])));
+    const request = { log: { error: vi.fn(), warn: vi.fn() } } as unknown as {
+      log: FastifyBaseLogger;
+    };
+
+    // The client's defaults: 35 concurrent requests plus a queue of 500.
+    const held = Array.from({ length: 35 + 500 }, () => fetchPipe(request, pipePath, {}));
+    await expect(fetchPipe(request, pipePath, {})).rejects.toBeInstanceOf(UpstreamUnavailableError);
+
+    expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
+      [expect.any(Number), { pipe: pipePath, status_class: 'error' }],
+    ]);
+    expect(calls(increment, 'insights.api.tinybird.errors')).toEqual([
+      [1, { pipe: pipePath, error_type: 'queue_full' }],
+    ]);
+
+    release();
+    await Promise.all(held);
+  });
+
   it('counts a bucket lookup network failure once, as the request that failed', async () => {
     mockFetch.mockRejectedValue(new TypeError('fetch failed'));
 
