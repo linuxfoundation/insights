@@ -365,8 +365,9 @@ const {
   computed(() => ({ ...params.value, granularity: selectedOption.value.granularity })),
 );
 
+// allSettled so one failing section shows its own error state instead of failing the whole render.
 onServerPrefetch(async () => {
-  await Promise.all([
+  await Promise.allSettled([
     summarySuspense(),
     timeseriesSuspense(),
     projectsSuspense(),
