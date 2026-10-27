@@ -114,6 +114,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     slowRequestThresholdMs = DEFAULT_SLOW_REQUEST_THRESHOLD_MS,
     latencyBackoff = {},
     bucketCache: bucketCacheStorage,
+    wrapRequest,
   } = config;
 
   const baseUrl = stripTrailingSlashes(rawBaseUrl);
@@ -123,7 +124,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
   const authHeaders = { Authorization: `Bearer ${token}` };
 
-  async function withThrottle<T>(
+  async function throttled<T>(
     path: string,
     params: TinybirdQuery,
     skipThrottle: boolean,
@@ -199,6 +200,16 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
         semaphore.release();
       }
     }
+  }
+
+  function withThrottle<T>(
+    path: string,
+    params: TinybirdQuery,
+    skipThrottle: boolean,
+    send: () => Promise<Response>,
+  ): Promise<TinybirdResponse<T>> {
+    const execute = () => throttled<T>(path, params, skipThrottle, send);
+    return wrapRequest ? wrapRequest(path, params, execute) : execute();
   }
 
   async function fetchFromTinybird<T>(

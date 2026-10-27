@@ -3,6 +3,7 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createTinybirdClient } from '../src/client.js';
+import type { TinybirdRequestWrapper } from '../src/types.js';
 
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -193,5 +194,125 @@ describe('createTinybirdClient — fetch()', () => {
 
     await expect(client.post('/mock-path', {})).rejects.toMatchObject({ statusCode: 503 });
     expect(mockFetch).toHaveBeenCalledOnce();
+  });
+});
+
+describe('createTinybirdClient — wrapRequest', () => {
+  const response = (status: number) =>
+    ({
+      ok: status < 400,
+      status,
+      statusText: String(status),
+      text: () => Promise.resolve(''),
+      json: () => Promise.resolve(mockResult),
+    }) as unknown as Response;
+
+  const passThrough = () => {
+    const wrapper = vi.fn();
+    const wrapRequest: TinybirdRequestWrapper = (path, params, send) => {
+      wrapper(path, params);
+      return send();
+    };
+    return Object.assign(wrapRequest, { mock: wrapper.mock });
+  };
+
+  const cacheStub = () => {
+    const store = new Map<string, number>();
+    return {
+      getItem: (key: string) => Promise.resolve(store.get(key)),
+      setItem: (key: string, value: number) => {
+        store.set(key, value);
+        return Promise.resolve();
+      },
+      removeItem: (key: string) => {
+        store.delete(key);
+        return Promise.resolve();
+      },
+      getKeys: (prefix: string) =>
+        Promise.resolve([...store.keys()].filter((key) => key.startsWith(prefix))),
+    };
+  };
+
+  beforeEach(() => {
+    vi.stubGlobal('fetch', mockFetch);
+    mockFetch.mockReset();
+    mockFetch.mockResolvedValue(okResponse(mockResult));
+  });
+
+  afterAll(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('wraps each request once with its path and params', async () => {
+    const wrapRequest = passThrough();
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN, wrapRequest });
+
+    await client.fetch('/mock-path', { key: 'value', bucketId: 7 });
+
+    expect(wrapRequest.mock.calls).toHaveLength(1);
+    expect(wrapRequest.mock.calls[0]?.slice(0, 2)).toEqual([
+      '/mock-path',
+      { key: 'value', bucketId: 7 },
+    ]);
+  });
+
+  it('keeps a retried GET inside a single wrapped call', async () => {
+    mockFetch.mockResolvedValueOnce(response(503)).mockResolvedValueOnce(response(200));
+    const wrapRequest = passThrough();
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN, wrapRequest });
+
+    await client.fetch('/mock-path', {});
+
+    expect(wrapRequest.mock.calls).toHaveLength(1);
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('skips bucket cache hits', async () => {
+    mockFetch.mockImplementation((url: string) =>
+      Promise.resolve(
+        okResponse(
+          url.includes('project_buckets') ? { ...mockResult, data: [{ bucketId: 7 }] } : mockResult,
+        ),
+      ),
+    );
+    const wrapRequest = passThrough();
+    const client = createTinybirdClient({
+      baseUrl: BASE_URL,
+      token: TOKEN,
+      bucketCache: cacheStub(),
+      wrapRequest,
+    });
+
+    await client.fetch('/v0/pipes/x.json', { project: 'p' });
+    await client.fetch('/v0/pipes/x.json', { project: 'p' });
+
+    expect(wrapRequest.mock.calls.map(([path]) => path)).toEqual([
+      '/v0/pipes/project_buckets.json',
+      '/v0/pipes/x.json',
+      '/v0/pipes/x.json',
+    ]);
+    expect(wrapRequest.mock.calls[1]?.[1]).toMatchObject({ project: 'p', bucketId: 7 });
+  });
+
+  it('wraps the collection bucket lookup apart from the pipe', async () => {
+    mockFetch.mockImplementation((url: string) =>
+      Promise.resolve(
+        okResponse(
+          url.includes('collection_buckets')
+            ? { ...mockResult, data: [{ bucketId: 3 }] }
+            : mockResult,
+        ),
+      ),
+    );
+    const wrapRequest = passThrough();
+    const client = createTinybirdClient({ baseUrl: BASE_URL, token: TOKEN, wrapRequest });
+
+    await client.fetch('/v0/pipes/x.json', { collectionSlug: 'c' });
+
+    expect(wrapRequest.mock.calls.map(([path]) => path)).toEqual([
+      '/v0/pipes/collection_buckets.json',
+      '/v0/pipes/x.json',
+    ]);
+    expect(wrapRequest.mock.calls[1]?.[1]).toMatchObject({ collectionSlug: 'c', bucketId: 3 });
   });
 });

@@ -15,7 +15,7 @@ We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics
 - `dd-trace` traces each request as `fastify.request`, named by route template, with its Postgres and outbound HTTP calls beneath it. Each Tinybird pipe call is a `tinybird.query` span named by pipe and tagged with its bucket. Health probes are not traced.
 - The caller's LFID and tier go on the trace's root span through `tracer.setUser`, as `usr.id` and `usr.tier`. Per-caller views come from span queries, and custom metrics go to the agent's DogStatsD port with low-cardinality tags only.
 - Log lines carry `dd.trace_id` and `dd.span_id` from `dd-trace`'s log injection, in place of OpenTelemetry's `trace_id` and `span_id`.
-- The request ID is the Datadog trace ID: 128-bit, logged as 32-char hex. Inbound W3C `traceparent` is still honoured, and outbound calls carry it alongside `x-datadog-*` headers.
+- `dd.trace_id` (128-bit, 32-char hex) is the key for finding a request's trace from its log lines. Fastify's own `reqId` is a per-process counter that stays on request-scoped lines. Inbound W3C `traceparent` is still honoured, and outbound calls carry it alongside `x-datadog-*` headers.
 - Sampling follows the `dd-trace` default, which the agent tunes per service. APM trace metrics (hits, errors, latency percentiles) count every request whatever is sampled.
 
 ## Alternatives Considered

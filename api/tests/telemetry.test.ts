@@ -7,7 +7,14 @@ import type { BuildAppOptions } from '../src/app.js';
 import { USERNAME_CLAIM } from '../src/auth.js';
 import { fetchPipe, withBucket } from '../src/clients/tinybird.js';
 import { localKeys, sign, useAuthApp } from './helpers/auth.js';
-import { bucketsPath, mockFetch, tinybirdHost, tinybirdStub } from './helpers/tinybird.js';
+import {
+  bucketsPath,
+  collectionBucketsPath,
+  collectionStub,
+  mockFetch,
+  tinybirdHost,
+  tinybirdStub,
+} from './helpers/tinybird.js';
 
 // The tracer is never initialized under test, so these spy on its no-op methods.
 const setUser = vi.spyOn(tracer, 'setUser');
@@ -25,6 +32,10 @@ const projects: BuildAppOptions['versions'] = [
         return withBucket(request, slug, (bucketId) =>
           fetchPipe(request, pipePath, { project: slug, bucketId }),
         );
+      });
+      scope.get('/collections/:slug/active-days', async (request) => {
+        const { slug } = request.params as { slug: string };
+        return fetchPipe(request, pipePath, { collectionSlug: slug });
       });
     },
   },
@@ -79,6 +90,34 @@ describe('request telemetry', () => {
     expect(trace.mock.calls.map(([name, options]) => [name, options])).toEqual([
       ['tinybird.query', { resource: bucketsPath, tags: { pipe: bucketsPath } }],
       ['tinybird.query', { resource: pipePath, tags: { pipe: pipePath, bucket_id: 7 } }],
+    ]);
+  });
+
+  it('emits no lookup span once the bucket is cached', async () => {
+    mockFetch.mockImplementation(tinybirdStub(() => []));
+    const token = await bearer('jdoe');
+    await get('/v1-alpha/projects/kubernetes/active-days', token);
+    trace.mockClear();
+
+    await get('/v1-alpha/projects/kubernetes/active-days', token);
+
+    expect(trace.mock.calls.map(([name, options]) => [name, options])).toEqual([
+      ['tinybird.query', { resource: pipePath, tags: { pipe: pipePath, bucket_id: 7 } }],
+    ]);
+  });
+
+  it('spans a collection bucket lookup apart from the pipe it serves', async () => {
+    mockFetch.mockImplementation(collectionStub(() => []));
+
+    const response = await get('/v1-alpha/collections/cncf/active-days', await bearer('jdoe'));
+
+    expect(response.statusCode).toBe(200);
+    expect(trace.mock.calls.map(([name, options]) => [name, options])).toEqual([
+      [
+        'tinybird.query',
+        { resource: collectionBucketsPath, tags: { pipe: collectionBucketsPath } },
+      ],
+      ['tinybird.query', { resource: pipePath, tags: { pipe: pipePath, bucket_id: 3 } }],
     ]);
   });
 });
