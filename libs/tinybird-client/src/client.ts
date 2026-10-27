@@ -202,7 +202,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     }
   }
 
-  function dispatch<T>(
+  function withRequestWrapper<T>(
     path: string,
     params: TinybirdQuery,
     skipThrottle: boolean,
@@ -265,7 +265,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = qs ? `${baseUrl}${path}?${qs}` : `${baseUrl}${path}`;
     const skipThrottle = SKIP_THROTTLE_PATHS.has(path);
 
-    return dispatch<T>(path, query, skipThrottle, () =>
+    return withRequestWrapper<T>(path, query, skipThrottle, () =>
       fetchWithRetry(url, { headers: authHeaders }, GET_RETRY_COUNT),
     );
   }
@@ -277,7 +277,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
     const url = `${baseUrl}${path}`;
     const body = buildBodyString(params);
 
-    return dispatch<T>(path, params, false, () =>
+    return withRequestWrapper<T>(path, params, false, () =>
       fetch(url, {
         method: 'POST',
         headers: { ...authHeaders, 'Content-Type': 'application/x-www-form-urlencoded' },
