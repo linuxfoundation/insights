@@ -29,6 +29,9 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 
 FROM node:${NODE_VERSION}-slim AS prod
 ENV NODE_ENV=production
+# Keys the response cache to this build, see src/response-cache.ts.
+ARG GIT_SHA=""
+ENV API_BUILD_SHA=${GIT_SHA}
 WORKDIR /app
 COPY --from=prod-deps /app ./
 # The workspace symlinks in node_modules resolve to these package dirs.

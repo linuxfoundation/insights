@@ -154,6 +154,7 @@ jobs:
           dockerfile: api/Dockerfile
           image-name: insights-api
           run-unique-tag: "true"
+          build-args: GIT_SHA=${{ github.sha }}
 
       - name: Update Deployment Image
         run: |
