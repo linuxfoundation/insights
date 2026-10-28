@@ -6,9 +6,12 @@ import type { FastifyRequest } from 'fastify';
 
 import {
   createTinybirdClient,
+  TinybirdClientError,
   TinybirdInvalidResponseError,
+  TinybirdProjectNotFoundError,
   TinybirdQueueFullError,
   TinybirdQueueTimeoutError,
+  TinybirdUnavailableError,
   type TinybirdClient,
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
@@ -17,6 +20,7 @@ import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
 import { type DateRange, toTinybirdRange } from '../lib/period.js';
 import type { PipeTarget } from '../lib/widget-scope.js';
+import { count, gauge, statusClass, timing } from '../metrics.js';
 import type { ActivityFilterQuery } from '../schemas/common.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 
@@ -25,6 +29,19 @@ const bucketsPath = '/v0/pipes/project_buckets.json';
 export type RequestLog = Pick<FastifyRequest, 'log'>;
 
 let client: TinybirdClient | undefined;
+
+// Errors already counted, so a failure shared by every caller of one bucket lookup counts once.
+const countedErrors = new WeakSet<object>();
+
+function alreadyCounted(err: unknown): boolean {
+  if (typeof err !== 'object' || err === null) return false;
+  return countedErrors.has(err) || alreadyCounted((err as { cause?: unknown }).cause);
+}
+
+function countError(path: string, err: unknown): void {
+  count('tinybird.errors', { pipe: path, error_type: tinybirdErrorType(err) });
+  if (typeof err === 'object' && err !== null) countedErrors.add(err);
+}
 
 export const tinybirdEnv = ['API_TB_TOKEN', 'API_TB_HOST'] as const;
 
@@ -35,27 +52,74 @@ export function getTinybirdClient(): TinybirdClient {
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
       bucketCache: createInMemoryBucketCache(),
-      // One span per request the client sends, queue wait and retries inside, so cache hits
-      // never count as pipe calls.
-      wrapRequest: (path, params, send) =>
-        tracer.trace(
-          'tinybird.query',
-          {
-            resource: path,
-            tags:
-              params.bucketId === undefined
-                ? { pipe: path }
-                : { pipe: path, bucket_id: params.bucketId },
-          },
-          send,
-        ),
+      // One span, duration sample and error count per request the client sends, queue wait and
+      // retries inside, so a cached bucket adds nothing to the pipe's figures.
+      wrapRequest: timedRequest,
+      // Gauges in place of the client's status log line every 8 seconds.
+      onQueueStatus: ({ active, queued, effectiveLimit }) => {
+        gauge('concurrency', active, { state: 'active' });
+        gauge('concurrency', queued, { state: 'queued' });
+        gauge('concurrency', effectiveLimit, { state: 'limit' });
+      },
     });
   }
   return client;
 }
 
+async function timedRequest<T>(
+  path: string,
+  params: TinybirdQuery,
+  send: () => Promise<T>,
+): Promise<T> {
+  const started = performance.now();
+  try {
+    const result = await tracer.trace(
+      'tinybird.query',
+      {
+        resource: path,
+        tags:
+          params.bucketId === undefined
+            ? { pipe: path }
+            : { pipe: path, bucket_id: params.bucketId },
+      },
+      send,
+    );
+    timing('tinybird.duration', performance.now() - started, { pipe: path, status_class: '2xx' });
+    return result;
+  } catch (err: unknown) {
+    timing('tinybird.duration', performance.now() - started, {
+      pipe: path,
+      status_class: durationStatusClass(err),
+    });
+    countError(path, err);
+    throw err;
+  }
+}
+
+// Queue rejections and malformed bodies carry synthetic status codes. A rejected request never
+// left the process and a body is parsed only after a 2xx, so neither is a Tinybird 5xx.
+function durationStatusClass(err: unknown): string {
+  if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
+    return 'error';
+  }
+  if (err instanceof TinybirdInvalidResponseError) return '2xx';
+  if (err instanceof TinybirdClientError) return statusClass(err.statusCode);
+  return 'error';
+}
+
+function tinybirdErrorType(err: unknown): string {
+  if (err instanceof TinybirdQueueFullError) return 'queue_full';
+  if (err instanceof TinybirdQueueTimeoutError) return 'queue_timeout';
+  if (err instanceof TinybirdInvalidResponseError) return 'invalid_response';
+  if (err instanceof TinybirdProjectNotFoundError) return 'not_found';
+  if (err instanceof TinybirdUnavailableError) return 'unavailable';
+  if (err instanceof TinybirdClientError) return 'http';
+  return 'network';
+}
+
 // Every Tinybird failure becomes a 503, logged once per pipe call with the pipe path, so
-// Tinybird's own status never reaches the caller.
+// Tinybird's own status never reaches the caller. Errors the request hook never saw are counted
+// here, once each.
 async function fromTinybird<T>(
   request: RequestLog,
   path: string,
@@ -64,6 +128,9 @@ async function fromTinybird<T>(
   try {
     return await call();
   } catch (err: unknown) {
+    if (!alreadyCounted(err)) {
+      countError(path, err);
+    }
     if (err instanceof TinybirdQueueFullError || err instanceof TinybirdQueueTimeoutError) {
       request.log.warn({ err }, `Tinybird ${path} request rejected by local queue`);
     } else {

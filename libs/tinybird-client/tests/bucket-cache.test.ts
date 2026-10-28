@@ -123,11 +123,12 @@ describe('createBucketCache — getBucketIdForProject', () => {
   it('wraps unclassified errors as TinybirdUnavailableError instead of a false "not found"', async () => {
     const storage = createMemoryStorage();
     const cache = createBucketCache(storage, logger);
-    const fetcher = vi.fn().mockRejectedValue(new Error('network blip'));
+    const original = new Error('network blip');
+    const fetcher = vi.fn().mockRejectedValue(original);
 
-    await expect(cache.getBucketIdForProject('k8s', fetcher)).rejects.toThrow(
-      TinybirdUnavailableError,
-    );
+    const rejection = cache.getBucketIdForProject('k8s', fetcher);
+    await expect(rejection).rejects.toThrow(TinybirdUnavailableError);
+    await expect(rejection).rejects.toHaveProperty('cause', original);
   });
 
   it('wraps unclassified errors as TinybirdUnavailableError when no storage is configured', async () => {

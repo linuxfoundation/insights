@@ -33,6 +33,7 @@ function classifyBucketLookupError(error: unknown, projectValue: string): never 
   }
   throw new TinybirdUnavailableError(
     `Failed to fetch bucketId for project ${projectValue}: ${error}`,
+    { cause: error },
   );
 }
 

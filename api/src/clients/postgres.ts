@@ -4,6 +4,7 @@ import { createPostgresPool, type Pool } from '@lfx-insights/postgres-client';
 
 import { requiredEnv } from '../env.js';
 import { UpstreamUnavailableError } from '../lib/errors.js';
+import { timing } from '../metrics.js';
 import type { RequestLog } from './tinybird.js';
 
 let pool: Pool | undefined;
@@ -51,15 +52,23 @@ export async function closeCmPool(): Promise<void> {
 }
 
 // Every Postgres failure becomes a 503, like a Tinybird failure, so driver errors never reach the caller.
+// `name` tags the duration metric, since the SQL itself is too varied to be a tag.
 export async function queryCm<T>(
   request: RequestLog,
   sql: string,
-  params: unknown[] = [],
+  params: unknown[],
+  name: string,
 ): Promise<T[]> {
+  const started = performance.now();
   try {
     const result = await getCmPool().query(sql, params);
+    timing('postgres.duration', performance.now() - started, { query_name: name, outcome: 'ok' });
     return result.rows as T[];
   } catch (err: unknown) {
+    timing('postgres.duration', performance.now() - started, {
+      query_name: name,
+      outcome: 'error',
+    });
     request.log.error({ err }, 'CM database query failed');
     throw new UpstreamUnavailableError();
   }
