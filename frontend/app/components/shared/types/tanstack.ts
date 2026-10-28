@@ -90,6 +90,11 @@ export enum TanstackKey {
   // Reports
   CNCF_GEO_TIMESERIES = 'cncf-geo-timeseries',
   CNCF_GEO_DISTRIBUTION = 'cncf-geo-distribution',
+  CNCF_COUNTRY_SUMMARY = 'cncf-country-summary',
+  CNCF_COUNTRY_TIMESERIES = 'cncf-country-timeseries',
+  CNCF_COUNTRY_PROJECTS = 'cncf-country-projects',
+  CNCF_COUNTRY_ORGANIZATIONS = 'cncf-country-organizations',
+  CNCF_COUNTRY_COMPARISON = 'cncf-country-comparison',
 
   // AI Code Tracker
   AI_CODE_TRACKER = 'ai-code-tracker',
