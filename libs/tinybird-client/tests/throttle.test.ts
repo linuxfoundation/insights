@@ -136,7 +136,7 @@ describe('fetchFromTinybird throttle behavior', () => {
     ['queue timeout', () => new TinybirdQueueTimeoutError(), true],
   ])('logs %s rejections as a warning, not a request error', async (_, makeError, wasQueued) => {
     mockAcquire.mockRejectedValue(makeError());
-    const logger = { warn: vi.fn(), error: vi.fn() };
+    const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
     const { createTinybirdClient } = await import('../src/client.js');
     const client = createTinybirdClient({ baseUrl: 'https://tb.test', token: 'tok', logger });

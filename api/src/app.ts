@@ -88,7 +88,8 @@ function prunedComponents(components: ComponentSections, paths: unknown): Compon
 export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyInstance> {
   const app = Fastify({
     logger: {
-      level: 'warn',
+      // pino rejects an unknown level at startup, so a typo fails the deploy instead of going quiet.
+      level: process.env.API_LOG_LEVEL ?? 'info',
       // Datadog reads a string level as the log status; pino writes a number by default.
       formatters: { level: (label) => ({ level: label }) },
     },

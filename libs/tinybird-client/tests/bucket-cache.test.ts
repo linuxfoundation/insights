@@ -6,7 +6,7 @@ import { createBucketCache } from '../src/bucket-cache.js';
 import { TinybirdClientError, TinybirdUnavailableError } from '../src/errors.js';
 import type { BucketCacheStorage, TinybirdLogger, TinybirdResponse } from '../src/types.js';
 
-const logger: TinybirdLogger = { warn: vi.fn(), error: vi.fn() };
+const logger: TinybirdLogger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
 function bucketResponse(bucketId: number): TinybirdResponse<{ bucketId: number }[]> {
   return {

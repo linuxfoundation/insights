@@ -79,7 +79,7 @@ export class AdaptiveSemaphore {
         });
         return;
       }
-      this.logger.warn('tinybird_queue_status', {
+      this.logger.debug('tinybird_queue_status', {
         active: this.count,
         queued: this.queue.length,
         effectiveLimit: this.effectiveLimit,
@@ -117,7 +117,7 @@ export class AdaptiveSemaphore {
       this.rateLimitCeiling = this.limit;
       this.applyCeilings();
       this.recoveryTimer = null;
-      this.logger.warn('tinybird_adaptive_throttle', {
+      this.logger.info('tinybird_adaptive_throttle', {
         event: 'recovery',
         restoredLimit: this.effectiveLimit,
         active: this.count,
@@ -150,7 +150,7 @@ export class AdaptiveSemaphore {
     this.applyCeilings();
     const backedOff = this.latencyCeiling < previousCeiling;
     if (backedOff || this.latencyCeiling === this.limit) {
-      this.logger.warn('tinybird_adaptive_throttle', {
+      this.logger[backedOff ? 'warn' : 'info']('tinybird_adaptive_throttle', {
         event: backedOff ? 'latency_backoff' : 'latency_recovery',
         previousLimit,
         newLimit: this.effectiveLimit,

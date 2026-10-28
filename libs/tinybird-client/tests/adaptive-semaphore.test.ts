@@ -14,6 +14,8 @@ const FAST_LATENCY_BACKOFF: LatencyBackoffOptions = {
   smoothingTimeConstantMs: 1,
 };
 
+const mockLogger = () => ({ debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() });
+
 /** Reports one latency sample per window; a window's effect lands when the next one opens. */
 function latencyWindows(sem: AdaptiveSemaphore, latencyMs: number, windows: number) {
   for (let i = 0; i < windows; i++) {
@@ -34,24 +36,29 @@ describe('AdaptiveSemaphore', () => {
   });
 
   describe('queue status', () => {
-    it('logs the status every 8 seconds by default', () => {
-      const sem = new AdaptiveSemaphore(2, 10);
+    it('logs the status at debug level every 8 seconds', () => {
+      const logger = mockLogger();
+      const sem = new AdaptiveSemaphore(2, 10, logger);
       void sem.acquire(1_000);
 
       vi.advanceTimersByTime(8_000);
 
-      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('tinybird_queue_status'));
+      expect(logger.debug).toHaveBeenCalledWith(
+        'tinybird_queue_status',
+        expect.objectContaining({ active: 1 }),
+      );
     });
 
     it('hands the status to onStatus in place of the log line', () => {
       const onStatus = vi.fn();
-      const sem = new AdaptiveSemaphore(2, 10, consoleLogger, {}, onStatus);
+      const logger = mockLogger();
+      const sem = new AdaptiveSemaphore(2, 10, logger, {}, onStatus);
       void sem.acquire(1_000);
 
       vi.advanceTimersByTime(8_000);
 
       expect(onStatus).toHaveBeenCalledWith({ active: 1, queued: 0, effectiveLimit: 2, limit: 2 });
-      expect(console.warn).not.toHaveBeenCalled();
+      expect(logger.debug).not.toHaveBeenCalled();
     });
   });
 
@@ -193,7 +200,8 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('grows the limit back one slot per healthy window', () => {
-      const sem = new AdaptiveSemaphore(20, 10, consoleLogger, FAST_LATENCY_BACKOFF);
+      const logger = mockLogger();
+      const sem = new AdaptiveSemaphore(20, 10, logger, FAST_LATENCY_BACKOFF);
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 6);
 
@@ -202,7 +210,10 @@ describe('AdaptiveSemaphore', () => {
 
       latencyWindows(sem, 100, 9);
       expect(sem.getEffectiveLimit()).toBe(20);
-      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"latency_recovery"'));
+      expect(logger.info).toHaveBeenCalledWith(
+        'tinybird_adaptive_throttle',
+        expect.objectContaining({ event: 'latency_recovery' }),
+      );
     });
 
     it('holds the limit while latency sits between the recovery and backoff ratios', () => {
