@@ -14,6 +14,7 @@ import {
   TinybirdQueueTimeoutError,
   TinybirdUnavailableError,
   type TinybirdClient,
+  type TinybirdLogLevel,
   type TinybirdQuery,
 } from '@lfx-insights/tinybird-client';
 
@@ -38,7 +39,7 @@ export function useTinybirdLog(log: FastifyBaseLogger): void {
   clientLog = log;
 }
 
-const toLog = (level: 'warn' | 'error') => (message: string, fields?: Record<string, unknown>) => {
+const toLog = (level: TinybirdLogLevel) => (message: string, fields?: Record<string, unknown>) => {
   if (!clientLog) {
     consoleLogger[level](message, fields);
     return;
@@ -75,7 +76,12 @@ export function getTinybirdClient(): TinybirdClient {
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
       bucketCache: createInMemoryBucketCache(),
-      logger: { warn: toLog('warn'), error: toLog('error') },
+      logger: {
+        debug: toLog('debug'),
+        info: toLog('info'),
+        warn: toLog('warn'),
+        error: toLog('error'),
+      },
       // One span, duration sample and error count per request the client sends, queue wait and
       // retries inside, so a cached bucket adds nothing to the pipe's figures.
       wrapRequest: timedRequest,

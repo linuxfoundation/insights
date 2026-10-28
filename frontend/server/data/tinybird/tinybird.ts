@@ -7,6 +7,7 @@ import {
   TinybirdClientError,
   TinybirdQueueFullError,
   TinybirdQueueTimeoutError,
+  type TinybirdLogLevel,
   type TinybirdResponse,
   BucketCacheStorage,
 } from '@lfx-insights/tinybird-client';
@@ -44,6 +45,7 @@ export const client = createTinybirdClient({
     10,
   ),
   latencyBackoff: process.env.NUXT_TINYBIRD_LATENCY_BACKOFF === 'false' ? false : {},
+  logLevel: process.env.NUXT_TINYBIRD_LOG_LEVEL as TinybirdLogLevel | undefined,
   bucketCache: createNitroRedisAdapter(),
 });
 

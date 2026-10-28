@@ -64,4 +64,16 @@ describe('app logger', () => {
     expect(JSON.stringify(emitWarning.mock.calls)).not.toContain('FSTDEP023');
     emitWarning.mockRestore();
   });
+
+  it('logs from info up unless API_LOG_LEVEL says otherwise', async () => {
+    vi.stubEnv('API_LOG_LEVEL', undefined);
+    const byDefault = await buildApp({ versions: [] });
+    vi.stubEnv('API_LOG_LEVEL', 'debug');
+    const debug = await buildApp({ versions: [] });
+    vi.unstubAllEnvs();
+
+    expect(byDefault.log.level).toBe('info');
+    expect(debug.log.level).toBe('debug');
+    await Promise.all([byDefault.close(), debug.close()]);
+  });
 });

@@ -9,7 +9,7 @@ import {
   TinybirdQueueFullError,
   TinybirdQueueTimeoutError,
 } from './errors.js';
-import { consoleLogger } from './logger.js';
+import { createConsoleLogger } from './logger.js';
 import type {
   TinybirdClient,
   TinybirdClientConfig,
@@ -119,7 +119,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
   } = config;
 
   const baseUrl = stripTrailingSlashes(rawBaseUrl);
-  const logger: TinybirdLogger = config.logger ?? consoleLogger;
+  const logger: TinybirdLogger = config.logger ?? createConsoleLogger(config.logLevel);
   const semaphore = new AdaptiveSemaphore(
     maxConcurrent,
     maxQueueSize,

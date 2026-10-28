@@ -29,11 +29,13 @@ export type TinybirdRequestWrapper = <T>(
   send: () => Promise<T>,
 ) => Promise<T>;
 
+export type TinybirdLogLevel = 'debug' | 'info' | 'warn' | 'error';
+
 /** Events log a name plus fields; free-text lines log the message alone. */
-export interface TinybirdLogger {
-  warn(message: string, fields?: Record<string, unknown>): void;
-  error(message: string, fields?: Record<string, unknown>): void;
-}
+export type TinybirdLogger = Record<
+  TinybirdLogLevel,
+  (message: string, fields?: Record<string, unknown>) => void
+>;
 
 /** Request queue snapshot the client takes every few seconds. */
 export interface TinybirdQueueStatus {
@@ -76,8 +78,10 @@ export interface TinybirdClientConfig {
   latencyBackoff?: LatencyBackoffOptions | false;
   /** Optional persistent cache for project → bucketId lookups. Omit to always fetch fresh. */
   bucketCache?: BucketCacheStorage;
-  /** Defaults to console */
+  /** Defaults to console output from `logLevel` up */
   logger?: TinybirdLogger;
+  /** Lowest level the default console logger prints. Defaults to info; a custom logger ignores it. */
+  logLevel?: TinybirdLogLevel;
   /** Optional hook around each request, e.g. to trace it. Omit to send requests as they are. */
   wrapRequest?: TinybirdRequestWrapper;
   /** Receives the queue snapshot in place of the periodic `tinybird_queue_status` log line. */
