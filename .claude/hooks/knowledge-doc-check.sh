@@ -5,7 +5,13 @@
 set -euo pipefail
 
 INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null || true)
+FILE_PATH=$(echo "$INPUT" | python3 -c "
+import sys, json
+try:
+    print(json.load(sys.stdin).get('tool_input', {}).get('file_path', ''))
+except Exception:
+    pass
+" 2>/dev/null || true)
 [ -z "$FILE_PATH" ] && exit 0
 
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
@@ -55,5 +61,8 @@ notes=$(printf ', %s' "${matches[@]}")
 notes="${notes:2}"
 message="Knowledge check: $FILE_PATH is a listed source of $notes. If this change makes the note wrong, fix the note in the same pull request."
 
-jq -n --arg ctx "$message" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $ctx}}'
+python3 -c "
+import sys, json
+print(json.dumps({'hookSpecificOutput': {'hookEventName': 'PostToolUse', 'additionalContext': sys.argv[1]}}))
+" "$message"
 exit 0
