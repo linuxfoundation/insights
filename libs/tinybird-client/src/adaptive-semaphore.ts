@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from './errors.js';
 import { DEFAULT_LATENCY_MONITOR_OPTIONS, LatencyMonitor } from './latency-monitor.js';
+import { consoleLogger } from './logger.js';
 import type { LatencyBackoffOptions, TinybirdLogger, TinybirdQueueStatus } from './types.js';
 
 const DEFAULT_LATENCY_BACKOFF_RATIO = 1.4;
@@ -52,7 +53,7 @@ export class AdaptiveSemaphore {
   constructor(
     private limit: number,
     private maxQueueSize: number,
-    private logger: TinybirdLogger = console,
+    private logger: TinybirdLogger = consoleLogger,
     latencyBackoff: LatencyBackoffOptions | false = {},
     private onStatus?: (status: TinybirdQueueStatus) => void,
   ) {
@@ -78,19 +79,16 @@ export class AdaptiveSemaphore {
         });
         return;
       }
-      this.logger.warn(
-        JSON.stringify({
-          message: 'tinybird_queue_status',
-          active: this.count,
-          queued: this.queue.length,
-          effectiveLimit: this.effectiveLimit,
-          limit: this.limit,
-          latencyLimit: this.latencyCeiling,
-          latencyP90Ms: this.latencyMonitor?.getSmoothedMs() ?? null,
-          latencyBaselineP90Ms: this.latencyMonitor?.getBaselineMs() ?? null,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      this.logger.warn('tinybird_queue_status', {
+        active: this.count,
+        queued: this.queue.length,
+        effectiveLimit: this.effectiveLimit,
+        limit: this.limit,
+        latencyLimit: this.latencyCeiling,
+        latencyP90Ms: this.latencyMonitor?.getSmoothedMs() ?? null,
+        latencyBaselineP90Ms: this.latencyMonitor?.getBaselineMs() ?? null,
+        timestamp: new Date().toISOString(),
+      });
     }, this.statusLogIntervalMs).unref();
   }
 
@@ -102,17 +100,14 @@ export class AdaptiveSemaphore {
     );
     this.applyCeilings();
 
-    this.logger.warn(
-      JSON.stringify({
-        message: 'tinybird_adaptive_throttle',
-        event: 'backoff',
-        previousLimit,
-        newLimit: this.effectiveLimit,
-        active: this.count,
-        queued: this.queue.length,
-        timestamp: new Date().toISOString(),
-      }),
-    );
+    this.logger.warn('tinybird_adaptive_throttle', {
+      event: 'backoff',
+      previousLimit,
+      newLimit: this.effectiveLimit,
+      active: this.count,
+      queued: this.queue.length,
+      timestamp: new Date().toISOString(),
+    });
 
     if (this.recoveryTimer) {
       clearTimeout(this.recoveryTimer);
@@ -122,16 +117,13 @@ export class AdaptiveSemaphore {
       this.rateLimitCeiling = this.limit;
       this.applyCeilings();
       this.recoveryTimer = null;
-      this.logger.warn(
-        JSON.stringify({
-          message: 'tinybird_adaptive_throttle',
-          event: 'recovery',
-          restoredLimit: this.effectiveLimit,
-          active: this.count,
-          queued: this.queue.length,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      this.logger.warn('tinybird_adaptive_throttle', {
+        event: 'recovery',
+        restoredLimit: this.effectiveLimit,
+        active: this.count,
+        queued: this.queue.length,
+        timestamp: new Date().toISOString(),
+      });
     }, this.recoveryMs);
   }
 
@@ -158,18 +150,15 @@ export class AdaptiveSemaphore {
     this.applyCeilings();
     const backedOff = this.latencyCeiling < previousCeiling;
     if (backedOff || this.latencyCeiling === this.limit) {
-      this.logger.warn(
-        JSON.stringify({
-          message: 'tinybird_adaptive_throttle',
-          event: backedOff ? 'latency_backoff' : 'latency_recovery',
-          previousLimit,
-          newLimit: this.effectiveLimit,
-          latencyRatio: Math.round(ratio * 100) / 100,
-          active: this.count,
-          queued: this.queue.length,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      this.logger.warn('tinybird_adaptive_throttle', {
+        event: backedOff ? 'latency_backoff' : 'latency_recovery',
+        previousLimit,
+        newLimit: this.effectiveLimit,
+        latencyRatio: Math.round(ratio * 100) / 100,
+        active: this.count,
+        queued: this.queue.length,
+        timestamp: new Date().toISOString(),
+      });
     }
   }
 
@@ -188,16 +177,13 @@ export class AdaptiveSemaphore {
         timer: setTimeout(() => {
           const idx = this.queue.indexOf(entry);
           if (idx !== -1) this.queue.splice(idx, 1);
-          this.logger.warn(
-            JSON.stringify({
-              message: 'tinybird_throttle',
-              queueDepth: this.queue.length,
-              effectiveLimit: this.effectiveLimit,
-              limit: this.limit,
-              timeoutMs,
-              timestamp: new Date().toISOString(),
-            }),
-          );
+          this.logger.warn('tinybird_throttle', {
+            queueDepth: this.queue.length,
+            effectiveLimit: this.effectiveLimit,
+            limit: this.limit,
+            timeoutMs,
+            timestamp: new Date().toISOString(),
+          });
           reject(new TinybirdQueueTimeoutError());
         }, timeoutMs),
       };

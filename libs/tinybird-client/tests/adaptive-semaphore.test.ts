@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AdaptiveSemaphore } from '../src/adaptive-semaphore.js';
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '../src/errors.js';
+import { consoleLogger } from '../src/logger.js';
 import type { LatencyBackoffOptions } from '../src/types.js';
 
 const FAST_LATENCY_BACKOFF: LatencyBackoffOptions = {
@@ -44,7 +45,7 @@ describe('AdaptiveSemaphore', () => {
 
     it('hands the status to onStatus in place of the log line', () => {
       const onStatus = vi.fn();
-      const sem = new AdaptiveSemaphore(2, 10, console, {}, onStatus);
+      const sem = new AdaptiveSemaphore(2, 10, consoleLogger, {}, onStatus);
       void sem.acquire(1_000);
 
       vi.advanceTimersByTime(8_000);
@@ -180,7 +181,7 @@ describe('AdaptiveSemaphore', () => {
 
   describe('reportTinybirdLatency()', () => {
     it('shrinks the limit by a quarter per slow window, down to half the configured limit', () => {
-      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      const sem = new AdaptiveSemaphore(20, 10, consoleLogger, FAST_LATENCY_BACKOFF);
       latencyWindows(sem, 100, 5);
 
       latencyWindows(sem, 300, 2);
@@ -192,7 +193,7 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('grows the limit back one slot per healthy window', () => {
-      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      const sem = new AdaptiveSemaphore(20, 10, consoleLogger, FAST_LATENCY_BACKOFF);
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 6);
 
@@ -205,7 +206,7 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('holds the limit while latency sits between the recovery and backoff ratios', () => {
-      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      const sem = new AdaptiveSemaphore(20, 10, consoleLogger, FAST_LATENCY_BACKOFF);
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 2);
       latencyWindows(sem, 170, 1);
@@ -216,7 +217,10 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('serves queued requests as soon as the limit grows back', async () => {
-      const sem = new AdaptiveSemaphore(4, 10, console, { ...FAST_LATENCY_BACKOFF, floor: 2 });
+      const sem = new AdaptiveSemaphore(4, 10, consoleLogger, {
+        ...FAST_LATENCY_BACKOFF,
+        floor: 2,
+      });
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 4);
       expect(sem.getEffectiveLimit()).toBe(2);
@@ -237,7 +241,7 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('applies the lower of the latency and rate-limit ceilings', () => {
-      const sem = new AdaptiveSemaphore(20, 10, console, FAST_LATENCY_BACKOFF);
+      const sem = new AdaptiveSemaphore(20, 10, consoleLogger, FAST_LATENCY_BACKOFF);
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 2);
       expect(sem.getEffectiveLimit()).toBe(15);
@@ -250,7 +254,7 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('keeps the configured limit when latency backoff is disabled', () => {
-      const sem = new AdaptiveSemaphore(20, 10, console, false);
+      const sem = new AdaptiveSemaphore(20, 10, consoleLogger, false);
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 10);
 
@@ -258,7 +262,7 @@ describe('AdaptiveSemaphore', () => {
     });
 
     it('defaults the floor to half the limit below the 429 minimum', () => {
-      const sem = new AdaptiveSemaphore(8, 10, console, FAST_LATENCY_BACKOFF);
+      const sem = new AdaptiveSemaphore(8, 10, consoleLogger, FAST_LATENCY_BACKOFF);
       latencyWindows(sem, 100, 5);
       latencyWindows(sem, 300, 5);
       expect(sem.getEffectiveLimit()).toBe(4);

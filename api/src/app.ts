@@ -7,10 +7,11 @@ import { fileURLToPath } from 'node:url';
 import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import Fastify, { type FastifyInstance } from 'fastify';
+import Fastify, { LogController, type FastifyInstance } from 'fastify';
 import type { JWTVerifyGetKey } from 'jose';
 
 import { authenticate } from './auth.js';
+import { useTinybirdLog } from './clients/tinybird.js';
 import { healthRoutes } from './health.js';
 import { notFoundHandler } from './lib/errors.js';
 import { rateLimit } from './rate-limit.js';
@@ -86,9 +87,14 @@ function prunedComponents(components: ComponentSections, paths: unknown): Compon
 
 export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyInstance> {
   const app = Fastify({
-    logger: { level: 'warn' },
-    disableRequestLogging: true,
+    logger: {
+      level: 'warn',
+      // Datadog reads a string level as the log status; pino writes a number by default.
+      formatters: { level: (label) => ({ level: label }) },
+    },
+    logController: new LogController({ disableRequestLogging: true }),
   }).withTypeProvider<TypeBoxTypeProvider>();
+  useTinybirdLog(app.log);
 
   // The local default lives in .env.dist, not here; see src/env.ts.
   const publicUrl = process.env.API_PUBLIC_URL;
