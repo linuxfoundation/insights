@@ -104,7 +104,9 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
 ## Where things are documented
 
 - API architecture decisions: `api/docs/arch/adr/`. Format is enforced by
-  `.claude/rules/adr-format.md`; use the `/adr` skill to add one.
+  `.claude/rules/adr-format.md`; use the `/adr` skill to add one. They stay under `api/` rather
+  than in a root `docs/adr/` like crowd.dev's because every record so far is about the public
+  API, and the skill, the rule and the API docs all link to this path.
 - API reference: built with VitePress from `api/docs/site/`, served by the API itself.
 - Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.

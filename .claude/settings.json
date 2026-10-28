@@ -19,6 +19,10 @@
           {
             "type": "command",
             "command": ".claude/hooks/post-tool-use-doc-check.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/knowledge-doc-check.sh"
           }
         ]
       }
