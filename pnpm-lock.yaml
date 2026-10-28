@@ -146,6 +146,9 @@ importers:
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.52
+      dd-trace:
+        specifier: ^6.20.1
+        version: 6.20.1
       fastify:
         specifier: ^5.12.6
         version: 5.12.7
@@ -2330,6 +2333,10 @@ packages:
   '@datadog/native-metrics@4.0.0':
     resolution: {integrity: sha512-rS6Qc8WAbOgbrtDYdqK15gi2xbuIEyfuquUH05g+2DOdiNAswNAGrlIuSdJZQF/qoJzjcFvxb9kCHu8BjiPfQQ==}
     engines: {node: '>=18'}
+
+  '@datadog/pprof@5.19.0':
+    resolution: {integrity: sha512-0ACUNjUdZ254ay7ZeAm8A3iO1t+jdPzAV8DuVHzqsuxV72KqygwT6ydq4/tm4LqIq51m1pQXEPT1L+j9myzn6g==}
+    engines: {node: '>=16'}
 
   '@datadog/pprof@5.20.0':
     resolution: {integrity: sha512-el72sY8ipZsA6dPFqNhXtXbA0e189U+eyYUWl2bBz4+qEIheIgmpLzDrF2F7gxu/Cn87pLLYnj+oNcySKBdylQ==}
@@ -7590,6 +7597,10 @@ packages:
   dd-trace@5.132.0:
     resolution: {integrity: sha512-2j+bHhDuAG0ghR7Qu/3fXR/02QhaX6U4ZanzasT7fZOsprwyR7RIC0gIykwcFiqY+NxF5ITmQAyUOQ0XuH8gfw==}
     engines: {node: '>=18'}
+
+  dd-trace@6.20.1:
+    resolution: {integrity: sha512-Jc+XYOERl7f5IogVlDR6mfGrweJmjKrIhz6aXkk4DDgTihecLmYuehVhlGzVFUZhVX1kCquRqvCDuY4HDGltkQ==}
+    engines: {node: '>=22'}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -14826,6 +14837,13 @@ snapshots:
       node-gyp-build: 3.9.0
     optional: true
 
+  '@datadog/pprof@5.19.0':
+    dependencies:
+      node-gyp-build: 4.8.4
+      pprof-format: 2.3.2
+      source-map: 0.8.0
+    optional: true
+
   '@datadog/pprof@5.20.0':
     dependencies:
       node-gyp-build: 4.8.4
@@ -20730,6 +20748,23 @@ snapshots:
       '@datadog/native-iast-taint-tracking': 4.2.1
       '@datadog/native-metrics': 4.0.0
       '@datadog/pprof': 5.20.0
+      '@datadog/wasm-js-rewriter': 5.0.4
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/api-logs': 0.223.0
+      oxc-parser: 0.132.0
+
+  dd-trace@6.20.1:
+    dependencies:
+      dc-polyfill: 0.1.11
+      import-in-the-middle: 3.5.1
+      opentracing: 0.14.7
+    optionalDependencies:
+      '@datadog/libdatadog': 0.21.0
+      '@datadog/libdatadog-extras': 0.21.0
+      '@datadog/native-appsec': 11.0.3
+      '@datadog/native-iast-taint-tracking': 4.2.1
+      '@datadog/native-metrics': 4.0.0
+      '@datadog/pprof': 5.19.0
       '@datadog/wasm-js-rewriter': 5.0.4
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.223.0

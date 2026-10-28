@@ -22,6 +22,13 @@ export type TinybirdQueryValue = string | number | boolean | string[] | number[]
 
 export type TinybirdQuery = Record<string, TinybirdQueryValue>;
 
+/** Wraps each request the client sends, queue wait and retries inside; bucket cache hits never reach it. */
+export type TinybirdRequestWrapper = <T>(
+  path: string,
+  params: TinybirdQuery,
+  send: () => Promise<T>,
+) => Promise<T>;
+
 export interface TinybirdLogger {
   warn(message: string): void;
   error(message: string): void;
@@ -62,6 +69,8 @@ export interface TinybirdClientConfig {
   bucketCache?: BucketCacheStorage;
   /** Defaults to console */
   logger?: TinybirdLogger;
+  /** Optional hook around each request, e.g. to trace it. Omit to send requests as they are. */
+  wrapRequest?: TinybirdRequestWrapper;
 }
 
 export interface TinybirdClient {

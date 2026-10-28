@@ -1,0 +1,54 @@
+# ADR-0024: The API reports to its node's Datadog agent through dd-trace
+
+**Date**: 2026-10-26
+**Status**: accepted
+**Deciders**: API team
+
+## Context
+
+ADR-0019 instrumented the API with the OpenTelemetry SDK and an `opentelemetry-collector` sidecar exporting to Datadog, following the LFX platform standard (LFX-0003). That design suits the LFX platform cluster, where the Datadog agent belongs to another team. The API instead runs in the production cluster it shares with the crowd.dev services. That cluster's Datadog agent runs on every node and is configured alongside the API's own deployment. It already collects every pod's logs, takes traces on port 8126 and DogStatsD metrics on port 8125, and the crowd.dev services report through it with `dd-trace`. Its OpenTelemetry (OTLP) receiver is off, and Datadog is the only observability backend in use.
+
+## Decision
+
+We will instrument the API with `dd-trace`, sending traces and DogStatsD metrics to the Datadog agent on the pod's node, as the crowd.dev services do.
+
+The main reason is to keep one observability machinery in the cluster. The crowd.dev services already report through `dd-trace` and the node agent, so an OpenTelemetry pipeline for the API alone would add a second machinery for the same traces, metrics and logs in the same cluster, with its own setup to configure, operate and debug. Moving to OpenTelemetry stays open as a later decision for the whole cluster at once.
+
+This amends ADR-0019 and the trace correlation section of ADR-0018:
+
+- `dd-trace` traces each request as `fastify.request`, named by route template, with its Postgres and outbound HTTP calls beneath it. Each Tinybird pipe call is a `tinybird.query` span named by pipe and tagged with its bucket. Health probes are not traced.
+- The caller's LFID and tier go on the trace's root span through `tracer.setUser`, as `usr.id` and `usr.tier`. Per-caller views come from span queries, and custom metrics go to the agent's DogStatsD port with low-cardinality tags only.
+- Log lines carry `dd.trace_id` and `dd.span_id` from `dd-trace`'s log injection, in place of OpenTelemetry's `trace_id` and `span_id`.
+- `dd.trace_id` (128-bit, 32-char hex) is the key for finding a request's trace from its log lines. Fastify's own `reqId` is a per-process counter that stays on request-scoped lines. Inbound W3C `traceparent` is still honoured, and outbound calls carry it alongside `x-datadog-*` headers.
+- Sampling follows the `dd-trace` default, which the agent tunes per service. APM trace metrics (hits, errors, latency percentiles) count every request whatever is sampled.
+
+## Alternatives Considered
+
+### OpenTelemetry SDK with a collector sidecar (ADR-0019 as written)
+
+- **Pros**: follows LFX-0003; vendor neutral; self-contained in the API pod.
+- **Cons**: a collector container and its config in every API pod, plus a copy of the Datadog API key in the namespace.
+- **Why not**: it rebuilds what the node agent already does for every other pod in the cluster.
+
+### OpenTelemetry SDK sending OTLP to the node agent
+
+- **Pros**: follows LFX-0003; no sidecar.
+- **Cons**: enabling the agent's OTLP receiver restarts the agent on every node, including those running the crowd.dev production services. The OpenTelemetry Node SDK spans about ten 0.x packages, several of which were renamed or deprecated while this was being built.
+- **Why not**: it adds a second telemetry machinery beside `dd-trace` in the same cluster. Its main gain is portability, which a cluster-wide move to OpenTelemetry would deliver for every service together.
+
+## Consequences
+
+### Positive
+
+- The only cluster change is environment on the API pod: `DD_AGENT_HOST` from the node IP, and `DD_ENV`.
+- One mature package, configured like every other service in the cluster.
+- Per-endpoint p50/p95/p99, hits and errors come from APM trace metrics without custom metrics. The profiler, runtime metrics and App and API Protection are available later through configuration.
+
+### Negative
+
+- The instrumentation is Datadog-specific and departs from LFX-0003. Moving to another backend means replacing `src/instrumentation.ts`, `src/telemetry.ts` and the `dd.*` log fields.
+
+### Risks
+
+- Per-caller counts come from span queries, so they are approximate by default: Datadog ingests the traces the agent's sampling rates keep (about 10 per second per agent), then indexes a sample of those. Exact counts need both a tracer sampling rule that keeps every `insights-api` trace (`DD_TRACE_SAMPLING_RULES`, within `DD_TRACE_RATE_LIMIT`) and a retention filter that indexes every span of this service, which costs little at current volume.
+- DogStatsD aggregates in-process for 10 seconds, so a rollout can drop up to 10 seconds of a pod's custom metrics. Accepted at current volume.

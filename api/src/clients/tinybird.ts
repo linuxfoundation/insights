@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Static } from '@sinclair/typebox';
+import tracer from 'dd-trace';
 import type { FastifyRequest } from 'fastify';
 
 import {
@@ -34,6 +35,20 @@ export function getTinybirdClient(): TinybirdClient {
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
       bucketCache: createInMemoryBucketCache(),
+      // One span per request the client sends, queue wait and retries inside, so cache hits
+      // never count as pipe calls.
+      wrapRequest: (path, params, send) =>
+        tracer.trace(
+          'tinybird.query',
+          {
+            resource: path,
+            tags:
+              params.bucketId === undefined
+                ? { pipe: path }
+                : { pipe: path, bucket_id: params.bucketId },
+          },
+          send,
+        ),
     });
   }
   return client;

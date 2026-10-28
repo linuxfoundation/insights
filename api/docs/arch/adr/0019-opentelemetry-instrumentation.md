@@ -1,5 +1,7 @@
 # OpenTelemetry instrumentation; OTel trace ID is the request ID
 
+> Amended 2026-10-26: the API uses `dd-trace` and reports to the Datadog agent on its node, in place of the OpenTelemetry SDK and a collector sidecar. Log lines carry `dd.trace_id` and `dd.span_id` as the log-to-trace correlation fields, and Fastify's `reqId` stays a per-process counter. See [ADR-0024](./0024-dd-trace-to-node-datadog-agent.md).
+
 The API service is instrumented with OpenTelemetry from day one. Inbound and outbound HTTP context propagation, log↔trace correlation, and custom metrics all flow through a single OTel SDK rather than ad-hoc per-concern integrations. This inherits the LFX platform standard from [lfx-architecture-decisions/0003](https://github.com/linuxfoundation/lfx-architecture-decisions/blob/main/decisions/0003-opentelemetry-instrumentation.md).
 
 ## What we use

@@ -40,4 +40,5 @@ COPY --from=builder /app/api/docs/site/.vitepress/dist ./api/docs/site/.vitepres
 WORKDIR /app/api
 USER node
 EXPOSE 4000
-CMD ["node", "dist/server.js"]
+# The instrumentation must load before the app, see src/instrumentation.ts.
+CMD ["node", "--import", "./dist/instrumentation.js", "dist/server.js"]
