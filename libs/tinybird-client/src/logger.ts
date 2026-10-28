@@ -11,7 +11,7 @@ const line = (message: string, fields?: Record<string, unknown>) =>
 /** Console output from `level` up, with each event as one JSON line. */
 export function createConsoleLogger(level: TinybirdLogLevel = 'info'): TinybirdLogger {
   // Levels usually come from an env var, so a typo falls back to info instead of silencing the client.
-  const min = rank[level] ?? rank.info;
+  const min = Object.hasOwn(rank, level) ? rank[level] : rank.info;
   const at = (target: TinybirdLogLevel) => (message: string, fields?: Record<string, unknown>) => {
     if (rank[target] >= min) console[target](line(message, fields));
   };

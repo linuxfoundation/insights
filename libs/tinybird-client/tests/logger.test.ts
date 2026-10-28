@@ -80,9 +80,9 @@ describe('createConsoleLogger', () => {
     expect(out.warn).toHaveBeenCalledOnce();
   });
 
-  it('falls back to info for an unknown level', () => {
+  it.each(['verbose', 'constructor'])('falls back to info for the unknown level %s', (level) => {
     const out = spies();
-    const logger = createConsoleLogger('verbose' as TinybirdLogLevel);
+    const logger = createConsoleLogger(level as TinybirdLogLevel);
 
     logger.debug('tinybird_queue_status', { active: 1 });
     logger.info('tinybird_adaptive_throttle', { event: 'recovery' });
