@@ -133,7 +133,7 @@ sequenceDiagram
         A0-->>M: Auth0 JWT (aud Insights, sub, username claim, azp = MCP client)
         M->>M: cache until exp - 5 min
     end
-    M->>W: GET /v1/... Bearer <Insights JWT>
+    M->>W: GET /v1-alpha/... Bearer <Insights JWT>
     W->>W: not lfi_ → JWT path: JWKS verify (iss, aud Insights, RS256, exp),<br/>check azp allow-list, read username claim
     alt tier cache miss for username
         W->>T: member tiers for username
@@ -146,6 +146,8 @@ sequenceDiagram
     W-->>M: same response
     M-->>U: tool result, or tool error (IsError) with the reason and retry hint
 ```
+
+All routes are served under `/v1-alpha` today; the `/v1` prefix is registered but has no routes yet. The MCP tools call `/v1-alpha` and move to `/v1` when it ships, following the `Deprecation` and `Sunset` headers ([ADR-0021](../../api/docs/arch/adr/0021-rfc-deprecation-sunset-header-formats.md)).
 
 ### 6.2 Why the Worker verifies the JWT and not only the API
 
@@ -187,7 +189,7 @@ The stdio mode uses a static token from `lfx auth token`. If that token has the 
 - **No token passthrough.** The MCP never forwards the user's MCP token to Insights, and Insights only accepts tokens minted for its own audience.
 - **Narrow audience.** Only two Auth0 clients can obtain Insights-audience tokens: the Worker (PAT exchange) and the MCP (user exchange). The Worker allow-list on `azp` enforces this even if Auth0 configuration widens by mistake.
 - **Trusted headers stay Worker-only.** The origin is reachable only through the Workers VPC binding, and the Worker strips client copies of `x-tier`, `x-org-id`, `x-client-ip` on both paths. This matters more now that `x-tier` gates the organization endpoints (ADR-0023).
-- **Revocation.** Revoking a user's MCP access (at Auth0 sign-in) stops new exchanges. Already-issued Insights tokens stay valid until they expire, so their lifetime should stay short. A lapsed membership drops the user to basic within the 10-minute tier cache window, as on the PAT path.
+- **Revocation.** MCP access is checked only at Auth0 sign-in, not per request (lfx-mcp `ARCHITECTURE.md`, "Sign-in entitlement"). Revoking it blocks the next sign-in, but an MCP token issued before the revocation can keep being exchanged for Insights tokens until it expires. Unless the token exchange rechecks MCP access, the window is the remaining lifetime of the user's MCP token plus the lifetime of the last Insights token issued. If the exchange action rechecks access (open question 9), the window shrinks to one Insights token lifetime, comparable to the 10-minute window on the PAT path. Either way, the Insights token lifetime should stay short. A lapsed membership drops the user to basic within the 10-minute tier cache window, as on the PAT path.
 - **Scopes.** The exchanged Insights token does not need `manage:all`. Insights is read-only. If the CTE action copies scopes, it should drop write scopes for the Insights audience.
 - **Abuse of the member-tiers endpoint.** Prevented by verifying before lookup and caching tiers per LFID.
 
@@ -201,16 +203,17 @@ The stdio mode uses a static token from `lfx auth token`. If that token has the 
 
 ## 11. Open questions
 
-| #   | Question                                                                                                                                                           | Owner                  |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- |
-| 1   | Can the existing MCP Custom Token Exchange profile target a second audience, or does Insights need its own profile?                                                | SSO / Auth0 admin      |
-| 2   | Does Auth0 set the username claim on MCP-exchanged tokens for the Insights audience?                                                                               | SSO / Auth0 admin      |
-| 3   | Exchanged token lifetime for the Insights audience.                                                                                                                | SSO, Insights          |
-| 4   | Which claim identifies the calling client on exchanged tokens: `azp` or `client_id`? The Worker allow-list keys on it.                                             | SSO                    |
-| 5   | Which Insights endpoints become MCP tools in v1, and do Collections (user-owned, ADR-0007) belong in the first set?                                                | Product, Insights, MCP |
-| 6   | MCP tools are staff-only for Lens today. Are Insights tools open to every MCP user with `read:all`, with tier gating left to the API? (This proposal assumes yes.) | Product, MCP           |
-| 7   | Should the PAT path and the JWT path share one tier cache keyed by LFID? (Proposed yes; changes the PAT cache layout.)                                             | Insights               |
-| 8   | Do the MCP tool descriptions mention "Insights"? Several MCP tests currently ban the word in tool text.                                                            | MCP                    |
+| #   | Question                                                                                                                                                                      | Owner                  |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| 1   | Can the existing MCP Custom Token Exchange profile target a second audience, or does Insights need its own profile?                                                           | SSO / Auth0 admin      |
+| 2   | Does Auth0 set the username claim on MCP-exchanged tokens for the Insights audience?                                                                                          | SSO / Auth0 admin      |
+| 3   | Exchanged token lifetime for the Insights audience.                                                                                                                           | SSO, Insights          |
+| 4   | Which claim identifies the calling client on exchanged tokens: `azp` or `client_id`? The Worker allow-list keys on it.                                                        | SSO                    |
+| 5   | Which Insights endpoints become MCP tools in v1, and do Collections (user-owned, ADR-0007) belong in the first set?                                                           | Product, Insights, MCP |
+| 6   | MCP tools are staff-only for Lens today. Are Insights tools open to every MCP user with `read:all`, with tier gating left to the API? (This proposal assumes yes.)            | Product, MCP           |
+| 7   | Should the PAT path and the JWT path share one tier cache keyed by LFID? (Proposed yes; changes the PAT cache layout.)                                                        | Insights               |
+| 8   | Do the MCP tool descriptions mention "Insights"? Several MCP tests currently ban the word in tool text.                                                                       | MCP                    |
+| 9   | Can the Custom Token Exchange action recheck the user's MCP access at exchange time, within the Auth0 action time budget? If not, the revocation window in section 9 applies. | SSO / Auth0 admin      |
 
 ## 12. Follow-ups
 
