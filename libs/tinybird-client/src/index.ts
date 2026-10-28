@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 export { createTinybirdClient } from './client.js';
 export { AdaptiveSemaphore } from './adaptive-semaphore.js';
+export { consoleLogger } from './logger.js';
 export {
   TinybirdClientError,
   TinybirdQueueFullError,

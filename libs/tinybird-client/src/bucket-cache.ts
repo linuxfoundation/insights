@@ -96,13 +96,10 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     }
 
     if (response.data.length === 0) {
-      logger.warn(
-        JSON.stringify({
-          message: 'tinybird_bucket_not_found',
-          project,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      logger.warn('tinybird_bucket_not_found', {
+        project,
+        timestamp: new Date().toISOString(),
+      });
       return null;
     }
 
@@ -120,12 +117,9 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
   async function getBucketIdForProject(project: string, fetcher: Fetcher): Promise<number | null> {
     const projectValue = project?.toString().trim();
     if (!projectValue) {
-      logger.warn(
-        JSON.stringify({
-          message: 'tinybird_bucket_invalid_project',
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      logger.warn('tinybird_bucket_invalid_project', {
+        timestamp: new Date().toISOString(),
+      });
       return null;
     }
 
@@ -193,26 +187,20 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     );
 
     if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
-      logger.warn(
-        JSON.stringify({
-          message: 'tinybird_bucket_not_found',
-          collectionSlug,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      logger.warn('tinybird_bucket_not_found', {
+        collectionSlug,
+        timestamp: new Date().toISOString(),
+      });
       return null;
     }
 
     const bucketId = response.data[0]?.bucketId;
     if (typeof bucketId !== 'number') {
-      logger.warn(
-        JSON.stringify({
-          message: 'tinybird_bucket_invalid_type',
-          collectionSlug,
-          bucketIdType: typeof bucketId,
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      logger.warn('tinybird_bucket_invalid_type', {
+        collectionSlug,
+        bucketIdType: typeof bucketId,
+        timestamp: new Date().toISOString(),
+      });
       return null;
     }
 
@@ -231,12 +219,9 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
   ): Promise<number | null> {
     const slugValue = collectionSlug?.toString().trim();
     if (!slugValue) {
-      logger.warn(
-        JSON.stringify({
-          message: 'tinybird_bucket_invalid_collection',
-          timestamp: new Date().toISOString(),
-        }),
-      );
+      logger.warn('tinybird_bucket_invalid_collection', {
+        timestamp: new Date().toISOString(),
+      });
       return null;
     }
 

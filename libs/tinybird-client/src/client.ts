@@ -9,6 +9,7 @@ import {
   TinybirdQueueFullError,
   TinybirdQueueTimeoutError,
 } from './errors.js';
+import { consoleLogger } from './logger.js';
 import type {
   TinybirdClient,
   TinybirdClientConfig,
@@ -118,7 +119,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
   } = config;
 
   const baseUrl = stripTrailingSlashes(rawBaseUrl);
-  const logger: TinybirdLogger = config.logger ?? console;
+  const logger: TinybirdLogger = config.logger ?? consoleLogger;
   const semaphore = new AdaptiveSemaphore(
     maxConcurrent,
     maxQueueSize,
@@ -155,18 +156,15 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
       const durationMs = Date.now() - fetchStart;
       if (durationMs > slowRequestThresholdMs) {
-        logger.warn(
-          JSON.stringify({
-            message: 'tinybird_slow_request',
-            pipe: path,
-            params,
-            durationMs,
-            wasQueued,
-            active: semaphore.getActive(),
-            queued: semaphore.getQueueLength(),
-            timestamp: new Date().toISOString(),
-          }),
-        );
+        logger.warn('tinybird_slow_request', {
+          pipe: path,
+          params,
+          durationMs,
+          wasQueued,
+          active: semaphore.getActive(),
+          queued: semaphore.getQueueLength(),
+          timestamp: new Date().toISOString(),
+        });
       }
 
       return data;
@@ -180,8 +178,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
 
       const queueRejected =
         error instanceof TinybirdQueueFullError || error instanceof TinybirdQueueTimeoutError;
-      const logEntry = JSON.stringify({
-        message: queueRejected ? 'tinybird_queue_rejected' : 'tinybird_request_error',
+      const fields = {
         pipe: path,
         params,
         status,
@@ -190,11 +187,11 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
         active: semaphore.getActive(),
         queued: semaphore.getQueueLength(),
         timestamp: new Date().toISOString(),
-      });
+      };
       if (queueRejected) {
-        logger.warn(logEntry);
+        logger.warn('tinybird_queue_rejected', fields);
       } else {
-        logger.error(logEntry);
+        logger.error('tinybird_request_error', fields);
       }
 
       if (status === 429) {

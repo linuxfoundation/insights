@@ -29,9 +29,10 @@ export type TinybirdRequestWrapper = <T>(
   send: () => Promise<T>,
 ) => Promise<T>;
 
+/** Events log a name plus fields; free-text lines log the message alone. */
 export interface TinybirdLogger {
-  warn(message: string): void;
-  error(message: string): void;
+  warn(message: string, fields?: Record<string, unknown>): void;
+  error(message: string, fields?: Record<string, unknown>): void;
 }
 
 /** Request queue snapshot the client takes every few seconds. */

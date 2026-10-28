@@ -5,6 +5,7 @@ import tracer from 'dd-trace';
 import type { FastifyBaseLogger, FastifyRequest } from 'fastify';
 
 import {
+  consoleLogger,
   createTinybirdClient,
   TinybirdClientError,
   TinybirdInvalidResponseError,
@@ -37,27 +38,19 @@ export function useTinybirdLog(log: FastifyBaseLogger): void {
   clientLog = log;
 }
 
-// The client writes its events as JSON strings and everything else as plain text.
-const toLog = (level: 'warn' | 'error') => (line: string) => {
+const toLog = (level: 'warn' | 'error') => (message: string, fields?: Record<string, unknown>) => {
   if (!clientLog) {
-    console[level](line);
+    consoleLogger[level](message, fields);
     return;
   }
-  if (line.startsWith('{')) {
-    try {
-      // Datadog reads a top-level status as the log severity, so the upstream HTTP status gets
-      // its own name.
-      const { message, status, ...fields } = JSON.parse(line) as {
-        message?: string;
-        status?: number;
-      };
-      clientLog[level](status === undefined ? fields : { ...fields, httpStatus: status }, message);
-      return;
-    } catch {
-      // Logged as plain text below.
-    }
+  if (!fields) {
+    clientLog[level](message);
+    return;
   }
-  clientLog[level](line);
+  // Datadog reads a top-level status as the log severity, so the upstream HTTP status gets its
+  // own name.
+  const { status, ...rest } = fields;
+  clientLog[level](status === undefined ? rest : { ...rest, httpStatus: status }, message);
 };
 
 // Errors already counted, so a failure shared by every caller of one bucket lookup counts once.

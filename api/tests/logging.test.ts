@@ -25,7 +25,7 @@ describe('Tinybird client logging', () => {
     { API_AUTH_DISABLED: 'true', API_TB_HOST: tinybirdHost, API_TB_TOKEN: 'test-token' },
   );
 
-  it('sends the client lines to the app logger, with JSON events as fields', async () => {
+  it('sends the client events to the app logger, with their fields as log fields', async () => {
     const log = { warn: vi.fn(), error: vi.fn() };
     useTinybirdLog(log as never);
     mockFetch.mockRejectedValue(new TypeError('fetch failed'));

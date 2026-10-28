@@ -146,10 +146,10 @@ describe('fetchFromTinybird throttle behavior', () => {
     });
 
     expect(logger.error).not.toHaveBeenCalled();
-    expect(JSON.parse(logger.warn.mock.calls[0]?.[0])).toMatchObject({
-      message: 'tinybird_queue_rejected',
-      wasQueued,
-    });
+    expect(logger.warn).toHaveBeenCalledWith(
+      'tinybird_queue_rejected',
+      expect.objectContaining({ wasQueued }),
+    );
   });
 
   it('skips semaphore for ping and bucket lookup paths', async () => {
