@@ -34,3 +34,5 @@ on), so these notes can move into it without renaming.
 
 Notes are maps, not manuals. Where a deeper document already exists, a note links to it rather
 than repeating it. When code changes make a note wrong, fix the note in the same pull request.
+`.claude/hooks/knowledge-doc-check.sh` reminds Claude Code when it edits a file that a note lists
+under `sources`; a source ending in `/` covers everything below it.

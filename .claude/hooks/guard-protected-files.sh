@@ -84,6 +84,39 @@ if [[ "$FILE_PATH" == frontend/server/plugins/* ]]; then
   warn "Server plugin — changes affect server startup and request lifecycle."
 fi
 
+# ── Database Migrations ────────────────────────────────────────
+if [[ "$FILE_PATH" == database/migrations/* ]]; then
+  warn "Flyway migration — append-only. Never modify an existing migration that has been applied."
+fi
+
+# ── Auth (API and frontend server) ─────────────────────────────
+case "$FILE_PATH" in
+  api/src/auth.ts)
+    warn "Public API auth — changes affect Auth0 token verification on every public API route." ;;
+  workers/api-gateway/src/exchange.ts)
+    warn "PAT token exchange — changes affect how the gateway swaps a personal access token for an Auth0 access token." ;;
+  frontend/server/api/auth/*|frontend/server/utils/auth-refresh.ts)
+    warn "Frontend auth routes — changes affect sign-in, sign-out and session refresh." ;;
+esac
+
+# ── Data Deletion ──────────────────────────────────────────────
+case "$FILE_PATH" in
+  .github/workflows/production-cache-flush.yaml)
+    warn "Production cache flush — runs FLUSHALL on production Redis." ;;
+  .github/workflows/production-cache-flush-partial.yaml)
+    warn "Production cache flush — deletes production Redis keys for a project, collection or leaderboard." ;;
+esac
+
+# ── Production Config ──────────────────────────────────────────
+case "$FILE_PATH" in
+  .github/workflows/production-deploy.yaml|.github/workflows/public-api-deploy.yaml)
+    warn "Production deploy workflow — changes affect how code reaches production." ;;
+  init-submodules.sh)
+    warn "Submodule init — decides which crowd.dev code every deploy builds against." ;;
+  workers/api-gateway/wrangler.jsonc)
+    warn "API gateway config — changes affect the production Cloudflare Worker and its binding to the API." ;;
+esac
+
 # ── Build & Config Files ───────────────────────────────────────
 if [[ "$FILE_PATH" == .husky/* ]]; then
   warn "Git hooks — changes affect pre-commit validation for all contributors."

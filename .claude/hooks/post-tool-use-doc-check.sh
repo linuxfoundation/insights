@@ -2,8 +2,8 @@
 # PostToolUse hook: suggest /tech-writer when doc-impacting files are edited
 #
 # Fires after every Edit or Write tool call. If the changed file lives in a
-# path that typically requires public documentation, prints a reminder so
-# Claude surfaces it at the end of the session.
+# path that typically requires public documentation, returns a reminder as
+# additionalContext so Claude surfaces it at the end of the session.
 
 input=$(cat)
 
@@ -27,8 +27,12 @@ patterns=(
 
 for pattern in "${patterns[@]}"; do
   if [[ "$file_path" == *"$pattern"* ]]; then
-    echo "Doc check: '${file_path}' is in a doc-impacting area."
-    echo "If this change adds or modifies user-facing behaviour, run /tech-writer to create or update the docs."
+    # Plain stdout from a PostToolUse hook only reaches the transcript; additionalContext reaches Claude.
+    message="Doc check: '${file_path}' is in a doc-impacting area. If this change adds or modifies user-facing behaviour, run /tech-writer to create or update the docs."
+    python3 -c "
+import sys, json
+print(json.dumps({'hookSpecificOutput': {'hookEventName': 'PostToolUse', 'additionalContext': sys.argv[1]}}))
+" "$message"
     exit 0
   fi
 done
