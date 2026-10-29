@@ -154,7 +154,8 @@ describe.each(names)('%s', (name) => {
       }),
     );
     expect((await get(url(name))).statusCode).toBe(200);
-    expect(maxInFlight).toBe(expected);
+    // The Tinybird client sends at most 5 at once (src/clients/tinybird.ts).
+    expect(maxInFlight).toBe(Math.min(expected, 5));
   });
 
   if (scoped(name)) {
@@ -507,7 +508,7 @@ describe.each(collectionNames)('collection scope: %s', (name) => {
       }),
     );
     expect((await get(collectionUrl(name))).statusCode).toBe(200);
-    expect(maxInFlight).toBe(expected);
+    expect(maxInFlight).toBe(Math.min(expected, 5));
   });
 
   it.each(['no-such-collection', 'private-one'])(

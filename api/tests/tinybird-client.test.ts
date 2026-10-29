@@ -285,6 +285,28 @@ describe('fetchPipe queue rejections', () => {
   });
 });
 
+describe('concurrency cap', () => {
+  it('sends at most 5 pipe calls at once and queues the rest', async () => {
+    const pending: ((response: Response) => void)[] = [];
+    mockFetch.mockImplementation(() => new Promise<Response>((resolve) => pending.push(resolve)));
+    const { request } = fakeRequest();
+
+    const calls = Array.from({ length: 6 }, () =>
+      fetchPipe<Row>(request, pipePath, { bucketId: 3 }),
+    );
+    await vi.waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(5));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(mockFetch).toHaveBeenCalledTimes(5);
+
+    pending.shift()?.(tinybirdRows([{ activityCount: 1 }]));
+    await vi.waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(6));
+    for (const resolve of pending.splice(0)) {
+      resolve(tinybirdRows([{ activityCount: 1 }]));
+    }
+    expect(await Promise.all(calls)).toHaveLength(6);
+  });
+});
+
 describe('withBucket (AC4)', () => {
   beforeEach(() => {
     // The client warns when the bucket lookup finds no row; keep the output readable.
