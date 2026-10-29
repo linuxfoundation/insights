@@ -92,6 +92,7 @@ export default {
           '/api/report/ai-code-tracker/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/report/health-score-coverage/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/cncf': { cache: { maxAge: longCache, base: 'redis' } },
+          '/report/cncf-france': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/ai-code-tracker': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/health-score-coverage': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/collection': { cache: false },
