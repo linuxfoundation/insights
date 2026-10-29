@@ -10,7 +10,7 @@ import { count as countMetric } from './metrics.js';
 import { tierOf, type Tier } from './tier.js';
 
 // Requests per LFID over a sliding one-second window, by tier (ADR-0023).
-export const RATE_LIMITS: Record<Tier, number> = { basic: 5, premium: 50 };
+export const RATE_LIMITS: Record<Tier, number> = { basic: 5, premium: 100 };
 const WINDOW_MS = 1000;
 // The oldest request in a one-second window always leaves it within a second, so reset and
 // Retry-After are both one second.

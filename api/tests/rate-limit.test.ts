@@ -177,14 +177,14 @@ describe('rate limiting', () => {
   it('gives a caller the Worker sends a tier for the premium limit', async () => {
     await atDate(t0, async () => {
       const gold = { 'x-tier': 'gold' };
-      expect(await statuses(50, jdoe, gold)).toEqual(Array(50).fill(200));
+      expect(await statuses(100, jdoe, gold)).toEqual(Array(100).fill(200));
 
       const limited = await get('/v1-alpha/whoami', jdoe, gold);
 
       expect(limited.statusCode).toBe(429);
-      expect(limited.headers['x-ratelimit-limit']).toBe('50');
+      expect(limited.headers['x-ratelimit-limit']).toBe('100');
       expect(limited.json()).toMatchObject({
-        message: 'Rate limit of 50 requests per second exceeded',
+        message: 'Rate limit of 100 requests per second exceeded',
       });
       expect(await statuses(6, asmith)).toEqual([...Array(5).fill(200), 429]);
     });
