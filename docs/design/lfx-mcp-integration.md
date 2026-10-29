@@ -80,6 +80,8 @@ Note: the Insights-audience PAT prefix is `lfi_` (not `lfx_pat_`). This document
 - One source of truth for limits, tiers and endpoint gating: the Insights API.
 - No new credential type for users. Signing in to the MCP is enough. Users do not paste an `lfi_` PAT into the MCP.
 - No change to the existing PAT path.
+- Every Insights Public API endpoint is available as an MCP tool, Collections included. The exchanged token carries the user's `sub`, so the Collections ownership check ([ADR-0007](../../api/docs/arch/adr/0007-collections-only-permission-check.md)) works unchanged.
+- The Insights tools are available to every MCP user signed in with an LFID, not only LF staff (unlike the Lens and semantic layer tools today). Tier gating stays in the API. This changes lfx-mcp's documented access policy: `docs/community-access.md` currently lists Insights data among what community accounts cannot access, so that page changes with the toolset.
 
 **Non-goals**
 
@@ -155,17 +157,17 @@ The API would reject a forged token anyway, so verifying at the Worker can look 
 
 - Without verification, any string that looks like a JWT would trigger a member-tiers lookup with the Worker's M2M token. That is a cheap way to load that endpoint.
 - The Worker reads the username from the token to choose the tier. Doing that from an unverified payload means tier decisions rest on attacker-controlled input, even if the API rejects the request later.
-- The `azp` allow-list can only be enforced where the token is verified.
+- The client allow-list reads the client claim (`azp`) from the token, and a claim is only trustworthy once the signature has been checked. Checking it in the Worker keeps tokens from other clients from reaching the tier lookup at all.
 
 ## 7. Error contract between the API and the MCP
 
-The MCP returns errors as tool results with `IsError: true`, never as JSON-RPC errors (its existing convention). The agent should get enough to decide what to do next.
+The MCP returns errors as tool results with `IsError: true`, never as JSON-RPC errors, and follows its existing upstream-status rules (lfx-mcp `AGENTS.md`, "Upstream HTTP status"). `429` is new to the MCP and is the one status that needs its own handling. The agent should get enough to decide what to do next.
 
 | Insights response         | Meaning                                                                    | MCP behavior                                                                                                                                                                                                                                                      |
 | ------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `401 unauthorized`        | Exchanged token rejected (expired, wrong audience, missing username claim) | Drop the cached Insights token, exchange again once, retry once. If it fails again, return a tool error: authentication with Insights failed.                                                                                                                     |
+| `401 unauthorized`        | Exchanged token rejected (expired, wrong audience, missing username claim) | `Unauthorized (HTTP 401)` and nothing else, logged at ERROR, as for every other upstream 401 in the MCP. No retry.                                                                                                                                                |
 | `403 tier_forbidden`      | Basic-tier user called a premium-only endpoint (organization endpoints)    | Tool error: this data needs an LFX membership (premium tier), with a link to the Insights API tier docs. Do not retry.                                                                                                                                            |
-| `403` / `404` (other)     | Not found or not allowed                                                   | Existing shared access-denied message.                                                                                                                                                                                                                            |
+| `404 not_found`           | The project, repository or Collection does not exist or is not visible     | Not found, with the API's message.                                                                                                                                                                                                                                |
 | `429 rate_limit_exceeded` | The user's per-LFID limit is exhausted                                     | Tool error that states the limit was hit and the `Retry-After` value in seconds, and tells the agent to wait before calling again and to avoid parallel calls. No retry loop inside the MCP: pods are stateless and a sleeping request ties up a pod for nothing. |
 | `5xx` / `503`             | Insights or an upstream (Auth0 JWKS, member-tiers) is unavailable          | Tool error: Insights is temporarily unavailable. No retry.                                                                                                                                                                                                        |
 
@@ -189,7 +191,7 @@ The stdio mode uses a static token from `lfx auth token`. If that token has the 
 - **No token passthrough.** The MCP never forwards the user's MCP token to Insights, and Insights only accepts tokens minted for its own audience.
 - **Narrow audience.** Only two Auth0 clients can obtain Insights-audience tokens: the Worker (PAT exchange) and the MCP (user exchange). The Worker allow-list on `azp` enforces this even if Auth0 configuration widens by mistake.
 - **Trusted headers stay Worker-only.** The origin is reachable only through the Workers VPC binding, and the Worker strips client copies of `x-tier`, `x-org-id`, `x-client-ip` on both paths. This matters more now that `x-tier` gates the organization endpoints (ADR-0023).
-- **Revocation.** MCP access is checked only at Auth0 sign-in, not per request (lfx-mcp `ARCHITECTURE.md`, "Sign-in entitlement"). Revoking it blocks the next sign-in, but an MCP token issued before the revocation can keep being exchanged for Insights tokens until it expires. Unless the token exchange rechecks MCP access, the window is the remaining lifetime of the user's MCP token plus the lifetime of the last Insights token issued. If the exchange action rechecks access (open question 9), the window shrinks to one Insights token lifetime, comparable to the 10-minute window on the PAT path. Either way, the Insights token lifetime should stay short. A lapsed membership drops the user to basic within the 10-minute tier cache window, as on the PAT path.
+- **Revocation.** MCP access is checked only at Auth0 sign-in, not per request (lfx-mcp `ARCHITECTURE.md`, "Sign-in entitlement"). Revoking it blocks the next sign-in, but an MCP token issued before the revocation can keep being exchanged for Insights tokens until it expires. Unless the token exchange rechecks MCP access, the window is the remaining lifetime of the user's MCP token plus the lifetime of the last Insights token issued. If the exchange action rechecks access (open question 6), the window shrinks to one Insights token lifetime, comparable to the 10-minute window on the PAT path. Either way, the Insights token lifetime should stay short. A lapsed membership drops the user to basic within the 10-minute tier cache window, as on the PAT path.
 - **Scopes.** The exchanged Insights token does not need `manage:all`. Insights is read-only. If the CTE action copies scopes, it should drop write scopes for the Insights audience.
 - **Abuse of the member-tiers endpoint.** Prevented by verifying before lookup and caching tiers per LFID.
 
@@ -199,21 +201,19 @@ The stdio mode uses a static token from `lfx auth token`. If that token has the 
 2. **Worker**: JWT path, off by default until the MCP client is on the allow-list.
 3. **MCP**: Insights toolset, off by default, using the token exchange and the error contract in section 7.
 4. **End to end in dev**, then allow the MCP client in the production Worker and turn the toolset on.
-5. **Docs**: Insights API docs (MCP access shares the per-user limit) and the MCP README (Insights tools, tier gating).
+5. **Docs**: Insights API docs (MCP access shares the per-user limit), the MCP README (Insights tools, tier gating) and lfx-mcp `docs/community-access.md` (community accounts can now access Insights data).
 
 ## 11. Open questions
 
-| #   | Question                                                                                                                                                                      | Owner                  |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| 1   | Can the existing MCP Custom Token Exchange profile target a second audience, or does Insights need its own profile?                                                           | SSO / Auth0 admin      |
-| 2   | Does Auth0 set the username claim on MCP-exchanged tokens for the Insights audience?                                                                                          | SSO / Auth0 admin      |
-| 3   | Exchanged token lifetime for the Insights audience.                                                                                                                           | SSO, Insights          |
-| 4   | Which claim identifies the calling client on exchanged tokens: `azp` or `client_id`? The Worker allow-list keys on it.                                                        | SSO                    |
-| 5   | Which Insights endpoints become MCP tools in v1, and do Collections (user-owned, ADR-0007) belong in the first set?                                                           | Product, Insights, MCP |
-| 6   | MCP tools are staff-only for Lens today. Are Insights tools open to every MCP user with `read:all`, with tier gating left to the API? (This proposal assumes yes.)            | Product, MCP           |
-| 7   | Should the PAT path and the JWT path share one tier cache keyed by LFID? (Proposed yes; changes the PAT cache layout.)                                                        | Insights               |
-| 8   | Do the MCP tool descriptions mention "Insights"? Several MCP tests currently ban the word in tool text.                                                                       | MCP                    |
-| 9   | Can the Custom Token Exchange action recheck the user's MCP access at exchange time, within the Auth0 action time budget? If not, the revocation window in section 9 applies. | SSO / Auth0 admin      |
+| #   | Question                                                                                                                                                                                                                                                                           | Owner             |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| 1   | Can the existing MCP Custom Token Exchange profile target a second audience, or does Insights need its own profile?                                                                                                                                                                | SSO / Auth0 admin |
+| 2   | Does Auth0 set the username claim on MCP-exchanged tokens for the Insights audience?                                                                                                                                                                                               | SSO / Auth0 admin |
+| 3   | Exchanged token lifetime for the Insights audience.                                                                                                                                                                                                                                | SSO, Insights     |
+| 4   | Which claim identifies the calling client on exchanged tokens: `azp` (Auth0) or `client_id` (RFC 9068)? The Worker allow-list keys on it. Can the exchange also add an RFC 8693 `act` claim naming the MCP, so the token records that the MCP acts on the user's behalf?           | SSO               |
+| 5   | Should the PAT path and the JWT path share one tier cache keyed by LFID? (Proposed yes; changes the PAT cache layout.)                                                                                                                                                             | Insights          |
+| 6   | Can the Custom Token Exchange action recheck the user's MCP access at exchange time, within the Auth0 action time budget? If not, the revocation window in section 9 applies.                                                                                                      | SSO / Auth0 admin |
+| 7   | The semantic layer tools and the Insights tools can report similar figures from different sources. How do the tool descriptions tell the agent what each covers? lfx-mcp tests forbid the semantic layer guidance from naming another surface (`TestGuidanceNamesNoOtherSurface`). | MCP, Insights     |
 
 ## 12. Follow-ups
 
