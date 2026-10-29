@@ -9,9 +9,8 @@ import { RateLimitedError } from './lib/errors.js';
 import { count as countMetric } from './metrics.js';
 import { tierOf, type Tier } from './tier.js';
 
-// Requests per LFID over a sliding one-second window, by tier (ADR-0023). Both stay at 30 until load
-// tests set them.
-export const RATE_LIMITS: Record<Tier, number> = { basic: 30, premium: 30 };
+// Requests per LFID over a sliding one-second window, by tier (ADR-0023).
+export const RATE_LIMITS: Record<Tier, number> = { basic: 5, premium: 50 };
 const WINDOW_MS = 1000;
 // The oldest request in a one-second window always leaves it within a second, so reset and
 // Retry-After are both one second.

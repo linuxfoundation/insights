@@ -5,7 +5,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { buildApp } from '../src/app.js';
 import { USERNAME_CLAIM } from '../src/auth.js';
-import { RATE_LIMITS } from '../src/rate-limit.js';
 import { audience, issuer, localKeys, sign, useAuthApp, whoami } from './helpers/auth.js';
 import { atDate } from './helpers/tinybird.js';
 
@@ -112,7 +111,7 @@ const tooManyRequestsBody = {
   statusCode: 429,
   code: 'rate_limit_exceeded',
   error: 'Too Many Requests',
-  message: 'Rate limit of 30 requests per second exceeded',
+  message: 'Rate limit of 5 requests per second exceeded',
 };
 
 beforeEach(() => {
@@ -148,9 +147,9 @@ describe('rate limiting', () => {
     return result;
   };
 
-  it('allows 30 requests a second and answers 429 to the next', async () => {
+  it('allows 5 requests a second and answers 429 to the next', async () => {
     await atDate(t0, async () => {
-      expect(await statuses(30, jdoe)).toEqual(Array(30).fill(200));
+      expect(await statuses(5, jdoe)).toEqual(Array(5).fill(200));
 
       const response = await get('/v1-alpha/whoami', jdoe);
 
@@ -164,7 +163,7 @@ describe('rate limiting', () => {
   it('counts each rejection by tier and endpoint', async () => {
     const increment = vi.spyOn(tracer.dogstatsd, 'increment');
     await atDate(t0, async () => {
-      await statuses(31, jdoe);
+      await statuses(6, jdoe);
     });
 
     expect(
@@ -176,26 +175,19 @@ describe('rate limiting', () => {
   });
 
   it('gives a caller the Worker sends a tier for the premium limit', async () => {
-    const { premium } = RATE_LIMITS;
-    // Both tiers start at 30, so premium is raised here to tell them apart.
-    RATE_LIMITS.premium = 35;
-    try {
-      await atDate(t0, async () => {
-        const gold = { 'x-tier': 'gold' };
-        expect(await statuses(35, jdoe, gold)).toEqual(Array(35).fill(200));
+    await atDate(t0, async () => {
+      const gold = { 'x-tier': 'gold' };
+      expect(await statuses(50, jdoe, gold)).toEqual(Array(50).fill(200));
 
-        const limited = await get('/v1-alpha/whoami', jdoe, gold);
+      const limited = await get('/v1-alpha/whoami', jdoe, gold);
 
-        expect(limited.statusCode).toBe(429);
-        expect(limited.headers['x-ratelimit-limit']).toBe('35');
-        expect(limited.json()).toMatchObject({
-          message: 'Rate limit of 35 requests per second exceeded',
-        });
-        expect(await statuses(31, asmith)).toEqual([...Array(30).fill(200), 429]);
+      expect(limited.statusCode).toBe(429);
+      expect(limited.headers['x-ratelimit-limit']).toBe('50');
+      expect(limited.json()).toMatchObject({
+        message: 'Rate limit of 50 requests per second exceeded',
       });
-    } finally {
-      RATE_LIMITS.premium = premium;
-    }
+      expect(await statuses(6, asmith)).toEqual([...Array(5).fill(200), 429]);
+    });
   });
 
   it('reports the limit, the requests left and the reset on every response', async () => {
@@ -208,18 +200,18 @@ describe('rate limiting', () => {
 
     await atDate(t0, async () => {
       expect(rateHeaders(await get('/v1-alpha/whoami', jdoe))).toEqual({
-        limit: '30',
-        remaining: '29',
+        limit: '5',
+        remaining: '4',
         reset: '1',
         retryAfter: undefined,
       });
-      await statuses(29, jdoe);
+      await statuses(4, jdoe);
 
       const limited = await get('/v1-alpha/whoami', jdoe);
 
       expect(limited.statusCode).toBe(429);
       expect(rateHeaders(limited)).toEqual({
-        limit: '30',
+        limit: '5',
         remaining: '0',
         reset: '1',
         retryAfter: '1',
@@ -237,22 +229,21 @@ describe('rate limiting', () => {
   });
 
   it('frees requests as the window slides past them', async () => {
-    await atDate(t0, () => statuses(30, jdoe));
+    await atDate(t0, () => statuses(5, jdoe));
 
     expect(await atDate(later(999), () => statuses(1, jdoe))).toEqual([429]);
     expect(await atDate(later(1000), () => statuses(1, jdoe))).toEqual([200]);
   });
 
   it('takes rejected requests back out of the window, so they cost no later request', async () => {
-    const { basic } = RATE_LIMITS;
-    await atDate(t0, () => statuses(basic, jdoe));
+    await atDate(t0, () => statuses(5, jdoe));
 
-    expect(await atDate(later(500), () => statuses(basic, jdoe))).toEqual(Array(basic).fill(429));
-    expect(await atDate(later(1000), () => statuses(basic, jdoe))).toEqual(Array(basic).fill(200));
+    expect(await atDate(later(500), () => statuses(5, jdoe))).toEqual(Array(5).fill(429));
+    expect(await atDate(later(1000), () => statuses(5, jdoe))).toEqual(Array(5).fill(200));
   });
 
   it('still answers 429 when taking a rejected request back out fails', async () => {
-    await atDate(t0, () => statuses(RATE_LIMITS.basic, jdoe));
+    await atDate(t0, () => statuses(5, jdoe));
     redis.state.failRem = true;
 
     const response = await atDate(t0, () => get('/v1-alpha/whoami', jdoe));
@@ -263,7 +254,7 @@ describe('rate limiting', () => {
 
   it('keeps a separate count per LFID', async () => {
     await atDate(t0, async () => {
-      await statuses(31, jdoe);
+      await statuses(6, jdoe);
 
       expect(await statuses(1, asmith)).toEqual([200]);
     });
@@ -273,7 +264,7 @@ describe('rate limiting', () => {
     redis.state.ready = false;
 
     await atDate(t0, async () => {
-      expect(await statuses(31, jdoe)).toEqual(Array(31).fill(200));
+      expect(await statuses(6, jdoe)).toEqual(Array(6).fill(200));
     });
     expect(redis.state.multis).toBe(0);
   });
@@ -281,8 +272,8 @@ describe('rate limiting', () => {
   it('lets requests through when the check fails', async () => {
     redis.state.failExec = true;
 
-    expect(await statuses(31, jdoe)).toEqual(Array(31).fill(200));
-    expect(redis.state.multis).toBe(31);
+    expect(await statuses(6, jdoe)).toEqual(Array(6).fill(200));
+    expect(redis.state.multis).toBe(6);
   });
 
   it('lets a request through when Redis does not answer in time', async () => {
@@ -306,15 +297,15 @@ describe('rate limiting', () => {
   it('skips the limit while auth is disabled', async () => {
     vi.stubEnv('API_AUTH_DISABLED', 'true');
 
-    expect(await statuses(31, jdoe)).toEqual(Array(31).fill(200));
+    expect(await statuses(6, jdoe)).toEqual(Array(6).fill(200));
     expect(redis.state.multis).toBe(0);
   });
 
   it('leaves the spec route out of the limit', async () => {
-    await atDate(t0, () => statuses(30, jdoe));
+    await atDate(t0, () => statuses(5, jdoe));
 
     expect((await get('/v1-alpha/openapi.json', jdoe)).statusCode).toBe(200);
-    expect(redis.state.multis).toBe(30);
+    expect(redis.state.multis).toBe(5);
   });
 
   it('reconnects with a backoff capped at 3 seconds and logs client errors', async () => {
@@ -335,7 +326,7 @@ describe('without API_REDIS_URL', () => {
     const clients = redis.state.clients.length;
     const jdoe = `Bearer ${await sign()}`;
 
-    for (let i = 0; i < 31; i += 1) {
+    for (let i = 0; i < 6; i += 1) {
       expect((await get('/v1-alpha/whoami', jdoe)).statusCode).toBe(200);
     }
     expect(redis.state.clients).toHaveLength(clients);
