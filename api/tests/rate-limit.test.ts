@@ -14,12 +14,14 @@ interface ClientOptions {
   socket: { reconnectStrategy: (retries: number) => number };
 }
 
-// An in-memory stand-in for the sorted-set commands the limiter sends in one MULTI.
+// An in-memory stand-in for the sorted-set commands the limiter sends: one MULTI per request, plus
+// a ZREM for a rejected one.
 const redis = vi.hoisted(() => {
   const sets = new Map<string, { score: number; value: string }[]>();
   const state = {
     ready: true,
     failExec: false,
+    failRem: false,
     hang: false,
     multis: 0,
     destroyed: 0,
@@ -38,6 +40,15 @@ const redis = vi.hoisted(() => {
     connect: async () => client,
     destroy: () => {
       state.destroyed += 1;
+    },
+    async zRem(key: string, value: string) {
+      if (state.failRem) {
+        throw new Error('READONLY You cannot write against a read only replica.');
+      }
+      const kept = (sets.get(key) ?? []).filter((member) => member.value !== value);
+      const removed = (sets.get(key)?.length ?? 0) - kept.length;
+      sets.set(key, kept);
+      return removed;
     },
     multi() {
       state.multis += 1;
@@ -106,7 +117,13 @@ const tooManyRequestsBody = {
 
 beforeEach(() => {
   redis.sets.clear();
-  Object.assign(redis.state, { ready: true, failExec: false, hang: false, multis: 0 });
+  Object.assign(redis.state, {
+    ready: true,
+    failExec: false,
+    failRem: false,
+    hang: false,
+    multis: 0,
+  });
 });
 
 describe('rate limiting', () => {
@@ -224,6 +241,24 @@ describe('rate limiting', () => {
 
     expect(await atDate(later(999), () => statuses(1, jdoe))).toEqual([429]);
     expect(await atDate(later(1000), () => statuses(1, jdoe))).toEqual([200]);
+  });
+
+  it('takes rejected requests back out of the window, so they cost no later request', async () => {
+    const { basic } = RATE_LIMITS;
+    await atDate(t0, () => statuses(basic, jdoe));
+
+    expect(await atDate(later(500), () => statuses(basic, jdoe))).toEqual(Array(basic).fill(429));
+    expect(await atDate(later(1000), () => statuses(basic, jdoe))).toEqual(Array(basic).fill(200));
+  });
+
+  it('still answers 429 when taking a rejected request back out fails', async () => {
+    await atDate(t0, () => statuses(RATE_LIMITS.basic, jdoe));
+    redis.state.failRem = true;
+
+    const response = await atDate(t0, () => get('/v1-alpha/whoami', jdoe));
+
+    expect(response.statusCode).toBe(429);
+    expect(response.headers['retry-after']).toBe('1');
   });
 
   it('keeps a separate count per LFID', async () => {
