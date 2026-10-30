@@ -101,7 +101,7 @@ Note: the Insights-audience PAT prefix is `lfi_` (not `lfx_pat_`). This document
 - One source of truth for limits, tiers and endpoint gating: the Insights API.
 - Signing in to the MCP is enough. Users do not create, copy or paste a credential to use the Insights tools.
 - No change to the existing PAT path for direct API callers.
-- Every Insights Public API endpoint is available as an MCP tool, Collections included. Both options carry the user's identity, so the Collections ownership check ([ADR-0007](../../api/docs/arch/adr/0007-collections-only-permission-check.md)) works unchanged.
+- Every Insights Public API endpoint is available as an MCP tool. The Collections endpoints return public Collections only today (`api/src/lib/collections-db.ts`). Private Collections need the ownership check from [ADR-0007](../../api/docs/arch/adr/0007-collections-only-permission-check.md), which is separate API work. Both options carry the user's identity that check will use, so neither needs more for it.
 - The Insights tools are available to every MCP user signed in with an LFID, not only LF staff (unlike the Lens and semantic layer tools today). Tier gating stays in the API. This changes lfx-mcp's documented access policy: `docs/community-access.md` currently lists Insights data among what community accounts cannot access, so that page changes with the toolset.
 
 **Non-goals**
@@ -233,7 +233,8 @@ sequenceDiagram
 - **Creation.** On a user's first Insights call, through the PAT service directly with the user's own token (the MCP's existing exchange to the LFX API audience). Default name and expiry, without asking the user (open question 12 covers whether the PAT service accepts this token). The default expiry is one of `30d`, `60d`, `90d` or `1y` (open question 9).
 - **Rotation on expiry.** Before `expires_at`, or when a call fails because the PAT expired, the MCP revokes the old PAT and creates a new one. Revoking first matters: expired tokens keep counting toward the per-audience limit.
 - **Revocation by the user.** A user can revoke the MCP PAT in Developer Settings. The MCP must then not create a new one on its own: it deletes the stored secret and returns a tool error saying Insights access through the MCP was revoked. How a user turns it back on is open (open question 11).
-- **Concurrent first calls.** Two pods can try to create the PAT for the same user at the same time. Creation needs a lock in the store or a uniqueness rule in the PAT service, so the user ends up with one PAT.
+- **Concurrent first calls.** Two pods can try to create the PAT for the same user at the same time. Creation needs a per-user lock in the store or a uniqueness rule in the PAT service, so the user ends up with one PAT.
+- **Stranded PAT.** If the PAT is created but the create response or the write to the store is lost, the next call finds an active MCP PAT with no stored secret. The MCP cannot use it, and it still holds its name and a token slot. Under the per-user lock, the MCP treats an active MCP PAT with no stored secret as stranded: it revokes it and creates a new one. This is different from a user's revocation, where the PAT is no longer active and nothing is recreated. It relies on telling the MCP token apart reliably (open question 10).
 
 #### 6B.3 Requirements on the PAT service
 
@@ -267,7 +268,7 @@ If a real need appears (for example an internal automation), the options are:
 - the automation uses its own `lfi_` PAT against the API directly, or
 - the Insights API learns a service-principal concept (its own key and limit). That is a separate decision and needs its own ADR.
 
-The stdio mode uses a static token from `lfx auth token`. If that token has the MCP audience, the same flows work. If not, Insights tools stay off in stdio mode until it does.
+Stdio mode (lfx-mcp run as a local program) has no MCP sign-in: lfx-mcp forwards the token passed with `-lfx_token` to the LFX APIs unchanged, so neither option applies. Insights tools are off in stdio mode in v1. If stdio support is needed later, the simplest path, for either option, is a user-supplied `lfi_` PAT passed as a flag or environment variable and sent through the existing PAT path, with no changes on the Insights, Auth0 or PAT service side.
 
 ## 9. Security considerations
 
