@@ -170,47 +170,34 @@ async function fromTinybird<T>(
   }
 }
 
-// The client only checks that `data` is present, so off-contract rows or totals are rejected here
-// and map to 503 with the other upstream faults. Tinybird can omit `total`.
+// The client only checks that `data` is present, so off-contract rows are rejected here and map
+// to 503 with the other upstream faults.
 function fetchGuarded<T>(
   request: RequestLog,
   path: string,
   params: TinybirdQuery,
   isRow: (row: T) => boolean,
-  checkTotal: boolean,
-  method: 'fetch' | 'post' = 'fetch',
-): Promise<{ rows: T[]; total: number | undefined }> {
+  method: 'fetch' | 'post',
+): Promise<T[]> {
   // A missing API_TB_* variable throws here, outside the 503 mapping, so it stays a 500.
   const client = getTinybirdClient();
   return fromTinybird(request, path, async () => {
-    const { data, rows_before_limit_at_least: total } = await client[method]<T[]>(path, params);
+    const { data } = await client[method]<T[]>(path, params);
     if (!Array.isArray(data) || !data.every(isRow)) {
       throw new TinybirdInvalidResponseError('Tinybird returned rows of an unexpected shape');
     }
-    if (checkTotal && total !== undefined && !(Number.isSafeInteger(total) && total >= 0)) {
-      throw new TinybirdInvalidResponseError('Tinybird returned an unexpected row total');
-    }
-    return { rows: data, total };
+    return data;
   });
 }
 
-export function fetchCountedPipe<T>(
-  request: RequestLog,
-  path: string,
-  params: TinybirdQuery,
-  isRow: (row: T) => boolean,
-): Promise<{ rows: T[]; total: number | undefined }> {
-  return fetchGuarded(request, path, params, isRow, true);
-}
-
 // POST keeps unbounded id lists out of the URL, which upstream proxies cap in length.
-export function postCountedPipe<T>(
+export function postPipe<T>(
   request: RequestLog,
   path: string,
   params: TinybirdQuery,
   isRow: (row: T) => boolean,
-): Promise<{ rows: T[]; total: number | undefined }> {
-  return fetchGuarded(request, path, params, isRow, true, 'post');
+): Promise<T[]> {
+  return fetchGuarded(request, path, params, isRow, 'post');
 }
 
 export async function fetchPipe<T>(
@@ -219,7 +206,7 @@ export async function fetchPipe<T>(
   params: TinybirdQuery,
   isRow: (row: T) => boolean = () => true,
 ): Promise<T[]> {
-  return (await fetchGuarded(request, path, params, isRow, false)).rows;
+  return fetchGuarded(request, path, params, isRow, 'fetch');
 }
 
 // Ajv coerces a bare `repos=` into [''] and the client sends an empty array as `repos=`, which a

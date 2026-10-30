@@ -24,7 +24,7 @@ Code to record a new decision interactively.
 | [ADR-0008](./0008-typebox-code-first-openapi.md)                 | TypeBox for code-first OpenAPI schema generation                                                   |                                |            |
 | [ADR-0009](./0009-api-key-required-for-all-requests.md)          | Every request requires a valid API key; no anonymous access                                        |                                |            |
 | [ADR-0010](./0010-billing-bundled-with-lfx-membership.md)        | API access is bundled with LFX membership; no standalone billing in v1                             | amended 2026-10-20             |            |
-| [ADR-0011](./0011-pagination-cursor-based.md)                    | Pagination is cursor-based with opaque base64url cursors                                           |                                |            |
+| [ADR-0011](./0011-pagination-cursor-based.md)                    | Pagination is cursor-based with opaque base64url cursors                                           | amended 2026-10-30             |            |
 | [ADR-0012](./0012-url-port-strategy-hybrid.md)                   | URL porting strategy: port-as-is by default, rename only when genuinely misleading                 |                                |            |
 | [ADR-0013](./0013-origin-cache-only-private-cache-control.md)    | Responses are cached at the origin (Redis) only; `Cache-Control: private, max-age=0`               |                                |            |
 | [ADR-0014](./0014-camelcase-json-iso8601-dates.md)               | All JSON keys are camelCase; dates are ISO-8601 UTC strings                                        |                                |            |
@@ -38,3 +38,4 @@ Code to record a new decision interactively.
 | [ADR-0022](./0022-config-only-readiness-probe.md)                | `/health/ready` checks this pod's configuration only, never an upstream                            | accepted                       | 2026-10-01 |
 | [ADR-0023](./0023-basic-and-premium-tiers.md)                    | Two tiers, basic and premium, set the rate limit and organization endpoint access                  | accepted                       | 2026-10-20 |
 | [ADR-0024](./0024-dd-trace-to-node-datadog-agent.md)             | The API reports to its node's Datadog agent through dd-trace                                       | accepted                       | 2026-10-26 |
+| [ADR-0025](./0025-row-offset-cursors.md)                         | Cursors hold a row offset over a unique sort order                                                 | accepted                       | 2026-10-30 |

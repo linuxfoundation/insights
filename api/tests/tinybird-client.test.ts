@@ -6,13 +6,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { TinybirdQueueFullError, TinybirdQueueTimeoutError } from '@lfx-insights/tinybird-client';
 
 import { createInMemoryBucketCache } from '../src/clients/bucket-cache.js';
-import {
-  fetchCountedPipe,
-  fetchPipe,
-  getTinybirdClient,
-  postCountedPipe,
-  withBucket,
-} from '../src/clients/tinybird.js';
+import { fetchPipe, getTinybirdClient, postPipe, withBucket } from '../src/clients/tinybird.js';
 import { UpstreamUnavailableError } from '../src/lib/errors.js';
 
 const tinybirdHost = 'https://tinybird.test';
@@ -180,46 +174,34 @@ describe('fetchPipe (AC3)', () => {
   });
 });
 
-describe('fetchCountedPipe row total', () => {
+describe('postPipe', () => {
   const anyRow = () => true;
 
-  it.each([0, 7])('returns the rows with the total %j', async (total) => {
-    serve({
-      [pipePath]: () => tinybirdRows([{ activityCount: 5 }], { rows_before_limit_at_least: total }),
-    });
-    const { request } = fakeRequest();
-
-    expect(await fetchCountedPipe<Row>(request, pipePath, { bucketId: 3 }, anyRow)).toEqual({
-      rows: [{ activityCount: 5 }],
-      total,
-    });
-  });
-
-  it('returns an undefined total when the pipe leaves it out', async () => {
+  it('posts the params in the body and returns the rows', async () => {
     serve({ [pipePath]: () => tinybirdRows([{ activityCount: 5 }]) });
     const { request } = fakeRequest();
 
-    const result = await fetchCountedPipe<Row>(request, pipePath, { bucketId: 3 }, anyRow);
-    expect(result.total).toBeUndefined();
+    expect(await postPipe<Row>(request, pipePath, { ids: ['a', 'b'] }, anyRow)).toEqual([
+      { activityCount: 5 },
+    ]);
+    const [url, init] = mockFetch.mock.calls[0]!;
+    expect(String(url)).toBe(`${tinybirdHost}${pipePath}`);
+    expect(init.method).toBe('POST');
+    expect(new URLSearchParams(init.body).get('ids')).toBe('a,b');
   });
 
-  it.each([-1, 1.5, '7'])(
-    'maps the total %j to UpstreamUnavailableError and logs it once',
-    async (total) => {
-      serve({ [pipePath]: () => tinybirdRows([], { rows_before_limit_at_least: total }) });
-      const { request, error } = fakeRequest();
+  it('maps a rejected row to UpstreamUnavailableError', async () => {
+    serve({ [pipePath]: () => tinybirdRows([{ activityCount: 5 }]) });
+    const { request } = fakeRequest();
 
-      const err = await rejectionOf(
-        fetchCountedPipe<Row>(request, pipePath, { bucketId: 3 }, anyRow),
-      );
+    expect(await rejectionOf(postPipe<Row>(request, pipePath, {}, () => false))).toBeInstanceOf(
+      UpstreamUnavailableError,
+    );
+  });
+});
 
-      expect(err).toBeInstanceOf(UpstreamUnavailableError);
-      expect(error).toHaveBeenCalledTimes(1);
-      expect(String(error.mock.calls[0]?.[1])).toContain(pipePath);
-    },
-  );
-
-  it('leaves the total of fetchPipe unchecked', async () => {
+describe('row total', () => {
+  it('is ignored by fetchPipe and postPipe', async () => {
     serve({
       [pipePath]: () => tinybirdRows([{ activityCount: 5 }], { rows_before_limit_at_least: -1 }),
     });
@@ -228,39 +210,7 @@ describe('fetchCountedPipe row total', () => {
     expect(await fetchPipe<Row>(request, pipePath, { bucketId: 3 })).toEqual([
       { activityCount: 5 },
     ]);
-  });
-});
-
-describe('postCountedPipe', () => {
-  const anyRow = () => true;
-
-  it('posts the params in the body and returns the rows with the total', async () => {
-    serve({
-      [pipePath]: () => tinybirdRows([{ activityCount: 5 }], { rows_before_limit_at_least: 7 }),
-    });
-    const { request } = fakeRequest();
-
-    expect(await postCountedPipe<Row>(request, pipePath, { ids: ['a', 'b'] }, anyRow)).toEqual({
-      rows: [{ activityCount: 5 }],
-      total: 7,
-    });
-    const [url, init] = mockFetch.mock.calls[0]!;
-    expect(String(url)).toBe(`${tinybirdHost}${pipePath}`);
-    expect(init.method).toBe('POST');
-    expect(new URLSearchParams(init.body).get('ids')).toBe('a,b');
-  });
-
-  it('maps a rejected row and an invalid total to UpstreamUnavailableError', async () => {
-    serve({ [pipePath]: () => tinybirdRows([{ activityCount: 5 }]) });
-    const { request } = fakeRequest();
-    expect(
-      await rejectionOf(postCountedPipe<Row>(request, pipePath, {}, () => false)),
-    ).toBeInstanceOf(UpstreamUnavailableError);
-
-    serve({ [pipePath]: () => tinybirdRows([], { rows_before_limit_at_least: -1 }) });
-    expect(await rejectionOf(postCountedPipe<Row>(request, pipePath, {}, anyRow))).toBeInstanceOf(
-      UpstreamUnavailableError,
-    );
+    expect(await postPipe<Row>(request, pipePath, {}, () => true)).toEqual([{ activityCount: 5 }]);
   });
 });
 
