@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { fetchCountedPipe } from '../../../clients/tinybird.js';
+import { fetchPipe } from '../../../clients/tinybird.js';
 import {
   escapeLike,
   isEntryRow,
@@ -14,7 +14,7 @@ import {
   toEntry,
   type LeaderboardRow,
 } from '../../../lib/leaderboards.js';
-import { pipePages, requestedPage, toCountedPage } from '../../../lib/pagination.js';
+import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { paginated, PaginationQuery } from '../../../schemas/common.js';
 
 const pipePath = '/v0/pipes/leaderboards.json';
@@ -68,38 +68,23 @@ const leaderboardRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { type } = request.params;
       const { search, collectionSlug } = request.query;
       const page = requestedPage(request.query);
-      const { pages, skip } = pipePages(page);
 
-      const chunks = await Promise.all(
-        pages.map((number) =>
-          fetchCountedPipe<LeaderboardRow>(
-            request,
-            pipePath,
-            {
-              leaderboardType: type,
-              page: number,
-              pageSize: page.pageSize,
-              search: search ? escapeLike(search) : undefined,
-              collectionSlug: collectionSlug || undefined,
-            },
-            isEntryRow,
-          ),
-        ),
+      const rows = await fetchPipe<LeaderboardRow>(
+        request,
+        pipePath,
+        {
+          leaderboardType: type,
+          search: search ? escapeLike(search) : undefined,
+          collectionSlug: collectionSlug || undefined,
+          ...pipeWindow(page),
+        },
+        isEntryRow,
       );
-      const fetched = chunks.flatMap((chunk) => chunk.rows);
-      const rows = fetched.slice(skip, skip + page.pageSize);
-      // A total below the rows already seen contradicts the page, so it is treated as missing. Then a
-      // full last pipe page is the only sign that more rows follow.
-      const last = chunks[chunks.length - 1]!;
-      const seen = pages[0]! * page.pageSize + fetched.length;
-      const reported = chunks[0]!.total;
-      const total =
-        reported !== undefined && reported >= seen
-          ? reported
-          : seen + (last.rows.length === page.pageSize ? 1 : 0);
 
       const info = leaderboardTypes.find((entry) => entry.type === type)!;
-      return { ...info, ...toCountedPage(rows.map(toEntry), page, total) };
+      // The pipe applies LIMIT and OFFSET after its only ORDER BY, so rows arrive in the order
+      // toPage needs.
+      return { ...info, ...toPage(rows.map(toEntry), page) };
     },
   );
 };

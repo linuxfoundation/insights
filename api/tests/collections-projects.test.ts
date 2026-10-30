@@ -55,36 +55,22 @@ const members = {
   repositoryUrls: ['https://github.com/org/r1'],
 };
 
+// The pipe pages by row: `limit` rows from `offset`.
 let all: unknown[] = [];
-let reportedTotal: number | undefined;
-let withTotal = true;
 
 const { get } = useApp();
 
 beforeEach(() => {
   findCollectionMembers.mockReset().mockResolvedValue(members);
   all = Array.from({ length: 5 }, (_, index) => row(index + 1));
-  reportedTotal = undefined;
-  withTotal = true;
   mockFetch.mockImplementation(
     tinybirdStub((url, init) => {
       if (url.pathname !== pipePath) {
         throw new Error(`unexpected Tinybird call to ${url.pathname}`);
       }
       const form = new URLSearchParams(String(init?.body ?? ''));
-      const size = Number(form.get('pageSize'));
-      const start = Number(form.get('page')) * size;
-      const data = all.slice(start, start + size);
-      return new Response(
-        JSON.stringify({
-          data,
-          meta: [],
-          rows: data.length,
-          ...(withTotal ? { rows_before_limit_at_least: reportedTotal ?? all.length } : {}),
-          statistics: { elapsed: 0.01, rows_read: 1, bytes_read: 1 },
-        }),
-        { status: 200, headers: { 'content-type': 'application/json' } },
-      );
+      const start = Number(form.get('offset'));
+      return all.slice(start, start + Number(form.get('limit')));
     }),
   );
 });
@@ -140,7 +126,7 @@ describe('Tinybird call', () => {
     expect(new URL(String(url)).search).toBe('');
   });
 
-  it('sends the members, default sort, first page and default pageSize', async () => {
+  it('sends the members, default sort, and one row more than the default pageSize from offset 0', async () => {
     await bodyOf();
     expect(pipeCalls()).toHaveLength(1);
     const params = pipeParams();
@@ -148,8 +134,10 @@ describe('Tinybird call', () => {
     expect(params.get('repoUrls')).toBe('https://github.com/org/r1');
     expect(params.get('orderByField')).toBe('contributorCount');
     expect(params.get('orderByDirection')).toBe('desc');
-    expect(params.get('page')).toBe('0');
-    expect(params.get('pageSize')).toBe('50');
+    expect(params.get('limit')).toBe('51');
+    expect(params.get('offset')).toBe('0');
+    expect(params.has('page')).toBe(false);
+    expect(params.has('pageSize')).toBe(false);
     expect(params.has('isLfx')).toBe(false);
   });
 
@@ -278,34 +266,22 @@ describe('paging', () => {
   it('keeps its position when pageSize changes between pages', async () => {
     const body = await bodyOf({ pageSize: '2', cursor: cursorFor(3) });
     expect(ids(body)).toEqual(['id-4', 'id-5']);
-    const pages = postedParams(pipePath).map((form) => form.get('page'));
-    expect(pages).toEqual(['1', '2']);
+    const windows = postedParams(pipePath).map((form) => [form.get('limit'), form.get('offset')]);
+    expect(windows).toEqual([['3', '3']]);
+    expect(body.nextCursor).toBeNull();
+  });
+
+  it('answers nextCursor null when the page ends on the last row', async () => {
+    all = all.slice(0, 4);
+    const body = await bodyOf({ pageSize: '2', cursor: cursorFor(2) });
+    expect(ids(body)).toEqual(['id-3', 'id-4']);
+    expect(body.nextCursor).toBeNull();
   });
 
   it('answers 400 for a cursor that is not a nextCursor value', async () => {
     const res = await get(`${route}?cursor=%21%21`);
     expect(res.statusCode).toBe(400);
     expect(mockFetch).not.toHaveBeenCalled();
-  });
-
-  describe.each([
-    ['a total below the rows seen', () => (reportedTotal = 1)],
-    ['no rows_before_limit_at_least', () => (withTotal = false)],
-  ])('with %s', (_label, setup) => {
-    beforeEach(() => {
-      setup();
-    });
-
-    it('assumes a next page when the last pipe page is full', async () => {
-      const body = await bodyOf({ pageSize: '2' });
-      expect(body.nextCursor).toBe(cursorFor(2));
-    });
-
-    it('answers nextCursor null when the last pipe page is short', async () => {
-      const body = await bodyOf({ pageSize: '2', cursor: cursorFor(4) });
-      expect(ids(body)).toEqual(['id-5']);
-      expect(body.nextCursor).toBeNull();
-    });
   });
 });
 

@@ -12,7 +12,7 @@ import {
   toCollectionProject,
   type CollectionProjectTuple,
 } from '../../../lib/oss-index.js';
-import { pipePages, requestedPage, toCountedPage } from '../../../lib/pagination.js';
+import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { inRange, isCount, isString } from '../../../lib/security.js';
 import { PaginationQuery, paginated } from '../../../schemas/common.js';
 
@@ -131,8 +131,8 @@ const collectionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         summary: 'List the OSS Index collections',
         description:
           'Returns collections with their totals and leading projects. `categorySlug` and `categoryGroupId` narrow the list, ' +
-          'and `sort` orders it by contributors or by software value. With `categorySlug`, the response also includes that category. ' +
-          'Pages follow position, as the Pagination guide describes. A final page that holds exactly `pageSize` collections may still return a `nextCursor`, and the page it points to is then empty.',
+          'and `sort` orders it by contributors or by software value, then by `id`. With `categorySlug`, the response also includes that category. ' +
+          'Pages follow position, as the Pagination guide describes.',
         querystring: Query,
         response: { 200: Collections },
       },
@@ -140,7 +140,6 @@ const collectionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const { categorySlug, categoryGroupId, sort } = request.query;
       const page = requestedPage(request.query);
-      const { pages, skip } = pipePages(page);
 
       let category: CategoryRow | undefined;
       if (categorySlug) {
@@ -155,34 +154,23 @@ const collectionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         }
       }
 
-      const chunks = await Promise.all(
-        pages.map((number) =>
-          fetchPipe<Row>(
-            request,
-            pipePath,
-            {
-              categorySlug: categorySlug || undefined,
-              categoryGroupId: categoryGroupId || undefined,
-              orderBy: sort ?? 'totalContributors',
-              page: number,
-              pageSize: page.pageSize,
-            },
-            isRow,
-          ),
-        ),
+      const rows = await fetchPipe<Row>(
+        request,
+        pipePath,
+        {
+          categorySlug: categorySlug || undefined,
+          categoryGroupId: categoryGroupId || undefined,
+          orderBy: sort ?? 'totalContributors',
+          ...pipeWindow(page),
+        },
+        isRow,
       );
-      const fetched = chunks.flat();
-      const rows = fetched.slice(skip, skip + page.pageSize);
-      // The pipe's row total ignores the category filter, so only a full last pipe page signals
-      // that more rows may follow.
-      const last = chunks[chunks.length - 1]!;
-      const total =
-        pages[0]! * page.pageSize + fetched.length + (last.length === page.pageSize ? 1 : 0);
 
-      const result = toCountedPage(
+      // The pipe applies LIMIT and OFFSET after its final ORDER BY, so rows arrive in the order
+      // toPage needs.
+      const result = toPage(
         rows.map((row) => ({ ...row, topProjects: row.topProjects.map(toCollectionProject) })),
         page,
-        total,
       );
       return category ? { ...result, category } : result;
     },
