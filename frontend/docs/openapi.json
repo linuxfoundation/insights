@@ -176,7 +176,7 @@
     "/api/project": {
       "get": {
         "summary": "List projects",
-        "description": "Returns a page of projects. Only the parameters and fields used to look up projects in batch by slug are documented here.\n\nThis endpoint is public and requires no authentication. Rate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
+        "description": "Returns a page of projects. Only the parameters and fields used to look up projects in batch by slug are documented here: the project's name, description, logo and links, and its Health Score v2.\n\nThis endpoint is public and requires no authentication. Rate limiting applies (default: 200 requests per 60 seconds per IP address).\nRate limit status is returned in the `X-RateLimit-Limit`, `X-RateLimit-Remaining`,\nand `X-RateLimit-Reset` response headers.\n",
         "operationId": "listProjects",
         "tags": [
           "Projects"
@@ -281,6 +281,13 @@
                   "data": [
                     {
                       "slug": "k8s",
+                      "name": "Kubernetes",
+                      "description": "Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.",
+                      "logo": "https://avatars.githubusercontent.com/u/13629408?v=4",
+                      "website": "https://kubernetes.io",
+                      "github": "https://github.com/kubernetes",
+                      "twitter": "https://x.com/kubernetesio",
+                      "linkedin": "https://www.linkedin.com/company/kubernetes/",
                       "healthScoreV2": 71,
                       "healthMaxScore": 100,
                       "healthLabel": "healthy",
@@ -667,6 +674,13 @@
         "description": "A project in the list. Other project fields are returned but not documented here.",
         "required": [
           "slug",
+          "name",
+          "description",
+          "logo",
+          "website",
+          "github",
+          "twitter",
+          "linkedin",
           "healthScoreV2",
           "healthMaxScore",
           "healthLabel",
@@ -676,6 +690,34 @@
           "slug": {
             "type": "string",
             "description": "URL slug used to identify the project"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the project"
+          },
+          "description": {
+            "type": "string",
+            "description": "Short description of the project. Empty string when the project has none."
+          },
+          "logo": {
+            "type": "string",
+            "description": "URL of the project logo. Empty string when the project has none."
+          },
+          "website": {
+            "type": "string",
+            "description": "Project website. Usually a full URL, but some values have no scheme (e.g. `bower.io`). Empty string when the project has none."
+          },
+          "github": {
+            "type": "string",
+            "description": "URL of the project's GitHub organization or repository. Empty string when the project has none."
+          },
+          "twitter": {
+            "type": "string",
+            "description": "The project's X (formerly Twitter) account. Usually a full URL, but some values are a bare handle (e.g. `OpenMFProject`). Empty string when the project has none."
+          },
+          "linkedin": {
+            "type": "string",
+            "description": "URL of the project's LinkedIn page. Empty string when the project has none."
           },
           "healthScoreV2": {
             "type": [
