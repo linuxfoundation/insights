@@ -14,4 +14,4 @@ permissions:
 
 jobs:
   pr-title-lint:
-    uses: linuxfoundation/lfx-ui/.github/workflows/_pr-title-lint.yml@main
+    uses: linuxfoundation/lfx-ui/.github/workflows/_pr-title-lint.yml@296ddab5bb307361832f7962402b5b09780a1ea8 # v0.3.1
