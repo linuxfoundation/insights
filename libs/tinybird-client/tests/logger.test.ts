@@ -23,7 +23,10 @@ describe('consoleLogger', () => {
   it('leaves undefined fields out of the line', () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    consoleLogger.error('tinybird_request_error', { pipe: '/v0/pipes/x.json', status: undefined });
+    consoleLogger.error('tinybird_request_error', {
+      pipe: '/v0/pipes/x.json',
+      httpStatus: undefined,
+    });
 
     expect(error).toHaveBeenCalledWith(
       '{"message":"tinybird_request_error","level":"error","pipe":"/v0/pipes/x.json"}',

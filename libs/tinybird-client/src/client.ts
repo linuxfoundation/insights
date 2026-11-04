@@ -176,7 +176,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
       return data;
     } catch (error: unknown) {
       // Only TinybirdClientError carries statusCode; plain network failures (DNS, TCP reset)
-      // will log status: undefined and will NOT trigger rate-limit backoff.
+      // will log httpStatus: undefined and will NOT trigger rate-limit backoff.
       const status =
         error && typeof error === 'object' && 'statusCode' in error
           ? (error as { statusCode: number }).statusCode
@@ -187,7 +187,8 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
       const fields = {
         pipe: path,
         params,
-        status,
+        // Datadog reads a top-level `status` as the log severity, ahead of `level`.
+        httpStatus: status,
         durationMs: Date.now() - fetchStart,
         wasQueued: wasQueued || error instanceof TinybirdQueueTimeoutError,
         active: semaphore.getActive(),

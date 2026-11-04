@@ -148,8 +148,27 @@ describe('fetchFromTinybird throttle behavior', () => {
     expect(logger.error).not.toHaveBeenCalled();
     expect(logger.warn).toHaveBeenCalledWith(
       'tinybird_queue_rejected',
-      expect.objectContaining({ wasQueued }),
+      expect.objectContaining({ wasQueued, httpStatus: 503 }),
     );
+    expect(logger.warn.mock.calls[0]?.[1]).not.toHaveProperty('status');
+  });
+
+  it('keeps the warn level on a queue rejection line that carries an HTTP status', async () => {
+    mockAcquire.mockRejectedValue(new TinybirdQueueFullError());
+    const warn = vi.mocked(console.warn);
+    warn.mockClear();
+
+    const { createTinybirdClient } = await import('../src/client.js');
+    const client = createTinybirdClient({ baseUrl: 'https://tb.test', token: 'tok' });
+    await expect(client.fetch('/v0/pipes/test.json', {})).rejects.toBeDefined();
+
+    const line = JSON.parse(warn.mock.calls[0]?.[0] as string);
+    expect(line).toMatchObject({
+      message: 'tinybird_queue_rejected',
+      level: 'warn',
+      httpStatus: 503,
+    });
+    expect(line).not.toHaveProperty('status');
   });
 
   it('skips semaphore for ping and bucket lookup paths', async () => {
