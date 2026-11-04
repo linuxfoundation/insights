@@ -107,6 +107,8 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
   `.claude/rules/adr-format.md`; use the `/adr` skill to add one. They stay under `api/` rather
   than in a root `docs/adr/` like crowd.dev's because every record so far is about the public
   API, and the skill, the rule and the API docs all link to this path.
+- Design proposals for work not built yet, before their decisions become ADRs:
+  [`docs/design/`](docs/design/README.md).
 - API reference: built with VitePress from `api/docs/site/`, served by the API itself.
 - Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.
