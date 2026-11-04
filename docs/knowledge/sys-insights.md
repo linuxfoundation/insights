@@ -51,18 +51,33 @@ All four crossings into CDP are described in [`cross-repo-contract.md`](cross-re
 
 ## Deployment
 
+`.github/workflows/public-api-deploy.yaml` deploys to production on every push to `main`. It
+compares each service with the commit its GitHub environment last deployed successfully and
+deploys only what changed:
+
+- **`api`** (environment `production-api`): the API image, checked through `/health/ready` on every
+  new pod and rolled back on failure. Changes under `api/docs` do not redeploy it.
+- **`api-gateway`** (environment `production-api-gateway`): the Cloudflare Worker, after the API,
+  with a smoke check and a `wrangler rollback` on failure.
+- **`app`** (environment `production-app`): the Nuxt app, after the API. Its image also builds the
+  API docs and exports the API spec, so changes to `api/docs/site`, `api/src` or the export script
+  redeploy it too. A failed rollout is undone, and the Redis page cache is cleared after a successful rollout or
+  rollback, keeping the session revocation keys (`auth:*`).
+
+The workflow can also be dispatched by hand from `main` only. It forces the selected service (or all
+of them) to deploy and also deploys any other service with detected changes.
+
 `.github/workflows/production-deploy.yaml` and `staging-deploy.yaml` are manual
 (`workflow_dispatch`) and take one service at a time: `frontend`, `package-downloads-worker`,
-`search-volume-worker` or `vulnerability-enrichment-worker`. Each builds the image, sets it on the
-matching Kubernetes deployment in the `insights` namespace. Only the production workflow then
+`search-volume-worker` or `vulnerability-enrichment-worker`. They can run from any branch, which
+makes them the way to put a branch on an environment on demand. Each builds the image and sets it on
+the matching Kubernetes deployment in the `insights` namespace. Only the production workflow then
 flushes the Redis page cache after a frontend deploy; staging does not, so a staging frontend can
 keep serving cached pages after a successful rollout.
 
-Two components are not in those workflows:
+A manual production frontend deploy records no GitHub Deployment, so production keeps that build
+until the next push to `main` that changes the app, or until Continuous Deploy is dispatched with
+`app`.
 
-- **`api/`** has a `Dockerfile`, but neither deploy workflow offers it.
-- **`workers/api-gateway/`** deploys with `pnpm run deploy` (`wrangler deploy --env production`) from
-  its own directory. No workflow runs it.
-
-Both workflows run `init-submodules.sh`, so every build resolves `submodules/crowd.dev` to CDP's
-current `main`; see the pin behaviour section of the contract.
+Both manual workflows run `init-submodules.sh`, so every build resolves
+`submodules/crowd.dev` to CDP's current `main`; see the pin behaviour section of the contract.

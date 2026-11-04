@@ -29,6 +29,10 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # The frontend shares its group with deploy-app in public-api-deploy.yaml, so two rollouts never overlap.
+    concurrency:
+      group: ${{ inputs.service == 'frontend' && 'production-app-rollout' || format('production-{0}', inputs.service) }}
+      cancel-in-progress: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
