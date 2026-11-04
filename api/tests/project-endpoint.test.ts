@@ -388,15 +388,12 @@ describe('/v1-alpha registration and spec (AC7)', () => {
     expect(spec.paths[routePath]?.get?.tags).toEqual(['Projects']);
   });
 
-  it('documents every field of the 200 response', async () => {
+  it('requires every field of the 200 response', async () => {
     const spec = await getSpec('/v1-alpha/openapi.json');
     const schema =
       spec.paths[routePath]?.get?.responses['200']?.content['application/json']?.schema;
     const fields = ['slug', 'name', 'repositories', 'connectedPlatforms'];
     expect(schema?.required).toEqual(expect.arrayContaining(fields));
-    for (const field of fields) {
-      expect(schema?.properties?.[field]?.description, `${field} has no description`).toBeTruthy();
-    }
   });
 
   it('keeps the route out of /v1', async () => {

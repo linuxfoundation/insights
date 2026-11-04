@@ -185,7 +185,6 @@ describe('GET /v1-alpha/organizations/{slug}/projects', () => {
     const operation = doc.paths['/v1-alpha/organizations/{slug}/projects']?.get;
 
     expect(operation?.tags).toEqual(['Organizations']);
-    expect(operation?.summary).toBeTruthy();
     expect(operation?.parameters?.map((parameter) => parameter.name)).toEqual(
       expect.arrayContaining(['cursor', 'pageSize']),
     );

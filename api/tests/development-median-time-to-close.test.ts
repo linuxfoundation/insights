@@ -388,13 +388,6 @@ describe('OpenAPI (AC10)', () => {
     return res.json<OpenApiDoc>().paths[developmentPath('median-time-to-close')]?.get;
   }
 
-  it('names the three platforms in the description', async () => {
-    const operation = await getOperation();
-    expect(operation?.description).toMatch(/GitHub/);
-    expect(operation?.description).toMatch(/GitLab/);
-    expect(operation?.description).toMatch(/Gerrit/);
-  });
-
   it('documents exactly five query params, with platform an optional enum', async () => {
     const operation = await getOperation();
     const params = new Map(

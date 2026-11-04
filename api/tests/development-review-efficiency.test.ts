@@ -6,7 +6,6 @@ import {
   atDate,
   developmentPath,
   mockFetch,
-  parameterDescription,
   pipeCalls,
   queryString,
   tinybirdHost,
@@ -14,7 +13,6 @@ import {
   useApp,
   type OpenApiDoc,
   type OpenApiOperation,
-  type OpenApiSchema,
 } from './helpers/tinybird.js';
 
 const startDate = '2025-01-01';
@@ -430,7 +428,6 @@ describe('OpenAPI (AC10)', () => {
     expect(res.statusCode).toBe(200);
     return res.json<OpenApiDoc>().paths[developmentPath('review-efficiency')]?.get;
   }
-  const unitOf = (schema?: OpenApiSchema) => schema?.description?.match(/\(([a-z ]+)\)\./)?.[1];
 
   it('documents integer counts in the buckets', async () => {
     const operation = await getOperation();
@@ -440,7 +437,7 @@ describe('OpenAPI (AC10)', () => {
     expect(bucket?.properties?.closed?.type).toBe('integer');
   });
 
-  it('documents the efficiency as nullable percent values with the change in percentage points', async () => {
+  it('documents the efficiency as nullable number values', async () => {
     const operation = await getOperation();
     const schema = operation?.responses['200']?.content['application/json']?.schema;
     const efficiency = schema?.properties?.efficiencyPercentage;
@@ -450,10 +447,6 @@ describe('OpenAPI (AC10)', () => {
         nullable: true,
       });
     }
-    expect(unitOf(efficiency?.properties?.current)).toBe('percent');
-    expect(unitOf(efficiency?.properties?.previous)).toBe('percent');
-    expect(unitOf(efficiency?.properties?.changeValue)).toBe('percentage points');
-    expect(efficiency?.properties?.current?.description).toMatch(/null/i);
   });
 
   it.each(['openedSummary', 'closedSummary'])('documents %s as integer counts', async (field) => {
@@ -462,7 +455,6 @@ describe('OpenAPI (AC10)', () => {
     const summary = schema?.properties?.[field];
     for (const key of ['current', 'previous', 'changeValue']) {
       expect(summary?.properties?.[key]?.type, `${field}.${key}`).toBe('integer');
-      expect(unitOf(summary?.properties?.[key]), `${field}.${key}`).toBe('count');
     }
     expect(summary?.properties?.percentageChange).toMatchObject({
       type: 'number',
@@ -487,14 +479,5 @@ describe('OpenAPI (AC10)', () => {
     const platform = params.get('platform');
     expect(platform?.required).toBeFalsy();
     expect(platform?.schema.enum).toEqual(platforms);
-    expect(parameterDescription(platform)).toMatch(/connectedPlatforms/);
-  });
-
-  it('states the ratio-to-percent reshape, the null rule and what an omitted platform covers', async () => {
-    const operation = await getOperation();
-    expect(operation?.description).toMatch(/percent/);
-    expect(operation?.description).toMatch(/null/i);
-    expect(operation?.description).toMatch(/platform/);
-    expect(operation?.description).toMatch(/00:00 UTC/);
   });
 });

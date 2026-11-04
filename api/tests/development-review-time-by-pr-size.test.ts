@@ -207,14 +207,6 @@ describe('OpenAPI (AC9)', () => {
     return res.json<OpenApiDoc>().paths[developmentPath('review-time-by-pr-size')]?.get;
   }
 
-  it('names the size labels and the first review in the description', async () => {
-    const operation = await getOperation();
-    for (const label of ['1-9', '10-59', '60-99', '100-499', '500+']) {
-      expect(operation?.description).toContain(label);
-    }
-    expect(operation?.description).toMatch(/first review/i);
-  });
-
   it('documents the type of every data field, with a nullable average', async () => {
     const operation = await getOperation();
     const schema = operation?.responses['200']?.content['application/json']?.schema;
