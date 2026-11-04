@@ -193,4 +193,49 @@ describe('fetchFromTinybird throttle behavior', () => {
 
     expect(mockReportLatency).not.toHaveBeenCalled();
   });
+
+  describe('slow request log', () => {
+    let clock = 0;
+
+    // Advance a fake clock while the request waits in the queue and while Tinybird answers.
+    async function fetchWith(queueMs: number, requestMs: number) {
+      clock = 0;
+      const now = vi.spyOn(Date, 'now').mockImplementation(() => clock);
+      mockAcquire.mockImplementation(async () => {
+        clock += queueMs;
+        return queueMs > 0;
+      });
+      mockFetch.mockImplementation(async () => {
+        clock += requestMs;
+        return okResponse(mockResult);
+      });
+      const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+
+      const { createTinybirdClient } = await import('../src/client.js');
+      const client = createTinybirdClient({ baseUrl: 'https://tb.test', token: 'tok', logger });
+      await client.fetch('/v0/pipes/test.json', {});
+      now.mockRestore();
+      return logger;
+    }
+
+    it('ignores time spent waiting in the queue', async () => {
+      const logger = await fetchWith(9000, 100);
+
+      expect(logger.warn).not.toHaveBeenCalled();
+    });
+
+    it('logs a slow Tinybird request with its queue and request time', async () => {
+      const logger = await fetchWith(100, 6000);
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        'tinybird_slow_request',
+        expect.objectContaining({
+          durationMs: 6100,
+          requestMs: 6000,
+          queuedMs: 100,
+          wasQueued: true,
+        }),
+      );
+    });
+  });
 });
