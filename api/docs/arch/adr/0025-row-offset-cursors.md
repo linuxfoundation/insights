@@ -34,7 +34,7 @@ Cursors keep holding a row offset, encoded as base64url. Every paginated pipe ta
 
 ### Positive
 
-- Every paginated request makes one Tinybird call.
+- Each page needs one Tinybird list query, plus any supporting lookup (the OSS Index category, the vulnerabilities bucket).
 - `lib/pagination.ts` has one path, and cursors issued before this change keep working.
 - Clients hold opaque cursors, so any endpoint can move to a keyset later without a breaking change.
 
