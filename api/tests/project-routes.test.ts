@@ -105,9 +105,9 @@ const rankedRows = (count: number) =>
     contributionPercentage: 1,
   }));
 
-// These pipes page by page number rather than limit and offset (categories pages groups after one
-// full read), so their own files test paging.
-const pagesByNumber = new Set(['security/vulnerabilities', 'leaderboards/{type}', 'categories']);
+// These routes reject the ranked rows the shared paging tests serve (categories also pages groups
+// after one full read), so their own files test paging.
+const pagedInOwnFile = new Set(['security/vulnerabilities', 'leaderboards/{type}', 'categories']);
 
 const { get } = useApp();
 const emptyRows = tinybirdStub(() => []);
@@ -351,7 +351,7 @@ describe.each(names)('%s', (name) => {
     });
   }
 
-  if (declares(name, 'cursor') && !pagesByNumber.has(name)) {
+  if (declares(name, 'cursor') && !pagedInOwnFile.has(name)) {
     describe('pagination', () => {
       const pagedCalls = () =>
         pipeCalls()
