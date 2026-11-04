@@ -35,16 +35,16 @@ or is cleared by a deploy or a manual workflow.
 
 ## The caches
 
-| Cache                        | Where it is configured                                                       | Key                                                               | Lifetime                                                                        |
-| ---------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| TanStack Query (browser)     | `frontend/app/plugins/vue-query.ts`                                          | Query key                                                         | `staleTime` 30 s; report modules under `app/components/modules/report/` use 1 h |
-| Browser HTTP cache           | Headers from Nitro's route cache, `html-cache-control.ts`, `og-image.ts`     | URL                                                               | `max-age` of the route rule on cached API responses; HTML pages get `no-cache`  |
-| Nitro route cache (Redis)    | `frontend/setup/caching.ts`, production builds only                          | `nitro:routes:_:<first 16 path chars>.<hash>.json`                | 1 h or 1 day, per route rule                                                    |
-| Nitro cache mount (Redis)    | `frontend/setup/caching.ts`, `frontend/setup/og-image.ts`                    | `nitro-cache:*`                                                   | Rendered OG images, 24 h; Redis TTL 3 days                                      |
-| Tinybird bucket IDs (Redis)  | `frontend/server/data/tinybird/`, `libs/tinybird-client/src/bucket-cache.ts` | `project_bucket:<slug>`, `collection_bucket:<slug>`               | 24 h                                                                            |
-| Public API responses (Redis) | `api/src/response-cache.ts`                                                  | `insights-api:cache:<build sha>:<route>:<sha256 of input>`        | 1 day for categories, leaderboards, OSS index; 1 h for the rest                 |
-| Public API bucket IDs        | `api/src/clients/bucket-cache.ts`                                            | Same as the frontend, in process memory                           | 24 h, per pod                                                                   |
-| API gateway entitlements     | `workers/api-gateway/src/cache.ts`                                           | Salted hash of the access token, in Cloudflare's `caches.default` | Token lifetime, at most 10 min                                                  |
+| Cache                        | Where it is configured                                                       | Key                                                                                 | Lifetime                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| TanStack Query (browser)     | `frontend/app/plugins/vue-query.ts`                                          | Query key                                                                           | `staleTime` 30 s; report modules under `app/components/modules/report/` use 1 h |
+| Browser HTTP cache           | Headers from Nitro's route cache, `html-cache-control.ts`, `og-image.ts`     | URL                                                                                 | `max-age` of the route rule on cached API responses; HTML pages get `no-cache`  |
+| Nitro route cache (Redis)    | `frontend/setup/caching.ts`, production builds only                          | `nitro:routes:_:<first 16 path chars>.<hash>.json`                                  | 1 h or 1 day, per route rule                                                    |
+| Nitro cache mount (Redis)    | `frontend/setup/caching.ts`, `frontend/setup/og-image.ts`                    | `nitro-cache:*`                                                                     | Rendered OG images, 24 h; Redis TTL 3 days                                      |
+| Tinybird bucket IDs (Redis)  | `frontend/server/data/tinybird/`, `libs/tinybird-client/src/bucket-cache.ts` | `project_bucket:<slug>`, `collection_bucket:<slug>`                                 | 24 h                                                                            |
+| Public API responses (Redis) | `api/src/response-cache.ts`                                                  | `insights-api:cache:<build sha>:<route>:<sha256 of input>`                          | 1 day for categories, leaderboards, OSS index; 1 h for the rest                 |
+| Public API bucket IDs        | `api/src/clients/bucket-cache.ts`                                            | Same as the frontend, in process memory                                             | 24 h, per pod                                                                   |
+| API gateway entitlements     | `workers/api-gateway/src/cache.ts`                                           | Salted hash of the incoming personal access token, in Cloudflare's `caches.default` | Lifetime of the exchanged access token, at most 10 min                          |
 
 ## Frontend route cache
 
@@ -56,8 +56,10 @@ or is cleared by a deploy or a manual workflow.
   `/api/community/list`, the CNCF, AI code tracker and health score coverage reports, and every
   page that no other rule matches (the `**` catch-all).
 - **1 hour:** every other `/api/**` route, including the per-project API under
-  `/api/project/<slug>/`.
-- **Uncached:** auth, health, events, chat, collections, community, security, `/api/report`,
+  `/api/project/<slug>/`. That includes the per-project security reads under
+  `/api/project/**/security/**`: they send `no-cache` headers to the browser but are still cached
+  in Redis.
+- **Uncached:** auth, health, events, chat, collections, community, `/api/security/**`, `/api/report`,
   project and collection pages, the API docs, OG and image routes.
 - **Organization pages** (`/organization/**`, 1 day) and `/api/organization-page/**` (1 hour) turn
   off stale-while-revalidate, so they expire in Redis at the TTL.

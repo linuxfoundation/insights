@@ -90,7 +90,8 @@ In CDP Postgres:
 - `securityInsightsEvaluationSuites`: one row per repository and catalog. Its `updatedAt` decides
   when a repository is due again.
 - `securityInsightsEvaluations`: one row per control, upserted on suite, repository and control.
-- `securityInsightsEvaluationAssessments`: one row per requirement, added on every run.
+- `securityInsightsEvaluationAssessments`: one row per requirement, upserted on evaluation,
+  repository and requirement, so a rerun overwrites the previous result and no history is kept.
 
 The last two are in the `sequin_pub` publication and reach Tinybird as the
 `securityInsightsEvaluations` and `securityInsightsEvaluationAssessments` datasources. The
@@ -100,8 +101,10 @@ assessments datasource keeps the latest row per project, repository and requirem
 `security_deduplicated_merged_ds`. It drops results marked `Not Run`, groups each control's
 requirements together and assigns each control one of eight categories: Access Control, Build and
 Release, Documentation, Governance, Legal, Quality, Security Assessment and Vulnerability
-Management. A finished run therefore shows on the page within about an hour, which is what the
-button's message tells the user.
+Management. A finished run therefore reaches Tinybird within about an hour, which is what the
+button's message tells the user. The page can take longer: in production the per-project security
+reads stay in the one-hour Redis route cache (see [`flow-caching.md`](flow-caching.md)), and an
+expired entry is served once more while it refreshes.
 
 ## What depends on it
 

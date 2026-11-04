@@ -89,8 +89,9 @@ sequenceDiagram
   end
 ```
 
-Every cached response carries `max-age` set to the rule's TTL, so the browser may answer the next
-request itself.
+Cached API responses carry `max-age` set to the rule's TTL, so the browser may answer the next
+request itself. HTML pages get `no-cache` instead (`server/middleware/html-cache-control.ts`), so
+the browser checks with the server before reusing them.
 
 The public API follows the same read, miss and write steps with a fixed TTL and no background
 refresh, and it answers with `private, max-age=0`.

@@ -70,10 +70,12 @@ If the Keywords Everywhere call fails, the worker logs the error and stores noth
 and the run carries on with the next page. A row that fails to insert is logged and counted; the
 rest of the page is still written.
 
-`ISearchVolumeParams` also accepts `keyword` (one slug) and `limit` (the first N Linux Foundation
-projects plus the top N other projects by rank) for a run started by hand. These filters apply
-to the first page of `projects_list` only: a filtered run stops once it selects fewer projects
-than a full page.
+`ISearchVolumeParams` also accepts `keyword` (one slug) and `limit` for a run started by hand.
+The filters apply to each page: `limit` selects up to N Linux Foundation projects plus the top N
+other projects by rank on that page. The run stops when a page selects nothing or fewer projects
+than a full page. A `keyword` run therefore stops at the first page that lacks the slug, while a
+large `limit` can carry the run across every page and spend more Keywords Everywhere credits than
+expected.
 
 ## Tables and datasources
 
