@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/guard-protected-files.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-protected-files.sh"
           }
         ]
       }
@@ -18,11 +18,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/post-tool-use-doc-check.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-tool-use-doc-check.sh"
           },
           {
             "type": "command",
-            "command": ".claude/hooks/knowledge-doc-check.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/knowledge-doc-check.sh"
           }
         ]
       }
