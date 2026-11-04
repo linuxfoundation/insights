@@ -60,11 +60,9 @@ describe('version-scoped routes (AC1, AC2, AC3, AC4)', () => {
 
   it('mounts every route under a registry prefix, except ADR 0009 surfaces (AC1, AC4)', () => {
     // ADR 0009 reserves these unversioned surfaces; everything else must be version-scoped.
-    const unversioned = ['/health/live', '/health/ready', '/docs'];
-    // @fastify/static serves the docs tree from a `/docs*` wildcard route.
+    const unversioned = ['/health/live', '/health/ready'];
     const scoped = listRoutePaths(app).filter(
-      (path) =>
-        !unversioned.some((u) => path === u || path.startsWith(`${u}/`) || path === `${u}*`),
+      (path) => !unversioned.some((u) => path === u || path.startsWith(`${u}/`)),
     );
     expect(scoped.length).toBeGreaterThan(0);
     const prefixes = versionRegistry.map((entry) => entry.prefix);
@@ -73,6 +71,15 @@ describe('version-scoped routes (AC1, AC2, AC3, AC4)', () => {
         prefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`)),
         `route ${path} is outside every registered version prefix`,
       ).toBe(true);
+    }
+  });
+
+  it('leaves the docs to the web app, answering /docs with the shared JSON 404', async () => {
+    for (const url of ['/docs', '/docs/', '/docs/reference', '/docs/assets/app.js']) {
+      const res = await app.inject({ method: 'GET', url });
+      expect(res.statusCode, url).toBe(404);
+      expect(res.headers['content-type'], url).toMatch(/application\/json/);
+      expect(res.json(), url).toMatchObject({ statusCode: 404, error: 'Not Found' });
     }
   });
 

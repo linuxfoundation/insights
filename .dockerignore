@@ -52,6 +52,7 @@ frontend/storybook-static
 *.md
 !frontend/docs/**/*.md
 !frontend/blog/**/*.md
+!api/docs/site/**/*.md
 LICENSE
 CHANGELOG
 CONTRIBUTING.md

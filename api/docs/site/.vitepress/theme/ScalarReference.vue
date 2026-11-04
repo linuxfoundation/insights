@@ -5,8 +5,23 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import '@scalar/api-reference/style.css';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { useData, useRouter } from 'vitepress';
+import { useData, useRouter, withBase } from 'vitepress';
 import type { ApiReferenceInstance } from '@scalar/types/api-reference';
+
+interface ReferenceSource {
+  title: string;
+  slug: string;
+  url: string;
+  default?: boolean;
+}
+
+const props = withDefaults(defineProps<{ sources?: ReferenceSource[] }>(), {
+  // One source per API version. Uncomment v1 once it has routes; an empty spec renders a blank page.
+  sources: () => [
+    { title: 'v1-alpha', slug: 'v1-alpha', url: withBase('/openapi/v1-alpha.json'), default: true },
+    // { title: 'v1', slug: 'v1', url: withBase('/openapi/v1.json') },
+  ],
+});
 
 const { isDark } = useData();
 const router = useRouter();
@@ -116,11 +131,7 @@ onMounted(async () => {
   const { createApiReference } = await import('@scalar/api-reference');
   if (!mountEl.value) return;
   const created = createApiReference(mountEl.value, {
-    // One source per API version. Uncomment v1 once it has routes; an empty spec renders a blank page.
-    sources: [
-      { title: 'v1-alpha', slug: 'v1-alpha', url: '/v1-alpha/openapi.json', default: true },
-      // { title: 'v1', slug: 'v1', url: '/v1/openapi.json' },
-    ],
+    sources: props.sources,
     // Try-it client off: it would let a PAT be pasted into the browser.
     hideClientButton: true,
     hideTestRequestButton: true,

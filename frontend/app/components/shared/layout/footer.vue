@@ -63,7 +63,7 @@ SPDX-License-Identifier: MIT
             </p>
             <nav class="flex flex-col">
               <template
-                v-for="link of section.links"
+                v-for="link of visibleFooterLinks(section.links, isAuthenticated)"
                 :key="link.name"
               >
                 <router-link
@@ -113,7 +113,10 @@ import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vu
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { lfxFooterMenu } from '~/config/menu/footer';
+import { lfxFooterMenu, visibleFooterLinks } from '~/config/menu/footer';
+import { useAuth } from '~~/composables/useAuth';
+
+const { isAuthenticated } = useAuth();
 
 if (import.meta.client) {
   await import('@linuxfoundation/lfx-ui-core');

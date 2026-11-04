@@ -17,8 +17,8 @@ describe('docs:dev / docs:build scripts (AC1)', () => {
     const pkg = JSON.parse(readFileSync(`${apiRoot}package.json`, 'utf-8')) as {
       scripts: Record<string, string>;
     };
-    expect(pkg.scripts['docs:dev']).toBe('vitepress dev docs/site');
-    expect(pkg.scripts['docs:build']).toBe('vitepress build docs/site');
+    expect(pkg.scripts['docs:dev']).toMatch(/vitepress dev docs\/site$/);
+    expect(pkg.scripts['docs:build']).toMatch(/vitepress build docs\/site$/);
   });
 
   it('declares vitepress as a dependency so pnpm install --filter api resolves it', () => {

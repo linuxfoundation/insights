@@ -107,7 +107,8 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
   `.claude/rules/adr-format.md`; use the `/adr` skill to add one. They stay under `api/` rather
   than in a root `docs/adr/` like crowd.dev's because every record so far is about the public
   API, and the skill, the rule and the API docs all link to this path.
-- API reference: built with VitePress from `api/docs/site/`, served by the API itself.
+- API reference: built with VitePress from `api/docs/site/`, served by the web app at `/docs/api/`
+  to logged-in users.
 - Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.
 - What Insights shares with CDP, and what breaks it:

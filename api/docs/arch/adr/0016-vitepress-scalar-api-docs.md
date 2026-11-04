@@ -1,5 +1,7 @@
 # API docs use VitePress + Scalar, served from `api/docs/`
 
+> Amended 2026-11-04: the docs are served by the Insights web app at `/docs/api` behind LFID login, and the API no longer serves `/docs`. See [ADR-0026](./0026-api-docs-in-web-app-behind-login.md).
+
 API documentation is a standalone VitePress site under `api/docs/`, co-located with the service it documents. Scalar is embedded on the reference page and ingests the OpenAPI spec generated from TypeBox schemas on every release.
 
 **Scalar's built-in "try it" client is disabled in v1.** The docs are served from the same origin as the API, and CORS never applies to same-origin requests, so an enabled browser client would bypass the server-to-server boundary set by [ADR-0004](./0004-server-to-server-cors-deny.md) and invite users to paste long-lived PATs into a browser UI.

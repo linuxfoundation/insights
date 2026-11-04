@@ -9,7 +9,7 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
   - `versions/v1-alpha/development/` — one route module per Development endpoint, loaded by `@fastify/autoload`. Every file in this folder must default-export a Fastify plugin that registers `/projects/:slug/development/<filename>`; nothing else belongs here. A helper or types file dropped next to the routes fails `app.ready()` and `tests/v1-alpha-autoload.test.ts`, on purpose. Adding an endpoint means adding one file here and one test; no list to edit.
   - `versions/v1-alpha/contributors/` — the same rules for Contributors endpoints, which register `/projects/:slug/contributors/<filename>`. The alpha plugin skips this folder until its first route exists.
   - `lib/` — shared helpers (`period.ts`, `errors.ts`); `schemas/` — shared TypeBox schemas; `clients/` — Tinybird client. Code used by more than one route goes in one of these, never in a `versions/` route folder.
-- `docs/site/` — customer-facing VitePress + Scalar docs, built by `pnpm build` and served by the API at `/docs`.
+- `docs/site/` — customer-facing VitePress + Scalar docs, built by `pnpm docs:build` and served by the web app at `/docs/api/` to logged-in users.
 - `docs/arch/` — engineering planning: `PUBLIC_API_PLAN.md`, `CONTEXT.md`, ADRs, architecture review. Not part of the published site.
 
 ## Development
@@ -49,12 +49,14 @@ A merge to `main` deploys the API to production through the Public API Deploy wo
 
 ## Scripts
 
-| Command          | Description                                                                   |
-| ---------------- | ----------------------------------------------------------------------------- |
-| `pnpm dev`       | Start with hot reload via `tsx watch`                                         |
-| `pnpm start`     | Run compiled output                                                           |
-| `pnpm build`     | Compile TypeScript to `dist/` and build the VitePress docs site (`docs/site`) |
-| `pnpm tsc-check` | Type check without emit                                                       |
-| `pnpm test`      | Run Vitest tests                                                              |
+| Command           | Description                                                                     |
+| ----------------- | ------------------------------------------------------------------------------- |
+| `pnpm dev`        | Start with hot reload via `tsx watch`                                           |
+| `pnpm start`      | Run compiled output                                                             |
+| `pnpm build`      | Compile TypeScript to `dist/`                                                   |
+| `pnpm docs:dev`   | Export the spec and run the docs site (`docs/site`) with hot reload             |
+| `pnpm docs:build` | Export the spec and build the docs site that the web app serves at `/docs/api/` |
+| `pnpm tsc-check`  | Type check without emit                                                         |
+| `pnpm test`       | Run Vitest tests                                                                |
 
 Linting and formatting run from the repo root with `pnpm lint` (oxlint) and `pnpm format` (oxfmt), not from this package.

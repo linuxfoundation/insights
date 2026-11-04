@@ -7,6 +7,6 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 const nonProductionDisallow = isDevelopment ? [] : ['/'];
 
 export default {
-  // Keeps crawlers off the silent SSO redirect that public pages can trigger
-  disallow: isProduction ? ['/api/auth/'] : nonProductionDisallow,
+  // Keeps crawlers off the silent SSO redirect and the login-gated API docs
+  disallow: isProduction ? ['/api/auth/', '/docs/api/'] : nonProductionDisallow,
 };

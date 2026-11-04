@@ -12,12 +12,14 @@ const navItems = [
   { text: 'Lifecycle', link: '/lifecycle' },
   { text: 'Changelog', link: '/changelog' },
   { text: 'Reference', link: '/reference' },
+  { text: 'Web API', link: '/web-api' },
+  { text: 'Health Score v2 migration', link: '/health-score-v2-migration/' },
 ];
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'LFX Insights API',
-  base: '/docs/',
+  base: '/docs/api/',
   description: 'Reference documentation for the LFX Insights public API.',
   head: [
     ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }],
