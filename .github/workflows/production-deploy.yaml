@@ -7,9 +7,9 @@ on:
         description: Service to deploy
         required: true
         type: choice
-        # The frontend deploys from public-api-deploy.yaml on every push to main.
-        default: package-downloads-worker
+        default: frontend
         options:
+          - frontend
           - package-downloads-worker
           - search-volume-worker
           - vulnerability-enrichment-worker
@@ -40,6 +40,12 @@ jobs:
         id: config
         run: |
           case "${{ inputs.service }}" in
+            frontend)
+              echo "dockerfile=frontend/Dockerfile" >> $GITHUB_OUTPUT
+              echo "image_name=insights-app" >> $GITHUB_OUTPUT
+              echo "k8s_deployment=insights-app-dpl" >> $GITHUB_OUTPUT
+              echo "k8s_container=frontend" >> $GITHUB_OUTPUT
+              ;;
             package-downloads-worker)
               echo "dockerfile=workers/temporal/package_downloads_worker/Dockerfile" >> $GITHUB_OUTPUT
               echo "image_name=package-downloads-worker" >> $GITHUB_OUTPUT
@@ -108,6 +114,9 @@ jobs:
           app-env: production
           dockerfile: ${{ steps.config.outputs.dockerfile }}
           image-name: ${{ steps.config.outputs.image_name }}
+          build-args: |
+            ${{ inputs.service == 'frontend' && format('NUXT_REDIS_URL={0}', env.NUXT_REDIS_URL) || '' }}
+            ${{ inputs.service == 'frontend' && format('API_PUBLIC_URL={0}', vars.API_PUBLIC_URL) || '' }}
 
       - name: Update Deployment Image
         run: |
@@ -115,3 +124,12 @@ jobs:
             ${{ steps.config.outputs.k8s_container }}=${{ steps.build-docker-image.outputs.image }} \
             -n insights
           kubectl rollout status deployment/${{ steps.config.outputs.k8s_deployment }} -n insights --timeout=300s
+
+      - name: Flush Redis cache
+        if: inputs.service == 'frontend'
+        run: |
+          REDIS_URL=$(kubectl get configmap insights-config-map -n insights -o jsonpath="{.data.NUXT_REDIS_URL}")
+          PASSWORD=$(echo "$REDIS_URL" | sed -n 's|.*://:\([^@]*\)@.*|\1|p')
+          REDIS_POD=$(kubectl get pod -n insights -l app=redis -o jsonpath='{.items[0].metadata.name}')
+          kubectl exec -i "$REDIS_POD" -n insights -- \
+            redis-cli -h redis-svc -a "$PASSWORD" FLUSHALL

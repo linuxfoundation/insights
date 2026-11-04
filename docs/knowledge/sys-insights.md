@@ -65,12 +65,17 @@ deploys only what changed:
 
 The workflow can also be dispatched by hand for one service or all of them, from `main` only.
 
-`.github/workflows/production-deploy.yaml` (workers only) and `staging-deploy.yaml` are manual
-(`workflow_dispatch`) and take one service at a time. Staging offers `frontend`,
-`package-downloads-worker`, `search-volume-worker` or `vulnerability-enrichment-worker`; production
-offers the three workers. Each builds the image and sets it on the matching Kubernetes deployment in
-the `insights` namespace. Staging does not flush the Redis page cache, so a staging frontend can
+`.github/workflows/production-deploy.yaml` and `staging-deploy.yaml` are manual
+(`workflow_dispatch`) and take one service at a time: `frontend`, `package-downloads-worker`,
+`search-volume-worker` or `vulnerability-enrichment-worker`. They can run from any branch, which
+makes them the way to put a branch on an environment on demand. Each builds the image and sets it on
+the matching Kubernetes deployment in the `insights` namespace. Only the production workflow then
+flushes the Redis page cache after a frontend deploy; staging does not, so a staging frontend can
 keep serving cached pages after a successful rollout.
 
-Both manual workflows run `init-submodules.sh`, so every worker build resolves
+A manual production frontend deploy records no GitHub Deployment, so production keeps that build
+until the next push to `main` that changes the app, or until Continuous Deploy is dispatched with
+`app`.
+
+Both manual workflows run `init-submodules.sh`, so every build resolves
 `submodules/crowd.dev` to CDP's current `main`; see the pin behaviour section of the contract.
