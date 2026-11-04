@@ -3,7 +3,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
-import { postCountedPipe } from '../../../clients/tinybird.js';
+import { postPipe } from '../../../clients/tinybird.js';
 import { findCollectionMembers } from '../../../lib/collections-db.js';
 import {
   CollectionProject,
@@ -13,7 +13,7 @@ import {
   type CollectionProjectRow,
 } from '../../../lib/collections.js';
 import { NotFoundError } from '../../../lib/errors.js';
-import { pipePages, requestedPage, toCountedPage } from '../../../lib/pagination.js';
+import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { dataEnum } from '../../../lib/security.js';
 import { paginated, PaginationQuery } from '../../../schemas/common.js';
 
@@ -58,6 +58,7 @@ const collectionProjectsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
           'Returns the projects of a public collection and the repositories added to it on their own, with their Insights metrics, one page at a time. ' +
           '`type` keeps only `project` or only `repo` entries, and `isLF` keeps Linux Foundation or other projects. ' +
           'A `repo` entry carries the name, slug and logo of the project that holds it, and `repoUrl` tells such entries apart. ' +
+          'Entries with the same sort value are ordered by `name`, then by `type` and an internal ID, so they keep their order from one page to the next. ' +
           'Pages follow position, as the Pagination guide describes, and a cursor keeps its position when `pageSize` changes. ' +
           'Answers 404 for an unknown or private collection.',
         params: Params,
@@ -79,42 +80,26 @@ const collectionProjectsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const ids = type === 'repo' ? [] : members.projectIds;
       const repoUrls = type === 'project' ? [] : members.repositoryUrls;
       if (ids.length === 0 && repoUrls.length === 0) {
-        return toCountedPage([], page, 0);
+        return toPage([], page);
       }
 
       const split = sort.lastIndexOf('_');
-      const { pages, skip } = pipePages(page);
-      const chunks = await Promise.all(
-        pages.map((number) =>
-          postCountedPipe<CollectionProjectRow>(
-            request,
-            pipePath,
-            {
-              ids: ids.length > 0 ? ids : undefined,
-              repoUrls: repoUrls.length > 0 ? repoUrls : undefined,
-              orderByField: sort.slice(0, split),
-              orderByDirection: sort.slice(split + 1),
-              isLfx: isLF === undefined ? undefined : Number(isLF),
-              page: number,
-              pageSize: page.pageSize,
-            },
-            isCollectionProjectRow,
-          ),
-        ),
+      const rows = await postPipe<CollectionProjectRow>(
+        request,
+        pipePath,
+        {
+          ids: ids.length > 0 ? ids : undefined,
+          repoUrls: repoUrls.length > 0 ? repoUrls : undefined,
+          orderByField: sort.slice(0, split),
+          orderByDirection: sort.slice(split + 1),
+          isLfx: isLF === undefined ? undefined : Number(isLF),
+          ...pipeWindow(page),
+        },
+        isCollectionProjectRow,
       );
-      const fetched = chunks.flatMap((chunk) => chunk.rows);
-      const rows = fetched.slice(skip, skip + page.pageSize);
-      // A total below the rows already seen contradicts the page, so it is treated as missing. Then a
-      // full last pipe page is the only sign that more rows follow.
-      const last = chunks[chunks.length - 1]!;
-      const seen = pages[0]! * page.pageSize + fetched.length;
-      const reported = chunks[0]!.total;
-      const total =
-        reported !== undefined && reported >= seen
-          ? reported
-          : seen + (last.rows.length === page.pageSize ? 1 : 0);
-
-      return toCountedPage(rows.map(toCollectionProject), page, total);
+      // The pipe applies LIMIT and OFFSET after its only ORDER BY, so rows arrive in the order
+      // toPage needs.
+      return toPage(rows.map(toCollectionProject), page);
     },
   );
 };

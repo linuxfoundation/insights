@@ -4,16 +4,9 @@ import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type } from '@sinclair/typebox';
 
 import { fetchPipe, repoFilter, withBucket } from '../../../clients/tinybird.js';
-import { pipePages, requestedPage, toCountedPage } from '../../../lib/pagination.js';
+import { pipeWindow, requestedPage, toPage } from '../../../lib/pagination.js';
 import { toIsoUtc } from '../../../lib/period.js';
-import {
-  type CountRow,
-  enumGuard,
-  isCountRow,
-  isString,
-  Severity,
-  VulnerabilityStatus,
-} from '../../../lib/security.js';
+import { enumGuard, isString, Severity, VulnerabilityStatus } from '../../../lib/security.js';
 import {
   nullableDateTime,
   nullableString,
@@ -125,7 +118,7 @@ const vulnerabilitiesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         summary: 'List vulnerabilities',
         description:
           'Returns the known vulnerabilities in the package dependencies of the project repositories, one entry per advisory and package, one page at a time. ' +
-          'Entries are sorted by `publishedAt`, newest first unless `order` is `asc`, then by `vulnerabilityId`; entries sharing both come in no set order. ' +
+          'Entries are sorted by `publishedAt`, newest first unless `order` is `asc`, then by `vulnerabilityId`, then by `packageName`. ' +
           'Archived repositories are left out. `RESOLVED` vulnerabilities are included unless `status` filters them out. ' +
           'Pages follow position, as the Pagination guide describes, and a cursor keeps its position when `pageSize` changes. ' +
           'An unknown project returns an empty `data` list.',
@@ -138,37 +131,27 @@ const vulnerabilitiesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
       const { slug } = request.params;
       const { repos, severity, status, ecosystem, order = 'desc' } = request.query;
       const page = requestedPage(request.query);
-      const { pages, skip } = pipePages(page);
 
-      const result = await withBucket(request, slug, async (bucketId) => {
-        const params = {
-          project: slug,
-          bucketId,
-          repos: repoFilter(repos),
-          severity,
-          status,
-          ecosystem: ecosystem || undefined,
-          orderByDirection: order,
-        };
-        const [counts, ...chunks] = await Promise.all([
-          fetchPipe<CountRow>(request, pipePath, { ...params, count: true }, isCountRow),
-          ...pages.map((number) =>
-            fetchPipe<Row>(
-              request,
-              pipePath,
-              { ...params, page: number, pageSize: page.pageSize },
-              isRow,
-            ),
-          ),
-        ]);
-        return { total: counts[0]?.count ?? 0, rows: chunks.flat() };
-      });
-      if (!result) {
-        return { data: [], pageSize: page.pageSize, nextCursor: null };
-      }
-
-      const rows = result.rows.slice(skip, skip + page.pageSize).map(toItem);
-      return toCountedPage(rows, page, result.total);
+      const rows = await withBucket(request, slug, (bucketId) =>
+        fetchPipe<Row>(
+          request,
+          pipePath,
+          {
+            project: slug,
+            bucketId,
+            repos: repoFilter(repos),
+            severity,
+            status,
+            ecosystem: ecosystem || undefined,
+            orderByDirection: order,
+            ...pipeWindow(page),
+          },
+          isRow,
+        ),
+      );
+      // The pipe applies LIMIT and OFFSET after its only ORDER BY, so rows arrive in the order
+      // toPage needs.
+      return toPage((rows ?? []).map(toItem), page);
     },
   );
 };

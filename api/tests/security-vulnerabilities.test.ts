@@ -24,41 +24,31 @@ const pipeRow = (index: number) => ({
   referenceLink: `https://osv.dev/GHSA-${index}`,
 });
 
-// The list pages by page number, as the pipe does: rows from page * pageSize, pageSize of them.
+// The list pages by row, as the pipe does: `limit` rows from `offset`.
 let all: unknown[] = [];
-let countRows: unknown[] | undefined;
 
 const { get } = useApp();
 
 beforeEach(() => {
   all = Array.from({ length: 5 }, (_, index) => pipeRow(index));
-  countRows = undefined;
   mockFetch.mockImplementation(
     tinybirdStub((url) => {
       if (url.pathname !== pipePath) {
         throw new Error(`unexpected Tinybird call to ${url.pathname}`);
       }
-      const params = url.searchParams;
-      if (params.get('count') === 'true') {
-        return countRows ?? [{ count: all.length }];
-      }
-      const size = Number(params.get('pageSize'));
-      const start = Number(params.get('page')) * size;
-      return all.slice(start, start + size);
+      const start = Number(url.searchParams.get('offset'));
+      return all.slice(start, start + Number(url.searchParams.get('limit')));
     }),
   );
 });
 
-const listCalls = () => callsTo(pipePath).filter((url) => url.searchParams.get('count') !== 'true');
-const countCalls = () =>
-  callsTo(pipePath).filter((url) => url.searchParams.get('count') === 'true');
-const pagesAsked = () =>
-  listCalls().map((url) => [url.searchParams.get('page'), url.searchParams.get('pageSize')]);
+const windowsAsked = () =>
+  callsTo(pipePath).map((url) => [url.searchParams.get('limit'), url.searchParams.get('offset')]);
 const ids = (body: { data: { vulnerabilityId: string }[] }) =>
   body.data.map((item) => item.vulnerabilityId);
 
 describe('Tinybird call (AC1)', () => {
-  it('sends the project, repos, filters and order to the list and count calls', async () => {
+  it('sends the project, repos, filters and order in one call', async () => {
     const res = await get(
       `${route}?${queryString({
         repos: repo,
@@ -69,21 +59,23 @@ describe('Tinybird call (AC1)', () => {
       })}`,
     );
     expect(res.statusCode).toBe(200);
-    expect(listCalls()).toHaveLength(1);
-    expect(countCalls()).toHaveLength(1);
-    for (const call of [...listCalls(), ...countCalls()]) {
-      expect(call.searchParams.get('project')).toBe('kubernetes');
-      expect(call.searchParams.getAll('repos').join(',')).toContain(repo);
-      expect(call.searchParams.get('severity')).toBe('CRITICAL');
-      expect(call.searchParams.get('status')).toBe('OPEN');
-      expect(call.searchParams.get('ecosystem')).toBe('npm');
-      expect(call.searchParams.get('orderByDirection')).toBe('asc');
-    }
+    const calls = callsTo(pipePath);
+    expect(calls).toHaveLength(1);
+    const params = calls[0]!.searchParams;
+    expect(params.get('project')).toBe('kubernetes');
+    expect(params.getAll('repos').join(',')).toContain(repo);
+    expect(params.get('severity')).toBe('CRITICAL');
+    expect(params.get('status')).toBe('OPEN');
+    expect(params.get('ecosystem')).toBe('npm');
+    expect(params.get('orderByDirection')).toBe('asc');
+    expect(params.has('count')).toBe(false);
+    expect(params.has('page')).toBe(false);
+    expect(params.has('pageSize')).toBe(false);
   });
 
   it('orders newest first by default', async () => {
     await get(route);
-    expect(listCalls()[0]?.searchParams.get('orderByDirection')).toBe('desc');
+    expect(callsTo(pipePath)[0]?.searchParams.get('orderByDirection')).toBe('desc');
   });
 
   it('leaves out an empty ecosystem and absent filters', async () => {
@@ -107,20 +99,20 @@ describe('Tinybird call (AC1)', () => {
 });
 
 describe('paging (AC2)', () => {
-  it('asks for page 0 of pageSize by default', async () => {
+  it('asks for one row more than pageSize from offset 0 by default', async () => {
     const res = await get(route);
     expect(res.json()).toMatchObject({ pageSize: 50, nextCursor: null });
-    expect(pagesAsked()).toEqual([['0', '50']]);
+    expect(windowsAsked()).toEqual([['51', '0']]);
   });
 
-  it('follows nextCursor to the next pipe page while rows remain', async () => {
+  it('follows nextCursor to the next rows while rows remain', async () => {
     const first = await get(`${route}?pageSize=2`);
     expect(ids(first.json())).toEqual(['GHSA-0', 'GHSA-1']);
     expect(first.json().nextCursor).toEqual(expect.any(String));
 
     mockFetch.mockClear();
     const second = await get(`${route}?pageSize=2&cursor=${first.json().nextCursor}`);
-    expect(pagesAsked()).toEqual([['1', '2']]);
+    expect(windowsAsked()).toEqual([['3', '2']]);
     expect(ids(second.json())).toEqual(['GHSA-2', 'GHSA-3']);
 
     const third = await get(`${route}?pageSize=2&cursor=${second.json().nextCursor}`);
@@ -128,7 +120,7 @@ describe('paging (AC2)', () => {
     expect(third.json().nextCursor).toBeNull();
   });
 
-  it('ends the list when the page reaches the count exactly', async () => {
+  it('ends the list when the page ends on the last row', async () => {
     all = all.slice(0, 4);
     const res = await get(`${route}?pageSize=2&cursor=${cursorFor(2)}`);
     expect(ids(res.json())).toEqual(['GHSA-2', 'GHSA-3']);
@@ -137,10 +129,7 @@ describe('paging (AC2)', () => {
 
   it('keeps its position when pageSize changes between requests', async () => {
     const res = await get(`${route}?pageSize=2&cursor=${cursorFor(3)}`);
-    expect(pagesAsked().sort()).toEqual([
-      ['1', '2'],
-      ['2', '2'],
-    ]);
+    expect(windowsAsked()).toEqual([['3', '3']]);
     expect(ids(res.json())).toEqual(['GHSA-3', 'GHSA-4']);
     expect(res.json().nextCursor).toBeNull();
   });
@@ -152,9 +141,8 @@ describe('paging (AC2)', () => {
     expect(res.json().nextCursor).toBe(cursorFor(4));
   });
 
-  it('treats an empty count response as zero rows', async () => {
+  it('answers an empty page when nothing matches', async () => {
     all = [];
-    countRows = [];
     const res = await get(route);
     expect(res.statusCode).toBe(200);
     expect(res.json()).toEqual({ data: [], pageSize: 50, nextCursor: null });
@@ -216,17 +204,6 @@ describe('row guard (AC4)', () => {
     ['a missing fixedVersion', { ...good, fixedVersion: undefined }],
   ])('answers 503 for %s', async (_label, row) => {
     all = [good, row];
-    const res = await get(route);
-    expect(res.statusCode).toBe(503);
-  });
-
-  it.each([
-    ['a negative count', [{ count: -1 }]],
-    ['a fractional count', [{ count: 1.5 }]],
-    ['a string count', [{ count: '5' }]],
-    ['a missing count', [{}]],
-  ])('answers 503 for %s', async (_label, rows) => {
-    countRows = rows;
     const res = await get(route);
     expect(res.statusCode).toBe(503);
   });
