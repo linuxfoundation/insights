@@ -185,7 +185,3 @@ export function responseFields(
     ];
   });
 }
-
-// Swagger writes a query property's description on the parameter; older output kept it on the schema.
-export const parameterDescription = (param?: OpenApiParameter) =>
-  param?.description ?? param?.schema.description;

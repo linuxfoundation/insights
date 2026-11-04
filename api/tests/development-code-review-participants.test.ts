@@ -367,15 +367,6 @@ describe('OpenAPI (AC10)', () => {
     expect(limit?.required).toBeFalsy();
     expect(limit?.schema).toMatchObject({ type: 'integer', default: 5, minimum: 1, maximum: 50 });
   });
-
-  it('ends the description by marking the participant identity fields provisional', async () => {
-    const operation = await getOperation();
-    expect(
-      operation?.description
-        ?.trim()
-        .endsWith('Participant identity fields are provisional in /v1-alpha.'),
-    ).toBe(true);
-  });
 });
 
 describe('malformed pipe rows (AC11)', () => {

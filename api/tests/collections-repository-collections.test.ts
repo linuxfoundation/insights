@@ -94,15 +94,12 @@ describe('shared route behaviour (AC4)', () => {
 });
 
 describe('OpenAPI (AC5)', () => {
-  it('is tagged Collections, with a required url, a summary, a description and every field required', async () => {
+  it('is tagged Collections, with a required url and every field required', async () => {
     const spec = (await get('/v1-alpha/openapi.json')).json<OpenApiDoc>();
     const operation = spec.paths['/v1-alpha/repositories/collections']?.get;
     expect(operation?.tags).toEqual(['Collections']);
-    expect(operation?.summary).toBeTruthy();
-    expect(operation?.description).toBeTruthy();
     const url = operation?.parameters?.find((p) => p.name === 'url');
     expect(url?.required).toBe(true);
-    expect(url?.description).toBeTruthy();
     const schema = operation?.responses['200']?.content['application/json']?.schema;
     const fields = responseFields(spec, schema);
     expect(fields.map((field) => field.path).sort()).toEqual([

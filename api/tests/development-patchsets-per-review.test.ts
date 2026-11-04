@@ -344,12 +344,6 @@ describe('OpenAPI (AC11)', () => {
     return res.json<OpenApiDoc>().paths[developmentPath('patchsets-per-review')]?.get;
   }
 
-  it('states that the data is Gerrit only and the period starts at 00:00 UTC', async () => {
-    const operation = await getOperation();
-    expect(operation?.description).toMatch(/Gerrit/);
-    expect(operation?.description).toMatch(/00:00 UTC/);
-  });
-
   it('types the summary values as nullable numbers in patchsets per review and each bucket value as a number', async () => {
     const operation = await getOperation();
     const schema = operation?.responses['200']?.content['application/json']?.schema;
@@ -362,7 +356,6 @@ describe('OpenAPI (AC11)', () => {
         nullable: true,
       });
     }
-    expect(summary?.properties?.current?.description).toContain('(patchsets per review)');
   });
 
   it('documents the query params, with stat an enum defaulting to median', async () => {

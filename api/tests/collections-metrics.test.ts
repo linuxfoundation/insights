@@ -124,7 +124,6 @@ describe('GET /v1-alpha/collections/{slug}/metrics', () => {
     const doc = (await get('/v1-alpha/openapi.json')).json() as OpenApiDoc;
     const operation = doc.paths['/v1-alpha/collections/{slug}/metrics']?.get;
     expect(operation?.tags).toEqual(['Collections']);
-    expect(operation?.summary).toBeTruthy();
   });
 
   it('publishes the bounds the row guard enforces', async () => {

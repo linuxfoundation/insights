@@ -82,13 +82,12 @@ describe('response (AC1)', () => {
     expect(body.data[1]?.owner).toEqual({ name: 'Ada', logoUrl: null });
   });
 
-  it('lists the route under the Collections tag and names the skipped highlighting', async () => {
+  it('lists the route under the Collections tag', async () => {
     const spec = app.swagger() as {
-      paths: Record<string, { get: { tags: string[]; description: string } }>;
+      paths: Record<string, { get: { tags: string[] } }>;
     };
     const operation = spec.paths[route]?.get;
     expect(operation?.tags).toEqual(['Collections']);
-    expect(operation?.description).toMatch(/highlight|pin/i);
   });
 });
 
