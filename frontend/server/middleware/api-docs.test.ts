@@ -86,12 +86,24 @@ describe('API docs for logged-in users', () => {
     expect(verifyOrRefreshOidcToken).toHaveBeenCalledTimes(1);
   });
 
-  it.each(['/docs/api', '/docs/api/'])('serves the docs home at %s', async (path) => {
-    const res = await request(path);
+  it('serves the docs home at /docs/api/', async () => {
+    const res = await request('/docs/api/');
 
     expect(res.status).toBe(200);
     expect(res.headers.get('content-type')).toMatch(/text\/html/);
     expect(await res.text()).toBe(files['index.html']);
+  });
+
+  it.each([
+    ['/docs/api', '/docs/api/'],
+    ['/docs/api?auth=success', '/docs/api/?auth=success'],
+  ])('moves the bare path %s under the docs base', async (path, location) => {
+    const res = await request(path);
+
+    expect(res.status).toBe(302);
+    expect(res.headers.get('location')).toBe(location);
+    expect(res.headers.get('cache-control')).toBe('private, no-store');
+    expect(await res.text()).toBe('');
   });
 
   it.each([
