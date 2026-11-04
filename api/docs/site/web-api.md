@@ -11,25 +11,19 @@ import ScalarReference from './.vitepress/theme/ScalarReference.vue'
 const sources = [{ title: 'Web API', slug: 'web-api', url: withBase('/web-api.json'), default: true }]
 </script>
 
-<div class="vp-doc web-api-intro">
+<!-- The spec's description renders as Scalar's introduction, so the page heading is kept for screen readers only. -->
+<h1 class="web-api-title">Web API</h1>
 
-# Web API
-
-The Web API documents the public endpoints served by insights.linuxfoundation.org/api. They are read-only and need no authentication.
-
-::: warning
-`healthScore` and the Health Score v1 fields are soon to be deprecated. Use the [migration guide](/health-score-v2-migration/) to move to the latest fields.
-:::
-
-</div>
-
-<ScalarReference :sources="sources" />
+<ScalarReference :sources="sources" show-introduction />
 
 <style>
-.web-api-intro {
-  max-width: 688px;
-  margin: 0 auto;
-  padding: 32px 24px 0;
+.web-api-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Same wide-screen sidebar math as the reference page; see reference.md. */

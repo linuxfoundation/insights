@@ -11,9 +11,8 @@ const navItems = [
   { text: 'Errors', link: '/errors' },
   { text: 'Lifecycle', link: '/lifecycle' },
   { text: 'Changelog', link: '/changelog' },
-  { text: 'Reference', link: '/reference' },
   { text: 'Web API', link: '/web-api' },
-  { text: 'Health Score v2 migration', link: '/health-score-v2-migration/' },
+  { text: 'Reference', link: '/reference' },
 ];
 
 // https://vitepress.dev/reference/site-config

@@ -15,7 +15,8 @@ interface ReferenceSource {
   default?: boolean;
 }
 
-const props = withDefaults(defineProps<{ sources?: ReferenceSource[] }>(), {
+const props = withDefaults(defineProps<{ sources?: ReferenceSource[]; showIntroduction?: boolean }>(), {
+  showIntroduction: false,
   // One source per API version. Uncomment v1 once it has routes; an empty spec renders a blank page.
   sources: () => [
     { title: 'v1-alpha', slug: 'v1-alpha', url: withBase('/openapi/v1-alpha.json'), default: true },
@@ -181,7 +182,11 @@ onUnmounted(() => {
 
 <template>
   <!-- vp-raw keeps VitePress's router from hijacking Scalar's hash links. -->
-  <div ref="mountEl" class="vp-raw scalar-reference" />
+  <div
+    ref="mountEl"
+    class="vp-raw scalar-reference"
+    :class="{ 'show-introduction': props.showIntroduction }"
+  />
 </template>
 
 <style scoped>
@@ -296,9 +301,10 @@ onUnmounted(() => {
   display: none;
 }
 
-/* The spec description already heads the docs site, so the reference starts at the first group. */
-.scalar-reference .section-container:has(.introduction-section),
-.scalar-reference [data-sidebar-id$="/description/introduction"] {
+/* The spec description already heads the docs site, so the reference starts at the first group.
+   A page with no intro of its own opts back in, which keeps Scalar's sidebar flush with the top. */
+.scalar-reference:not(.show-introduction) .section-container:has(.introduction-section),
+.scalar-reference:not(.show-introduction) [data-sidebar-id$="/description/introduction"] {
   display: none;
 }
 
