@@ -29,7 +29,7 @@ Code to record a new decision interactively.
 | [ADR-0013](./0013-origin-cache-only-private-cache-control.md)    | Responses are cached at the origin (Redis) only; `Cache-Control: private, max-age=0`               |                                |            |
 | [ADR-0014](./0014-camelcase-json-iso8601-dates.md)               | All JSON keys are camelCase; dates are ISO-8601 UTC strings                                        |                                |            |
 | [ADR-0015](./0015-api-keys-issued-by-lfx-self-serve.md)          | API keys are issued by the LFX Self-Serve App                                                      | amended 2026-10-12             |            |
-| [ADR-0016](./0016-vitepress-scalar-api-docs.md)                  | API docs use VitePress + Scalar, served from `api/docs/`                                           |                                |            |
+| [ADR-0016](./0016-vitepress-scalar-api-docs.md)                  | API docs use VitePress + Scalar, served from `api/docs/`                                           | amended 2026-11-04             |            |
 | [ADR-0017](./0017-collections-queries-not-shared.md)             | Collections Postgres queries are written fresh in `/api`, not shared with the frontend             |                                |            |
 | [ADR-0018](./0018-structured-json-logging.md)                    | Structured JSON logging via pino; log levels follow LFX-0002                                       | amended 2026-10-26             |            |
 | [ADR-0019](./0019-opentelemetry-instrumentation.md)              | OpenTelemetry instrumentation; OTel trace ID is the request ID                                     | amended 2026-10-26             |            |
@@ -39,3 +39,4 @@ Code to record a new decision interactively.
 | [ADR-0023](./0023-basic-and-premium-tiers.md)                    | Two tiers, basic and premium, set the rate limit and organization endpoint access                  | accepted                       | 2026-10-20 |
 | [ADR-0024](./0024-dd-trace-to-node-datadog-agent.md)             | The API reports to its node's Datadog agent through dd-trace                                       | accepted                       | 2026-10-26 |
 | [ADR-0025](./0025-row-offset-cursors.md)                         | Cursors hold a row offset over a unique sort order                                                 | accepted                       | 2026-10-30 |
+| [ADR-0026](./0026-api-docs-in-web-app-behind-login.md)           | The API docs are served by the web app at /docs/api, behind LFID login                             | accepted                       | 2026-11-04 |

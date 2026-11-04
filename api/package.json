@@ -7,17 +7,16 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "node --import ./dist/instrumentation.js dist/server.js",
-    "build": "tsc -p tsconfig.build.json && vitepress build docs/site",
+    "build": "tsc -p tsconfig.build.json",
     "tsc-check": "tsc --noEmit",
     "test": "vitest run",
     "openapi:export": "tsx scripts/export-openapi.ts",
-    "docs:dev": "vitepress dev docs/site",
-    "docs:build": "vitepress build docs/site",
+    "docs:dev": "pnpm openapi:export docs/site/public/openapi && vitepress dev docs/site",
+    "docs:build": "pnpm openapi:export docs/site/public/openapi && vitepress build docs/site",
     "docs:preview": "vitepress preview docs/site"
   },
   "dependencies": {
     "@fastify/autoload": "^6.5.0",
-    "@fastify/static": "^8.0.0",
     "@fastify/swagger": "^9.0.0",
     "@fastify/type-provider-typebox": "^5.0.0",
     "@lfx-insights/postgres-client": "workspace:*",

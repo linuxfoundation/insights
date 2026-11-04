@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { fileURLToPath } from 'node:url';
+
 import rateLimiter from './rate-limiter';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
@@ -56,6 +58,8 @@ export default {
   awsBedrockGuardrailVersion: 'DRAFT',
   dataCopilotDefaultSegmentId: '',
   rateLimiter: rateLimiter,
+  // Local API docs build; the image overrides it with NUXT_API_DOCS_DIR (see Dockerfile).
+  apiDocsDir: fileURLToPath(new URL('../../api/docs/site/.vitepress/dist', import.meta.url)),
   // These are also exposed on the client-side
   public: {
     apiBase: '/api',

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineConfig } from 'vitepress';
 
-import { referenceSections } from './reference-search';
+import { referenceSections, webApiSections } from './reference-search';
 
 const navItems = [
   { text: 'Quickstart', link: '/' },
@@ -11,13 +11,14 @@ const navItems = [
   { text: 'Errors', link: '/errors' },
   { text: 'Lifecycle', link: '/lifecycle' },
   { text: 'Changelog', link: '/changelog' },
+  { text: 'Web API', link: '/web-api' },
   { text: 'Reference', link: '/reference' },
 ];
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'LFX Insights API',
-  base: '/docs/',
+  base: '/docs/api/',
   description: 'Reference documentation for the LFX Insights public API.',
   head: [
     ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }],
@@ -32,8 +33,11 @@ export default defineConfig({
       options: {
         miniSearch: {
           // Returning undefined keeps VitePress's own heading-based split for the other pages.
-          _splitIntoSections: (file) =>
-            file.endsWith('/reference.md') ? referenceSections() : undefined,
+          _splitIntoSections: (file) => {
+            if (file.endsWith('/reference.md')) return referenceSections();
+            if (file.endsWith('/web-api.md')) return webApiSections();
+            return undefined;
+          },
         },
         translations: {
           button: {

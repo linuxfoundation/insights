@@ -112,6 +112,9 @@ export default {
           '/project/**': { cache: false },
           '/collection/**': { cache: false },
           '/collection': { cache: false },
+          // The API docs sit behind login, so a cached copy would leak them to anonymous visitors.
+          '/docs/api': { cache: false },
+          '/docs/api/**': { cache: false },
           // Stale-while-revalidate is off so a stale cached 200 cannot mask a blocked org's 404.
           '/api/organization-page/**': { cache: { maxAge: shortCache, base: 'redis', swr: false } },
           '/organization/**': { cache: { maxAge: longCache, base: 'redis', swr: false } },

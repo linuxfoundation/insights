@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { createRouter } from 'radix3';
+import { createRouter, toRouteMatcher } from 'radix3';
 import { describe, test, expect, afterEach } from 'vitest';
 
 const noCacheHeader = 'max-age=0, no-cache, no-store, must-revalidate, s-maxage=0';
@@ -107,6 +107,23 @@ describe('caching configuration', () => {
     const dev = await loadCachingConfig('development');
     expect(dev.routeRules['/organization/**']).toBeUndefined();
     expect(dev.routeRules['/api/organization-page/**']).toBeUndefined();
+  });
+
+  test('never caches the login-gated API docs, even under the catch-all redis rule', async () => {
+    const cachingConfig = await loadCachingConfig('production');
+    const matcher = toRouteMatcher(createRouter({ routes: cachingConfig.routeRules }));
+    // Nitro merges every matching rule with the most specific one winning (see nitro getRouteRules).
+    const effectiveRule = (path: string) => Object.assign({}, ...matcher.matchAll(path));
+
+    for (const path of [
+      '/docs/api',
+      '/docs/api/',
+      '/docs/api/reference',
+      '/docs/api/assets/app.js',
+    ]) {
+      expect(effectiveRule(path).cache, path).toBe(false);
+    }
+    expect(effectiveRule('/docs/introduction/what-is-insights/').cache).not.toBe(false);
   });
 
   test('every route rule pattern is declared exactly once', async () => {

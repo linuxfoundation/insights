@@ -21,13 +21,14 @@ WORKDIR /app
 # Copy workspace configuration files first (better cache)
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY frontend/package.json ./frontend/
+COPY api/package.json ./api/
 COPY libs/postgres-client/package.json ./libs/postgres-client/
 COPY libs/tinybird-client/package.json ./libs/tinybird-client/
 COPY libs/types/package.json ./libs/types/
 
 # Install dependencies with BuildKit cache mount for pnpm store
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install --filter lfx-insights... --filter @lfx-insights/postgres-client --filter @lfx-insights/tinybird-client --filter @lfx-insights/types --frozen-lockfile
+    pnpm install --filter lfx-insights... --filter @lfx-insights/api... --filter @lfx-insights/postgres-client --filter @lfx-insights/tinybird-client --filter @lfx-insights/types --frozen-lockfile
 
 # ============================================
 # Builder stage: Build the application
@@ -36,6 +37,8 @@ FROM deps AS builder
 
 ARG APP_ENV=production
 ARG NUXT_REDIS_URL
+# The exported spec lists this as its server, so the reference's examples call the API host.
+ARG API_PUBLIC_URL
 
 ENV NUXT_APP_ENV=$APP_ENV
 ENV NUXT_REDIS_URL=$NUXT_REDIS_URL
@@ -43,8 +46,9 @@ ENV NODE_OPTIONS=--max-old-space-size=4096
 
 WORKDIR /app
 
-# Copy frontend source and its workspace-linked lib dependencies
+# Copy frontend source, the API (for its docs site) and the workspace-linked lib dependencies
 COPY frontend ./frontend
+COPY api ./api
 COPY libs/postgres-client ./libs/postgres-client
 COPY libs/tinybird-client ./libs/tinybird-client
 COPY libs/types ./libs/types
@@ -56,12 +60,15 @@ RUN pnpm --filter @lfx-insights/types build && \
 
 WORKDIR /app/frontend
 
-# Build docs and blog in parallel; use ; not && so PID assignments run in main shell
+# Build docs, blog and API docs in parallel; use ; not && so PID assignments run in main shell.
+# /docs/api must stay out of public/ so the login gate runs (see server/middleware/api-docs.ts).
 RUN pnpm docs:build & DOCS_PID=$! ; \
     pnpm blog:build & BLOG_PID=$! ; \
-    wait $DOCS_PID && wait $BLOG_PID && \
+    API_PUBLIC_URL=$API_PUBLIC_URL pnpm --filter @lfx-insights/api docs:build & API_DOCS_PID=$! ; \
+    wait $DOCS_PID && wait $BLOG_PID && wait $API_DOCS_PID && \
     mkdir -p public/docs public/blog && \
     cp -r docs/.vitepress/dist/* public/docs/ && \
+    test ! -e public/docs/api && \
     cp -r blog/.vitepress/dist/* public/blog/
 
 # Build the Nuxt app
@@ -87,6 +94,8 @@ WORKDIR /app
 
 # Copy only the built output (Nuxt bundles dependencies)
 COPY --from=builder /app/frontend/.output ./.output
+COPY --from=builder /app/api/docs/site/.vitepress/dist ./api-docs
+ENV NUXT_API_DOCS_DIR=/app/api-docs
 
 # Set non-root user for security
 RUN groupadd --gid 1001 nodejs && \

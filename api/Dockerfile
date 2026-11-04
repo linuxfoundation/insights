@@ -22,7 +22,7 @@ RUN pnpm --filter @lfx-insights/types build && \
     pnpm --filter @lfx-insights/tinybird-client build && \
     pnpm --filter @lfx-insights/api build
 
-# Production dependencies only, so vitepress and the rest of the build tooling stay out of the runtime image.
+# Production dependencies only, so the build tooling stays out of the runtime image.
 FROM base AS prod-deps
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --filter @lfx-insights/api... --prod --frozen-lockfile
@@ -39,7 +39,6 @@ COPY --from=builder /app/libs/types/dist ./libs/types/dist
 COPY --from=builder /app/libs/postgres-client/dist ./libs/postgres-client/dist
 COPY --from=builder /app/libs/tinybird-client/dist ./libs/tinybird-client/dist
 COPY --from=builder /app/api/dist ./api/dist
-COPY --from=builder /app/api/docs/site/.vitepress/dist ./api/docs/site/.vitepress/dist
 WORKDIR /app/api
 USER node
 EXPOSE 4000

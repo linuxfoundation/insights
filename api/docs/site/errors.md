@@ -16,7 +16,7 @@ expect to handle.
     "code": "invalid_sort",
     "message": "Unsupported sort value 'foo' for this endpoint.",
     "requestId": "4e1f9c2a2b7e4d3b9a7a4a1e9e2b6f10",
-    "docsUrl": "https://api.insights.linuxfoundation.org/docs/errors#invalid_sort"
+    "docsUrl": "https://insights.linuxfoundation.org/docs/api/errors#invalid_sort"
   }
 }
 ```
