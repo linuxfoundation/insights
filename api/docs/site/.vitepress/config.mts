@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineConfig } from 'vitepress';
 
-import { referenceSections } from './reference-search';
+import { referenceSections, webApiSections } from './reference-search';
 
 const navItems = [
   { text: 'Quickstart', link: '/' },
@@ -34,8 +34,11 @@ export default defineConfig({
       options: {
         miniSearch: {
           // Returning undefined keeps VitePress's own heading-based split for the other pages.
-          _splitIntoSections: (file) =>
-            file.endsWith('/reference.md') ? referenceSections() : undefined,
+          _splitIntoSections: (file) => {
+            if (file.endsWith('/reference.md')) return referenceSections();
+            if (file.endsWith('/web-api.md')) return webApiSections();
+            return undefined;
+          },
         },
         translations: {
           button: {

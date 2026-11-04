@@ -24,11 +24,13 @@ const SPEC_PREFIX = '/v1-alpha';
 
 const apiRoot = fileURLToPath(new URL('../../..', import.meta.url));
 
+type Spec = { paths?: Record<string, Record<string, Operation>> };
+
 // Scalar renders the reference in the browser, so the search index is built from the spec instead.
 // The exporter runs out of process because route autoloading breaks inside the bundled VitePress config.
 export function referenceSections(): Section[] {
   const outDir = mkdtempSync(join(tmpdir(), 'docs-openapi-'));
-  let spec: { paths?: Record<string, Record<string, Operation>> };
+  let spec: Spec;
   try {
     execFileSync(join(apiRoot, 'node_modules/.bin/tsx'), ['scripts/export-openapi.ts', outDir], {
       cwd: apiRoot,
@@ -38,7 +40,17 @@ export function referenceSections(): Section[] {
   } finally {
     rmSync(outDir, { recursive: true, force: true });
   }
+  return specSections(spec, 'Reference');
+}
 
+export function webApiSections(): Section[] {
+  const spec: Spec = JSON.parse(
+    readFileSync(fileURLToPath(new URL('../public/web-api.json', import.meta.url)), 'utf-8'),
+  );
+  return specSections(spec, 'Web API');
+}
+
+function specSections(spec: Spec, pageTitle: string): Section[] {
   const sections: Section[] = [];
   const seenTags = new Set<string>();
   for (const [path, ops] of Object.entries(spec.paths ?? {})) {
@@ -48,13 +60,13 @@ export function referenceSections(): Section[] {
       const tagAnchor = `tag/${tag.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
       if (!seenTags.has(tag)) {
         seenTags.add(tag);
-        sections.push({ anchor: tagAnchor, titles: ['Reference', tag], text: tag });
+        sections.push({ anchor: tagAnchor, titles: [pageTitle, tag], text: tag });
       }
       const verb = method.toUpperCase();
       const params = (op.parameters ?? []).map((p) => `${p.name} ${p.description ?? ''}`);
       sections.push({
         anchor: `${tagAnchor}/${verb}${path}`,
-        titles: ['Reference', tag, op.summary ?? `${verb} ${path}`],
+        titles: [pageTitle, tag, op.summary ?? `${verb} ${path}`],
         text: [`${verb} ${path}`, op.description ?? '', ...params].join('\n'),
       });
     }

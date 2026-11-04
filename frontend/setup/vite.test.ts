@@ -22,6 +22,8 @@ describe('dev server proxy', () => {
     expect(proxyTargetFor('/docs/api')).toBeUndefined();
     expect(proxyTargetFor('/docs/api/')).toBeUndefined();
     expect(proxyTargetFor('/docs/api/reference')).toBeUndefined();
+    // Logging in from bare /docs/api returns here with a query string (see server/api/auth/callback.ts).
+    expect(proxyTargetFor('/docs/api?auth=success')).toBeUndefined();
   });
 
   test('keeps proxying the blog', () => {
