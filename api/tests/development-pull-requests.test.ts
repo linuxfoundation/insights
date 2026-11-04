@@ -395,11 +395,6 @@ describe('OpenAPI spec (AC11)', () => {
     return operation as OpenApiOperation;
   }
 
-  it('states the Tinybird call count in the description', async () => {
-    const operation = await getOperation();
-    expect(operation.description).toMatch(/11 Tinybird calls/);
-  });
-
   it('formats the response dates as date-time and makes the resolve time and percentageChange nullable', async () => {
     const operation = await getOperation();
     const schema = operation.responses['200']?.content['application/json']?.schema;

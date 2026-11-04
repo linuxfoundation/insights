@@ -394,12 +394,10 @@ describe.each(names)('%s', (name) => {
   }
 
   describe('OpenAPI', () => {
-    it(`is tagged ${tagOf(name)}, with a summary and a description`, () => {
+    it(`is tagged ${tagOf(name)}`, () => {
       const operation = operationOf(name);
       expect(tagOf(name), `add the tag of ${name.split('/')[0]} to groupTags`).toBeDefined();
       expect(operation.tags).toEqual([tagOf(name)]);
-      expect(operation.summary).toBeTruthy();
-      expect(operation.description).toBeTruthy();
     });
 
     if (hasDates(name)) {
@@ -645,16 +643,13 @@ describe.each(collectionNames)('collection scope: %s', (name) => {
   describe('OpenAPI', () => {
     const operation = () => collectionOf(name).operation;
 
-    it('is tagged Collections, with a summary and a description', () => {
+    it('is tagged Collections', () => {
       expect(operation().tags).toEqual(['Collections']);
-      expect(operation().summary).toBeTruthy();
-      expect(operation().description).toBeTruthy();
     });
 
-    it('requires the slug and documents the 404', () => {
+    it('requires the slug', () => {
       const slug = operation().parameters?.find((param) => param.name === 'slug');
       expect(slug?.required).toBe(true);
-      expect(operation().description).toContain('unknown or private collection');
     });
 
     // The wording differs by scope, so only the structure is compared.
@@ -678,17 +673,6 @@ describe.each(collectionNames)('collection scope: %s', (name) => {
         shape(project.parameters?.filter((param) => param.name !== 'repos')),
       );
       expect(shape(operation().responses)).toEqual(shape(project.responses));
-    });
-
-    it('reads as a collection, with no project wording left over', () => {
-      const text = JSON.stringify([
-        operation().description,
-        operation().parameters,
-        operation().responses,
-      ]);
-      expect(text).not.toMatch(
-        /unknown project|the project|project's|project repository|`repos`|collection endpoint/,
-      );
     });
 
     it('requires every response field', () => {

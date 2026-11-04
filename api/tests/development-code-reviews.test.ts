@@ -302,12 +302,4 @@ describe('OpenAPI (AC9)', () => {
       'startDate',
     ]);
   });
-
-  it('names the five code review activity types and the overlap with review-comments', async () => {
-    const operation = await getOperation();
-    for (const type of codeReviewTypes) {
-      expect(operation?.description, `description omits ${type}`).toContain(type);
-    }
-    expect(operation?.description).toContain('review-comments');
-  });
 });

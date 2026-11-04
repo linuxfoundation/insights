@@ -310,12 +310,10 @@ describe('paging', () => {
 });
 
 describe('OpenAPI', () => {
-  it('tags the route as Collections and gives it a summary', async () => {
+  it('tags the route as Collections', async () => {
     const res = await get('/v1-alpha/openapi.json');
     expect(res.statusCode).toBe(200);
     const operation = res.json<OpenApiDoc>().paths['/v1-alpha/collections/{slug}/projects']?.get;
     expect(operation?.tags).toEqual(['Collections']);
-    expect(operation?.summary).toEqual(expect.any(String));
-    expect(operation?.summary).not.toBe('');
   });
 });

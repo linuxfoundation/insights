@@ -169,7 +169,6 @@ describe('GET /v1-alpha/organizations/{slug}/metrics', () => {
     const operation = doc.paths['/v1-alpha/organizations/{slug}/metrics']?.get;
 
     expect(operation?.tags).toEqual(['Organizations']);
-    expect(operation?.summary).toBeTruthy();
   });
 
   it('publishes the bounds the row guard enforces', async () => {

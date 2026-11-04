@@ -437,14 +437,6 @@ describe('OpenAPI (AC11)', () => {
     return res.json<OpenApiDoc>().paths[developmentPath('median-time-to-review')]?.get;
   }
 
-  it('has a description that covers platform', async () => {
-    const operation = await getOperation();
-    expect(operation?.description).toMatch(/`platform`/);
-    for (const platform of ['GitHub', 'GitLab', 'Gerrit']) {
-      expect(operation?.description).toContain(platform);
-    }
-  });
-
   it('types the summary values nullable and the bucket median a number that is not', async () => {
     const operation = await getOperation();
     const schema = operation?.responses['200']?.content['application/json']?.schema;

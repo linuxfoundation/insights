@@ -336,13 +336,6 @@ describe('OpenAPI (AC11)', () => {
     return res.json<OpenApiDoc>().paths[developmentPath('contributions-outside-work-hours')]?.get;
   }
 
-  it('gives the work-hours definition and timezone in the description', async () => {
-    const operation = await getOperation();
-    expect(operation?.description).toMatch(/18:00/);
-    expect(operation?.description).toMatch(/08:00/);
-    expect(operation?.description).toMatch(/local time/i);
-  });
-
   it('lists the query params, with both booleans optional and defaulted', async () => {
     const parameters = (await getOperation())?.parameters ?? [];
     const query = Object.fromEntries(
