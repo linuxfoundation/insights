@@ -27,6 +27,9 @@ import type { ActivityFilterQuery } from '../schemas/common.js';
 import { createInMemoryBucketCache } from './bucket-cache.js';
 
 const bucketsPath = '/v0/pipes/project_buckets.json';
+// Per pod. Tinybird is shared with the frontend, whose latency doubled when the API ran about 15
+// queries at once; queries past the cap wait in the client's queue.
+const MAX_CONCURRENT = 5;
 
 export type RequestLog = Pick<FastifyRequest, 'log'>;
 
@@ -75,6 +78,7 @@ export function getTinybirdClient(): TinybirdClient {
     client = createTinybirdClient({
       baseUrl: requiredEnv('API_TB_HOST'),
       token: requiredEnv('API_TB_TOKEN'),
+      maxConcurrent: MAX_CONCURRENT,
       bucketCache: createInMemoryBucketCache(),
       logger: {
         debug: toLog('debug'),

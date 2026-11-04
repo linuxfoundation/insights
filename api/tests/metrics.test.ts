@@ -250,8 +250,8 @@ describe('custom metrics', () => {
       log: FastifyBaseLogger;
     };
 
-    // The client's defaults: 35 concurrent requests plus a queue of 500.
-    const held = Array.from({ length: 35 + 500 }, () => fetchPipe(request, pipePath, {}));
+    // The API's cap of 5 concurrent requests plus the client's default queue of 500.
+    const held = Array.from({ length: 5 + 500 }, () => fetchPipe(request, pipePath, {}));
     await expect(fetchPipe(request, pipePath, {})).rejects.toBeInstanceOf(UpstreamUnavailableError);
 
     expect(calls(distribution, 'insights.api.tinybird.duration')).toEqual([
