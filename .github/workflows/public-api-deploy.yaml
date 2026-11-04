@@ -364,9 +364,14 @@ jobs:
           PASSWORD=$(echo "$REDIS_URL" | sed -n 's|.*://:\([^@]*\)@.*|\1|p')
           echo "::add-mask::$PASSWORD"
           REDIS_POD=$(kubectl get pod -n insights -l app=redis -o jsonpath='{.items[0].metadata.name}')
+          # redis-cli exits 0 on an error reply, so PING proves auth and UNLINK replies must all be counts.
           kubectl exec -i "$REDIS_POD" -n insights -- sh -c '
+            set -e
             export REDISCLI_AUTH="$1"
-            redis-cli -h redis-svc --scan | grep -v "^auth:" | tr "\n" "\0" |
-              xargs -0 -r -n 500 redis-cli -h redis-svc UNLINK > /dev/null
+            redis-cli -h redis-svc PING | grep -qx PONG
+            redis-cli -h redis-svc --scan > /tmp/cache-keys
+            grep -v "^auth:" /tmp/cache-keys | tr "\n" "\0" |
+              xargs -0 -r -n 500 redis-cli -h redis-svc UNLINK > /tmp/unlinked
+            if grep -qv "^[0-9][0-9]*$" /tmp/unlinked; then cat /tmp/unlinked; exit 1; fi
             echo "keys left: $(redis-cli -h redis-svc DBSIZE)"
           ' sh "$PASSWORD"
