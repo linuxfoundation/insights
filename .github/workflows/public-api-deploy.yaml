@@ -259,13 +259,18 @@ jobs:
     needs: [changes, deploy-api]
     # Waits for the API when both changed, so the reference page never lists routes the API does not serve yet.
     # A dispatch that selects the app still runs when the API deploy fails, so an app fix can ship during an API outage.
+    # A dispatch sets the app output from its input, so the main-only check in changes must pass explicitly.
     if: >-
-      !cancelled() && needs.changes.outputs.app == 'true' &&
+      !cancelled() && needs.changes.result == 'success' && needs.changes.outputs.app == 'true' &&
       (needs.deploy-api.result == 'success' || needs.deploy-api.result == 'skipped' ||
       (github.event_name == 'workflow_dispatch' && inputs.service == 'app'))
     runs-on: ubuntu-latest
     environment:
       name: production-app
+    # Shared with the manual frontend deploy in production-deploy.yaml, so two rollouts never overlap.
+    concurrency:
+      group: production-app-rollout
+      cancel-in-progress: false
     env:
       ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
       ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
@@ -344,15 +349,24 @@ jobs:
         run: kubectl rollout status deployment/insights-app-dpl -n insights --timeout=300s
 
       - name: Roll back
+        id: rollback
         if: failure() && steps.rollout.outcome == 'failure'
         run: |
           kubectl rollout undo deployment/insights-app-dpl -n insights
           kubectl rollout status deployment/insights-app-dpl -n insights --timeout=300s
 
-      - name: Flush Redis cache
+      # Pods of a failed rollout can cache pages too, so the cache is cleared after a rollback as well.
+      # Session revocations (auth:*) share this Redis and must survive, so only other keys are removed.
+      - name: Clear the Redis page cache
+        if: always() && (steps.rollout.outcome == 'success' || steps.rollback.outcome == 'success')
         run: |
           REDIS_URL=$(kubectl get configmap insights-config-map -n insights -o jsonpath="{.data.NUXT_REDIS_URL}")
           PASSWORD=$(echo "$REDIS_URL" | sed -n 's|.*://:\([^@]*\)@.*|\1|p')
+          echo "::add-mask::$PASSWORD"
           REDIS_POD=$(kubectl get pod -n insights -l app=redis -o jsonpath='{.items[0].metadata.name}')
-          kubectl exec -i "$REDIS_POD" -n insights -- \
-            redis-cli -h redis-svc -a "$PASSWORD" FLUSHALL
+          kubectl exec -i "$REDIS_POD" -n insights -- sh -c '
+            export REDISCLI_AUTH="$1"
+            redis-cli -h redis-svc --scan | grep -v "^auth:" | tr "\n" "\0" |
+              xargs -0 -r -n 500 redis-cli -h redis-svc UNLINK > /dev/null
+            echo "keys left: $(redis-cli -h redis-svc DBSIZE)"
+          ' sh "$PASSWORD"

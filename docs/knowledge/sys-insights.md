@@ -61,9 +61,11 @@ deploys only what changed:
   with a smoke check and a `wrangler rollback` on failure.
 - **`app`** (environment `production-app`): the Nuxt app, after the API. Its image also builds the
   API docs and exports the API spec, so changes to `api/docs/site`, `api/src` or the export script
-  redeploy it too. A failed rollout is undone, and a successful one flushes the Redis page cache.
+  redeploy it too. A failed rollout is undone, and the Redis page cache is cleared after a successful rollout or
+  rollback, keeping the session revocation keys (`auth:*`).
 
-The workflow can also be dispatched by hand for one service or all of them, from `main` only.
+The workflow can also be dispatched by hand from `main` only. It forces the selected service (or all
+of them) to deploy and also deploys any other service with detected changes.
 
 `.github/workflows/production-deploy.yaml` and `staging-deploy.yaml` are manual
 (`workflow_dispatch`) and take one service at a time: `frontend`, `package-downloads-worker`,
