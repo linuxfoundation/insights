@@ -154,8 +154,10 @@ resolving on merge is enough.
 4. Call `get_finding`. If it is already resolved, skip to step 7 only if its resolution is
    `fixed`; otherwise report the resolution and stop.
 5. Check the finding no longer applies on the fresh `origin/main`: read each evidence location
-   there (following moved code) against the fix criteria. Then run the test the fix added, or,
-   when the fix had no test, repeat the manual check recorded in the ops comment. It must pass. If
+   there (following moved code) against the fix criteria. Then check out that revision, since a
+   fetch leaves the working tree as it was: on a clean tree run
+   `git switch --detach origin/main` (switch back afterwards). Run the test the fix added there,
+   or, when the fix had no test, repeat the manual check recorded in the ops comment. It must pass. If
    the vulnerable path is still there or the check fails, stop and go back to fix mode; a revert
    or regression can sit on top of a merged fix.
 6. Call `resolve_finding` with `reason: "fixed"` and `reason_note: "Fixed in <PR url>"`.
