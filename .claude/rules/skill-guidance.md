@@ -8,17 +8,18 @@ paths:
 
 This project has guided skills for common workflows. **Proactively suggest the relevant skill** when a user's request matches one of these:
 
-| Skill          | When to Suggest                                                                                     |
-| -------------- | --------------------------------------------------------------------------------------------------- |
-| `/commit`      | Commit staged changes, generate a commit message, "commit this", "make a commit"                    |
-| `/preflight`   | Before submitting a PR, check if code is ready, validate changes, verify a branch, run all checks   |
-| `/dco`         | PR failing DCO check, missing Signed-off-by, sign-off forgotten on a commit                         |
-| `/review-pr`   | Review a PR, audit code changes, check PR quality, validate a PR against standards                  |
-| `/setup`       | First-time setup, getting started, broken environment, app won't start, missing env vars, DB setup  |
-| `/setup-docs`  | Run docs site, blog, or Storybook locally                                                           |
-| `/db-migrate`  | Apply pending migrations, create a new migration, check migration status                            |
-| `/tech-writer` | Write or improve documentation, update READMEs, draft technical content                             |
-| `/adr`         | Record an architecture decision, choose between frameworks/libraries/patterns, query past decisions |
+| Skill                   | When to Suggest                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `/commit`               | Commit staged changes, generate a commit message, "commit this", "make a commit"                    |
+| `/preflight`            | Before submitting a PR, check if code is ready, validate changes, verify a branch, run all checks   |
+| `/dco`                  | PR failing DCO check, missing Signed-off-by, sign-off forgotten on a commit                         |
+| `/review-pr`            | Review a PR, audit code changes, check PR quality, validate a PR against standards                  |
+| `/setup`                | First-time setup, getting started, broken environment, app won't start, missing env vars, DB setup  |
+| `/setup-docs`           | Run docs site, blog, or Storybook locally                                                           |
+| `/db-migrate`           | Apply pending migrations, create a new migration, check migration status                            |
+| `/tech-writer`          | Write or improve documentation, update READMEs, draft technical content                             |
+| `/adr`                  | Record an architecture decision, choose between frameworks/libraries/patterns, query past decisions |
+| `/fix-security-finding` | Fix a Claude Security finding from an ops `security` issue, or resolve it after the fix merges      |
 
 ## Trigger Phrases
 
@@ -70,3 +71,9 @@ This project has guided skills for common workflows. **Proactively suggest the r
 - "Should we use X or Y?" when the choice is architectural (framework, database, pattern, API style)
 - "Document this trade-off", "Capture this as an ADR"
 - Any moment where a significant technical alternative was considered and rejected
+
+**`/fix-security-finding`** — match any of these intents:
+
+- "Fix security finding", "Fix ops issue 1234", "Work on a security issue"
+- "Resolve the finding", "The security fix merged"
+- Any mention of a Claude Security finding or a `security` issue in lfx-cdp-insights-ops
