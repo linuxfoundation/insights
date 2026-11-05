@@ -47,7 +47,7 @@ export class UpstreamUnavailableError extends Error {
 }
 
 // The root app and every deprecated version scope register this one handler, so the 404
-// body has a single definition to change when the error envelope in docs/site/errors.md lands.
+// body has a single definition. docs/site/errors.md documents its missing `code` field.
 export function notFoundHandler(request: FastifyRequest, reply: FastifyReply): void {
   reply.code(404).send({
     message: `Route ${request.method}:${request.url} not found`,

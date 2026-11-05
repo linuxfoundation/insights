@@ -25,10 +25,12 @@ You send the PAT itself on every call.
 
 ## 2. Make your first request {#make-your-first-request}
 
-Send the PAT as a bearer token on the `Authorization` header of any request:
+All endpoints are currently served under `/v1-alpha`; none have been promoted to `/v1`
+yet (see [Endpoint lifecycle](/lifecycle)). Send the PAT as a bearer token on the
+`Authorization` header of any request. This one fetches the `korg` project:
 
 ```bash
-curl https://api.insights.linuxfoundation.org/v1/projects/torvalds-linux \
+curl https://api.insights.linuxfoundation.org/v1-alpha/projects/korg \
   -H "Authorization: Bearer lfi_your_token_here"
 ```
 
@@ -36,24 +38,24 @@ A successful response is plain JSON with camelCase field names (see
 [Errors](/errors) for more on our JSON conventions). A failed request returns a
 non-2xx status code and a JSON error body, described below.
 
-Every response, success or failure, also carries `Cache-Control: private, max-age=0`.
-That tells shared caches and proxies not to store the response on your behalf; your own
+Every response from an endpoint, success or failure, also carries
+`Cache-Control: private, max-age=0`. Two responses never reach an endpoint and come
+without it: a `401` the gateway sends when the PAT is missing or invalid, and a `404`
+for a path that matches no endpoint. The header tells shared caches and proxies not to store the response on your behalf; your own
 client may still cache it privately but must revalidate before reusing it. Treat the data
 as near real-time rather than guaranteed instantaneous. See [Pagination](/pagination) for
 how this interacts with list endpoints.
 
-## 3. Understand the error envelope
+## 3. Understand the error body
 
-Every error response uses one consistent shape, regardless of which endpoint produced it:
+Error responses share one flat shape, regardless of which endpoint produced it:
 
 ```json
 {
-  "error": {
-    "code": "invalid_sort",
-    "message": "Unsupported sort value 'foo' for this endpoint.",
-    "requestId": "4e1f9c2a2b7e4d3b9a7a4a1e9e2b6f10",
-    "docsUrl": "https://insights.linuxfoundation.org/docs/api/errors#invalid_sort"
-  }
+  "statusCode": 404,
+  "code": "not_found",
+  "error": "Not Found",
+  "message": "Project not found"
 }
 ```
 

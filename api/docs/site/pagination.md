@@ -22,7 +22,7 @@ Paginated endpoints accept two query parameters, both optional:
 {
   "data": [/* ...page of results... */],
   "pageSize": 50,
-  "nextCursor": "eyJrIjoiMjAyNS0xMi0zMSIsImlkIjoiNDIifQ"
+  "nextCursor": "NTA"
 }
 ```
 
@@ -31,14 +31,14 @@ Paginated endpoints accept two query parameters, both optional:
 - `nextCursor` is the value to pass as `cursor` on your next request. When it is `null`,
   you have reached the end of the list.
 
-To iterate an entire collection, keep requesting with the previous response's
-`nextCursor` until you receive `nextCursor: null`.
+To iterate an entire list, keep requesting with the previous response's `nextCursor`
+until you receive `nextCursor: null`. For example, to page through all collections:
 
 ```bash
-curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100" \
+curl "https://api.insights.linuxfoundation.org/v1-alpha/collections?pageSize=100" \
   -H "Authorization: Bearer lfi_your_token_here"
 
-curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100&cursor=eyJrIjoiMjAyNS0xMi0zMSIsImlkIjoiNDIifQ" \
+curl "https://api.insights.linuxfoundation.org/v1-alpha/collections?pageSize=100&cursor=MTAw" \
   -H "Authorization: Bearer lfi_your_token_here"
 ```
 
