@@ -18,6 +18,9 @@ Usage:
 - `/fix-security-finding <issue>`: fix the finding behind ops issue `<issue>` and open a PR.
 - `/fix-security-finding resolve <issue>`: after that PR merges, resolve the finding.
 
+`<issue>` is the ops issue number. `#1234` and `linuxfoundation/lfx-cdp-insights-ops#1234` work
+too; older issue bodies use that form, and some name the resolve step `/resolve-security-finding`.
+
 The issues are created by the `sync-security-findings` routine in
 `linuxfoundation/lfx-cdp-insights-ops`. Each body starts with the marker
 `<!-- claude-security-finding: find_... -->`. Claude Security is reached through its connector
