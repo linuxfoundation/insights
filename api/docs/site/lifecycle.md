@@ -9,8 +9,8 @@ page explains what each stage means for you as a caller.
 
 ## `/v1-alpha`
 
-- Access is **allow-listed**: only LFX-internal developers and external design partners
-  we've explicitly enrolled can call `/v1-alpha` endpoints.
+- Any caller with a valid PAT can reach `/v1-alpha` endpoints, subject to their tier. This
+  stage is meant for early integrations and feedback.
 - There are **no contract guarantees**. Response shapes, field names, and error codes can
   change at any time.
 - We allow **breaking changes** freely at this stage, since it exists to validate an
