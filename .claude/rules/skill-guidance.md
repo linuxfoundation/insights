@@ -74,6 +74,6 @@ This project has guided skills for common workflows. **Proactively suggest the r
 
 **`/fix-security-finding`** — match any of these intents:
 
-- "Fix security finding", "Fix ops issue 1234", "Work on a security issue"
+- "Fix security finding", "Fix ops issue 1234", "Work on a Claude Security finding"
 - "Resolve the finding", "The security fix merged"
 - Any mention of a Claude Security finding or a `security` issue in lfx-cdp-insights-ops
