@@ -144,6 +144,7 @@ resolving on merge is enough.
    ```
 
    If it is not on `main`, stop.
+
 4. Call `get_finding`. If it is already resolved, skip to step 7 only if its resolution is
    `fixed`; otherwise report the resolution and stop.
 5. Check the finding no longer applies on the fresh `origin/main`: read each evidence location
