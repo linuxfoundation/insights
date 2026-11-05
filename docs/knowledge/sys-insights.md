@@ -72,8 +72,9 @@ of them) to deploy and also deploys any other service with detected changes.
 `search-volume-worker` or `vulnerability-enrichment-worker`. They can run from any branch, which
 makes them the way to put a branch on an environment on demand. Each builds the image and sets it on
 the matching Kubernetes deployment in the `insights` namespace. Only the production workflow then
-flushes the Redis page cache after a frontend deploy; staging does not, so a staging frontend can
-keep serving cached pages after a successful rollout.
+flushes the Redis page cache after a frontend deploy. Staging does not need to: the Redis route
+cache rules apply only when `NUXT_APP_ENV` is `production`, so a staging frontend caches no routes.
+How caching works is in [`flow-caching.md`](flow-caching.md).
 
 A manual production frontend deploy records no GitHub Deployment, so production keeps that build
 until the next push to `main` that changes the app, or until Continuous Deploy is dispatched with
