@@ -76,6 +76,7 @@ section](/#watch-your-rate-limit) for more detail.
 
 ## Caching headers on error responses
 
-Error responses are not cached any differently from successful ones. See the quickstart's
-[caching note](/#make-your-first-request) for the response-wide caching contract, which
-applies here too.
+Error responses from an endpoint carry the same `Cache-Control` header as successful
+ones. The gateway's `401` for a missing or invalid PAT and the `404` for a path that
+matches no endpoint carry none. See the quickstart's
+[caching note](/#make-your-first-request) for the full caching contract.

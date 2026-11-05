@@ -38,8 +38,10 @@ A successful response is plain JSON with camelCase field names (see
 [Errors](/errors) for more on our JSON conventions). A failed request returns a
 non-2xx status code and a JSON error body, described below.
 
-Every API response, success or failure, also carries `Cache-Control: private, max-age=0`.
-That tells shared caches and proxies not to store the response on your behalf; your own
+Every response from an endpoint, success or failure, also carries
+`Cache-Control: private, max-age=0`. Two responses never reach an endpoint and come
+without it: a `401` the gateway sends when the PAT is missing or invalid, and a `404`
+for a path that matches no endpoint. The header tells shared caches and proxies not to store the response on your behalf; your own
 client may still cache it privately but must revalidate before reusing it. Treat the data
 as near real-time rather than guaranteed instantaneous. See [Pagination](/pagination) for
 how this interacts with list endpoints.
