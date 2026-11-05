@@ -49,9 +49,14 @@ The issues are created by the `sync-security-findings` routine in
 gh issue view <issue> -R linuxfoundation/lfx-cdp-insights-ops --json number,title,state,labels,body
 ```
 
-Stop if the issue is closed, has no `security` label, or has no `claude-security-finding`
-marker. Take the `find_...` ID from the marker and call `get_finding`. Stop if its status is not
-`open`: tell the user it was already resolved and point them to the ops issue.
+Stop if the issue has no `security` label or no `claude-security-finding` marker. Take the
+`find_...` ID from the marker and call `get_finding`. Stop if its status is not `open`: tell the
+user it was already resolved and point them to the ops issue.
+
+A closed issue with an open finding is a retry: the earlier fix PR closed it on merge, then
+resolve mode or a scan found the problem still there. Reopen it with a comment saying why
+(`gh issue reopen <issue> -R linuxfoundation/lfx-cdp-insights-ops --comment "<why>"`) and
+continue.
 
 From the finding, keep:
 
@@ -61,8 +66,9 @@ From the finding, keep:
 
 ### 2. Confirm it still applies
 
-The evidence points at the commit that was scanned. Read each location on current `origin/main`
-(`git show origin/main:<path>`), following the code if it moved. Then decide:
+The evidence points at the commit that was scanned. Run `git fetch origin main` first so
+`origin/main` is current, then read each location there (`git show origin/main:<path>`),
+following the code if it moved. Then decide:
 
 - **Still present**: continue.
 - **Already fixed on main**: name the commit or PR that fixed it
@@ -148,9 +154,10 @@ resolving on merge is enough.
 4. Call `get_finding`. If it is already resolved, skip to step 7 only if its resolution is
    `fixed`; otherwise report the resolution and stop.
 5. Check the finding no longer applies on the fresh `origin/main`: read each evidence location
-   there (following moved code) against the fix criteria, and run the test the fix added. If the
-   vulnerable path is still there, stop and go back to fix mode; a revert or regression can sit
-   on top of a merged fix.
+   there (following moved code) against the fix criteria. Then run the test the fix added, or,
+   when the fix had no test, repeat the manual check recorded in the ops comment. It must pass. If
+   the vulnerable path is still there or the check fails, stop and go back to fix mode; a revert
+   or regression can sit on top of a merged fix.
 6. Call `resolve_finding` with `reason: "fixed"` and `reason_note: "Fixed in <PR url>"`.
 7. Comment on the ops issue:
 
