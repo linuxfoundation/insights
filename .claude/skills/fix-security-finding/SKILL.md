@@ -101,9 +101,14 @@ cd frontend && pnpm test --run   # or: cd api && pnpm test
 
 ### 6. Validate and commit
 
-Run `/preflight`, then commit with `/commit`. The branch name gives the commit body
-`Refs linuxfoundation/lfx-cdp-insights-ops#<issue>`. Check the subject against the ground rules
-before committing.
+Commit first: `/preflight` expects commits ahead of main and a clean tree, and `/commit` only
+commits what is staged.
+
+1. Stage the fix and its test by path (`git add <files>`), then run `/commit`. The branch name
+   gives the commit body `Refs linuxfoundation/lfx-cdp-insights-ops#<issue>`. Check the subject
+   against the ground rules before committing.
+2. Run `/preflight`. If it changes or asks you to fix files (headers, format, lint), stage them,
+   commit with `/commit`, and run `/preflight` again until it passes on a clean tree.
 
 ### 7. Open the PR
 
@@ -128,13 +133,25 @@ resolving on merge is enough.
 
 1. Read the ops issue and take the finding ID from its marker, as in fix mode.
 2. Find the fix: the PR linked from the issue, the commit on `main` named in an earlier ops
-   comment, or ask the user. Confirm a PR is merged with
-   `gh pr view <pr> --json state,mergedAt,url`, or a commit is on main with
-   `git merge-base --is-ancestor <sha> origin/main`. If not, stop.
-3. Call `get_finding`. If it is already resolved, skip to step 5 only if its resolution is
+   comment, or ask the user. If the issue has a `<!-- claude-security-regression -->` comment,
+   only a fix merged after that comment counts; the earlier PR is the one that regressed.
+3. Confirm the fix is on `main`. Merged is not enough, since a PR can merge into another branch:
+
+   ```bash
+   git fetch origin main
+   gh pr view <pr> --json state,baseRefName,mergeCommit,url   # state MERGED
+   git merge-base --is-ancestor <mergeCommit.oid or commit sha> origin/main && echo on-main
+   ```
+
+   If it is not on `main`, stop.
+4. Call `get_finding`. If it is already resolved, skip to step 7 only if its resolution is
    `fixed`; otherwise report the resolution and stop.
-4. Call `resolve_finding` with `reason: "fixed"` and `reason_note: "Fixed in <PR url>"`.
-5. Comment on the ops issue:
+5. Check the finding no longer applies on the fresh `origin/main`: read each evidence location
+   there (following moved code) against the fix criteria, and run the test the fix added. If the
+   vulnerable path is still there, stop and go back to fix mode; a revert or regression can sit
+   on top of a merged fix.
+6. Call `resolve_finding` with `reason: "fixed"` and `reason_note: "Fixed in <PR url>"`.
+7. Comment on the ops issue:
 
    ```text
    Resolved in Claude Security as fixed after <PR url>.
@@ -142,7 +159,7 @@ resolving on merge is enough.
    <!-- claude-security-resolved: fixed -->
    ```
 
-6. If the issue is still open, close it as completed:
+8. If the issue is still open, close it as completed:
    `gh issue close <issue> -R linuxfoundation/lfx-cdp-insights-ops --reason completed`.
 
 Resolve first, then comment. The sync planner reopens a closed issue whose latest marker says
