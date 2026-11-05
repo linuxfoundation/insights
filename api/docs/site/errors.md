@@ -45,15 +45,15 @@ locale-formatted dates.
 
 ## Common error codes
 
-| HTTP status | `code`                 | Meaning                                                                                                                                                           |
-| ----------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `400`       | `FST_ERR_VALIDATION`   | A path or query parameter fails the endpoint's schema: missing, wrong type, out of range, or a `sort` value not on the allow-list. `message` names the parameter. |
-| `400`       | `invalid_request`      | A parameter passes the schema but is still unusable, such as a `cursor` the API did not issue or an invalid date range.                                           |
-| `401`       | `unauthorized`         | The `Authorization` header is missing, malformed, or the token is invalid or expired.                                                                             |
-| `403`       | `tier_forbidden`       | Your tier does not include this endpoint. The organization endpoints require the premium tier.                                                                    |
-| `404`       | `not_found`            | The requested resource does not exist.                                                                                                                            |
-| `429`       | `rate_limit_exceeded`  | You have exceeded your rate limit. See `Retry-After`.                                                                                                             |
-| `503`       | `upstream_unavailable` | An upstream data source is unavailable. Retry later with backoff.                                                                                                 |
+| HTTP status | `code`                 | Meaning                                                                                        |
+| ----------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
+| `400`       | `invalid_sort`         | The `sort` value is not on the endpoint's allow-list.                                          |
+| `400`       | `invalid_request`      | A required parameter is missing or malformed.                                                  |
+| `401`       | `unauthorized`         | The `Authorization` header is missing, malformed, or the token is invalid or expired.          |
+| `403`       | `tier_forbidden`       | Your tier does not include this endpoint. The organization endpoints require the premium tier. |
+| `404`       | `not_found`            | The requested resource does not exist.                                                         |
+| `429`       | `rate_limit_exceeded`  | You have exceeded your rate limit. See `Retry-After`.                                          |
+| `503`       | `upstream_unavailable` | An upstream data source is unavailable. Retry later with backoff.                              |
 
 This list grows over time as new endpoints ship. Treat any `code` you don't recognize as
 a generic error for its HTTP status.
