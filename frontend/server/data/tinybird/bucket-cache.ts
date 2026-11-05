@@ -187,10 +187,13 @@ async function fetchBucketIdFromTinybird(
     );
   }
 
+  // Unknown slugs come from crawlers and stale links, so a miss is info, not a fault. Datadog reads
+  // the status from `level`, not from the console method.
   if (response.data.length === 0) {
     console.warn(
       JSON.stringify({
         message: 'tinybird_bucket_not_found',
+        level: 'info',
         project: projectValue,
         timestamp: new Date().toISOString(),
       }),

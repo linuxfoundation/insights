@@ -147,6 +147,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
         acquired = true;
       }
 
+      const sendStart = Date.now();
       const response = await send();
       const data = await parseResponse<T>(response);
       const queryElapsedSeconds = data.statistics?.elapsed;
@@ -154,12 +155,17 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
         semaphore.reportTinybirdLatency(queryElapsedSeconds * 1000);
       }
 
-      const durationMs = Date.now() - fetchStart;
-      if (durationMs > slowRequestThresholdMs) {
+      // Judge slowness on Tinybird time alone. A full queue makes every request slow, and
+      // tinybird_queue_rejected already reports saturation.
+      const now = Date.now();
+      const requestMs = now - sendStart;
+      if (requestMs > slowRequestThresholdMs) {
         logger.warn('tinybird_slow_request', {
           pipe: path,
           params,
-          durationMs,
+          durationMs: now - fetchStart,
+          requestMs,
+          queuedMs: sendStart - fetchStart,
           wasQueued,
           active: semaphore.getActive(),
           queued: semaphore.getQueueLength(),
@@ -170,7 +176,7 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
       return data;
     } catch (error: unknown) {
       // Only TinybirdClientError carries statusCode; plain network failures (DNS, TCP reset)
-      // will log status: undefined and will NOT trigger rate-limit backoff.
+      // will log httpStatus: undefined and will NOT trigger rate-limit backoff.
       const status =
         error && typeof error === 'object' && 'statusCode' in error
           ? (error as { statusCode: number }).statusCode
@@ -181,7 +187,8 @@ export function createTinybirdClient(config: TinybirdClientConfig): TinybirdClie
       const fields = {
         pipe: path,
         params,
-        status,
+        // Datadog reads a top-level `status` as the log severity, ahead of `level`.
+        httpStatus: status,
         durationMs: Date.now() - fetchStart,
         wasQueued: wasQueued || error instanceof TinybirdQueueTimeoutError,
         active: semaphore.getActive(),
