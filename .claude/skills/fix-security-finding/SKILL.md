@@ -92,8 +92,9 @@ separate worktree if that is how you work; never start from another branch's cha
 Turn the fix criteria into a Vitest test next to the code it covers (tests live beside the
 source, e.g. `frontend/server/utils/*.spec.ts`, or in `api/tests/`). Run it and confirm it fails
 on the current code for the reason the finding gives. If the criteria can't be tested in-process
-(deploy config, a workflow file, infrastructure), write down the manual check that proves the fix
-and put it in the ops issue comment in step 7.
+(deploy config, a workflow file, infrastructure), or the package has no test runner (the Temporal
+workers and `libs/types` have no `test` script or Vitest), write down the manual check that
+proves the fix, run it before and after the fix, and put it in the ops issue comment in step 7.
 
 Name the test after the behavior, e.g. `returns 404 when the view belongs to another user`, not after
 the attack.
