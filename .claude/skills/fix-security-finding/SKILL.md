@@ -157,14 +157,18 @@ resolving on merge is enough.
 
 4. Call `get_finding`. If it is already resolved with any resolution other than `fixed`,
    report the resolution and stop. If it is resolved as `fixed`, still run step 5 (a revert can
-   follow the resolve, and the ancestry check above still passes), then skip step 6.
+   follow the resolve, and the ancestry check above still passes). It then skips step 6 but still
+   needs steps 7 and 8, which write the marker the sync planner reads.
 5. Check the finding no longer applies on the fresh `origin/main`: read each evidence location
    there (following moved code) against the fix criteria. Then check out that revision, since a
-   fetch leaves the working tree as it was: on a clean tree run
-   `git switch --detach origin/main` (switch back afterwards). Run the test the fix added there,
-   or, when the fix had no test, repeat the manual check recorded in the ops comment. Then:
+   fetch leaves the working tree as it was. `git status --porcelain` must be empty first; if it
+   isn't, stop and ask the user to commit or stash, because a test run on the current branch
+   proves nothing about `main`. Run `git switch --detach origin/main` (switch back afterwards),
+   then the test the fix added, or, when the fix had no test, repeat the manual check recorded
+   in the ops comment. Then:
 
-   - **Passes and the code meets the fix criteria**: continue to step 6.
+   - **Passes and the code meets the fix criteria**: continue to step 6, or straight to step 7
+     when the finding was already resolved as `fixed`.
    - **Can't tell** (the runner fails before the test runs, setup or config is missing, the check
      can't be repeated): stop and report it as inconclusive. Resolve nothing and reopen nothing.
    - **Regressed**: the code no longer meets the fix criteria, or the test fails on its own
