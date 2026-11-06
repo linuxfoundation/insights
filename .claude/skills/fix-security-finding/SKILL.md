@@ -103,11 +103,16 @@ the attack.
 Make the smallest change that meets the fix criteria. Check every location in the evidence, not
 just the first: findings often span a helper and each caller. If the same pattern exists
 elsewhere in the repo, leave it and list each place in the ops comment as a follow-up.
-Run the test until it passes, then run the package's full tests:
+Run the test until it passes. Then, in every package the fix touches (`frontend`, `api`,
+`workers/api-gateway`, a `workers/temporal/*` worker or a `libs/*` package), run its full tests
+and type check. `/preflight` type-checks and builds `frontend/` only, so a fix in another
+package is not checked there:
 
 ```bash
-cd frontend && pnpm test --run   # or: cd api && pnpm test
+cd <package> && pnpm tsc-check && pnpm test --run   # api and the gateway: pnpm test
 ```
+
+If the package has a `build` script, run it as well.
 
 ### 6. Validate and commit
 
