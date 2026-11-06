@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { H3Event } from 'h3';
+import { createError, type H3Event } from 'h3';
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 
 const mockReadBody = vi.fn();
@@ -31,7 +31,7 @@ vi.mock('../../../lib/chat/chart/generator', () => ({
 }));
 
 global.defineEventHandler = vi.fn((handler) => handler);
-global.createError = vi.fn((error) => error);
+global.createError = vi.fn(createError);
 global.readBody = mockReadBody;
 
 type Handler = (event: H3Event) => Promise<unknown>;
