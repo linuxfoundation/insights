@@ -96,7 +96,7 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     }
 
     if (response.data.length === 0) {
-      logger.warn('tinybird_bucket_not_found', {
+      logger.info('tinybird_bucket_not_found', {
         project,
         timestamp: new Date().toISOString(),
       });
@@ -187,7 +187,7 @@ export function createBucketCache(storage: BucketCacheStorage | undefined, logge
     );
 
     if (!response?.data || !Array.isArray(response.data) || response.data.length === 0) {
-      logger.warn('tinybird_bucket_not_found', {
+      logger.info('tinybird_bucket_not_found', {
         collectionSlug,
         timestamp: new Date().toISOString(),
       });

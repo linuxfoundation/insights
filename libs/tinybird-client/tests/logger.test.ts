@@ -16,26 +16,31 @@ describe('consoleLogger', () => {
     consoleLogger.warn('tinybird_slow_request', { pipe: '/v0/pipes/x.json', durationMs: 6000 });
 
     expect(warn).toHaveBeenCalledWith(
-      '{"message":"tinybird_slow_request","pipe":"/v0/pipes/x.json","durationMs":6000}',
+      '{"message":"tinybird_slow_request","level":"warn","pipe":"/v0/pipes/x.json","durationMs":6000}',
     );
   });
 
   it('leaves undefined fields out of the line', () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    consoleLogger.error('tinybird_request_error', { pipe: '/v0/pipes/x.json', status: undefined });
+    consoleLogger.error('tinybird_request_error', {
+      pipe: '/v0/pipes/x.json',
+      httpStatus: undefined,
+    });
 
     expect(error).toHaveBeenCalledWith(
-      '{"message":"tinybird_request_error","pipe":"/v0/pipes/x.json"}',
+      '{"message":"tinybird_request_error","level":"error","pipe":"/v0/pipes/x.json"}',
     );
   });
 
-  it('prints a free-text line as it is', () => {
+  it('wraps a free-text line in JSON so it keeps its level', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     consoleLogger.warn('Failed to fetch bucketId for project k8s: boom');
 
-    expect(warn).toHaveBeenCalledWith('Failed to fetch bucketId for project k8s: boom');
+    expect(warn).toHaveBeenCalledWith(
+      '{"message":"Failed to fetch bucketId for project k8s: boom","level":"warn"}',
+    );
   });
 });
 
@@ -66,7 +71,9 @@ describe('createConsoleLogger', () => {
 
     createConsoleLogger('debug').debug('tinybird_queue_status', { active: 1 });
 
-    expect(out.debug).toHaveBeenCalledWith('{"message":"tinybird_queue_status","active":1}');
+    expect(out.debug).toHaveBeenCalledWith(
+      '{"message":"tinybird_queue_status","level":"debug","active":1}',
+    );
   });
 
   it('prints only warnings and errors at warn level', () => {

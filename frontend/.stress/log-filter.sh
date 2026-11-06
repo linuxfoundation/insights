@@ -27,7 +27,7 @@ grep '"tinybird_slow_request"' "$TMPFILE" \
 echo ""
 echo "=== Errors (tinybird_request_error) ==="
 grep '"tinybird_request_error"' "$TMPFILE" \
-  | jq -r '[.pipe, .durationMs, .status, .active, .queued] | @tsv' \
+  | jq -r '[.pipe, .durationMs, (.httpStatus // .status), .active, .queued] | @tsv' \
   | sort -t$'\t' -k2 -rn | head -20
 
 echo ""

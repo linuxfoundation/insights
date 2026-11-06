@@ -5,28 +5,29 @@ title: Errors
 # Errors
 
 All Insights API errors, from every endpoint, share one JSON shape. This page documents
-that envelope, our general JSON and date conventions, and the error codes you should
+that shape, our general JSON and date conventions, and the error codes you should
 expect to handle.
 
-## Error envelope
+## Error body
 
 ```json
 {
-  "error": {
-    "code": "invalid_sort",
-    "message": "Unsupported sort value 'foo' for this endpoint.",
-    "requestId": "4e1f9c2a2b7e4d3b9a7a4a1e9e2b6f10",
-    "docsUrl": "https://insights.linuxfoundation.org/docs/api/errors#invalid_sort"
-  }
+  "statusCode": 404,
+  "code": "not_found",
+  "error": "Not Found",
+  "message": "Project not found"
 }
 ```
 
-| Field       | Description                                                                                       |
-| ----------- | ------------------------------------------------------------------------------------------------- |
-| `code`      | Stable, machine-readable identifier. Safe to branch on in code.                                   |
-| `message`   | Human-readable explanation. Useful for logs, not guaranteed word-for-word stable across releases. |
-| `requestId` | Identifies this request in our tracing system. Include it when contacting support.                |
-| `docsUrl`   | Deep link back to the relevant section of this page.                                              |
+| Field        | Description                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| `statusCode` | The HTTP status code, repeated in the body.                                                       |
+| `code`       | Stable, machine-readable identifier. Safe to branch on in code.                                   |
+| `error`      | The standard HTTP reason phrase for `statusCode`, such as `Not Found`.                            |
+| `message`    | Human-readable explanation. Useful for logs, not guaranteed word-for-word stable across releases. |
+
+A request to a path that matches no route returns `404` without a `code` field. Branch on
+the HTTP status when `code` is missing.
 
 Adding a new error `code` is not a breaking change: new codes can appear at any time as
 the API grows, and clients should treat an unrecognized `code` the same way they treat any
@@ -36,10 +37,11 @@ other error they don't specifically handle.
 
 All request and response field names are **camelCase** (`startDate`, `activityTypes`,
 `includeCodeContributions`), including inside error responses and paginated envelopes.
-There is no snake_case anywhere in the public contract.
+No field name uses snake_case.
 
-Date and timestamp values are always **ISO-8601** strings in UTC, for example
-`2025-12-31T23:59:59Z`. The API never returns Unix timestamps or locale-formatted dates.
+Date and timestamp values are always **ISO-8601** strings in UTC: dates as `2025-12-31`,
+timestamps as `2025-12-31T23:59:59Z`. The API never returns Unix timestamps or
+locale-formatted dates.
 
 ## Common error codes
 
@@ -51,10 +53,10 @@ Date and timestamp values are always **ISO-8601** strings in UTC, for example
 | `403`       | `tier_forbidden`       | Your tier does not include this endpoint. The organization endpoints require the premium tier. |
 | `404`       | `not_found`            | The requested resource does not exist.                                                         |
 | `429`       | `rate_limit_exceeded`  | You have exceeded your rate limit. See `Retry-After`.                                          |
-| `503`       | `upstream_unavailable` | An upstream data source is unavailable and no cached response could be served.                 |
+| `503`       | `upstream_unavailable` | An upstream data source is unavailable. Retry later with backoff.                              |
 
-This list grows over time as new endpoints ship; check `docsUrl` on any error you don't
-recognize, since it points at the current, authoritative reference for that code.
+This list grows over time as new endpoints ship. Treat any `code` you don't recognize as
+a generic error for its HTTP status.
 
 ## Rate limit responses
 
@@ -74,6 +76,7 @@ section](/#watch-your-rate-limit) for more detail.
 
 ## Caching headers on error responses
 
-Error responses are not cached any differently from successful ones. See the quickstart's
-[caching note](/#make-your-first-request) for the response-wide caching contract, which
-applies here too.
+Error responses from an endpoint carry the same `Cache-Control` header as successful
+ones. The gateway's `401` for a missing or invalid PAT and the `404` for a path that
+matches no endpoint carry none. See the quickstart's
+[caching note](/#make-your-first-request) for the full caching contract.
