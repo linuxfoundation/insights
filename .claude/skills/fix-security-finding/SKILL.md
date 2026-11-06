@@ -103,16 +103,19 @@ the attack.
 Make the smallest change that meets the fix criteria. Check every location in the evidence, not
 just the first: findings often span a helper and each caller. If the same pattern exists
 elsewhere in the repo, leave it and list each place in the ops comment as a follow-up.
-Run the test until it passes. Then, in every package the fix touches (`frontend`, `api`,
-`workers/api-gateway`, a `workers/temporal/*` worker or a `libs/*` package), run its full tests
-and type check. `/preflight` type-checks and builds `frontend/` only, so a fix in another
-package is not checked there:
+Run the test until it passes. Then check every package the fix touches (`frontend`, `api`,
+`workers/api-gateway`, a `workers/temporal/*` worker or a `libs/*` package). `/preflight`
+type-checks and builds `frontend/` only, so a fix in another package is not checked there.
+See which scripts the package has with `jq .scripts <package>/package.json`, then from the
+package directory:
 
-```bash
-cd <package> && pnpm tsc-check && pnpm test --run   # api and the gateway: pnpm test
-```
+- `pnpm tsc-check`: every package has it.
+- `pnpm test`: when the package has a `test` script (add `--run` in `frontend`, whose script
+  is plain `vitest`).
+- `pnpm build`: when the package has a `build` script.
 
-If the package has a `build` script, run it as well.
+The Temporal workers and `libs/types` have no test runner, so a fix there gets the manual check
+from step 4 instead of a test, recorded in the ops comment.
 
 ### 6. Validate and commit
 
