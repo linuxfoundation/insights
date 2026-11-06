@@ -8,7 +8,7 @@ description: >
   the PR merges to resolve the finding as fixed and record that on the ops issue, so a later
   regression reopens the issue. Use when the user says "fix security finding", "fix ops issue
   1234", "work on a Claude Security finding", "resolve the finding" or invokes /fix-security-finding.
-allowed-tools: Bash, Read, Edit, Write, Glob, Grep, AskUserQuestion, mcp__claude_security__get_finding, mcp__claude_security__resolve_finding
+allowed-tools: Bash, Read, Edit, Write, Glob, Grep, AskUserQuestion, mcp__claude_security__get_finding, mcp__claude_security__resolve_finding, mcp__claude_security__reopen_finding
 ---
 
 # Fix a Security Finding
@@ -24,9 +24,9 @@ too; older issue bodies use that form, and some name the resolve step `/resolve-
 The issues are created by the `sync-security-findings` routine in
 `linuxfoundation/lfx-cdp-insights-ops`. Each body starts with the marker
 `<!-- claude-security-finding: find_... -->`. Claude Security is reached through its connector
-(`get_finding`, `resolve_finding`). `allowed-tools` lists them as `mcp__claude_security__*`, the
-claude.ai connector name; if your setup names the connector differently, the same tools work
-after you approve the permission prompt.
+(`get_finding`, `resolve_finding`, `reopen_finding`). `allowed-tools` lists them as
+`mcp__claude_security__*`, the claude.ai connector name; if your setup names the connector
+differently, the same tools work after you approve the permission prompt.
 
 ## Ground rules
 
@@ -54,7 +54,8 @@ gh issue view <issue> -R linuxfoundation/lfx-cdp-insights-ops --json number,titl
 
 Stop if the issue has no `security` label or no `claude-security-finding` marker. Take the
 `find_...` ID from the marker and call `get_finding`. Stop if its status is not `open`: tell the
-user it was already resolved and point them to the ops issue.
+user it was already resolved and point them to the ops issue. If resolve mode found that a
+`fixed` finding regressed on main, follow its step 5 to reopen the finding, then come back here.
 
 A closed issue with an open finding is a retry: the earlier fix PR closed it on merge, then
 resolve mode or a scan found the problem still there. Reopen it with a comment saying why
@@ -162,8 +163,17 @@ resolving on merge is enough.
    fetch leaves the working tree as it was: on a clean tree run
    `git switch --detach origin/main` (switch back afterwards). Run the test the fix added there,
    or, when the fix had no test, repeat the manual check recorded in the ops comment. It must pass. If
-   the vulnerable path is still there or the check fails, stop and go back to fix mode; a revert
-   or regression can sit on top of a merged fix.
+   the vulnerable path is still there or the check fails, a revert or regression sits on top of
+   the merged fix: stop and go back to fix mode. If the finding is already resolved as `fixed`,
+   reopen it first so fix mode accepts it:
+   1. Ask the user to confirm, then call `reopen_finding`.
+   2. Comment `Regression: the fix is no longer on main (<what you found>).` followed by
+      `<!-- claude-security-regression -->` on the ops issue, then reopen the issue.
+
+   Reopen the finding before touching the issue. If the comment fails after that, the sync
+   planner sees a closed `fixed` issue with an open finding and writes the regression comment and
+   reopens the issue itself.
+
 6. Call `resolve_finding` with `reason: "fixed"` and `reason_note: "Fixed in <PR url>"`.
 7. Comment on the ops issue:
 
