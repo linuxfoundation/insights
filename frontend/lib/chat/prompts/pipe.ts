@@ -54,7 +54,7 @@ Your response must include an "instructions" field with this structure:
     {
       "type": "formula",
       "name": "Growth %",            // Name for the calculated column
-      "formula": "((b - a) / a) * 100",  // JavaScript expression
+      "formula": "((b - a) / a) * 100",  // Arithmetic only: numbers, variables, + - * / ( )
       "dependencies": [
         { "variable": "a", "pipeId": "pipe1", "sourceColumn": "last_year_count" },
         { "variable": "b", "pipeId": "pipe2", "sourceColumn": "this_year_count" }
@@ -88,6 +88,7 @@ Use formula columns when the user asks for:
 - Any other calculations between columns
 
 Always ensure variables in formulas match the dependency variable names.
+Formulas support only numbers, dependency variables, + - * / and parentheses. Function calls, property access and other JavaScript syntax are not evaluated and produce null.
 
 **RESPONSE GUIDELINES**
 - **MUST respond with valid JSON containing "explanation" and "instructions" fields**
