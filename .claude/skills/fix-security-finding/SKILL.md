@@ -89,8 +89,10 @@ separate worktree if that is how you work; never start from another branch's cha
 
 ### 4. Write the test first
 
-Turn the fix criteria into a Vitest test next to the code it covers (tests live beside the
-source, e.g. `frontend/server/utils/*.spec.ts`, or in `api/tests/`). Run it and confirm it fails
+Turn the fix criteria into a Vitest test where the package's runner finds it: in `frontend`,
+beside the source (e.g. `frontend/server/utils/*.spec.ts`); in `api`, `workers/api-gateway`,
+`libs/postgres-client` and `libs/tinybird-client`, under `<package>/tests/` as `*.test.ts`,
+which is all their `vitest.config.ts` includes. Run it and confirm it fails
 on the current code for the reason the finding gives. If the criteria can't be tested in-process
 (deploy config, a workflow file, infrastructure), or the package has no test runner (the Temporal
 workers and `libs/types` have no `test` script or Vitest), write down the manual check that
