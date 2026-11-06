@@ -33,7 +33,11 @@ export const outputColumnSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('formula'),
     name: z.string().describe('Column name in final output'),
-    formula: z.string().describe('JavaScript expression to compute the value'),
+    formula: z
+      .string()
+      .describe(
+        'Arithmetic expression over the dependency variables: numbers, + - * / and parentheses',
+      ),
     dependencies: z
       .array(
         z.object({

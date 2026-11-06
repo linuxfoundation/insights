@@ -1,13 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { isError } from 'h3';
 import { Pool } from 'pg';
-
-import { PipeInstructions } from '~~/lib/chat/types';
 
 import { generateChartConfig, modifyChartConfig } from '../../../lib/chat/chart/generator';
 import { Result, Config, DataMapping } from '../../../lib/chat/chart/types';
-import { getBucketIdForProject } from '../../data/tinybird/bucket-cache';
-import { fetchFromTinybird } from '../../data/tinybird/tinybird';
 import { ChatRepository } from '../../repo/chat.repo';
 
 export const maxDuration = 30;
@@ -35,7 +32,6 @@ interface IChartRequestBody {
   userQuery?: string;
   currentConfig?: Config;
   instructions?: string;
-  pipeInstructions?: PipeInstructions;
   conversationId?: string;
 }
 
@@ -49,7 +45,7 @@ interface ChartConfigResponse {
 
 export default defineEventHandler(async (event): Promise<ChartConfigResponse | Error> => {
   try {
-    const { results, userQuery, currentConfig, instructions, pipeInstructions, conversationId } =
+    const { results, userQuery, currentConfig, instructions, conversationId } =
       await readBody<IChartRequestBody>(event);
 
     // Get router reasoning from conversation
@@ -58,48 +54,10 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
       conversationId,
     );
 
-    // If pipe instructions are provided, execute them first to get results
-    if (pipeInstructions && !results) {
-      const { executePipeInstructions } = await import('../../../lib/chat/instructions');
-
-      try {
-        const project = pipeInstructions.pipes[0]?.inputs?.project as string | undefined;
-        const bucketId = project ? await getBucketIdForProject(project, fetchFromTinybird) : null;
-        const executedResults = await executePipeInstructions(pipeInstructions, bucketId);
-
-        if (!userQuery) {
-          throw createError({
-            statusCode: 400,
-            statusMessage: 'User query is required for chart generation',
-          });
-        }
-
-        const chartGeneration = await generateChartConfig(
-          executedResults as Result[],
-          userQuery,
-          routerReasoning,
-        );
-
-        return {
-          success: true,
-          isMetric: chartGeneration.isMetric,
-          config: chartGeneration.config,
-          dataMapping: chartGeneration.dataMapping,
-          isModification: false,
-        };
-      } catch (pipeError) {
-        console.error('Pipe execution error:', pipeError);
-        throw createError({
-          statusCode: 500,
-          statusMessage: 'Failed to execute pipe instructions',
-        });
-      }
-    }
-
     if (!results || !Array.isArray(results)) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Results array or pipe instructions are required',
+        statusMessage: 'Results array is required',
       });
     }
 
@@ -140,6 +98,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
       isModification: false,
     };
   } catch (error) {
+    if (isError(error)) throw error;
     console.error('Chart generation/modification error:', error);
     throw createError({ statusCode: 500, statusMessage: 'Failed to process chart request' });
   }
