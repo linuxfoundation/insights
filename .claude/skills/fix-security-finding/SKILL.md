@@ -162,17 +162,21 @@ resolving on merge is enough.
    there (following moved code) against the fix criteria. Then check out that revision, since a
    fetch leaves the working tree as it was: on a clean tree run
    `git switch --detach origin/main` (switch back afterwards). Run the test the fix added there,
-   or, when the fix had no test, repeat the manual check recorded in the ops comment. It must pass. If
-   the vulnerable path is still there or the check fails, a revert or regression sits on top of
-   the merged fix: stop and go back to fix mode. If the finding is already resolved as `fixed`,
-   reopen it first so fix mode accepts it:
-   1. Ask the user to confirm, then call `reopen_finding`.
-   2. Comment `Regression: the fix is no longer on main (<what you found>).` followed by
-      `<!-- claude-security-regression -->` on the ops issue, then reopen the issue.
+   or, when the fix had no test, repeat the manual check recorded in the ops comment. Then:
 
-   Reopen the finding before touching the issue. If the comment fails after that, the sync
-   planner sees a closed `fixed` issue with an open finding and writes the regression comment and
-   reopens the issue itself.
+   - **Passes and the code meets the fix criteria**: continue to step 6.
+   - **Can't tell** (the runner fails before the test runs, setup or config is missing, the check
+     can't be repeated): stop and report it as inconclusive. Resolve nothing and reopen nothing.
+   - **Regressed**: the code no longer meets the fix criteria, or the test fails on its own
+     assertion. A revert or regression sits on top of the merged fix: stop and go back to fix
+     mode. If the finding is already resolved as `fixed`, reopen it first so fix mode accepts it:
+     1. Ask the user to confirm, then call `reopen_finding`.
+     2. Comment `Regression: the fix is no longer on main (<what you found>).` followed by
+        `<!-- claude-security-regression -->` on the ops issue, then reopen the issue.
+
+     Reopen the finding before touching the issue. If the comment fails after that, the sync
+     planner sees a closed `fixed` issue with an open finding and writes the regression comment
+     and reopens the issue itself.
 
 6. Call `resolve_finding` with `reason: "fixed"` and `reason_note: "Fixed in <PR url>"`.
 7. Comment on the ops issue:
