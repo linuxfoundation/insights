@@ -154,8 +154,9 @@ resolving on merge is enough.
 
    If it is not on `main`, stop.
 
-4. Call `get_finding`. If it is already resolved, skip to step 7 only if its resolution is
-   `fixed`; otherwise report the resolution and stop.
+4. Call `get_finding`. If it is already resolved with any resolution other than `fixed`,
+   report the resolution and stop. If it is resolved as `fixed`, still run step 5 (a revert can
+   follow the resolve, and the ancestry check above still passes), then skip step 6.
 5. Check the finding no longer applies on the fresh `origin/main`: read each evidence location
    there (following moved code) against the fix criteria. Then check out that revision, since a
    fetch leaves the working tree as it was: on a clean tree run
