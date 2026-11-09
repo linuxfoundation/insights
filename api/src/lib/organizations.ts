@@ -37,7 +37,7 @@ export const Organization = Type.Object({
   name: Type.String({ description: "The organization's display name." }),
   slug: Type.String({
     description:
-      "The organization's slug in LFX Insights, as in its organization page URL `https://insights.linuxfoundation.org/organization/{slug}`. It can change, for example when the organization is renamed. An empty string when the organization has no public page, so there is no page to link to.",
+      "The organization's slug in LFX Insights, as in its organization page URL `https://insights.linuxfoundation.org/company/{slug}`. It can change, for example when the organization is renamed. An empty string when the organization has no public page, so there is no page to link to.",
   }),
   logo: Type.String({
     description: "URL of the organization's logo image. An empty string when it has none.",
@@ -56,7 +56,7 @@ export const OrganizationParams = Type.Object({
   slug: Type.String({
     minLength: 1,
     description:
-      "The organization's slug, as in its organization page URL `https://insights.linuxfoundation.org/organization/{slug}` and in the `slug` the organization leaderboards return.",
+      "The organization's slug, as in its organization page URL `https://insights.linuxfoundation.org/company/{slug}` and in the `slug` the organization leaderboards return.",
   }),
 });
 

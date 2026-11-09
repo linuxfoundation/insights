@@ -10,6 +10,10 @@ SPDX-License-Identifier: MIT
 const route = useRoute();
 const slug = ([] as string[]).concat(route.params.slug || []).join('/');
 
+if (!slug) {
+  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true });
+}
+
 await navigateTo(
   { path: `/company/${slug}`, query: route.query, hash: route.hash },
   { redirectCode: 301, replace: true },

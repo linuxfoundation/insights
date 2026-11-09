@@ -7,8 +7,12 @@ const slugByKey: Record<string, string> = {
   'active-organizations': 'active-companies',
 };
 
-const keyBySlug = Object.fromEntries(Object.entries(slugByKey).map(([key, slug]) => [slug, key]));
+const keyBySlug: Record<string, string> = Object.fromEntries(
+  Object.entries(slugByKey).map(([key, slug]) => [slug, key]),
+);
 
-export const leaderboardSlug = (key: string): string => slugByKey[key] ?? key;
+export const leaderboardSlug = (key: string): string =>
+  Object.hasOwn(slugByKey, key) ? slugByKey[key]! : key;
 
-export const leaderboardKeyFromSlug = (slug: string): string => keyBySlug[slug] ?? slug;
+export const leaderboardKeyFromSlug = (slug: string): string =>
+  Object.hasOwn(keyBySlug, slug) ? keyBySlug[slug]! : slug;
