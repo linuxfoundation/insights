@@ -64,7 +64,7 @@ SPDX-License-Identifier: MIT
                 name="building"
                 :size="14"
               />
-              Organizations
+              Companies
             </lfx-tag>
             <p class="text-body-1">
               {{ formatNumber(props.project.organizationCount) }}

@@ -7,12 +7,12 @@ import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const mostActiveOrganizationsConfig: LeaderboardConfig = {
   key: 'active-organizations',
-  name: 'Most active organizations',
+  name: 'Most active companies',
   description:
-    'These projects brought together the largest number of distinct contributing organizations in the past 12 months.',
+    'These projects brought together the largest number of distinct contributing companies in the past 12 months.',
   icon: 'buildings',
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'Organizations (12M)',
+  metricLabel: 'Companies (12M)',
 };

@@ -33,12 +33,12 @@ SPDX-License-Identifier: MIT
       v-if="props.snapshot"
       class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
     >
-      {{ model.activeTab }} active organizations
+      {{ model.activeTab }} active companies
     </div>
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching active organizations"
+      error-message="Error fetching active companies"
       :is-empty="isEmpty"
     >
       <div class="h-[330px]">
@@ -148,7 +148,7 @@ const tabs = computed(() =>
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Organizations',
+    name: 'Companies',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,

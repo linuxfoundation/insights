@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     <lfx-project-load-state
       :status="isSuccess || isError ? 'success' : 'pending'"
       :error="isError"
-      error-message="Error fetching organizations leaderboard"
+      error-message="Error fetching companies leaderboard"
       :is-empty="isEmpty"
     >
       <lfx-organizations-table
@@ -33,7 +33,7 @@ SPDX-License-Identifier: MIT
           type="transparent"
           @click="isDrawerOpened = true"
         >
-          All organizations
+          All companies
         </lfx-button>
       </div>
     </lfx-project-load-state>

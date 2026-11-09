@@ -29,7 +29,7 @@ export default defineEventHandler(async (event): Promise<OrganizationProfile> =>
     });
 
     if (!res.data?.length) {
-      throw createError({ statusCode: 404, statusMessage: 'Organization not found' });
+      throw createError({ statusCode: 404, statusMessage: 'Company not found' });
     }
 
     const raw = res.data[0];

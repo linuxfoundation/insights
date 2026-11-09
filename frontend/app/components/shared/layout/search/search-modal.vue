@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
           v-model="search"
           type="text"
           class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
-          placeholder="Search projects, repositories, collections, or organizations..."
+          placeholder="Search projects, repositories, collections, or companies..."
           @input="triggerSearch"
         />
         <lfx-icon

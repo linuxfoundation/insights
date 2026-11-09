@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
           size="medium"
         >
           <span class="sm:hidden">Open in LFX</span>
-          <span class="hidden sm:inline">Check your organization data in LFX</span>
+          <span class="hidden sm:inline">Check your company data in LFX</span>
           <lfx-icon
             name="arrow-up-right-from-square"
             :size="12"
@@ -46,7 +46,7 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const { organization } = storeToRefs(useOrganizationPageStore());
-const orgDisplayName = computed(() => organization.value?.displayName || 'your organization');
+const orgDisplayName = computed(() => organization.value?.displayName || 'your company');
 </script>
 
 <script lang="ts">

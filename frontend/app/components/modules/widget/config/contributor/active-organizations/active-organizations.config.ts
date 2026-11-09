@@ -9,10 +9,10 @@ import ActiveOrganizations from './active-organizations.vue';
 const activeOrganizations: WidgetConfig = {
   key: 'activeOrganization',
   availableInCollection: true,
-  name: 'Active organizations',
+  name: 'Active companies',
   description: () =>
-    'Organizations that had at least one active contributor during the selected period.',
-  learnMoreLink: `/docs/metrics/contributors#active-organizations`,
+    'Companies that had at least one active contributor during the selected period.',
+  learnMoreLink: `/docs/metrics/contributors#active-companies`,
   component: ActiveOrganizations,
   defaultValue: {
     activeTab: Granularity.WEEKLY,
@@ -23,7 +23,7 @@ const activeOrganizations: WidgetConfig = {
   snapshot: true,
   copilot: {
     icon: 'people-group',
-    suggestions: 'How many active organizations are there?',
+    suggestions: 'How many active companies are there?',
   },
   headerFilters: LfxWidgetFilterCollaboration,
 };

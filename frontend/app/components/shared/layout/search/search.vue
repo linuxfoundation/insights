@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400 font-normal"
         :size="14"
       />
-      <p class="text-body-1 text-neutral-400 truncate">Search projects, repositories, collections, or organizations</p>
+      <p class="text-body-1 text-neutral-400 truncate">Search projects, repositories, collections, or companies</p>
       <div class="flex-grow" />
       <lfx-chip
         v-if="!isMobile"

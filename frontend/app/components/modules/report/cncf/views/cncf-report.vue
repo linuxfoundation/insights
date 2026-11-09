@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
         CNCF Contributor Geographic Distribution
       </h1>
       <p class="text-body-2 md:text-body-1 text-neutral-600">
-        Geographical distribution of contributing organizations across all CNCF projects
+        Geographical distribution of contributing companies across all CNCF projects
       </p>
     </div>
 

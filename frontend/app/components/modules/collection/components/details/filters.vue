@@ -71,7 +71,7 @@ SPDX-License-Identifier: MIT
           />
           <lfx-dropdown-item
             value="organizationCount_desc"
-            label="Most organizations"
+            label="Most companies"
           />
           <lfx-dropdown-item
             value="score_desc"

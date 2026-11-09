@@ -138,7 +138,7 @@ const isEmpty = computed(() =>
 
 const tabs = [
   {
-    label: 'Organizations',
+    label: 'Companies',
     value: 'organizations',
   },
   {
@@ -147,7 +147,7 @@ const tabs = [
   },
 ];
 
-const label = computed(() => (activeTab.value === 'contributors' ? 'Contributor' : 'Organization'));
+const label = computed(() => (activeTab.value === 'contributors' ? 'Contributor' : 'Company'));
 
 watch(isDrawerOpen, (isOpen) => {
   if (isOpen) {

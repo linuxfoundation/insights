@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
           :size="12"
         />
         {{ props.project.organizationDependencyCount }}
-        {{ pluralize('organization', props.project.organizationDependencyCount) }}
+        {{ pluralize('company', props.project.organizationDependencyCount) }}
       </div>
       <div class="text-neutral-500">
         <span class="text-sm leading-none"> ・ </span>

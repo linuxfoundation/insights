@@ -8,7 +8,7 @@ import {
 } from '../../config/health-breakdown-templates';
 import type { HealthBreakdownResults } from '../../types/overview/responses.types';
 
-describe('Organization Diversity label capitalization IN-1238', () => {
+describe('Company Diversity label capitalization IN-1238', () => {
   const defaultSignals: HealthBreakdownResults = {
     responsivenessAvailable: false,
     busFactorAvailable: false,
@@ -23,13 +23,13 @@ describe('Organization Diversity label capitalization IN-1238', () => {
     isExcluded: false,
   };
 
-  test('getOrgDiversityRow outputs full word "organization diversity"', () => {
+  test('getOrgDiversityRow outputs full word "company diversity"', () => {
     const result = getOrgDiversityRow(defaultSignals);
     expect(result.status).toBe('no-data');
-    expect(result.description).toContain('organization diversity');
+    expect(result.description).toContain('company diversity');
   });
 
-  test('getCategoryDescription includes "organization diversity" in signal list', () => {
+  test('getCategoryDescription includes "company diversity" in signal list', () => {
     const signals: HealthBreakdownResults = {
       ...defaultSignals,
       responsivenessAvailable: true,
@@ -39,7 +39,7 @@ describe('Organization Diversity label capitalization IN-1238', () => {
     const result = getCategoryDescription('maintainer', null, false, signals);
     expect(result).toContain('maintainer responsiveness');
     expect(result).toContain('bus factor');
-    expect(result).toContain('organization diversity');
+    expect(result).toContain('company diversity');
   });
 
   test('getCategoryDescription with only org diversity uses full word', () => {
@@ -48,6 +48,6 @@ describe('Organization Diversity label capitalization IN-1238', () => {
       orgDiversityAvailable: true,
     };
     const result = getCategoryDescription('maintainer', null, false, signals);
-    expect(result).toContain('organization diversity');
+    expect(result).toContain('company diversity');
   });
 });

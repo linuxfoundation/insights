@@ -103,7 +103,7 @@ type Metric = 'Contributor' | 'Contribution' | 'Organization';
 const metricTabs = [
   { value: 'Contributor', label: 'Contributors' },
   { value: 'Contribution', label: 'Code contributions' },
-  { value: 'Organization', label: 'Organizations' },
+  { value: 'Organization', label: 'Companies' },
 ];
 const metric = ref<Metric>('Contributor');
 
@@ -132,7 +132,7 @@ const worldNote = computed(
     ({
       Contributor: 'Code contributors with a known location',
       Contribution: 'Code contributions from people with a known location',
-      Organization: 'Active organizations with a known HQ',
+      Organization: 'Active companies with a known HQ',
     })[metric.value],
 );
 

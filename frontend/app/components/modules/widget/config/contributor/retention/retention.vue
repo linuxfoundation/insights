@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div v-else>
       <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">
-        {{ model.activeTab }} retention breakdown
+        {{ activeTabLabel }} retention breakdown
       </div>
     </div>
     <lfx-project-load-state
@@ -165,10 +165,12 @@ const tabs = [
     value: 'contributors',
   },
   {
-    label: 'Organizations',
+    label: 'Companies',
     value: 'organizations',
   },
 ];
+
+const activeTabLabel = computed(() => tabs.find((tab) => tab.value === model.value.activeTab)?.label);
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {

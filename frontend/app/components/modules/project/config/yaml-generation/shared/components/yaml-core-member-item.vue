@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
         >
           <LfxInput
             v-model="model.affiliation"
-            placeholder="Company or Organization"
+            placeholder="Company"
           />
         </LfxField>
       </div>
