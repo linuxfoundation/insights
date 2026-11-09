@@ -12,7 +12,7 @@ An activity, performed by an individual, that is counted as Collaboration. Colla
 
 ## Collection
 
-A named group of open source projects organized around a common theme, organization, foundation, technology, or purpose. Collections help users discover, explore, and compare related projects, such as all CNCF-hosted projects, critical non-Linux Foundation projects, or top-ranked initiatives. There are two types of collections in LFX Insights: [Curated Collections](#curated-collection) and [Community Collections](#community-collection).
+A named group of open source projects organized around a common theme, company, foundation, technology, or purpose. Collections help users discover, explore, and compare related projects, such as all CNCF-hosted projects, critical non-Linux Foundation projects, or top-ranked initiatives. There are two types of collections in LFX Insights: [Curated Collections](#curated-collection) and [Community Collections](#community-collection).
 
 ## Community Collection
 
@@ -28,7 +28,7 @@ A recorded change to a project's source code, typically including code additions
 
 ## Contributor
 
-Any individual who actively participates in the development or maintenance of an open source project. This includes writing code, reviewing pull requests, reporting issues, or updating documentation. In LFX Insights, contributors are identified through activity in version control systems and other platforms, and can be analyzed by metrics such as activity level, organization affiliation, and contribution history.
+Any individual who actively participates in the development or maintenance of an open source project. This includes writing code, reviewing pull requests, reporting issues, or updating documentation. In LFX Insights, contributors are identified through activity in version control systems and other platforms, and can be analyzed by metrics such as activity level, company affiliation, and contribution history.
 
 ## Maintainer
 
@@ -51,9 +51,9 @@ Tracked tasks, bugs, feature requests, or discussions opened within a project's 
 
 Merging is the process of integrating changes from a pull request into the main branch of a project’s codebase. In LFX Insights, a successful merge indicates that the proposed code has passed any required reviews or checks and is now part of the official project history.
 
-## Organization
+## Company
 
-A legal or corporate entity that is actively involved in open source development. This includes companies, foundations, academic institutions, and government agencies. We identify organizations based on contributor email domains, GitHub affiliation, and verified project ownership. Organizations are used to group activity, assess influence, and analyze ecosystem-level participation across projects.
+A legal or corporate entity that is actively involved in open source development. This includes companies, foundations, academic institutions, and government agencies. We identify companies based on contributor email domains, GitHub affiliation, and verified project ownership. Companies are used to group activity, assess influence, and analyze ecosystem-level participation across projects.
 
 ## Project
 

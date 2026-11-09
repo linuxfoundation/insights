@@ -1,8 +1,8 @@
 # Contributor Affiliations
 
-Contributor affiliations map individual contributors to the organizations they represent. This is one of the most important data points in LFX Insights — it powers the Organizations Leaderboard, Organization Dependency metrics, and helps answer the question: *which companies are investing in this project?*
+Contributor affiliations map individual contributors to the companies they represent. This is one of the most important data points in LFX Insights — it powers the Companies Leaderboard, Company Dependency metrics, and helps answer the question: *which companies are investing in this project?*
 
-Getting affiliations right is hard. Contributors change jobs, use personal email addresses, and contribute across multiple organizations. GitHub profile data alone is often incomplete or outdated. LFX Insights uses a multi-signal enrichment process to build the most accurate picture possible.
+Getting affiliations right is hard. Contributors change jobs, use personal email addresses, and contribute across multiple companies. GitHub profile data alone is often incomplete or outdated. LFX Insights uses a multi-signal enrichment process to build the most accurate picture possible.
 
 ## How We Determine Affiliations
 
@@ -12,17 +12,17 @@ We combine signals from multiple sources, each with different levels of confiden
 
 These are signals we can observe from publicly available data:
 
-- **Git commit emails** — The email address in a commit's author field often contains an organizational domain (e.g., `jane@company.com`). This is one of the most common affiliation signals.
+- **Git commit emails** — The email address in a commit's author field often contains a company domain (e.g., `jane@company.com`). This is one of the most common affiliation signals.
 - **GitHub profile** — A contributor's GitHub profile may list their employer, organization memberships, or a company-affiliated email address.
 - **Social profiles** — LinkedIn and other linked profiles can indicate current employment.
-- **Email domains** — We maintain a mapping of known organizational email domains to their parent companies, including subsidiaries and acquisitions.
+- **Email domains** — We maintain a mapping of known company email domains to their parent companies, including subsidiaries and acquisitions.
 
 ### LF-Internal Signals
 
 For contributors who have a Linux Foundation ID (LF ID), we can access additional high-confidence data:
 
 - **LF ID profile** — Contributors may have employer information stored in their LF ID account.
-- **LF membership records** — Organizational membership data from the Linux Foundation's records.
+- **LF membership records** — Company membership data from the Linux Foundation's records.
 
 These internal signals are typically more reliable than public signals because they are self-reported and verified through the LF's membership processes.
 
@@ -39,8 +39,8 @@ The enrichment process runs continuously as new data is ingested, so affiliation
 Contributors often appear under multiple identities — different email addresses, usernames, or social accounts. Our platform runs several services to clean and deduplicate this data:
 
 - **Identity matching** — We merge multiple identities that belong to the same person into a single contributor profile.
-- **Organization normalization** — We resolve different names for the same organization (e.g., "Google LLC", "Google Inc.", "Alphabet") into a canonical entity.
-- **Historical tracking** — We maintain affiliation history so that past contributions are attributed to the correct organization at the time they were made.
+- **Company normalization** — We resolve different names for the same company (e.g., "Google LLC", "Google Inc.", "Alphabet") into a canonical entity.
+- **Historical tracking** — We maintain affiliation history so that past contributions are attributed to the correct company at the time they were made.
 
 For more details on how we handle data quality across the platform, see [Data Quality](/introduction/data-quality/).
 
@@ -52,7 +52,7 @@ To review your affiliations:
 
 1. **Log in** to your [LF ID](https://myprofile.lfx.linuxfoundation.org/) account
 2. **Navigate** to your profile and select the "Work History & Affiliations" tab
-3. **Review** your current and historical organization affiliations
+3. **Review** your current and historical company affiliations
 4. **Edit** any incorrect affiliations — for example, updating your current employer or correcting a past affiliation date range
 
 ![LFX Profile - Work History & Affiliations](../../images/my-lfx-profile.png)

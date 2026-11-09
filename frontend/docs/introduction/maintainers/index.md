@@ -2,7 +2,7 @@
 
 ## Overview
 
-LFX Insights automatically identifies and tracks [maintainer](../../more/glossary/index.md) information across open source repositories to provide visibility into project governance and leadership structures. This data helps organizations understand project stewardship and contributor roles.
+LFX Insights automatically identifies and tracks [maintainer](../../more/glossary/index.md) information across open source repositories to provide visibility into project governance and leadership structures. This data helps companies understand project stewardship and contributor roles.
 
 ## Data Collection Process
 
@@ -42,7 +42,7 @@ From maintainer files, we extract:
 - **Display names** and contact information, including email addresses when available.
 - **Roles and titles** — as listed in the file (e.g., "Lead Maintainer", "Core Developer", "Security Lead").
 - **Normalized roles** — a standardized role assigned based on context.
-- **Organizational affiliations** when available.
+- **Company affiliations** when available.
 
 ### Identity Resolution
 

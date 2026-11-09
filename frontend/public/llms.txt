@@ -6,7 +6,7 @@
 
 LFX Insights provides data-driven insights for 13,000+ open source projects, tracking over 1 billion activities across 20+ data sources. It answers two key questions: "Is my project healthy?" and "Is this project trustworthy?"
 
-Backed by the Linux Foundation, Insights offers the deepest contributor profile data and organization affiliation mapping in the industry.
+Backed by the Linux Foundation, Insights offers the deepest contributor profile data and company affiliation mapping in the industry.
 
 ## Main Pages
 
@@ -22,7 +22,7 @@ Backed by the Linux Foundation, Insights offers the deepest contributor profile 
 
 - **Project Health Metrics**: Development velocity, contributor diversity, release cadence
 - **Security Insights**: Vulnerability tracking, security posture assessment
-- **Contributor Analytics**: Individual and organizational contribution tracking
+- **Contributor Analytics**: Individual and company contribution tracking
 - **Community Voice**: Sentiment analysis from community discussions
 - **Popularity Metrics**: GitHub stars, forks, downloads, adoption trends
 - **Collections**: "Spotify playlists for open source" — curated project groupings

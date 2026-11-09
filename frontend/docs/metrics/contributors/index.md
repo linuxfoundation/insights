@@ -1,6 +1,6 @@
 # Contributors Metrics Explained
 
-This page provides concise explanations of the metrics available on the Contributors page of LFX Insights. These metrics help you understand <b>who is contributing to an open source project on behalf of which organizations</b>.
+This page provides concise explanations of the metrics available on the Contributors page of LFX Insights. These metrics help you understand <b>who is contributing to an open source project on behalf of which companies</b>.
 
 ## Contributors Leaderboard
 
@@ -8,9 +8,9 @@ This page provides concise explanations of the metrics available on the Contribu
 
 **Why it matters:** Helps identify the most active individuals in a project. Useful for recognizing key contributors, assessing engagement, and understanding who is driving the project forward.
 
-## Organizations Leaderboard
+## Companies Leaderboard
 
-**What it is:** A ranked list of organizations contributing to the project, based on aggregated contributions from their affiliated members.
+**What it is:** A ranked list of companies contributing to the project, based on aggregated contributions from their affiliated members.
 
 **Why it matters:** Shows which companies or institutions are backing the project. Indicates corporate support, resource allocation, and long-term investment.
 
@@ -20,11 +20,11 @@ This page provides concise explanations of the metrics available on the Contribu
 
 **Why it matters:** Gives a snapshot of current community engagement. A high number signals a vibrant, collaborative project.
 
-## Active Organizations
+## Active Companies
 
-**What it is:** The number of unique organizations with affiliated contributors active in the project over a selected period.
+**What it is:** The number of unique companies with affiliated contributors active in the project over a selected period.
 
-**Why it matters:** Shows organizational diversity. Broad participation makes a project more resilient and less reliant on any one group.
+**Why it matters:** Shows company diversity. Broad participation makes a project more resilient and less reliant on any one group.
 
 ## Contributor Dependency
 
@@ -32,11 +32,11 @@ This page provides concise explanations of the metrics available on the Contribu
 
 **Why it matters:** Highlights risk areas if key contributors leave. Useful for sustainability planning and succession strategy.
 
-## Organization Dependency
+## Company Dependency
 
-**What it is:** Analyzes how much of the project’s contributions come from a small number of organizations.
+**What it is:** Analyzes how much of the project’s contributions come from a small number of companies.
 
-**Why it matters:** Reveals potential over-reliance on single entities. Projects with diverse organizational support are generally more robust.
+**Why it matters:** Reveals potential over-reliance on single entities. Projects with diverse company support are generally more robust.
 
 ## Quarterly Contributor Retention
 
