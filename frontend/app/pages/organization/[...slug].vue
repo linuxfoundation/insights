@@ -10,10 +10,10 @@ SPDX-License-Identifier: MIT
 definePageMeta({
   middleware: [
     (to) => {
-      if (to.path.replace(/^\/organization\/?/, '') === '') {
+      if (to.path.replace(/^\/organization\/?/i, '') === '') {
         return abortNavigation(createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true }));
       }
-      return navigateTo(to.fullPath.replace(/^\/organization/, '/company'), { redirectCode: 301, replace: true });
+      return navigateTo(to.fullPath.replace(/^\/organization/i, '/company'), { redirectCode: 301, replace: true });
     },
   ],
 });
