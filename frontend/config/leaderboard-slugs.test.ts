@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: MIT
 import { describe, expect, test } from 'vitest';
 
-import { leaderboardKeyFromSlug, leaderboardSlug } from './leaderboard-slugs';
+import {
+  leaderboardKeyFromSlug,
+  leaderboardSlug,
+  legacyLeaderboardSlug,
+} from './leaderboard-slugs';
 
 describe('leaderboard slugs', () => {
   test('maps the company leaderboards to their URL slugs and back', () => {
@@ -22,5 +26,13 @@ describe('leaderboard slugs', () => {
     expect(leaderboardKeyFromSlug('constructor')).toBe('constructor');
     expect(leaderboardKeyFromSlug('__proto__')).toBe('__proto__');
     expect(leaderboardSlug('toString')).toBe('toString');
+  });
+
+  test('finds the company slug for old leaderboard URL segments in any case', () => {
+    expect(legacyLeaderboardSlug('organizations')).toBe('companies');
+    expect(legacyLeaderboardSlug('Active-Organizations')).toBe('active-companies');
+    expect(legacyLeaderboardSlug('ORGANIZATIONS')).toBe('companies');
+    expect(legacyLeaderboardSlug('companies')).toBeUndefined();
+    expect(legacyLeaderboardSlug('constructor')).toBeUndefined();
   });
 });

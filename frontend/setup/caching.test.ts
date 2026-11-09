@@ -109,16 +109,6 @@ describe('caching configuration', () => {
     expect(dev.routeRules['/api/organization-page/**']).toBeUndefined();
   });
 
-  test('301-redirects the old organization leaderboard URLs to their company equivalents', async () => {
-    const { routeRules } = await loadCachingConfig('development');
-    for (const [from, to] of [
-      ['/leaderboards/organizations', '/leaderboards/companies'],
-      ['/leaderboards/active-organizations', '/leaderboards/active-companies'],
-    ] as const) {
-      expect(routeRules[from]?.redirect).toEqual({ to, statusCode: 301 });
-    }
-  });
-
   test('never caches the login-gated API docs, even under the catch-all redis rule', async () => {
     const cachingConfig = await loadCachingConfig('production');
     const matcher = toRouteMatcher(createRouter({ routes: cachingConfig.routeRules }));

@@ -59,11 +59,7 @@ export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
-    // Old /organization/<slug> URLs redirect from app/pages/organization/[...slug].vue.
-    '/leaderboards/organizations': { redirect: { to: '/leaderboards/companies', statusCode: 301 } },
-    '/leaderboards/active-organizations': {
-      redirect: { to: '/leaderboards/active-companies', statusCode: 301 },
-    },
+    // Old /organization and /leaderboards URLs redirect from page middleware (case-insensitive).
     '/api/auth/**': { prerender: false, index: false, cache: false, headers: noCacheHeaders },
     '/_og/**': { cache: false },
     // The `/**` catch-all cache rule below wraps every route in Nitro's cachedEventHandler,

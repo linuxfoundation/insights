@@ -14,7 +14,20 @@ import { computed } from 'vue';
 
 import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/views/leaderboard-detail.vue';
 import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
-import { leaderboardKeyFromSlug } from '~~/config/leaderboard-slugs';
+import { leaderboardKeyFromSlug, legacyLeaderboardSlug } from '~~/config/leaderboard-slugs';
+
+definePageMeta({
+  middleware: [
+    (to) => {
+      const slug = legacyLeaderboardSlug(String(to.params.key ?? ''));
+      if (!slug) return;
+      return navigateTo(to.fullPath.replace(/^\/leaderboards\/[^/?#]+/i, `/leaderboards/${slug}`), {
+        redirectCode: 301,
+        replace: true,
+      });
+    },
+  ],
+});
 
 const route = useRoute();
 const leaderboardKey = computed<string>(() => leaderboardKeyFromSlug(route.params.key as string));

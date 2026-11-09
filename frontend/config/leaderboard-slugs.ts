@@ -16,3 +16,9 @@ export const leaderboardSlug = (key: string): string =>
 
 export const leaderboardKeyFromSlug = (slug: string): string =>
   Object.hasOwn(keyBySlug, slug) ? keyBySlug[slug]! : slug;
+
+// Old leaderboard URL segments (any case) that now redirect to a company slug.
+export const legacyLeaderboardSlug = (segment: string): string | undefined => {
+  const key = segment.toLowerCase();
+  return Object.hasOwn(slugByKey, key) ? slugByKey[key] : undefined;
+};
