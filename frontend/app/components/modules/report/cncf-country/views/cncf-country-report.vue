@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
           Cloud Native in {{ country.name }}
         </h1>
         <p class="text-body-2 md:text-body-1 text-neutral-600">
-          Code contributions to CNCF projects from people in {{ country.name }} and from organizations with
+          Code contributions to CNCF projects from people in {{ country.name }} and from companies with
           {{ country.adjective }} HQ.
         </p>
       </div>
@@ -77,8 +77,8 @@ SPDX-License-Identifier: MIT
           Where {{ country.adjective }} contributors are based
         </h2>
         <p class="text-body-2 text-neutral-500">
-          A contributor counts when they live in {{ country.name }}, work for an organization with
-          {{ country.adjective }} HQ, or both
+          A contributor counts when they live in {{ country.name }}, work for a company with {{ country.adjective }} HQ,
+          or both
         </p>
       </div>
       <lfx-skeleton
@@ -171,8 +171,8 @@ SPDX-License-Identifier: MIT
         :granularity="selectedOption.granularity"
       />
       <p class="text-body-2 text-neutral-500">
-        Compared by location only: contributors by their profile country, or else location, and organizations by their
-        HQ, so {{ country.name }} here excludes {{ country.adjective }}-HQ staff based abroad. Shares are of what has a
+        Compared by location only: contributors by their profile country, or else location, and companies by their HQ,
+        so {{ country.name }} here excludes {{ country.adjective }}-HQ staff based abroad. Shares are of what has a
         known location.
       </p>
     </lfx-card>
@@ -208,8 +208,8 @@ SPDX-License-Identifier: MIT
     <lfx-card class="p-4 md:p-6 flex flex-col gap-4">
       <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">Top organizations</h2>
-          <p class="text-body-2 text-neutral-500">Organizations ranked by {{ country.adjective }} contributors</p>
+          <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">Top companies</h2>
+          <p class="text-body-2 text-neutral-500">Companies ranked by {{ country.adjective }} contributors</p>
         </div>
         <div class="flex items-center gap-2 text-body-2 text-neutral-600">
           <lfx-tag
@@ -218,7 +218,7 @@ SPDX-License-Identifier: MIT
           >
             {{ country.code }}
           </lfx-tag>
-          Organization with {{ country.adjective }} HQ
+          Company with {{ country.adjective }} HQ
         </div>
       </div>
       <lfx-skeleton
@@ -248,8 +248,8 @@ SPDX-License-Identifier: MIT
 
     <p class="text-body-2 text-neutral-500 border-t border-neutral-200 pt-4">
       Methodology: a contributor is in {{ country.name }} when the country on their profile, or else their location,
-      names {{ country.name }}. An organization has {{ country.adjective }} HQ when its record places its headquarters
-      in {{ country.name }}. Code contributions are code activities, such as commits and pull requests, in CNCF projects
+      names {{ country.name }}. A company has {{ country.adjective }} HQ when its record places its headquarters in
+      {{ country.name }}. Code contributions are code activities, such as commits and pull requests, in CNCF projects
       over the selected period.
     </p>
   </div>
@@ -315,7 +315,7 @@ const selectedOption = computed(
 const activityTabs = [
   { value: 'contributorCount', label: 'Contributors' },
   { value: 'contributionCount', label: 'Code contributions' },
-  { value: 'organizationCount', label: 'Organizations' },
+  { value: 'organizationCount', label: 'Companies' },
 ];
 const activityMetric = ref<CncfCountryActivityMetric>('contributorCount');
 const activityLabel = computed(() => activityTabs.find((tab) => tab.value === activityMetric.value)?.label ?? '');
@@ -384,7 +384,7 @@ const kpiCards = computed(() => [
   { label: 'Active contributors', value: formatNumber(summary.value?.contributorCount ?? 0) },
   { label: 'Code contributions', value: formatNumberShort(summary.value?.contributionCount ?? 0) },
   {
-    label: `Active Organizations with ${props.country.adjective} HQ`,
+    label: `Active companies with ${props.country.adjective} HQ`,
     value: formatNumber(summary.value?.organizationCount ?? 0),
   },
 ]);

@@ -26,13 +26,13 @@ const title = computed(() => {
   if (!name) return 'LFX Insights';
   const widgetName =
     widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Contributors Insights';
-  return widget ? `${name} ${widgetName} | LFX Insights` : `${name} Contributors & Organizations | LFX Insights`;
+  return widget ? `${name} ${widgetName} | LFX Insights` : `${name} Contributors & Companies | LFX Insights`;
 });
 const description = computed(() =>
   project.value?.name
     ? `See who contributes to ${project.value.name}, ` +
-      `with insights on maintainers, top contributors, and organizations in open source.`
-    : 'See who contributes to this project, with insights on maintainers, top contributors, and organizations.',
+      `with insights on maintainers, top contributors, and companies in open source.`
+    : 'See who contributes to this project, with insights on maintainers, top contributors, and companies.',
 );
 
 const imageAlt = computed(() => `${project.value?.name} Contributors Insights - LFX Insights`);

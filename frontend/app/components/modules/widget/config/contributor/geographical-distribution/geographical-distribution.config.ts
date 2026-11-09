@@ -11,7 +11,7 @@ const geographicalDistribution: WidgetConfig = {
   name: 'Geographical distribution',
   description: () =>
     'Distribution of the geographical location of contributors ' +
-    'and the headquarters of their organizations.',
+    'and the headquarters of their companies.',
   learnMoreLink: `/docs/metrics/contributors#geographical-distribution`,
   component: GeographicalDistribution,
   defaultValue: {

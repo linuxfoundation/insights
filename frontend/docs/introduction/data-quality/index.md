@@ -16,7 +16,7 @@ Here are some examples of the challenges we face:
 - Frequently change employers
 - Add personal or hobby projects to their open-source profiles
 
-**Organizations**
+**Companies**
 
 - Have complex corporate structures with nested subsidiaries
 - Rename, merge, or restructure
@@ -38,7 +38,7 @@ We collect raw data from third-party sources like GitHub via our Community Data 
 
 ### Step 2: Data Onboarding
 
-We ingest data into LFX systems and structure it for analysis. This includes linking identities, mapping contributors to organizations, and parsing contribution records.
+We ingest data into LFX systems and structure it for analysis. This includes linking identities, mapping contributors to companies, and parsing contribution records.
 
 ### Step 3: AI-Powered Enrichment & Deduplication
 

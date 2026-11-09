@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
       v-else-if="!isLoading && !data"
       class="w-full flex justify-center py-20 text-neutral-500 text-sm"
     >
-      Organization not found.
+      Company not found.
     </div>
   </div>
 </template>
@@ -44,7 +44,7 @@ const { isLoading, data, suspense, isError, error } = useQuery<OrganizationProfi
 onServerPrefetch(async () => {
   await suspense();
   if (isError.value) {
-    const statusMessage = error.value?.message || 'Organization Not Found';
+    const statusMessage = error.value?.message || 'Company Not Found';
 
     if (import.meta.server) {
       throw createError({ statusCode: 404, statusMessage });

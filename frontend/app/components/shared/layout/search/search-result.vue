@@ -159,7 +159,7 @@ SPDX-License-Identifier: MIT
         v-if="tab === 'all' && props.organizations.length > 0"
         class="pt-3 px-3 text-xs font-semibold leading-5 text-neutral-400"
       >
-        Organizations
+        Companies
       </div>
       <section
         v-if="tab === 'all' || (tab === 'organizations' && props.organizations.length > 0)"
@@ -190,9 +190,7 @@ SPDX-License-Identifier: MIT
           :size="40"
           class="text-neutral-300"
         />
-        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">
-          We couldn’t find any organizations with that term
-        </p>
+        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">We couldn’t find any companies with that term</p>
       </section>
 
       <!-- No results -->
@@ -271,7 +269,7 @@ const tabs = [
   },
   {
     value: 'organizations',
-    label: 'Organizations',
+    label: 'Companies',
   },
 ];
 </script>

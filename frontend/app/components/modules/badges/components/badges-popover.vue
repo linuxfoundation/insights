@@ -62,7 +62,7 @@ SPDX-License-Identifier: MIT
       <nuxt-link
         :to="{
           name: LfxRoutes.LEADERBOARD,
-          params: { key: props.badge.config.leaderboardKey },
+          params: { key: leaderboardSlug(props.badge.config.leaderboardKey) },
         }"
         class="flex-1"
       >
@@ -89,6 +89,7 @@ import { computed } from 'vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { leaderboardSlug } from '~~/config/leaderboard-slugs';
 
 import { tierConfigs, getTierTagStyle } from '../config/tiers.config';
 import type { ProjectBadge } from '../types/badge.types';

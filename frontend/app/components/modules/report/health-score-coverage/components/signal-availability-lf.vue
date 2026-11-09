@@ -103,7 +103,7 @@ import { fetchHealthScoreCoverageSignalAvailabilityLfQuery } from '../services/s
 const SIGNAL_LABELS: Record<string, string> = {
   commitActivity: 'Commit activity',
   responsiveness: 'Responsiveness',
-  orgDiversity: 'Organizational diversity',
+  orgDiversity: 'Company diversity',
   prMerge: 'Pull request merge',
   busFactor: 'Bus factor',
   openVuln: 'Known vulnerabilities',

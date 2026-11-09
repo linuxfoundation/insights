@@ -45,13 +45,13 @@ SPDX-License-Identifier: MIT
 
     <!-- Organization dependency -->
     <div class="flex flex-col gap-3">
-      <p class="text-xs leading-4 font-semibold text-neutral-500">Organization dependency</p>
+      <p class="text-xs leading-4 font-semibold text-neutral-500">Company dependency</p>
       <div class="flex flex-col gap-2">
         <div class="flex items-start justify-between">
           <div class="flex flex-col">
             <p class="text-sm font-semibold text-neutral-900">
               {{ formatNumber(props.project.organizationDependencyCount) }}
-              {{ pluralize('organization', props.project.organizationDependencyCount) }}
+              {{ pluralize('company', props.project.organizationDependencyCount) }}
             </p>
             <p
               class="text-xs leading-4"
@@ -63,7 +63,7 @@ SPDX-License-Identifier: MIT
           <div class="flex flex-col text-right">
             <p class="text-sm font-semibold text-neutral-900">
               Other {{ formatNumber(otherOrganizationsCount) }}
-              {{ pluralize('organization', otherOrganizationsCount) }}
+              {{ pluralize('company', otherOrganizationsCount) }}
             </p>
             <p class="text-xs leading-4 text-neutral-500">{{ otherOrganizationsPercentage }}% of all contributions</p>
           </div>

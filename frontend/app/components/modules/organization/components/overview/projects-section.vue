@@ -212,7 +212,7 @@ import type { TechnicalInfluence } from '~~/types/organization-page';
 
 const route = useRoute();
 const { organization } = storeToRefs(useOrganizationPageStore());
-const orgDisplayName = computed(() => organization.value?.displayName || 'This organization');
+const orgDisplayName = computed(() => organization.value?.displayName || 'This company');
 const orgSlug = route.params.orgSlug as string;
 
 const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =

@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <lfx-table class="min-w-[640px]">
       <thead>
         <tr>
-          <th>Organization</th>
+          <th>Company</th>
           <th class="text-right">Contributors</th>
           <th class="text-right">In {{ countryName }}</th>
           <th class="text-right">Code contributions</th>

@@ -38,7 +38,7 @@ const title = computed(() =>
 const description = computed(() =>
   collection.value?.name
     ? `See development activity aggregated across every project in the ${collection.value.name} collection.`
-    : 'See active contributors and organizations aggregated across every project in this collection.',
+    : 'See active contributors and companies aggregated across every project in this collection.',
 );
 
 useSeoMeta({

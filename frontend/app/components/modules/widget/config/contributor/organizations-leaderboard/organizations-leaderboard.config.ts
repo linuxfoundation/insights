@@ -8,11 +8,11 @@ import OrganizationsLeaderboard from './organizations-leaderboard.vue';
 const organizationsLeaderboard: WidgetConfig = {
   key: 'organizationsLeaderboard',
   availableInCollection: true,
-  name: 'Organizations leaderboard',
+  name: 'Companies leaderboard',
   description: () =>
-    'Organizations ranked by the number of contribution activities' +
+    'Companies ranked by the number of contribution activities' +
     ' performed by contributors on their behalf during the selected time period.',
-  learnMoreLink: `/docs/metrics/contributors#organizations-leaderboard`,
+  learnMoreLink: `/docs/metrics/contributors#companies-leaderboard`,
   component: OrganizationsLeaderboard,
   defaultValue: {
     metric: 'all:all',
@@ -23,7 +23,7 @@ const organizationsLeaderboard: WidgetConfig = {
   snapshot: true,
   copilot: {
     icon: 'people-group',
-    suggestions: 'How many organizations are there in the leaderboard?',
+    suggestions: 'How many companies are there in the leaderboard?',
   },
   headerFilters: LfxWidgetFilterCollaboration,
 };

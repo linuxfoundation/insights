@@ -12,7 +12,7 @@ const retention: WidgetConfig = {
   availableInCollection: true,
   name: 'Quarterly contributor retention',
   description: () =>
-    'Share of contributors and organizations that contributed continuously ' +
+    'Share of contributors and companies that contributed continuously ' +
     'in all consecutive quarters of the selected time period.',
   learnMoreLink: `/docs/metrics/contributors#retention`,
   defaultValue: {

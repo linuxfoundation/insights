@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
         <lfx-project-load-state
           :status="isSuccess || isError ? 'success' : 'pending'"
           :error="isError"
-          error-message="Error fetching organizations leaderboard"
+          error-message="Error fetching companies leaderboard"
           :is-empty="isEmpty"
         >
           <lfx-organizations-table

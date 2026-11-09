@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
       <router-link
         v-for="config in allLeaderboards"
         :key="config.key"
-        :to="{ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } }"
+        :to="{ name: LfxRoutes.LEADERBOARD, params: { key: leaderboardSlug(config.key) } }"
         class="flex items-center justify-between py-2 px-0"
         @click="isModalOpen = false"
       >
@@ -66,6 +66,7 @@ import { LfxRoutes } from '~/components/shared/types/routes';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxModal from '~/components/uikit/modal/modal.vue';
+import { leaderboardSlug } from '~~/config/leaderboard-slugs';
 
 import leaderboardConfigs from '../../config/index.config';
 

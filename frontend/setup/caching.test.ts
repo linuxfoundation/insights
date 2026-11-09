@@ -91,9 +91,9 @@ describe('caching configuration', () => {
     expect(dev.routeRules['/api/**']?.cache).toBeUndefined();
   });
 
-  test('organization page routes disable stale-while-revalidate in production only', async () => {
+  test('company page routes disable stale-while-revalidate in production only', async () => {
     const prod = await loadCachingConfig('production');
-    expect(prod.routeRules['/organization/**']?.cache).toEqual({
+    expect(prod.routeRules['/company/**']?.cache).toEqual({
       maxAge: 86400,
       base: 'redis',
       swr: false,
@@ -105,7 +105,7 @@ describe('caching configuration', () => {
     });
 
     const dev = await loadCachingConfig('development');
-    expect(dev.routeRules['/organization/**']).toBeUndefined();
+    expect(dev.routeRules['/company/**']).toBeUndefined();
     expect(dev.routeRules['/api/organization-page/**']).toBeUndefined();
   });
 

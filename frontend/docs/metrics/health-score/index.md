@@ -92,13 +92,13 @@ Counts the number of people who are actively maintaining the project, taking the
 - **3 pts:** 1 active maintainer
 - **0 pts:** No active maintainers
 
-#### 1.3 Organizational Diversity (max 7 pts)
+#### 1.3 Company Diversity (max 7 pts)
 
-Measures how many distinct organizations the active maintainers are affiliated with, using contributor affiliation data. Projects maintained by contributors from multiple independent organizations are more resilient to any single organization withdrawing support.
+Measures how many distinct companies the active maintainers are affiliated with, using contributor affiliation data. Projects maintained by contributors from multiple independent companies are more resilient to any single company withdrawing support.
 
-- **7 pts:** Maintainers from 3 or more organizations
-- **5 pts:** Maintainers from 2 organizations
-- **2 pts:** All maintainers from 1 organization
+- **7 pts:** Maintainers from 3 or more companies
+- **5 pts:** Maintainers from 2 companies
+- **2 pts:** All maintainers from 1 company
 - **0 pts:** Affiliation unknown
 
 ### 2. Security and Supply Chain (0–35 pts)

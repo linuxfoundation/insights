@@ -79,7 +79,7 @@ const isMobile = useMediaQuery('(max-width: 767px)');
 // for this widget to depend on yet - see the types file for the merge-order explanation.
 const SIGNAL_LABELS: Record<string, string> = {
   busFactor: 'Bus factor',
-  orgDiversity: 'Organizational diversity',
+  orgDiversity: 'Company diversity',
   responsiveness: 'Responsiveness',
   openVuln: 'Known vulnerabilities',
   scorecard: 'OpenSSF Scorecard',

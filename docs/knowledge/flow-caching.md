@@ -61,7 +61,7 @@ or is cleared by a deploy or a manual workflow.
   in Redis.
 - **Uncached:** auth, health, events, chat, collections, community, `/api/security/**`, `/api/report`,
   project and collection pages, the API docs, OG and image routes.
-- **Organization pages** (`/organization/**`, 1 day) and `/api/organization-page/**` (1 hour) turn
+- **Company pages** (`/company/**`, 1 day) and `/api/organization-page/**` (1 hour) turn
   off stale-while-revalidate, so they expire in Redis at the TTL.
 
 All other rules keep Nitro's default stale-while-revalidate. Past the TTL, the next request gets

@@ -79,7 +79,7 @@ import type { OrganizationKpis } from '~~/types/organization-page';
 const route = useRoute();
 const orgSlug = route.params.orgSlug as string;
 const { organization } = storeToRefs(useOrganizationPageStore());
-const orgDisplayName = computed(() => organization.value?.displayName || 'this organization');
+const orgDisplayName = computed(() => organization.value?.displayName || 'this company');
 
 const queryKey = computed(() => [TanstackKey.ORGANIZATION_PAGE_KPIS, orgSlug]);
 

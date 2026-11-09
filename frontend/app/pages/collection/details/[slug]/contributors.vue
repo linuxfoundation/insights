@@ -38,7 +38,7 @@ const title = computed(() =>
 const description = computed(() =>
   collection.value?.name
     ? `See who contributes across every project in the ${collection.value.name} collection, ` +
-      'with insights on maintainers, top contributors, and organizations.'
+      'with insights on maintainers, top contributors, and companies.'
     : 'See who contributes across every project in this collection.',
 );
 

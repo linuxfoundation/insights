@@ -59,6 +59,7 @@ export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
+    // Old /organization and /leaderboards URLs redirect from page middleware (case-insensitive).
     '/api/auth/**': { prerender: false, index: false, cache: false, headers: noCacheHeaders },
     '/_og/**': { cache: false },
     // The `/**` catch-all cache rule below wraps every route in Nitro's cachedEventHandler,
@@ -117,7 +118,7 @@ export default {
           '/docs/api/**': { cache: false },
           // Stale-while-revalidate is off so a stale cached 200 cannot mask a blocked org's 404.
           '/api/organization-page/**': { cache: { maxAge: shortCache, base: 'redis', swr: false } },
-          '/organization/**': { cache: { maxAge: longCache, base: 'redis', swr: false } },
+          '/company/**': { cache: { maxAge: longCache, base: 'redis', swr: false } },
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {}),
