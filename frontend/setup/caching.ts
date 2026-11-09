@@ -59,8 +59,7 @@ export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
-    // OPS-1006: Organization -> Company rename; keep old URLs working for links and SEO.
-    '/organization/**': { redirect: { to: '/company/**', statusCode: 301 } },
+    // Old /organization/<slug> URLs redirect from app/pages/organization/[...slug].vue.
     '/leaderboards/organizations': { redirect: { to: '/leaderboards/companies', statusCode: 301 } },
     '/leaderboards/active-organizations': {
       redirect: { to: '/leaderboards/active-companies', statusCode: 301 },

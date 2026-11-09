@@ -53,7 +53,7 @@ Merging is the process of integrating changes from a pull request into the main 
 
 ## Company
 
-A legal or corporate entity that is actively involved in open source development. This includes companies, foundations, academic institutions, and government agencies. We identify companies based on contributor email domains, GitHub affiliation, and verified project ownership. Companies are used to group activity, assess influence, and analyze ecosystem-level participation across projects.
+A legal or corporate entity that is actively involved in open source development. This covers businesses, foundations, academic institutions, and government agencies. We identify companies based on contributor email domains, GitHub affiliation, and verified project ownership. Companies are used to group activity, assess influence, and analyze ecosystem-level participation across projects.
 
 ## Project
 

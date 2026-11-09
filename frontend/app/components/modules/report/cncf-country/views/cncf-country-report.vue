@@ -384,7 +384,7 @@ const kpiCards = computed(() => [
   { label: 'Active contributors', value: formatNumber(summary.value?.contributorCount ?? 0) },
   { label: 'Code contributions', value: formatNumberShort(summary.value?.contributionCount ?? 0) },
   {
-    label: `Active Companies with ${props.country.adjective} HQ`,
+    label: `Active companies with ${props.country.adjective} HQ`,
     value: formatNumber(summary.value?.organizationCount ?? 0),
   },
 ]);

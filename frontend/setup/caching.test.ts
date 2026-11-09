@@ -109,10 +109,9 @@ describe('caching configuration', () => {
     expect(dev.routeRules['/api/organization-page/**']).toBeUndefined();
   });
 
-  test('301-redirects the old organization URLs to their company equivalents', async () => {
+  test('301-redirects the old organization leaderboard URLs to their company equivalents', async () => {
     const { routeRules } = await loadCachingConfig('development');
     for (const [from, to] of [
-      ['/organization/**', '/company/**'],
       ['/leaderboards/organizations', '/leaderboards/companies'],
       ['/leaderboards/active-organizations', '/leaderboards/active-companies'],
     ] as const) {

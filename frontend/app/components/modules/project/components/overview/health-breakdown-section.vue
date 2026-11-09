@@ -242,7 +242,7 @@ const selectedCategoryRows = computed(() => {
     return [
       { name: 'Maintainer responsiveness', ...getResponsivenessRow(signals) },
       { name: 'Bus factor', ...getBusFactorRow(signals) },
-      { name: 'Company Diversity', ...getOrgDiversityRow(signals) },
+      { name: 'Company diversity', ...getOrgDiversityRow(signals) },
     ];
   }
   if (selectedCategoryKey.value === 'security-supply-chain') {
