@@ -24,7 +24,7 @@ const title = computed(() =>
 const description = computed(() =>
   organization.value
     ? organization.value.description || `Explore ${organization.value.displayName}'s open source contributions`
-    : 'Explore organization insights on LFX',
+    : 'Explore company insights on LFX',
 );
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 

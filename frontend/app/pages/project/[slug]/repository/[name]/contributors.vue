@@ -34,7 +34,7 @@ const title = computed(
 const description = computed(
   () =>
     `See who contributes to ${project?.value?.name} ${repoName.value}, ` +
-    `with insights on maintainers, top contributors, and organizations in open source.`,
+    `with insights on maintainers, top contributors, and companies in open source.`,
 );
 
 const imageAlt = computed(() => `${project.value?.name} ${repoName.value} Repository Contributors - LFX Insights`);

@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         >
           #
         </div>
-        Organization
+        Company
       </div>
       <div>Total contributions</div>
     </div>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
           </div>
           <nuxt-link
             v-if="organization.slug"
-            :to="`/organization/${organization.slug}`"
+            :to="`/company/${organization.slug}`"
             class="flex items-center gap-2 min-w-0 overflow-hidden no-underline text-inherit cursor-pointer"
           >
             <lfx-avatar
@@ -93,7 +93,7 @@ SPDX-License-Identifier: MIT
               :type="'light'"
             />
           </span>
-          <span class="text-sm text-brand-300 font-semibold"> Loading organizations </span>
+          <span class="text-sm text-brand-300 font-semibold"> Loading companies </span>
         </div>
       </div>
     </lfx-scrollable-shadow>

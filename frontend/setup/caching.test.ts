@@ -91,9 +91,9 @@ describe('caching configuration', () => {
     expect(dev.routeRules['/api/**']?.cache).toBeUndefined();
   });
 
-  test('organization page routes disable stale-while-revalidate in production only', async () => {
+  test('company page routes disable stale-while-revalidate in production only', async () => {
     const prod = await loadCachingConfig('production');
-    expect(prod.routeRules['/organization/**']?.cache).toEqual({
+    expect(prod.routeRules['/company/**']?.cache).toEqual({
       maxAge: 86400,
       base: 'redis',
       swr: false,
@@ -105,8 +105,19 @@ describe('caching configuration', () => {
     });
 
     const dev = await loadCachingConfig('development');
-    expect(dev.routeRules['/organization/**']).toBeUndefined();
+    expect(dev.routeRules['/company/**']).toBeUndefined();
     expect(dev.routeRules['/api/organization-page/**']).toBeUndefined();
+  });
+
+  test('301-redirects the old organization URLs to their company equivalents', async () => {
+    const { routeRules } = await loadCachingConfig('development');
+    for (const [from, to] of [
+      ['/organization/**', '/company/**'],
+      ['/leaderboards/organizations', '/leaderboards/companies'],
+      ['/leaderboards/active-organizations', '/leaderboards/active-companies'],
+    ] as const) {
+      expect(routeRules[from]?.redirect).toEqual({ to, statusCode: 301 });
+    }
   });
 
   test('never caches the login-gated API docs, even under the catch-all redis rule', async () => {

@@ -14,9 +14,10 @@ import { computed } from 'vue';
 
 import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/views/leaderboard-detail.vue';
 import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
+import { leaderboardKeyFromSlug } from '~~/config/leaderboard-slugs';
 
 const route = useRoute();
-const leaderboardKey = computed<string>(() => route.params.key as string);
+const leaderboardKey = computed<string>(() => leaderboardKeyFromSlug(route.params.key as string));
 const config = computed(() => leaderboardConfigs.find((c) => c.key === leaderboardKey.value));
 const title = computed(() => config.value?.name || 'Leaderboard');
 
