@@ -143,7 +143,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { DateTime } from 'luxon';
-import { ref, computed, watch, type ComputedRef } from 'vue';
+import { ref, computed, type ComputedRef } from 'vue';
 
 import LfxCncfGeoPieChart from '~/components/modules/report/cncf/components/cncf-geo-pie-chart.vue';
 import LfxCncfGeoStackedChart from '~/components/modules/report/cncf/components/cncf-geo-stacked-chart.vue';
@@ -194,7 +194,8 @@ const dateOptions = [
 ];
 
 const selectedDateRange = ref('past12months');
-const granularity = ref('monthly');
+// Derived so a date range change reaches the query together with its granularity in a single fetch.
+const granularity = computed(() => (selectedDateRange.value === 'past12months' ? 'monthly' : 'yearly'));
 
 const displayTabs = [
   { value: 'absolute', label: 'Absolute' },
@@ -334,14 +335,6 @@ const distributionData = computed(() => {
       contributorPercentage: othersPercentage,
     },
   ];
-});
-
-watch(selectedDateRange, (newValue) => {
-  if (newValue === 'past12months') {
-    granularity.value = 'monthly';
-  } else {
-    granularity.value = 'yearly';
-  }
 });
 </script>
 
