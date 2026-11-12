@@ -52,10 +52,10 @@ SPDX-License-Identifier: MIT
             </div>
 
             <lfx-archived-tag
-              v-if="data.isUnavailable || data.isArchived || data.isExcluded"
+              v-if="repositoryTagLabel(data)"
               :archived="data.isArchived && !data.isUnavailable"
               :unavailable="data.isUnavailable"
-              :label="repositoryTagLabel(data)"
+              :label="repositoryTagLabel(data) ?? ''"
             />
           </div>
         </lfx-project-repository-switch-item>
@@ -84,6 +84,10 @@ import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
+import {
+  type RepositoryFlags,
+  repositoryTagLabel,
+} from '~/components/modules/project/components/shared/header/repository-switch/repository-tag-label';
 import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
@@ -108,19 +112,7 @@ const search = ref('');
 const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos, unavailableRepos } =
   storeToRefs(useProjectStore());
 
-interface RepositoryItem extends ProjectRepository {
-  isExcluded: boolean;
-  isArchived: boolean;
-  isUnavailable: boolean;
-}
-
-// A repository gone from its source is usually also marked excluded, so unavailable wins.
-const repositoryTagLabel = (repo: RepositoryItem): string => {
-  if (repo.isUnavailable) {
-    return 'Unavailable';
-  }
-  return repo.isArchived ? 'Archived' : 'Excluded';
-};
+type RepositoryItem = ProjectRepository & RepositoryFlags;
 
 const repositories = computed<RepositoryItem[]>(() =>
   projectRepos.value.map((repo) => ({
