@@ -83,7 +83,8 @@ the table above.
 The repository records a fixed submodule commit, but **the deploy path does not use it**.
 `init-submodules.sh` deinits the submodule, removes its entry from `.gitmodules`, and re-adds it
 with `git submodule add -b main`, which resolves `main` to its current tip.
-`.github/workflows/production-deploy.yaml` and `staging-deploy.yaml` both run that script.
+`.github/workflows/production-deploy.yaml`, `staging-deploy.yaml` and the worker jobs of
+`public-api-deploy.yaml` run that script.
 
 The worker Dockerfiles install with `--frozen-lockfile`, so a CDP change to any `package.json`
 in the sparse set fails the next worker build until the lockfile is regenerated against the new
@@ -93,7 +94,8 @@ Two consequences:
 
 - A production build and a rebuild of the same insights commit can link different CDP code.
 - A merge to CDP `main` reaches insights production on the next deploy, with no insights commit
-  and no review on this side.
+  and no review on this side. Continuous Deploy redeploys the workers on every lockfile change,
+  so that next deploy can come from an unrelated dependency bump.
 
 Whether that is intended has not been decided. It is the single largest unguarded path between
 the two repositories.
