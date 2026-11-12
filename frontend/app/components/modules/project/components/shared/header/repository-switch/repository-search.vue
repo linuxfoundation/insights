@@ -52,9 +52,10 @@ SPDX-License-Identifier: MIT
             </div>
 
             <lfx-archived-tag
-              v-if="data.isArchived || data.isExcluded"
-              :archived="data.isArchived"
-              :label="data.isArchived ? 'Archived' : 'Excluded'"
+              v-if="data.isUnavailable || data.isArchived || data.isExcluded"
+              :archived="data.isArchived && !data.isUnavailable"
+              :unavailable="data.isUnavailable"
+              :label="repositoryTagLabel(data)"
             />
           </div>
         </lfx-project-repository-switch-item>
@@ -104,12 +105,22 @@ const router = useRouter();
 const searchInputRef = ref(null);
 const search = ref('');
 
-const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos } = storeToRefs(useProjectStore());
+const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos, unavailableRepos } =
+  storeToRefs(useProjectStore());
 
 interface RepositoryItem extends ProjectRepository {
   isExcluded: boolean;
   isArchived: boolean;
+  isUnavailable: boolean;
 }
+
+// A repository gone from its source is usually also marked excluded, so unavailable wins.
+const repositoryTagLabel = (repo: RepositoryItem): string => {
+  if (repo.isUnavailable) {
+    return 'Unavailable';
+  }
+  return repo.isArchived ? 'Archived' : 'Excluded';
+};
 
 const repositories = computed<RepositoryItem[]>(() =>
   projectRepos.value.map((repo) => ({
@@ -117,6 +128,7 @@ const repositories = computed<RepositoryItem[]>(() =>
     name: normalizeRepoName(repo),
     isExcluded: excludedRepos.value.includes(repo.url),
     isArchived: archivedRepos.value.includes(repo.url),
+    isUnavailable: unavailableRepos.value.includes(repo.url),
   })),
 );
 
