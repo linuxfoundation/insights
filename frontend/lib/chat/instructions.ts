@@ -3,7 +3,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ofetch } from 'ofetch';
 
-import type { PipeInstructions, TextToSqlInstructions } from './types';
+import { evaluateFormula } from './formula';
+import type { OutputColumn, PipeInstructions, TextToSqlInstructions } from './types';
+
+function computeFormulaColumn(
+  column: Extract<OutputColumn, { type: 'formula' }>,
+  variables: Record<string, any>,
+): number | null {
+  const value = evaluateFormula(column.formula, variables);
+  if (value === null) {
+    console.error(`Formula for column ${column.name} is not a supported arithmetic expression`);
+  }
+  return value;
+}
 
 // Function to execute a TinyBird pipe
 async function executeTinybirdPipe(
@@ -144,17 +156,7 @@ export async function executePipeInstructions(
               }
             }
 
-            // Evaluate the formula safely
-            try {
-              const formulaFunction = new Function(
-                ...Object.keys(variables),
-                `return ${outputColumn.formula}`,
-              );
-              row[outputColumn.name] = formulaFunction(...Object.values(variables));
-            } catch (error) {
-              console.error(`Error evaluating formula for column ${outputColumn.name}:`, error);
-              row[outputColumn.name] = null;
-            }
+            row[outputColumn.name] = computeFormulaColumn(outputColumn, variables);
           }
         }
 
@@ -189,18 +191,7 @@ export async function executePipeInstructions(
             }
           }
 
-          // Evaluate the formula safely
-          try {
-            // Create a function that has access only to the variables we provide
-            const formulaFunction = new Function(
-              ...Object.keys(variables),
-              `return ${outputColumn.formula}`,
-            );
-            row[outputColumn.name] = formulaFunction(...Object.values(variables));
-          } catch (error) {
-            console.error(`Error evaluating formula for column ${outputColumn.name}:`, error);
-            row[outputColumn.name] = null;
-          }
+          row[outputColumn.name] = computeFormulaColumn(outputColumn, variables);
         }
       }
 

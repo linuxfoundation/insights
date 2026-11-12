@@ -20,12 +20,16 @@ export interface FooterMenuLink {
   route?: LfxRoutes;
   click?: () => void;
   name: string;
+  requiresAuth?: boolean;
 }
 
 export interface FooterMenuSection {
   title: string;
   links: FooterMenuLink[];
 }
+
+export const visibleFooterLinks = (links: FooterMenuLink[], isAuthenticated: boolean) =>
+  links.filter((link) => isAuthenticated || !link.requiresAuth);
 
 export const lfxFooterMenu: FooterMenuSection[] = [
   {
@@ -46,6 +50,11 @@ export const lfxFooterMenu: FooterMenuSection[] = [
       {
         name: 'Docs',
         link: '/docs/introduction/what-is-insights/',
+      },
+      {
+        name: 'API docs',
+        link: '/docs/api/',
+        requiresAuth: true,
       },
       {
         name: 'Changelog',

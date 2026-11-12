@@ -247,7 +247,7 @@ const getMaintainerDescription = (band: CategoryBand, signals: HealthBreakdownRe
   const maintainerCount = signals.busFactorCount ?? 0;
 
   if (band === 'success') {
-    return `Responsive maintainers, ${maintainerCount} active maintainer${maintainerCount === 1 ? '' : 's'} with merge rights, a stable contributor pipeline, and contributors spanning ${orgCount} organization${orgCount === 1 ? '' : 's'}.`;
+    return `Responsive maintainers, ${maintainerCount} active maintainer${maintainerCount === 1 ? '' : 's'} with merge rights, a stable contributor pipeline, and contributors spanning ${orgCount} ${orgCount === 1 ? 'company' : 'companies'}.`;
   }
   if (band === 'warning') {
     const teamDetail =
@@ -255,9 +255,7 @@ const getMaintainerDescription = (band: CategoryBand, signals: HealthBreakdownRe
         ? 'A single active maintainer'
         : `A small team of ${maintainerCount} active maintainers`;
     const orgDetail =
-      orgCount <= 1
-        ? 'limited organizational diversity'
-        : `contributors across ${orgCount} organizations`;
+      orgCount <= 1 ? 'limited company diversity' : `contributors across ${orgCount} companies`;
     return `${teamDetail} with slow response times, no contributor growth, and ${orgDetail}.`;
   }
   const isUnresponsive =
@@ -366,7 +364,7 @@ const getCategoryUnavailableDescription = (
     const availableSignals: string[] = [];
     if (signals?.responsivenessAvailable) availableSignals.push('maintainer responsiveness');
     if (signals?.busFactorAvailable) availableSignals.push('bus factor');
-    if (signals?.orgDiversityAvailable) availableSignals.push('organization diversity');
+    if (signals?.orgDiversityAvailable) availableSignals.push('company diversity');
     const namedAvailable =
       availableSignals.length > 0
         ? `Only ${availableSignals.join(', ')} ${availableSignals.length === 1 ? 'is' : 'are'} available.`
@@ -486,25 +484,25 @@ export const getOrgDiversityRow = (signals: HealthBreakdownResults): SignalRow =
   if (!signals.orgDiversityAvailable || signals.orgDiversityScore === null) {
     return {
       status: 'no-data',
-      description: blockedSignalDescription('Organization diversity', signals),
+      description: blockedSignalDescription('Company diversity', signals),
     };
   }
   const count = signals.orgCount ?? 0;
   if (signals.orgDiversityScore >= 4) {
-    return { status: 'positive', description: `Contributors span ${count} organizations.` };
+    return { status: 'positive', description: `Contributors span ${count} companies.` };
   }
   if (signals.orgDiversityScore >= 2) {
     return {
       status: 'warning',
-      description: `Contributors come from ${count} organization${count === 1 ? '' : 's'} only.`,
+      description: `Contributors come from ${count} ${count === 1 ? 'company' : 'companies'} only.`,
     };
   }
   return {
     status: 'negative',
     description:
       count > 0
-        ? `Contributors span ${count} organization${count === 1 ? '' : 's'}, but most repositories lack organizational diversity.`
-        : 'No organization affiliation data is available for contributors.',
+        ? `Contributors span ${count} ${count === 1 ? 'company' : 'companies'}, but most repositories lack company diversity.`
+        : 'No company affiliation data is available for contributors.',
   };
 };
 

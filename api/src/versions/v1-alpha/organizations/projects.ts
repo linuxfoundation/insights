@@ -72,7 +72,7 @@ const OrganizationProject = Type.Object(
 );
 
 const OrganizationProjects = paginated(OrganizationProject, {
-  data: 'Up to `pageSize` projects, by `contributorCount`, then `technicalScore`, then `contributionCount`, all descending. Empty when the organization has no code contributions in the last 730 days.',
+  data: 'Up to `pageSize` projects, by `contributorCount`, then `technicalScore`, then `contributionCount`, all descending, then by an internal project ID. Empty when the organization has no code contributions in the last 730 days.',
 });
 
 const projectsRoutes: FastifyPluginAsyncTypebox = async (scope) => {

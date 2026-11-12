@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
     <div v-if="props.snapshot">
-      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">{{ model.activeTab }} distribution</div>
+      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">{{ activeTabLabel }} distribution</div>
     </div>
     <lfx-project-load-state
       :status="status"
@@ -140,7 +140,7 @@ const isEmpty = computed(() => isEmptyData(knownGeoMapData.value as unknown as R
 
 const tabs = [
   {
-    label: 'Organizations',
+    label: 'Companies',
     value: 'organizations',
   },
   {
@@ -149,7 +149,9 @@ const tabs = [
   },
 ];
 
-const label = computed(() => (model.value.activeTab === 'contributors' ? 'Contributor' : 'Organization'));
+const activeTabLabel = computed(() => tabs.find((tab) => tab.value === model.value.activeTab)?.label);
+
+const label = computed(() => (model.value.activeTab === 'contributors' ? 'Contributor' : 'Company'));
 
 watch(
   status,

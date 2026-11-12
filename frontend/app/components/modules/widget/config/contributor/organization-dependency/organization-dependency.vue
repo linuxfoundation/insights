@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching organization dependency"
+      error-message="Error fetching company dependency"
       :is-empty="isEmpty"
       use-min-height
     >
@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
         :top-dependency="topOrganizations"
         :other-dependency="otherOrganizations"
         :list="organizations"
-        label="organization"
+        label="company"
       >
         <lfx-avatar-group>
           <lfx-avatar

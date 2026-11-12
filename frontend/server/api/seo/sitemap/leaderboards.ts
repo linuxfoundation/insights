@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { leaderboardSlug } from '~~/config/leaderboard-slugs';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 
 export default defineSitemapEventHandler(async () => {
@@ -9,6 +10,6 @@ export default defineSitemapEventHandler(async () => {
     {},
   );
   return res.data.map((item) => ({
-    loc: `/leaderboards/${item.leaderboardType}`,
+    loc: `/leaderboards/${leaderboardSlug(item.leaderboardType)}`,
   }));
 });

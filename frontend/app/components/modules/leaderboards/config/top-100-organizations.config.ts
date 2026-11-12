@@ -7,12 +7,12 @@ import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const top100OrganizationsConfig: LeaderboardConfig = {
   key: 'organizations',
-  name: 'Top 100 organizations',
+  name: 'Top 100 companies',
   description:
-    'Most influential organizations based on the total number of contributions made over the last 12 months.',
+    'Most influential companies based on the total number of contributions made over the last 12 months.',
   icon: 'building-flag',
   dataDisplay: LfxOrganizationRowDisplay,
   minimizedDataDisplay: LfxOrganizationMinimizedRowDisplay,
-  entityLabel: 'Organization',
+  entityLabel: 'Company',
   metricLabel: 'Contributions (12M)',
 };

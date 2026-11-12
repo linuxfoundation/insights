@@ -115,13 +115,15 @@ describe('GET /v1-alpha/oss-index/collections', () => {
     expect(res.json()).toEqual({ data: [], pageSize: 50, nextCursor: null });
   });
 
-  it('sends the default sort, first page and page size, and omits the filters', async () => {
+  it('sends the default sort and one row more than the page from offset 0, and omits the filters', async () => {
     await get(route);
     expect(pipeCalls()).toHaveLength(1);
     const [call] = callsTo(pipePath);
     expect(call?.searchParams.get('orderBy')).toBe('totalContributors');
-    expect(call?.searchParams.get('page')).toBe('0');
-    expect(call?.searchParams.get('pageSize')).toBe('50');
+    expect(call?.searchParams.get('limit')).toBe('51');
+    expect(call?.searchParams.get('offset')).toBe('0');
+    expect(call?.searchParams.has('page')).toBe(false);
+    expect(call?.searchParams.has('pageSize')).toBe(false);
     expect(call?.searchParams.has('categorySlug')).toBe(false);
     expect(call?.searchParams.has('categoryGroupId')).toBe(false);
   });
@@ -183,31 +185,31 @@ describe('GET /v1-alpha/oss-index/collections', () => {
 });
 
 describe('paging', () => {
-  it('returns a nextCursor when a full page is read', async () => {
-    rows = numbered(2);
+  it('returns a nextCursor when the pipe returns the extra row', async () => {
+    rows = numbered(3);
     const res = await get(`${route}?pageSize=2`);
     expect(res.json().data).toHaveLength(2);
     expect(res.json().pageSize).toBe(2);
     expect(res.json().nextCursor).toBe(cursorOf(2));
-    expect(callsTo(pipePath)[0]?.searchParams.get('pageSize')).toBe('2');
+    expect(callsTo(pipePath)[0]?.searchParams.get('limit')).toBe('3');
   });
 
-  it('returns a null nextCursor on a short last page', async () => {
-    rows = numbered(1);
+  it('returns a null nextCursor when the page ends on the last row', async () => {
+    rows = numbered(2);
     const res = await get(`${route}?pageSize=2`);
+    expect(res.json().data).toHaveLength(2);
     expect(res.json().nextCursor).toBeNull();
   });
 
-  it('continues from a cursor by reading the matching pipe page', async () => {
-    rows = numbered(2);
+  it('continues from a cursor at its offset', async () => {
+    rows = numbered(3);
     const res = await get(`${route}?pageSize=2&cursor=${cursorOf(4)}`);
     expect(res.statusCode).toBe(200);
-    const pages = callsTo(pipePath).map((call) => call.searchParams.get('page'));
-    expect(pages).toEqual(['2']);
+    expect(callsTo(pipePath)[0]?.searchParams.get('offset')).toBe('4');
     expect(res.json().nextCursor).toBe(cursorOf(6));
   });
 
-  describe('with a page-aware pipe', () => {
+  describe('with a row-aware pipe', () => {
     const ids = (res: { json: () => { data: { id: string }[] } }) =>
       res.json().data.map((item) => item.id);
 
@@ -218,17 +220,15 @@ describe('paging', () => {
           if (url.pathname === categoryPath) {
             return categories;
           }
-          const size = Number(url.searchParams.get('pageSize'));
-          const page = Number(url.searchParams.get('page'));
-          return all.slice(page * size, page * size + size);
+          const start = Number(url.searchParams.get('offset'));
+          return all.slice(start, start + Number(url.searchParams.get('limit')));
         }),
       );
     });
 
-    it('returns the rows after a mid-page cursor from two pipe pages', async () => {
+    it('returns the rows after a cursor that falls inside a page', async () => {
       const res = await get(`${route}?pageSize=2&cursor=${cursorOf(1)}`);
-      const pages = callsTo(pipePath).map((call) => call.searchParams.get('page'));
-      expect(pages.sort()).toEqual(['0', '1']);
+      expect(pipeCalls()).toHaveLength(1);
       expect(ids(res)).toEqual(['c1', 'c2']);
       expect(res.json().nextCursor).toBe(cursorOf(3));
     });

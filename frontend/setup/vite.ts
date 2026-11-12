@@ -4,7 +4,8 @@
 export default {
   server: {
     proxy: {
-      '/docs': {
+      // A leading ^ makes Vite treat the key as a RegExp; /docs/api stays on Nuxt so its login gate runs.
+      '^/docs(?!/api(?:[/?#]|$))': {
         target: 'http://localhost:5173',
         changeOrigin: true,
         rewrite: (path: string) => path.replace(/^\/docs/, '/docs'),

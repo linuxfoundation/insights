@@ -16,8 +16,8 @@ SPDX-License-Identifier: MIT
             height="24"
           />
           <p class="pt-3 text-body-2 text-neutral-500">
-            LFX Insights helps developers and their organizations make smarter decisions about the open source projects
-            they depend on.
+            LFX Insights helps developers and their companies make smarter decisions about the open source projects they
+            depend on.
           </p>
           <div class="pt-10 md:pt-11 lg:pt-15 flex items-center gap-3">
             <a
@@ -63,7 +63,7 @@ SPDX-License-Identifier: MIT
             </p>
             <nav class="flex flex-col">
               <template
-                v-for="link of section.links"
+                v-for="link of visibleFooterLinks(section.links, isAuthenticated)"
                 :key="link.name"
               >
                 <router-link
@@ -113,7 +113,10 @@ import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vu
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { lfxFooterMenu } from '~/config/menu/footer';
+import { lfxFooterMenu, visibleFooterLinks } from '~/config/menu/footer';
+import { useAuth } from '~~/composables/useAuth';
+
+const { isAuthenticated } = useAuth();
 
 if (import.meta.client) {
   await import('@linuxfoundation/lfx-ui-core');

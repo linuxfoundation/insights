@@ -101,6 +101,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { leaderboardSlug } from '~~/config/leaderboard-slugs';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 import LfxTableHeader from './table-header.vue';
@@ -115,7 +116,7 @@ const props = defineProps<{
 const isHovered = ref(false);
 
 const navigateToLeaderboard = () => {
-  router.push({ name: LfxRoutes.LEADERBOARD, params: { key: props.config.key as string } });
+  router.push({ name: LfxRoutes.LEADERBOARD, params: { key: leaderboardSlug(props.config.key) } });
 };
 
 const handleCardClick = (event: MouseEvent) => {
@@ -135,7 +136,7 @@ const handleShare = () => {
 
   const resolvedRoute = router.resolve({
     name: LfxRoutes.LEADERBOARD,
-    params: { key: props.config.key as string },
+    params: { key: leaderboardSlug(props.config.key) },
   });
   const url = new URL(resolvedRoute.href, window.location.origin);
 

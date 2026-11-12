@@ -23,6 +23,9 @@ export const SHORT_TTL_SECONDS = 3_600;
 const LONG_ROUTES = /^\/(categories|leaderboards|oss-index)(\/|$)/;
 // Collections stay uncached, as on the frontend, so an edit shows on the next request.
 const UNCACHED_ROUTES = /(^|\/)collections(\/|$)/;
+// Their metric routes take the hour like the project ones, since lib/widget-scope.ts checks the
+// collection's visibility before the cache read.
+const COLLECTION_METRIC_ROUTES = /^\/collections\/:slug\/(contributors|development|popularity)\//;
 
 // Keeps a single large response from crowding the frontend's entries out of the shared Redis.
 const MAX_ENTRY_BYTES = 1_000_000;
@@ -36,7 +39,9 @@ export function cacheTtl(routeUrl: string): number | undefined {
   if (LONG_ROUTES.test(route)) {
     return LONG_TTL_SECONDS;
   }
-  return UNCACHED_ROUTES.test(route) ? undefined : SHORT_TTL_SECONDS;
+  return UNCACHED_ROUTES.test(route) && !COLLECTION_METRIC_ROUTES.test(route)
+    ? undefined
+    : SHORT_TTL_SECONDS;
 }
 
 const sortedKeys = (value: unknown): unknown => {

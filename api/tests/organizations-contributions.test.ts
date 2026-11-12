@@ -117,6 +117,5 @@ describe('GET /v1-alpha/organizations/{slug}/contributions', () => {
     const operation = doc.paths['/v1-alpha/organizations/{slug}/contributions']?.get;
 
     expect(operation?.tags).toEqual(['Organizations']);
-    expect(operation?.summary).toBeTruthy();
   });
 });

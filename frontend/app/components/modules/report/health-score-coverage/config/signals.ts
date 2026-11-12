@@ -17,7 +17,7 @@ export const healthScoreSignals = [
   },
   {
     key: 'org_diversity',
-    label: 'Organizational diversity',
+    label: 'Company diversity',
     category: 'maintainer-health',
     maxPts: 7,
     scoreColumn: 'orgDiversityScore',

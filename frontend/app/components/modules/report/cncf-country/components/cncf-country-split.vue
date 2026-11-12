@@ -52,20 +52,20 @@ const segments = computed(() => {
   return [
     {
       key: 'in-country-elsewhere',
-      label: `In ${props.countryName}, other or no organization`,
+      label: `In ${props.countryName}, other or no company`,
       value: props.summary.inCountryElsewhereCount,
       barClass: 'bg-brand-300',
     },
     {
       key: 'in-country-at-country-organization',
-      label: `In ${props.countryName}, at an organization with ${props.countryAdjective} HQ`,
+      label: `In ${props.countryName}, at a company with ${props.countryAdjective} HQ`,
       value: props.summary.inCountryAtCountryOrganizationCount,
       barClass: 'bg-brand-500',
     },
     {
       key: 'abroad-at-country-organization',
       // Counts everyone not located in the country, including contributors with no location.
-      label: `Abroad or location unknown, at an organization with ${props.countryAdjective} HQ`,
+      label: `Abroad or location unknown, at a company with ${props.countryAdjective} HQ`,
       value: props.summary.abroadAtCountryOrganizationCount,
       barClass: 'bg-brand-800',
     },

@@ -59,6 +59,7 @@ export default {
   routeRules: {
     '/auth/callback': { redirect: '/api/auth/callback' },
     '/callback': { redirect: '/api/auth/callback' },
+    // Old /organization and /leaderboards URLs redirect from page middleware (case-insensitive).
     '/api/auth/**': { prerender: false, index: false, cache: false, headers: noCacheHeaders },
     '/_og/**': { cache: false },
     // The `/**` catch-all cache rule below wraps every route in Nitro's cachedEventHandler,
@@ -92,6 +93,7 @@ export default {
           '/api/report/ai-code-tracker/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/report/health-score-coverage/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/cncf': { cache: { maxAge: longCache, base: 'redis' } },
+          '/report/cncf-france': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/ai-code-tracker': { cache: { maxAge: longCache, base: 'redis' } },
           '/report/health-score-coverage': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/collection': { cache: false },
@@ -111,9 +113,12 @@ export default {
           '/project/**': { cache: false },
           '/collection/**': { cache: false },
           '/collection': { cache: false },
+          // The API docs sit behind login, so a cached copy would leak them to anonymous visitors.
+          '/docs/api': { cache: false },
+          '/docs/api/**': { cache: false },
           // Stale-while-revalidate is off so a stale cached 200 cannot mask a blocked org's 404.
           '/api/organization-page/**': { cache: { maxAge: shortCache, base: 'redis', swr: false } },
-          '/organization/**': { cache: { maxAge: longCache, base: 'redis', swr: false } },
+          '/company/**': { cache: { maxAge: longCache, base: 'redis', swr: false } },
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {}),

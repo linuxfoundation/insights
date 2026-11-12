@@ -228,7 +228,7 @@ const handleShare = () => {
   url.hash = '';
   openShareModal({
     url: url.toString(),
-    title: `LFX Insights | ${props.organization?.displayName || 'Organization'}`,
+    title: `LFX Insights | ${props.organization?.displayName || 'Company'}`,
     area: props.organization?.displayName,
   });
 };

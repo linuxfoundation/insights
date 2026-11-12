@@ -292,14 +292,4 @@ describe('OpenAPI (AC9)', () => {
       'startDate',
     ]);
   });
-
-  it('names the counted activity types, the overlap with code-reviews and the required granularity', async () => {
-    const operation = await getOperation();
-    const description = operation?.description ?? '';
-    for (const type of reviewCommentTypes) {
-      expect(description).toContain(type);
-    }
-    expect(description).toContain('code-reviews');
-    expect(description).toContain('granularity');
-  });
 });

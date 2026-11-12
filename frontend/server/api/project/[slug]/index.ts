@@ -97,6 +97,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       repositoryGroups: repositoryGroups.data || [],
       archivedRepositories: project.archivedRepositories || [],
       excludedRepositories: project.excludedRepositories || [],
+      unavailableRepositories: project.unavailableRepositories || [],
       projectLinks,
       repoData: undefined,
       tags: project?.keywords || [],

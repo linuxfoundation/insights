@@ -6,7 +6,6 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.ts'],
-    globalSetup: ['tests/setup/build-docs-fixture.ts'],
     // Route tests call without tokens; tests/auth.test.ts turns verification back on.
     env: { API_AUTH_DISABLED: 'true' },
     // autoload imports route modules at runtime from inside node_modules, where vitest does not

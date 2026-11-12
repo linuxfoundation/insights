@@ -71,7 +71,9 @@ A project with responsive maintainers will fix CVEs, clear backlogs, and ship fi
 
 #### 1.1 Maintainer Responsiveness (max 15 pts)
 
-Measures the median time for a non-author to respond to newly opened issues and pull requests. The score uses the average of the issue and PR response medians. Bot and automation activity is excluded so only genuine human responses count.
+Measures the median time for a non-author to respond to issues and pull requests opened in the last 12 months. The window is counted from when the issue or pull request was opened, not from when it was answered. The score uses the average of the issue and PR response medians, or whichever one exists when a repository has only issues or only pull requests. Bot and automation activity is excluded so only genuine human responses count.
+
+For Gerrit repositories, only change response time counts. Gerrit has no issue tracker, so issues are left out of the calculation rather than counted against the project.
 
 - **15 pts:** Median response time under 24 hours
 - **12 pts:** Median response time under 3 days
@@ -92,13 +94,13 @@ Counts the number of people who are actively maintaining the project, taking the
 - **3 pts:** 1 active maintainer
 - **0 pts:** No active maintainers
 
-#### 1.3 Organizational Diversity (max 7 pts)
+#### 1.3 Company Diversity (max 7 pts)
 
-Measures how many distinct organizations the active maintainers are affiliated with, using contributor affiliation data. Projects maintained by contributors from multiple independent organizations are more resilient to any single organization withdrawing support.
+Measures how many distinct companies the active maintainers are affiliated with, using contributor affiliation data. Projects maintained by contributors from multiple independent companies are more resilient to any single company withdrawing support.
 
-- **7 pts:** Maintainers from 3 or more organizations
-- **5 pts:** Maintainers from 2 organizations
-- **2 pts:** All maintainers from 1 organization
+- **7 pts:** Maintainers from 3 or more companies
+- **5 pts:** Maintainers from 2 companies
+- **2 pts:** All maintainers from 1 company
 - **0 pts:** Affiliation unknown
 
 ### 2. Security and Supply Chain (0–35 pts)

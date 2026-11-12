@@ -22,7 +22,7 @@ Paginated endpoints accept two query parameters, both optional:
 {
   "data": [/* ...page of results... */],
   "pageSize": 50,
-  "nextCursor": "eyJrIjoiMjAyNS0xMi0zMSIsImlkIjoiNDIifQ"
+  "nextCursor": "NTA"
 }
 ```
 
@@ -31,29 +31,26 @@ Paginated endpoints accept two query parameters, both optional:
 - `nextCursor` is the value to pass as `cursor` on your next request. When it is `null`,
   you have reached the end of the list.
 
-To iterate an entire collection, keep requesting with the previous response's
-`nextCursor` until you receive `nextCursor: null`.
+To iterate an entire list, keep requesting with the previous response's `nextCursor`
+until you receive `nextCursor: null`. For example, to page through all collections:
 
 ```bash
-curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100" \
+curl "https://api.insights.linuxfoundation.org/v1-alpha/collections?pageSize=100" \
   -H "Authorization: Bearer lfi_your_token_here"
 
-curl "https://api.insights.linuxfoundation.org/v1/projects?pageSize=100&cursor=eyJrIjoiMjAyNS0xMi0zMSIsImlkIjoiNDIifQ" \
+curl "https://api.insights.linuxfoundation.org/v1-alpha/collections?pageSize=100&cursor=MTAw" \
   -H "Authorization: Bearer lfi_your_token_here"
 ```
 
-## What cursors guarantee
+## How pages follow each other
 
-- **No skipped or duplicated rows.** Each page picks up exactly where the previous one
-  ended, even when data is added or removed between your requests.
-- **Consistent performance.** The first page and the hundredth page respond equally fast,
-  so iterating a large collection does not slow down as you go deeper.
+Every list has a fixed sort order, and entries that tie on it always come in the same order.
+A cursor marks a position in that order, and the next page starts right after it, whatever
+`pageSize` you send with the cursor.
 
-Endpoints that page through a ranking, such as a leaderboard, page by position instead, so
-a row whose rank changes between your requests, or that ties with others at a page
-boundary, can be skipped or repeated. Their descriptions say so. The performance guarantee
-does not cover them either: each request recomputes the whole ranking before it takes a
-page, so a deep page costs about as much as the first.
+While the data stays the same, following `nextCursor` returns every entry exactly once. An
+entry added, removed or moved to another rank between your requests shifts the entries
+after your position, so one of them can be skipped or returned twice.
 
 ## Cursors are opaque
 

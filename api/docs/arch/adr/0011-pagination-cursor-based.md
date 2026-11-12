@@ -1,5 +1,7 @@
 # Pagination is cursor-based with opaque base64url cursors
 
+> Amended 2026-10-30: cursors hold a row offset over a unique sort order instead of the `{ k, id }` keyset, sort keys need no index, and the leaderboards are paginated with the same cursor. See [ADR-0025](./0025-row-offset-cursors.md).
+
 All paginated endpoints accept `cursor` (opaque base64url string, omit on the first request) and `pageSize` (integer, default 50, max 200) as query parameters, and return `{ data, pageSize, nextCursor }`. `nextCursor: null` indicates the end of the list. There is no `total` field and no page number.
 
 ## Why cursor-based instead of page + pageSize

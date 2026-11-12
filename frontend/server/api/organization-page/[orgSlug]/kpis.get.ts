@@ -17,7 +17,7 @@ export default defineEventHandler(async (event): Promise<OrganizationKpis> => {
     });
 
     if (!res.data?.length) {
-      throw createError({ statusCode: 404, statusMessage: 'Organization not found' });
+      throw createError({ statusCode: 404, statusMessage: 'Company not found' });
     }
 
     return res.data[0];

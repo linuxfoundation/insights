@@ -159,7 +159,7 @@ The entire system is orchestrated through **`frontend/lib/chat/data-copilot.ts`*
       {
         type: "formula",
         name: string,
-        formula: string,     // JavaScript expression
+        formula: string,     // Arithmetic: numbers, variables, + - * / ( )
         dependencies: [...]
       }
     ]
@@ -181,7 +181,7 @@ The instruction execution layer provides functions to execute the instructions g
 2. Collects results indexed by pipe ID
 3. Combines results according to output instructions:
    - **Direct mapping**: Simple column-to-column transfer
-   - **Formula evaluation**: Safe JavaScript expression evaluation with limited scope
+   - **Formula evaluation**: Arithmetic parser (see formula.ts); the formula is never run as code
 4. Returns combined data array
 
 #### `executeTextToSqlInstructions(query: TextToSqlInstructions)`
@@ -258,7 +258,7 @@ const mcpClient = await createMCPClient({
 
 - Complex calculations via formula columns
 - Variable dependency tracking
-- Safe JavaScript evaluation environment
+- Arithmetic-only evaluation (numbers, variables, + - * / and parentheses)
 
 ### 5. Error Handling
 

@@ -46,7 +46,7 @@ The Projects tab lists all projects in the collection as a sortable table. Each 
 - **Impact** — a pill showing the project's Impact tier (Foundational, Major, Moderate, or Minor) with the underlying score. Projects without an impact score show **N/A**.
 -->
 - **Contributors** — contributor count (sortable)
-- **Contributor / Organization dependency** — concentration risk indicators
+- **Contributor / Company dependency** — concentration risk indicators
 - **Achievements** — earned badges
 
 An **Only LF projects** toggle lets you filter the list to Linux Foundation–hosted projects only.
@@ -60,11 +60,11 @@ A **date range picker** in the tab bar scopes all widgets on that tab to a speci
 **Contributors** — contributor-focused metrics aggregated across the collection:
 
 - Contributors leaderboard
-- Organizations leaderboard
+- Companies leaderboard
 - Active contributors
-- Active organizations
+- Active companies
 - Contributor dependency
-- Organization dependency
+- Company dependency
 - Quarterly contributor retention
 - Geographical distribution
 

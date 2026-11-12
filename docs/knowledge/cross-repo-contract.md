@@ -222,7 +222,8 @@ The Nuxt server starts two workflows that run on CDP workers, defined in
 The workflow names, task queues and argument shapes are a contract: Insights declares its own
 copies of them, so a rename or a signature change on the CDP side compiles cleanly here and fails
 only when a user triggers the route. The Nuxt client must also reach the namespace in which those
-CDP workers poll.
+CDP workers poll. How the security assessment runs end to end is in
+[`flow-security-assessment.md`](flow-security-assessment.md).
 
 ### Payload codec
 

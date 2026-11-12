@@ -12,7 +12,13 @@ import {
   SHORT_TTL_SECONDS,
 } from '../src/response-cache.js';
 import { localKeys, sign, useAuthApp } from './helpers/auth.js';
-import { mockFetch, tinybirdError, tinybirdHost, tinybirdStub } from './helpers/tinybird.js';
+import {
+  collectionStub,
+  mockFetch,
+  tinybirdError,
+  tinybirdHost,
+  tinybirdStub,
+} from './helpers/tinybird.js';
 
 // An in-memory stand-in for the commands the cache sends, plus the MULTI the rate limiter sends.
 const redis = vi.hoisted(() => {
@@ -54,10 +60,17 @@ const redis = vi.hoisted(() => {
 
 vi.mock('@redis/client', () => ({ createClient: () => redis.client }));
 
+const collectionExists = vi.hoisted(() => vi.fn());
+vi.mock('../src/lib/collections-db.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../src/lib/collections-db.js')>()),
+  collectionExists,
+}));
+
 const increment = vi.spyOn(tracer.dogstatsd, 'increment');
 
 const organizationRoute = '/v1-alpha/organizations/microsoft';
 const projectRoute = '/v1-alpha/projects/kubernetes';
+const collectionRoute = '/v1-alpha/collections/cncf/development/active-days?granularity=monthly';
 const premium = { 'x-tier': 'gold' };
 const microsoftRow = {
   id: '0f7c5c1e-0000-4000-8000-000000000001',
@@ -92,12 +105,15 @@ describe('route TTLs', () => {
       '/v1-alpha/projects/:slug/development/pull-requests',
       '/v1-alpha/organizations/:slug/metrics',
       '/v1-alpha/projects/:slug/security/vulnerabilities',
+      '/v1-alpha/collections/:slug/contributors/active-contributors',
+      '/v1-alpha/collections/:slug/development/pull-requests',
+      '/v1-alpha/collections/:slug/popularity/stars',
     ]) {
       expect(cacheTtl(route), route).toBe(SHORT_TTL_SECONDS);
     }
   });
 
-  it('leaves collections uncached, as on the frontend', () => {
+  it('leaves the collections themselves uncached, as on the frontend', () => {
     for (const route of [
       '/v1-alpha/collections',
       '/v1-alpha/collections/:slug/metrics',
@@ -178,6 +194,8 @@ describe('response cache', () => {
     Object.assign(redis.state, { ready: true, failGet: false });
     redis.client.get.mockClear();
     increment.mockClear();
+    collectionExists.mockReset();
+    collectionExists.mockResolvedValue(true);
     token = `Bearer ${await sign()}`;
     mockFetch.mockImplementation(tinybirdStub(() => [microsoftRow]));
   });
@@ -214,6 +232,23 @@ describe('response cache', () => {
 
     expect(basic.statusCode).toBe(403);
     expect(basic.json()).toMatchObject({ code: 'tier_forbidden' });
+  });
+
+  it('caches collection metrics and still checks the collection on every request', async () => {
+    mockFetch.mockImplementation(collectionStub(() => []));
+    expect((await get(collectionRoute, token)).statusCode).toBe(200);
+    const tinybirdCalls = mockFetch.mock.calls.length;
+
+    expect((await get(collectionRoute, token)).statusCode).toBe(200);
+    expect(mockFetch.mock.calls.length).toBe(tinybirdCalls);
+
+    collectionExists.mockResolvedValue(false);
+    const hidden = await get(collectionRoute, token);
+
+    expect(hidden.statusCode).toBe(404);
+    expect(hidden.json()).toMatchObject({ code: 'not_found' });
+    expect(collectionExists).toHaveBeenCalledTimes(3);
+    expect(lookups()).toEqual(['miss', 'hit']);
   });
 
   it('caches reference data for a day', async () => {

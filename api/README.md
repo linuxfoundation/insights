@@ -9,7 +9,7 @@ Standalone public API for LFX Insights. See [`docs/arch/PUBLIC_API_PLAN.md`](./d
   - `versions/v1-alpha/development/` — one route module per Development endpoint, loaded by `@fastify/autoload`. Every file in this folder must default-export a Fastify plugin that registers `/projects/:slug/development/<filename>`; nothing else belongs here. A helper or types file dropped next to the routes fails `app.ready()` and `tests/v1-alpha-autoload.test.ts`, on purpose. Adding an endpoint means adding one file here and one test; no list to edit.
   - `versions/v1-alpha/contributors/` — the same rules for Contributors endpoints, which register `/projects/:slug/contributors/<filename>`. The alpha plugin skips this folder until its first route exists.
   - `lib/` — shared helpers (`period.ts`, `errors.ts`); `schemas/` — shared TypeBox schemas; `clients/` — Tinybird client. Code used by more than one route goes in one of these, never in a `versions/` route folder.
-- `docs/site/` — customer-facing VitePress + Scalar docs, built by `pnpm build` and served by the API at `/docs`.
+- `docs/site/` — customer-facing VitePress + Scalar docs, built by `pnpm docs:build` and served by the web app at `/docs/api/` to logged-in users.
 - `docs/arch/` — engineering planning: `PUBLIC_API_PLAN.md`, `CONTEXT.md`, ADRs, architecture review. Not part of the published site.
 
 ## Development
@@ -33,11 +33,11 @@ Every route under `/v1` and `/v1-alpha` except `openapi.json` needs the Auth0 ac
 
 ## Rate limiting
 
-Each LFID gets a number of requests per second over a sliding window, set by its tier (ADR-0023): premium when the Worker forwards an `x-tier` header, basic otherwise. Both limits are 30 until load tests set them, in `src/rate-limit.ts`. Requests are counted in the Redis at `API_REDIS_URL`. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
+Each LFID gets a number of requests per second over a sliding window, set by its tier (ADR-0023): premium when the Worker forwards an `x-tier` header, basic otherwise. Basic gets 5 requests per second and premium 100, in `src/rate-limit.ts`. Requests are counted in the Redis at `API_REDIS_URL`, and a rejected request is taken back out of the count, so a caller over the limit loses only the requests past it. Keys start with `insights-api:ratelimit:`, so the API can share the frontend's Redis. While Redis is unreachable, requests go through unlimited. The limit is skipped while `API_AUTH_DISABLED=true`, so local development needs no Redis.
 
 ## Caching
 
-Successful GET responses are cached in the same Redis as the rate limit, under `insights-api:cache:` (ADR-0013, `src/response-cache.ts`). Categories, leaderboards and the OSS index are cached for 24 hours, collections are not cached so an edit shows on the next request, and every other route is cached for an hour, the same tiers as the frontend's `setup/caching.ts`. The key covers the route, its params, the query params the route declares and the build in `API_BUILD_SHA`, which the deploy workflow sets to the commit, so each deploy starts on fresh entries. The cache is read after auth, the rate limit and the tier check, so a cached response still counts against the caller's limit. Entries expire by TTL only. When Redis is unreachable or slow, requests go to Tinybird. Without `API_REDIS_URL`, as in local development, nothing is cached.
+Successful GET responses are cached in the same Redis as the rate limit, under `insights-api:cache:` (ADR-0013, `src/response-cache.ts`). Categories, leaderboards and the OSS index are cached for 24 hours, collections are not cached so an edit shows on the next request, and every other route is cached for an hour, the same tiers as the frontend's `setup/caching.ts`. The contributors, development and popularity metrics of a collection are cached for an hour like their project versions, and they check that the collection is still public before the cache read. The key covers the route, its params, the query params the route declares and the build in `API_BUILD_SHA`, which the deploy workflow sets to the commit, so each deploy starts on fresh entries. The cache is read after auth, the rate limit and the tier check, so a cached response still counts against the caller's limit. Entries expire by TTL only. When Redis is unreachable or slow, requests go to Tinybird. Without `API_REDIS_URL`, as in local development, nothing is cached. Each pod sends Tinybird at most 5 queries at once (`src/clients/tinybird.ts`), since the frontend shares it; the rest wait in the client's queue for up to 10 seconds, after which the request answers 503.
 
 ## Telemetry
 
@@ -49,12 +49,14 @@ A merge to `main` deploys the API to production through the Public API Deploy wo
 
 ## Scripts
 
-| Command          | Description                                                                   |
-| ---------------- | ----------------------------------------------------------------------------- |
-| `pnpm dev`       | Start with hot reload via `tsx watch`                                         |
-| `pnpm start`     | Run compiled output                                                           |
-| `pnpm build`     | Compile TypeScript to `dist/` and build the VitePress docs site (`docs/site`) |
-| `pnpm tsc-check` | Type check without emit                                                       |
-| `pnpm test`      | Run Vitest tests                                                              |
+| Command           | Description                                                                     |
+| ----------------- | ------------------------------------------------------------------------------- |
+| `pnpm dev`        | Start with hot reload via `tsx watch`                                           |
+| `pnpm start`      | Run compiled output                                                             |
+| `pnpm build`      | Compile TypeScript to `dist/`                                                   |
+| `pnpm docs:dev`   | Export the spec and run the docs site (`docs/site`) with hot reload             |
+| `pnpm docs:build` | Export the spec and build the docs site that the web app serves at `/docs/api/` |
+| `pnpm tsc-check`  | Type check without emit                                                         |
+| `pnpm test`       | Run Vitest tests                                                                |
 
 Linting and formatting run from the repo root with `pnpm lint` (oxlint) and `pnpm format` (oxfmt), not from this package.

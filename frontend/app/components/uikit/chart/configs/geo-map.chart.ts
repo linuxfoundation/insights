@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { MapSeriesOption, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
+import pluralize from 'pluralize';
 
 import { geoMapCountries } from '~/components/modules/widget/components/contributors/config/geo-map-countries';
 import { lfxColors } from '~/config/styles/colors';
@@ -50,7 +51,7 @@ const defaultGeoOption: ECOption = {
         min-width: 150px;">
         <span style="font-weight: 400;">
           ${Number.isNaN(data.value) ? 0 : data.value}
-          ${params.seriesName}s
+          ${pluralize(params.seriesName || '', Number(data.value))}
         </span>
         <span style="font-weight: 500;">${
           Number.isNaN(data.percentage) ? 0 : data.percentage

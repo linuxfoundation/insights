@@ -8,7 +8,8 @@ other tools all read this file, so it is the only one. Area-specific rules live 
 `.claude/rules/`; repeatable workflows live in `.claude/skills/`.
 
 Deeper notes on what each component does, how Insights depends on CDP and local setup are in
-[`docs/knowledge/`](docs/knowledge/README.md).
+[`docs/knowledge/`](docs/knowledge/README.md). Architecture diagrams are in
+[`docs/design/`](docs/design/README.md), which also explains which kind of doc goes where.
 
 ## Repository layout
 
@@ -103,13 +104,13 @@ Two facts worth knowing before you change anything that touches `@crowd/*`:
 
 ## Where things are documented
 
+- Knowledge notes (maps of the code): `docs/knowledge/`. Architecture diagrams: `docs/design/`.
 - API architecture decisions: `api/docs/arch/adr/`. Format is enforced by
   `.claude/rules/adr-format.md`; use the `/adr` skill to add one. They stay under `api/` rather
   than in a root `docs/adr/` like crowd.dev's because every record so far is about the public
   API, and the skill, the rule and the API docs all link to this path.
-- Design proposals for work not built yet, before their decisions become ADRs:
-  [`docs/design/`](docs/design/README.md).
-- API reference: built with VitePress from `api/docs/site/`, served by the API itself.
+- API reference: built with VitePress from `api/docs/site/`, served by the web app at `/docs/api/`
+  to logged-in users.
 - Auth setup: `frontend/AUTH_CONFIGURATION.md`.
 - Contribution guide: `CONTRIBUTING.md`.
 - What Insights shares with CDP, and what breaks it:

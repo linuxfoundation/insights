@@ -59,7 +59,7 @@ type SlugRequest<Q extends TObject> = FastifyRequest<{
 // registered through this loose signature; `WidgetRoute` carries the real types to the handler.
 type Register = <Q extends TObject>(
   path: string,
-  options: { schema: object },
+  options: { schema: object; preHandler?: (request: SlugRequest<Q>) => Promise<void> },
   handler: (request: SlugRequest<Q>) => Promise<unknown>,
 ) => void;
 
@@ -97,12 +97,16 @@ export function widgetRoutes<Q extends TObject, R extends TSchema>(
         querystring: collection.querystring,
         response: { 200: collection.response },
       },
+      // A hook runs ahead of the response cache read, so a collection made private or deleted
+      // answers 404 even while its metrics are cached (ADR-0013).
+      preHandler: async (request: SlugRequest<Q>) => {
+        if (!(await collectionExists(request, request.params.slug))) {
+          throw new NotFoundError('Collection not found');
+        }
+      },
     },
     async (request: SlugRequest<Q>) => {
       const { slug } = request.params;
-      if (!(await collectionExists(request, slug))) {
-        throw new NotFoundError('Collection not found');
-      }
       // Ajv keeps undeclared query keys, so a caller's repos is dropped here rather than forwarded.
       delete (request.query as { repos?: unknown }).repos;
       return handler(request, (query) => query({ collectionSlug: slug }));

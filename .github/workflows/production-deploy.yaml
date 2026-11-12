@@ -29,6 +29,10 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # The frontend shares its group with deploy-app in public-api-deploy.yaml, so two rollouts never overlap.
+    concurrency:
+      group: ${{ inputs.service == 'frontend' && 'production-app-rollout' || format('production-{0}', inputs.service) }}
+      cancel-in-progress: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -114,7 +118,9 @@ jobs:
           app-env: production
           dockerfile: ${{ steps.config.outputs.dockerfile }}
           image-name: ${{ steps.config.outputs.image_name }}
-          build-args: ${{ inputs.service == 'frontend' && format('NUXT_REDIS_URL={0}', env.NUXT_REDIS_URL) || '' }}
+          build-args: |
+            ${{ inputs.service == 'frontend' && format('NUXT_REDIS_URL={0}', env.NUXT_REDIS_URL) || '' }}
+            ${{ inputs.service == 'frontend' && format('API_PUBLIC_URL={0}', vars.API_PUBLIC_URL) || '' }}
 
       - name: Update Deployment Image
         run: |
