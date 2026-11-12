@@ -58,7 +58,7 @@ Callers without a user (M2M tokens, static API keys, stdio mode) get no Insights
 
 - **Pros**: Uses the existing PAT path with no Insights change. A user could revoke the MCP's access to Insights, and only that, from Developer Settings.
 - **Cons**: The MCP becomes a store of long-lived user secrets, which needs new shared encrypted storage. It has to manage the PAT lifecycle: create, rotate, detect revocation, recover stranded tokens. It also needs PAT service changes for token state, token type and revocation by LFX.
-- **Why not**: Far more moving parts for a benefit that is smaller than it looked. With a token exchange, no long-lived credential exists to leak or rotate. MCP clients hold refresh tokens with rotation. A user can still be blocked in Insights by LFID, or immediately by token id.
+- **Why not**: Far more moving parts for a benefit that is smaller than it looked. With a token exchange, no long-lived credential exists to leak or rotate. MCP clients hold refresh tokens with rotation. If Insights ever needs to block one user on its own, a deny-list by LFID or token id can be added to the Worker or the API. Neither exists today, and it isn't part of this decision.
 
 ### Alternative 2: The MCP calls the API directly and sets the tier headers itself
 
@@ -88,7 +88,7 @@ Callers without a user (M2M tokens, static API keys, stdio mode) get no Insights
 
 ### Negative
 
-- Insights access through the MCP can't be revoked on its own. The levers are removing the user's MCP access or blocking the LFID. Tokens already issued keep working until they expire, unless the exchange rechecks MCP access.
+- Insights access through the MCP can't be revoked on its own. The levers are removing the user's MCP access or blocking the LFID in Auth0, and both only stop new sign-ins. The API has no deny-list, so tokens already issued keep working until they expire: the remaining lifetime of the user's MCP token plus that of the last Insights token. If the token exchange rechecks MCP access (an open question for SSO), the window shrinks to one Insights token lifetime.
 - New Auth0 configuration for a second exchange audience.
 
 ### Ownership
