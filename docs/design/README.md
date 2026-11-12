@@ -4,9 +4,10 @@ Major architecture diagrams for Insights: how services, stores and repositories 
 the repository's `AGENTS.md` and the notes in [`docs/knowledge/`](../knowledge/README.md); these
 docs show the picture behind them.
 
-| Doc                        | What it shows                                                                                     |
-| -------------------------- | ------------------------------------------------------------------------------------------------- |
-| [`caching.md`](caching.md) | The caches between visitors and Tinybird, how a request passes through them, and what clears them |
+| Doc                                                          | What it shows                                                                                          |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| [`caching.md`](caching.md)                                   | The caches between visitors and Tinybird, how a request passes through them, and what clears them      |
+| [`insights-mcp-integration.md`](insights-mcp-integration.md) | _Planned._ How the LFX MCP reaches the Insights Public API as the user, and which source answers what |
 
 ## Where a doc goes
 
@@ -41,7 +42,10 @@ To decide where something goes:
 - **Rules stay next to the code.** Decision rules, scoring and algorithms go in the README of the
   service or library that runs them, even when drawn as a flowchart, and the design doc links
   there. So does a diagram of one service's or library's internals.
-- **Current state only.** Proposals and alternatives belong in ADRs.
+- **Current state only.** Proposals and alternatives belong in ADRs. One exception: once its ADRs
+  are accepted, a design that is being built can be documented here, marked **Planned** at the top
+  and linked to those ADRs. It describes the chosen design only, and becomes current state as the
+  work ships.
 - **Diagrams are Mermaid**, so they render on GitHub and diff in review. Use an image only when
   Mermaid can't draw it: keep it under about 300 KB in `docs/design/assets/`, with its editable
   source (`.excalidraw`, `.drawio`) next to it.
