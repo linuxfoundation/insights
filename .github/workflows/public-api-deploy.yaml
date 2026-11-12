@@ -12,9 +12,13 @@ on:
       - "libs/postgres-client/**"
       - "libs/tinybird-client/**"
       - "workers/api-gateway/**"
+      - "workers/temporal/**"
+      - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".dockerignore"
+      - "init-submodules.sh"
+      - "submodules/crowd.dev"
       - "!api/README.md"
       - "!frontend/README.md"
       - "!workers/api-gateway/README.md"
@@ -30,6 +34,9 @@ on:
           - api
           - api-gateway
           - app
+          - package-downloads-worker
+          - search-volume-worker
+          - vulnerability-enrichment-worker
 
 permissions:
   contents: read
@@ -49,6 +56,7 @@ jobs:
       api: ${{ (github.event_name == 'workflow_dispatch' && (inputs.service == 'all' || inputs.service == 'api')) || steps.diff.outputs.api == 'true' }}
       gateway: ${{ (github.event_name == 'workflow_dispatch' && (inputs.service == 'all' || inputs.service == 'api-gateway')) || steps.diff.outputs.gateway == 'true' }}
       app: ${{ (github.event_name == 'workflow_dispatch' && (inputs.service == 'all' || inputs.service == 'app')) || steps.diff.outputs.app == 'true' }}
+      workers: ${{ steps.diff.outputs.workers }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,6 +68,7 @@ jobs:
         id: diff
         env:
           GH_TOKEN: ${{ github.token }}
+          SELECTED: ${{ github.event_name == 'workflow_dispatch' && inputs.service || '' }}
         run: |
           # A dispatch from another branch would ship that branch's code to production.
           [ "$GITHUB_REF" = refs/heads/main ] || { echo "::error::Run this workflow from main"; exit 1; }
@@ -100,6 +109,20 @@ jobs:
           echo "gateway=$(changed production-api-gateway workers/api-gateway ':!workers/api-gateway/README.md' pnpm-lock.yaml pnpm-workspace.yaml)" >> "$GITHUB_OUTPUT"
           # The app image builds the API docs site and exports the API spec for its reference page.
           echo "app=$(changed production-app frontend ':!frontend/README.md' api/docs/site api/src api/scripts/export-openapi.ts api/package.json libs/types libs/postgres-client libs/tinybird-client pnpm-lock.yaml pnpm-workspace.yaml .dockerignore)" >> "$GITHUB_OUTPUT"
+
+          # Each worker image copies its own directory, the shared base and the root manifests, and links CDP code checked out by init-submodules.sh.
+          workers='[]'
+          for worker in \
+            package-downloads-worker:package_downloads_worker:package-downloads-worker \
+            search-volume-worker:search_volume_worker:insights-search-volume-worker \
+            vulnerability-enrichment-worker:vulnerability_enrichment_worker:vulnerability-enrichment-worker; do
+            IFS=: read -r service dir image <<< "$worker"
+            if [ "$SELECTED" = all ] || [ "$SELECTED" = "$service" ] ||
+              [ "$(changed "production-$service" "workers/temporal/$dir" workers/temporal/base package.json pnpm-lock.yaml pnpm-workspace.yaml .dockerignore init-submodules.sh submodules/crowd.dev)" = true ]; then
+              workers=$(jq -c --arg service "$service" --arg dir "$dir" --arg image "$image" '. + [{service: $service, dir: $dir, image: $image}]' <<< "$workers")
+            fi
+          done
+          echo "workers=$workers" >> "$GITHUB_OUTPUT"
 
   deploy-api:
     needs: changes
@@ -375,3 +398,120 @@ jobs:
             if grep -qv "^[0-9][0-9]*$" /tmp/unlinked; then cat /tmp/unlinked; exit 1; fi
             echo "keys left: $(redis-cli -h redis-svc DBSIZE)"
           ' sh "$PASSWORD"
+
+  deploy-workers:
+    needs: changes
+    if: needs.changes.outputs.workers != '[]'
+    name: deploy-${{ matrix.service }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.changes.outputs.workers) }}
+    environment:
+      name: production-${{ matrix.service }}
+    # Shared with the manual worker deploys in production-deploy.yaml, so two rollouts of one worker never overlap.
+    concurrency:
+      group: production-${{ matrix.service }}
+      cancel-in-progress: false
+    env:
+      ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
+      ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
+      ORACLE_USER: ${{ secrets.ORACLE_USER }}
+      ORACLE_TENANT: ${{ secrets.ORACLE_TENANT }}
+      ORACLE_REGION: ${{ secrets.ORACLE_REGION }}
+      ORACLE_FINGERPRINT: ${{ secrets.ORACLE_FINGERPRINT }}
+      ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
+      ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
+      ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Init submodules
+        run: bash init-submodules.sh --https
+
+      - name: Setup OCI CLI and Kubectl
+        run: |
+          # Install OCI CLI
+          curl -sL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh | bash -s -- --accept-all-defaults
+          echo "$HOME/bin" >> $GITHUB_PATH
+          export PATH="$HOME/bin:$PATH"
+
+          # Configure OCI CLI
+          mkdir -p ~/.oci
+          echo "${{ env.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user=${{ env.ORACLE_USER }}
+          fingerprint=${{ env.ORACLE_FINGERPRINT }}
+          key_file=$HOME/.oci/oci_api_key.pem
+          tenancy=${{ env.ORACLE_TENANT }}
+          region=${{ env.ORACLE_REGION }}
+          pass_phrase=${{ env.ORACLE_KEY_PASSPHRASE }}
+          EOF
+          chmod 600 ~/.oci/config
+
+          # Get kubeconfig
+          $HOME/bin/oci ce cluster create-kubeconfig \
+            --cluster-id ${{ env.ORACLE_CLUSTER }} \
+            --file $HOME/.kube/config \
+            --region ${{ env.ORACLE_REGION }} \
+            --token-version 2.0.0 \
+            --kube-endpoint PUBLIC_ENDPOINT \
+            --overwrite
+
+      - name: Build docker image
+        uses: ./.github/actions/build-docker-image
+        id: build-docker-image
+        with:
+          app-env: production
+          dockerfile: workers/temporal/${{ matrix.dir }}/Dockerfile
+          image-name: ${{ matrix.image }}
+          run-unique-tag: "true"
+
+      - name: Update Deployment Image
+        run: |
+          kubectl set image deployment/${{ matrix.service }}-dpl \
+            ${{ matrix.service }}=${{ steps.build-docker-image.outputs.image }} \
+            -n insights
+
+      # The worker pods have no probes, so each new pod must log its Temporal worker reaching RUNNING.
+      # Workers exit on a lost connection right after starting, so the pods must also stay up a minute.
+      - name: Wait for rollout and worker start
+        id: rollout
+        env:
+          SERVICE: ${{ matrix.service }}
+          IMAGE: ${{ steps.build-docker-image.outputs.image }}
+        run: |
+          kubectl rollout status deployment/"$SERVICE"-dpl -n insights --timeout=300s
+          PODS=$(kubectl get pods -n insights -l app="$SERVICE" -o json \
+            | jq -r --arg image "$IMAGE" '.items[] | select(.metadata.deletionTimestamp == null and .spec.containers[0].image == $image) | .metadata.name')
+          [ -n "$PODS" ] || { echo "::error::No pods run $IMAGE"; exit 1; }
+          for POD in $PODS; do
+            started=false
+            for _ in $(seq 36); do
+              if kubectl logs -n insights "$POD" -c "$SERVICE" 2>/dev/null | grep -q '"state":"RUNNING"'; then
+                started=true
+                break
+              fi
+              sleep 5
+            done
+            [ "$started" = true ] || { echo "::error::$POD did not start its Temporal worker within 3 minutes"; exit 1; }
+          done
+          sleep 60
+          for POD in $PODS; do
+            RESTARTS=$(kubectl get pod -n insights "$POD" -o jsonpath='{.status.containerStatuses[0].restartCount}')
+            [ "$RESTARTS" = 0 ] || { echo "::error::$POD restarted $RESTARTS times"; exit 1; }
+            echo "$POD is running $IMAGE"
+          done
+
+      - name: Roll back
+        if: failure() && steps.rollout.outcome == 'failure'
+        env:
+          SERVICE: ${{ matrix.service }}
+        run: |
+          kubectl rollout undo deployment/"$SERVICE"-dpl -n insights
+          kubectl rollout status deployment/"$SERVICE"-dpl -n insights --timeout=300s

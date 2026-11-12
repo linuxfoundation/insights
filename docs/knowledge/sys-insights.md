@@ -63,6 +63,12 @@ deploys only what changed:
   API docs and exports the API spec, so changes to `api/docs/site`, `api/src` or the export script
   redeploy it too. A failed rollout is undone, and the Redis page cache is cleared after a successful rollout or
   rollback, keeping the session revocation keys (`auth:*`).
+- **Temporal workers** (environments `production-package-downloads-worker`,
+  `production-search-volume-worker` and `production-vulnerability-enrichment-worker`): each worker
+  redeploys when its own directory, `workers/temporal/base`, the root `package.json`, the lockfile,
+  `pnpm-workspace.yaml`, `.dockerignore`, `init-submodules.sh` or the submodule pin changes. The
+  pods have no probes, so the job waits until every new pod logs its Temporal worker reaching
+  `RUNNING`, checks a minute later that the pod has not restarted, and undoes the rollout otherwise.
 
 The workflow can also be dispatched by hand from `main` only. It forces the selected service (or all
 of them) to deploy and also deploys any other service with detected changes.
@@ -76,9 +82,10 @@ flushes the Redis page cache after a frontend deploy. Staging does not need to: 
 cache rules apply only when `NUXT_APP_ENV` is `production`, so a staging frontend caches no routes.
 How caching works is in [`flow-caching.md`](flow-caching.md).
 
-A manual production frontend deploy records no GitHub Deployment, so production keeps that build
-until the next push to `main` that changes the app, or until Continuous Deploy is dispatched with
-`app`.
+A manual production deploy records no GitHub Deployment, so production keeps that build until the
+next push to `main` that changes the same service, or until Continuous Deploy is dispatched with it
+(`app` for the frontend).
 
-Both manual workflows run `init-submodules.sh`, so every build resolves
-`submodules/crowd.dev` to CDP's current `main`; see the pin behaviour section of the contract.
+Both manual workflows and the worker jobs of Continuous Deploy run `init-submodules.sh`, so those
+builds resolve `submodules/crowd.dev` to CDP's current `main`; see the pin behaviour section of the
+contract.
