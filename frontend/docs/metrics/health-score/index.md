@@ -71,7 +71,9 @@ A project with responsive maintainers will fix CVEs, clear backlogs, and ship fi
 
 #### 1.1 Maintainer Responsiveness (max 15 pts)
 
-Measures the median time for a non-author to respond to newly opened issues and pull requests. The score uses the average of the issue and PR response medians. Bot and automation activity is excluded so only genuine human responses count.
+Measures the median time for a non-author to respond to issues and pull requests opened in the last 12 months. The window is counted from when the issue or pull request was opened, not from when it was answered. The score uses the average of the issue and PR response medians, or whichever one exists when a repository has only issues or only pull requests. Bot and automation activity is excluded so only genuine human responses count.
+
+For Gerrit repositories, only change response time counts. Gerrit has no issue tracker, so issues are left out of the calculation rather than counted against the project.
 
 - **15 pts:** Median response time under 24 hours
 - **12 pts:** Median response time under 3 days
