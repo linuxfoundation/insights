@@ -42,13 +42,13 @@ sequenceDiagram
 
 The MCP turns API errors into tool errors and never retries in a loop:
 
-| API response | Tool error |
-|---|---|
-| `401` | Unauthorized |
-| `403 tier_forbidden` | Needs an LFX membership (premium) |
-| `404` | Not found |
-| `429` | The limit was hit; wait `Retry-After` seconds and avoid parallel calls |
-| `5xx` | Insights is temporarily unavailable |
+| API response         | Tool error                                                             |
+| -------------------- | ---------------------------------------------------------------------- |
+| `401`                | Unauthorized                                                           |
+| `403 tier_forbidden` | Needs an LFX membership (premium)                                      |
+| `404`                | Not found                                                              |
+| `429`                | The limit was hit; wait `Retry-After` seconds and avoid parallel calls |
+| `5xx`                | Insights is temporarily unavailable                                    |
 
 Callers without a user (M2M tokens, static API keys, stdio mode) get no Insights tools in v1.
 
@@ -99,6 +99,6 @@ Callers without a user (M2M tokens, static API keys, stdio mode) get no Insights
 
 ### Follow-ups, not blocking the integration
 
-- The Cloudflare side of the API path is configured in the dashboard of the *Linux Foundation - LFIT Managed* account: the tunnel, the Workers VPC service, the Worker's domain and the cache rules. The `cloudflared` deployment is in crowd-kube and the Worker in this repository. The dashboard settings should move into IaC. `lfx-cloudflare-terraform` covers the *LFX Products* account, so where that IaC lives is still to be decided.
+- The Cloudflare side of the API path is configured in the dashboard of the _Linux Foundation - LFIT Managed_ account: the tunnel, the Workers VPC service, the Worker's domain and the cache rules. The `cloudflared` deployment is in crowd-kube and the Worker in this repository. The dashboard settings should move into IaC. `lfx-cloudflare-terraform` covers the _LFX Products_ account, so where that IaC lives is still to be decided.
 - The Worker's domain and deploys should move into `wrangler.jsonc` and a deploy workflow.
 - The other diagrams of the API path (`docs/design/caching.md`, the ASCII diagram in `PUBLIC_API_PLAN.md`) should show the tunnel, the Workers VPC binding and the API's network boundary, as the integration design does.

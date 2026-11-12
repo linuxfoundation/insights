@@ -101,12 +101,12 @@ sequenceDiagram
     M-->>U: tool result, or tool error with the reason
 ```
 
-| Component | Role |
-| --------- | ---- |
-| LFX MCP | Exchanges the user's MCP token for an Insights-audience token and caches it in memory. Never forwards the MCP token itself. |
-| Auth0 | Issues the Insights-audience token through the MCP's Custom Token Exchange profile, with the username claim. |
-| Worker | Two paths: `lfi_` PATs (existing) and Auth0 JWTs from allow-listed clients (the MCP). Both resolve the tier the same way and set `x-tier` / `x-org-id`. It verifies the JWT before any tier lookup, so unsigned input never drives a lookup or a tier decision. |
-| Insights API | Unchanged. It verifies the JWT with Auth0's public keys, applies the tier (`403 tier_forbidden` on organization endpoints for basic) and the per-LFID limit (30 requests per second). |
+| Component    | Role                                                                                                                                                                                                                                                            |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LFX MCP      | Exchanges the user's MCP token for an Insights-audience token and caches it in memory. Never forwards the MCP token itself.                                                                                                                                     |
+| Auth0        | Issues the Insights-audience token through the MCP's Custom Token Exchange profile, with the username claim.                                                                                                                                                    |
+| Worker       | Two paths: `lfi_` PATs (existing) and Auth0 JWTs from allow-listed clients (the MCP). Both resolve the tier the same way and set `x-tier` / `x-org-id`. It verifies the JWT before any tier lookup, so unsigned input never drives a lookup or a tier decision. |
+| Insights API | Unchanged. It verifies the JWT with Auth0's public keys, applies the tier (`403 tier_forbidden` on organization endpoints for basic) and the per-LFID limit (30 requests per second).                                                                           |
 
 A user's MCP traffic and PAT traffic share one rate-limit budget, because the limit is per LFID.
 
@@ -115,13 +115,13 @@ A user's MCP traffic and PAT traffic share one rate-limit budget, because the li
 The MCP returns errors as tool results (`IsError: true`) and never retries in a loop. Pods are stateless,
 and a sleeping request ties one up for nothing.
 
-| Insights response | Tool error |
-| --- | --- |
-| `401` | Unauthorized. Logged; no retry. |
-| `403 tier_forbidden` | This data needs an LFX membership (premium tier), with a link to the tier docs. |
-| `404 not_found` | Not found, with the API's message (and candidate matches once they ship). |
-| `429 rate_limit_exceeded` | The limit was hit. Wait `Retry-After` seconds and avoid parallel calls. |
-| `5xx` | Insights is temporarily unavailable. |
+| Insights response         | Tool error                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `401`                     | Unauthorized. Logged; no retry.                                                 |
+| `403 tier_forbidden`      | This data needs an LFX membership (premium tier), with a link to the tier docs. |
+| `404 not_found`           | Not found, with the API's message (and candidate matches once they ship).       |
+| `429 rate_limit_exceeded` | The limit was hit. Wait `Retry-After` seconds and avoid parallel calls.         |
+| `5xx`                     | Insights is temporarily unavailable.                                            |
 
 ## Callers without a user
 
@@ -134,12 +134,12 @@ The MCP exposes Insights through two tools: `explore_lfx_insights`, which finds 
 endpoints from the OpenAPI spec, and `query_lfx_insights`, which runs one endpoint. They call `/v1-alpha`
 until `/v1` ships.
 
-| Question | Answered by |
-| --- | --- |
-| Foundations, the LF hierarchy, Salesforce, CRM accounts, marketing | Snowflake (LFX Lens) |
-| Collections, Insights metrics (such as the health score), projects as shown in Insights | Insights |
-| Data both have, when Snowflake can't answer | Insights, as fallback |
-| Users who aren't LF staff | Insights only |
+| Question                                                                                | Answered by           |
+| --------------------------------------------------------------------------------------- | --------------------- |
+| Foundations, the LF hierarchy, Salesforce, CRM accounts, marketing                      | Snowflake (LFX Lens)  |
+| Collections, Insights metrics (such as the health score), projects as shown in Insights | Insights              |
+| Data both have, when Snowflake can't answer                                             | Insights, as fallback |
+| Users who aren't LF staff                                                               | Insights only         |
 
 Where both serve the same data, Tinybird and dbt apply the same business rules
 ([ADR-0028](../../api/docs/arch/adr/0028-insights-data-in-the-lfx-mcp.md)). The API adds:
@@ -151,12 +151,12 @@ Where both serve the same data, Tinybird and dbt apply the same business rules
 
 ## Ownership
 
-| Area | Owner |
-| --- | --- |
-| Worker JWT path and allow-list, API changes, Insights docs, Tinybird-side rule fixes | Insights team |
-| Token exchange, Insights tools, error mapping, routing guidance, rollout in the MCP | LFX MCP team |
-| Auth0 exchange profile and claims for the Insights audience | SSO |
-| Shared business rules between Tinybird and Snowflake | Insights team and data lake team |
+| Area                                                                                 | Owner                            |
+| ------------------------------------------------------------------------------------ | -------------------------------- |
+| Worker JWT path and allow-list, API changes, Insights docs, Tinybird-side rule fixes | Insights team                    |
+| Token exchange, Insights tools, error mapping, routing guidance, rollout in the MCP  | LFX MCP team                     |
+| Auth0 exchange profile and claims for the Insights audience                          | SSO                              |
+| Shared business rules between Tinybird and Snowflake                                 | Insights team and data lake team |
 
 ## Rollout
 

@@ -4,9 +4,9 @@ Major architecture diagrams for Insights: how services, stores and repositories 
 the repository's `AGENTS.md` and the notes in [`docs/knowledge/`](../knowledge/README.md); these
 docs show the picture behind them.
 
-| Doc                                                          | What it shows                                                                                          |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| [`caching.md`](caching.md)                                   | The caches between visitors and Tinybird, how a request passes through them, and what clears them      |
+| Doc                                                          | What it shows                                                                                         |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| [`caching.md`](caching.md)                                   | The caches between visitors and Tinybird, how a request passes through them, and what clears them     |
 | [`insights-mcp-integration.md`](insights-mcp-integration.md) | _Planned._ How the LFX MCP reaches the Insights Public API as the user, and which source answers what |
 
 ## Where a doc goes
