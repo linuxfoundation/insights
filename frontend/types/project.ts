@@ -28,6 +28,7 @@ export interface Project {
   repositoryGroups: ProjectRepositoryGroup[];
   archivedRepositories: string[];
   excludedRepositories: string[];
+  unavailableRepositories: string[];
   widgets: string[];
   softwareValue?: number;
   maturityStatus?: string;
@@ -91,6 +92,7 @@ export interface ProjectTinybird {
   repositories: string[];
   archivedRepositories: string[];
   excludedRepositories: string[];
+  unavailableRepositories: string[];
   keywords?: string[];
   website?: string;
   linkedin?: string;

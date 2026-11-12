@@ -102,6 +102,8 @@ export const useProjectStore = defineStore('project', () => {
   const archivedRepos = computed<string[]>(() => project.value?.archivedRepositories || []);
   // List of excluded repositories
   const excludedRepos = computed<string[]>(() => project.value?.excludedRepositories || []);
+  // Repositories that no longer exist or are no longer accessible on their source platform
+  const unavailableRepos = computed<string[]>(() => project.value?.unavailableRepositories || []);
 
   // Selected repositories from URL param 'repos' or single repo from route param 'name'.
   const selectedRepoSlugs = computed<string[]>(() => {
@@ -221,6 +223,7 @@ export const useProjectStore = defineStore('project', () => {
     selectedRepositoryGroup,
     archivedRepos,
     excludedRepos,
+    unavailableRepos,
     customRangeGranularity,
     selectedRepoSlugs,
     selectedRepositories,
