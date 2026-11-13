@@ -23,6 +23,10 @@ LFX Insights represents the world’s most critical open source projects includi
 
 When a repository is archived, LFX Insights continues to display it within the project, but treats it as inactive. Historical metrics, such as Contributors, Popularity, and Development, remain available, but archived repositories are excluded from calculations related to [Security & Best Practices](../../metrics/security/index.md) and the overall [Health Score](../../metrics/health-score/index.md).
 
+**Unavailable Repositories**
+
+When a repository is no longer available on its source platform, LFX Insights marks it with an **Unavailable** label in the repository switcher. These repositories are no longer updated because their source data can no longer be fetched, but historical Contributors, Popularity, and Development metrics remain accessible.
+
 ## How we define "critical" projects
 
 To identify critical open source projects outside of the LF, we rely on the [OpenSSF Criticality Score](https://github.com/ossf/criticality_score) — an open-source metric that evaluates projects based on:
