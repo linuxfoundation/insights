@@ -95,7 +95,7 @@ Callers without a user (M2M tokens, static API keys, stdio mode) get no Insights
 
 - **Insights team**: the Worker's JWT path and client allow-list, documentation, and the Insights API changes in [ADR-0028](./0028-insights-data-in-the-lfx-mcp.md).
 - **LFX MCP (Pepe Reyero)**: the token exchange, the Insights tools (`explore_lfx_insights`, built from the OpenAPI spec, and `query_lfx_insights`), error mapping, routing guidance and rollout. The tools call `/v1-alpha` until `/v1` ships ([ADR-0021](./0021-rfc-deprecation-sunset-header-formats.md)).
-- **SSO (Robert Detjens)**: the Auth0 side. Can the existing exchange profile target the Insights audience? Does it carry the username claim? What token lifetime? Which claim identifies the client (`azp` or `client_id`)? Can the exchange recheck MCP access?
+- **SSO (Robert Detjens) and Insights team**: the Auth0 exchange profile and claims for the Insights audience. Can the existing exchange profile target the Insights audience? Does it carry the username claim? What token lifetime? Which claim identifies the client (`azp` or `client_id`)? Can the exchange recheck MCP access?
 
 ### Follow-ups, not blocking the integration
 

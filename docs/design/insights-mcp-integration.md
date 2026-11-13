@@ -155,7 +155,7 @@ Where both serve the same data, Tinybird and dbt apply the same business rules
 | ------------------------------------------------------------------------------------ | -------------------------------- |
 | Worker JWT path and allow-list, API changes, Insights docs, Tinybird-side rule fixes | Insights team                    |
 | Token exchange, Insights tools, error mapping, routing guidance, rollout in the MCP  | LFX MCP team                     |
-| Auth0 exchange profile and claims for the Insights audience                          | SSO                              |
+| Auth0 exchange profile and claims for the Insights audience                          | SSO and Insights team            |
 | Shared business rules between Tinybird and Snowflake                                 | Insights team and data lake team |
 
 ## Rollout
