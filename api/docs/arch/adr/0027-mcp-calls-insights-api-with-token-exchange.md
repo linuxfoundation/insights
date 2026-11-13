@@ -100,5 +100,5 @@ Callers without a user (M2M tokens, static API keys, stdio mode) get no Insights
 ### Follow-ups, not blocking the integration
 
 - The Cloudflare side of the API path is configured in the dashboard of the _Linux Foundation - LFIT Managed_ account: the tunnel, the Workers VPC service, the Worker's domain and the cache rules. The `cloudflared` deployment is in crowd-kube and the Worker in this repository. The dashboard settings should move into IaC. `lfx-cloudflare-terraform` covers the _LFX Products_ account, so where that IaC lives is still to be decided.
-- The Worker's domain and deploys should move into `wrangler.jsonc` and a deploy workflow.
+- The Worker's domain should move into `wrangler.jsonc`. The Worker itself is already deployed by `.github/workflows/public-api-deploy.yaml`, with a smoke check.
 - The other diagrams of the API path (`docs/design/caching.md`, the ASCII diagram in `PUBLIC_API_PLAN.md`) should show the tunnel, the Workers VPC binding and the API's network boundary, as the integration design does.
