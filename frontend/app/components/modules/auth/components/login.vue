@@ -50,7 +50,7 @@ SPDX-License-Identifier: MIT
               />
               <div class="flex-col gap-1">
                 Manage profile
-                <p class="text-xs text-neutral-500">LFX Individual Dashboard</p>
+                <p class="text-xs text-neutral-500">LFX</p>
               </div>
             </lfx-menu-button>
           </a>
