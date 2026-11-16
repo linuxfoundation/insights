@@ -50,7 +50,7 @@ We know automated enrichment isn't perfect. That's why contributors can review a
 
 To review your affiliations:
 
-1. **Log in** to your [LF ID](https://app.lfx.dev/profile) account
+1. **Log in** to [LFX](https://app.lfx.dev/profile) with your LF ID
 2. **Navigate** to your profile and select the "Work History & Affiliations" tab
 3. **Review** your current and historical company affiliations
 4. **Edit** any incorrect affiliations — for example, updating your current employer or correcting a past affiliation date range

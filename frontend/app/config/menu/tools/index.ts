@@ -3,6 +3,7 @@
 import communityManagement from '~/config/menu/tools/community-management';
 import crowdfunding from '~/config/menu/tools/crowdfunding';
 import easycla from '~/config/menu/tools/easy-cla';
+import lfx from '~/config/menu/tools/lfx';
 import mentorship from '~/config/menu/tools/mentorship';
 import organizationDashboard from '~/config/menu/tools/organization-dashboard';
 import projectControlCenter from '~/config/menu/tools/project-control-center';
@@ -17,6 +18,7 @@ export interface ToolsItem {
 
 export const lfxTools: Record<string, ToolsItem> = {
   organizationDashboard,
+  lfx,
   projectControlCenter,
   security,
   easycla,
