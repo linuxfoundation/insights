@@ -3,7 +3,6 @@
 import { useReportStore } from '~/components/shared/modules/report/store/report.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import crowdfunding from '~/config/menu/tools/crowdfunding';
-import individualDashboard from '~/config/menu/tools/individual-dashboard';
 import mentorship from '~/config/menu/tools/mentorship';
 import organizationDashboard from '~/config/menu/tools/organization-dashboard';
 import projectControlCenter from '~/config/menu/tools/project-control-center';
@@ -106,12 +105,6 @@ export const lfxFooterMenu: FooterMenuSection[] = [
   },
   {
     title: 'Other LFX Tools',
-    links: [
-      individualDashboard,
-      organizationDashboard,
-      projectControlCenter,
-      mentorship,
-      crowdfunding,
-    ],
+    links: [organizationDashboard, projectControlCenter, mentorship, crowdfunding],
   },
 ];
