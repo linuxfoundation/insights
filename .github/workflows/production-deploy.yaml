@@ -144,6 +144,7 @@ jobs:
             redis-cli -h redis-svc -a "$PASSWORD" FLUSHALL
 
       - id: release
+        continue-on-error: true
         env:
           SERVICE: ${{ inputs.service }}
         run: |
@@ -151,6 +152,7 @@ jobs:
           echo "service=$SERVICE" >> "$GITHUB_OUTPUT"
 
       - uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+        continue-on-error: true
         env:
           GH_REPO: ${{ github.repository }}
         with:

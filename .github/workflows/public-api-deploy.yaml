@@ -535,6 +535,7 @@ jobs:
 
       # Names match .github/release-services.json. The workers job covers every matrix leg, so a successful result means all changed workers were deployed.
       - id: services
+        continue-on-error: true
         env:
           API_RESULT: ${{ needs.deploy-api.result }}
           GATEWAY_RESULT: ${{ needs.deploy-api-gateway.result }}
@@ -555,6 +556,7 @@ jobs:
 
       - if: steps.services.outputs.list != ''
         uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+        continue-on-error: true
         env:
           GH_REPO: ${{ github.repository }}
         with:
