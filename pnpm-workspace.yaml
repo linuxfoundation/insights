@@ -58,7 +58,7 @@ overrides:
   express-rate-limit: ">=8.2.2 <9" # GHSA-46wh-pxpv-q5gq
   fast-uri: ">=3.1.2 <4" # GHSA-q3j6-qgpj-74h6, GHSA-v39h-62p7-jpjc
   path-to-regexp@8: ">=8.4.0 <9" # GHSA-j3q9-mxjg-w52f (8.x line only; 0.1.x is submodule-origin via dd-trace)
-  node-forge: ">=1.4.0 <2" # GHSA-2328-f5f3-gj25, GHSA-554w-wpv2-vw27, GHSA-5gfm-wpxj-wjgq, GHSA-5m6q-g25r-mvwx, GHSA-ppp5-5v6c-4jwp, GHSA-q67f-28xg-22rw
+  node-forge: ">=1.4.1 <2" # GHSA-2328-f5f3-gj25, GHSA-554w-wpv2-vw27, GHSA-5gfm-wpxj-wjgq, GHSA-5m6q-g25r-mvwx, GHSA-ppp5-5v6c-4jwp, GHSA-q67f-28xg-22rw; 1.4.1: GHSA-rhr8-3pm8-cq29, GHSA-6qrw-m8cv-hcxf, GHSA-7wch-p9px-956x, GHSA-jc66-7q78-782g, GHSA-8hrf-8g6f-7xwp, GHSA-hqq3-7jhf-c5jx, GHSA-5x38-2vff-x55p, GHSA-86w9-cpqp-85rv
   flatted: ">=3.4.2 <4" # GHSA-25h7-pfq9-p65f, GHSA-rf6f-7fwh-wjgh
   tar: ">=7.5.11 <8" # stacked GHSAs, see CHANGELOG 7.5.3-7.5.11
   preact: ">=10.27.3 <11" # GHSA-36hm-qxxp-pg3m
@@ -95,3 +95,9 @@ overrides:
   launch-editor: ">=2.14.2 <3" # GHSA-587h-7wmj-h5pm
   vite@7: ">=7.3.7 <8" # GHSA-587h-7wmj-h5pm (7.x line; 5.x vitepress line deferred, needs-human: major hop)
   vite@8: ">=8.3.3 <9" # GHSA-587h-7wmj-h5pm (8.x line; 8.3.0-8.3.2 also affected, patched in 8.3.3)
+  follow-redirects: ">=1.16.2 <2" # GHSA-mrwp-f3q8-3g9p, GHSA-q3jh-wrc6-jgq8, GHSA-8r9p-f939-6h3c
+  body-parser@2: ">=2.4.0 <3" # GHSA-27r3-jxmh-p828
+  undici@8: "8.12.2" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c (8.x line; pinned to reviewed release; 7.x deferred, needs-human: miniflare exact-pins 7.29.0)
+  seroval: "1.6.8" # GHSA-7rv5-mrxv-xcr9, GHSA-97r2-qh9m-474h, GHSA-wp97-x4hv-qvhp (build-time only via @nuxt/vite-builder; pinned to reviewed release)
+  zod@4: "4.6.6" # GHSA-mrhx-c7xc-m3w5 (4.x line; pinned to reviewed release; 3.x via is-zod deferred, needs-human: major hop)
+  "isomorphic-dompurify>dompurify": "3.4.17" # GHSA-cg2g-xh64-v4q7, GHSA-mrv2-3pqr-j5jr (scoped: @linuxfoundation/lfx-ui-core exact-pins 3.3.3 and stays on it; pinned to reviewed release)
