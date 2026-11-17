@@ -28,6 +28,8 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --filter @lfx-insights/api... --prod --frozen-lockfile
 
 FROM node:${NODE_VERSION}-slim AS prod
+ARG APP_VERSION=unknown
+ENV APP_VERSION=$APP_VERSION
 ENV NODE_ENV=production
 # Keys the response cache to this build, see src/response-cache.ts.
 ARG GIT_SHA=""

@@ -15,6 +15,8 @@ COPY ./workers/temporal/package_downloads_worker ./workers/temporal/package_down
 RUN pnpm i --frozen-lockfile
 
 FROM node:24-bookworm-slim AS runner
+ARG APP_VERSION=unknown
+ENV APP_VERSION=$APP_VERSION
 
 WORKDIR /usr/insights/app
 RUN npm install -g corepack@latest && corepack enable pnpm && corepack prepare pnpm@10.12.4 --activate && apt update && apt install -y ca-certificates --no-install-recommends && rm -rf /var/lib/apt/lists/*

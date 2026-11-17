@@ -34,6 +34,8 @@ RUN --mount=type=cache,id=pnpm,target=${PNPM_CACHE_DIR} pnpm config set store-di
 
 ## Runner stage
 FROM node:${NODE_VERSION}-bookworm-slim AS runner
+ARG APP_VERSION=unknown
+ENV APP_VERSION=$APP_VERSION
 ARG PNPM_VERSION
 
 WORKDIR /insights-search-volume-app/workers/temporal/search_volume_worker

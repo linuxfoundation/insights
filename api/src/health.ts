@@ -14,9 +14,13 @@ export const healthRoutes: FastifyPluginAsync = async (scope) => {
   scope.addHook('onClose', closeCmPool);
   scope.addHook('onClose', closeRedis);
 
-  scope.get('/health/live', { schema: { hide: true } }, async () => ({ status: 'ok' }));
+  scope.get('/health/live', { schema: { hide: true } }, async (_request, reply) => {
+    reply.header('X-App-Version', process.env.APP_VERSION ?? 'unknown');
+    return { status: 'ok' };
+  });
 
   scope.get('/health/ready', { schema: { hide: true } }, async (_request, reply) => {
+    reply.header('X-App-Version', process.env.APP_VERSION ?? 'unknown');
     const missing = missingEnv([...cmDbEnv, ...tinybirdEnv, ...authEnv, ...redisEnv]);
     const invalidConfig: string[] = [];
     try {

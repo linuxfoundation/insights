@@ -79,6 +79,8 @@ RUN echo "Building with APP_ENV=$APP_ENV" && \
 # Production stage: Minimal runtime image
 # ============================================
 FROM node:${NODE_VERSION}-slim AS prod
+ARG APP_VERSION=unknown
+ENV APP_VERSION=$APP_VERSION
 
 # Install system packages needed by sharp and font rendering
 # Combine update, install, and cleanup in single layer
