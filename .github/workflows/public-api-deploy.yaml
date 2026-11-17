@@ -528,6 +528,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
@@ -555,7 +556,7 @@ jobs:
           echo "list=${services[*]}" >> "$GITHUB_OUTPUT"
 
       - if: steps.services.outputs.list != ''
-        uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+        uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@b8a4fb16d54785852300af070e44a4d466369aa1 # TODO repin after crowd.dev merge
         continue-on-error: true
         env:
           GH_REPO: ${{ github.repository }}

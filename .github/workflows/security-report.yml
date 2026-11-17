@@ -35,7 +35,7 @@ jobs:
 
       # Our own digest: open alerts by severity and the ones past the SLA (critical 7 days, high 30 days).
       - id: sla
-        uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+        uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@b8a4fb16d54785852300af070e44a4d466369aa1 # TODO repin after crowd.dev merge
         env:
           GH_REPO: ${{ github.repository }}
         with:

@@ -28,6 +28,7 @@ env:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   deploy:
@@ -151,7 +152,7 @@ jobs:
           [ "$SERVICE" = frontend ] && SERVICE=app
           echo "service=$SERVICE" >> "$GITHUB_OUTPUT"
 
-      - uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+      - uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@b8a4fb16d54785852300af070e44a4d466369aa1 # TODO repin after crowd.dev merge
         continue-on-error: true
         env:
           GH_REPO: ${{ github.repository }}
