@@ -97,7 +97,7 @@ overrides:
   vite@8: ">=8.3.3 <9" # GHSA-587h-7wmj-h5pm (8.x line; 8.3.0-8.3.2 also affected, patched in 8.3.3)
   follow-redirects: ">=1.16.2 <2" # GHSA-mrwp-f3q8-3g9p, GHSA-q3jh-wrc6-jgq8, GHSA-8r9p-f939-6h3c
   body-parser@2: ">=2.4.0 <3" # GHSA-27r3-jxmh-p828
-  undici@8: "8.12.2" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c (8.x line; pinned to reviewed release; 7.x deferred, needs-human: miniflare exact-pins 7.29.0)
+  undici@8: "8.12.4" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c, GHSA-mqg3-3v4r-cm32 (8.x line; pinned to reviewed release; 7.x deferred, needs-human: miniflare exact-pins 7.29.0)
   seroval: "1.6.8" # GHSA-7rv5-mrxv-xcr9, GHSA-97r2-qh9m-474h, GHSA-wp97-x4hv-qvhp (build-time only via @nuxt/vite-builder; pinned to reviewed release)
   zod@4: "4.6.6" # GHSA-mrhx-c7xc-m3w5 (4.x line; pinned to reviewed release; 3.x via is-zod deferred, needs-human: major hop)
   "isomorphic-dompurify>dompurify": "3.4.17" # GHSA-cg2g-xh64-v4q7, GHSA-mrv2-3pqr-j5jr (scoped: @linuxfoundation/lfx-ui-core exact-pins 3.3.3 and stays on it; pinned to reviewed release)
