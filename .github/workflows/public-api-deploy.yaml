@@ -515,3 +515,43 @@ jobs:
         run: |
           kubectl rollout undo deployment/"$SERVICE"-dpl -n insights
           kubectl rollout status deployment/"$SERVICE"-dpl -n insights --timeout=300s
+
+  publish-releases:
+    needs: [changes, deploy-api, deploy-api-gateway, deploy-app, deploy-workers]
+    if: always() && !cancelled() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+
+      # Names match .github/release-services.json. The workers job covers every matrix leg, so a successful result means all changed workers were deployed.
+      - id: services
+        env:
+          API_RESULT: ${{ needs.deploy-api.result }}
+          GATEWAY_RESULT: ${{ needs.deploy-api-gateway.result }}
+          APP_RESULT: ${{ needs.deploy-app.result }}
+          WORKERS_RESULT: ${{ needs.deploy-workers.result }}
+          WORKERS: ${{ needs.changes.outputs.workers }}
+        run: |
+          services=()
+          [ "$API_RESULT" = success ] && services+=(api)
+          [ "$GATEWAY_RESULT" = success ] && services+=(api-gateway)
+          [ "$APP_RESULT" = success ] && services+=(app)
+          if [ "$WORKERS_RESULT" = success ]; then
+            while read -r worker; do
+              services+=("$worker")
+            done < <(jq -r '.[].service' <<< "$WORKERS")
+          fi
+          echo "list=${services[*]}" >> "$GITHUB_OUTPUT"
+
+      - if: steps.services.outputs.list != ''
+        uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+        env:
+          GH_REPO: ${{ github.repository }}
+        with:
+          command: deployed
+          services: ${{ steps.services.outputs.list }}
+          publish: "true"

@@ -1,0 +1,27 @@
+name: Release tag
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-tag
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+
+      - uses: linuxfoundation/crowd.dev/.github/actions/repo-automation@017616984cca938058659de6ba83ddfd9e4d9668 # TODO repin after crowd.dev merge
+        env:
+          GH_REPO: ${{ github.repository }}
+        with:
+          command: tag
+          initial-version: v0.1.0

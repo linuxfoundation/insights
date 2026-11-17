@@ -1,0 +1,52 @@
+{
+  "rules": [
+    {
+      "prefix": "api/",
+      "services": ["api"]
+    },
+    {
+      "prefix": "workers/api-gateway/",
+      "services": ["api-gateway"]
+    },
+    {
+      "prefix": "frontend/",
+      "services": ["app"]
+    },
+    {
+      "prefix": "workers/temporal/package_downloads_worker/",
+      "services": ["package-downloads-worker"]
+    },
+    {
+      "prefix": "workers/temporal/search_volume_worker/",
+      "services": ["search-volume-worker"]
+    },
+    {
+      "prefix": "workers/temporal/vulnerability_enrichment_worker/",
+      "services": ["vulnerability-enrichment-worker"]
+    },
+    {
+      "prefix": "workers/temporal/base/",
+      "services": "*"
+    },
+    {
+      "prefix": "libs/",
+      "services": "*"
+    },
+    {
+      "prefix": "submodules/",
+      "services": "*"
+    },
+    {
+      "prefix": "package.json",
+      "services": "*"
+    },
+    {
+      "prefix": "pnpm-lock.yaml",
+      "services": "*"
+    },
+    {
+      "prefix": "pnpm-workspace.yaml",
+      "services": "*"
+    }
+  ]
+}
