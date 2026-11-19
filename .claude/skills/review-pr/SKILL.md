@@ -10,7 +10,7 @@ description: >
   before any comment lands on the PR. Use when reviewing PRs, checking PR
   quality, validating code changes, or when the user says "review", "check this
   PR", or "audit code".
-allowed-tools: Bash(gh repo view --json nameWithOwner --jq .nameWithOwner), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr list --author *), Bash(gh api repos/*/pulls/*/comments --paginate), Bash(git fetch origin), Bash(git show origin/*), Bash(git merge-base --is-ancestor origin/main origin/*), Read, Glob, Grep, Agent, AskUserQuestion
+allowed-tools: Bash(gh repo view --json nameWithOwner --jq .nameWithOwner), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr list --author *), Bash(gh api repos/*/pulls/*/comments --paginate), Bash(gh api repos/*/pulls/*/reviews --paginate), Bash(gh api repos/*/pulls/*/commits --paginate), Bash(git fetch origin), Bash(git show origin/*), Bash(git diff origin/*), Bash(git merge-base --is-ancestor origin/main origin/*), Read, Glob, Grep, Agent, AskUserQuestion
 ---
 
 # Insights PR Review
@@ -60,8 +60,8 @@ Run all of the following in a single turn, exactly as written (one command per c
 redirects or extra flags):
 
 ```bash
-# PR details, review summaries and commit messages
-gh pr view <N> --json title,body,headRefName,baseRefName,author,files,additions,deletions,state,number,reviews,commits
+# PR details
+gh pr view <N> --json title,body,headRefName,baseRefName,author,files,additions,deletions,state,number
 
 # Full diff
 gh pr diff <N>
@@ -69,12 +69,19 @@ gh pr diff <N>
 # Previous inline review comments
 gh api repos/{owner}/{repo}/pulls/{N}/comments --paginate
 
+# Previous review summaries
+gh api repos/{owner}/{repo}/pulls/{N}/reviews --paginate
+
+# Commit messages (read `.commit.message` from each entry)
+gh api repos/{owner}/{repo}/pulls/{N}/commits --paginate
+
 # Update the origin/* remote-tracking branches for git show and the merge-base check (no refspec)
 git fetch origin
 ```
 
-If the diff is too large, read only the changed `.ts`, `.vue`, `.scss` and `.md` files with
-`git show origin/<headRefName>:<path>`.
+If the diff is too large, review the changed `.ts`, `.vue`, `.scss` and `.md` files one at a
+time with `git diff origin/<baseRefName>...origin/<headRefName> -- <path>`, which shows removed
+lines and deleted files as well as additions.
 
 ### Load all project rules (dynamic — do not hardcode)
 

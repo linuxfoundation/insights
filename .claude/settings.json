@@ -52,7 +52,14 @@
       "Bash(gh api * --raw-field*)",
       "Bash(gh api * -X*)",
       "Bash(gh api * --method*)",
-      "Bash(gh api * --input*)"
+      "Bash(gh api * --input*)",
+      "Bash(gh api -f*)",
+      "Bash(gh api -F*)",
+      "Bash(gh api --field*)",
+      "Bash(gh api --raw-field*)",
+      "Bash(gh api -X*)",
+      "Bash(gh api --method*)",
+      "Bash(gh api --input*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
