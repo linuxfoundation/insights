@@ -10,7 +10,7 @@ description: >
   before any comment lands on the PR. Use when reviewing PRs, checking PR
   quality, validating code changes, or when the user says "review", "check this
   PR", or "audit code".
-allowed-tools: Bash(gh repo view --json nameWithOwner --jq .nameWithOwner), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr list --author *), Bash(gh api repos/*/pulls/*/comments --paginate), Bash(git fetch origin *), Bash(git show origin/*), Bash(git merge-base --is-ancestor origin/main origin/*), Read, Glob, Grep, Agent, AskUserQuestion
+allowed-tools: Bash(gh repo view --json nameWithOwner --jq .nameWithOwner), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr list --author *), Bash(gh api repos/*/pulls/*/comments --paginate), Bash(git fetch origin), Bash(git show origin/*), Bash(git merge-base --is-ancestor origin/main origin/*), Read, Glob, Grep, Agent, AskUserQuestion
 ---
 
 # Insights PR Review
@@ -69,8 +69,8 @@ gh pr diff <N>
 # Previous inline review comments
 gh api repos/{owner}/{repo}/pulls/{N}/comments --paginate
 
-# Fetch both branches for merge-base check
-git fetch origin <baseRefName> <headRefName>
+# Update the origin/* remote-tracking branches for git show and the merge-base check (no refspec)
+git fetch origin
 ```
 
 If the diff is too large, read only the changed `.ts`, `.vue`, `.scss` and `.md` files with

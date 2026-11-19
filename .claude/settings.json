@@ -41,7 +41,6 @@
       "Bash(git status)",
       "Bash(git diff *)",
       "Bash(git log *)",
-      "Bash(git commit *)",
       "Read"
     ],
     "ask": [
