@@ -41,52 +41,12 @@ export interface MailingListsMessages {
   }[];
 }
 
-export interface SocialMentions {
-  summary: Summary;
-  data: {
-    startDate: string;
-    endDate: string;
-    twitter: number;
-    reddit: number;
-    hackerNews: number;
-    stackOverflow: number;
-  }[];
-}
-
-export interface GithubMentions {
-  summary: Summary;
-  data: {
-    startDate: string;
-    endDate: string;
-    mentions: number;
-  }[];
-}
-
 export interface SearchQueries {
   data: {
     startDate: string;
     endDate: string;
     queryCount: number;
   }[];
-}
-
-export interface PressMention {
-  thumbnail: string;
-  title: string;
-  url: string;
-  date: string;
-  description: string;
-  source: string;
-}
-
-export interface PressMentions {
-  summary: Summary;
-  data: {
-    startDate: string;
-    endDate: string;
-    mentions: number;
-  }[];
-  list: PressMention[];
 }
 
 export interface PackageDownloads {

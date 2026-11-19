@@ -27,13 +27,10 @@ import pullRequests from './development/pull-requests/pull-requests.config';
 import reviewEfficiency from './development/review-efficiency/review-efficiency.config';
 import reviewTimeByPullRequestSize from './development/review-time-by-pull-request-size/review-time-by-pull-request-size.config';
 import forks from './popularity/forks/forks.config';
-import githubMentions from './popularity/github-mentions/github-mentions.config';
 import mailingListMessages from './popularity/mailing-list-messages/mailing-list-messages.config';
 import packageDependency from './popularity/package-dependency/package-dependency.config';
 import packageDownloads from './popularity/package-downloads/package-downloads.config';
-import pressMentions from './popularity/press-mentions/press-mentions.config';
 import searchQueries from './popularity/search-queries/search-queries.config';
-import socialMentions from './popularity/social-mentions/social-mentions.config';
 import stars from './popularity/stars/stars.config';
 
 export interface WidgetBenchmarkConfig {
@@ -103,9 +100,6 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   // Popularity
   [Widget.STARS]: stars,
   [Widget.FORKS]: forks,
-  [Widget.SOCIAL_MENTIONS]: socialMentions,
-  [Widget.GITHUB_MENTIONS]: githubMentions,
-  [Widget.PRESS_MENTIONS]: pressMentions,
   [Widget.SEARCH_QUERIES]: searchQueries,
   [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
   [Widget.PACKAGE_DEPENDENCY]: packageDependency,
