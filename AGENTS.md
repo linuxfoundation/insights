@@ -63,7 +63,7 @@ directory. Lint and format from the root, where they cover every package.
 | Storybook         | `cd frontend && pnpm storybook` (port 6006)                           |
 | Docs sites        | `/setup-docs` skill covers VitePress docs and blog                    |
 
-Never use `npm`, `npx` or `yarn`. `.claude/settings.json` only permits `pnpm` and git.
+Never use `npm`, `npx` or `yarn`. `.claude/settings.json` pre-approves only the fixed lint, format, type-check, test and build commands and a few read-only git commands; everything else prompts.
 
 Before opening a PR, run the `/preflight` skill.
 
