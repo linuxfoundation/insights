@@ -1,48 +1,57 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { getRequestWebStream, type H3Event } from 'h3';
+import type { H3Event } from 'h3';
 
 export const MAX_RETURN_TO_LENGTH = 2048;
 
+const BODY_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
 /**
- * Reads a JSON body up to maxBytes. Returns undefined when the body is missing, malformed or
- * too large. Reads the raw stream because readBody skips bodies without Content-Length, which
- * happens behind Cloudflare.
+ * Reads a JSON body up to maxBytes, or returns undefined when it is missing, malformed or too large.
+ * Reads the Node request directly because readBody skips bodies without Content-Length (Cloudflare strips it).
  */
-export async function readBoundedJsonBody(
+export function readBoundedJsonBody(
   event: H3Event,
   maxBytes: number,
 ): Promise<unknown | undefined> {
-  const stream = getRequestWebStream(event);
-  if (!stream) return undefined;
+  const req = event.node.req;
+  if (!BODY_METHODS.has(event.method) || req.readableEnded) return Promise.resolve(undefined);
 
-  const reader = stream.getReader();
-  const chunks: Uint8Array[] = [];
-  let totalBytes = 0;
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      totalBytes += value.byteLength;
+  return new Promise((resolve) => {
+    const chunks: Buffer[] = [];
+    let totalBytes = 0;
+
+    const finish = (value: unknown | undefined) => {
+      req.off('data', onData);
+      req.off('end', onEnd);
+      req.off('error', onError);
+      resolve(value);
+    };
+    const onData = (chunk: Buffer) => {
+      totalBytes += chunk.length;
       if (totalBytes > maxBytes) {
-        await reader.cancel();
-        return undefined;
+        // Keep the socket usable for the response by discarding the rest of the upload.
+        req.resume();
+        finish(undefined);
+        return;
       }
-      chunks.push(value);
-    }
-    const combined = new Uint8Array(totalBytes);
-    let offset = 0;
-    for (const chunk of chunks) {
-      combined.set(chunk, offset);
-      offset += chunk.byteLength;
-    }
-    return JSON.parse(new TextDecoder().decode(combined));
-  } catch {
-    return undefined;
-  }
+      chunks.push(chunk);
+    };
+    const onEnd = () => {
+      try {
+        finish(JSON.parse(Buffer.concat(chunks).toString('utf8')));
+      } catch {
+        finish(undefined);
+      }
+    };
+    const onError = () => finish(undefined);
+
+    req.on('data', onData);
+    req.on('end', onEnd);
+    req.on('error', onError);
+  });
 }
 
-/** Returns body.returnTo when it is a string no longer than a URL, otherwise undefined. */
 export function readReturnTo(body: unknown): string | undefined {
   if (!body || typeof body !== 'object') return undefined;
   const { returnTo } = body as { returnTo?: unknown };

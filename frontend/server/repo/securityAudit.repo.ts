@@ -72,7 +72,9 @@ const cap = (value: string | undefined, max: number): string | null =>
 function capDetails(details: Record<string, unknown> | undefined): string | null {
   if (!details) return null;
   const json = JSON.stringify(details);
-  return json.length <= AUDIT_FIELD_LIMITS.details ? json : JSON.stringify({ truncated: true });
+  return Buffer.byteLength(json, 'utf8') <= AUDIT_FIELD_LIMITS.details
+    ? json
+    : JSON.stringify({ truncated: true });
 }
 
 export class SecurityAuditRepository {

@@ -53,6 +53,22 @@ describe('SecurityAuditRepository', () => {
     expect(() => JSON.parse(details)).not.toThrow();
   });
 
+  it('caps details by UTF-8 bytes, not characters', async () => {
+    const { pool, query } = createPool();
+    const repo = new SecurityAuditRepository(pool, new AuditWriteLimiter(), clock);
+
+    // 600 three-byte characters: under 1024 characters but about 1.8 KB.
+    await repo.logSecurityEvent({
+      eventType: 'invalid_redirect',
+      endpoint: '/api/auth/login',
+      details: { blob: '漢'.repeat(600) },
+    });
+
+    const [[, params]] = insertCalls(query);
+    const details = (params as string[])[5]!;
+    expect(Buffer.byteLength(details, 'utf8')).toBeLessThanOrEqual(AUDIT_FIELD_LIMITS.details);
+  });
+
   it('keeps short values unchanged', async () => {
     const { pool, query } = createPool();
     const repo = new SecurityAuditRepository(pool, new AuditWriteLimiter(), clock);
