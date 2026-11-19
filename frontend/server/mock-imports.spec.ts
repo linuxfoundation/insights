@@ -7,6 +7,7 @@ import { describe, expect, test } from 'vitest';
 
 const serverDir = __dirname;
 const mocksDir = join(serverDir, 'mocks');
+const mocksImport = /(?:from\s+|import\s*\(?\s*)['"](?:[^'"]*\/)?mocks\//;
 
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -23,7 +24,7 @@ function sourceFiles(dir: string): string[] {
 describe('server modules', () => {
   test('do not import from server/mocks', () => {
     const importers = sourceFiles(serverDir)
-      .filter((file) => /from\s+['"](?:[^'"]*\/)?mocks\//.test(readFileSync(file, 'utf8')))
+      .filter((file) => mocksImport.test(readFileSync(file, 'utf8')))
       .map((file) => relative(serverDir, file));
 
     expect(importers).toEqual([]);
