@@ -13,8 +13,88 @@ export interface SecurityAuditLogEntry {
   details?: Record<string, unknown>;
 }
 
+export const AUDIT_FIELD_LIMITS = {
+  endpoint: 128,
+  ipAddress: 64,
+  userAgent: 256,
+  attemptedValue: 512,
+  details: 1024,
+} as const;
+
+export const AUDIT_RETENTION_DAYS = 30;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export interface AuditWriteLimits {
+  perClient: number;
+  global: number;
+  windowMs: number;
+  pruneIntervalMs: number;
+}
+
+const DEFAULT_LIMITS: AuditWriteLimits = {
+  perClient: 3,
+  global: 20,
+  windowMs: 60_000,
+  pruneIntervalMs: 60 * 60 * 1000,
+};
+
+/**
+ * Fixed-window counters for audit writes, kept per process. The global cap bounds table growth
+ * even when callers rotate the client address, since that value comes from request headers.
+ */
+export class AuditWriteLimiter {
+  private readonly limits: AuditWriteLimits;
+  private windowStart = 0;
+  private total = 0;
+  private perClient = new Map<string, number>();
+  private lastPruneAt: number | undefined;
+
+  constructor(limits: Partial<AuditWriteLimits> = {}) {
+    this.limits = { ...DEFAULT_LIMITS, ...limits };
+  }
+
+  tryAcquire(clientKey: string, now: number): boolean {
+    if (now - this.windowStart >= this.limits.windowMs) {
+      this.windowStart = now;
+      this.total = 0;
+      this.perClient.clear();
+    }
+    if (this.total >= this.limits.global) return false;
+
+    const count = this.perClient.get(clientKey) ?? 0;
+    if (count >= this.limits.perClient) return false;
+
+    this.perClient.set(clientKey, count + 1);
+    this.total += 1;
+    return true;
+  }
+
+  shouldPrune(now: number): boolean {
+    if (this.lastPruneAt !== undefined && now - this.lastPruneAt < this.limits.pruneIntervalMs) {
+      return false;
+    }
+    this.lastPruneAt = now;
+    return true;
+  }
+}
+
+const sharedLimiter = new AuditWriteLimiter();
+
+const cap = (value: string | undefined, max: number): string | null =>
+  value ? value.slice(0, max) : null;
+
+function capDetails(details: Record<string, unknown> | undefined): string | null {
+  if (!details) return null;
+  const json = JSON.stringify(details);
+  return json.length <= AUDIT_FIELD_LIMITS.details ? json : JSON.stringify({ truncated: true });
+}
+
 export class SecurityAuditRepository {
-  constructor(private pool: Pool) {}
+  constructor(
+    private pool: Pool,
+    private limiter: AuditWriteLimiter = sharedLimiter,
+    private now: () => number = Date.now,
+  ) {}
 
   /**
    * Logs a security audit event to the database.
@@ -22,6 +102,10 @@ export class SecurityAuditRepository {
    * internally to avoid affecting the main request flow.
    */
   async logSecurityEvent(entry: SecurityAuditLogEntry): Promise<void> {
+    const now = this.now();
+    const clientKey = cap(entry.ipAddress, AUDIT_FIELD_LIMITS.ipAddress) ?? 'unknown';
+    if (!this.limiter.tryAcquire(clientKey, now)) return;
+
     try {
       const query = `
         INSERT INTO security_audit_logs (
@@ -37,12 +121,18 @@ export class SecurityAuditRepository {
 
       await this.pool.query(query, [
         entry.eventType,
-        entry.endpoint,
-        entry.ipAddress || null,
-        entry.userAgent || null,
-        entry.attemptedValue || null,
-        entry.details ? JSON.stringify(entry.details) : null,
+        cap(entry.endpoint, AUDIT_FIELD_LIMITS.endpoint),
+        cap(entry.ipAddress, AUDIT_FIELD_LIMITS.ipAddress),
+        cap(entry.userAgent, AUDIT_FIELD_LIMITS.userAgent),
+        cap(entry.attemptedValue, AUDIT_FIELD_LIMITS.attemptedValue),
+        capDetails(entry.details),
       ]);
+
+      if (this.limiter.shouldPrune(now)) {
+        await this.pool.query('DELETE FROM security_audit_logs WHERE created_at < $1', [
+          new Date(now - AUDIT_RETENTION_DAYS * DAY_MS),
+        ]);
+      }
     } catch (error) {
       // Log to console but don't throw - security logging should not break the main flow
       console.error('Failed to log security audit event:', error);
