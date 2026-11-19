@@ -21,21 +21,16 @@ export const AUDIT_FIELD_LIMITS = {
   details: 1024,
 } as const;
 
-export const AUDIT_RETENTION_DAYS = 30;
-const DAY_MS = 24 * 60 * 60 * 1000;
-
 export interface AuditWriteLimits {
   perClient: number;
   global: number;
   windowMs: number;
-  pruneIntervalMs: number;
 }
 
 const DEFAULT_LIMITS: AuditWriteLimits = {
   perClient: 3,
   global: 20,
   windowMs: 60_000,
-  pruneIntervalMs: 60 * 60 * 1000,
 };
 
 /**
@@ -47,7 +42,6 @@ export class AuditWriteLimiter {
   private windowStart = 0;
   private total = 0;
   private perClient = new Map<string, number>();
-  private lastPruneAt: number | undefined;
 
   constructor(limits: Partial<AuditWriteLimits> = {}) {
     this.limits = { ...DEFAULT_LIMITS, ...limits };
@@ -66,14 +60,6 @@ export class AuditWriteLimiter {
 
     this.perClient.set(clientKey, count + 1);
     this.total += 1;
-    return true;
-  }
-
-  shouldPrune(now: number): boolean {
-    if (this.lastPruneAt !== undefined && now - this.lastPruneAt < this.limits.pruneIntervalMs) {
-      return false;
-    }
-    this.lastPruneAt = now;
     return true;
   }
 }
@@ -102,9 +88,8 @@ export class SecurityAuditRepository {
    * internally to avoid affecting the main request flow.
    */
   async logSecurityEvent(entry: SecurityAuditLogEntry): Promise<void> {
-    const now = this.now();
     const clientKey = cap(entry.ipAddress, AUDIT_FIELD_LIMITS.ipAddress) ?? 'unknown';
-    if (!this.limiter.tryAcquire(clientKey, now)) return;
+    if (!this.limiter.tryAcquire(clientKey, this.now())) return;
 
     try {
       const query = `
@@ -127,12 +112,6 @@ export class SecurityAuditRepository {
         cap(entry.attemptedValue, AUDIT_FIELD_LIMITS.attemptedValue),
         capDetails(entry.details),
       ]);
-
-      if (this.limiter.shouldPrune(now)) {
-        await this.pool.query('DELETE FROM security_audit_logs WHERE created_at < $1', [
-          new Date(now - AUDIT_RETENTION_DAYS * DAY_MS),
-        ]);
-      }
     } catch (error) {
       // Log to console but don't throw - security logging should not break the main flow
       console.error('Failed to log security audit event:', error);

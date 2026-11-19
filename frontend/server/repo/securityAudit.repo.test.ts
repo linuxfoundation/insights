@@ -6,13 +6,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import {
   AUDIT_FIELD_LIMITS,
-  AUDIT_RETENTION_DAYS,
   AuditWriteLimiter,
   SecurityAuditRepository,
 } from './securityAudit.repo';
 
 const MINUTE = 60_000;
-const HOUR = 60 * MINUTE;
 
 const huge = (size = 5 * 1024 * 1024) => 'a'.repeat(size);
 
@@ -23,9 +21,6 @@ function createPool() {
 
 const insertCalls = (query: ReturnType<typeof vi.fn>) =>
   query.mock.calls.filter(([sql]) => String(sql).includes('INSERT INTO security_audit_logs'));
-
-const deleteCalls = (query: ReturnType<typeof vi.fn>) =>
-  query.mock.calls.filter(([sql]) => String(sql).includes('DELETE FROM security_audit_logs'));
 
 describe('SecurityAuditRepository', () => {
   let now: number;
@@ -111,25 +106,6 @@ describe('SecurityAuditRepository', () => {
     await repo.logInvalidRedirect('/api/auth/login', 'x', '1.2.3.4');
 
     expect(insertCalls(query)).toHaveLength(2);
-  });
-
-  it('deletes rows older than the retention window, at most once per hour', async () => {
-    const { pool, query } = createPool();
-    const limiter = new AuditWriteLimiter({ perClient: 100, global: 100, windowMs: MINUTE });
-    const repo = new SecurityAuditRepository(pool, limiter, clock);
-
-    await repo.logInvalidRedirect('/api/auth/login', 'x', '1.2.3.4');
-    await repo.logInvalidRedirect('/api/auth/login', 'x', '1.2.3.4');
-    expect(deleteCalls(query)).toHaveLength(1);
-
-    now += HOUR;
-    await repo.logInvalidRedirect('/api/auth/login', 'x', '1.2.3.4');
-    expect(deleteCalls(query)).toHaveLength(2);
-
-    const [[sql, params]] = deleteCalls(query);
-    expect(String(sql)).toMatch(/created_at < \$1/);
-    const cutoff = (params as Date[])[0]!;
-    expect(cutoff.getTime()).toBe(Date.UTC(2026, 10, 19) - AUDIT_RETENTION_DAYS * 24 * HOUR);
   });
 
   it('does not throw when the database fails', async () => {
