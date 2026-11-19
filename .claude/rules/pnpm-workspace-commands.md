@@ -25,7 +25,7 @@ This is a pnpm monorepo. All package management and script execution must follow
 
    Lint and format run from the repo root instead: `pnpm lint` (oxlint) and `pnpm format` (oxfmt) cover every package
 
-4. **Never use `npm run *`** — `.claude/settings.json` only allows `Bash(pnpm *)` and git commands, and pnpm is the required tool for this repo
+4. **Never use `npm run *`** — pnpm is the required tool for this repo. `.claude/settings.json` pre-approves only the fixed lint, format, type-check, test and build commands (no wildcards), so `pnpm install`, `pnpm dlx`, `pnpm exec` and other scripts ask first
 
 ## Common Commands Reference
 

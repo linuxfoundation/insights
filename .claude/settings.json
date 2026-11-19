@@ -30,16 +30,36 @@
   },
   "permissions": {
     "allow": [
-      "Bash(pnpm *)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:fix)",
+      "Bash(pnpm format)",
+      "Bash(pnpm format:check)",
+      "Bash(pnpm tsc-check)",
+      "Bash(pnpm test)",
+      "Bash(pnpm test --run)",
+      "Bash(pnpm build)",
       "Bash(git status)",
       "Bash(git diff *)",
       "Bash(git log *)",
-      "Bash(git checkout *)",
-      "Bash(git commit *)",
-      "Bash(git push *)",
-      "Read",
-      "Write",
-      "Edit"
+      "Read"
+    ],
+    "ask": [
+      "Bash(git * --output*)",
+      "Bash(git * --upload-pack*)",
+      "Bash(gh api * -f*)",
+      "Bash(gh api * -F*)",
+      "Bash(gh api * --field*)",
+      "Bash(gh api * --raw-field*)",
+      "Bash(gh api * -X*)",
+      "Bash(gh api * --method*)",
+      "Bash(gh api * --input*)",
+      "Bash(gh api -f*)",
+      "Bash(gh api -F*)",
+      "Bash(gh api --field*)",
+      "Bash(gh api --raw-field*)",
+      "Bash(gh api -X*)",
+      "Bash(gh api --method*)",
+      "Bash(gh api --input*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
