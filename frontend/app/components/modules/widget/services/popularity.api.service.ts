@@ -13,9 +13,6 @@ import type {
   PackageDownloads,
   SearchQueries,
   StarsData,
-  GithubMentions,
-  PressMentions,
-  SocialMentions,
 } from '~~/types/popularity/responses.types';
 
 export interface QueryParams {
@@ -41,14 +38,6 @@ export interface PackagesQueryParams {
   collectionSlug?: string;
   repos?: string[];
   search?: string;
-}
-
-export interface GithubMentionsQueryParams extends QueryParams {
-  type: string;
-}
-
-export interface SocialMentionsQueryParams extends QueryParams {
-  type: string;
 }
 
 class PopularityApiService {
@@ -336,144 +325,6 @@ class PopularityApiService {
           type,
           countType,
           activityType: 'star',
-          repos,
-          startDate,
-          endDate,
-        },
-      });
-  }
-
-  fetchGithubMentions(params: ComputedRef<GithubMentionsQueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.GITHUB_MENTIONS,
-      params.value.projectSlug,
-      params.value.collectionSlug,
-      params.value.granularity,
-      params.value.repos,
-      params.value.startDate,
-      params.value.endDate,
-      params.value.type,
-    ]);
-    const queryFn = computed<QueryFunction<GithubMentions>>(() =>
-      this.githubMentionsQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        collectionSlug: params.value.collectionSlug,
-        repos: params.value.repos,
-        granularity: params.value.granularity,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-        type: params.value.type,
-      })),
-    );
-
-    return useQuery<GithubMentions>({
-      queryKey,
-      queryFn,
-    });
-  }
-
-  githubMentionsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<GithubMentions> {
-    const { projectSlug, collectionSlug, repos, startDate, endDate, granularity, type } = query();
-    return async () =>
-      await $fetch(`/api/widget/popularity/github-mentions`, {
-        params: {
-          project: projectSlug,
-          collectionSlug,
-          granularity,
-          type,
-          repos,
-          startDate,
-          endDate,
-        },
-      });
-  }
-
-  fetchPressMentions(params: ComputedRef<QueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.PRESS_MENTIONS,
-      params.value.projectSlug,
-      params.value.collectionSlug,
-      params.value.granularity,
-      params.value.repos,
-      params.value.startDate,
-      params.value.endDate,
-    ]);
-    const queryFn = computed<QueryFunction<PressMentions>>(() =>
-      this.pressMentionsQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        collectionSlug: params.value.collectionSlug,
-        repos: params.value.repos,
-        granularity: params.value.granularity,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-      })),
-    );
-
-    return useQuery<PressMentions>({
-      queryKey,
-      queryFn,
-    });
-  }
-
-  pressMentionsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<PressMentions> {
-    const { projectSlug, collectionSlug, repos, startDate, endDate, granularity } = query();
-    return async () =>
-      await $fetch(`/api/widget/popularity/press-mentions`, {
-        params: {
-          project: projectSlug,
-          collectionSlug,
-          granularity,
-          repos,
-          startDate,
-          endDate,
-        },
-      });
-  }
-
-  fetchSocialMentions(params: ComputedRef<SocialMentionsQueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.SOCIAL_MENTIONS,
-      params.value.projectSlug,
-      params.value.collectionSlug,
-      params.value.granularity,
-      params.value.repos,
-      params.value.startDate,
-      params.value.endDate,
-      params.value.type,
-    ]);
-    const queryFn = computed<QueryFunction<SocialMentions>>(() =>
-      this.socialMentionsQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        collectionSlug: params.value.collectionSlug,
-        repos: params.value.repos,
-        granularity: params.value.granularity,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-        type: params.value.type,
-      })),
-    );
-
-    return useQuery<SocialMentions>({
-      queryKey,
-      queryFn,
-    });
-  }
-
-  socialMentionsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<SocialMentions> {
-    const { projectSlug, collectionSlug, repos, startDate, endDate, granularity, type } = query();
-    return async () =>
-      await $fetch(`/api/widget/popularity/social-mentions`, {
-        params: {
-          project: projectSlug,
-          collectionSlug,
-          granularity,
-          type,
           repos,
           startDate,
           endDate,

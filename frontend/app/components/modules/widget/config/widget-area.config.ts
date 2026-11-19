@@ -30,9 +30,6 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
     widgets: [
       Widget.STARS,
       Widget.FORKS,
-      Widget.SOCIAL_MENTIONS,
-      Widget.GITHUB_MENTIONS,
-      Widget.PRESS_MENTIONS,
       Widget.SEARCH_QUERIES,
       Widget.PACKAGE_DOWNLOADS,
       Widget.PACKAGE_DEPENDENCY,

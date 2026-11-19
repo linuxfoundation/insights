@@ -46,12 +46,9 @@ export enum TanstackKey {
   // Popularity
   FORKS = 'forks',
   FORKS_CUMULATIVE = 'forks-cumulative',
-  GITHUB_MENTIONS = 'github-mentions',
   PACKAGE_DOWNLOADS = 'package-downloads',
   PACKAGES = 'packages',
-  PRESS_MENTIONS = 'press-mentions',
   SEARCH_QUERIES = 'search-queries',
-  SOCIAL_MENTIONS = 'social-mentions',
   STARS = 'stars',
   STARS_CUMULATIVE = 'stars-cumulative',
   MAILING_LISTS_MESSAGES = 'mailing-lists-messages',
