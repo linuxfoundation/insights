@@ -66,8 +66,9 @@ export class AuditWriteLimiter {
 
 const sharedLimiter = new AuditWriteLimiter();
 
-const cap = (value: string | undefined, max: number): string | null =>
-  value ? value.slice(0, max) : null;
+// Callers pass request values cast to string, and h3 returns an array for a repeated query key.
+const cap = (value: unknown, max: number): string | null =>
+  value ? String(value).slice(0, max) : null;
 
 function capDetails(details: Record<string, unknown> | undefined): string | null {
   if (!details) return null;

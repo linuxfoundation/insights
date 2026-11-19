@@ -53,6 +53,21 @@ describe('SecurityAuditRepository', () => {
     expect(() => JSON.parse(details)).not.toThrow();
   });
 
+  it('caps values that arrive as arrays at runtime', async () => {
+    const { pool, query } = createPool();
+    const repo = new SecurityAuditRepository(pool, new AuditWriteLimiter(), clock);
+    const repeated = [huge(4096), huge(4096)] as unknown as string;
+
+    await repo.logInvalidRedirect('/api/auth/login', repeated, repeated, repeated);
+
+    const [[, params]] = insertCalls(query);
+    const [, , ip, userAgent, attemptedValue] = params as unknown[];
+    expect(typeof attemptedValue).toBe('string');
+    expect(attemptedValue).toHaveLength(AUDIT_FIELD_LIMITS.attemptedValue);
+    expect(ip).toHaveLength(AUDIT_FIELD_LIMITS.ipAddress);
+    expect(userAgent).toHaveLength(AUDIT_FIELD_LIMITS.userAgent);
+  });
+
   it('caps details by UTF-8 bytes, not characters', async () => {
     const { pool, query } = createPool();
     const repo = new SecurityAuditRepository(pool, new AuditWriteLimiter(), clock);
