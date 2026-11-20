@@ -25,7 +25,7 @@ describe('useDocsReadinessEnabled', () => {
     expect(useDocsReadinessEnabled()).toBe(true);
   });
 
-  // The values Nitro produces for NUXT_PUBLIC_DOCS_READINESS_ENABLED=1, =yes, ="true" and =
+  // What Nitro yields for the env var set to 1, yes, a value with literal quotes, and empty
   test.each([1, 'yes', 'true', ''])('returns false for non-boolean value %j', (value) => {
     publicConfig.docsReadinessEnabled = value;
     expect(useDocsReadinessEnabled()).toBe(false);
