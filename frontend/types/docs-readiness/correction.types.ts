@@ -20,3 +20,12 @@ export interface DocsCorrectionContext {
   candidates: DocsCorrectionCandidate[];
   override: DocsCorrectionOverride | null;
 }
+
+export interface DocsCorrectionRequest {
+  projectSlug: string;
+  // Page the request was sent from
+  url: string;
+  // null asks to mark the project as having no documentation site
+  requestedDocsUrl: string | null;
+  description?: string;
+}

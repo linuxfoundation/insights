@@ -40,6 +40,12 @@ const rateLimiterConfig: RateLimiterConfig = {
       windowSeconds: 60, // 10 reports per minute
     },
     {
+      route: '/api/report/docs-url-correction',
+      methods: ['POST'],
+      maxRequests: 5,
+      windowSeconds: 60, // each request opens a public GitHub issue
+    },
+    {
       route: '/_og/*',
       methods: ['GET'],
       maxRequests: 10,

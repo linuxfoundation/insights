@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
 
+import { sameDocsUrl } from '~~/config/docs-url-correction';
 import type {
   DocsCorrectionCandidate,
   DocsCorrectionContext,
@@ -22,18 +23,6 @@ interface CurrentDocs {
 
 const REPO_URL_METHOD = 'repo-url';
 
-// Matches the worker's normalizeUrl for stored URLs, which are always trimmed and have a scheme.
-function normalizeUrl(url: string): string {
-  try {
-    const parsed = new URL(url);
-    parsed.hash = '';
-    const href = parsed.toString();
-    return parsed.pathname !== '/' && href.endsWith('/') ? href.slice(0, -1) : href;
-  } catch {
-    return url;
-  }
-}
-
 export function buildCorrectionCandidates(
   candidates: StoredCandidate[] | null,
   current: CurrentDocs,
@@ -42,13 +31,13 @@ export function buildCorrectionCandidates(
 
   const listed = (candidates ?? [])
     .filter((c) => c.livenessOk && c.method !== REPO_URL_METHOD)
-    .map((c) => ({ url: c.url, method: c.method, confidence: c.confidence, isCurrent: false }));
+    .map((c) => ({ url: c.url, method: c.method, confidence: c.confidence, isCurrent: false }))
+    .filter((c, i, all) => all.findIndex((o) => sameDocsUrl(o.url, c.url)) === i);
 
   if (!currentDocsUrl) {
     return { currentDocsUrl: null, candidates: listed };
   }
 
-  const currentKey = normalizeUrl(currentDocsUrl);
   return {
     currentDocsUrl,
     candidates: [
@@ -58,7 +47,7 @@ export function buildCorrectionCandidates(
         confidence: current.confidence,
         isCurrent: true,
       },
-      ...listed.filter((c) => normalizeUrl(c.url) !== currentKey),
+      ...listed.filter((c) => !sameDocsUrl(c.url, currentDocsUrl)),
     ],
   };
 }

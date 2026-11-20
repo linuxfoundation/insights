@@ -89,6 +89,7 @@ export default {
           '/api/health/live': { cache: false },
           '/api/health/ready': { cache: false },
           '/api/report': { cache: false },
+          '/api/report/docs-url-correction': { cache: false },
           '/api/report/cncf/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/report/ai-code-tracker/**': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/report/health-score-coverage/**': { cache: { maxAge: longCache, base: 'redis' } },

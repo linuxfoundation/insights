@@ -8,45 +8,53 @@ SPDX-License-Identifier: MIT
     position="bottom-center"
   >
     <template #message="slotProps">
-      <div class="flex items-center gap-3">
+      <div class="flex items-start gap-3">
         <i
-          class="p-toast-icon"
+          class="p-toast-icon mt-0.5 shrink-0"
           :class="getToastIcon(slotProps.message)"
         />
-        <div>
-          <p
-            v-if="slotProps.message.title"
-            class="text-sm font-semibold leading-5"
+        <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-2">
+          <div
+            class="min-w-0 flex-1"
+            :class="{ 'basis-60': slotProps.message.actionLabel }"
           >
-            {{ slotProps.message.title }}
-          </p>
-          <p
-            class="text-xs leading-5"
-            v-html="sanitize(slotProps.message.detail)"
-          ></p>
-        </div>
-        <div v-if="slotProps.message.actionLabel">
-          <a
-            v-if="slotProps.message.actionUrl"
-            :href="slotProps.message.actionUrl"
-            target="_blank"
-            rel="noopener noreferrer"
+            <p
+              v-if="slotProps.message.title"
+              class="text-sm font-semibold leading-5"
+            >
+              {{ slotProps.message.title }}
+            </p>
+            <p
+              class="text-xs leading-5"
+              v-html="sanitize(slotProps.message.detail)"
+            ></p>
+          </div>
+          <div
+            v-if="slotProps.message.actionLabel"
+            class="shrink-0"
           >
+            <a
+              v-if="slotProps.message.actionUrl"
+              :href="slotProps.message.actionUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <lfx-button
+                type="tertiary"
+                size="small"
+              >
+                {{ slotProps.message.actionLabel }}
+              </lfx-button>
+            </a>
             <lfx-button
+              v-else-if="slotProps.message.action"
               type="tertiary"
               size="small"
+              @click="slotProps.message.action()"
             >
               {{ slotProps.message.actionLabel }}
             </lfx-button>
-          </a>
-          <lfx-button
-            v-else-if="slotProps.message.action"
-            type="tertiary"
-            size="small"
-            @click="slotProps.message.action()"
-          >
-            {{ slotProps.message.actionLabel }}
-          </lfx-button>
+          </div>
         </div>
       </div>
     </template>
