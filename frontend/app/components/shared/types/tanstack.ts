@@ -65,6 +65,7 @@ export enum TanstackKey {
 
   // Docs readiness
   DOCS_READINESS_CORRECTION_CONTEXT = 'docs-readiness-correction-context',
+  DOCS_READINESS_SUMMARY = 'docs-readiness-summary',
 
   // Community
   COMMUNITY_MENTIONS = 'community-mentions',

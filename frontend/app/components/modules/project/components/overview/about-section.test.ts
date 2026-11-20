@@ -1,0 +1,64 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { shallowMount } from '@vue/test-utils';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import type { Ref } from 'vue';
+
+import AboutSection from './about-section.vue';
+
+const state = vi.hoisted(() => ({
+  enabled: true,
+  project: null as unknown as Ref<{ isLF: boolean } | null>,
+}));
+
+vi.mock('pinia', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('pinia')>()),
+  storeToRefs: vi.fn((store) => store),
+}));
+
+vi.mock('~~/app/components/modules/project/store/project.store', async () => {
+  const { ref: vueRef } = await import('vue');
+  state.project = vueRef({ isLF: true });
+  return {
+    useProjectStore: vi.fn(() => ({ isProjectLoading: vueRef(false), project: state.project })),
+  };
+});
+
+vi.mock('~~/composables/useDocsReadinessEnabled', () => ({
+  useDocsReadinessEnabled: vi.fn(() => state.enabled),
+}));
+
+const tileExists = () =>
+  shallowMount(AboutSection).findComponent({ name: 'LfxProjectDocsReadinessTile' }).exists();
+
+describe('about-section.vue', () => {
+  beforeEach(() => {
+    state.enabled = true;
+    state.project.value = { isLF: true };
+  });
+
+  test('mounts the tile when the flag is on and the project is LF', () => {
+    expect(tileExists()).toBe(true);
+  });
+
+  test('does not mount the tile when the flag is off', () => {
+    state.enabled = false;
+    expect(tileExists()).toBe(false);
+  });
+
+  test('does not mount the tile for a non-LF project', () => {
+    state.project.value = { isLF: false };
+    expect(tileExists()).toBe(false);
+  });
+
+  test('does not mount the tile while the project is null', () => {
+    state.project.value = null;
+    expect(tileExists()).toBe(false);
+  });
+
+  test('keeps the tile after the Data sources block', () => {
+    const root = shallowMount(AboutSection).element;
+    const last = root.lastElementChild as Element;
+    expect(last.tagName.toLowerCase()).toContain('docs-readiness-tile');
+  });
+});

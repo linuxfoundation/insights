@@ -8,8 +8,18 @@ import type {
   DocsCorrectionContext,
   DocsCorrectionRequest,
 } from '~~/types/docs-readiness/correction.types';
+import type { DocsReadinessSummary } from '~~/types/docs-readiness/readiness.types';
 
 class DocsReadinessApiService {
+  fetchSummary(slug: ComputedRef<string>) {
+    const queryKey = computed(() => [TanstackKey.DOCS_READINESS_SUMMARY, slug.value]);
+
+    return useQuery<DocsReadinessSummary>({
+      queryKey,
+      queryFn: () => $fetch(`/api/project/${slug.value}/docs-readiness/summary`),
+    });
+  }
+
   fetchCorrectionContext(slug: ComputedRef<string>) {
     const queryKey = computed(() => [TanstackKey.DOCS_READINESS_CORRECTION_CONTEXT, slug.value]);
 
