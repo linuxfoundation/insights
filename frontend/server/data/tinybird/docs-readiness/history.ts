@@ -11,7 +11,7 @@ export type TinybirdDocsReadinessHistory = {
   failedOnly: number;
   docsUrl: string;
   urlChanged: number;
-  firstEvaluatedMonth: string;
+  firstEvaluatedMonth: string | null;
 };
 
 export function mapHistory(rows: TinybirdDocsReadinessHistory[]): DocsReadinessHistory {
