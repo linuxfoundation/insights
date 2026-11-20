@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
     <lfx-skeleton
       height="1rem"
       width="16.875rem"
-      class="rounded-sm"
+      class="max-w-full rounded-sm"
     />
   </div>
 </template>
