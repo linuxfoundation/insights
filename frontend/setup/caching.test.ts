@@ -126,6 +126,14 @@ describe('caching configuration', () => {
     expect(effectiveRule('/docs/introduction/what-is-insights/').cache).not.toBe(false);
   });
 
+  test('never caches the docs URL correction POST under the /api/** redis rule', async () => {
+    const cachingConfig = await loadCachingConfig('production');
+    const matcher = toRouteMatcher(createRouter({ routes: cachingConfig.routeRules }));
+    const effectiveRule = (path: string) => Object.assign({}, ...matcher.matchAll(path));
+
+    expect(effectiveRule('/api/report/docs-url-correction').cache).toBe(false);
+  });
+
   test('every route rule pattern is declared exactly once', async () => {
     // Guards against reintroducing the DE-1044 bug: a pattern split across two config sources
     // (or duplicated within this one) has its rule silently replaced instead of merged.

@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
     </div>
     <lfx-toast theme="dark" />
     <lfx-report-global />
+    <lfx-docs-readiness-correction-global />
     <lfx-share-global />
     <lf-edit-collection-global />
     <lf-duplicate-collection-global />
@@ -33,6 +34,7 @@ import LfxAddToCollectionGlobal from '~/components/modules/collection/components
 import LfDuplicateCollectionGlobal from '~/components/modules/collection/components/create-modal/duplicate-collection-global.vue';
 import LfEditCollectionGlobal from '~/components/modules/collection/components/edit-modal/edit-collection-global.vue';
 import LfxCommunityFilterGlobal from '~/components/modules/project/components/community/sections/community-filter-global.vue';
+import LfxDocsReadinessCorrectionGlobal from '~/components/modules/project/components/docs-readiness/correction-global.vue';
 import LfxInsightsFooter from '~/components/shared/layout/footer.vue';
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxConfirmGlobal from '~/components/shared/modules/confirm/components/confirm-global.vue';
