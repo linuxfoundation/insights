@@ -40,3 +40,5 @@ Code to record a new decision interactively.
 | [ADR-0024](./0024-dd-trace-to-node-datadog-agent.md)             | The API reports to its node's Datadog agent through dd-trace                                       | accepted                       | 2026-10-26 |
 | [ADR-0025](./0025-row-offset-cursors.md)                         | Cursors hold a row offset over a unique sort order                                                 | accepted                       | 2026-10-30 |
 | [ADR-0026](./0026-api-docs-in-web-app-behind-login.md)           | The API docs are served by the web app at /docs/api, behind LFID login                             | accepted                       | 2026-11-04 |
+| [ADR-0027](./0027-mcp-calls-insights-api-with-token-exchange.md) | The LFX MCP calls the Insights API with an Auth0 token exchange                                    | accepted                       | 2026-11-12 |
+| [ADR-0028](./0028-insights-data-in-the-lfx-mcp.md)               | In the LFX MCP, Snowflake answers first and Insights shares business rules with the warehouse      | accepted                       | 2026-11-12 |
