@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
       <lfx-links />
       <lfx-project-about-section-connected-platforms />
     </lfx-project-about-section-loading>
-    <lfx-project-docs-readiness-tile v-if="docsReadinessEnabled && project?.isLF" />
+    <lfx-project-docs-readiness-tile v-if="docsReadinessEnabled && !isProjectLoading && project?.isLF" />
     <!-- <lfx-associated-organization /> -->
   </div>
 </template>

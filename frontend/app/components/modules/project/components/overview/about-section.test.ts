@@ -9,6 +9,7 @@ import AboutSection from './about-section.vue';
 const state = vi.hoisted(() => ({
   enabled: true,
   project: null as unknown as Ref<{ isLF: boolean } | null>,
+  loading: null as unknown as Ref<boolean>,
 }));
 
 vi.mock('pinia', async (importOriginal) => ({
@@ -19,8 +20,9 @@ vi.mock('pinia', async (importOriginal) => ({
 vi.mock('~~/app/components/modules/project/store/project.store', async () => {
   const { ref: vueRef } = await import('vue');
   state.project = vueRef({ isLF: true });
+  state.loading = vueRef(false);
   return {
-    useProjectStore: vi.fn(() => ({ isProjectLoading: vueRef(false), project: state.project })),
+    useProjectStore: vi.fn(() => ({ isProjectLoading: state.loading, project: state.project })),
   };
 });
 
@@ -35,6 +37,7 @@ describe('about-section.vue', () => {
   beforeEach(() => {
     state.enabled = true;
     state.project.value = { isLF: true };
+    state.loading.value = false;
   });
 
   test('mounts the tile when the flag is on and the project is LF', () => {
@@ -53,6 +56,11 @@ describe('about-section.vue', () => {
 
   test('does not mount the tile while the project is null', () => {
     state.project.value = null;
+    expect(tileExists()).toBe(false);
+  });
+
+  test('does not mount the tile while the next project loads over a stale LF project', () => {
+    state.loading.value = true;
     expect(tileExists()).toBe(false);
   });
 
