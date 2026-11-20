@@ -77,7 +77,7 @@ describe('buildCorrectionIssueBody', () => {
       '### Project',
       'Kubernetes (`kubernetes`)',
       '### Page',
-      '[https://insights.linuxfoundation.org/project/kubernetes/security](https://insights.linuxfoundation.org/project/kubernetes/security)',
+      'https://insights.linuxfoundation.org/project/kubernetes/security',
       '### Current docs URL',
       'https://docs.kubernetes.io',
       '### Requested docs URL',

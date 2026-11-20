@@ -42,11 +42,12 @@ export function validateDocsUrl(value: string, currentDocsUrl: string | null): D
   } catch {
     return 'invalid';
   }
-  if (parsed.username || parsed.password || !parsed.hostname.includes('.')) {
+  const hostname = parsed.hostname.replace(/\.$/, '');
+  if (parsed.username || parsed.password || !/^[^.]+(\.[^.]+)+$/.test(hostname)) {
     return 'invalid';
   }
 
-  if (REPOSITORY_HOSTS.includes(parsed.hostname.replace(/\.$/, '').replace(/^www\./, ''))) {
+  if (REPOSITORY_HOSTS.includes(hostname.replace(/^www\./, ''))) {
     return 'repository';
   }
 

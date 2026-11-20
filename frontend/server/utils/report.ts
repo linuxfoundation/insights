@@ -92,7 +92,7 @@ export function buildCorrectionIssueBody(input: {
     '### Project',
     `${input.projectName} (\`${input.projectSlug}\`)`,
     '### Page',
-    `[${input.url}](${input.url})`,
+    input.url,
     '### Current docs URL',
     input.currentDocsUrl ?? 'none found',
     '### Requested docs URL',

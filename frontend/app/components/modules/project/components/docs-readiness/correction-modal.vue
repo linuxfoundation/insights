@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
         <lfx-icon-button
           icon="close"
           size="small"
+          :disabled="isSending"
           @click="isModalOpen = false"
         />
       </div>
@@ -33,13 +34,15 @@ SPDX-License-Identifier: MIT
 
     <section class="flex flex-col gap-6 pb-6">
       <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm bg-neutral-50 rounded-lg px-3.5 py-2.5">
-        <span>
-          <span class="text-neutral-500">Project</span>
-          <strong class="font-semibold"> {{ context.projectName }}</strong>
+        <span class="min-w-0">
+          <span class="text-neutral-500">Project</span>{{ ' '
+          }}<strong class="font-semibold break-all">{{ context.projectName }}</strong>
         </span>
-        <span>
-          <span class="text-neutral-500">Currently evaluated</span>
-          <strong class="font-semibold"> {{ currentDocsUrl ? displayDocsUrl(currentDocsUrl) : 'None found' }}</strong>
+        <span class="min-w-0">
+          <span class="text-neutral-500">Currently evaluated</span>{{ ' '
+          }}<strong class="font-semibold break-all">{{
+            currentDocsUrl ? displayDocsUrl(currentDocsUrl) : 'None found'
+          }}</strong>
         </span>
       </div>
 
@@ -72,10 +75,11 @@ SPDX-License-Identifier: MIT
               v-model="form.picked"
               :value="candidate.url"
               name="docs-url"
+              :class="radioClass"
             >
-              <span class="flex flex-col gap-0.5">
+              <span class="flex min-w-0 flex-col gap-0.5">
                 <span class="flex flex-wrap items-center gap-2 font-semibold">
-                  {{ displayDocsUrl(candidate.url) }}
+                  <span class="break-all">{{ displayDocsUrl(candidate.url) }}</span>
                   <lfx-tag
                     v-if="candidate.isCurrent"
                     size="small"
@@ -100,6 +104,7 @@ SPDX-License-Identifier: MIT
               v-model="form.picked"
               :value="OTHER"
               name="docs-url"
+              :class="radioClass"
             >
               <span class="font-semibold">A different URL</span>
             </lfx-radio>
@@ -128,8 +133,9 @@ SPDX-License-Identifier: MIT
               v-model="form.picked"
               :value="NONE"
               name="docs-url"
+              :class="radioClass"
             >
-              <span class="flex flex-col gap-0.5">
+              <span class="flex min-w-0 flex-col gap-0.5">
                 <span class="font-semibold">The project has no documentation site</span>
                 <span class="text-xs text-neutral-500 font-normal">
                   We'll stop looking for one and show that on the project page.
@@ -178,6 +184,7 @@ SPDX-License-Identifier: MIT
         type="outline"
         button-style="pill"
         size="large"
+        :disabled="isSending"
         @click="isModalOpen = false"
       >
         Cancel
@@ -188,10 +195,9 @@ SPDX-License-Identifier: MIT
         size="large"
         :disabled="$v.$invalid"
         :loading="isSending"
+        label="Submit request"
         @click="submit()"
-      >
-        Submit request
-      </lfx-button>
+      />
     </section>
   </lfx-modal>
 </template>
@@ -232,6 +238,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 
+// Top-aligns the radio with the first text line; the uikit default is items-center
+const radioClass = '!items-start w-full [&_.c-radio__indicator]:mt-0.5 [&_.c-radio__label]:min-w-0';
 const OTHER = '__other__';
 const NONE = '__none__';
 

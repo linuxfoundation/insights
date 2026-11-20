@@ -599,6 +599,18 @@ describe('checkRateLimit', () => {
       expect(new Set(keys).size).toBe(1);
     });
 
+    it('keeps separate buckets per query on a default-limit path', async () => {
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '10.0.0.1' });
+
+      const keys: unknown[] = [];
+      for (const path of ['/api/test?a=1', '/api/test?a=2']) {
+        const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+        await checkRateLimit(createEvent({ path, method: 'GET' }), baseConfig, redis);
+        keys.push((redis.zAdd as ReturnType<typeof vi.fn>).mock.calls[0]![0]);
+      }
+      expect(new Set(keys).size).toBe(2);
+    });
+
     it('should return matching rule with wildcard', async () => {
       const config: RateLimiterConfig = {
         ...baseConfig,
@@ -720,6 +732,21 @@ describe('checkRateLimit', () => {
       expect(result.allowed).toBe(true);
       expect(result.limit).toBe(Number.MAX_SAFE_INTEGER);
       expect(redis.zCount).not.toHaveBeenCalled(); // No Redis calls
+    });
+
+    it('should bypass for an excluded route with a query string or trailing slash', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        exclusions: [{ route: '/api/health' }],
+      };
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '10.0.0.1' });
+
+      for (const path of ['/api/health?x=1', '/api/health/']) {
+        const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+        const result = await checkRateLimit(createEvent({ path, method: 'GET' }), config, redis);
+        expect(result.allowed, path).toBe(true);
+        expect(redis.zCount).not.toHaveBeenCalled();
+      }
     });
 
     it('should bypass for wildcard exclusion pattern', async () => {

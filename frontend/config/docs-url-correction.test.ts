@@ -23,6 +23,9 @@ describe('validateDocsUrl', () => {
 
   it('rejects a host without a dot', () => {
     expect(validateDocsUrl('https://localhost', null)).toBe('invalid');
+    for (const value of ['https://.', 'https://a.', 'https://localhost.', 'https://a..b']) {
+      expect(validateDocsUrl(value, null), value).toBe('invalid');
+    }
   });
 
   it('rejects whitespace, credentials and links over 2048 chars', () => {

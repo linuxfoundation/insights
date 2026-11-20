@@ -37,9 +37,10 @@ vi.mock('~/components/uikit/modal/modal.vue', () => ({
 vi.mock('~/components/uikit/button/button.vue', () => ({
   default: {
     name: 'LfxButton',
-    props: ['disabled', 'loading'],
+    props: ['disabled', 'loading', 'label'],
     emits: ['click'],
-    template: '<button :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
+    template:
+      '<button :disabled="disabled" :data-loading="loading" @click="$emit(\'click\')">{{ label }}<slot /></button>',
   },
 }));
 
@@ -117,6 +118,22 @@ describe('correction-modal.vue', () => {
     expect(text.indexOf('kubernetes.io/docs')).toBeLessThan(text.indexOf('k8s.dev'));
     expect(text).toContain('Found at a /docs path · High confidence');
     expect(text).toContain('Found via web search · Low confidence');
+  });
+
+  test('renders the summary strip with spaces between labels and values', () => {
+    const text = mountModal().text().replace(/\s+/g, ' ');
+    expect(text).toContain('Project Kubernetes');
+    expect(text).toContain('Currently evaluated kubernetes.io/docs');
+  });
+
+  test('shows the loading state on Submit while sending', async () => {
+    mockSubmit.mockReturnValue(new Promise(() => {}));
+    const w = mountModal();
+    await pick(w, 1);
+    expect(submitButton(w).attributes('data-loading')).toBe('false');
+    await submitButton(w).trigger('click');
+    expect(submitButton(w).attributes('data-loading')).toBe('true');
+    expect(cancelButton(w).attributes('disabled')).toBeDefined();
   });
 
   test('tags the current candidate as "Currently used"', () => {
