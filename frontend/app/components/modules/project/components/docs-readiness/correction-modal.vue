@@ -36,11 +36,11 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm bg-neutral-50 rounded-lg px-3.5 py-2.5">
         <span class="min-w-0">
           <span class="text-neutral-500">Project</span>{{ ' '
-          }}<strong class="font-semibold break-all">{{ context.projectName }}</strong>
+          }}<strong class="font-semibold [overflow-wrap:anywhere]">{{ context.projectName }}</strong>
         </span>
         <span class="min-w-0">
           <span class="text-neutral-500">Currently evaluated</span>{{ ' '
-          }}<strong class="font-semibold break-all">{{
+          }}<strong class="font-semibold [overflow-wrap:anywhere]">{{
             currentDocsUrl ? displayDocsUrl(currentDocsUrl) : 'None found'
           }}</strong>
         </span>
@@ -79,7 +79,7 @@ SPDX-License-Identifier: MIT
             >
               <span class="flex min-w-0 flex-col gap-0.5">
                 <span class="flex flex-wrap items-center gap-2 font-semibold">
-                  <span class="break-all">{{ displayDocsUrl(candidate.url) }}</span>
+                  <span class="[overflow-wrap:anywhere]">{{ displayDocsUrl(candidate.url) }}</span>
                   <lfx-tag
                     v-if="candidate.isCurrent"
                     size="small"
@@ -179,12 +179,12 @@ SPDX-License-Identifier: MIT
       </lfx-field-message>
     </section>
 
-    <section class="flex justify-end gap-3">
+    <section class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
       <lfx-button
         type="outline"
         button-style="pill"
         size="large"
-        class="whitespace-nowrap"
+        class="w-full whitespace-nowrap sm:w-auto"
         :disabled="isSending"
         @click="isModalOpen = false"
       >
@@ -194,7 +194,7 @@ SPDX-License-Identifier: MIT
         type="primary"
         button-style="pill"
         size="large"
-        class="whitespace-nowrap"
+        class="w-full whitespace-nowrap sm:w-auto"
         :disabled="$v.$invalid || isSending"
         :aria-busy="isSending"
         :loading="isSending"
