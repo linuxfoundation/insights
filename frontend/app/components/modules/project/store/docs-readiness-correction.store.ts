@@ -4,15 +4,9 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import { useAuth } from '~~/composables/useAuth';
+import type { DocsReadinessState } from '~~/types/docs-readiness/readiness.types';
 
-export type DocsReadinessState =
-  | 'not-evaluated'
-  | 'scored'
-  | 'confirmed-no-docs'
-  | 'no-docs'
-  | 'repo-only'
-  | 'latest-failed'
-  | 'failed';
+export type { DocsReadinessState };
 
 export interface DocsReadinessCorrectionContext {
   projectSlug: string;
