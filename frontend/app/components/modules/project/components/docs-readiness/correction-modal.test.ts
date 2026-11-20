@@ -134,6 +134,8 @@ describe('correction-modal.vue', () => {
     await submitButton(w).trigger('click');
     expect(submitButton(w).attributes('data-loading')).toBe('true');
     expect(cancelButton(w).attributes('disabled')).toBeDefined();
+    expect(submitButton(w).attributes('disabled')).toBeDefined();
+    expect(submitButton(w).attributes('aria-busy')).toBe('true');
   });
 
   test('tags the current candidate as "Currently used"', () => {

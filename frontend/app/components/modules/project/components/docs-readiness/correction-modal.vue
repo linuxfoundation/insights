@@ -67,7 +67,7 @@ SPDX-License-Identifier: MIT
           <div
             v-for="candidate in candidates"
             :key="candidate.url"
-            class="border rounded-lg px-3.5 py-3 cursor-pointer"
+            class="border rounded-lg px-3.5 py-3 cursor-pointer flex flex-col"
             :class="rowClass(candidate.url)"
             @click="form.picked = candidate.url"
           >
@@ -125,7 +125,7 @@ SPDX-License-Identifier: MIT
 
           <div
             v-if="showNoDocsOption"
-            class="border rounded-lg px-3.5 py-3 cursor-pointer"
+            class="border rounded-lg px-3.5 py-3 cursor-pointer flex flex-col"
             :class="rowClass(NONE)"
             @click="form.picked = NONE"
           >
@@ -184,6 +184,7 @@ SPDX-License-Identifier: MIT
         type="outline"
         button-style="pill"
         size="large"
+        class="whitespace-nowrap"
         :disabled="isSending"
         @click="isModalOpen = false"
       >
@@ -193,7 +194,9 @@ SPDX-License-Identifier: MIT
         type="primary"
         button-style="pill"
         size="large"
-        :disabled="$v.$invalid"
+        class="whitespace-nowrap"
+        :disabled="$v.$invalid || isSending"
+        :aria-busy="isSending"
         :loading="isSending"
         label="Submit request"
         @click="submit()"
@@ -239,7 +242,7 @@ const props = defineProps<{
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 // Top-aligns the radio with the first text line; the uikit default is items-center
-const radioClass = '!items-start w-full [&_.c-radio__indicator]:mt-0.5 [&_.c-radio__label]:min-w-0';
+const radioClass = 'docs-radio !items-start w-full';
 const OTHER = '__other__';
 const NONE = '__none__';
 
@@ -343,3 +346,16 @@ export default {
   name: 'LfxDocsReadinessCorrectionModal',
 };
 </script>
+
+<style lang="scss" scoped>
+.docs-radio {
+  // 3px offset, as in the design, lines the indicator up with the first text line
+  :deep(.c-radio__indicator) {
+    margin-top: 3px;
+  }
+
+  :deep(.c-radio__label) {
+    min-width: 0;
+  }
+}
+</style>

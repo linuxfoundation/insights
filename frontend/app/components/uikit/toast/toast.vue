@@ -8,12 +8,12 @@ SPDX-License-Identifier: MIT
     position="bottom-center"
   >
     <template #message="slotProps">
-      <div class="flex items-center gap-3">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
         <i
           class="p-toast-icon"
           :class="getToastIcon(slotProps.message)"
         />
-        <div>
+        <div class="min-w-0 flex-1 basis-40">
           <p
             v-if="slotProps.message.title"
             class="text-sm font-semibold leading-5"

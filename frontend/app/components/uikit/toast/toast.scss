@@ -3,6 +3,11 @@
 .p-toast {
   transform: translatex(-50%);
 
+  // The container is centered from left: 50%, so without a width it only gets half the viewport
+  @media (max-width: 640px) {
+    width: calc(100vw - 2rem);
+  }
+
   .p-toast-message {
     @apply bg-neutral-900 border-0 text-white rounded-lg mb-2 px-4 py-3;
     @apply text-sm shadow-2xl;

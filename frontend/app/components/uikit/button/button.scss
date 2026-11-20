@@ -95,7 +95,7 @@
     }
 
     &:disabled {
-      @apply text-neutral-400;
+      @apply bg-white text-neutral-400;
     }
   }
 
