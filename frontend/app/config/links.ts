@@ -4,6 +4,7 @@
 export const links = {
   trustScore: `/docs/metrics/health-score`,
   securityScore: `/docs/metrics/security`,
+  docsReadiness: 'https://insights.linuxfoundation.org/docs/features/ai-documentation-readiness',
   ospsScore: 'https://baseline.openssf.org/versions/2025-02-25',
   issues: 'https://github.com/linuxfoundation/insights/issues',
   discussions: 'https://github.com/linuxfoundation/insights/discussions',

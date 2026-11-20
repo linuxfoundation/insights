@@ -8,7 +8,11 @@ import type {
   DocsCorrectionContext,
   DocsCorrectionRequest,
 } from '~~/types/docs-readiness/correction.types';
-import type { DocsReadinessSummary } from '~~/types/docs-readiness/readiness.types';
+import type {
+  DocsReadinessChecks,
+  DocsReadinessHistory,
+  DocsReadinessSummary,
+} from '~~/types/docs-readiness/readiness.types';
 
 class DocsReadinessApiService {
   fetchSummary(slug: ComputedRef<string>) {
@@ -20,12 +24,31 @@ class DocsReadinessApiService {
     });
   }
 
-  fetchCorrectionContext(slug: ComputedRef<string>) {
+  fetchHistory(slug: ComputedRef<string>) {
+    const queryKey = computed(() => [TanstackKey.DOCS_READINESS_HISTORY, slug.value]);
+
+    return useQuery<DocsReadinessHistory>({
+      queryKey,
+      queryFn: () => $fetch(`/api/project/${slug.value}/docs-readiness/history`),
+    });
+  }
+
+  fetchChecks(slug: ComputedRef<string>) {
+    const queryKey = computed(() => [TanstackKey.DOCS_READINESS_CHECKS, slug.value]);
+
+    return useQuery<DocsReadinessChecks>({
+      queryKey,
+      queryFn: () => $fetch(`/api/project/${slug.value}/docs-readiness/checks`),
+    });
+  }
+
+  fetchCorrectionContext(slug: ComputedRef<string>, enabled?: ComputedRef<boolean>) {
     const queryKey = computed(() => [TanstackKey.DOCS_READINESS_CORRECTION_CONTEXT, slug.value]);
 
     return useQuery<DocsCorrectionContext>({
       queryKey,
       queryFn: () => $fetch(`/api/project/${slug.value}/docs-readiness/correction-context`),
+      enabled,
     });
   }
 
