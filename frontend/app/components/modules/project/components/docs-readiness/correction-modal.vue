@@ -47,7 +47,11 @@ SPDX-License-Identifier: MIT
         label="Where is the project's main documentation?"
         :required="true"
       >
-        <div class="flex flex-col gap-2 pt-1">
+        <div
+          class="flex flex-col gap-2 pt-1"
+          role="radiogroup"
+          aria-label="Where is the project's main documentation?"
+        >
           <template v-if="isPending">
             <lfx-skeleton
               v-for="n in 3"
@@ -105,7 +109,6 @@ SPDX-License-Identifier: MIT
               placeholder="https://"
               aria-label="Documentation URL"
               :invalid="!!urlError"
-              @focus="form.picked = OTHER"
             />
             <div role="alert">
               <lfx-field-messages
@@ -151,6 +154,7 @@ SPDX-License-Identifier: MIT
         </p>
         <lfx-textarea
           v-model="form.description"
+          aria-label="What's wrong with the current URL?"
           :maxlength="DOCS_CORRECTION_DESCRIPTION_MAX"
           rows="3"
           placeholder="e.g. docs.kubernetes.io redirects to kubernetes.io; the docs live at kubernetes.io/docs."
@@ -244,7 +248,8 @@ const { data, isPending } = DOCS_READINESS_API_SERVICE.fetchCorrectionContext(
 const isModalOpen = computed({
   get: () => true,
   set: (value: boolean) => {
-    if (!value) emit('close');
+    // Stay open while sending so a failure is never lost behind a closed modal
+    if (!value && !isSending.value) emit('close');
   },
 });
 

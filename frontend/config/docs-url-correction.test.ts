@@ -38,6 +38,8 @@ describe('validateDocsUrl', () => {
     'https://www.gitlab.com/x',
     'https://bitbucket.org/atlassian/x',
     'https://github.com',
+    'https://github.com./x',
+    'https://www.gitlab.com./x',
   ])('rejects the repository link %s', (value) => {
     expect(validateDocsUrl(value, null)).toBe('repository');
   });

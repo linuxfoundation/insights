@@ -42,7 +42,8 @@ export function buildInternalIssueBody(
 const SLUG_MAX = 200;
 
 function isHttpUrl(value: string): boolean {
-  if (value.length > DOCS_URL_MAX) return false;
+  // \s check first: the URL parser silently drops \n and \t, which would let them into the issue body
+  if (value.length > DOCS_URL_MAX || !/^https?:\/\/\S+$/i.test(value)) return false;
   try {
     return ['http:', 'https:'].includes(new URL(value).protocol);
   } catch {

@@ -46,7 +46,7 @@ export function validateDocsUrl(value: string, currentDocsUrl: string | null): D
     return 'invalid';
   }
 
-  if (REPOSITORY_HOSTS.includes(parsed.hostname.replace(/^www\./, ''))) {
+  if (REPOSITORY_HOSTS.includes(parsed.hostname.replace(/\.$/, '').replace(/^www\./, ''))) {
     return 'repository';
   }
 

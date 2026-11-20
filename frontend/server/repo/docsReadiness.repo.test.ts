@@ -42,6 +42,17 @@ describe('buildCorrectionCandidates', () => {
     expect(candidates.map((c) => c.url)).toEqual(['https://b.dev']);
   });
 
+  it('lists a URL once when two methods found it, keeping the first', () => {
+    const { candidates } = buildCorrectionCandidates(
+      [
+        cand('https://a.dev/docs', { method: 'serp' }),
+        cand('https://A.dev/docs/', { method: 'readme-scrape' }),
+      ],
+      noCurrent,
+    );
+    expect(candidates.map((c) => [c.url, c.method])).toEqual([['https://a.dev/docs', 'serp']]);
+  });
+
   it('puts the current URL first and marks it', () => {
     const result = buildCorrectionCandidates([cand('https://a.dev'), cand('https://b.dev')], {
       docsUrl: 'https://b.dev',

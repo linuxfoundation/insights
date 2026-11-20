@@ -31,7 +31,8 @@ export function buildCorrectionCandidates(
 
   const listed = (candidates ?? [])
     .filter((c) => c.livenessOk && c.method !== REPO_URL_METHOD)
-    .map((c) => ({ url: c.url, method: c.method, confidence: c.confidence, isCurrent: false }));
+    .map((c) => ({ url: c.url, method: c.method, confidence: c.confidence, isCurrent: false }))
+    .filter((c, i, all) => all.findIndex((o) => sameDocsUrl(o.url, c.url)) === i);
 
   if (!currentDocsUrl) {
     return { currentDocsUrl: null, candidates: listed };

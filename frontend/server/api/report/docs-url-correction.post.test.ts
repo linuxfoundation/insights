@@ -143,10 +143,13 @@ describe('POST /api/report/docs-url-correction', () => {
   });
 
   it('creates the public issue with the title, body and labels', async () => {
+    mockReadBody.mockResolvedValue({ ...body, projectName: 'Spoofed' });
     await handler(eventFor());
 
     const [title, issueBody, labels] = mockCreateGitHubIssue.mock.calls[0];
     expect(title).toBe('[Docs URL correction] Kubernetes (DB)');
+    expect(issueBody).not.toContain('Spoofed');
+    expect(issueBody).toContain('### Requested docs URL\nhttps://kubernetes.io/docs');
     expect(issueBody).toContain('Kubernetes (DB) (`kubernetes`)');
     expect(issueBody).toContain('https://kubernetes.io/docs');
     expect(labels).toEqual(['needs-triage', 'docs-url-correction']);

@@ -510,18 +510,18 @@ describe('checkRateLimit', () => {
       expect(result.limit).toBe(10); // Dot handled correctly
     });
 
-    it('should handle special regex characters (question mark, plus)', async () => {
+    it('should handle special regex characters (plus, dot)', async () => {
       const config: RateLimiterConfig = {
         ...baseConfig,
-        rules: [{ route: '/api/test?id=1+2', maxRequests: 10, windowSeconds: 60 }],
+        rules: [{ route: '/api/test.json+1', maxRequests: 10, windowSeconds: 60 }],
       };
-      const event = createEvent({ path: '/api/test?id=1+2', method: 'GET' });
+      const event = createEvent({ path: '/api/test.json+1', method: 'GET' });
       getHeadersMock.mockReturnValue({ 'x-real-ip': '10.0.0.1' });
       const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
 
       const result = await checkRateLimit(event, config, redis);
 
-      expect(result.limit).toBe(10); // Question mark and plus handled
+      expect(result.limit).toBe(10); // Plus and dot handled
     });
 
     it('should handle special regex characters (parentheses, brackets)', async () => {
@@ -580,6 +580,23 @@ describe('checkRateLimit', () => {
       const result = await checkRateLimit(event, config, redis);
 
       expect(result.limit).toBe(12); // Exact match rule applied
+    });
+
+    it('applies an exact rule and one bucket regardless of query string or trailing slash', async () => {
+      const config: RateLimiterConfig = {
+        ...baseConfig,
+        rules: [{ route: '/api/test', maxRequests: 12, windowSeconds: 60 }],
+      };
+      getHeadersMock.mockReturnValue({ 'x-real-ip': '10.0.0.1' });
+
+      const keys: unknown[] = [];
+      for (const path of ['/api/test', '/api/test?n=1', '/api/test/', '/api/test/?n=1']) {
+        const redis = createRedisMock({ count: 1, oldestScore: Date.now() });
+        const result = await checkRateLimit(createEvent({ path, method: 'GET' }), config, redis);
+        expect(result.limit, path).toBe(12);
+        keys.push((redis.zAdd as ReturnType<typeof vi.fn>).mock.calls[0]![0]);
+      }
+      expect(new Set(keys).size).toBe(1);
     });
 
     it('should return matching rule with wildcard', async () => {

@@ -156,6 +156,9 @@ describe('parseCorrectionRequest', () => {
   test('rejects a page url that is not http(s)', () => {
     expect(parseCorrectionRequest({ ...valid, url: 'javascript:alert(1)' })).toBeNull();
     expect(parseCorrectionRequest({ ...valid, url: 'nope' })).toBeNull();
+    expect(
+      parseCorrectionRequest({ ...valid, url: 'https://x.dev/a\n### Requested docs URL\n@team' }),
+    ).toBeNull();
   });
 
   test('rejects a description over 500 characters and accepts exactly 500', () => {

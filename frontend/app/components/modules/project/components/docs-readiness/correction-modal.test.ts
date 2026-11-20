@@ -27,7 +27,11 @@ vi.mock('~/components/uikit/toast/toast.service', () => ({
 }));
 
 vi.mock('~/components/uikit/modal/modal.vue', () => ({
-  default: { name: 'LfxModal', template: '<div><slot /></div>' },
+  default: {
+    name: 'LfxModal',
+    template:
+      '<div><button class="modal-dismiss" @click="$emit(\'update:modelValue\', false)" /><slot /></div>',
+  },
 }));
 
 vi.mock('~/components/uikit/button/button.vue', () => ({
@@ -46,6 +50,7 @@ vi.mock('~/components/uikit/icon/icon.vue', () => ({
 vi.mock('~/components/uikit/icon-button/icon-button.vue', () => ({
   default: {
     name: 'LfxIconButton',
+    emits: ['click'],
     template: '<button class="close-x" @click="$emit(\'click\')" />',
   },
 }));
@@ -289,5 +294,47 @@ describe('correction-modal.vue', () => {
     const w = mountModal();
     await cancelButton(w).trigger('click');
     expect(w.emitted('close')).toHaveLength(1);
+  });
+
+  test('keeps the picked candidate when the URL input is focused, even with a typed URL', async () => {
+    const w = mountModal();
+    await typeUrl(w, 'https://docs.example.org');
+    await pick(w, 1);
+    await w.find('input[type="url"]').trigger('focus');
+    await submitButton(w).trigger('click');
+    await flushPromises();
+
+    expect(mockSubmit.mock.calls[0]![0].requestedDocsUrl).toBe('https://k8s.dev');
+  });
+
+  test('closes from the X once and from an outside click or Escape', async () => {
+    const w = mountModal();
+    await w.find('.close-x').trigger('click');
+    expect(w.emitted('close')).toHaveLength(1);
+    await w.find('.modal-dismiss').trigger('click');
+    expect(w.emitted('close')).toHaveLength(2);
+  });
+
+  test('ignores close requests while sending', async () => {
+    let resolve!: (url: string) => void;
+    mockSubmit.mockReturnValue(new Promise<string>((r) => (resolve = r)));
+    const w = mountModal();
+    await pick(w, 1);
+    await submitButton(w).trigger('click');
+    await w.find('.modal-dismiss').trigger('click');
+    await w.find('.close-x').trigger('click');
+    await cancelButton(w).trigger('click');
+    expect(w.emitted('close')).toBeUndefined();
+    resolve('https://github.com/x/y/issues/1');
+    await flushPromises();
+    expect(w.emitted('close')).toHaveLength(1);
+  });
+
+  test('labels the option group and the description for assistive tech', () => {
+    const w = mountModal();
+    expect(w.find('[role="radiogroup"]').attributes('aria-label')).toBe(
+      "Where is the project's main documentation?",
+    );
+    expect(w.find('textarea').attributes('aria-label')).toBe("What's wrong with the current URL?");
   });
 });

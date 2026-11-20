@@ -124,6 +124,12 @@ function matchesRoute(route: string, pattern: string): boolean {
   return false;
 }
 
+// Rules and bucket keys ignore the query string and a trailing slash, so neither opens a fresh bucket.
+function normalizePath(path: string): string {
+  const pathname = path.split('?')[0] ?? path;
+  return pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname;
+}
+
 /**
  * Finds the rate limit rule that applies to the current request.
  *
@@ -132,7 +138,7 @@ function matchesRoute(route: string, pattern: string): boolean {
  * @returns The matching rule or null if no specific rule matches
  */
 function findMatchingRule(event: H3Event, rules: RateLimitRule[]): RateLimitRule | null {
-  const path = event.path;
+  const path = normalizePath(event.path);
   const method = event.method.toUpperCase() as HttpMethod;
 
   // Find the first matching rule
@@ -305,7 +311,7 @@ export async function checkRateLimit(
   const windowSeconds = matchingRule?.windowSeconds ?? rateLimiterConfig.defaultLimit.windowSeconds;
 
   // Create a unique key for this route + method combination
-  const path = event.path;
+  const path = normalizePath(event.path);
   const method = event.method.toUpperCase();
   const key = `${method}:${path}`;
 
