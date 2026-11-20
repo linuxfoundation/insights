@@ -13,8 +13,77 @@ export interface SecurityAuditLogEntry {
   details?: Record<string, unknown>;
 }
 
+export const AUDIT_FIELD_LIMITS = {
+  endpoint: 128,
+  ipAddress: 64,
+  userAgent: 256,
+  attemptedValue: 512,
+  details: 1024,
+} as const;
+
+export interface AuditWriteLimits {
+  perClient: number;
+  global: number;
+  windowMs: number;
+}
+
+const DEFAULT_LIMITS: AuditWriteLimits = {
+  perClient: 3,
+  global: 20,
+  windowMs: 60_000,
+};
+
+/**
+ * Fixed-window counters for audit writes, kept per process. The global cap bounds table growth
+ * even when callers rotate the client address, since that value comes from request headers.
+ */
+export class AuditWriteLimiter {
+  private readonly limits: AuditWriteLimits;
+  private windowStart = 0;
+  private total = 0;
+  private perClient = new Map<string, number>();
+
+  constructor(limits: Partial<AuditWriteLimits> = {}) {
+    this.limits = { ...DEFAULT_LIMITS, ...limits };
+  }
+
+  tryAcquire(clientKey: string, now: number): boolean {
+    if (now - this.windowStart >= this.limits.windowMs) {
+      this.windowStart = now;
+      this.total = 0;
+      this.perClient.clear();
+    }
+    if (this.total >= this.limits.global) return false;
+
+    const count = this.perClient.get(clientKey) ?? 0;
+    if (count >= this.limits.perClient) return false;
+
+    this.perClient.set(clientKey, count + 1);
+    this.total += 1;
+    return true;
+  }
+}
+
+const sharedLimiter = new AuditWriteLimiter();
+
+// Callers pass request values cast to string, and h3 returns an array for a repeated query key.
+const cap = (value: unknown, max: number): string | null =>
+  value ? String(value).slice(0, max) : null;
+
+function capDetails(details: Record<string, unknown> | undefined): string | null {
+  if (!details) return null;
+  const json = JSON.stringify(details);
+  return Buffer.byteLength(json, 'utf8') <= AUDIT_FIELD_LIMITS.details
+    ? json
+    : JSON.stringify({ truncated: true });
+}
+
 export class SecurityAuditRepository {
-  constructor(private pool: Pool) {}
+  constructor(
+    private pool: Pool,
+    private limiter: AuditWriteLimiter = sharedLimiter,
+    private now: () => number = Date.now,
+  ) {}
 
   /**
    * Logs a security audit event to the database.
@@ -22,6 +91,9 @@ export class SecurityAuditRepository {
    * internally to avoid affecting the main request flow.
    */
   async logSecurityEvent(entry: SecurityAuditLogEntry): Promise<void> {
+    const clientKey = cap(entry.ipAddress, AUDIT_FIELD_LIMITS.ipAddress) ?? 'unknown';
+    if (!this.limiter.tryAcquire(clientKey, this.now())) return;
+
     try {
       const query = `
         INSERT INTO security_audit_logs (
@@ -37,11 +109,11 @@ export class SecurityAuditRepository {
 
       await this.pool.query(query, [
         entry.eventType,
-        entry.endpoint,
-        entry.ipAddress || null,
-        entry.userAgent || null,
-        entry.attemptedValue || null,
-        entry.details ? JSON.stringify(entry.details) : null,
+        cap(entry.endpoint, AUDIT_FIELD_LIMITS.endpoint),
+        cap(entry.ipAddress, AUDIT_FIELD_LIMITS.ipAddress),
+        cap(entry.userAgent, AUDIT_FIELD_LIMITS.userAgent),
+        cap(entry.attemptedValue, AUDIT_FIELD_LIMITS.attemptedValue),
+        capDetails(entry.details),
       ]);
     } catch (error) {
       // Log to console but don't throw - security logging should not break the main flow

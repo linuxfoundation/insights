@@ -8,8 +8,10 @@ import { Pool } from 'pg';
 
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { isValidRedirectUrl } from '../../utils/redirect';
+import { readBoundedJsonBody, readReturnTo } from '../../utils/request-body';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
+const MAX_LOGOUT_BODY_BYTES = 4096;
 
 /**
  * Clears all insights auth cookies with the correct domain/secure options for the current
@@ -44,14 +46,14 @@ export default defineEventHandler(async (event) => {
   // Read optional returnTo from request body and validate it
   let returnToUrl = `${config.public.appUrl}?auth=logout`;
   try {
-    const body = await readBody(event);
+    const returnTo = readReturnTo(await readBoundedJsonBody(event, MAX_LOGOUT_BODY_BYTES));
     const insightsDbPool = event.context.insightsDbPool as Pool;
-    if (body?.returnTo) {
-      if (isValidRedirectUrl(body.returnTo)) {
+    if (returnTo) {
+      if (isValidRedirectUrl(returnTo)) {
         // Build absolute URL if relative path provided
-        const validatedReturnTo = body.returnTo.startsWith('/')
-          ? `${config.public.appUrl}${body.returnTo}`
-          : body.returnTo;
+        const validatedReturnTo = returnTo.startsWith('/')
+          ? `${config.public.appUrl}${returnTo}`
+          : returnTo;
         returnToUrl = validatedReturnTo.includes('?')
           ? `${validatedReturnTo}&auth=logout`
           : `${validatedReturnTo}?auth=logout`;
@@ -62,7 +64,7 @@ export default defineEventHandler(async (event) => {
           // Fire-and-forget: don't await to avoid blocking the request
           securityAuditRepo.logInvalidRedirect(
             '/api/auth/logout',
-            body.returnTo,
+            returnTo,
             getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
             getHeader(event, 'user-agent'),
           );
