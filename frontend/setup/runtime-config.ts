@@ -78,5 +78,7 @@ export default {
     lfxSegmentCdnUrl: process.env.LFX_SEGMENT_CDN_URL || '',
     intercomId: isProduction ? 'w29sqomy' : 'mxl90k6y',
     intercomApiBase: 'https://api-iam.intercom.io',
+    // Off until product turns it on; override with NUXT_PUBLIC_DOCS_READINESS_ENABLED=true
+    docsReadinessEnabled: false,
   },
 };
