@@ -22,7 +22,7 @@ interface CurrentDocs {
 
 const REPO_URL_METHOD = 'repo-url';
 
-// Mirrors the docs readiness worker's normalizeUrl.
+// Matches the worker's normalizeUrl for stored URLs, which are always trimmed and have a scheme.
 function normalizeUrl(url: string): string {
   try {
     const parsed = new URL(url);
