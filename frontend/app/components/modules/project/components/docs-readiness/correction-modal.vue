@@ -271,7 +271,10 @@ const candidates = computed(() =>
   (data.value?.candidates ?? []).filter((c) => c.isCurrent || validateDocsUrl(c.url, null) === null),
 );
 const currentPicked = computed(() => candidates.value.some((c) => c.isCurrent && c.url === form.picked));
-const showNoDocsOption = computed(() => props.context.state !== 'confirmed-no-docs');
+// The fetched override wins over a stale opener state, so the server never refuses the option
+const showNoDocsOption = computed(() =>
+  data.value ? data.value.override?.docsUrl !== null : props.context.state !== 'confirmed-no-docs',
+);
 const urlError = computed(() =>
   form.picked === OTHER && form.url.trim() ? validateDocsUrl(form.url, currentDocsUrl.value) : null,
 );

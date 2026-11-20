@@ -169,9 +169,20 @@ describe('correction-modal.vue', () => {
     expect(mountModal().text()).not.toContain('github.com/kubernetes/kubernetes');
   });
 
-  test('hides the no-docs option for a confirmed-no-docs project', () => {
+  test('hides the no-docs option for a confirmed-no-docs opener until the context loads', () => {
+    setContext(undefined, true);
     const w = mountModal({ ...openerContext, state: 'confirmed-no-docs' });
     expect(w.text()).not.toContain('The project has no documentation site');
+  });
+
+  test('hides the no-docs option when the fetched override already says no docs', () => {
+    setContext({ ...loaded, override: { docsUrl: null, submittedAt: '2026-11-01T00:00:00Z' } });
+    expect(mountModal().text()).not.toContain('The project has no documentation site');
+  });
+
+  test('offers the no-docs option when the fetched context has no no-docs override', () => {
+    const w = mountModal({ ...openerContext, state: 'confirmed-no-docs' });
+    expect(w.text()).toContain('The project has no documentation site');
   });
 
   test('submit is disabled until an option is picked', () => {

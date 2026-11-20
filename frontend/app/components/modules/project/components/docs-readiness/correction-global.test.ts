@@ -46,6 +46,16 @@ describe('correction-global.vue', () => {
     const w = mountGlobal();
     expect(w.find('.modal-stub').text()).toBe('Kubernetes');
 
+    const first = w.find('.modal-stub').element;
+    store.openCorrection({
+      projectSlug: 'k8s',
+      projectName: 'K8s',
+      currentDocsUrl: null,
+      state: 'scored',
+    });
+    await w.vm.$nextTick();
+    expect(w.find('.modal-stub').element).not.toBe(first);
+
     await w.find('.modal-stub').trigger('click');
     expect(store.isCorrectionModalOpen).toBe(false);
     expect(w.find('.modal-stub').exists()).toBe(false);

@@ -5,6 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-docs-readiness-correction-modal
     v-if="isCorrectionModalOpen && correctionContext"
+    :key="correctionContext.projectSlug"
     :context="correctionContext"
     @close="closeCorrection"
   />
