@@ -194,7 +194,7 @@ SPDX-License-Identifier: MIT
         type="primary"
         button-style="pill"
         size="large"
-        class="w-full whitespace-nowrap sm:w-auto"
+        class="w-full whitespace-nowrap sm:w-auto sm:min-w-[11.25rem]"
         :disabled="$v.$invalid || isSending"
         :aria-busy="isSending"
         :loading="isSending"
