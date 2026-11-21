@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       <div
         class="c-modal"
         :class="modalClass"
-        @click="clickOutsideClose()"
+        @click="onBackdropClick"
       >
         <div
           class="c-modal__content"
@@ -65,6 +65,12 @@ const clickOutsideClose = () => {
   if (canClose) {
     close();
   }
+};
+
+// The second click of a double-click on the opener would land on the fresh backdrop and close it
+const onBackdropClick = (event: MouseEvent) => {
+  if (event.detail > 1) return;
+  clickOutsideClose();
 };
 
 const onEscapeKeyUp = (event: KeyboardEvent) => {
