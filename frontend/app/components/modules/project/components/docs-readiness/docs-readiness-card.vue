@@ -111,7 +111,10 @@ SPDX-License-Identifier: MIT
             :repo-url="summary.repoUrl"
             @correct="requestCorrection"
           />
-          <!-- Score breakdown (OPS-1205) mounts here: v-if="checks?.categories.length" :categories="checks.categories" -->
+          <lfx-project-docs-readiness-breakdown
+            v-if="hasScore && checks?.categories.length"
+            :categories="checks.categories"
+          />
         </template>
       </div>
 
@@ -148,6 +151,7 @@ import { useRoute, useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, nextTick, onMounted, onServerPrefetch, onUnmounted, watch, type WatchStopHandle } from 'vue';
 
+import LfxProjectDocsReadinessBreakdown from '~/components/modules/project/components/docs-readiness/breakdown.vue';
 import LfxProjectDocsReadinessAside from '~/components/modules/project/components/docs-readiness/docs-readiness-aside.vue';
 import LfxProjectDocsReadinessEmptyState from '~/components/modules/project/components/docs-readiness/docs-readiness-empty-state.vue';
 import LfxProjectDocsReadinessEvaluatedDocs from '~/components/modules/project/components/docs-readiness/docs-readiness-evaluated-docs.vue';
