@@ -92,6 +92,10 @@ vi.mock('~/components/uikit/skeleton/skeleton.vue', () => ({
   default: { name: 'LfxSkeleton', template: '<div data-testid="skeleton" />' },
 }));
 
+vi.mock('~/components/uikit/chart/chart.vue', () => ({
+  default: { name: 'LfxChart', template: '<div />' },
+}));
+
 const query = (data: unknown, extra: Record<string, unknown> = {}) => ({
   data: ref(data),
   isPending: ref(false),
@@ -636,6 +640,23 @@ describe('docs-readiness-card.vue', () => {
     expect(link.text()).toBe('How we score this');
     expect(link.attributes('target')).toBe('_blank');
     expect(link.attributes('rel')).toContain('noopener');
+  });
+
+  test('scored with categories: renders the breakdown', () => {
+    setup();
+    expect(render().find('#docs-readiness-breakdown-title').exists()).toBe(true);
+  });
+
+  test('confirmed-no-docs: no breakdown even when checks have categories', () => {
+    setup({
+      summary: summaryFixture({
+        state: 'confirmed-no-docs',
+        score: null,
+        median: null,
+        docsUrl: null,
+      }),
+    });
+    expect(render().find('#docs-readiness-breakdown-title').exists()).toBe(false);
   });
 
   test('shows the one-page note in Evaluated documentation', () => {

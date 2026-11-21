@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <article class="c-accordion__item">
     <div
-      class="flex cursor-pointer select-none gap-4 items-center"
+      class="flex cursor-pointer select-none gap-4 items-center focus-visible:outline-offset-2"
       :class="{ 'flex-row-reverse': props.reverse }"
       role="button"
       tabindex="0"

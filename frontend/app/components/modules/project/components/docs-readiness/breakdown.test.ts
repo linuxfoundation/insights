@@ -141,7 +141,7 @@ describe('breakdown.vue', () => {
 
   it('not assessed: N/A, "Not assessed · full points", points still shown', () => {
     const wrapper = render([
-      category({ notAssessed: true, percent: null, points: 10, weight: 10, checks: [] }),
+      category({ notAssessed: true, percent: 100, points: 10, weight: 10, checks: [] }),
     ]);
     expect(wrapper.get('[data-test="pct"]').text()).toBe('N/A');
     expect(wrapper.get('[data-test="passed"]').text()).toBe('Not assessed · full points');

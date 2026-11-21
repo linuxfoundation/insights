@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { DOCS_READINESS_CHECK_COPY } from '~/components/modules/project/config/docs-readiness-checks';
+
 import {
   kyvernoCheckRows,
   mockChecksKyverno,
@@ -44,6 +46,12 @@ const category = (result: ReturnType<typeof mapChecks>, key: string) =>
   result.categories.find((c) => c.key === key)!;
 
 describe('docs readiness checks', () => {
+  it('has check copy for every check id in the kyverno fixture', () => {
+    kyvernoCheckRows.forEach(({ checkId }) =>
+      expect(DOCS_READINESS_CHECK_COPY[checkId], checkId).toBeDefined(),
+    );
+  });
+
   it('kyverno fixture: counts 8 passed, 0 need attention, 6 failed, 9 skipped; points 0/0/10/10/10/10/10', () => {
     const result = mapChecks(kyvernoCheckRows, kyvernoScores);
     expect(result.counts).toEqual({ passed: 8, needsAttention: 0, failed: 6, skipped: 9 });

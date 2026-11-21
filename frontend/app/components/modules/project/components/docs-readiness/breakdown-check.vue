@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
           data-test="details"
         >
           Check ID
-          <code class="text-xs bg-neutral-200 px-1.5 py-px rounded">{{ props.check.id }}</code
+          <code class="text-xs bg-neutral-200 px-1.5 py-px rounded-sm">{{ props.check.id }}</code
           >{{ testedLine }}
         </p>
       </div>

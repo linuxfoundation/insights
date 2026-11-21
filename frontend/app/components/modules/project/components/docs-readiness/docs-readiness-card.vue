@@ -112,7 +112,7 @@ SPDX-License-Identifier: MIT
             @correct="requestCorrection"
           />
           <lfx-project-docs-readiness-breakdown
-            v-if="checks?.categories.length"
+            v-if="hasScore && checks?.categories.length"
             :categories="checks.categories"
           />
         </template>

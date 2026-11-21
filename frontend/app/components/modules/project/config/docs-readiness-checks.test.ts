@@ -17,33 +17,6 @@ import {
   docsReadinessTestedLine,
 } from './docs-readiness-checks';
 
-// Check ids of the worker's kyverno-results.json fixture; importing the server mock would pull server code into tsc
-const WORKER_CHECK_IDS = [
-  'llms-txt-exists',
-  'llms-txt-directive-html',
-  'llms-txt-directive-md',
-  'llms-txt-valid',
-  'llms-txt-size',
-  'llms-txt-links-resolve',
-  'llms-txt-links-markdown',
-  'markdown-url-support',
-  'content-negotiation',
-  'page-size-html',
-  'rendering-strategy',
-  'content-start-position',
-  'page-size-markdown',
-  'tabbed-content-serialization',
-  'section-header-quality',
-  'markdown-code-fence-validity',
-  'redirect-behavior',
-  'http-status-codes',
-  'cache-header-hygiene',
-  'llms-txt-coverage',
-  'markdown-content-parity',
-  'auth-gate-detection',
-  'auth-alternative-access',
-];
-
 const check = (overrides: Partial<DocsReadinessCheck> = {}): DocsReadinessCheck => ({
   id: 'llms-txt-exists',
   status: 'fail',
@@ -62,10 +35,6 @@ describe('docs-readiness-checks', () => {
       expect(entry.title).not.toBe('');
       expect(entry.fix).not.toBe('');
     });
-  });
-
-  it('covers every check id in the worker fixture', () => {
-    WORKER_CHECK_IDS.forEach((id) => expect(DOCS_READINESS_CHECK_COPY[id], id).toBeDefined());
   });
 
   it('docsReadinessCheckTitle returns the copy title for a known id', () => {

@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
           :animation="false"
         />
         <span
-          class="absolute inset-0 flex items-center justify-center text-xs font-bold text-neutral-900"
+          class="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-neutral-900"
           data-test="pct"
           >{{ pctLabel }}</span
         >
