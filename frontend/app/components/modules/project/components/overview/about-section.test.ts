@@ -26,9 +26,10 @@ vi.mock('~~/app/components/modules/project/store/project.store', async () => {
   };
 });
 
-vi.mock('~~/composables/useDocsReadinessEnabled', () => ({
-  useDocsReadinessEnabled: vi.fn(() => state.enabled),
-}));
+vi.mock('~~/composables/useDocsReadinessEnabled', async () => {
+  const { computed } = await import('vue');
+  return { useDocsReadinessEnabled: vi.fn(() => computed(() => state.enabled)) };
+});
 
 const tileExists = () =>
   shallowMount(AboutSection).findComponent({ name: 'LfxProjectDocsReadinessTile' }).exists();
