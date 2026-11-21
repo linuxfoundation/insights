@@ -130,6 +130,8 @@ SPDX-License-Identifier: MIT
       </lfx-card>
     </template>
 
+    <lfx-project-docs-readiness-card v-if="showDocsReadiness" />
+
     <lfx-project-vulnerabilities-section
       v-if="isAuthenticated"
       @choose-repository="isSearchRepoModalOpen = true"
@@ -161,6 +163,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 // import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxProjectDocsReadinessCard from '~/components/modules/project/components/docs-readiness/docs-readiness-card.vue';
 import LfxProjectSecurityControlAssessmentHead from '~/components/modules/project/components/security/control-assessment-head.vue';
 import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
 import LfxProjectSecurityEvaluationSectionAccordion from '~/components/modules/project/components/security/evaluation-section-accordion.vue';
@@ -176,6 +179,7 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import { useDocsReadinessEnabled } from '~~/composables/useDocsReadinessEnabled';
 import type { SecurityData } from '~~/types/security/responses.types';
 
 const isSearchRepoModalOpen = ref(false);
@@ -183,9 +187,21 @@ const isSearchRepoModalOpen = ref(false);
 const route = useRoute();
 const { name } = route.params;
 
-const { selectedReposValues, project, isArchived, emptyStateTitle, emptyStateDescription, hasSelectedArchivedRepos } =
-  storeToRefs(useProjectStore());
+const {
+  selectedReposValues,
+  project,
+  isProjectLoading,
+  isArchived,
+  emptyStateTitle,
+  emptyStateDescription,
+  hasSelectedArchivedRepos,
+} = storeToRefs(useProjectStore());
 const { isAuthenticated } = storeToRefs(useAuthStore());
+
+const docsReadinessEnabled = useDocsReadinessEnabled();
+const showDocsReadiness = computed(
+  () => docsReadinessEnabled.value && !isProjectLoading.value && !!project.value?.isLF,
+);
 
 const isRepository = computed(() => !!name || (project.value?.repositories?.length ?? 0) <= 1);
 const isReposEvalModalOpen = ref(false);
