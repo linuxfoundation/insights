@@ -7,16 +7,21 @@ SPDX-License-Identifier: MIT
     <div
       class="flex cursor-pointer select-none gap-4 items-center"
       :class="{ 'flex-row-reverse': props.reverse }"
+      role="button"
+      tabindex="0"
+      :aria-expanded="!!isOpen"
       @click="toggle()"
+      @keydown.enter.self.prevent="toggle()"
+      @keydown.space.self.prevent="toggle()"
     >
-      <div class="flex-grow">
+      <div class="flex-grow min-w-0">
         <slot />
       </div>
 
       <lfx-icon
         name="angle-down"
         :size="16"
-        class="transition-all"
+        class="transition-all shrink-0"
         :class="{ 'rotate-180': isOpen }"
       />
     </div>
