@@ -47,12 +47,12 @@ SPDX-License-Identifier: MIT
           <div
             v-if="bar.failed"
             data-testid="history-failed-slot"
-            class="w-full max-w-10 h-6 shrink-0 rounded-t border border-dashed border-negative-600"
+            class="w-full max-w-10 h-6 shrink-0 rounded-t-sm border border-dashed border-negative-600"
           />
           <div
             v-else
             data-testid="history-fill"
-            class="w-full max-w-10 shrink-0 rounded-t bg-brand-300"
+            class="w-full max-w-10 shrink-0 rounded-t-sm bg-brand-300"
             :style="{ height: `${Math.round((bar.score ?? 0) * 1.1)}px` }"
           />
           <span class="text-xs text-neutral-500">{{ formatMonth(bar.month) }}</span>

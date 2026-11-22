@@ -75,7 +75,24 @@ describe('docs readiness checks', () => {
     ).toEqual(['fail', 'error', 'warn', 'pass', 'skip']);
   });
 
-  it('keeps checkId order inside one status', () => {
+  it('orders known checks inside one status by the check-copy order, unknown ids last', () => {
+    const rows = [
+      check('unknown-check', 'fail'),
+      check('llms-txt-directive-md', 'fail'),
+      check('llms-txt-exists', 'fail'),
+      check('llms-txt-directive-html', 'fail'),
+    ];
+    expect(
+      category(mapChecks(rows, fullScores), 'content-structure').checks.map((c) => c.id),
+    ).toEqual([
+      'llms-txt-exists',
+      'llms-txt-directive-html',
+      'llms-txt-directive-md',
+      'unknown-check',
+    ]);
+  });
+
+  it('keeps input order for unknown ids inside one status', () => {
     const rows = [check('a', 'fail'), check('b', 'fail'), check('c', 'fail')];
     expect(
       category(mapChecks(rows, fullScores), 'content-structure').checks.map((c) => c.id),
@@ -134,17 +151,17 @@ describe('docs readiness checks', () => {
 
   it('keeps the stored message for any other skip', () => {
     const rows = [
-      check('auth-alternative-access', 'skip', {
-        message: 'All docs pages are publicly accessible; no alternative access paths needed',
-      }),
       check('markdown-code-fence-validity', 'skip', {
         message: 'Site does not serve markdown content; nothing to analyze',
+      }),
+      check('auth-alternative-access', 'skip', {
+        message: 'All docs pages are publicly accessible; no alternative access paths needed',
       }),
     ];
     const checks = category(mapChecks(rows, fullScores), 'content-structure').checks;
     expect(checks.map((c) => c.message)).toEqual([
-      'All docs pages are publicly accessible; no alternative access paths needed',
       'Site does not serve markdown content; nothing to analyze',
+      'All docs pages are publicly accessible; no alternative access paths needed',
     ]);
     expect(checks.every((c) => c.skipReason === null)).toBe(true);
   });

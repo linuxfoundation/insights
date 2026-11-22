@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
       <lfx-health-score-ring
         :score="summary.score ?? 0"
         :color="scoreColor()"
+        large
       />
     </div>
     <div class="flex flex-col gap-2 min-w-0 flex-1 basis-56">

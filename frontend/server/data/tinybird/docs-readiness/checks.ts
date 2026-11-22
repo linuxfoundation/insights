@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import { DOCS_READINESS_CHECK_COPY } from '~/components/modules/project/config/docs-readiness-checks';
 import {
   DOCS_READINESS_CATEGORIES,
   DOCS_READINESS_DEPENDENCY_SKIP_MESSAGE,
@@ -28,6 +29,11 @@ export type TinybirdDocsReadinessCheck = {
 };
 
 const STATUS_ORDER: DocsReadinessCheckStatus[] = ['fail', 'error', 'warn', 'pass', 'skip'];
+const CHECK_ORDER = Object.keys(DOCS_READINESS_CHECK_COPY);
+const checkRank = (id: string) => {
+  const rank = CHECK_ORDER.indexOf(id);
+  return rank === -1 ? CHECK_ORDER.length : rank;
+};
 
 function toStatus(raw: string): DocsReadinessCheckStatus {
   return STATUS_ORDER.includes(raw as DocsReadinessCheckStatus)
@@ -71,7 +77,9 @@ function buildCategory(
     applicable,
     needsAttention: checks.filter((check) => check.status === 'warn').length,
     checks: [...checks].sort(
-      (a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status),
+      (a, b) =>
+        STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status) ||
+        checkRank(a.id) - checkRank(b.id),
     ),
   };
 }
