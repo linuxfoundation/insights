@@ -21,11 +21,13 @@ const mocks = await vi.hoisted(async () => {
     beforeEach: vi.fn(),
     fetchingCount: vueRef(0),
     scrollToTarget: vi.fn(),
+    isHydrating: false,
   };
 });
 
 vi.mock('nuxt/app', async (importOriginal) => ({
   ...(await importOriginal<typeof import('nuxt/app')>()),
+  useNuxtApp: () => ({ isHydrating: mocks.isHydrating }),
   useRoute: () => mocks.route,
   useRouter: () => ({ beforeEach: mocks.beforeEach }),
 }));
@@ -576,18 +578,28 @@ describe('docs-readiness-card.vue', () => {
     expect(mocks.scrollToTarget).toHaveBeenCalledTimes(1);
   });
 
-  test('removes the input listeners on unmount', async () => {
-    const remove = vi.spyOn(window, 'removeEventListener');
+  test('input before the card hydrates stops the landing, also after a query-change remount', async () => {
+    mocks.isHydrating = true;
+    mocks.route.hash = '#docs-readiness';
+    mocks.fetchingCount.value = 1;
+    window.dispatchEvent(new Event('wheel'));
+    setup();
+    const first = mount(LfxProjectDocsReadinessCard, { attachTo: document.body });
+    await nextTick();
+    navigate({ path: mocks.route.path, hash: mocks.route.hash });
+    first.unmount();
+
+    mocks.isHydrating = false;
+    mount(LfxProjectDocsReadinessCard, { attachTo: document.body });
+    mocks.fetchingCount.value = 0;
+    await flushPromises();
+    expect(mocks.scrollToTarget).not.toHaveBeenCalled();
+  });
+
+  test('removes the router guard on unmount', async () => {
     const wrapper = await landOnCard();
     wrapper.unmount();
-
-    const removeGuard = mocks.beforeEach.mock.results.at(-1)!.value;
-    const removed = remove.mock.calls.map(([event]) => event);
-    expect(removeGuard).toHaveBeenCalledTimes(1);
-    expect(removed).toEqual(
-      expect.arrayContaining(['wheel', 'touchmove', 'keydown', 'pointerdown', 'mousedown']),
-    );
-    remove.mockRestore();
+    expect(mocks.beforeEach.mock.results.at(-1)!.value).toHaveBeenCalledTimes(1);
   });
 
   test('does not scroll without the hash', async () => {
