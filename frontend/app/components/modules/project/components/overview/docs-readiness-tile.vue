@@ -21,44 +21,48 @@ SPDX-License-Identifier: MIT
       </div>
 
       <template v-if="isScored">
-        <div>
-          <p class="font-secondary text-2xl font-semibold leading-tight text-neutral-900 whitespace-nowrap">
-            {{ summary.score }}
-            <span class="font-primary text-sm font-normal text-neutral-500">/ 100</span>
-          </p>
-          <p
-            v-if="summary.median"
-            class="mt-0.5 text-neutral-600"
-          >
-            {{ medianLead }}
-            <span class="whitespace-nowrap">LF median ({{ summary.median.value }})</span>
-          </p>
-        </div>
-        <div
-          class="relative w-full"
-          role="img"
-          :aria-label="barLabel"
-        >
-          <lfx-progress-bar
-            :values="[summary.score!]"
-            color="normal"
-          />
+        <div class="flex flex-col gap-3 rounded-lg border border-neutral-200 bg-white p-4">
+          <div>
+            <p class="font-secondary text-2xl font-semibold leading-tight text-neutral-900 whitespace-nowrap">
+              {{ summary.score }}
+              <span class="font-primary text-sm font-normal text-neutral-500">/ 100</span>
+            </p>
+            <p
+              v-if="summary.median"
+              class="mt-0.5 text-neutral-600"
+            >
+              {{ medianLead }}
+              <span class="whitespace-nowrap">LF median ({{ summary.median.value }})</span>
+            </p>
+          </div>
           <div
-            v-if="summary.median"
-            class="absolute -top-0.5 h-3 w-0.5 -translate-x-1/2 bg-neutral-700"
-            :style="{ left: `${summary.median.value}%` }"
-            data-testid="docs-readiness-median-marker"
-          />
+            class="relative w-full"
+            role="img"
+            :aria-label="barLabel"
+          >
+            <lfx-progress-bar
+              :values="[summary.score!]"
+              color="normal"
+            />
+            <div
+              v-if="summary.median"
+              class="absolute -top-0.5 h-3 w-0.5 -translate-x-1/2 bg-neutral-700"
+              :style="{ left: `${summary.median.value}%` }"
+              data-testid="docs-readiness-median-marker"
+            />
+          </div>
+          <p
+            v-if="summary.biggestGap"
+            class="break-words text-neutral-500"
+          >
+            Biggest gap:
+            <span class="font-semibold text-neutral-900">{{ summary.biggestGap.name }}</span>
+            ·
+            <span class="whitespace-nowrap"
+              >{{ summary.biggestGap.earned }} of {{ summary.biggestGap.weight }} pts</span
+            >
+          </p>
         </div>
-        <p
-          v-if="summary.biggestGap"
-          class="break-words text-neutral-500"
-        >
-          Biggest gap:
-          <span class="font-semibold text-neutral-900">{{ summary.biggestGap.name }}</span>
-          ·
-          <span class="whitespace-nowrap">{{ summary.biggestGap.earned }} of {{ summary.biggestGap.weight }} pts</span>
-        </p>
         <nuxt-link
           :to="breakdownLink"
           class="-ml-3 flex max-w-full justify-start"

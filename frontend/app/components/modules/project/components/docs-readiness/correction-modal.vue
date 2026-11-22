@@ -83,7 +83,7 @@ SPDX-License-Identifier: MIT
                   <lfx-tag
                     v-if="candidate.isCurrent"
                     size="small"
-                    variation="neutral"
+                    class="!rounded-sm"
                   >
                     Currently used
                   </lfx-tag>
