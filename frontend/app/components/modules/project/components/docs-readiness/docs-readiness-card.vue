@@ -147,7 +147,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useIsFetching } from '@tanstack/vue-query';
-import { useRoute, useRouter } from 'nuxt/app';
+import { useNuxtApp, useRoute, useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, nextTick, onMounted, onServerPrefetch, onUnmounted, watch, type WatchStopHandle } from 'vue';
 
@@ -224,7 +224,7 @@ const route = useRoute();
 const router = useRouter();
 const { scrollToTarget } = useScroll();
 const fetchingCount = useIsFetching();
-const userInputEvents = ['wheel', 'touchmove', 'keydown', 'pointerdown', 'mousedown'] as const;
+const isHydrating = useNuxtApp().isHydrating;
 const target = () => `${route.path}${route.hash}`;
 let stopLanding: WatchStopHandle | undefined;
 const stop = () => {
@@ -232,7 +232,8 @@ const stop = () => {
   stopLanding = undefined;
 };
 const finish = () => {
-  if (stopLanding) landedOn = target();
+  landedOn = target();
+  landing = null;
   stop();
 };
 
@@ -242,9 +243,11 @@ const armLanding = () => {
   if (landedOn === target()) return;
   // A history entry left earlier carries its scroll, which the router restores instead
   if (window.history.state?.scroll) {
-    landedOn = target();
+    finish();
     return;
   }
+  // On first load, input since page start counts; the session survives query-change remounts
+  if (landing?.target !== target()) landing = { target: target(), since: isHydrating ? 0 : performance.now() };
   const handle = watch(
     [() => summaryQuery.isPending.value, fetchingCount],
     ([pending, count]) => {
@@ -253,7 +256,7 @@ const armLanding = () => {
         if (stopLanding !== handle) return;
         const card = document.getElementById('docs-readiness');
         if (!card) return;
-        scrollToTarget(card, undefined, 'instant');
+        if (!(landing && lastInputAt > landing.since)) scrollToTarget(card, undefined, 'instant');
         finish();
       });
     },
@@ -264,9 +267,11 @@ const armLanding = () => {
 
 let removeGuard: (() => void) | undefined;
 onMounted(() => {
-  userInputEvents.forEach((event) => window.addEventListener(event, finish, { passive: true }));
   removeGuard = router.beforeEach((to, from) => {
-    if (to.path !== from.path || to.hash !== from.hash) landedOn = null;
+    if (to.path !== from.path || to.hash !== from.hash) {
+      landedOn = null;
+      landing = null;
+    }
   });
   watch(
     () => route.hash,
@@ -276,7 +281,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  userInputEvents.forEach((event) => window.removeEventListener(event, finish));
   removeGuard?.();
   stop();
 });
@@ -285,6 +289,15 @@ onUnmounted(() => {
 <script lang="ts">
 // Module scope: the page remounts on every query change, which must not land on the card again
 let landedOn: string | null = null;
+let landing: { target: string; since: number } | null = null;
+let lastInputAt = -1;
+// Listen from chunk load so input before the card hydrates still cancels the landing
+if (import.meta.client) {
+  const markInput = () => (lastInputAt = performance.now());
+  ['wheel', 'touchmove', 'keydown', 'pointerdown', 'mousedown'].forEach((event) =>
+    window.addEventListener(event, markInput, { passive: true, capture: true }),
+  );
+}
 
 export default {
   name: 'LfxProjectDocsReadinessCard',
