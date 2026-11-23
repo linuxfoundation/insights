@@ -18,6 +18,7 @@ const kubernetesRow = {
   id: 'b4a5c1e2',
   name: 'Kubernetes',
   slug: 'kubernetes',
+  sourceId: 'a0941000002wBz9AAE',
   description: 'Production-grade container orchestration',
   logo: 'https://example.org/k8s.png',
   isLF: 1,
@@ -132,6 +133,7 @@ describe('GET /v1-alpha/projects/{slug} (AC1, AC8)', () => {
     expect(res.json()).toEqual({
       slug: 'kubernetes',
       name: 'Kubernetes',
+      sourceId: 'a0941000002wBz9AAE',
       ...kubernetesAbout,
       repositories: [k8sRepoOut, websiteRepoOut],
       connectedPlatforms: ['github', 'git'],
@@ -152,6 +154,7 @@ describe('GET /v1-alpha/projects/{slug} (AC1, AC8)', () => {
         'repositories',
         'slug',
         'softwareValue',
+        'sourceId',
         'tags',
       ].sort(),
     );
@@ -160,6 +163,18 @@ describe('GET /v1-alpha/projects/{slug} (AC1, AC8)', () => {
         ['archived', 'excluded', 'licenses', 'name', 'rank', 'score', 'url'].sort(),
       );
     }
+  });
+});
+
+describe('sourceId (AC4.4)', () => {
+  it.each([
+    ['empty', { ...kubernetesRow, sourceId: '' }],
+    ['missing', (({ sourceId: _s, ...rest }) => rest)(kubernetesRow)],
+  ])('answers null sourceId when the pipe sends it %s', async (_, pipeRow) => {
+    mockFetch.mockImplementation(tinybirdRows([pipeRow]));
+    const res = await get('/v1-alpha/projects/kubernetes');
+    expect(res.statusCode).toBe(200);
+    expect(res.json().sourceId).toBeNull();
   });
 });
 
