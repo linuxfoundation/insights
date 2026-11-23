@@ -71,6 +71,7 @@ overrides:
   minimatch@3: '>=3.1.4 <4'
   minimatch@5: '>=5.1.8 <6'
   minimatch@9: '>=9.0.7 <10'
+  '@ai-sdk/provider-utils>undici': '>=7.30.1 <8'
   minimatch@10: '>=10.2.3 <11'
   rollup@2: '>=2.80.0 <3'
   lodash: '>=4.18.1 <5'
@@ -12030,8 +12031,8 @@ packages:
     resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
     engines: {node: '>=20.18.1'}
 
-  undici@7.29.1:
-    resolution: {integrity: sha512-RYONW2MeafgYlkVOKYKkA/Ag7BmXqgIWCa8t1m0JcxrQg9pI9lEqRhAOruOBCbAohOa/gkCF+iPi9hrgvTzu6Q==}
+  undici@7.30.2:
+    resolution: {integrity: sha512-mLyPQnHwUxaM/rideoK/+KL8DaAJLRl4aBCfmX444aCSLnIaomqPLtNRe2jdCYcsk5wZzXrDIQC8ZeYNRAYyIA==}
     engines: {node: '>=20.18.1'}
 
   undici@8.12.4:
@@ -12977,7 +12978,7 @@ snapshots:
       '@standard-schema/spec': 1.1.0
       '@workflow/serde': 4.1.0
       eventsource-parser: 3.1.1
-      undici: 7.29.1
+      undici: 7.30.2
       zod: 4.6.6
 
   '@ai-sdk/provider@3.0.2':
@@ -26119,7 +26120,7 @@ snapshots:
 
   undici@7.29.0: {}
 
-  undici@7.29.1: {}
+  undici@7.30.2: {}
 
   undici@8.12.4: {}
 
