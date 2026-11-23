@@ -10,6 +10,9 @@
     "tsc-check": "tsc --noEmit",
     "test": "vitest run"
   },
+  "dependencies": {
+    "jose": "^6.2.12"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260925.1",
     "typescript": "^5.9.3",

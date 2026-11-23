@@ -3,10 +3,12 @@
 
 const PAT_PREFIX = 'lfi_';
 
-export function readPat(request: Request): string | null {
-  const match = /^Bearer\s+(\S+)$/i.exec(request.headers.get('authorization') ?? '');
-  const token = match?.[1];
-  return token?.startsWith(PAT_PREFIX) ? token : null;
+export function readBearer(request: Request): string | null {
+  return /^Bearer\s+(\S+)$/i.exec(request.headers.get('authorization') ?? '')?.[1] ?? null;
+}
+
+export function isPat(token: string): boolean {
+  return token.startsWith(PAT_PREFIX);
 }
 
 export async function hashPat(pat: string, salt: string): Promise<string> {
