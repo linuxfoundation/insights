@@ -147,7 +147,7 @@ const setRefreshedCookies = (event: H3Event, result: RawRefresh) => {
     secure: isProduction,
     sameSite: 'lax' as const,
     path: '/',
-    ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
+    ...(isProduction && { domain: config.auth0CookieDomain }),
     maxAge: result.expiresIn,
   };
 
@@ -170,7 +170,7 @@ const clearAuthCookies = (event: H3Event) => {
     secure: isProduction,
     sameSite: 'lax' as const,
     path: '/',
-    ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
+    ...(isProduction && { domain: config.auth0CookieDomain }),
   };
   deleteCookie(event, 'insights_oidc_token', cookieOptions);
   deleteCookie(event, 'insights_refresh_token', cookieOptions);
