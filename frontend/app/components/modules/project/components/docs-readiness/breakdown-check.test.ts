@@ -39,17 +39,17 @@ describe('breakdown-check.vue', () => {
   enableAutoUnmount(afterEach);
 
   it.each([
-    ['fail', 'Failed', 'xmark', 'text-negative-700'],
-    ['error', 'Couldn’t run', 'xmark', 'text-negative-700'],
-    ['warn', 'Needs attention', 'exclamation-triangle', 'text-warning-800'],
-    ['pass', 'Passed', 'check', 'text-positive-700'],
-    ['skip', 'Skipped', 'minus', 'text-neutral-500'],
-  ] as [DocsReadinessCheckStatus, string, string, string][])(
-    'renders label, icon and colour for %s',
-    (status, label, icon, cls) => {
+    ['fail', 'Failed', 'text-negative-700'],
+    ['error', 'Couldn’t run', 'text-negative-700'],
+    ['warn', 'Needs attention', 'text-warning-800'],
+    ['pass', 'Passed', 'text-positive-700'],
+    ['skip', 'Skipped', 'text-neutral-500'],
+  ] as [DocsReadinessCheckStatus, string, string][])(
+    'renders the label in its colour, with no icon, for %s',
+    (status, label, cls) => {
       const status$ = render({ status }).get('[data-test="status"]');
       expect(status$.text()).toBe(label);
-      expect(status$.get('i').attributes('data-icon')).toBe(icon);
+      expect(status$.find('i').exists()).toBe(false);
       expect(status$.classes()).toContain(cls);
     },
   );

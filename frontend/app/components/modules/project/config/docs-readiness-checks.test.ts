@@ -96,12 +96,11 @@ describe('docs-readiness-checks', () => {
     expect(docsReadinessTestedLine(check({ testedPages, totalPages }))).toBe(expected);
   });
 
-  it('every status has a label, an icon and a colour class', () => {
+  it('every status has a label and a colour class', () => {
     const statuses: DocsReadinessCheckStatus[] = ['fail', 'error', 'warn', 'pass', 'skip'];
     statuses.forEach((status) => {
       const entry = DOCS_READINESS_CHECK_STATUS[status];
       expect(entry.label).not.toBe('');
-      expect(entry.icon).not.toBe('');
       expect(entry.class).toMatch(/^text-/);
     });
   });

@@ -14,13 +14,13 @@ export const DOCS_READINESS_BREAKDOWN_SUBTITLE =
 
 export const DOCS_READINESS_CHECK_STATUS: Record<
   DocsReadinessCheckStatus,
-  { label: string; icon: string; class: string }
+  { label: string; class: string }
 > = {
-  fail: { label: 'Failed', icon: 'xmark', class: 'text-negative-700' },
-  error: { label: 'Couldn’t run', icon: 'xmark', class: 'text-negative-700' },
-  warn: { label: 'Needs attention', icon: 'exclamation-triangle', class: 'text-warning-800' },
-  pass: { label: 'Passed', icon: 'check', class: 'text-positive-700' },
-  skip: { label: 'Skipped', icon: 'minus', class: 'text-neutral-500' },
+  fail: { label: 'Failed', class: 'text-negative-700' },
+  error: { label: 'Couldn’t run', class: 'text-negative-700' },
+  warn: { label: 'Needs attention', class: 'text-warning-800' },
+  pass: { label: 'Passed', class: 'text-positive-700' },
+  skip: { label: 'Skipped', class: 'text-neutral-500' },
 };
 
 export const DOCS_READINESS_CHECK_COPY: Record<string, { title: string; fix: string }> = {

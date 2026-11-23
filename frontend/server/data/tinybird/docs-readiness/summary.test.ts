@@ -50,7 +50,8 @@ describe('docs readiness summary', () => {
       confidence: {
         level: 'medium',
         label: 'Medium confidence',
-        tooltip: 'Likely the docs site; request a correction if it isn’t',
+        tooltip:
+          'This is probably the project’s docs site. If it isn’t, you can request a correction.',
       },
       lastEvaluated: { date: '2026-11-01', failed: false },
       resultDate: '2026-11-01',
