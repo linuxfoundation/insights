@@ -29,6 +29,7 @@ const secret = 'test-secret';
 mockNuxtImport('useRuntimeConfig', (original) => () => ({
   ...original(),
   auth0ClientSecret: 'test-secret',
+  auth0CookieDomain: 'insights.example',
   lfxAuth0TokenClaimGroupKey: 'claims',
   redisUrl: 'redis://redis:6379',
 }));
@@ -134,21 +135,45 @@ describe('verifyOrRefreshOidcToken back-channel revocation', () => {
     });
   });
 
-  it('sets and clears the session cookies host-only outside production', async () => {
-    cookies.insights_refresh_token = refreshCookie('rt-host-only');
-    await verifyOrRefreshOidcToken(event);
+  it.each([
+    ['development', undefined],
+    ['staging', undefined],
+    ['production', 'insights.example'],
+  ])(
+    'sets and clears the session cookies for NUXT_APP_ENV=%s on domain %s',
+    async (appEnv, domain) => {
+      // isProduction is read at import, so load a fresh copy under the env being tested.
+      vi.stubEnv('NUXT_APP_ENV', appEnv);
+      vi.resetModules();
+      try {
+        const h3 = await import('h3');
+        const fresh = await import('./auth-refresh');
+        vi.mocked(h3.getCookie).mockImplementation((_event, name) => cookies[name]);
 
-    cookies = { insights_oidc_token: mint({}) };
-    store.set('auth:revoked_sid:sid-1', now());
-    await verifyOrRefreshOidcToken(event);
+        cookies.insights_refresh_token = fresh.signRefreshCookie({
+          rt: 'rt-env',
+          sub: 'auth0|u',
+          sid: 'sid-1',
+          auth_time: loggedInAt,
+        });
+        await fresh.verifyOrRefreshOidcToken(event);
 
-    const options = [
-      ...vi.mocked(setCookie).mock.calls.map(([, , , cookieOptions]) => cookieOptions),
-      ...vi.mocked(deleteCookie).mock.calls.map(([, , cookieOptions]) => cookieOptions),
-    ];
-    expect(options).toHaveLength(4);
-    for (const cookieOptions of options) expect(cookieOptions).not.toHaveProperty('domain');
-  });
+        cookies = { insights_oidc_token: mint({}) };
+        store.set('auth:revoked_sid:sid-1', now());
+        await fresh.verifyOrRefreshOidcToken(event);
+
+        const options = [
+          ...vi.mocked(h3.setCookie).mock.calls.map(([, , , cookieOptions]) => cookieOptions),
+          ...vi.mocked(h3.deleteCookie).mock.calls.map(([, , cookieOptions]) => cookieOptions),
+        ];
+        expect(options).toHaveLength(4);
+        for (const cookieOptions of options) expect(cookieOptions?.domain).toBe(domain);
+      } finally {
+        vi.unstubAllEnvs();
+        vi.resetModules();
+      }
+    },
+  );
 
   it('still refreshes a legacy raw refresh cookie', async () => {
     cookies.insights_refresh_token = 'legacy-raw-rt';

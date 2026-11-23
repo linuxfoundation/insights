@@ -20,6 +20,7 @@ global.defineEventHandler = vi.fn((handler) => handler);
 const { runtimeConfig } = vi.hoisted(() => ({
   runtimeConfig: {
     auth0ClientSecret: 'secret',
+    auth0CookieDomain: 'insights.example',
     lfxAuth0TokenClaimGroupKey: 'claims',
     public: { auth0Domain: 'auth0.example', auth0RedirectUri: 'https://insights.example/cb' },
   },
@@ -165,7 +166,12 @@ describe('GET /api/auth/callback redirect target', () => {
     expect(vi.mocked(jwt.sign).mock.calls[0]![0]).toMatchObject({ sid: 'sid-1' });
   });
 
-  it('sets the session cookies host-only outside production', async () => {
+  it.each([
+    ['development', undefined],
+    ['staging', undefined],
+    ['production', 'insights.example'],
+  ])('sets the session cookies for NUXT_APP_ENV=%s on domain %s', async (appEnv, domain) => {
+    vi.stubEnv('NUXT_APP_ENV', appEnv);
     const { authorizationCodeGrant } = await import('openid-client');
     vi.mocked(authorizationCodeGrant).mockResolvedValueOnce({
       id_token: 'id-token',
@@ -175,7 +181,11 @@ describe('GET /api/auth/callback redirect target', () => {
     cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
     mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
 
-    await handler({ context: {} } as H3Event);
+    try {
+      await handler({ context: {} } as H3Event);
+    } finally {
+      vi.unstubAllEnvs();
+    }
 
     const sessionCookies = vi
       .mocked(global.setCookie)
@@ -184,7 +194,7 @@ describe('GET /api/auth/callback redirect target', () => {
       'insights_oidc_token',
       'insights_refresh_token',
     ]);
-    for (const [, , , options] of sessionCookies) expect(options).not.toHaveProperty('domain');
+    for (const [, , , options] of sessionCookies) expect(options?.domain).toBe(domain);
   });
 
   it('appends auth=success to the original page after login', async () => {

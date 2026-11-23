@@ -30,9 +30,8 @@ export default defineEventHandler(async (event) => {
     path: '/',
     // Silent attempts get a short window, matching SILENT_LOGIN_ATTEMPT_TTL_MS in useAuth.ts
     maxAge: query.silent === 'true' ? 60 * 2 : 60 * 15,
-    // No domain: a host-only cookie works on localhost, staging and production alike.
-    // A Domain that doesn't match the host (e.g. localhost on staging) is dropped by the
-    // browser, which loses the PKCE verifier and loops the callback back to login.
+    // Host-only: a Domain that doesn't match the host is dropped by the browser,
+    // which loses the PKCE verifier.
   };
 
   try {

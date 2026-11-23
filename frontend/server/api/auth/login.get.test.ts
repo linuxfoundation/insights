@@ -142,15 +142,23 @@ describe('GET /api/auth/login cookie lifetime', () => {
 
   // A Domain that doesn't match the host (e.g. localhost on staging) is dropped by the
   // browser, so the callback never sees the PKCE verifier and loops back to login.
-  it('sets the flow cookies host-only outside production', async () => {
-    mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
+  it.each(['development', 'staging', 'production'])(
+    'sets the flow cookies host-only when NUXT_APP_ENV is %s',
+    async (appEnv) => {
+      vi.stubEnv('NUXT_APP_ENV', appEnv);
+      mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
 
-    await handler({} as H3Event);
+      try {
+        await handler({} as H3Event);
+      } finally {
+        vi.unstubAllEnvs();
+      }
 
-    const options = mockSetCookie.mock.calls.map(([, , , cookieOptions]) => cookieOptions);
-    expect(options).toHaveLength(2);
-    for (const cookieOptions of options) expect(cookieOptions).not.toHaveProperty('domain');
-  });
+      const options = mockSetCookie.mock.calls.map(([, , , cookieOptions]) => cookieOptions);
+      expect(options).toHaveLength(2);
+      for (const cookieOptions of options) expect(cookieOptions).not.toHaveProperty('domain');
+    },
+  );
 });
 
 describe('GET /api/auth/login cookie contents', () => {
