@@ -134,6 +134,22 @@ describe('verifyOrRefreshOidcToken back-channel revocation', () => {
     });
   });
 
+  it('sets and clears the session cookies host-only outside production', async () => {
+    cookies.insights_refresh_token = refreshCookie('rt-host-only');
+    await verifyOrRefreshOidcToken(event);
+
+    cookies = { insights_oidc_token: mint({}) };
+    store.set('auth:revoked_sid:sid-1', now());
+    await verifyOrRefreshOidcToken(event);
+
+    const options = [
+      ...vi.mocked(setCookie).mock.calls.map(([, , , cookieOptions]) => cookieOptions),
+      ...vi.mocked(deleteCookie).mock.calls.map(([, , cookieOptions]) => cookieOptions),
+    ];
+    expect(options).toHaveLength(4);
+    for (const cookieOptions of options) expect(cookieOptions).not.toHaveProperty('domain');
+  });
+
   it('still refreshes a legacy raw refresh cookie', async () => {
     cookies.insights_refresh_token = 'legacy-raw-rt';
 

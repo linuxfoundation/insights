@@ -139,6 +139,18 @@ describe('GET /api/auth/login cookie lifetime', () => {
     expect(maxAgeOf('auth_pkce')).toBe(900);
     expect(maxAgeOf('auth_redirect_to')).toBe(900);
   });
+
+  // A Domain that doesn't match the host (e.g. localhost on staging) is dropped by the
+  // browser, so the callback never sees the PKCE verifier and loops back to login.
+  it('sets the flow cookies host-only outside production', async () => {
+    mockGetQuery.mockReturnValue({ redirectTo: '/project/linux' });
+
+    await handler({} as H3Event);
+
+    const options = mockSetCookie.mock.calls.map(([, , , cookieOptions]) => cookieOptions);
+    expect(options).toHaveLength(2);
+    for (const cookieOptions of options) expect(cookieOptions).not.toHaveProperty('domain');
+  });
 });
 
 describe('GET /api/auth/login cookie contents', () => {

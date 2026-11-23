@@ -180,8 +180,9 @@ export default defineEventHandler(async (event) => {
       // Use 'none' for production to ensure cross-site compatibility with Auth0 redirects
       sameSite: 'lax' as const,
       path: '/',
-      // Force domain for production to ensure cookies work across proxy inconsistencies
-      ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
+      // Force domain for production to ensure cookies work across proxy inconsistencies.
+      // Elsewhere the cookie stays host-only, so it works on localhost and any staging host.
+      ...(isProduction && { domain: config.auth0CookieDomain }),
       maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
     };
 

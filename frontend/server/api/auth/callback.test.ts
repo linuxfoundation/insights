@@ -165,6 +165,28 @@ describe('GET /api/auth/callback redirect target', () => {
     expect(vi.mocked(jwt.sign).mock.calls[0]![0]).toMatchObject({ sid: 'sid-1' });
   });
 
+  it('sets the session cookies host-only outside production', async () => {
+    const { authorizationCodeGrant } = await import('openid-client');
+    vi.mocked(authorizationCodeGrant).mockResolvedValueOnce({
+      id_token: 'id-token',
+      expires_in: 60,
+      refresh_token: 'rt-1',
+    } as never);
+    cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
+    mockGetQuery.mockReturnValue({ code: 'c', state: 's' });
+
+    await handler({ context: {} } as H3Event);
+
+    const sessionCookies = vi
+      .mocked(global.setCookie)
+      .mock.calls.filter(([, name]) => name.startsWith('insights_'));
+    expect(sessionCookies.map(([, name]) => name)).toEqual([
+      'insights_oidc_token',
+      'insights_refresh_token',
+    ]);
+    for (const [, , , options] of sessionCookies) expect(options).not.toHaveProperty('domain');
+  });
+
   it('appends auth=success to the original page after login', async () => {
     cookies.auth_pkce = JSON.stringify({ state: 's', codeVerifier: 'v' });
     mockGetQuery.mockReturnValue({ code: 'c', state: 's' });

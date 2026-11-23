@@ -28,7 +28,7 @@ const clearAllAuthCookies = (event: H3Event) => {
     secure: isProduction,
     sameSite: 'lax' as const,
     path: '/',
-    ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
+    ...(isProduction && { domain: config.auth0CookieDomain }),
     maxAge: 0,
   };
 
