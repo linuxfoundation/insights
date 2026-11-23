@@ -49,6 +49,8 @@ export default {
   temporalPrivateKey: '',
   temporalEncryptionKeyId: 'local',
   temporalEncryptionKey: '',
+  // Decrypt-only keys during a key rotation; see parsePreviousEncryptionKeys in server/utils/temporal.ts.
+  temporalEncryptionKeysPrevious: '',
   securityGithubToken: '',
   awsBedrockAccessKeyId: '',
   awsBedrockSecretAccessKey: '',
