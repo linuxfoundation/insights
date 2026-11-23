@@ -25,6 +25,20 @@ expect to handle.
 | `code`       | Stable, machine-readable identifier. Safe to branch on in code.                                   |
 | `error`      | The standard HTTP reason phrase for `statusCode`, such as `Not Found`.                            |
 | `message`    | Human-readable explanation. Useful for logs, not guaranteed word-for-word stable across releases. |
+| `candidates` | Project route `404` only: up to 5 close matches, each with `slug` and `name`. May be empty.       |
+
+When a project slug is unknown, the `404` from `GET /v1-alpha/projects/{slug}` lists close
+matches in `candidates`, so you can retry with the right slug:
+
+```json
+{
+  "statusCode": 404,
+  "code": "not_found",
+  "error": "Not Found",
+  "message": "Project not found",
+  "candidates": [{ "slug": "k8s", "name": "Kubernetes" }]
+}
+```
 
 A request to a path that matches no route returns `404` without a `code` field. Branch on
 the HTTP status when `code` is missing.
