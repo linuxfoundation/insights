@@ -66,19 +66,22 @@ export const DOCS_READINESS_CONFIDENCE_LABELS: Record<string, { label: string; t
   {
     authoritative: {
       label: 'Confirmed',
-      tooltip: 'Set by the LF team after a correction request',
+      tooltip: 'The LF team confirmed this is the project’s documentation site.',
     },
     high: {
       label: 'High confidence',
-      tooltip: 'Found at a location projects conventionally use for docs',
+      tooltip:
+        'Found where projects usually publish their docs, so it’s very likely the right site.',
     },
     medium: {
       label: 'Medium confidence',
-      tooltip: 'Likely the docs site; request a correction if it isn’t',
+      tooltip:
+        'This is probably the project’s docs site. If it isn’t, you can request a correction.',
     },
     low: {
       label: 'Low confidence',
-      tooltip: 'Best guess; request a correction if it isn’t',
+      tooltip:
+        'We couldn’t confirm this is the project’s docs site. If it’s wrong, you can request a correction.',
     },
   };
 

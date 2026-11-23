@@ -11,7 +11,11 @@ import type {
 import LfxProjectDocsReadinessBreakdown from './breakdown.vue';
 
 vi.mock('~/components/uikit/chart/chart.vue', () => ({
-  default: { name: 'LfxChart', template: '<div data-test="ring" />' },
+  default: {
+    name: 'LfxChart',
+    props: ['config'],
+    template: '<div data-test="ring" :data-value="config.series[0].data[0].value" />',
+  },
 }));
 
 vi.mock('~/components/uikit/icon/icon.vue', () => ({
@@ -107,9 +111,10 @@ describe('breakdown.vue', () => {
     expect(first.text()).not.toContain('llms.txt follows the llmstxt.org structure');
   });
 
-  it('shows percent in the ring label and "x of y checks passed"', () => {
+  it('shows percent in the gauge and "x of y checks passed"', () => {
     const wrapper = render([category({ percent: 50, passed: 1, applicable: 2 })]);
-    expect(wrapper.get('[data-test="pct"]').text()).toBe('50%');
+    expect(wrapper.get('[data-test="ring"]').attributes('data-value')).toBe('50');
+    expect(wrapper.find('[data-test="pct"]').exists()).toBe(false);
     expect(wrapper.get('[data-test="passed"]').text()).toBe('1 of 2 checks passed');
   });
 

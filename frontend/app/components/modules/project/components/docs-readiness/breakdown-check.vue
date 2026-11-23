@@ -6,17 +6,10 @@ SPDX-License-Identifier: MIT
   <li class="bg-neutral-50 rounded-lg px-3 py-2.5">
     <div class="flex flex-wrap items-start gap-x-3 gap-y-1.5">
       <span
-        class="flex-none w-[8.25rem] flex items-center gap-1.5 text-xs font-semibold"
+        class="flex-none w-[8.25rem] text-xs font-semibold"
         :class="status.class"
         data-test="status"
       >
-        <lfx-icon
-          :name="status.icon"
-          type="solid"
-          :size="14"
-          class="shrink-0"
-          aria-hidden="true"
-        />
         {{ status.label }}
       </span>
       <div class="flex-[1_1_300px] min-w-0">
@@ -75,7 +68,6 @@ import {
   docsReadinessTestedLine,
 } from '~/components/modules/project/config/docs-readiness-checks';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { DocsReadinessCheck } from '~~/types/docs-readiness/readiness.types';
 
 const props = defineProps<{

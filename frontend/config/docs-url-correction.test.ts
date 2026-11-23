@@ -101,4 +101,10 @@ describe('displayDocsUrl', () => {
     expect(displayDocsUrl('https://docs.kubernetes.io/')).toBe('docs.kubernetes.io');
     expect(displayDocsUrl('http://kubernetes.io/docs')).toBe('kubernetes.io/docs');
   });
+
+  it('strips a leading www.', () => {
+    expect(displayDocsUrl('https://www.cncf.io')).toBe('cncf.io');
+    expect(displayDocsUrl('http://WWW.cncf.io/docs/')).toBe('cncf.io/docs');
+    expect(displayDocsUrl('https://docs.www-project.io')).toBe('docs.www-project.io');
+  });
 });
