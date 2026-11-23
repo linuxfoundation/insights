@@ -188,6 +188,30 @@ describe('search (D1)', () => {
 
     expect(listCalls()[0]?.has('search')).toBe(false);
   });
+
+  // The pipe matches with ILIKE, so the route escapes LIKE wildcards to keep the match literal.
+  it.each([
+    ['foo_bar', 'foo\\_bar'],
+    ['100%', '100\\%'],
+    ['a\\b', 'a\\\\b'],
+  ])('sends search %s to the pipe as %s', async (search, sent) => {
+    await getPage(`${route}?search=${encodeURIComponent(search)}`);
+
+    expect(listCalls()[0]?.get('search')).toBe(sent);
+  });
+
+  it('accepts a search of 200 characters', async () => {
+    await getPage(`${route}?search=${'a'.repeat(200)}`);
+
+    expect(listCalls()[0]?.get('search')).toBe('a'.repeat(200));
+  });
+
+  it('answers 400 for a search longer than 200 characters without calling the pipe', async () => {
+    const res = await get(`${route}?search=${'a'.repeat(201)}`);
+
+    expect(res.statusCode).toBe(400);
+    expect(pipeCalls()).toHaveLength(0);
+  });
 });
 
 describe('project fields (AC4.3)', () => {

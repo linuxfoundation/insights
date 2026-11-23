@@ -5,6 +5,7 @@ import { Type, type Static } from '@sinclair/typebox';
 
 import { fetchPipe } from '../../clients/tinybird.js';
 import { NotFoundError } from '../../lib/errors.js';
+import { escapeLike } from '../../lib/leaderboards.js';
 import { pipeWindow, requestedPage, toPage } from '../../lib/pagination.js';
 import {
   nullableNumber,
@@ -124,7 +125,9 @@ const ProjectList = paginated(Project, {
 const ProjectListQuery = Type.Object({
   search: Type.Optional(
     Type.String({
-      description: 'Case-insensitive text to find in the project name. Empty means no filter.',
+      maxLength: 200,
+      description:
+        'Case-insensitive text to find in the project name, matched literally. Empty means no filter.',
     }),
   ),
   ...PaginationQuery.properties,
@@ -197,7 +200,7 @@ const projectRoutes: FastifyPluginAsyncTypebox = async (scope) => {
     async (request) => {
       const page = requestedPage(request.query);
       const rows = await fetchPipe<ProjectRow>(request, pipePath, {
-        search: request.query.search,
+        search: request.query.search ? escapeLike(request.query.search) : undefined,
         orderByField: 'name',
         orderByDirection: 'asc',
         ...pipeWindow(page),
