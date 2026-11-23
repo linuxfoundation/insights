@@ -13,7 +13,7 @@ The `production` environment in `wrangler.jsonc` reaches the API through the `IN
 
 Auth0 access tokens with the `INSIGHTS_API_AUDIENCE` audience, such as the ones the LFX MCP gets from its token exchange ([ADR-0027](../../api/docs/arch/adr/0027-mcp-calls-insights-api-with-token-exchange.md)), are accepted only from the Auth0 clients listed in `JWT_CLIENT_IDS` (comma-separated client ids). The path is off while `JWT_CLIENT_IDS` is unset or empty: every such token gets `401` before any key or tier lookup. With clients listed, the Worker:
 
-1. Verifies the token against the key set at `.well-known/jwks.json` under `M2M_ISSUER_URL`: issuer `M2M_ISSUER_URL`, audience `INSIGHTS_API_AUDIENCE`, RS256 only, and expiry. A bad token gets `401`, while a key set that can't be fetched surfaces as a server error.
+1. Verifies the token against the key set at `.well-known/jwks.json` under `M2M_ISSUER_URL`: issuer `M2M_ISSUER_URL`, audience `INSIGHTS_API_AUDIENCE`, RS256 only, and expiry, which the token must carry. A bad token gets `401`, while a key set that can't be fetched surfaces as a server error.
 2. Requires the token's `client_id` claim (`azp` when the token has no `client_id`) to be in `JWT_CLIENT_IDS`, and a non-empty `http://lfx.dev/claims/username` claim.
 3. Resolves the org and tier for that username as for a PAT, cached for 10 minutes under a salted hash of the username. Every request is verified; the cache only skips the tier lookup.
 4. Forwards the caller's own token with the same Worker-set headers as a PAT request.

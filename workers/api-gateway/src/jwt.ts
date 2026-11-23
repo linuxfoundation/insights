@@ -44,6 +44,8 @@ export async function verifyJwt(
       issuer: env.M2M_ISSUER_URL,
       audience: env.INSIGHTS_API_AUDIENCE,
       algorithms: ['RS256'],
+      // jose checks exp only when the token carries one.
+      requiredClaims: ['exp'],
     }));
   } catch (err) {
     if (isKeySetFailure(err)) throw err;

@@ -254,6 +254,7 @@ describe('api gateway JWT path', () => {
     ['a wrong audience', () => signJwt(claims({ aud: 'https://other-api.test/' }))],
     ['a wrong issuer', () => signJwt(claims({ iss: 'https://evil.test/' }))],
     ['an expired token', () => signJwt(claims({ iat: now() - 7200, exp: now() - 3600 }))],
+    ['a token without expiry', () => signJwt(claims({ exp: undefined }))],
     ['an HS256 token', () => signHs256(claims())],
     ['a malformed token', async () => 'not-a-jwt'],
     ['a client off the allow-list', () => signJwt(claims({ client_id: 'other-client' }))],
