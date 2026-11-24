@@ -76,7 +76,8 @@ overrides:
   minimatch@3: ">=3.1.4 <4" # GHSA-23c5-xmqv-rm74, GHSA-3ppc-4f35-3m26, GHSA-7r86-cg39-jmmj (3.x line)
   minimatch@5: ">=5.1.8 <6" # same GHSAs (5.x line)
   minimatch@9: ">=9.0.7 <10" # same GHSAs (9.x line; editorconfig@1.0.4 exact-pinned 9.0.1 but API surface unchanged 9.0.1->9.0.7, verified via upstream diff)
-  "@ai-sdk/provider-utils>undici": ">=7.30.1 <8" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c (scoped: miniflare exact-pins 7.29.0, dev-only)
+  "@ai-sdk/provider-utils>undici": ">=7.30.1 <8" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c (scoped: keeps both provider-utils lines on patched 7.x)
+  "miniflare>undici": ">=7.30.1 <8" # same GHSAs plus the 7.29.1 batch (scoped: miniflare exact-pins 7.29.0, dev-only; newer miniflare ships 7.30.x)
   "@ai-sdk/provider-utils@4": ">=4.0.33 <5" # GHSA-866g-f22w-33x8 (4.x line only; parents exact-pin 4.0.5, override authorized; 5.x instance unaffected)
   qs: ">=6.16.1 <7" # GHSA-6pq8-jhm2-2vcw, GHSA-4mjr-xmp4-gh2g, GHSA-q8mj-m7cp-5q26, GHSA-6rw7-vpxm-498p, GHSA-w7fw-mjwx-w883
   ip-address: ">=10.7.4 <11" # GHSA-h3mg-xc3c-68pw, GHSA-j6r3-76f7-8jcv, GHSA-rxp7-6hxx-x8q5
@@ -102,7 +103,7 @@ overrides:
   vite@8: ">=8.3.3 <9" # GHSA-587h-7wmj-h5pm (8.x line; 8.3.0-8.3.2 also affected, patched in 8.3.3)
   follow-redirects: ">=1.16.2 <2" # GHSA-mrwp-f3q8-3g9p, GHSA-q3jh-wrc6-jgq8, GHSA-8r9p-f939-6h3c
   body-parser@2: ">=2.4.0 <3" # GHSA-27r3-jxmh-p828
-  undici@8: "8.12.4" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c, GHSA-mqg3-3v4r-cm32 (8.x line; pinned to reviewed release; 7.x deferred, needs-human: miniflare exact-pins 7.29.0)
+  undici@8: "8.12.4" # GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-xjj6-f33q-929c, GHSA-mqg3-3v4r-cm32 (8.x line; pinned to reviewed release)
   seroval: ">=1.6.11 <1.7" # GHSA-7rv5-mrxv-xcr9, GHSA-97r2-qh9m-474h, GHSA-wp97-x4hv-qvhp, GHSA-9wx9-5pv9-3349, GHSA-f86p-h4j2-7qgj (build-time only via @nuxt/vite-builder; kept to the reviewed 1.6.x line)
   zod@4: "4.6.6" # GHSA-mrhx-c7xc-m3w5 (4.x line; pinned to reviewed release; 3.x via is-zod deferred, needs-human: major hop)
   "isomorphic-dompurify>dompurify": "3.4.17" # GHSA-cg2g-xh64-v4q7, GHSA-mrv2-3pqr-j5jr (scoped: @linuxfoundation/lfx-ui-core exact-pins 3.3.3 and stays on it; pinned to reviewed release)
