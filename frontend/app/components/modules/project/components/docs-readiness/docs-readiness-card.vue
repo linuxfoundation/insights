@@ -199,7 +199,7 @@ const isUnavailable = computed(
 const isEmptyState = computed(
   () => !!summary.value && ['no-docs', 'confirmed-no-docs', 'repo-only', 'not-evaluated'].includes(summary.value.state),
 );
-const showAside = computed(() => !isUnavailable.value && summary.value?.state !== 'not-evaluated');
+const showAside = computed(() => !isUnavailable.value && !isEmptyState.value);
 const banner = computed(() => (summary.value && !isUnavailable.value ? failureBanner(summary.value) : null));
 
 const requestCorrection = () => {

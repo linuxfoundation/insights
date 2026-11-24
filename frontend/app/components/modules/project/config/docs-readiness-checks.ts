@@ -1,6 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import pluralize from 'pluralize';
 
 import type {
   DocsReadinessCheck,
@@ -135,9 +134,3 @@ export const docsReadinessCheckResult = (check: DocsReadinessCheck): string =>
   check.skipReason
     ? `${check.message} ${DOCS_READINESS_SKIP_REFERENCE[check.skipReason]}`
     : check.message;
-
-export const docsReadinessTestedLine = (check: DocsReadinessCheck): string => {
-  if (!check.testedPages) return '';
-  if (check.totalPages === null) return ` · ${pluralize('page', check.testedPages, true)} tested`;
-  return ` · ${check.testedPages} of ${check.totalPages} ${pluralize('page', check.totalPages)} tested`;
-};

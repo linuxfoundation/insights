@@ -32,56 +32,30 @@ SPDX-License-Identifier: MIT
         >
           <strong class="font-semibold">How to fix:</strong> {{ fix }}
         </p>
-        <p
-          v-if="detailsOpen"
-          :id="detailsId"
-          class="mt-1.5 text-xs text-neutral-500 [overflow-wrap:anywhere]"
-          data-test="details"
-        >
-          Check ID
-          <code class="text-xs bg-neutral-200 px-1.5 py-px rounded-sm">{{ props.check.id }}</code
-          >{{ testedLine }}
-        </p>
       </div>
-      <lfx-button
-        type="transparent"
-        size="small"
-        class="flex-none !p-1 !text-xs"
-        :aria-expanded="detailsOpen"
-        :aria-controls="detailsOpen ? detailsId : undefined"
-        @click="detailsOpen = !detailsOpen"
-      >
-        {{ detailsOpen ? 'Hide details' : 'Details' }}
-      </lfx-button>
     </div>
   </li>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue';
+import { computed } from 'vue';
 
 import {
   DOCS_READINESS_CHECK_STATUS,
   docsReadinessCheckFix,
   docsReadinessCheckResult,
   docsReadinessCheckTitle,
-  docsReadinessTestedLine,
 } from '~/components/modules/project/config/docs-readiness-checks';
-import LfxButton from '~/components/uikit/button/button.vue';
 import type { DocsReadinessCheck } from '~~/types/docs-readiness/readiness.types';
 
 const props = defineProps<{
   check: DocsReadinessCheck;
 }>();
 
-const detailsOpen = ref(false);
-const detailsId = useId();
-
 const status = computed(() => DOCS_READINESS_CHECK_STATUS[props.check.status]);
 const title = computed(() => docsReadinessCheckTitle(props.check.id));
 const result = computed(() => docsReadinessCheckResult(props.check));
 const fix = computed(() => docsReadinessCheckFix(props.check));
-const testedLine = computed(() => docsReadinessTestedLine(props.check));
 </script>
 
 <script lang="ts">

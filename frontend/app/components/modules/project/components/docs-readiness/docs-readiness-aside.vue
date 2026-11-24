@@ -103,9 +103,7 @@ const nextEvaluation = computed(() => nextEvaluationLabel(props.summary));
 
 const bars = computed(() => (props.history?.months ?? []).filter((month) => month.failed || month.score !== null));
 
-const showHistory = computed(
-  () => ['scored', 'latest-failed', 'failed'].includes(props.summary.state) && bars.value.length > 0,
-);
+const showHistory = computed(() => ['scored', 'latest-failed'].includes(props.summary.state) && bars.value.length > 0);
 
 const historyAria = computed(
   () =>

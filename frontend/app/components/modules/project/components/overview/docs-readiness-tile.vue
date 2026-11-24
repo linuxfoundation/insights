@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
       class="flex flex-col gap-3 text-xs"
       data-testid="docs-readiness-tile"
     >
-      <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <p class="text-sm font-semibold text-neutral-900">AI docs readiness</p>
+      <div class="text-neutral-400 font-semibold flex flex-wrap items-center gap-x-2 gap-y-1">
+        AI docs readiness
         <lfx-tag
           type="outline"
           size="small"
@@ -21,78 +21,65 @@ SPDX-License-Identifier: MIT
       </div>
 
       <template v-if="isScored">
-        <div class="flex flex-col gap-3 rounded-lg border border-neutral-200 bg-white p-4">
-          <div>
-            <p class="font-secondary text-2xl font-semibold leading-tight text-neutral-900 whitespace-nowrap">
-              {{ summary.score }}
-              <span class="font-primary text-sm font-normal text-neutral-500">/ 100</span>
-            </p>
-            <p
-              v-if="summary.median"
-              class="mt-0.5 text-neutral-600"
-            >
-              {{ medianLead }}
-              <span class="whitespace-nowrap">LF median ({{ summary.median.value }})</span>
-            </p>
-          </div>
-          <div
-            class="relative w-full"
-            role="img"
-            :aria-label="barLabel"
-          >
-            <lfx-progress-bar
-              :values="[summary.score!]"
-              color="normal"
-            />
-            <div
-              v-if="summary.median"
-              class="absolute -top-0.5 h-3 w-0.5 -translate-x-1/2 bg-neutral-700"
-              :style="{ left: `${summary.median.value}%` }"
-              data-testid="docs-readiness-median-marker"
-            />
-          </div>
+        <div class="text-neutral-900">
+          <p class="whitespace-nowrap">
+            <span class="font-semibold">{{ summary.score }}</span>
+            <span class="text-neutral-500"> / 100</span>
+          </p>
           <p
-            v-if="summary.biggestGap"
-            class="break-words text-neutral-500"
+            v-if="summary.median"
+            class="mt-0.5 text-neutral-500"
           >
-            Biggest gap:
-            <span class="font-semibold text-neutral-900">{{ summary.biggestGap.name }}</span>
-            ·
-            <span class="whitespace-nowrap"
-              >{{ summary.biggestGap.earned }} of {{ summary.biggestGap.weight }} pts</span
-            >
+            {{ medianLead }}
+            <span class="whitespace-nowrap">LF median ({{ summary.median.value }})</span>
           </p>
         </div>
+        <div
+          class="relative w-full"
+          role="img"
+          :aria-label="barLabel"
+        >
+          <lfx-progress-bar
+            :values="[summary.score!]"
+            color="normal"
+          />
+          <div
+            v-if="summary.median"
+            class="absolute -top-0.5 h-3 w-0.5 -translate-x-1/2 bg-neutral-700"
+            :style="{ left: `${summary.median.value}%` }"
+            data-testid="docs-readiness-median-marker"
+          />
+        </div>
+        <p
+          v-if="summary.biggestGap"
+          class="break-words text-neutral-500"
+        >
+          Biggest gap:
+          <span class="text-neutral-900">{{ summary.biggestGap.name }}</span>
+          ·
+          <span class="whitespace-nowrap">{{ summary.biggestGap.earned }} of {{ summary.biggestGap.weight }} pts</span>
+        </p>
         <nuxt-link
           :to="breakdownLink"
-          class="-ml-3 flex max-w-full justify-start"
+          class="flex items-center gap-1 self-start text-brand-500 hover:underline"
         >
-          <lfx-button
-            type="transparent"
-            button-style="pill"
-            size="small"
-            class="max-w-full"
-          >
-            View breakdown
-            <lfx-icon
-              name="arrow-up-right"
-              :size="12"
-            />
-          </lfx-button>
+          View breakdown
+          <lfx-icon
+            name="arrow-right"
+            :size="12"
+          />
         </nuxt-link>
       </template>
 
       <template v-else-if="empty">
         <div>
-          <p class="break-words font-semibold text-neutral-900">{{ empty.title }}</p>
-          <p class="mt-1 break-words text-neutral-500">{{ empty.body }}</p>
+          <p class="break-words text-neutral-900">{{ empty.title }}</p>
+          <p class="mt-0.5 break-words text-neutral-500">{{ empty.body }}</p>
         </div>
         <lfx-button
           v-if="empty.suggest"
           type="transparent"
-          button-style="pill"
-          size="small"
-          class="-ml-3 max-w-full self-start"
+          class="!p-0 !text-xs !font-normal !text-brand-500 hover:!bg-transparent hover:underline self-start"
           @click="suggest"
         >
           Suggest a documentation URL

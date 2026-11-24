@@ -292,12 +292,12 @@ describe('docs-readiness-card.vue', () => {
     );
     expect(wrapper.find('[data-testid="ring"]').exists()).toBe(false);
     expect(text).toContain('docs.kubernetes.io');
-    expect(wrapper.find('[data-testid="history-failed-slot"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="history-chart"]').exists()).toBe(false);
     expect(text).toContain('Retrying daily');
     expect(text).not.toContain('page tested');
   });
 
-  test('no-docs: copy and action; no URL row, no history; dates shown', () => {
+  test('no-docs: copy and action; no URL row, no history, no dates', () => {
     setup({
       summary: summaryFixture({
         state: 'no-docs',
@@ -315,7 +315,8 @@ describe('docs-readiness-card.vue', () => {
     expect(text).toContain('Suggest a documentation URL');
     expect(text).not.toContain('Evaluated documentation');
     expect(wrapper.find('[data-testid="history-chart"]').exists()).toBe(false);
-    expect(text).toContain('Last evaluated');
+    expect(text).not.toContain('Last evaluated');
+    expect(text).not.toContain('Next evaluation');
   });
 
   test('confirmed-no-docs: copy and "Request a correction"', () => {
@@ -331,6 +332,7 @@ describe('docs-readiness-card.vue', () => {
 
     expect(text).toContain('This project doesn’t publish a documentation site');
     expect(text).toContain('Docs published since? Request a correction');
+    expect(text).not.toContain('Last evaluated');
   });
 
   test('repo-only: body names the repository; "Suggest a documentation website"', () => {
@@ -340,7 +342,8 @@ describe('docs-readiness-card.vue', () => {
     const text = render().text();
 
     expect(text).toContain('github.com/kubernetes/kubernetes isn’t scored.');
-    expect(text).toContain('Suggest a documentation website');
+    expect(text).toContain('Have a documentation website? Suggest a documentation website');
+    expect(text).not.toContain('Last evaluated');
   });
 
   test('not-evaluated: copy only, no action, no dates', () => {

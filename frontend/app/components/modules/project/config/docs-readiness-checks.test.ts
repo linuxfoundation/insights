@@ -14,7 +14,6 @@ import {
   docsReadinessCheckFix,
   docsReadinessCheckResult,
   docsReadinessCheckTitle,
-  docsReadinessTestedLine,
 } from './docs-readiness-checks';
 
 const check = (overrides: Partial<DocsReadinessCheck> = {}): DocsReadinessCheck => ({
@@ -83,17 +82,6 @@ describe('docs-readiness-checks', () => {
     expect(DOCS_READINESS_SKIP_REFERENCE['needs-llms-txt']).toContain(
       docsReadinessCheckTitle('llms-txt-exists'),
     );
-  });
-
-  it.each([
-    [1, 1, ' · 1 of 1 page tested'],
-    [5, 120, ' · 5 of 120 pages tested'],
-    [3, null, ' · 3 pages tested'],
-    [1, null, ' · 1 page tested'],
-    [null, null, ''],
-    [0, 0, ''],
-  ])('docsReadinessTestedLine %s/%s', (testedPages, totalPages, expected) => {
-    expect(docsReadinessTestedLine(check({ testedPages, totalPages }))).toBe(expected);
   });
 
   it('every status has a label and a colour class', () => {

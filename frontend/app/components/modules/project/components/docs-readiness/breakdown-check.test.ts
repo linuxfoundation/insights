@@ -109,34 +109,9 @@ describe('breakdown-check.vue', () => {
     ).toBe(false);
   });
 
-  it('Details is collapsed by default with aria-expanded false', () => {
+  it('has no Details toggle and never shows the check id', () => {
     const wrapper = render();
-    expect(wrapper.get('button').attributes('aria-expanded')).toBe('false');
-    expect(wrapper.get('button').text()).toBe('Details');
-    expect(wrapper.find('[data-test="details"]').exists()).toBe(false);
-  });
-
-  it('clicking Details shows the check id and pages tested, sets aria-expanded true and the label to Hide details', async () => {
-    const wrapper = render({ testedPages: 5, totalPages: 120 });
-    await wrapper.get('button').trigger('click');
-    const details = wrapper.get('[data-test="details"]');
-    expect(details.text()).toBe('Check ID llms-txt-exists · 5 of 120 pages tested');
-    expect(wrapper.get('button').attributes('aria-expanded')).toBe('true');
-    expect(wrapper.get('button').attributes('aria-controls')).toBe(details.attributes('id'));
-    expect(wrapper.get('button').text()).toBe('Hide details');
-  });
-
-  it('clicking Hide details collapses again', async () => {
-    const wrapper = render();
-    await wrapper.get('button').trigger('click');
-    await wrapper.get('button').trigger('click');
-    expect(wrapper.find('[data-test="details"]').exists()).toBe(false);
-    expect(wrapper.get('button').attributes('aria-expanded')).toBe('false');
-  });
-
-  it('omits the pages line when testedPages is null', async () => {
-    const wrapper = render({ testedPages: null, totalPages: null });
-    await wrapper.get('button').trigger('click');
-    expect(wrapper.get('[data-test="details"]').text()).toBe('Check ID llms-txt-exists');
+    expect(wrapper.find('button').exists()).toBe(false);
+    expect(wrapper.text()).not.toContain('llms-txt-exists');
   });
 });
