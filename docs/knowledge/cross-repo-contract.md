@@ -235,6 +235,13 @@ not: `frontend/server/utils/temporal.ts` contains its own `EncryptionCodec` impl
 must stay wire-compatible with CDP's, including the `encryption-key-id` metadata key and the
 encryption keys themselves. A change to CDP's codec will not show up as a diff on this side.
 
+Both codecs encrypt with the current key and also decrypt with previous keys, given as a JSON object
+of key id to key: `NUXT_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS` on the Nuxt server and
+`INSIGHTS_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS` on the workers, which copy it to
+`CROWD_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS`. During a key rotation the Nuxt server, the Insights
+workers and CDP's workers must hold the same current key and the same previous keys. The workers
+read previous keys only once the `crowd.dev` submodule pin includes linuxfoundation/crowd.dev#5430.
+
 ### Connection settings
 
 Insights workers connect to one Temporal namespace, configured with `INSIGHTS_TEMPORAL_*`. The
