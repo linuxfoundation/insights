@@ -1,5 +1,11 @@
 # Security & Best Practices
 
+## AI Documentation Readiness
+
+For Linux Foundation projects, this tab also includes an experimental assessment of how AI agents can find, read, and access the project's documentation website. You can review a score out of 100, check results, and suggestions for improvement.
+
+See [AI Documentation Readiness](../../features/ai-documentation-readiness/index.md) to understand the score, use the breakdown, or request a correction to the documentation URL.
+
 ## Controls Assessment
 
 The control assessments that we run for "Security & Best Practices" are powered by the [Open Source Project Security Baseline](https://baseline.openssf.org) by OpenSSF.
