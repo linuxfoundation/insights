@@ -72,8 +72,6 @@ For example, if **Content discoverability** is the biggest gap and **An llms.txt
 
 You can share the failed checks and their suggestions with whoever maintains your documentation site. Changes need to be published on that site; Insights does not edit your documentation.
 
-<!-- Add a screenshot of the score card and expanded breakdown when available. -->
-
 ## Correct the documentation URL
 
 If Insights assessed the wrong site, select **Wrong URL? Request a correction**. If it could not find a site, use the suggestion link shown in its place.
