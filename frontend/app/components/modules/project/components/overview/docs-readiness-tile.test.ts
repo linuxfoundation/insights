@@ -113,7 +113,7 @@ describe('docs-readiness-tile.vue', () => {
   test('scored: shows score, median sentence, biggest gap and View breakdown', () => {
     const wrapper = mountTile();
     const text = wrapper.text();
-    expect(wrapper.find('p.font-secondary').text().replace(/\s+/g, ' ')).toBe('45 / 100');
+    expect(wrapper.find('p.whitespace-nowrap').text().replace(/\s+/g, ' ')).toBe('45 / 100');
     expect(text).toContain('5 points below the LF median (50)');
     expect(text.replace(/\s+/g, ' ')).toContain(
       'Biggest gap: Content discoverability · 0 of 30 pts',
@@ -172,7 +172,7 @@ describe('docs-readiness-tile.vue', () => {
   test('scored: score 0 renders "0" and an empty bar', () => {
     mockSummary({ score: 0 });
     const wrapper = mountTile();
-    expect(wrapper.find('p.font-secondary').text().replace(/\s+/g, ' ')).toBe('0 / 100');
+    expect(wrapper.find('p.whitespace-nowrap').text().replace(/\s+/g, ' ')).toBe('0 / 100');
     expect(wrapper.findComponent({ name: 'LfxProgressBar' }).props('values')).toEqual([0]);
   });
 
