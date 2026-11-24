@@ -72,6 +72,7 @@ overrides:
   minimatch@5: '>=5.1.8 <6'
   minimatch@9: '>=9.0.7 <10'
   '@ai-sdk/provider-utils>undici': '>=7.30.1 <8'
+  miniflare>undici: '>=7.30.1 <8'
   '@ai-sdk/provider-utils@4': '>=4.0.33 <5'
   qs: '>=6.16.1 <7'
   ip-address: '>=10.7.4 <11'
@@ -12297,10 +12298,6 @@ packages:
   undici-types@8.3.0:
     resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
-  undici@7.29.0:
-    resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
-    engines: {node: '>=20.18.1'}
-
   undici@7.30.2:
     resolution: {integrity: sha512-mLyPQnHwUxaM/rideoK/+KL8DaAJLRl4aBCfmX444aCSLnIaomqPLtNRe2jdCYcsk5wZzXrDIQC8ZeYNRAYyIA==}
     engines: {node: '>=20.18.1'}
@@ -24044,7 +24041,7 @@ snapshots:
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       sharp: 0.35.5(@types/node@26.4.1)
-      undici: 7.29.0
+      undici: 7.30.2
       workerd: 1.20260923.1
       ws: 8.21.3
       youch: 4.1.0-beta.10
@@ -27125,8 +27122,6 @@ snapshots:
   undici-types@7.18.2: {}
 
   undici-types@8.3.0: {}
-
-  undici@7.29.0: {}
 
   undici@7.30.2: {}
 
