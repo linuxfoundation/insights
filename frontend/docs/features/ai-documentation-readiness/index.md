@@ -34,7 +34,7 @@ The card also shows how many pages were tested. If only the landing page could b
 
 A higher score means more of the applicable Agent-Friendly Docs checks passed. These are automated checks of how agents can find, read, and access documentation.
 
-Each category contributes a fixed share of the 100-point score. Within a category, applicable checks count equally, and only passed checks earn credit. Skipped checks do not reduce the score, but they do not confirm that the skipped behavior works.
+Each category contributes a fixed share of the 100-point score. Within a category, applicable checks count equally, and only passed checks earn credit. If a category has no applicable checks, either because all checks were skipped or because it has no check results, it receives its full share of the score and is labeled **Not assessed · full points**. Skipped checks do not reduce the score, but they do not confirm that the skipped behavior works.
 
 When available, the **LF project median** gives you a comparison with the middle score for evaluated Linux Foundation projects. It is a reference point, not a pass mark.
 
