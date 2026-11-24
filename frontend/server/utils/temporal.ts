@@ -64,14 +64,54 @@ async function fetchKey(encryptionKey: string): Promise<crypto.CryptoKey> {
   return cryptoKey;
 }
 
-class EncryptionCodec implements PayloadCodec {
+/**
+ * Reads NUXT_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS, a JSON object of key id to key. Nuxt parses JSON env
+ * values into objects, so both forms are accepted; the error never echoes the value (key material).
+ */
+export function parsePreviousEncryptionKeys(value: unknown): Record<string, string> {
+  if (value === undefined || value === null || value === '') {
+    return {};
+  }
+
+  const invalid = new Error(
+    'NUXT_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS must be a JSON object of key id to non-empty key',
+  );
+  let parsed: unknown = value;
+  if (typeof value === 'string') {
+    try {
+      parsed = JSON.parse(value);
+    } catch {
+      throw invalid;
+    }
+  }
+  if (
+    !parsed ||
+    typeof parsed !== 'object' ||
+    Array.isArray(parsed) ||
+    !Object.values(parsed).every((key) => typeof key === 'string' && key.length > 0)
+  ) {
+    throw invalid;
+  }
+  return parsed as Record<string, string>;
+}
+
+// Encrypts with the current key and also decrypts payloads written with the previous keys, so the
+// key can rotate while stored workflow payloads stay readable. Same format as CDP's @crowd/temporal.
+export class EncryptionCodec implements PayloadCodec {
   constructor(
     protected readonly keys: Map<string, crypto.CryptoKey>,
     protected readonly defaultKeyId: string,
   ) {}
 
-  static async create(keyId: string, encryptionKey: string): Promise<EncryptionCodec> {
+  static async create(
+    keyId: string,
+    encryptionKey: string,
+    previousKeys: Record<string, string> = {},
+  ): Promise<EncryptionCodec> {
     const keys = new Map<string, crypto.CryptoKey>();
+    for (const [previousKeyId, previousKey] of Object.entries(previousKeys)) {
+      keys.set(previousKeyId, await fetchKey(previousKey));
+    }
     keys.set(keyId, await fetchKey(encryptionKey));
     return new EncryptionCodec(keys, keyId);
   }
@@ -121,12 +161,13 @@ class EncryptionCodec implements PayloadCodec {
 async function createDataConverter(
   keyId: string,
   encryptionKey: string,
+  previousKeys: Record<string, string>,
 ): Promise<DataConverter | undefined> {
   if (!encryptionKey) {
     return undefined;
   }
   return {
-    payloadCodecs: [await EncryptionCodec.create(keyId, encryptionKey)],
+    payloadCodecs: [await EncryptionCodec.create(keyId, encryptionKey, previousKeys)],
   };
 }
 
@@ -154,7 +195,11 @@ export async function getTemporalClient(): Promise<Client> {
 
   const dataConverter = isLocal
     ? undefined
-    : await createDataConverter(config.temporalEncryptionKeyId, config.temporalEncryptionKey);
+    : await createDataConverter(
+        config.temporalEncryptionKeyId,
+        config.temporalEncryptionKey,
+        parsePreviousEncryptionKeys(config.temporalEncryptionKeysPrevious),
+      );
 
   temporalClient = new Client({
     connection,

@@ -60,5 +60,8 @@ export function validateDocsUrl(value: string, currentDocsUrl: string | null): D
 
 // Stored URLs are shown as text only, never bound to an href.
 export function displayDocsUrl(url: string): string {
-  return url.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+  return url
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .replace(/\/$/, '');
 }

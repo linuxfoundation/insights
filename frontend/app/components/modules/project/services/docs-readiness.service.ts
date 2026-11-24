@@ -11,7 +11,7 @@ export const formatDay = (date: string) =>
 export const formatMonth = (month: string, format = 'MMM') =>
   DateTime.fromISO(month, { zone: 'utc' }).toFormat(format);
 
-export const displayUrl = (url: string) => url.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+export { displayDocsUrl as displayUrl } from '~~/config/docs-url-correction';
 
 export const isHttpUrl = (url: string | null): url is string => !!url && /^https?:\/\//i.test(url);
 
