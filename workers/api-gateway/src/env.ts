@@ -13,4 +13,5 @@ export interface Env {
   INSIGHTS_API_AUDIENCE: string;
   LD_SDK_KEY: string;
   LD_FLAG_URL: string;
+  JWT_CLIENT_IDS?: string;
 }

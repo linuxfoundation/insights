@@ -30,9 +30,8 @@ export default defineEventHandler(async (event) => {
     path: '/',
     // Silent attempts get a short window, matching SILENT_LOGIN_ATTEMPT_TTL_MS in useAuth.ts
     maxAge: query.silent === 'true' ? 60 * 2 : 60 * 15,
-    // Don't set domain for production - let browser handle it automatically
-    // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
-    ...(!isProduction && { domain: 'localhost' }),
+    // Host-only: a Domain that doesn't match the host is dropped by the browser,
+    // which loses the PKCE verifier.
   };
 
   try {

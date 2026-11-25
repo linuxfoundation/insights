@@ -3,8 +3,8 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { Type, type Static } from '@sinclair/typebox';
 
-import { fetchPipe } from '../../clients/tinybird.js';
-import { NotFoundError } from '../../lib/errors.js';
+import { fetchPipe, type RequestLog } from '../../clients/tinybird.js';
+import { UpstreamUnavailableError } from '../../lib/errors.js';
 import { escapeLike } from '../../lib/leaderboards.js';
 import { pipeWindow, requestedPage, toPage } from '../../lib/pagination.js';
 import {
@@ -38,6 +38,16 @@ interface ProjectRow {
   repoLicenses?: [string, string][];
   connectedPlatforms?: string[];
 }
+
+interface CandidateRow {
+  slug: string;
+  name: string;
+}
+
+const isCandidateRow = (row: CandidateRow) =>
+  typeof row.slug === 'string' && typeof row.name === 'string';
+
+const candidateLimit = 5;
 
 const orNull = (value: string | undefined) => value || null;
 
@@ -180,6 +190,42 @@ function toProject(row: ProjectRow): Static<typeof Project> {
   };
 }
 
+// The API has no error handler of its own, and Fastify's default one sends only the four standard
+// fields, so the route sends this body itself.
+const ProjectNotFound = Type.Object({
+  statusCode: Type.Integer({ description: 'The HTTP status code, 404.' }),
+  code: Type.String({ description: 'Machine-readable error identifier, `not_found`.' }),
+  error: Type.String({ description: 'The HTTP reason phrase, `Not Found`.' }),
+  message: Type.String({ description: 'Human-readable explanation.' }),
+  candidates: Type.Array(
+    Type.Object({
+      slug: Type.String({ description: 'Slug of a project close to the requested one.' }),
+      name: Type.String({ description: 'Display name of the project.' }),
+    }),
+    {
+      description:
+        'Up to 5 projects close to the requested slug, closest first. Empty when none is close.',
+    },
+  ),
+});
+
+// Candidates only help the caller recover, so their lookup failing, which fetchPipe has logged,
+// still answers the 404.
+async function slugCandidates(request: RequestLog, slug: string): Promise<CandidateRow[]> {
+  try {
+    const rows = await fetchPipe<CandidateRow>(
+      request,
+      '/v0/pipes/project_slug_candidates.json',
+      { slug, limit: candidateLimit },
+      isCandidateRow,
+    );
+    return rows.slice(0, candidateLimit).map((row) => ({ slug: row.slug, name: row.name }));
+  } catch (err: unknown) {
+    if (err instanceof UpstreamUnavailableError) return [];
+    throw err;
+  }
+}
+
 const projectRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   scope.get(
     '/projects',
@@ -220,14 +266,21 @@ const projectRoutes: FastifyPluginAsyncTypebox = async (scope) => {
         description:
           'Returns the project name, its repositories and its connected platforms, plus the About section of the Overview tab: description, logo, software value, tags, maturity and links. Use the repository URLs and platforms as the `repos` and `platform` values on the Development endpoints.',
         params: ProjectSlugParams,
-        response: { 200: Project },
+        response: { 200: Project, 404: ProjectNotFound },
       },
     },
-    async (request) => {
+    async (request, reply) => {
       const { slug } = request.params;
       const [row] = await fetchPipe<ProjectRow>(request, pipePath, { slug, details: true });
       if (!row) {
-        throw new NotFoundError('Project not found');
+        reply.code(404);
+        return {
+          statusCode: 404,
+          code: 'not_found',
+          error: 'Not Found',
+          message: 'Project not found',
+          candidates: await slugCandidates(request, slug),
+        };
       }
       return toProject(row);
     },

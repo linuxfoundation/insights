@@ -3,10 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="relative h-28 w-28 shrink-0">
+  <div
+    class="relative shrink-0"
+    :class="props.large ? 'h-32 w-32' : 'h-28 w-28'"
+  >
     <div
       v-if="props.unavailable"
-      class="h-28 w-28 rounded-full border-4 border-dashed border-neutral-300"
+      class="h-full w-full rounded-full border-4 border-dashed border-neutral-300"
     />
     <lfx-chart
       v-else
@@ -28,9 +31,11 @@ SPDX-License-Identifier: MIT
       />
     </svg>
     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      <span class="text-4xl font-secondary font-light text-neutral-900 leading-none">{{
-        props.unavailable ? '—' : props.score
-      }}</span>
+      <span
+        class="text-4xl font-secondary text-neutral-900 leading-none"
+        :class="props.large ? 'font-bold' : 'font-light'"
+        >{{ props.unavailable ? '—' : props.score }}</span
+      >
       <span
         v-if="!props.unavailable"
         class="text-xs text-neutral-500 mt-1"
@@ -55,11 +60,13 @@ const props = withDefaults(
     color?: string;
     unavailable?: boolean;
     maxScore?: number;
+    large?: boolean;
   }>(),
   {
     color: undefined,
     unavailable: false,
     maxScore: 100,
+    large: false,
   },
 );
 
@@ -73,7 +80,7 @@ const gaugeConfig = computed(() => {
     name: '',
     graphOnly: true,
     lineColor: props.color || lfxColors.positive[500],
-    lineWidth: 4,
+    lineWidth: props.large ? 12 : 4,
   });
   if (!isPartial.value) return config;
   const [series] = config.series as GaugeSeriesOption[];

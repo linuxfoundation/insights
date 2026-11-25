@@ -6,7 +6,7 @@
   }
 
   &__indicator {
-    @apply relative flex items-center justify-center;
+    @apply relative flex shrink-0 items-center justify-center;
     @apply rounded-full border transition-all;
     @apply bg-white border-neutral-300;
 

@@ -7,11 +7,13 @@ SPDX-License-Identifier: MIT
     <img
       src="/images/misc/vulnerabilities-preview.png"
       alt="Auth wall vulnerabilities"
+      class="hidden lg:inline"
     />
 
-    <div class="absolute h-full w-full flex items-center justify-center -mt-6 -ml-6">
+    <!-- Below lg the panel is taller than the preview, so it sits in normal flow instead of overlaying -->
+    <div class="lg:absolute lg:h-full lg:w-full flex items-center justify-center lg:-mt-6 lg:-ml-6">
       <div
-        class="shadow-xl bg-gradient-to-b from-violet-50/50 to-white p-8 border border-neutral-200 rounded-xl flex flex-col gap-8 items-center w-[50rem]"
+        class="shadow-xl bg-gradient-to-b from-violet-50/50 to-white p-4 lg:p-8 border border-neutral-200 rounded-xl flex flex-col gap-8 items-center w-full lg:w-[50rem]"
       >
         <!-- Icon and text section -->
         <div class="flex flex-col gap-5 items-center">

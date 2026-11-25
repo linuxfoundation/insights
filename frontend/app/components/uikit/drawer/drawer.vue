@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       <div
         class="c-drawer"
         :class="props.position === 'left' ? 'c-drawer--left' : 'c-drawer--right'"
-        @click="clickOutsideClose()"
+        @click="onBackdropClick"
       >
         <div
           class="c-drawer__content"
@@ -68,6 +68,12 @@ const clickOutsideClose = () => {
   if (canClose) {
     close();
   }
+};
+
+// The second click of a double-click on the opener would land on the fresh backdrop and close it
+const onBackdropClick = (event: MouseEvent) => {
+  if (event.detail > 1) return;
+  clickOutsideClose();
 };
 
 const onEscapeKeyUp = (event: KeyboardEvent) => {

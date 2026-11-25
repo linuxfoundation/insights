@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
           <p class="text-base font-semibold">
             {{ collection.name }}
           </p>
-          <div class="flex items-center gap-4">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
             <article class="flex items-center gap-1.5">
               <div class="h-5 w-5 rounded-full flex items-center justify-center bg-neutral-100">
                 <lfx-icon

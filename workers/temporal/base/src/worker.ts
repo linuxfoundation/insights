@@ -323,6 +323,8 @@ export class InsightsServiceWorker extends Service {
       process.env['INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID'] || '';
     process.env['CROWD_TEMPORAL_ENCRYPTION_KEY'] =
       process.env['INSIGHTS_TEMPORAL_ENCRYPTION_KEY'] || '';
+    process.env['CROWD_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS'] =
+      process.env['INSIGHTS_TEMPORAL_ENCRYPTION_KEYS_PREVIOUS'] || '';
     process.env['CROWD_TEMPORAL_NAMESPACE'] =
       process.env['INSIGHTS_TEMPORAL_NAMESPACE'] || 'default';
     process.env['CROWD_TEMPORAL_SERVER_URL'] = process.env['INSIGHTS_TEMPORAL_SERVER_URL'] || '';

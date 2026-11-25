@@ -90,6 +90,10 @@ export default defineConfig({
         text: 'Features',
         items: [
           { text: 'LFX Data Copilot', link: '/features/lfx-data-copilot/index.md' },
+          {
+            text: 'AI Documentation Readiness',
+            link: '/features/ai-documentation-readiness/index.md',
+          },
           { text: 'Repository Groups', link: '/features/repository-groups/index.md' },
           { text: 'Community Collections', link: '/features/community-collections/index.md' },
           { text: 'Company Page', link: '/features/organization-page/index.md' },

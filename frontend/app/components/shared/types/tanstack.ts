@@ -63,6 +63,12 @@ export enum TanstackKey {
   SECURITY_ASSESSMENT = 'security-assessment',
   VULNERABILITIES = 'vulnerabilities',
 
+  // Docs readiness
+  DOCS_READINESS_SUMMARY = 'docs-readiness-summary',
+  DOCS_READINESS_HISTORY = 'docs-readiness-history',
+  DOCS_READINESS_CHECKS = 'docs-readiness-checks',
+  DOCS_READINESS_CORRECTION_CONTEXT = 'docs-readiness-correction-context',
+
   // Community
   COMMUNITY_MENTIONS = 'community-mentions',
 
