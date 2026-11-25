@@ -1106,6 +1106,10 @@ importers:
         version: 24.13.3
 
   workers/api-gateway:
+    dependencies:
+      jose:
+        specifier: ^6.2.12
+        version: 6.2.12
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^5.20260925.1

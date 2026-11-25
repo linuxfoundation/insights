@@ -19,8 +19,9 @@ sources:
 > **Planned.** This describes the design accepted in
 > [ADR-0027](../../api/docs/arch/adr/0027-mcp-calls-insights-api-with-token-exchange.md) (authentication)
 > and [ADR-0028](../../api/docs/arch/adr/0028-insights-data-in-the-lfx-mcp.md) (which source answers what).
-> Parts of it are already live: the Worker, the tunnel and the PAT path. The rest becomes current state as
-> the work ships. Update this doc in the same pull requests.
+> Parts of it are already live: the Worker with its PAT and JWT paths, and the tunnel. The JWT path stays off
+> until the MCP client is added to the Worker's `JWT_CLIENT_IDS`. The rest becomes current state as the work
+> ships. Update this doc in the same pull requests.
 
 The LFX MCP server (`mcp.lfx.dev`) exposes the Insights Public API as MCP tools. An MCP user's Insights
 calls are identified, tiered and rate-limited exactly as if the same user called the API with a PAT.
@@ -105,7 +106,7 @@ sequenceDiagram
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LFX MCP      | Exchanges the user's MCP token for an Insights-audience token and caches it in memory. Never forwards the MCP token itself.                                                                                                                                                                                                |
 | Auth0        | Issues the Insights-audience token through the MCP's Custom Token Exchange profile, with the username claim.                                                                                                                                                                                                               |
-| Worker       | Two paths: `lfi_` PATs (existing) and Auth0 JWTs from allow-listed clients (the MCP). Both resolve the tier the same way and set `x-tier` / `x-org-id`. It verifies the JWT before any tier lookup, so unsigned input never drives a lookup or a tier decision.                                                            |
+| Worker       | Two paths: `lfi_` PATs and Auth0 JWTs from the clients in `JWT_CLIENT_IDS` (the MCP). Both resolve the tier the same way and set `x-tier` / `x-org-id`. It verifies the JWT before any tier lookup, so unsigned input never drives a lookup or a tier decision.                                                            |
 | Insights API | Unchanged. It verifies the JWT with Auth0's public keys, applies the tier (`403 tier_forbidden` on organization endpoints for basic) and the per-LFID limit for that tier (`RATE_LIMITS` in `api/src/rate-limit.ts`, currently 5 requests per second for basic and 100 for premium, also returned in `X-RateLimit-Limit`). |
 
 A user's MCP traffic and PAT traffic share one rate-limit budget, because the limit is per LFID.
@@ -162,11 +163,11 @@ Where both serve the same data, Tinybird and dbt apply the same business rules
 
 1. **Auth0**: the MCP's exchange profile can issue Insights-audience tokens with the username claim. Token
    lifetime set. Tested in the dev tenant first.
-2. **Worker**: the JWT path, off by default until the MCP client is on the allow-list.
+2. **Worker** (shipped): the JWT path. It stays off until the MCP client is added to `JWT_CLIENT_IDS`.
 3. **MCP**: the Insights tools, off by default, using the token exchange and the error mapping above.
 4. **Data rules**: the rules ADR-0028 lists as required before launch match in Tinybird and Snowflake, and a
    parity audit confirms it.
-5. **End to end in dev**, then the MCP client is allowed in the production Worker and the tools are turned on
-   for every LFID.
+5. **End to end in dev**, then the MCP client is added to the production Worker's `JWT_CLIENT_IDS` and the tools
+   are turned on for every LFID.
 6. **Docs**: the Insights API docs (MCP access shares the per-user limit), the MCP README, and lfx-mcp's
    `docs/community-access.md` (community accounts can now reach Insights data).
