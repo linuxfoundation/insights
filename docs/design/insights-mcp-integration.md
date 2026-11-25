@@ -120,7 +120,7 @@ and a sleeping request ties one up for nothing.
 | ------------------------- | ------------------------------------------------------------------------------- |
 | `401`                     | Unauthorized. Logged; no retry.                                                 |
 | `403 tier_forbidden`      | This data needs an LFX membership (premium tier), with a link to the tier docs. |
-| `404 not_found`           | Not found, with the API's message (and candidate matches once they ship).       |
+| `404 not_found`           | Not found, with the API's message and candidates for an unknown project slug.   |
 | `429 rate_limit_exceeded` | The limit was hit. Wait `Retry-After` seconds and avoid parallel calls.         |
 | `5xx`                     | Insights is temporarily unavailable.                                            |
 
@@ -147,7 +147,8 @@ Where both serve the same data, Tinybird and dbt apply the same business rules
 
 - `GET /projects` with LFX identifiers, so the MCP can resolve a project
 - an `applied` block on widget responses, so answers state their scope, window and filters
-- `404` with candidate matches for unknown slugs
+- `404` with candidate matches for unknown slugs, shipped for project slugs on
+  `GET /v1-alpha/projects/{slug}`
 - later, a daily health snapshot
 
 ## Ownership

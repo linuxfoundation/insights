@@ -313,6 +313,134 @@ describe('unknown slug (AC4)', () => {
   });
 });
 
+describe('candidates on an unknown slug', () => {
+  const candidatesPath = '/v0/pipes/project_slug_candidates.json';
+  const kubernetesCandidates = [
+    { slug: 'k8s', name: 'Kubernetes', distance: 0.538 },
+    { slug: 'kuberay', name: 'KubeRay', distance: 0.6 },
+  ];
+
+  // The slug lookup finds nothing; the candidates lookup answers `candidates`.
+  const missWith = (candidates: object[] | (() => Promise<Response>)) => async (input: unknown) =>
+    new URL(String(input)).pathname === candidatesPath
+      ? typeof candidates === 'function'
+        ? candidates()
+        : tinybirdRows(candidates)()
+      : tinybirdRows([])();
+
+  const pipeCall = (index: number) => new URL(String(mockFetch.mock.calls[index]?.[0]));
+
+  beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('adds the closest projects to the 404 body, in pipe order, as slug and name', async () => {
+    mockFetch.mockImplementation(missWith(kubernetesCandidates));
+    const res = await get('/v1-alpha/projects/kuberntes');
+
+    expect(res.statusCode).toBe(404);
+    expect(res.json()).toEqual({
+      statusCode: 404,
+      code: 'not_found',
+      error: 'Not Found',
+      message: 'Project not found',
+      candidates: [
+        { slug: 'k8s', name: 'Kubernetes' },
+        { slug: 'kuberay', name: 'KubeRay' },
+      ],
+    });
+  });
+
+  it('asks the candidates pipe once, after the lookup misses, with the slug and a limit of 5', async () => {
+    mockFetch.mockImplementation(missWith(kubernetesCandidates));
+    await get('/v1-alpha/projects/kuberntes');
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(pipeCall(0).pathname).toBe('/v0/pipes/projects_list.json');
+    expect(pipeCall(1).pathname).toBe(candidatesPath);
+    expect(pipeCall(1).searchParams.get('slug')).toBe('kuberntes');
+    expect(pipeCall(1).searchParams.get('limit')).toBe('5');
+  });
+
+  it('keeps at most 5 candidates', async () => {
+    const many = Array.from({ length: 7 }, (_, index) => ({
+      slug: `kube-${index}`,
+      name: `Kube ${index}`,
+    }));
+    mockFetch.mockImplementation(missWith(many));
+    const res = await get('/v1-alpha/projects/kube');
+
+    expect(res.json().candidates).toEqual(many.slice(0, 5));
+  });
+
+  it('answers an empty candidate list when nothing is close', async () => {
+    mockFetch.mockImplementation(missWith([]));
+    const res = await get('/v1-alpha/projects/zqxjv-wkpfh');
+
+    expect(res.statusCode).toBe(404);
+    expect(res.json()).toMatchObject({ code: 'not_found', candidates: [] });
+  });
+
+  it.each([
+    ['answers 500', async () => new Response('tinybird internal detail', { status: 500 })],
+    [
+      'cannot be reached',
+      async () => {
+        throw new TypeError('fetch failed');
+      },
+    ],
+  ])('still answers the 404 with no candidates when the candidates lookup %s', async (_, fail) => {
+    mockFetch.mockImplementation(missWith(fail));
+    const res = await get('/v1-alpha/projects/kuberntes');
+
+    expect(res.statusCode).toBe(404);
+    expect(res.json()).toMatchObject({ code: 'not_found', candidates: [] });
+    expect(res.body).not.toContain('tinybird internal detail');
+  });
+
+  it('looks for candidates only when the project is missing', async () => {
+    await get('/v1-alpha/projects/kubernetes');
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(pipeCall(0).pathname).not.toBe(candidatesPath);
+  });
+
+  it('documents the 404 body with its candidates in the spec', async () => {
+    interface Schema {
+      $ref?: string;
+      type?: string;
+      required?: string[];
+      properties?: Record<string, Schema>;
+      items?: Schema;
+    }
+    const doc = (await get('/v1-alpha/openapi.json')).json<{
+      components?: { schemas?: Record<string, Schema> };
+      paths: Record<
+        string,
+        { get?: { responses: Record<string, { content: Record<string, { schema: Schema }> }> } }
+      >;
+    }>();
+    const resolve = (schema?: Schema) =>
+      schema?.$ref ? doc.components?.schemas?.[schema.$ref.split('/').pop()!] : schema;
+    const body = resolve(
+      doc.paths['/v1-alpha/projects/{slug}']?.get?.responses['404']?.content['application/json']
+        ?.schema,
+    );
+    const candidate = resolve(resolve(body?.properties?.candidates)?.items);
+
+    expect(Object.keys(body?.properties ?? {})).toEqual(
+      expect.arrayContaining(['statusCode', 'code', 'error', 'message', 'candidates']),
+    );
+    expect(resolve(body?.properties?.candidates)?.type).toBe('array');
+    expect(candidate?.required).toEqual(expect.arrayContaining(['slug', 'name']));
+  });
+});
+
 describe('Tinybird failures (AC5)', () => {
   const upstreamDetail = 'tinybird internal detail';
 
