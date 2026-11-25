@@ -145,7 +145,8 @@ until `/v1` ships.
 Where both serve the same data, Tinybird and dbt apply the same business rules
 ([ADR-0028](../../api/docs/arch/adr/0028-insights-data-in-the-lfx-mcp.md)). The API adds:
 
-- `GET /projects` with LFX identifiers, so the MCP can resolve a project
+- `GET /v1-alpha/projects` (shipped), which lists projects with their LFX identifier as `sourceId`, so the MCP
+  can resolve a project
 - an `applied` block on widget responses, so answers state their scope, window and filters
 - `404` with candidate matches for unknown slugs, shipped for project slugs on
   `GET /v1-alpha/projects/{slug}`
