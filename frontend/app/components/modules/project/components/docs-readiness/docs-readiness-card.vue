@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
       <lfx-tag
         size="small"
         type="outline"
-        class="!font-semibold !text-neutral-500 shrink-0"
+        class="!border-neutral-500 !font-semibold !text-neutral-700 shrink-0"
       >
         Experimental
       </lfx-tag>
