@@ -7,7 +7,6 @@ import type { Ref } from 'vue';
 import AboutSection from './about-section.vue';
 
 const state = vi.hoisted(() => ({
-  enabled: true,
   project: null as unknown as Ref<{ isLF: boolean } | null>,
   loading: null as unknown as Ref<boolean>,
 }));
@@ -26,28 +25,17 @@ vi.mock('~~/app/components/modules/project/store/project.store', async () => {
   };
 });
 
-vi.mock('~~/composables/useDocsReadinessEnabled', async () => {
-  const { computed } = await import('vue');
-  return { useDocsReadinessEnabled: vi.fn(() => computed(() => state.enabled)) };
-});
-
 const tileExists = () =>
   shallowMount(AboutSection).findComponent({ name: 'LfxProjectDocsReadinessTile' }).exists();
 
 describe('about-section.vue', () => {
   beforeEach(() => {
-    state.enabled = true;
     state.project.value = { isLF: true };
     state.loading.value = false;
   });
 
-  test('mounts the tile when the flag is on and the project is LF', () => {
+  test('mounts the tile for an LF project', () => {
     expect(tileExists()).toBe(true);
-  });
-
-  test('does not mount the tile when the flag is off', () => {
-    state.enabled = false;
-    expect(tileExists()).toBe(false);
   });
 
   test('does not mount the tile for a non-LF project', () => {

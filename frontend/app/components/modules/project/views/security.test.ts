@@ -8,7 +8,6 @@ import SecurityView from './security.vue';
 const mocks = await vi.hoisted(async () => {
   const { ref } = await import('vue');
   return {
-    enabled: ref(true),
     project: ref<Record<string, unknown> | undefined>(),
     loading: ref(false),
   };
@@ -51,28 +50,18 @@ vi.mock('~/components/modules/project/services/security.api.service', () => ({
   },
 }));
 
-vi.mock('~~/composables/useDocsReadinessEnabled', () => ({
-  useDocsReadinessEnabled: () => mocks.enabled,
-}));
-
 const CARD = 'lfx-project-docs-readiness-card-stub';
 
 const render = () => shallowMount(SecurityView, { global: { renderStubDefaultSlot: true } });
 
 describe('security.vue docs readiness card', () => {
   beforeEach(() => {
-    mocks.enabled.value = true;
     mocks.loading.value = false;
     mocks.project.value = { slug: 'kubernetes', isLF: true, connectedPlatforms: ['github'] };
   });
 
-  test('renders the card for an LF project when the flag is on', () => {
+  test('renders the card for an LF project', () => {
     expect(render().find(CARD).exists()).toBe(true);
-  });
-
-  test('hides the card when the flag is off', () => {
-    mocks.enabled.value = false;
-    expect(render().find(CARD).exists()).toBe(false);
   });
 
   test('hides the card for a non-LF project', () => {
@@ -96,16 +85,6 @@ describe('security.vue docs readiness card', () => {
 
     expect(wrapper.find(CARD).exists()).toBe(true);
     expect(wrapper.find('lfx-project-security-control-assessment-head-stub').exists()).toBe(false);
-  });
-
-  test('appears when the preview permission turns the gate on after load', async () => {
-    mocks.enabled.value = false;
-    const wrapper = render();
-    expect(wrapper.find(CARD).exists()).toBe(false);
-
-    mocks.enabled.value = true;
-    await wrapper.vm.$nextTick();
-    expect(wrapper.find(CARD).exists()).toBe(true);
   });
 
   test('places the card after controls assessment and before vulnerabilities', () => {

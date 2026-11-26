@@ -86,7 +86,6 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import { useDocsReadinessEnabled } from '~~/composables/useDocsReadinessEnabled';
 import type { Project } from '~~/types/project';
 
 const props = defineProps<{
@@ -109,7 +108,6 @@ const { excludedWidgets: popularityExcludedWidgets } = usePopularityExcludedWidg
   projectWidgets,
 });
 
-const docsReadinessEnabled = useDocsReadinessEnabled();
 const hasVulnerabilitiesData = computed(() => props.project?.lastVulnerabilityScanStatus === 'success' || false);
 
 const activeLink = computed(() =>
@@ -135,7 +133,7 @@ const isAreaEnabled = (area: WidgetArea) => {
     return (
       props.project?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github')) ||
       hasVulnerabilitiesData.value ||
-      (docsReadinessEnabled.value && !!props.project?.isLF)
+      !!props.project?.isLF
     );
   }
 
