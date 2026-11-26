@@ -17,8 +17,8 @@ import {
 
 const startDate = '2025-01-01';
 const endDate = '2025-03-31';
-const previousStart = '2024-10-01';
-const previousEnd = '2024-12-31';
+const previousStart = '2024-10-02';
+const previousEnd = '2025-01-01';
 const atMidnight = (day: string) => `${day} 00:00:00`;
 const isoDay = (day: string) => `${day}T00:00:00Z`;
 

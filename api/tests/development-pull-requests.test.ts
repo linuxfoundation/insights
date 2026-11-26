@@ -25,7 +25,7 @@ const closedState = 'closed';
 const states = [openedState, mergedState, closedState];
 
 const currentRange = { startDate: '2025-01-01 00:00:00', endDate: '2025-03-31 00:00:00' };
-const previousRange = { startDate: '2024-10-01 00:00:00', endDate: '2024-12-31 00:00:00' };
+const previousRange = { startDate: '2024-10-02 00:00:00', endDate: '2025-01-01 00:00:00' };
 
 const summaryCounts: Record<string, { current: number; previous: number }> = {
   [openedState]: { current: 100, previous: 50 },

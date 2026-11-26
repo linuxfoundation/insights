@@ -47,7 +47,7 @@ const CommitActivities = Type.Object({
 });
 
 const measures =
-  'Returns commit counts per time bucket of the requested granularity, as new commits in each bucket or as a cumulative total, plus a summary comparing the current period with the comparison period before it. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'Returns commit counts per time bucket of the requested granularity, as new commits in each bucket or as a cumulative total, plus a summary comparing the current period with the comparison period before it. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const commitActivityRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

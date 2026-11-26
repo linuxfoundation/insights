@@ -13,78 +13,92 @@ import {
   utcMidnight,
 } from '../src/lib/period.js';
 
-// Expected ranges were computed with the frontend's Luxon 3.7.2 getPreviousDates
-// (frontend/server/data/util.ts), which the API port must match day for day.
+// Worked out by hand: the span is measured in calendar months and days like the frontend's
+// getPreviousDates, and the comparison period ends where the current one starts.
 const luxonFixtures = [
   {
     label: 'UI 90d preset',
     start: '2025-06-20',
     end: '2025-09-18',
-    previousStart: '2025-03-21',
-    previousEnd: '2025-06-19',
+    previousStart: '2025-03-22',
+    previousEnd: '2025-06-20',
   },
   {
     label: 'UI 180d preset',
     start: '2025-03-22',
     end: '2025-09-18',
-    previousStart: '2024-09-24',
-    previousEnd: '2025-03-21',
+    previousStart: '2024-09-25',
+    previousEnd: '2025-03-22',
   },
   {
     label: 'UI 1y preset',
     start: '2024-09-18',
     end: '2025-09-18',
-    previousStart: '2023-09-17',
-    previousEnd: '2024-09-17',
+    previousStart: '2023-09-18',
+    previousEnd: '2024-09-18',
   },
   {
     label: 'month-end clamp',
     start: '2025-01-31',
     end: '2025-03-01',
-    previousStart: '2024-12-29',
-    previousEnd: '2025-01-30',
+    previousStart: '2024-12-30',
+    previousEnd: '2025-01-31',
   },
   {
     label: 'leap day start',
     start: '2024-02-29',
     end: '2024-03-31',
-    previousStart: '2024-01-26',
-    previousEnd: '2024-02-28',
+    previousStart: '2024-01-27',
+    previousEnd: '2024-02-29',
   },
   {
     label: '31st to 30th',
     start: '2025-03-31',
     end: '2025-04-30',
     previousStart: '2025-02-28',
-    previousEnd: '2025-03-30',
+    previousEnd: '2025-03-31',
   },
   {
     label: 'same day',
     start: '2025-09-18',
     end: '2025-09-18',
-    previousStart: '2025-09-17',
-    previousEnd: '2025-09-17',
+    previousStart: '2025-09-18',
+    previousEnd: '2025-09-18',
   },
   {
     label: 'full month',
     start: '2025-03-01',
     end: '2025-03-31',
-    previousStart: '2025-01-29',
-    previousEnd: '2025-02-28',
+    previousStart: '2025-01-30',
+    previousEnd: '2025-03-01',
   },
   {
     label: 'full month after leap February',
     start: '2024-03-01',
     end: '2024-03-31',
-    previousStart: '2024-01-30',
-    previousEnd: '2024-02-29',
+    previousStart: '2024-01-31',
+    previousEnd: '2024-03-01',
   },
   {
     label: 'default start to today',
     start: '2010-01-01',
     end: '2025-09-18',
-    previousStart: '1994-04-13',
-    previousEnd: '2009-12-31',
+    previousStart: '1994-04-14',
+    previousEnd: '2010-01-01',
+  },
+  {
+    label: 'calendar month',
+    start: '2025-03-01',
+    end: '2025-04-01',
+    previousStart: '2025-02-01',
+    previousEnd: '2025-03-01',
+  },
+  {
+    label: 'one week, the previous week ends where it starts',
+    start: '2025-11-01',
+    end: '2025-11-08',
+    previousStart: '2025-10-25',
+    previousEnd: '2025-11-01',
   },
 ] as const;
 
@@ -97,7 +111,7 @@ function thrownBy(fn: () => unknown): unknown {
   throw new Error('expected the call to throw');
 }
 
-describe('resolvePeriods matches the Nuxt Luxon implementation (AC5)', () => {
+describe('resolvePeriods ends the comparison period where the current one starts (AC5)', () => {
   it.each(luxonFixtures)(
     '$label ($start to $end)',
     ({ start, end, previousStart, previousEnd }) => {
@@ -115,14 +129,14 @@ describe('resolvePeriods defaults (AC5)', () => {
   it('uses 2010-01-01 and today in UTC when both dates are omitted', () => {
     expect(resolvePeriods(undefined, undefined, now)).toEqual({
       current: { startDate: '2010-01-01', endDate: '2025-09-18' },
-      previous: { startDate: '1994-04-13', endDate: '2009-12-31' },
+      previous: { startDate: '1994-04-14', endDate: '2010-01-01' },
     });
   });
 
   it('uses today in UTC when only endDate is omitted', () => {
     expect(resolvePeriods('2025-06-20', undefined, now)).toEqual({
       current: { startDate: '2025-06-20', endDate: '2025-09-18' },
-      previous: { startDate: '2025-03-21', endDate: '2025-06-19' },
+      previous: { startDate: '2025-03-22', endDate: '2025-06-20' },
     });
   });
 
@@ -158,7 +172,7 @@ describe('resolvePeriods works in UTC calendar days (AC5)', () => {
       process.env.TZ = timeZone;
       expect(resolvePeriods('2025-01-31', '2025-03-01')).toEqual({
         current: { startDate: '2025-01-31', endDate: '2025-03-01' },
-        previous: { startDate: '2024-12-29', endDate: '2025-01-30' },
+        previous: { startDate: '2024-12-30', endDate: '2025-01-31' },
       });
       for (const instant of ['2025-09-18T00:30:00Z', '2025-09-18T23:30:00Z']) {
         expect(resolvePeriods(undefined, undefined, new Date(instant)).current.endDate).toBe(
@@ -187,13 +201,13 @@ describe('resolvePeriods rejects an inverted range (AC5)', () => {
   });
 });
 
-describe('resolvePeriods takes dates from 2000-01-01 to today', () => {
+describe('resolvePeriods takes dates from 2000-01-01 to tomorrow', () => {
   const now = new Date('2025-09-18T12:00:00Z');
 
   it.each([
     ['a startDate before 2000-01-01', '1999-12-31', '2025-01-01'],
     ['a year-one startDate', '0001-01-01', undefined],
-    ['an endDate after today', '2025-01-01', '2025-09-19'],
+    ['an endDate after tomorrow', '2025-01-01', '2025-09-20'],
     ['a far-future endDate', undefined, '9999-12-31'],
   ])('rejects %s as a 400 invalid_request', (_label, startDate, endDate) => {
     const error = thrownBy(() => resolvePeriods(startDate, endDate, now));
@@ -201,10 +215,16 @@ describe('resolvePeriods takes dates from 2000-01-01 to today', () => {
     expect(error).toMatchObject({ statusCode: 400, code: 'invalid_request' });
   });
 
-  it('accepts 2000-01-01 and today as the bounds', () => {
-    expect(resolvePeriods('2000-01-01', '2025-09-18', now).current).toEqual({
+  it('accepts 2000-01-01 and tomorrow as the bounds, so a range can take in today', () => {
+    expect(resolvePeriods('2000-01-01', '2025-09-19', now).current).toEqual({
       startDate: '2000-01-01',
-      endDate: '2025-09-18',
+      endDate: '2025-09-19',
+    });
+  });
+
+  it('names tomorrow in the error for a later endDate', () => {
+    expect(thrownBy(() => resolvePeriods('2025-01-01', '2025-09-20', now))).toMatchObject({
+      message: 'endDate must be on or before tomorrow (2025-09-19)',
     });
   });
 });

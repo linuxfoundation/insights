@@ -88,7 +88,7 @@ const PatchsetsPerReview = Type.Object({
 
 const measures =
   'Returns the number of patchsets a Gerrit changeset needed during review, as the median or the average per `stat`: a `summary` comparing the current period with the comparison period before it, and one `value` per time bucket of the requested granularity in `data`. Patchsets are a Gerrit concept, so the data covers Gerrit changesets only, each counted by the day it was opened and only when it carries a patchset count. ' +
-  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
+  'The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
   'A period without such a changeset has a null summary value, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket without one has `value` 0.';
 
 const patchsetsPerReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {

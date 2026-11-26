@@ -90,7 +90,7 @@ const counting =
   'Returns the number of active contributors in the period against the comparison period before it, the maintainer and reviewer counts in the period, and the active contributors per bucket. An active contributor is a person with at least one activity in the period of a kind the contribution flags select: code contributions unless `includeCodeContributions` is false, and collaborations when `includeCollaborations` is true.';
 
 const period =
-  'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const activeContributorsRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

@@ -25,8 +25,8 @@ const repos = `repos=${encodeURIComponent(k8sRepo)}&repos=${encodeURIComponent(w
 const baseQuery = `${range}&granularity=monthly&${repos}`;
 
 const currentStart = '2025-01-01 00:00:00';
-const previousStart = '2024-10-01 00:00:00';
-const previousEnd = '2024-12-31 00:00:00';
+const previousStart = '2024-10-02 00:00:00';
+const previousEnd = '2025-01-01 00:00:00';
 const summaryCounts: Record<string, number> = { [currentStart]: 120, [previousStart]: 100 };
 
 const monthlyRows = [
@@ -242,8 +242,8 @@ describe('date range (AC6)', () => {
       const previous = calls.filter((url) => !current.includes(url));
       expect(previous.map(params)).toEqual([
         expect.objectContaining({
-          startDate: '1994-10-01 00:00:00',
-          endDate: '2009-12-31 00:00:00',
+          startDate: '1994-10-02 00:00:00',
+          endDate: '2010-01-01 00:00:00',
         }),
       ]);
       expect(previous[0]?.searchParams.has('granularity')).toBe(false);

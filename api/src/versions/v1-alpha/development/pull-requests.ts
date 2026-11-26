@@ -125,7 +125,7 @@ function toPullRequests(rows: PipeRows, current: DateRange): PullRequests {
 }
 
 const measures =
-  'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'Returns the pull requests opened, merged and closed in the period against the comparison period before it, the average time to resolve one in seconds, and the opened, merged and closed counts per bucket. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const pullRequestRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

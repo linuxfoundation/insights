@@ -77,7 +77,7 @@ const ActiveDays = Type.Object({
 });
 
 const measures =
-  'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends the day before `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'Returns the number of days with at least one development activity in the period against the previous period, the average contributions per active day, and the contributions per bucket. The previous period ends at `startDate` and covers the same calendar span as the current period, counted in whole months plus remaining days the way the Insights UI does, so its number of days can differ around month ends. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const activeDaysRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

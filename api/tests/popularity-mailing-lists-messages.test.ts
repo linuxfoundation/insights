@@ -18,7 +18,7 @@ const route = '/v1-alpha/projects/kubernetes/popularity/mailing-lists-messages';
 const baseQuery = 'startDate=2025-01-01&endDate=2025-03-31&granularity=monthly';
 
 const currentStart = '2025-01-01 00:00:00';
-const previousStart = '2024-10-01 00:00:00';
+const previousStart = '2024-10-02 00:00:00';
 
 const monthlyRows = [
   {

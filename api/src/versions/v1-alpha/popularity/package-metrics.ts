@@ -158,7 +158,7 @@ const runningTotals =
   'Each daily record holds running totals: downloads and Docker downloads up to that day, and the dependents counted on that day. So the summary and the buckets take the highest value in their range rather than a sum.';
 
 const period =
-  'Records dated on `startDate` are left out: the period covers the days after `startDate` and before `endDate`. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today.';
+  'Records dated on `startDate` are left out: the period covers the days after `startDate` and before `endDate`. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today.';
 
 const summarize = (current: MetricRow = {}, previous: MetricRow = {}, range: DateRange) =>
   Object.fromEntries(

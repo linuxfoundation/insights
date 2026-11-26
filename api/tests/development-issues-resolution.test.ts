@@ -26,7 +26,7 @@ const velocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
 // The request range and the previous range resolvePeriods derives from it (the UI's 90d preset).
 const range = { startDate: '2025-06-20', endDate: '2025-09-18' };
-const previousRange = { startDate: '2025-03-21', endDate: '2025-06-19' };
+const previousRange = { startDate: '2025-03-22', endDate: '2025-06-20' };
 const tinybirdDay = (day: string) => `${day} 00:00:00`;
 const isoDay = (day: string) => `${day}T00:00:00Z`;
 
