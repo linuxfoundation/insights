@@ -4,6 +4,7 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { computed, nextTick, reactive, ref } from 'vue';
 
+import RepositorySwitch from '../repository-switch.vue';
 import RepositorySearch from './repository-search.vue';
 import RepositorySwitchItem from './repository-switch-item.vue';
 
@@ -17,18 +18,31 @@ const route = reactive<{
   query: {},
 });
 
-const push = vi.fn(
-  (to: {
-    name: string;
-    params?: Record<string, string>;
-    query: Record<string, string | undefined>;
-  }) => {
-    route.name = to.name;
-    route.params = { slug: 'demo', ...to.params };
-    route.query = to.query;
+let navigationDelayMs = 0;
+
+type Location = {
+  name: string;
+  params?: Record<string, string>;
+  query: Record<string, string | undefined>;
+};
+
+const navigate = (to: Location) => {
+  route.name = to.name;
+  route.params = { slug: 'demo', ...to.params };
+  route.query = to.query;
+};
+
+// A later push supersedes a pending one, like vue-router.
+let pendingNavigation: ReturnType<typeof setTimeout> | undefined;
+const push = vi.fn((to: Location) => {
+  if (!navigationDelayMs) {
+    navigate(to);
     return Promise.resolve();
-  },
-);
+  }
+  clearTimeout(pendingNavigation);
+  pendingNavigation = setTimeout(() => navigate(to), navigationDelayMs);
+  return Promise.resolve();
+});
 
 vi.mock('nuxt/app', async (importOriginal) => ({
   ...(await importOriginal<typeof import('nuxt/app')>()),
@@ -56,6 +70,8 @@ vi.mock('~/components/modules/project/store/project.store', () => ({
     archivedRepos: ref([]),
     excludedRepos: ref([]),
     unavailableRepos: ref([]),
+    projectRepositoryGroups: ref([]),
+    selectedRepositoryGroup: ref(null),
   }),
 }));
 
@@ -83,10 +99,13 @@ const render = () => mount(RepositorySearch, { props: { link } as never });
 const rows = (wrapper: ReturnType<typeof render>) =>
   wrapper.findAllComponents(RepositorySwitchItem);
 
+const isSelected = (row: { props: () => unknown } | undefined) =>
+  (row?.props() as { selected?: boolean } | undefined)?.selected;
+
 const clickRow = (wrapper: ReturnType<typeof render>, index: number) =>
   rows(wrapper).at(index)?.trigger('click');
 
-describe('repository-search batching (OPS-1221)', () => {
+describe('repository-search batching', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     push.mockClear();
@@ -107,11 +126,8 @@ describe('repository-search batching (OPS-1221)', () => {
       vi.advanceTimersByTime(100);
     }
 
-    // fails before fix: every click pushed a route (30 pushes)
     expect(push).not.toHaveBeenCalled();
-    expect(rows(wrapper).every((row) => (row.props() as { selected: boolean }).selected)).toBe(
-      true,
-    );
+    expect(rows(wrapper).every((row) => isSelected(row))).toBe(true);
 
     vi.advanceTimersByTime(400);
     await nextTick();
@@ -156,10 +172,15 @@ describe('repository-search batching (OPS-1221)', () => {
     expect(push).not.toHaveBeenCalled();
   });
 
-  test('leaving one repository navigates to its page immediately and closes', async () => {
+  test('leaving one repository opens its page after the pause and closes', async () => {
     const wrapper = render();
 
     await clickRow(wrapper, 0);
+    expect(push).not.toHaveBeenCalled();
+
+    await clickRow(wrapper, 2);
+    await clickRow(wrapper, 2);
+    vi.advanceTimersByTime(400);
 
     expect(push).toHaveBeenCalledTimes(1);
     expect(push.mock.calls[0]?.[0]).toMatchObject({
@@ -167,5 +188,76 @@ describe('repository-search batching (OPS-1221)', () => {
       params: { name: 'repo-1' },
     });
     expect(wrapper.emitted('close')).toHaveLength(1);
+  });
+
+  test('a route change from outside the modal drops the pending draft', async () => {
+    const wrapper = render();
+
+    await clickRow(wrapper, 2);
+    route.query = { repos: 'repo-7,repo-8' };
+    await nextTick();
+    vi.advanceTimersByTime(400);
+
+    expect(push).not.toHaveBeenCalled();
+    expect(isSelected(rows(wrapper).at(7))).toBe(true);
+    expect(isSelected(rows(wrapper).at(2))).toBe(false);
+  });
+
+  test('leaving the project with a pending draft does not navigate back', async () => {
+    const wrapper = render();
+
+    await clickRow(wrapper, 2);
+    route.params = { slug: 'other' };
+    route.query = { repos: 'repo-0,repo-1,repo-2' };
+    wrapper.unmount();
+
+    expect(push).not.toHaveBeenCalled();
+  });
+});
+
+describe('repository-switch "All repositories" with a pending draft', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    push.mockClear();
+    route.name = 'project-slug';
+    route.params = { slug: 'demo' };
+    route.query = { repos: 'repo-0,repo-1' };
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  afterEach(() => {
+    navigationDelayMs = 0;
+  });
+
+  const renderSwitch = () =>
+    mount(RepositorySwitch, {
+      props: { modelValue: true },
+      global: {
+        stubs: {
+          LfxModal: { props: ['modelValue'], template: '<div v-if="modelValue"><slot /></div>' },
+        },
+      },
+    });
+
+  test('the "All repositories" row follows the draft, and choosing it wins over the draft', async () => {
+    const wrapper = renderSwitch();
+    const allRow = () => wrapper.findAllComponents(RepositorySwitchItem).at(0);
+    const repoRows = () => wrapper.findAllComponents(RepositorySwitchItem).slice(1);
+
+    await repoRows().at(0)?.trigger('click');
+    await repoRows().at(1)?.trigger('click');
+    expect(isSelected(allRow())).toBe(true);
+
+    navigationDelayMs = 50;
+    await repoRows().at(2)?.trigger('click');
+    await allRow()?.trigger('click');
+    await wrapper.setProps({ modelValue: false } as never);
+    vi.advanceTimersByTime(400);
+
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(route.query.repos).toBeUndefined();
   });
 });

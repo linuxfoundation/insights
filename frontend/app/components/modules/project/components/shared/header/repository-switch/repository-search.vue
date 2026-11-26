@@ -147,16 +147,17 @@ const { list, containerProps, wrapperProps } = useVirtualList(result, {
 // Checkboxes reflect this draft at once; the route (and every repo-dependent query) follows after a pause.
 const draftSlugs = ref<string[]>([...selectedRepoSlugs.value]);
 let hasPendingChanges = false;
-
-watch(selectedRepoSlugs, (slugs) => {
-  if (!hasPendingChanges) {
-    draftSlugs.value = [...slugs];
-  }
-});
+let draftProjectSlug: string | undefined;
+let lastAppliedSlugs: string | null = null;
 
 const applySelection = () => {
   hasPendingChanges = false;
+  // The user left this project while the change was pending, so it no longer applies.
+  if (route.params.slug !== draftProjectSlug) {
+    return;
+  }
   const repos = draftSlugs.value;
+  lastAppliedSlugs = repos.join(',');
   const routeQuery = route.query;
   if (repos.length === 1) {
     router.push({
@@ -181,11 +182,8 @@ const handleReposChange = (repo: RepositoryItem) => {
   const isSelected = slugs.some((slug) => draftSlugs.value.includes(slug));
   draftSlugs.value = isSelected ? draftSlugs.value.filter((s) => !slugs.includes(s)) : [...draftSlugs.value, ...slugs];
 
-  // One repo left navigates to its page and closes the modal, so apply it now.
-  if (draftSlugs.value.length === 1) {
-    scheduleApply.cancel();
-    applySelection();
-    return;
+  if (!hasPendingChanges) {
+    draftProjectSlug = route.params.slug as string | undefined;
   }
   hasPendingChanges = true;
   scheduleApply();
@@ -194,9 +192,18 @@ const handleReposChange = (repo: RepositoryItem) => {
 const cancelPendingSelection = () => {
   scheduleApply.cancel();
   hasPendingChanges = false;
+  draftSlugs.value = [...selectedRepoSlugs.value];
 };
 
-defineExpose({ cancelPendingSelection });
+watch(selectedRepoSlugs, (slugs) => {
+  // Our own earlier push landing mid-burst keeps the draft; any other route change drops it.
+  if (hasPendingChanges && slugs.join(',') === lastAppliedSlugs) {
+    return;
+  }
+  cancelPendingSelection();
+});
+
+defineExpose({ draftSlugs, cancelPendingSelection });
 
 onMounted(() => {
   searchInputRef.value?.focus();

@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="p-1 flex flex-col gap-1 w-full min-w-[30rem]">
       <lfx-project-repository-switch-item
-        :selected="selectedRepoSlugs.length === 0 && !selectedRepositoryGroup"
+        :selected="(repositorySearchRef?.draftSlugs ?? selectedRepoSlugs).length === 0 && !selectedRepositoryGroup"
         @click="allRepositories()"
       >
         <div class="flex items-center gap-1.5">
