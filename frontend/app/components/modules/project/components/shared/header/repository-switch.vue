@@ -71,7 +71,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'nuxt/app';
+import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -91,8 +91,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
-const route = useRoute();
 const router = useRouter();
+const route = router.currentRoute;
 
 const { projectRepositoryGroups, selectedRepoSlugs, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
@@ -110,7 +110,7 @@ const isModalOpen = computed({
 });
 
 const routeName = computed<ProjectLinkConfig>(() => {
-  const type: string = (route.name || '').split('-').at(-1);
+  const type: string = (route.value.name?.toString() || '').split('-').at(-1);
   const link = lfProjectLinks.find((l) => l.key === type);
   const overview = lfProjectLinks.find((l) => l.key === 'overview');
 
@@ -120,12 +120,12 @@ const routeName = computed<ProjectLinkConfig>(() => {
 const allRepositories = () => {
   repositorySearchRef.value?.cancelPendingSelection();
   isModalOpen.value = false;
-  const routeQuery = router.currentRoute.value.query;
+  const routeQuery = route.value.query;
 
   router.push({
     name: routeName.value.projectRouteName,
     params: {
-      slug: route.params.slug,
+      slug: route.value.params.slug,
     },
     query: { ...routeQuery, repos: undefined },
   });

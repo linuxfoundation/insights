@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { computed, nextTick, reactive, ref } from 'vue';
 
 import RepositorySwitch from '../repository-switch.vue';
+import RepositoryGroupSearch from './repository-group-search.vue';
 import RepositorySearch from './repository-search.vue';
 import RepositorySwitchItem from './repository-switch-item.vue';
 
@@ -62,6 +63,8 @@ const repos = Array.from({ length: 32 }, (_, i) => ({
   url: `https://github.com/demo/repo-${i}`,
 }));
 
+const groups = ref<{ name: string; slug: string; repositories: string[] }[]>([]);
+
 vi.mock('~/components/modules/project/store/project.store', () => ({
   useProjectStore: () => ({
     selectedRepoSlugs: computed(() =>
@@ -71,7 +74,7 @@ vi.mock('~/components/modules/project/store/project.store', () => ({
     archivedRepos: ref([]),
     excludedRepos: ref([]),
     unavailableRepos: ref([]),
-    projectRepositoryGroups: ref([]),
+    projectRepositoryGroups: groups,
     selectedRepositoryGroup: ref(null),
   }),
 }));
@@ -324,5 +327,27 @@ describe('repository-switch "All repositories" with a pending draft', () => {
 
     expect(push).toHaveBeenCalledTimes(1);
     expect(route.query.repos).toBeUndefined();
+  });
+});
+
+describe('repository-group-search', () => {
+  afterEach(() => {
+    groups.value = [];
+  });
+
+  test('picking a group keeps the current date range', async () => {
+    push.mockClear();
+    route.params = { slug: 'demo' };
+    route.query = { timeRange: 'past90days', repos: 'repo-0,repo-1' };
+    groups.value = [{ name: 'Core', slug: 'core', repositories: [] }];
+    const wrapper = mount(RepositoryGroupSearch, {
+      props: { link: { ...link, repoGroupRouteName: 'project-slug-group' } } as never,
+    });
+
+    await wrapper.findAllComponents(RepositorySwitchItem).at(0)?.trigger('click');
+
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(route.query).toEqual({ timeRange: 'past90days', repos: undefined });
+    expect(route.params).toMatchObject({ groupSlug: 'core' });
   });
 });

@@ -68,7 +68,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'nuxt/app';
+import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import pluralize from 'pluralize';
 import { computed, onMounted, ref } from 'vue';
@@ -87,8 +87,8 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const route = useRoute();
 const router = useRouter();
+const route = router.currentRoute;
 
 const searchInputRef = ref(null);
 const search = ref('');
@@ -102,7 +102,7 @@ const result = computed<ProjectRepositoryGroup[]>(() =>
 );
 
 const handleSelectRepositoryGroup = (rg: ProjectRepositoryGroup) => {
-  const routeQuery = route.query;
+  const routeQuery = route.value.query;
   router.push({
     name: props.link.repoGroupRouteName,
     params: {

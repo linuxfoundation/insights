@@ -107,7 +107,7 @@ const emit = defineEmits<{
 }>();
 
 const router = useRouter();
-// useRoute() can lag behind query updates made elsewhere (e.g. the date range), like in the project store.
+// Nuxt's useRoute() here misses query updates made after the page rendered, such as the date range.
 const route = router.currentRoute;
 
 const searchInputRef = ref(null);
