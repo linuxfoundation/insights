@@ -33,7 +33,7 @@ export const PeriodQuery = Type.Object({
     Type.String({
       format: 'date',
       description:
-        'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets. The latest accepted day is today in UTC.',
+        'End of the period, as a UTC calendar day (YYYY-MM-DD). Exclusive: the period ends at 00:00 UTC on this day, so activity on this day is outside it, as in the Insights widgets. The latest accepted day is tomorrow in UTC, which takes in the data for today so far.',
     }),
   ),
 });
@@ -59,7 +59,8 @@ export const Granularity = Type.Unsafe<`${Exclude<SharedGranularity, SharedGranu
     SharedGranularity.QUARTERLY,
     SharedGranularity.YEARLY,
   ],
-  description: 'Width of each bucket in `data`.',
+  description:
+    'Width of each bucket in `data`. A `weekly` bucket runs from Sunday to Saturday, in UTC.',
 });
 
 const pullRequestPlatform = (description: string) =>
@@ -197,7 +198,7 @@ interface NullablePeriodSummaryOptions extends PeriodSummaryText {
 // PeriodSummary leaves its three numbers undescribed because the unit is per metric.
 const summaryText = ({ measure, unit, changeUnit = unit }: PeriodSummaryText) => ({
   current: `${measure} in the current period (${unit}).`,
-  previous: `${measure} in the comparison period, which ends the day before \`periodFrom\`. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (${unit}).`,
+  previous: `${measure} in the comparison period, which ends at \`periodFrom\`, where the current period starts. Its span is derived in calendar months and days, so its elapsed days can differ from the current period (${unit}).`,
   changeValue: `\`current\` minus \`previous\` (${changeUnit}).`,
 });
 

@@ -62,7 +62,7 @@ const MergeLeadTime = Type.Object({
 
 const measures =
   'Returns the average time a pull request takes from being opened to being merged (`summary`) and how that time splits across four stages, each for the current period against the comparison period before it: `pickupSeconds` from opened to a review being requested, `reviewSeconds` from the review request to the first review, `acceptedSeconds` from the first review to approval, and `mergedSeconds` from approval to merge. Every value is an average in seconds. ' +
-  'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
+  'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. ' +
   'GitHub and GitLab pull requests are counted; Gerrit changesets are excluded. Each average covers only the pull requests that reached both ends of that stage, so a stage no pull request reached is null, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null.';
 
 const mergeLeadTimeRoutes: FastifyPluginAsyncTypebox = async (scope) => {

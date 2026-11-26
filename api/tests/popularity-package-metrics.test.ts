@@ -17,7 +17,7 @@ const baseQuery = 'startDate=2025-01-01&endDate=2025-03-31&granularity=monthly';
 const pipePath = '/v0/pipes/package_metrics.json';
 
 const currentStart = '2025-01-01 00:00:00';
-const previousStart = '2024-10-01 00:00:00';
+const previousStart = '2024-10-02 00:00:00';
 
 const summaryRows: Record<string, Record<string, number>> = {
   [currentStart]: {
@@ -171,7 +171,7 @@ describe('Tinybird calls (AC3)', () => {
     expect(summaries).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ startDate: currentStart, endDate: '2025-03-31 00:00:00' }),
-        expect.objectContaining({ startDate: previousStart, endDate: '2024-12-31 00:00:00' }),
+        expect.objectContaining({ startDate: previousStart, endDate: '2025-01-01 00:00:00' }),
       ]),
     );
     const series = calls.filter(isSeries).map(params);

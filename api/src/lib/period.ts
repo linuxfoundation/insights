@@ -19,8 +19,8 @@ export class InvalidDateRangeError extends Error {
 
 // Same default as earliestPossibleStartDate in frontend/server/data/util.ts.
 const defaultStartDate = '2010-01-01';
-// The oldest start a caller may ask for. With the end capped at today, as in the Insights date picker,
-// every previous period stays in positive years.
+// The oldest start a caller may ask for. With the end capped at tomorrow, every previous period stays
+// in positive years.
 const earliestStartDate = '2000-01-01';
 const dayMs = 86_400_000;
 
@@ -72,20 +72,22 @@ function addMonthsClamped(date: Date, months: number): Date {
   return utcDate(year, month, Math.min(date.getUTCDate(), lastDay));
 }
 
-// Ports getPreviousDates from frontend/server/data/util.ts, Luxon month-end clamping included, so the
-// comparison period matches the UI day for day.
+// Measures the span like getPreviousDates in frontend/server/data/util.ts, Luxon month-end clamping
+// included. Ends are exclusive, so the comparison period ends where the current one starts.
 export function resolvePeriods(
   startDate = defaultStartDate,
   endDate?: string,
   now = new Date(),
 ): { current: DateRange; previous: DateRange } {
   const today = formatDay(now);
+  // The end is exclusive, so tomorrow is the end that takes in today's data so far.
+  const tomorrow = formatDay(addDays(parseDay(today), 1));
   const current = { startDate, endDate: endDate ?? today };
   if (current.startDate < earliestStartDate) {
     throw new InvalidDateRangeError(`startDate must be on or after ${earliestStartDate}`);
   }
-  if (current.endDate > today) {
-    throw new InvalidDateRangeError(`endDate must be on or before today (${today})`);
+  if (current.endDate > tomorrow) {
+    throw new InvalidDateRangeError(`endDate must be on or before tomorrow (${tomorrow})`);
   }
   const start = parseDay(current.startDate);
   const end = parseDay(current.endDate);
@@ -102,11 +104,10 @@ export function resolvePeriods(
   }
   const days = (end.getTime() - monthsEnd.getTime()) / dayMs;
 
-  const previousEnd = addDays(start, -1);
-  const previousStart = addDays(addMonthsClamped(previousEnd, -months), -days);
+  const previousStart = addDays(addMonthsClamped(start, -months), -days);
   return {
     current,
-    previous: { startDate: formatDay(previousStart), endDate: formatDay(previousEnd) },
+    previous: { startDate: formatDay(previousStart), endDate: current.startDate },
   };
 }
 

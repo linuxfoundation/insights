@@ -48,7 +48,7 @@ const MailingListsMessages = Type.Object({
 });
 
 const counting =
-  'Only groups.io messages are counted. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'Only groups.io messages are counted. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const mailingListsMessagesRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

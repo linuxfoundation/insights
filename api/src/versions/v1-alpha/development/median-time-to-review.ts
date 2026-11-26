@@ -95,7 +95,7 @@ const measures =
   'Returns the median time from a pull request being opened to its first review, in seconds, as a summary for the current period against the comparison period before it (`summary`) and per bucket of the requested granularity (`data`). The period selects pull requests by the day they were opened. Only pull requests with a positive time to review count, so a first review recorded in the same second the pull request was opened is left out. ' +
   '`platform` narrows the pull requests to one source platform; when omitted, GitHub pull requests, GitLab merge requests and Gerrit changesets are counted together. ' +
   'A period without such a pull request has a null median, and `changeValue` and `percentageChange` are null whenever `current` or `previous` is null; a bucket without such a pull request reports 0. `granularity` has no default and must be sent. ' +
-  'The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const medianTimeToReviewRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

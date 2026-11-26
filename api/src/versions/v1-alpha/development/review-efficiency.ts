@@ -125,7 +125,7 @@ const measures =
   'Returns the pull requests opened in the period that have since been closed, as a percentage of all pull requests opened in the period (`efficiencyPercentage`), against the comparison period before it; the opened and closed counts as their own summaries; and both counts per bucket. Closed means the pull request has a resolution time in the pipe, merged or closed, at any time up to now, so an older period has had longer to close its pull requests. The Insights widget shows the efficiency as a ratio; the API reshapes it to a percent, so its `changeValue` is in percentage points, and because `closed` counts a subset of `opened` it runs from 0 to 100. The efficiency is null for a period in which no pull request was opened, and its `changeValue` and `percentageChange` are null whenever `current` or `previous` is null.';
 
 const period =
-  'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ.';
+  'The period selects pull requests by the day they were opened: from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`. Without dates the period runs from 2010-01-01 to today. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ.';
 
 const reviewEfficiencyRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {

@@ -97,7 +97,7 @@ function mergeBuckets(
 }
 
 const measures =
-  'Returns the issues closed in the period against the comparison period before it, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The comparison period ends the day before `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
+  'Returns the issues closed in the period against the comparison period before it, the average time to resolve an issue in seconds, and the issues opened and closed in each bucket. The comparison period ends at `startDate`; its span is derived in calendar months and days, so its elapsed days can differ. Without dates the period runs from 2010-01-01 to today. The period runs from 00:00 UTC on `startDate` up to, and excluding, 00:00 UTC on `endDate`.';
 
 const issuesResolutionRoutes: FastifyPluginAsyncTypebox = async (scope) => {
   widgetRoutes(scope, {
