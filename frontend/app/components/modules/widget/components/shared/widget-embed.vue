@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
           />
           <p v-if="startDate && endDate">
             {{ DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
-            → {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+            → {{ lastDayOf(endDate).toFormat('MMM d, yyyy') }}
           </p>
           <p v-else>All time</p>
         </div>
@@ -80,7 +80,7 @@ import { DateTime } from 'luxon';
 import { storeToRefs } from 'pinia';
 import { computed, onServerPrefetch } from 'vue';
 
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { dateOptKeys, lastDayOf } from '~/components/modules/project/config/date-options';
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';

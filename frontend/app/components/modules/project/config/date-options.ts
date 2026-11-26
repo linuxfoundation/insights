@@ -12,6 +12,11 @@ export interface DateOptionConfig {
 
 const now = DateTime.local();
 
+// endDate is exclusive, as in the pipes' `< endDate` filters, so a range ends at midnight after its last day.
+export const lastDayOf = (endDate: string) =>
+  DateTime.fromFormat(endDate, 'yyyy-MM-dd').minus({ days: 1 });
+export const endDateAfter = (lastDay: DateTime) => lastDay.plus({ days: 1 }).toFormat('yyyy-MM-dd');
+
 export enum dateOptKeys {
   past90days = 'past90days',
   past180days = 'past180days',
@@ -53,7 +58,7 @@ export const lfxProjectDateOptionsPrevious: DateOptionConfig[] = [
     key: dateOptKeys.previousQuarter,
     label: 'Previous quarter',
     startDate: now.minus({ quarters: 1 }).startOf('quarter').toFormat('yyyy-MM-dd'),
-    endDate: now.minus({ quarters: 1 }).endOf('quarter').toFormat('yyyy-MM-dd'),
+    endDate: now.startOf('quarter').toFormat('yyyy-MM-dd'),
     description: `${now.minus({ quarters: 1 }).startOf('quarter').toFormat('MMM yyyy')} 
         -> ${now.minus({ quarters: 1 }).endOf('quarter').toFormat('MMM yyyy')}`,
   },
@@ -61,14 +66,14 @@ export const lfxProjectDateOptionsPrevious: DateOptionConfig[] = [
     key: dateOptKeys.previousYear,
     label: 'Previous year',
     startDate: now.minus({ years: 1 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: now.minus({ years: 1 }).endOf('year').toFormat('yyyy-MM-dd'),
+    endDate: now.startOf('year').toFormat('yyyy-MM-dd'),
     description: `${now.minus({ years: 1 }).toFormat('yyyy')}`,
   },
   {
     key: dateOptKeys.previous5Year,
     label: 'Previous 5 years',
     startDate: now.minus({ years: 5 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: now.minus({ years: 1 }).endOf('year').toFormat('yyyy-MM-dd'),
+    endDate: now.startOf('year').toFormat('yyyy-MM-dd'),
     description: `${now.minus({ years: 5 }).toFormat('yyyy')} 
         -> ${now.minus({ years: 1 }).endOf('year').toFormat('yyyy')}`,
   },
@@ -76,7 +81,7 @@ export const lfxProjectDateOptionsPrevious: DateOptionConfig[] = [
     key: dateOptKeys.previous10Year,
     label: 'Previous 10 years',
     startDate: now.minus({ years: 10 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: now.minus({ years: 1 }).endOf('year').toFormat('yyyy-MM-dd'),
+    endDate: now.startOf('year').toFormat('yyyy-MM-dd'),
     description: `${now.minus({ years: 10 }).toFormat('yyyy')} 
         -> ${now.minus({ years: 1 }).endOf('year').toFormat('yyyy')}`,
   },

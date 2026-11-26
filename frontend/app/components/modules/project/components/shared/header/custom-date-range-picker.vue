@@ -79,7 +79,7 @@ SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import { computed, ref, watch, nextTick } from 'vue';
 
-import type { DateOptionConfig } from '~/components/modules/project/config/date-options';
+import { endDateAfter, lastDayOf, type DateOptionConfig } from '~/components/modules/project/config/date-options';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDatepicker from '~/components/uikit/datepicker/datepicker.vue';
 import LfxModal from '~/components/uikit/modal/modal.vue';
@@ -105,7 +105,7 @@ const getInitialDateRange = (): [Date, Date] | null => {
   if (props.initialStartDate && props.initialEndDate) {
     return [
       DateTime.fromFormat(props.initialStartDate, 'yyyy-MM-dd').toJSDate(),
-      DateTime.fromFormat(props.initialEndDate, 'yyyy-MM-dd').toJSDate(),
+      lastDayOf(props.initialEndDate).toJSDate(),
     ];
   }
   return null;
@@ -158,7 +158,7 @@ const select = () => {
     key: 'custom',
     label: 'Custom',
     startDate: DateTime.fromJSDate(start).toFormat('yyyy-MM-dd'),
-    endDate: DateTime.fromJSDate(end).toFormat('yyyy-MM-dd'),
+    endDate: endDateAfter(DateTime.fromJSDate(end)),
   });
   emit('update:modelValue', false);
 };

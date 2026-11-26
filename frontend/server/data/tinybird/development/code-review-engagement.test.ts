@@ -43,8 +43,8 @@ function getTinybirdQueries(
 
   const participantsPreviousSummaryQuery: ActiveContributorsTinybirdQuery = {
     ...participantsCurrentSummaryQuery,
-    startDate: DateTime.utc(2023, 3, 19),
-    endDate: DateTime.utc(2024, 3, 19),
+    startDate: DateTime.utc(2023, 3, 20),
+    endDate: DateTime.utc(2024, 3, 20),
   };
 
   const participantsDataQuery: ContributorsLeaderboardTinybirdQuery = {
@@ -313,8 +313,8 @@ describe('Code Review Engagement Data Source', () => {
     };
     const expectedPreviousSummaryQuery: ActiveContributorsTinybirdQuery = {
       ...expectedCurrentSummaryQuery,
-      startDate: DateTime.utc(2023, 3, 19),
-      endDate: DateTime.utc(2024, 3, 19),
+      startDate: DateTime.utc(2023, 3, 20),
+      endDate: DateTime.utc(2024, 3, 20),
     };
     const expectedDataQuery = {
       ...expectedCurrentSummaryQuery,

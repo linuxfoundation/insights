@@ -9,6 +9,7 @@ import { ref, computed, watch } from 'vue';
 import { Granularity } from '@lfx-insights/types';
 import {
   dateOptKeys,
+  lastDayOf,
   lfxProjectDateOptions,
 } from '~/components/modules/project/config/date-options';
 import {
@@ -25,7 +26,8 @@ const calculateGranularity = (start: string | null, end: string | null): string[
   }
 
   const startDate = DateTime.fromISO(start);
-  const endDate = DateTime.fromISO(end);
+  // The thresholds count from the first day to the last, which is the day before the exclusive end.
+  const endDate = lastDayOf(end);
   const diffInDays = Math.ceil(endDate.diff(startDate, 'days').days);
 
   // TODO: verify with backend first if hourly granularity is doable

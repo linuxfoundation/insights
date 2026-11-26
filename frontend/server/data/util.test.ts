@@ -6,14 +6,14 @@ import { describe, test, expect, vi } from 'vitest';
 import { calculatePercentageChange, earliestPossibleStartDate, getPreviousDates } from './util';
 
 describe('getPreviousDates', () => {
-  test('should return the previous interval start and end dates, for the current start and end dates', () => {
+  test('should return a comparison period that ends where the current one starts', () => {
     const currentStartDate = DateTime.utc(2025, 1, 10);
     const currentEndDate = DateTime.utc(2025, 1, 15);
 
     const result = getPreviousDates(currentStartDate, currentEndDate);
 
-    const expectedStartDate = DateTime.utc(2025, 1, 4);
-    const expectedEndDate = DateTime.utc(2025, 1, 9);
+    const expectedStartDate = DateTime.utc(2025, 1, 5);
+    const expectedEndDate = DateTime.utc(2025, 1, 10);
 
     expect(result).toEqual({
       current: {
@@ -35,8 +35,8 @@ describe('getPreviousDates', () => {
 
     const expectedCurrentStartDate = earliestPossibleStartDate;
 
-    const expectedPreviousStartDate = DateTime.utc(1994, 12, 31);
-    const expectedPreviousEndDate = DateTime.utc(2009, 12, 31);
+    const expectedPreviousStartDate = DateTime.utc(1995, 1, 1);
+    const expectedPreviousEndDate = earliestPossibleStartDate;
 
     expect(result).toEqual({
       current: {
@@ -63,8 +63,8 @@ describe('getPreviousDates', () => {
 
     vi.useRealTimers();
 
-    const expectedPreviousStartDate = DateTime.utc(2022, 12, 31);
-    const expectedPreviousEndDate = DateTime.utc(2023, 12, 31);
+    const expectedPreviousStartDate = DateTime.utc(2023, 1, 1);
+    const expectedPreviousEndDate = currentStartDate;
 
     expect(result).toEqual({
       current: {
@@ -77,6 +77,29 @@ describe('getPreviousDates', () => {
       },
     });
   });
+
+  test.each([
+    ['a week', [2026, 11, 1], [2026, 11, 8], [2026, 10, 25]],
+    ['a calendar quarter', [2026, 7, 1], [2026, 10, 1], [2026, 4, 1]],
+    ['a calendar year', [2025, 1, 1], [2026, 1, 1], [2024, 1, 1]],
+    ['a span ending on the 30th after a 31st', [2025, 3, 31], [2025, 4, 30], [2025, 2, 28]],
+    ['a span from a leap day', [2024, 2, 29], [2024, 3, 31], [2024, 1, 27]],
+  ])(
+    'should measure the comparison period for %s in calendar months and days',
+    (_, start, end, previousStart) => {
+      const [startYear, startMonth, startDay] = start as [number, number, number];
+      const [endYear, endMonth, endDay] = end as [number, number, number];
+      const [previousYear, previousMonth, previousDay] = previousStart as [number, number, number];
+      const currentStartDate = DateTime.utc(startYear, startMonth, startDay);
+
+      const result = getPreviousDates(currentStartDate, DateTime.utc(endYear, endMonth, endDay));
+
+      expect(result.previous).toEqual({
+        from: DateTime.utc(previousYear, previousMonth, previousDay),
+        to: currentStartDate,
+      });
+    },
+  );
 
   test('should throw a 400 error when startDate is after endDate', () => {
     const currentStartDate = DateTime.utc(2026, 9, 21);
