@@ -19,7 +19,7 @@ import {
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import type { Project, ProjectRepository, ProjectRepositoryGroup } from '~~/types/project';
 
-const calculateGranularity = (start: string | null, end: string | null): string[] => {
+export const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
   if (!start || !end) {
     return [Granularity.WEEKLY];
