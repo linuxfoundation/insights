@@ -198,8 +198,10 @@ const cancelPendingSelection = () => {
 watch(
   () => selectedRepoSlugs.value.join(','),
   (slugs) => {
+    const isOwnPush = slugs === lastAppliedSlugs;
+    lastAppliedSlugs = null;
     // Our own earlier push landing mid-burst keeps the draft; any other repo change drops it.
-    if (hasPendingChanges && slugs === lastAppliedSlugs) {
+    if (hasPendingChanges && isOwnPush) {
       return;
     }
     cancelPendingSelection();

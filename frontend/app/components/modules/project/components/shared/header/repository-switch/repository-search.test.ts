@@ -231,6 +231,23 @@ describe('repository-search batching', () => {
     expect(route.query).toMatchObject({ repos: 'repo-0,repo-1,repo-2', timeRange: 'past90days' });
   });
 
+  test('a Forward back onto a selection we applied earlier still drops a newer draft', async () => {
+    const wrapper = render();
+
+    await clickRow(wrapper, 2);
+    vi.advanceTimersByTime(400);
+    await nextTick();
+    route.query = { repos: 'repo-0,repo-1' };
+    await nextTick();
+    await clickRow(wrapper, 5);
+    route.query = { repos: 'repo-0,repo-1,repo-2' };
+    await nextTick();
+    vi.advanceTimersByTime(400);
+
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(route.query.repos).toBe('repo-0,repo-1,repo-2');
+  });
+
   test('leaving the project with a pending draft does not navigate back', async () => {
     const wrapper = render();
 
