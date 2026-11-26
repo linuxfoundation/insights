@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
           v-for="{ data } in list"
           :key="data.url"
           is-multi-select
-          :selected="selectedRepoSlugs.includes(data.slug)"
+          :selected="draftSlugs.includes(data.slug)"
           @click="handleReposChange(data)"
         >
           <div class="flex justify-between w-full">
@@ -79,9 +79,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useVirtualList } from '@vueuse/core';
-import { useRoute, useRouter } from 'nuxt/app';
+import { debounce } from 'lodash-es';
+import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import {
@@ -95,6 +96,8 @@ import { normalizeRepoName } from '~/components/shared/utils/helper';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { ProjectRepository } from '~~/types/project';
 
+const REPO_SELECTION_DEBOUNCE_MS = 400;
+
 const props = defineProps<{
   link: ProjectLinkConfig;
 }>();
@@ -103,8 +106,9 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const route = useRoute();
 const router = useRouter();
+// Nuxt's useRoute() here misses query updates made after the page rendered, such as the date range.
+const route = router.currentRoute;
 
 const searchInputRef = ref(null);
 const search = ref('');
@@ -141,17 +145,21 @@ const { list, containerProps, wrapperProps } = useVirtualList(result, {
   itemHeight: 40,
 });
 
-const handleReposChange = (repo: RepositoryItem) => {
-  let repos: string[] = [];
-  const slugs: string[] = repositories.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+// Checkboxes reflect this draft at once; the route (and every repo-dependent query) follows after a pause.
+const draftSlugs = ref<string[]>([...selectedRepoSlugs.value]);
+let hasPendingChanges = false;
+let draftProjectSlug: string | undefined;
+let lastAppliedSlugs: string | null = null;
 
-  const isSelected = slugs.some((slug) => selectedRepoSlugs.value.includes(slug));
-  if (isSelected) {
-    repos = selectedRepoSlugs.value.filter((s) => !slugs.includes(s));
-  } else {
-    repos = [...selectedRepoSlugs.value, ...slugs];
+const applySelection = () => {
+  hasPendingChanges = false;
+  // The user left this project while the change was pending, so it no longer applies.
+  if (route.value.params.slug !== draftProjectSlug) {
+    return;
   }
-  const routeQuery = route.query;
+  const repos = draftSlugs.value;
+  lastAppliedSlugs = repos.join(',');
+  const routeQuery = route.value.query;
   if (repos.length === 1) {
     router.push({
       name: props.link.repoRouteName,
@@ -167,8 +175,49 @@ const handleReposChange = (repo: RepositoryItem) => {
   }
 };
 
+const scheduleApply = debounce(applySelection, REPO_SELECTION_DEBOUNCE_MS);
+
+const handleReposChange = (repo: RepositoryItem) => {
+  const slugs: string[] = repositories.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+
+  const isSelected = slugs.some((slug) => draftSlugs.value.includes(slug));
+  draftSlugs.value = isSelected ? draftSlugs.value.filter((s) => !slugs.includes(s)) : [...draftSlugs.value, ...slugs];
+
+  if (!hasPendingChanges) {
+    draftProjectSlug = route.value.params.slug as string | undefined;
+  }
+  hasPendingChanges = true;
+  scheduleApply();
+};
+
+const cancelPendingSelection = () => {
+  scheduleApply.cancel();
+  hasPendingChanges = false;
+  draftSlugs.value = [...selectedRepoSlugs.value];
+};
+
+watch(
+  () => selectedRepoSlugs.value.join(','),
+  (slugs) => {
+    const isOwnPush = slugs === lastAppliedSlugs;
+    lastAppliedSlugs = null;
+    // Our own earlier push landing mid-burst keeps the draft; any other repo change drops it.
+    if (hasPendingChanges && isOwnPush) {
+      return;
+    }
+    cancelPendingSelection();
+  },
+);
+
+defineExpose({ draftSlugs, cancelPendingSelection });
+
 onMounted(() => {
   searchInputRef.value?.focus();
+});
+
+// Closing the modal or switching tabs keeps the selection the user made.
+onBeforeUnmount(() => {
+  scheduleApply.flush();
 });
 </script>
 

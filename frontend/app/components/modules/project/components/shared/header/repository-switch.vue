@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="p-1 flex flex-col gap-1 w-full min-w-[30rem]">
       <lfx-project-repository-switch-item
-        :selected="selectedRepoSlugs.length === 0 && !selectedRepositoryGroup"
+        :selected="(repositorySearchRef?.draftSlugs ?? selectedRepoSlugs).length === 0 && !selectedRepositoryGroup"
         @click="allRepositories()"
       >
         <div class="flex items-center gap-1.5">
@@ -57,6 +57,7 @@ SPDX-License-Identifier: MIT
       </div>
       <lfx-project-repository-search
         v-if="tab === 'repositories'"
+        ref="repositorySearchRef"
         :link="routeName"
         @close="isModalOpen = false"
       />
@@ -70,7 +71,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'nuxt/app';
+import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -90,12 +91,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
-const route = useRoute();
 const router = useRouter();
+const route = router.currentRoute;
 
 const { projectRepositoryGroups, selectedRepoSlugs, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
 const tab = ref('repositories');
+const repositorySearchRef = ref<InstanceType<typeof LfxProjectRepositorySearch> | null>(null);
 
 const tabs = [
   { label: 'Repositories', value: 'repositories', icon: 'book' },
@@ -108,7 +110,7 @@ const isModalOpen = computed({
 });
 
 const routeName = computed<ProjectLinkConfig>(() => {
-  const type: string = (route.name || '').split('-').at(-1);
+  const type: string = (route.value.name?.toString() || '').split('-').at(-1);
   const link = lfProjectLinks.find((l) => l.key === type);
   const overview = lfProjectLinks.find((l) => l.key === 'overview');
 
@@ -116,13 +118,14 @@ const routeName = computed<ProjectLinkConfig>(() => {
 });
 
 const allRepositories = () => {
+  repositorySearchRef.value?.cancelPendingSelection();
   isModalOpen.value = false;
-  const routeQuery = route.query;
+  const routeQuery = route.value.query;
 
   router.push({
     name: routeName.value.projectRouteName,
     params: {
-      slug: route.params.slug,
+      slug: route.value.params.slug,
     },
     query: { ...routeQuery, repos: undefined },
   });
