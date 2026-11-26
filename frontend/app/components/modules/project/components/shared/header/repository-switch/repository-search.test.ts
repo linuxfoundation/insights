@@ -116,6 +116,7 @@ describe('repository-search batching', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    navigationDelayMs = 0;
   });
 
   test('rapid selections update checkboxes at once and the route once, after the pause', async () => {
@@ -201,6 +202,33 @@ describe('repository-search batching', () => {
     expect(push).not.toHaveBeenCalled();
     expect(isSelected(rows(wrapper).at(7))).toBe(true);
     expect(isSelected(rows(wrapper).at(2))).toBe(false);
+  });
+
+  test('a click made while our own push is still navigating is kept', async () => {
+    navigationDelayMs = 50;
+    const wrapper = render();
+
+    await clickRow(wrapper, 2);
+    vi.advanceTimersByTime(400);
+    await clickRow(wrapper, 3);
+    vi.advanceTimersByTime(50);
+    await nextTick();
+    vi.advanceTimersByTime(450);
+
+    expect(push).toHaveBeenCalledTimes(2);
+    expect(route.query.repos).toBe('repo-0,repo-1,repo-2,repo-3');
+  });
+
+  test('a route change that keeps the repos, such as the date range, keeps the draft', async () => {
+    const wrapper = render();
+
+    await clickRow(wrapper, 2);
+    route.query = { ...route.query, timeRange: 'past90days' };
+    await nextTick();
+    vi.advanceTimersByTime(400);
+
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(route.query).toMatchObject({ repos: 'repo-0,repo-1,repo-2', timeRange: 'past90days' });
   });
 
   test('leaving the project with a pending draft does not navigate back', async () => {

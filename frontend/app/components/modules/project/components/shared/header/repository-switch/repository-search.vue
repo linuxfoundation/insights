@@ -195,13 +195,16 @@ const cancelPendingSelection = () => {
   draftSlugs.value = [...selectedRepoSlugs.value];
 };
 
-watch(selectedRepoSlugs, (slugs) => {
-  // Our own earlier push landing mid-burst keeps the draft; any other route change drops it.
-  if (hasPendingChanges && slugs.join(',') === lastAppliedSlugs) {
-    return;
-  }
-  cancelPendingSelection();
-});
+watch(
+  () => selectedRepoSlugs.value.join(','),
+  (slugs) => {
+    // Our own earlier push landing mid-burst keeps the draft; any other repo change drops it.
+    if (hasPendingChanges && slugs === lastAppliedSlugs) {
+      return;
+    }
+    cancelPendingSelection();
+  },
+);
 
 defineExpose({ draftSlugs, cancelPendingSelection });
 
