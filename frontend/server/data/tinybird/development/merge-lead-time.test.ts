@@ -51,8 +51,8 @@ describe('Merge Lead Time Data Source', () => {
 
     const expectedPreviousQuery = {
       ...filter,
-      startDate: DateTime.utc(2023, 3, 19),
-      endDate: DateTime.utc(2024, 3, 19),
+      startDate: DateTime.utc(2023, 3, 20),
+      endDate: DateTime.utc(2024, 3, 20),
     };
 
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(1, expectedTinybirdPath, filter);

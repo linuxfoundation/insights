@@ -59,8 +59,8 @@ describe('Active Days Data Source', () => {
     const expectedPreviousSummaryQuery = {
       project: filter.project,
       repos: ['some-repo'],
-      startDate: DateTime.utc(2023, 3, 19),
-      endDate: DateTime.utc(2024, 3, 19),
+      startDate: DateTime.utc(2023, 3, 20),
+      endDate: DateTime.utc(2024, 3, 20),
     };
     const expectedActiveDaysQuery = {
       project: filter.project,

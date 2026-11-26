@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
           <span v-if="selectedOption.value !== 'custom'">{{ selectedOption?.label }}</span>
           <span v-else-if="startDate && endDate">
             {{ DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
-            -> {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+            -> {{ lastDayOf(endDate).toFormat('MMM d, yyyy') }}
           </span>
           <span v-else>Custom</span>
           <template
@@ -126,6 +126,7 @@ import { ref, watch } from 'vue';
 import LfxProjectCustomDateRangePicker from '~/components/modules/project/components/shared/header/custom-date-range-picker.vue';
 import {
   type DateOptionConfig,
+  lastDayOf,
   lfxProjectDateOptions,
   lfxProjectDateOptionsGeneral,
   lfxProjectDateOptionsPast,

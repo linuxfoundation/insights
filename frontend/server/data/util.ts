@@ -18,9 +18,8 @@ export type DateRangeSet = {
 export const earliestPossibleStartDate = DateTime.utc(2010, 1, 1);
 
 /**
- * Calculates the start and end dates for the previous time interval, based on the current start and end dates.
- * Needs to calculate the number of days between the current start and end dates,
- * and then subtract that from the current dates to get the previous ones.
+ * Calculates the comparison period for the current one. End dates are exclusive, so the comparison period ends
+ * where the current one starts and spans the same calendar months and days.
  * It provides correct defaults for the current dates if they are not provided.
  */
 export function getPreviousDates(
@@ -39,8 +38,8 @@ export function getPreviousDates(
 
   const dateDiff = safeEndDate.diff(safeStartDate, ['months', 'days']);
 
-  const previousEndDate = safeStartDate.minus({ days: 1 });
-  const previousStartDate = previousEndDate.minus(dateDiff);
+  const previousEndDate = safeStartDate;
+  const previousStartDate = safeStartDate.minus(dateDiff);
 
   return {
     current: {
