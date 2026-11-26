@@ -179,7 +179,6 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { useDocsReadinessEnabled } from '~~/composables/useDocsReadinessEnabled';
 import type { SecurityData } from '~~/types/security/responses.types';
 
 const isSearchRepoModalOpen = ref(false);
@@ -198,10 +197,7 @@ const {
 } = storeToRefs(useProjectStore());
 const { isAuthenticated } = storeToRefs(useAuthStore());
 
-const docsReadinessEnabled = useDocsReadinessEnabled();
-const showDocsReadiness = computed(
-  () => docsReadinessEnabled.value && !isProjectLoading.value && !!project.value?.isLF,
-);
+const showDocsReadiness = computed(() => !isProjectLoading.value && !!project.value?.isLF);
 
 const isRepository = computed(() => !!name || (project.value?.repositories?.length ?? 0) <= 1);
 const isReposEvalModalOpen = ref(false);

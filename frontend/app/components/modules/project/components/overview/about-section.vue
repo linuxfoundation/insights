@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
       <lfx-links />
       <lfx-project-about-section-connected-platforms />
     </lfx-project-about-section-loading>
-    <lfx-project-docs-readiness-tile v-if="docsReadinessEnabled && !isProjectLoading && project?.isLF" />
+    <lfx-project-docs-readiness-tile v-if="!isProjectLoading && project?.isLF" />
     <!-- <lfx-associated-organization /> -->
   </div>
 </template>
@@ -29,7 +29,6 @@ import { storeToRefs } from 'pinia';
 import LfxBadges from '~/components/modules/badges/components/badges.vue';
 import LfxProjectAboutSectionConnectedPlatforms from '~/components/modules/project/components/overview/about-section/connected-platforms.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import { useDocsReadinessEnabled } from '~~/composables/useDocsReadinessEnabled';
 
 import LfxProjectAboutSectionLoading from './about-section/about-section-loading.vue';
 import LfxProjectAboutSoftwareValue from './about-section/about-software-value.vue';
@@ -39,7 +38,6 @@ import LfxTagsAndLanguages from './about-section/tags-ang-languages.vue';
 import LfxProjectDocsReadinessTile from './docs-readiness-tile.vue';
 
 const { isProjectLoading, project } = storeToRefs(useProjectStore());
-const docsReadinessEnabled = useDocsReadinessEnabled();
 </script>
 
 <script lang="ts">
