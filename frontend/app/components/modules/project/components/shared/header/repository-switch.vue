@@ -120,7 +120,7 @@ const routeName = computed<ProjectLinkConfig>(() => {
 const allRepositories = () => {
   repositorySearchRef.value?.cancelPendingSelection();
   isModalOpen.value = false;
-  const routeQuery = route.query;
+  const routeQuery = router.currentRoute.value.query;
 
   router.push({
     name: routeName.value.projectRouteName,

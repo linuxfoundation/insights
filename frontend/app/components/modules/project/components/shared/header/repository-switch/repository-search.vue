@@ -80,7 +80,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useVirtualList } from '@vueuse/core';
 import { debounce } from 'lodash-es';
-import { useRoute, useRouter } from 'nuxt/app';
+import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
@@ -106,8 +106,9 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const route = useRoute();
 const router = useRouter();
+// useRoute() can lag behind query updates made elsewhere (e.g. the date range), like in the project store.
+const route = router.currentRoute;
 
 const searchInputRef = ref(null);
 const search = ref('');
@@ -153,12 +154,12 @@ let lastAppliedSlugs: string | null = null;
 const applySelection = () => {
   hasPendingChanges = false;
   // The user left this project while the change was pending, so it no longer applies.
-  if (route.params.slug !== draftProjectSlug) {
+  if (route.value.params.slug !== draftProjectSlug) {
     return;
   }
   const repos = draftSlugs.value;
   lastAppliedSlugs = repos.join(',');
-  const routeQuery = route.query;
+  const routeQuery = route.value.query;
   if (repos.length === 1) {
     router.push({
       name: props.link.repoRouteName,
@@ -183,7 +184,7 @@ const handleReposChange = (repo: RepositoryItem) => {
   draftSlugs.value = isSelected ? draftSlugs.value.filter((s) => !slugs.includes(s)) : [...draftSlugs.value, ...slugs];
 
   if (!hasPendingChanges) {
-    draftProjectSlug = route.params.slug as string | undefined;
+    draftProjectSlug = route.value.params.slug as string | undefined;
   }
   hasPendingChanges = true;
   scheduleApply();

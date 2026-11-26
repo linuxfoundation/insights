@@ -46,8 +46,9 @@ const push = vi.fn((to: Location) => {
 
 vi.mock('nuxt/app', async (importOriginal) => ({
   ...(await importOriginal<typeof import('nuxt/app')>()),
-  useRoute: () => route,
-  useRouter: () => ({ push }),
+  // Nuxt's useRoute() can be a stale snapshot; the components must read the router's current route.
+  useRoute: () => ({ name: 'project-slug', params: { slug: 'demo' }, query: {} }),
+  useRouter: () => ({ push, currentRoute: { value: route } }),
 }));
 
 vi.mock('pinia', async (importOriginal) => ({
@@ -117,6 +118,16 @@ describe('repository-search batching', () => {
   afterEach(() => {
     vi.useRealTimers();
     navigationDelayMs = 0;
+  });
+
+  test('keeps the current date range in the URL when applying', async () => {
+    route.query = { timeRange: 'past90days', repos: 'repo-0,repo-1' };
+    const wrapper = render();
+
+    await clickRow(wrapper, 2);
+    vi.advanceTimersByTime(400);
+
+    expect(route.query).toEqual({ timeRange: 'past90days', repos: 'repo-0,repo-1,repo-2' });
   });
 
   test('rapid selections update checkboxes at once and the route once, after the pause', async () => {
@@ -286,6 +297,15 @@ describe('repository-switch "All repositories" with a pending draft', () => {
         },
       },
     });
+
+  test('"All repositories" keeps the current date range', async () => {
+    route.query = { timeRange: 'past90days', repos: 'repo-0,repo-1' };
+    const wrapper = renderSwitch();
+
+    await wrapper.findAllComponents(RepositorySwitchItem).at(0)?.trigger('click');
+
+    expect(route.query).toEqual({ timeRange: 'past90days', repos: undefined });
+  });
 
   test('the "All repositories" row follows the draft, and choosing it wins over the draft', async () => {
     const wrapper = renderSwitch();
