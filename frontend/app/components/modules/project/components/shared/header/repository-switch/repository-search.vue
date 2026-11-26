@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
           v-for="{ data } in list"
           :key="data.url"
           is-multi-select
-          :selected="selectedRepoSlugs.includes(data.slug)"
+          :selected="draftSlugs.includes(data.slug)"
           @click="handleReposChange(data)"
         >
           <div class="flex justify-between w-full">
@@ -79,9 +79,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useVirtualList } from '@vueuse/core';
+import { debounce } from 'lodash-es';
 import { useRoute, useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import {
@@ -94,6 +95,8 @@ import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { normalizeRepoName } from '~/components/shared/utils/helper';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { ProjectRepository } from '~~/types/project';
+
+const REPO_SELECTION_DEBOUNCE_MS = 400;
 
 const props = defineProps<{
   link: ProjectLinkConfig;
@@ -141,16 +144,19 @@ const { list, containerProps, wrapperProps } = useVirtualList(result, {
   itemHeight: 40,
 });
 
-const handleReposChange = (repo: RepositoryItem) => {
-  let repos: string[] = [];
-  const slugs: string[] = repositories.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+// Checkboxes reflect this draft at once; the route (and every repo-dependent query) follows after a pause.
+const draftSlugs = ref<string[]>([...selectedRepoSlugs.value]);
+let hasPendingChanges = false;
 
-  const isSelected = slugs.some((slug) => selectedRepoSlugs.value.includes(slug));
-  if (isSelected) {
-    repos = selectedRepoSlugs.value.filter((s) => !slugs.includes(s));
-  } else {
-    repos = [...selectedRepoSlugs.value, ...slugs];
+watch(selectedRepoSlugs, (slugs) => {
+  if (!hasPendingChanges) {
+    draftSlugs.value = [...slugs];
   }
+});
+
+const applySelection = () => {
+  hasPendingChanges = false;
+  const repos = draftSlugs.value;
   const routeQuery = route.query;
   if (repos.length === 1) {
     router.push({
@@ -167,8 +173,38 @@ const handleReposChange = (repo: RepositoryItem) => {
   }
 };
 
+const scheduleApply = debounce(applySelection, REPO_SELECTION_DEBOUNCE_MS);
+
+const handleReposChange = (repo: RepositoryItem) => {
+  const slugs: string[] = repositories.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+
+  const isSelected = slugs.some((slug) => draftSlugs.value.includes(slug));
+  draftSlugs.value = isSelected ? draftSlugs.value.filter((s) => !slugs.includes(s)) : [...draftSlugs.value, ...slugs];
+
+  // One repo left navigates to its page and closes the modal, so apply it now.
+  if (draftSlugs.value.length === 1) {
+    scheduleApply.cancel();
+    applySelection();
+    return;
+  }
+  hasPendingChanges = true;
+  scheduleApply();
+};
+
+const cancelPendingSelection = () => {
+  scheduleApply.cancel();
+  hasPendingChanges = false;
+};
+
+defineExpose({ cancelPendingSelection });
+
 onMounted(() => {
   searchInputRef.value?.focus();
+});
+
+// Closing the modal or switching tabs keeps the selection the user made.
+onBeforeUnmount(() => {
+  scheduleApply.flush();
 });
 </script>
 

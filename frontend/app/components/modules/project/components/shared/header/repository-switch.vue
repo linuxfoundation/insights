@@ -57,6 +57,7 @@ SPDX-License-Identifier: MIT
       </div>
       <lfx-project-repository-search
         v-if="tab === 'repositories'"
+        ref="repositorySearchRef"
         :link="routeName"
         @close="isModalOpen = false"
       />
@@ -96,6 +97,7 @@ const router = useRouter();
 const { projectRepositoryGroups, selectedRepoSlugs, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
 const tab = ref('repositories');
+const repositorySearchRef = ref<InstanceType<typeof LfxProjectRepositorySearch> | null>(null);
 
 const tabs = [
   { label: 'Repositories', value: 'repositories', icon: 'book' },
@@ -116,6 +118,7 @@ const routeName = computed<ProjectLinkConfig>(() => {
 });
 
 const allRepositories = () => {
+  repositorySearchRef.value?.cancelPendingSelection();
   isModalOpen.value = false;
   const routeQuery = route.query;
 
